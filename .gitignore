@@ -1,7 +1,0 @@
-node_modules
-.vscode
-build
-website
-server/node_modules
-.idea
-.DS_Store
