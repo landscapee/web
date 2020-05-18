@@ -1,0 +1,1147 @@
+/* common */
+.ke-inline-block {
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+}
+.ke-clearfix {
+	zoom: 1;/*no*/
+}
+.ke-clearfix:after {
+	content: ".";/*no*/
+	display: block;/*no*/
+	clear: both;/*no*/
+	font-size: 0;/*no*/
+	height: 0;/*no*/
+	line-height: 0;/*no*/
+	visibility: hidden;/*no*/
+}
+.ke-shadow {
+	box-shadow: 1px 1px 3px #A0A0A0;/*no*/
+	-moz-box-shadow: 1px 1px 3px #A0A0A0;/*no*/
+	-webkit-box-shadow: 1px 1px 3px #A0A0A0;/*no*/
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#A0A0A0', Direction=135, Strength=3);/*no*/
+	background-color: #F0F0EE;/*no*/
+}
+.ke-menu a,
+.ke-menu a:hover,
+.ke-dialog a,
+.ke-dialog a:hover {
+	color: #337FE5;/*no*/
+	text-decoration: none;/*no*/
+}
+/* icons */
+.ke-icon-source {
+	background-position: 0px 0px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-preview {
+	background-position: 0px -16px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-print {
+	background-position: 0px -32px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-undo {
+	background-position: 0px -48px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-redo {
+	background-position: 0px -64px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-cut {
+	background-position: 0px -80px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-copy {
+	background-position: 0px -96px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-paste {
+	background-position: 0px -112px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-selectall {
+	background-position: 0px -128px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-justifyleft {
+	background-position: 0px -144px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-justifycenter {
+	background-position: 0px -160px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-justifyright {
+	background-position: 0px -176px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-justifyfull {
+	background-position: 0px -192px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-insertorderedlist {
+	background-position: 0px -208px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-insertunorderedlist {
+	background-position: 0px -224px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-indent {
+	background-position: 0px -240px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-outdent {
+	background-position: 0px -256px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-subscript {
+	background-position: 0px -272px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-superscript {
+	background-position: 0px -288px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-date {
+	background-position: 0px -304px;/*no*/
+	width: 25px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-time {
+	background-position: 0px -320px;/*no*/
+	width: 25px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-formatblock {
+	background-position: 0px -336px;/*no*/
+	width: 25px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-fontname {
+	background-position: 0px -352px;/*no*/
+	width: 21px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-fontsize {
+	background-position: 0px -368px;/*no*/
+	width: 23px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-forecolor {
+	background-position: 0px -384px;/*no*/
+	width: 20px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-hilitecolor {
+	background-position: 0px -400px;/*no*/
+	width: 23px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-bold {
+	background-position: 0px -416px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-italic {
+	background-position: 0px -432px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-underline {
+	background-position: 0px -448px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-strikethrough {
+	background-position: 0px -464px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-removeformat {
+	background-position: 0px -480px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-image {
+	background-position: 0px -496px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-flash {
+	background-position: 0px -512px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-media {
+	background-position: 0px -528px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-div {
+	background-position: 0px -544px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-formula {
+	background-position: 0px -576px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-hr {
+	background-position: 0px -592px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-emoticons {
+	background-position: 0px -608px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-link {
+	background-position: 0px -624px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-unlink {
+	background-position: 0px -640px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-fullscreen {
+	background-position: 0px -656px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-about {
+	background-position: 0px -672px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-plainpaste {
+	background-position: 0px -704px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-wordpaste {
+	background-position: 0px -720px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-table {
+	background-position: 0px -784px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablemenu {
+	background-position: 0px -768px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tableinsert {
+	background-position: 0px -784px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tabledelete {
+	background-position: 0px -800px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecolinsertleft {
+	background-position: 0px -816px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecolinsertright {
+	background-position: 0px -832px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablerowinsertabove {
+	background-position: 0px -848px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablerowinsertbelow {
+	background-position: 0px -864px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecoldelete {
+	background-position: 0px -880px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablerowdelete {
+	background-position: 0px -896px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecellprop {
+	background-position: 0px -912px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tableprop {
+	background-position: 0px -928px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-checked {
+	background-position: 0px -944px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-code {
+	background-position: 0px -960px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-map {
+	background-position: 0px -976px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-baidumap {
+	background-position: 0px -976px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-lineheight {
+	background-position: 0px -992px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-clearhtml {
+	background-position: 0px -1008px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-pagebreak {
+	background-position: 0px -1024px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-insertfile {
+	background-position: 0px -1040px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-quickformat {
+	background-position: 0px -1056px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-template {
+	background-position: 0px -1072px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecellsplit {
+	background-position: 0px -1088px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablerowmerge {
+	background-position: 0px -1104px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablerowsplit {
+	background-position: 0px -1120px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecolmerge {
+	background-position: 0px -1136px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-tablecolsplit {
+	background-position: 0px -1152px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-anchor {
+	background-position: 0px -1168px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-search {
+	background-position: 0px -1184px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-new {
+	background-position: 0px -1200px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-specialchar {
+	background-position: 0px -1216px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+.ke-icon-multiimage {
+	background-position: 0px -1232px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+}
+/* container */
+.ke-container {
+	display: block;/*no*/
+	border: 1px solid #CCCCCC;/*no*/
+	background-color: #FFF;/*no*/
+	overflow: hidden;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+}
+/* toolbar */
+.ke-toolbar {
+	border-bottom: 1px solid #CCC;/*no*/
+	background-color: #F0F0EE;/*no*/
+	padding: 2px 5px;/*no*/
+	text-align: left;/*no*/
+	overflow: hidden;/*no*/
+	zoom: 1;/*no*/
+}
+.ke-toolbar-icon {
+	background-repeat: no-repeat;/*no*/
+	font-size: 0;/*no*/
+	line-height: 0;/*no*/
+	overflow: hidden;/*no*/
+	display: block;/*no*/
+}
+.ke-toolbar-icon-url {
+	background-image: url(default.png);/*no*/
+}
+.ke-toolbar .ke-outline {
+	border: 1px solid #F0F0EE;/*no*/
+	margin: 1px;/*no*/
+	padding: 1px 2px;/*no*/
+	font-size: 0;/*no*/
+	line-height: 0;/*no*/
+	overflow: hidden;/*no*/
+	cursor: pointer;/*no*/
+	display: block;/*no*/
+	float: left;/*no*/
+}
+.ke-toolbar .ke-on {
+	border: 1px solid #5690D2;/*no*/
+}
+.ke-toolbar .ke-selected {
+	border: 1px solid #5690D2;/*no*/
+	background-color: #E9EFF6;/*no*/
+}
+.ke-toolbar .ke-disabled {
+	cursor: default;/*no*/
+}
+.ke-toolbar .ke-separator {
+	height: 16px;/*no*/
+	margin: 2px 3px;/*no*/
+	border-left: 1px solid #A0A0A0;/*no*/
+	border-right: 1px solid #FFFFFF;/*no*/
+	border-top:0;/*no*/
+	border-bottom:0;/*no*/
+	width: 0;/*no*/
+	font-size: 0;/*no*/
+	line-height: 0;/*no*/
+	overflow: hidden;/*no*/
+	display: block;/*no*/
+	float: left;/*no*/
+}
+.ke-toolbar .ke-hr {
+	overflow: hidden;/*no*/
+	height: 1px;/*no*/
+	clear: both;/*no*/
+}
+/* edit */
+.ke-edit {
+	padding: 0;/*no*/
+}
+.ke-edit-iframe,
+.ke-edit-textarea {
+	border: 0;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+	overflow: auto;/*no*/
+}
+.ke-edit-textarea {
+	font: 12px/1.5 "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;/*no*/
+	color: #000;/*no*/
+	overflow: auto;/*no*/
+	resize: none;/*no*/
+}
+.ke-edit-textarea:focus {
+	outline: none;/*no*/
+}
+/* statusbar */
+.ke-statusbar {
+	position: relative;/*no*/
+	background-color: #F0F0EE;/*no*/
+	border-top: 1px solid #CCCCCC;/*no*/
+	font-size: 0;/*no*/
+	line-height: 0;/*no*/
+	*height: 12px;/*no*/
+	overflow: hidden;/*no*/
+	text-align: center;/*no*/
+	cursor: s-resize;/*no*/
+}
+.ke-statusbar-center-icon {
+	background-position: -0px -754px;/*no*/
+	width: 15px;/*no*/
+	height: 11px;/*no*/
+	background-image: url(default.png);/*no*/
+}
+.ke-statusbar-right-icon {
+	position: absolute;/*no*/
+	right: 0;/*no*/
+	bottom: 0;/*no*/
+	cursor: se-resize;/*no*/
+	background-position: -5px -741px;/*no*/
+	width: 11px;/*no*/
+	height: 11px;/*no*/
+	background-image: url(default.png);/*no*/
+}
+/* menu */
+.ke-menu {
+	border: 1px solid #A0A0A0;/*no*/
+	background-color: #F1F1F1;/*no*/
+	color: #222222;/*no*/
+	padding: 2px;/*no*/
+	font-family: "sans serif",tahoma,verdana,helvetica;/*no*/
+	font-size: 12px;/*no*/
+	text-align: left;/*no*/
+	overflow: hidden;/*no*/
+}
+.ke-menu-item {
+	border: 1px solid #F1F1F1;/*no*/
+	background-color: #F1F1F1;/*no*/
+	color: #222222;/*no*/
+	height: 24px;/*no*/
+	overflow: hidden;/*no*/
+	cursor: pointer;/*no*/
+}
+.ke-menu-item-on {
+	border: 1px solid #5690D2;/*no*/
+	background-color: #E9EFF6;/*no*/
+}
+.ke-menu-item-left {
+	width: 27px;/*no*/
+	text-align: center;/*no*/
+	overflow: hidden;/*no*/
+}
+.ke-menu-item-center {
+	width: 0;/*no*/
+	height: 24px;/*no*/
+	border-left: 1px solid #E3E3E3;/*no*/
+	border-right: 1px solid #FFFFFF;/*no*/
+	border-top: 0;/*no*/
+	border-bottom: 0;/*no*/
+}
+.ke-menu-item-center-on {
+	border-left: 1px solid #E9EFF6;/*no*/
+	border-right: 1px solid #E9EFF6;/*no*/
+}
+.ke-menu-item-right {
+	border: 0;/*no*/
+	padding: 0 0 0 5px;/*no*/
+	line-height: 24px;/*no*/
+	text-align: left;/*no*/
+	overflow: hidden;/*no*/
+}
+.ke-menu-separator {
+	margin: 2px 0;/*no*/
+	height: 0;/*no*/
+	overflow: hidden;/*no*/
+	border-top: 1px solid #CCCCCC;/*no*/
+	border-bottom: 1px solid #FFFFFF;/*no*/
+	border-left: 0;/*no*/
+	border-right: 0;/*no*/
+}
+/* colorpicker */
+.ke-colorpicker {
+	border: 1px solid #A0A0A0;/*no*/
+	background-color: #F1F1F1;/*no*/
+	color: #222222;/*no*/
+	padding: 2px;/*no*/
+}
+.ke-colorpicker-table {
+	border:0;/*no*/
+	margin:0;/*no*/
+	padding:0;/*no*/
+	border-collapse: separate;/*no*/
+}
+.ke-colorpicker-cell {
+	font-size: 0;/*no*/
+	line-height: 0;/*no*/
+	border: 1px solid #F0F0EE;/*no*/
+	cursor: pointer;/*no*/
+	margin:3px;/*no*/
+	padding:0;/*no*/
+}
+.ke-colorpicker-cell-top {
+	font-family: "sans serif",tahoma,verdana,helvetica;/*no*/
+	font-size: 12px;/*no*/
+	line-height: 24px;/*no*/
+	border: 1px solid #F0F0EE;/*no*/
+	cursor: pointer;/*no*/
+	margin:0;/*no*/
+	padding:0;/*no*/
+	text-align: center;/*no*/
+}
+.ke-colorpicker-cell-on {
+	border: 1px solid #5690D2;/*no*/
+}
+.ke-colorpicker-cell-selected {
+	border: 1px solid #2446AB;/*no*/
+}
+.ke-colorpicker-cell-color {
+	width: 14px;/*no*/
+	height: 14px;/*no*/
+	margin: 3px;/*no*/
+	padding: 0;/*no*/
+	border: 0;/*no*/
+}
+/* dialog */
+.ke-dialog {
+	position: absolute;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+}
+.ke-dialog .ke-header {
+	width: 100%;/*no*/
+	margin-bottom: 10px;/*no*/
+}
+.ke-dialog .ke-header .ke-left {
+	float: left;/*no*/
+}
+.ke-dialog .ke-header .ke-right {
+	float: right;/*no*/
+}
+.ke-dialog .ke-header label {
+	margin-right: 0;/*no*/
+	cursor: pointer;/*no*/
+	font-weight: normal;/*no*/
+	display: inline;/*no*/
+	vertical-align: top;/*no*/
+}
+.ke-dialog-content {
+	background-color: #FFF;/*no*/
+	width: 100%;/*no*/
+	height: 100%;/*no*/
+	color: #333;/*no*/
+	border: 1px solid #A0A0A0;/*no*/
+}
+.ke-dialog-shadow {
+	position: absolute;/*no*/
+	z-index: -1;/*no*/
+	top: 0;/*no*/
+	left: 0;/*no*/
+	width: 100%;/*no*/
+	height: 100%;/*no*/
+	box-shadow: 3px 3px 7px #999;/*no*/
+	-moz-box-shadow: 3px 3px 7px #999;/*no*/
+	-webkit-box-shadow: 3px 3px 7px #999;/*no*/
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='3', MakeShadow='true', ShadowOpacity='0.4');/*no*/
+	background-color: #F0F0EE;/*no*/
+}
+.ke-dialog-header {
+	border:0;/*no*/
+	margin:0;/*no*/
+	padding: 0 10px;/*no*/
+	background: url(background.png) repeat scroll 0 0 #F0F0EE;/*no*/
+	border-bottom: 1px solid #CFCFCF;/*no*/
+	height: 24px;/*no*/
+	font: 12px/24px "sans serif",tahoma,verdana,helvetica;/*no*/
+	text-align: left;/*no*/
+	color: #222;/*no*/
+	cursor: move;/*no*/
+}
+.ke-dialog-icon-close {
+	display: block;/*no*/
+	background: url(default.png) no-repeat scroll 0px -688px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+	position: absolute;/*no*/
+	right: 6px;/*no*/
+	top: 6px;/*no*/
+	cursor: pointer;/*no*/
+}
+.ke-dialog-body {
+	font: 12px/1.5 "sans serif",tahoma,verdana,helvetica;/*no*/
+	text-align: left;/*no*/
+	overflow: hidden;/*no*/
+	width: 100%;/*no*/
+}
+.ke-dialog-body textarea {
+	display: block;/*no*/
+	overflow: auto;/*no*/
+	padding: 0;/*no*/
+	resize: none;/*no*/
+}
+.ke-dialog-body textarea:focus,
+.ke-dialog-body input:focus,
+.ke-dialog-body select:focus {
+	outline: none;/*no*/
+}
+.ke-dialog-body label {
+	margin-right: 10px;/*no*/
+	cursor: pointer;/*no*/
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+}
+.ke-dialog-body img {
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+}
+.ke-dialog-body select {
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+	width: auto;/*no*/
+}
+.ke-dialog-body .ke-textarea {
+	display: block;/*no*/
+	width: 408px;/*no*/
+	height: 260px;/*no*/
+	font-family: "sans serif",tahoma,verdana,helvetica;/*no*/
+	font-size: 12px;/*no*/
+	border-color: #848484 #E0E0E0 #E0E0E0 #848484;/*no*/
+	border-style: solid;/*no*/
+	border-width: 1px;/*no*/
+}
+.ke-dialog-body .ke-form {
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+}
+.ke-dialog-loading {
+	position: absolute;/*no*/
+	top: 0;/*no*/
+	left: 1px;/*no*/
+	z-index: 1;/*no*/
+	text-align: center;/*no*/
+}
+.ke-dialog-loading-content {
+	background: url("../common/loading.gif") no-repeat;/*no*/
+    color: #666;/*no*/
+    font-size: 14px;/*no*/
+    font-weight: bold;/*no*/
+    height: 31px;/*no*/
+    line-height: 31px;/*no*/
+    padding-left: 36px;/*no*/
+}
+.ke-dialog-row {
+	margin-bottom: 10px;/*no*/
+}
+.ke-dialog-footer {
+	font: 12px/1 "sans serif",tahoma,verdana,helvetica;/*no*/
+	text-align: right;/*no*/
+	padding:0 0 5px 0;/*no*/
+	background-color: #FFF;/*no*/
+	width: 100%;/*no*/
+}
+.ke-dialog-preview,
+.ke-dialog-yes {
+	margin: 5px;/*no*/
+}
+.ke-dialog-no {
+	margin: 5px 10px 5px 5px;/*no*/
+}
+.ke-dialog-mask {
+	background-color:#FFF;/*no*/
+	filter:alpha(opacity=50);/*no*/
+	opacity:0.5;/*no*/
+}
+.ke-button-common {
+	background: url(background.png) no-repeat;/*no*/
+	cursor: pointer;/*no*/
+	height: 23px;/*no*/
+	line-height: 23px;/*no*/
+	overflow: visible;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: top;/*no*/
+	cursor: pointer;/*no*/
+}
+.ke-button-outer {
+	background-position: 0 -25px;/*no*/
+	padding: 0;/*no*/
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+}
+.ke-button {
+	background-position: right -25px;/*no*/
+	padding: 0 14px 0 12px;/*no*/
+	margin: 0 0 0 2px;/*no*/
+	font-family: "sans serif",tahoma,verdana,helvetica;/*no*/
+	border: 0 none;/*no*/
+	color: #333;/*no*/
+	font-size: 12px;/*no*/
+	text-decoration: none;/*no*/
+}
+/* inputbox */
+.ke-input-text {
+	background-color:#FFFFFF;/*no*/
+	font-family: "sans serif",tahoma,verdana,helvetica;/*no*/
+	font-size: 12px;/*no*/
+	line-height: 17px;/*no*/
+	height: 17px;/*no*/
+	padding: 2px 4px;/*no*/
+	border-color: #848484 #E0E0E0 #E0E0E0 #848484;/*no*/
+	border-style: solid;/*no*/
+	border-width: 1px;/*no*/
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+}
+.ke-input-number {
+	width: 50px;/*no*/
+}
+.ke-input-color {
+	border: 1px solid #A0A0A0;/*no*/
+	background-color: #FFFFFF;/*no*/
+	font-size: 12px;/*no*/
+	width: 60px;/*no*/
+	height: 20px;/*no*/
+	line-height: 20px;/*no*/
+	padding-left: 5px;/*no*/
+	overflow: hidden;/*no*/
+	cursor: pointer;/*no*/
+	display: -moz-inline-stack;/*no*/
+	display: inline-block;/*no*/
+	vertical-align: middle;/*no*/
+	zoom: 1;/*no*/
+	*display: inline;/*no*/
+}
+.ke-upload-button {
+	position: relative;/*no*/
+}
+.ke-upload-area {
+	position: relative;/*no*/
+	overflow: hidden;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+	*height: 25px;/*no*/
+}
+.ke-upload-area .ke-upload-file {
+	position: absolute;/*no*/
+	font-size: 60px;/*no*/
+	top: 0;/*no*/
+	right: 0;/*no*/
+	padding: 0;/*no*/
+	margin: 0;/*no*/
+	z-index: 811212;/*no*/
+	border: 0 none;/*no*/
+	opacity: 0;/*no*/
+	filter: alpha(opacity=0);/*no*/
+}
+/* tabs */
+.ke-tabs {
+	font: 12px/1 "sans serif",tahoma,verdana,helvetica;/*no*/
+	border-bottom:1px solid #A0A0A0;/*no*/
+	padding-left:5px;/*no*/
+	margin-bottom:20px;/*no*/
+}
+.ke-tabs-ul  {
+	list-style-image:none;/*no*/
+	list-style-position:outside;/*no*/
+	list-style-type:none;/*no*/
+	margin:0;/*no*/
+	padding:0;/*no*/
+}
+.ke-tabs-li {
+	position: relative;/*no*/
+	border: 1px solid #A0A0A0;/*no*/
+	background-color: #F0F0EE;/*no*/
+	margin: 0 2px -1px 0;/*no*/
+	padding: 0 20px;/*no*/
+	float: left;/*no*/
+	line-height: 25px;/*no*/
+	text-align: center;/*no*/
+	color: #555555;/*no*/
+	cursor: pointer;/*no*/
+}
+.ke-tabs-li-selected {
+	background-color: #FFF;/*no*/
+	border-bottom: 1px solid #FFF;/*no*/
+	color: #000;/*no*/
+	cursor: default;/*no*/
+}
+.ke-tabs-li-on {
+	background-color: #FFF;/*no*/
+	color: #000;/*no*/
+}
+/* progressbar */
+.ke-progressbar {
+	position: relative;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+}
+.ke-progressbar-bar {
+	border: 1px solid #6FA5DB;/*no*/
+	width: 80px;/*no*/
+	height: 5px;/*no*/
+	margin: 10px 10px 0 10px;/*no*/
+	padding: 0;/*no*/
+}
+.ke-progressbar-bar-inner {
+	width: 0;/*no*/
+	height: 5px;/*no*/
+	background-color: #6FA5DB;/*no*/
+	overflow: hidden;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+}
+.ke-progressbar-percent {
+	position: absolute;/*no*/
+	top: 0;/*no*/
+	left: 40%;/*no*/
+	display: none;/*no*/
+}
+/* swfupload */
+.ke-swfupload-top {
+	position: relative;/*no*/
+	margin-bottom: 10px;/*no*/
+	_width: 608px;/*no*/
+}
+.ke-swfupload-button {
+	height: 23px;/*no*/
+	line-height: 23px;/*no*/
+}
+.ke-swfupload-desc {
+	padding: 0 10px;/*no*/
+	height: 23px;/*no*/
+	line-height: 23px;/*no*/
+}
+.ke-swfupload-startupload {
+	position: absolute;/*no*/
+	top: 0;/*no*/
+	right: 0;/*no*/
+}
+.ke-swfupload-body {
+	overflow: scroll;/*no*/
+	background-color:#FFFFFF;/*no*/
+	border-color: #848484 #E0E0E0 #E0E0E0 #848484;/*no*/
+	border-style: solid;/*no*/
+	border-width: 1px;/*no*/
+	width: auto;/*no*/
+	height: 370px;/*no*/
+	padding: 5px;/*no*/
+}
+.ke-swfupload-body .ke-item {
+	width: 100px;/*no*/
+	margin: 5px;/*no*/
+}
+.ke-swfupload-body .ke-photo {
+	position: relative;/*no*/
+	border: 1px solid #DDDDDD;/*no*/
+	background-color:#FFFFFF;/*no*/
+	padding: 10px;/*no*/
+}
+.ke-swfupload-body .ke-delete {
+	display: block;/*no*/
+	background: url(default.png) no-repeat scroll 0px -688px;/*no*/
+	width: 16px;/*no*/
+	height: 16px;/*no*/
+	position: absolute;/*no*/
+	right: 0;/*no*/
+	top: 0;/*no*/
+	cursor: pointer;/*no*/
+}
+.ke-swfupload-body .ke-status  {
+	position: absolute;/*no*/
+	left: 0;/*no*/
+	bottom: 5px;/*no*/
+	width: 100px;/*no*/
+	height: 17px;/*no*/
+}
+.ke-swfupload-body .ke-message  {
+	width: 100px;/*no*/
+	text-align: center;/*no*/
+	overflow: hidden;/*no*/
+	height:17px;/*no*/
+}
+.ke-swfupload-body .ke-error  {
+	color: red;/*no*/
+}
+.ke-swfupload-body .ke-name {
+	width: 100px;/*no*/
+	text-align: center;/*no*/
+	overflow: hidden;/*no*/
+	height:16px;/*no*/
+}
+.ke-swfupload-body .ke-on {
+	border: 1px solid #5690D2;/*no*/
+	background-color: #E9EFF6;/*no*/
+}
+
+/* emoticons */
+.ke-plugin-emoticons {
+	position: relative;/*no*/
+}
+.ke-plugin-emoticons .ke-preview {
+	position: absolute;/*no*/
+	text-align: center;/*no*/
+	margin: 2px;/*no*/
+	padding: 10px;/*no*/
+	top: 0;/*no*/
+	border: 1px solid #A0A0A0;/*no*/
+	background-color: #FFFFFF;/*no*/
+	display: none;/*no*/
+}
+.ke-plugin-emoticons .ke-preview-img {
+	border:0;/*no*/
+	margin:0;/*no*/
+	padding:0;/*no*/
+}
+.ke-plugin-emoticons .ke-table {
+	border:0;/*no*/
+	margin:0;/*no*/
+	padding:0;/*no*/
+	border-collapse:separate;/*no*/
+}
+.ke-plugin-emoticons .ke-cell {
+	margin:0;/*no*/
+	padding:1px;/*no*/
+	border:1px solid #F0F0EE;/*no*/
+	cursor:pointer;/*no*/
+}
+.ke-plugin-emoticons .ke-on {
+	border: 1px solid #5690D2;/*no*/
+	background-color: #E9EFF6;/*no*/
+}
+.ke-plugin-emoticons .ke-img {
+	display:block;/*no*/
+	background-repeat:no-repeat;/*no*/
+	overflow:hidden;/*no*/
+	margin:2px;/*no*/
+	width:24px;/*no*/
+	height:24px;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+	border: 0;/*no*/
+}
+.ke-plugin-emoticons .ke-page {
+	text-align: right;/*no*/
+	margin: 5px;/*no*/
+	padding: 0;/*no*/
+	border: 0;/*no*/
+	font: 12px/1 "sans serif",tahoma,verdana,helvetica;/*no*/
+	color: #333;/*no*/
+	text-decoration: none;/*no*/
+}
+.ke-plugin-plainpaste-textarea,
+.ke-plugin-wordpaste-iframe {
+	display: block;/*no*/
+	width: 408px;/*no*/
+	height: 260px;/*no*/
+	font-family: "sans serif",tahoma,verdana,helvetica;/*no*/
+	font-size: 12px;/*no*/
+	border-color: #848484 #E0E0E0 #E0E0E0 #848484;/*no*/
+	border-style: solid;/*no*/
+	border-width: 1px;/*no*/
+}
+/* filemanager */
+.ke-plugin-filemanager-header {
+	width: 100%;/*no*/
+	margin-bottom: 10px;/*no*/
+}
+.ke-plugin-filemanager-header .ke-left {
+	float: left;/*no*/
+}
+.ke-plugin-filemanager-header .ke-right {
+	float: right;/*no*/
+}
+.ke-plugin-filemanager-body {
+	overflow: scroll;/*no*/
+	background-color:#FFFFFF;/*no*/
+	border-color: #848484 #E0E0E0 #E0E0E0 #848484;/*no*/
+	border-style: solid;/*no*/
+	border-width: 1px;/*no*/
+	width: auto;/*no*/
+	height: 370px;/*no*/
+	padding: 5px;/*no*/
+}
+.ke-plugin-filemanager-body .ke-item {
+	width: 100px;/*no*/
+	margin: 5px;/*no*/
+}
+.ke-plugin-filemanager-body .ke-photo {
+	border: 1px solid #DDDDDD;/*no*/
+	background-color:#FFFFFF;/*no*/
+	padding: 10px;/*no*/
+}
+.ke-plugin-filemanager-body .ke-name {
+	width: 100px;/*no*/
+	text-align: center;/*no*/
+	overflow: hidden;/*no*/
+	height:16px;/*no*/
+}
+.ke-plugin-filemanager-body .ke-on {
+	border: 1px solid #5690D2;/*no*/
+	background-color: #E9EFF6;/*no*/
+}
+.ke-plugin-filemanager-body .ke-table {
+	width: 95%;/*no*/
+	border: 0;/*no*/
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+	border-collapse: separate;/*no*/
+}
+.ke-plugin-filemanager-body .ke-table .ke-cell {
+	margin: 0;/*no*/
+	padding: 0;/*no*/
+	border: 0;/*no*/
+}
+.ke-plugin-filemanager-body .ke-table .ke-name {
+	width: 55%;/*no*/
+	text-align: left;/*no*/
+}
+.ke-plugin-filemanager-body .ke-table .ke-size {
+	width: 15%;/*no*/
+	text-align: left;/*no*/
+}
+.ke-plugin-filemanager-body .ke-table .ke-datetime {
+	width: 30%;/*no*/
+	text-align: center;/*no*/
+}
+
