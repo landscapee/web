@@ -9,3 +9,21 @@
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener("DOMContentLoaded", recalc, false);
 })(document, window);
+// import { isString } from 'lodash';
+// const DEFAULT_WIDTH = window.screen.width;
+// const DEFAULT_HEIGHT = window.screen.height;
+// const DEFAULT_FONTSIZE = 16;
+// var currentScreenFontSize;
+// let screenWidth = window.innerWidth;
+// let screenHeight = window.innerHeight;
+// let x, y, radioX, radioY;
+
+// radioX = DEFAULT_WIDTH / DEFAULT_FONTSIZE;
+// x = screenWidth / radioX;
+
+// radioY = DEFAULT_HEIGHT / DEFAULT_FONTSIZE;
+// y = screenHeight / radioY;
+// // y = 16;
+
+// currentScreenFontSize = Math.min(x, y);
+// window.document.documentElement.style.fontSize = currentScreenFontSize + 'px';

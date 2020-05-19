@@ -21,6 +21,7 @@ export default {
       editorTextCopy: ''  // content-change 事件回掉改变的对象
     }
   },
+
     methods: {
     onContentChange (val) {
       this.editorTextCopy = val;

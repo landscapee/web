@@ -1,30 +1,27 @@
 <template>
 	<div class="login-container">
+		<div class="login-bg blur"></div>
 		<div class="loginPanle">
-			<el-row>
-				<el-col :span="12" style="position:relative;">
-					<div class="login-log"></div>
-				</el-col>
-				<el-col :span="12">
-					<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-						<el-form-item prop="username" class="input-panel-g">
-							<!-- <span class="svg-container">
-								<svg-icon icon-class="user" />
-							</span> -->
-							<el-input ref="username" v-model="loginForm.username" placeholder="用户名" name="username" type="text" tabindex="1" auto-complete="on" />
-						</el-form-item>
-						<el-form-item prop="password" class="input-panel-r">
-							<!-- <span class="svg-container">
-								<svg-icon icon-class="password" />
-							</span> -->
-							<el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="密码" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
-							<!-- <span class="show-pwd" @click="showPwd">
-								<svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-							</span> -->
-						</el-form-item>
-						<el-button :loading="loading" class="loginBtn" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-					</el-form>
-				</el-col>
+			<div class="loginTitle"><span>机务管理系统</span></div>
+			<el-row class="left">
+					<img :src="logo" alt="" />
+			</el-row>
+			<el-row class="right">
+				<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+					<el-form-item prop="username" class="input-panel-g">
+						<span class="imgbox">
+							<img :src="userimg"  />
+						</span>
+						<el-input ref="username" v-model="loginForm.username" placeholder="请输入您的用户名" name="username" type="text" tabindex="1" auto-complete="on" />
+					</el-form-item>
+					<el-form-item prop="password" class="input-panel-r">
+						<span class="imgbox">
+							<img :src="pwdimg"  />
+						</span>
+						<el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="请输入您的密码" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
+					</el-form-item>
+					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin">登录 →</el-button>
+				</el-form>
 			</el-row>
 		</div>
 	</div>
@@ -33,6 +30,9 @@
 <script>
 import { MessageBox, Message } from 'element-ui';
 import request from '@lib/axios.js';
+import logo from './assets/img/login-logo.png';
+import userimg from './assets/img/login-username.png';
+import pwdimg from './assets/img/login-password.png';
 export default {
 	name: 'Login',
 	data() {
@@ -51,6 +51,9 @@ export default {
 			}
 		};
 		return {
+			logo,
+			userimg,
+			pwdimg,
 			loginForm: {
 				username: '',
 				password: '',
@@ -132,15 +135,17 @@ $cursor: #222;
 .login-container {
 	.el-input {
 		display: inline-block;
-		height: 40px;
+	    height: 0.36rem ;
 		width: 85%;
-
+		
 		input {
+			height: 0.36rem ;
+    		line-height: 0.36rem ;
 			background: transparent;
 			border: 0px;
 			-webkit-appearance: none;
 			border-radius: 0px;
-			padding: 12px 5px 12px 15px;
+			padding: 12px 5px 12px 0px;
 			color: $light_gray;
 			// height: 47px;
 			caret-color: $cursor;
@@ -149,13 +154,17 @@ $cursor: #222;
 				// box-shadow: 0 0 0px 1000px $bg inset !important;
 				-webkit-text-fill-color: $cursor !important;
 			}
+			&::-webkit-input-placeholder {
+				color: #89A3B5;
+			}
+   
 		}
 	}
 
 	.el-form-item {
 		// border: 1px solid rgba(255, 255, 255, 0.1);
 		background: #e9f4ff;
-		border-radius: 5px;
+		border-radius: 2px;
 	}
 }
 </style>
@@ -164,101 +173,166 @@ $cursor: #222;
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
-
 .login-container {
-	position: relative;
-	min-height: 100%;
-	width: 100%;
-	background-image: url('assets/img/bg.png');
-	background-repeat: no-repeat;
-	background-size: cover;
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 	overflow: hidden;
-	.loginPanle {
+	.login-bg{
 		position: absolute;
-		width: 920px;
-		height: 500px;
-		left: 50%;
-		top: 50%;
-		margin-left: -460px;
-		margin-top: -250px;
-		&::before {
+		top: -9px;
+		bottom: -9px;
+		left: -9px;
+		right: -9px;
+		background-image: url('./assets/img/bg.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center center;
+		z-index: -1;
+		transition:all 3s ease 0s;
+		-webkit-transition:all 3s ease 0s;
+	}
+	.loginPanle {
+		width: 8.3222rem;
+        height: 4.52rem;
+		display: flex;
+        position: relative;
+		.loginTitle {
+			width:2.74rem;
+			height: 35.7px;
+			background-size: 2.74rem  35.7px;
+			background: url('./assets/img/loginTitle.png') no-repeat;
 			position: absolute;
-			right: 4px;
-			top: -33px;
-			content: '';
-			width: 362px;
-			height: 68px;
-		}
-		&::after {
-			position: absolute;
-			font-size: 20px;
-			right: 161px;
-            top: 99px;
-			content: '机务管理系统';
+			right: 0px;
+    		top: -35.7px;
 			color: #fff;
+			text-align: center;
+			line-height: 35.7px;
+			 box-shadow:  0px 4px 16px rgba(0, 0, 0, 0.3);
+			 z-index: 10;
+			span{
+				font-size: 16px;
+			}
+		}
+		.left{
+			border-radius: 10px 0 0 10px;
+			width: 50%;
+			height: 100%;
+			background-image: linear-gradient(to bottom, rgba(208,224,248,1), rgba(208,224,248,0.9));
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			img{
+				width: 3.45rem;
+			}
+		}
+		.right{
+			border-radius: 0 0px 10px 0;
+			width: 50%;
+			height: 100%;
+			background-image: linear-gradient(to bottom, RGBA(216, 229, 248, 1), RGBA(216, 229, 248, 0.9));
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.login-log {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+			.el-form-item {
+				position: relative;
+				height: 0.36rem;
+				.imgbox{
+					vertical-align: middle;
+					height: 33px;
+					line-height:33px ;
+					width: 30px;
+					display: inline-block;
+					color: #889aa4;
+					text-align: center;
+					img{
+						width: 1.05em;
+    					height: 1.2em;
+						vertical-align: -0.15em;
+						fill: currentColor;
+						overflow: hidden;
+					}
+				}
+				/deep/ .el-form-item__content {
+					height: 0.35rem !important;
+    				line-height: 0.35rem !important;
+					.svg-container {
+						vertical-align: baseline;
+						 height: 0.36rem ;
+						padding-top: 0;
+						padding-bottom: 0;
+					}
+					.el-input {
+						    height: 0.36rem !important;
+					}
+				}
+				&.input-panel-g::after,
+				&.input-panel-r::after {
+					position: absolute;
+					content: ' ';
+					width: 96%;
+					left: 6px;
+					height: 2px;
+				}
+				&.input-panel-g {
+					margin-bottom: 25px !important;
+					&::after {
+						background-color: #446ED6;
+					}
+				}
+				&.input-panel-r {
+					margin-bottom: 34.7px !important;
+					&::after {
+						background-color: #169F3E;
+					}
+				}
+			}
+			.loginBtn {
+				width: 100%;
+				border: none !important;
+				height: 35.5px;
+				background-image: linear-gradient(to right, #0ACFFE, #495AFF) !important;
+				color: #fff;
+				border-radius: 5px;
+				border:none;
+				box-shadow:  0px 5px 15px rgba(73, 90, 255, 0.3);
+				position: relative;
+				/deep/ span{
+					font-size: 15px;
+					font-weight: 400;
+					font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+				}
+			}
+			.loginBtn:active{
+				box-shadow: 0 0 0 0 rgba(46,103,246,.5);
+			}
 		}
 		.el-row,
 		.el-col {
 			height: 100%;
 		}
-		.login-log {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-		}
-		.el-form-item {
-			position: relative;
-			height: 40px;
-			width: 280px;
-			/deep/ .el-form-item__content {
-				height: 40px !important;
-				.svg-container {
-					vertical-align: baseline;
-					height: 40px;
-					padding-top: 0;
-					padding-bottom: 0;
-				}
-				.el-input {
-					height: 40px !important;
-				}
-			}
-			&.input-panel-g::after,
-			&.input-panel-r::after {
-				position: absolute;
-				content: ' ';
-				width: 98%;
-				left: 4px;
-				height: 1px;
-			}
-			&.input-panel-g {
-				margin-bottom: 25px !important;
-				&::after {
-					background-color: #169f3e;
-				}
-			}
-			&.input-panel-r {
-				margin-bottom: 40px !important;
-				&::after {
-					background-color: #db4d54;
-				}
-			}
-		}
-		.loginBtn {
-			background: linear-gradient(90deg, #0acffe 0%, #495aff 100%) !important;
-			border: none !important;
-			color: #fff;
-		}
+		
 	}
 
 	.login-form {
 		position: relative;
-		width: 350px;
+		width: 323px;
 		max-width: 100%;
-		padding: 160px 35px 0;
+		padding: 0px 35px 0px;
 		margin: 0 auto;
-		overflow: hidden;
 	}
 
 	.tips {
