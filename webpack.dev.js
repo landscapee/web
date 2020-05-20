@@ -13,7 +13,7 @@ const webpack = require('webpack');
 
 let port = 8000;
 
-if (argv.Program === 'fpms.dev') {
+if (argv.Program === 'jwxt.dev') {
     port = 8089;
 };
 
