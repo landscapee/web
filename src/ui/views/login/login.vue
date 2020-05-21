@@ -2,7 +2,7 @@
 	<div class="login-container">
 		<div class="login-bg blur"></div>
 		<div class="loginPanle">
-			<div class="loginTitle"><span>机务管理系统</span></div>
+			<div class="loginTitle"><span>成都天府机场机务管理系统</span></div>
 			<el-row class="left">
 					<img :src="logo" alt="" />
 			</el-row>

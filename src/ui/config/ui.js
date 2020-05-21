@@ -7,7 +7,7 @@
  * @LastEditTime: 2020-05-13 13:19:02
  */
 import Vue from 'vue';
-
-
-Vue.component('AdvTable', import( '@components/AdvTable/advTable'));
-Vue.component('ScrollBox', import('@components/Scroll/scroll'));
+import ScrollBox from'@components/Scroll/scroll';
+import AdvTable from '@components/AdvTable/advTable';
+Vue.component('ScrollBox',ScrollBox);
+Vue.component('AdvTable',AdvTable);

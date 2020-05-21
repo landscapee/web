@@ -661,11 +661,15 @@
 </template>
 
 <script>
+    // import ScrollBox from '@components/Scroll/scroll.vue';
     import postal from 'postal';
     import validator from "validator";
     import { get, map, cloneDeep, compact, extend, find, debounce, omit, filter } from 'lodash';
 
     export default {
+        // components: {
+        //     ScrollBox,
+        // },
         props: {
             id: {
                 type: String,

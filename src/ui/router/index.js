@@ -10,7 +10,7 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/intelligenceManage',
 		name: '质量管理',
-		meta: {title: '质量管理',icon: '' },
+		meta: {title: '质量管理',icon: 'zlgl' },
     children: [
 			{
 				path: '/intelligenceManage',

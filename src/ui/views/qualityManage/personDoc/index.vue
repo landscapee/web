@@ -1,5 +1,5 @@
 <template>
-    <div>资质管理</div>
+    <div>人员档案</div>
 </template>
 <script>
 export default {

@@ -1,52 +1,157 @@
 <template>
-<el-container class="layout-container">
-  <el-aside width="200px" class="left-menu" >
-    <el-menu v-for="(item,index) in asyncRoutes"   :key="index" >
-      <el-submenu :index="index" >
-        <template slot="title">{{item.name}}</template>
-		<el-menu-item  :index="index2" v-for="(obj,index2) in item.children" :key="index2">{{obj.name}}</el-menu-item>
-      </el-submenu>
-    </el-menu>
-  </el-aside>
-  <el-container>
-    <el-header style="text-align: right; font-size: 12px">
-      <span>王小虎</span>
-    </el-header>
-    <el-main>
-      <router-view :key="key" />
-    </el-main>
-  </el-container>
-</el-container>
+	<el-container  class="layout-container">
+		<el-header class="layout-header">
+			<img :src="logo" class="logo_icon" />
+			<span class="header_title">{{sysname}}</span>
+			<div class="header-right">
+				<span><img :src="usericon" />{{username}}</span>
+				<span><img :src="bell" /><span class="bell_tips">{{tipsNumber}}</span>消息</span>
+				<span><img :src="esc" />退出</span>
+			</div>
+		</el-header>
+		  <el-container>
+		<el-aside  class="left-menu" >
+			<el-menu  router :default-active="routePath">
+				<el-submenu :index="item.path" v-for="(item,index) in asyncRoutes" :key="index">
+					<template slot="title">
+						<icon :iconClass="item.meta.icon" ></icon>
+          				<span>{{item.name}}</span>
+					</template>
+					<el-menu-item  :index="obj.path" v-for="obj in item.children" :key="obj.path"  >
+						<span >{{obj.name}}</span>
+					</el-menu-item>
+				</el-submenu>
+			</el-menu>
+		</el-aside>
+		<el-container class="main-layout">
+			<el-main>
+				<breadcrumb  />
+				<router-view :key="routePath" />
+			</el-main>
+		</el-container>
+		</el-container>
+	</el-container>
 </template>
 <script>
 import { asyncRoutes } from '@/ui/router';
+import logo from './assets/img/logo.png';
+import bell from './assets/img/ic_bell.png';
+import esc from './assets/img/ic_esc.png';
+import usericon from './assets/img/usericon.png';
+import Breadcrumb from './components/Breadcrumb/index';
+import Icon from '@components/Icon-svg/index';
   export default {
+	components: {
+		Breadcrumb,
+		Icon
+	},
     data() {
       return {
 		routeMenu:[],
-		asyncRoutes
+		asyncRoutes,
+		username:'杨丹丹',
+		sysname:'成都天府机场机务管理系统',
+		tipsNumber:'99+',
+		logo,
+		bell,
+		esc,
+		usericon,
+		routePath:this.$route.path
       }
 	},
-	computed: {
-		key() {
-			return this.$route.path;
-		},
-	},
+	methods:{
+		
+	}
   };
 </script>
 
 <style lang="scss" scoped>
 .layout-container{
-	height: 100%;
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+	.main-layout{
+		.el-main{
+			padding:0px;
+		}
+	}
+	.layout-header{
+		height: 48px !important;
+		background: url('./assets/img/nav_bg.png') no-repeat;
+		padding: 0px;
+		display: flex;
+		align-items: center;
+		.header_title{
+			font-size:22px;
+			font-family:SourceHanSansCN-Medium,SourceHanSansCN;
+			font-weight:500;
+			color:rgba(255,255,255,1);
+			margin-left:98px;
+		}
+		.header-right{
+			position: absolute;
+			right: 0px;
+			color: #fff;
+			img{
+				vertical-align: text-bottom;
+				margin-right: 8px;
+				width: 16px;
+				height:16px;
+			}
+			.bell_tips{
+				position: absolute;
+				left: 111px;
+				top: -11px;
+				padding: 1px;
+				background: #E93570;
+				color: #fff;
+				border-radius: 5px;
+				font-size:12px;
+				font-family:SourceHanSansCN-Medium,SourceHanSansCN;
+				font-weight:500;
+				line-height:12px;
+			}
+			span{
+				margin-right: 15px;
+				cursor: pointer;
+			}
+			span:not(:last-child):after{
+				content:'|';
+				width:2px;
+				height:16px;
+				color:#00549A;
+				margin-left: 12px;
+			}
+		}
+		.logo_icon{
+			margin-left:63px;
+			width:109px;
+			height:34px;
+		}
+	}
 	/deep/ .el-menu{
 		border:0px;
 		background: unset;
+		
 		.el-menu-item{
 			background: #162C41;
 			color: #fff;
+			cursor: pointer;
 		}
-		/deep/ .is-active:not(.el-submenu__title){
-			background: #3280E7;
+		.el-menu-item::before{
+			content: ' ';
+            position: absolute;
+            right: 160px;
+    		top: 25px;
+            width:4px;
+			height:4px;
+			background:rgba(255,255,255,1);
+			border-radius: 2px;
 		}
 		.el-submenu__title{
 			color: #fff;
@@ -54,10 +159,28 @@ import { asyncRoutes } from '@/ui/router';
 		.el-submenu__title:hover{
 			background: unset;
 		}
+		.el-submenu__icon-arrow{
+			display: none;
+		}
+		/deep/ .svg-icon {
+			width: 16px;
+			height: 16px;
+			vertical-align: middle;
+		}
+	}
+	/deep/ .el-menu--inline{
+		/deep/ .is-active{
+			background: #3280E7;
+		}
 	}
 	.left-menu{
-		background-image: url('./assets/img/leftNav.png');
+		width: 160px !important;
+		background: url('./assets/img/leftNav.png') no-repeat;
+		background-size:cover;
+		overflow-x: hidden;
+		padding-top: 55px;
 	}
+	
 }
 
 </style>

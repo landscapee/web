@@ -17,6 +17,7 @@
 <script>
     import { extend, map, debounce } from 'lodash';
     export default {
+        name:'ScrollBox',
         props: {
             scrollConfig: {
                 type: Array
