@@ -59,6 +59,15 @@ import Icon from '@components/Icon-svg/index';
 		routePath:this.$route.path
       }
 	},
+	watch: {
+		$route: {
+			handler: function(val, oldVal){
+				this.routePath = val.path;
+			},
+			// 深度观察监听
+			deep: true
+		}
+	},
 	methods:{
 		
 	}
@@ -83,6 +92,8 @@ import Icon from '@components/Icon-svg/index';
 	.layout-header{
 		height: 48px !important;
 		background: url('./assets/img/nav_bg.png') no-repeat;
+		background-size: cover;
+		width:100%;
 		padding: 0px;
 		display: flex;
 		align-items: center;
@@ -105,7 +116,7 @@ import Icon from '@components/Icon-svg/index';
 			}
 			.bell_tips{
 				position: absolute;
-				left: 111px;
+				left:103px;
 				top: -11px;
 				padding: 1px;
 				background: #E93570;
@@ -146,8 +157,8 @@ import Icon from '@components/Icon-svg/index';
 		.el-menu-item::before{
 			content: ' ';
             position: absolute;
-            right: 160px;
-    		top: 25px;
+            right: 146px;
+    		top: 20px;
             width:4px;
 			height:4px;
 			background:rgba(255,255,255,1);

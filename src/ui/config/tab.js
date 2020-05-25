@@ -23,7 +23,7 @@ const demoTabs = [
                 display: r => Dictionary.formatDateTime(r.flightDate, 'YYYY-MM-DD HH:mm')
             },
             {
-                key: 'remark', label: '备注', width: '', type: 'edit',
+                key: 'remark', label: '备注', width: '100px', type: 'edit',
                 editConfig: {
                     type: 'input',
                     switch: r => {

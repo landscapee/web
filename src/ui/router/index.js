@@ -6,31 +6,40 @@ Vue.use(Router);
 
 let authRoutes = [
   {
-    path: '/qualityManage',
+    	path: '/qualityManage',
 		component: Layout,
 		redirect: '/intelligenceManage',
 		name: '质量管理',
 		meta: {title: '质量管理',icon: 'zlgl' },
-    children: [
+		children: [
 			{
 				path: '/intelligenceManage',
 				component: () => import('@views/qualityManage/intelligenceManage/index'),
 				name: '资质管理',
 				meta: {	title: '资质管理',	icon: ''	},
-      },
-      {
+				children:[
+					{
+						path: '/addQualifications',
+						component: () => import('@views/qualityManage/intelligenceManage/components/addQualifications'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					}
+				]
+			},
+			{
 				path: '/personDoc',
 				component: () => import('@views/qualityManage/personDoc/index'),
 				name: '人员档案',
 				meta: {	title: '人员档案',icon: ''},
-      },
-      {
+			},
+			{
 				path: '/authorizeManage',
 				component: () => import('@views/qualityManage/authorizeManage/index'),
 				name: '授权管理',
 				meta: {title: '授权管理',	icon: ''},
-      },
-      {
+			},
+			{
 				path: '/warningManage',
 				component: () => import('@views/qualityManage/warningManage/index'),
 				name: '预警管理',
@@ -43,7 +52,7 @@ let defaultRoutes = [
   {path: '/',name: 'login',	component: () => import('@views/login/login')},
   {path: '/table',name: 'table',	component: () => import('@views/table/table')},
   {path: '/workOrder',name: 'workOrder',	component: () => import('@views/workOrder/workOrder')},
-	{path: '/404',component: () => import('@views/notFound/404')},
+  {path: '/404',component: () => import('@views/notFound/404')},
 
 ];
 //无权限
@@ -54,8 +63,8 @@ export const asyncRoutes = authRoutes;
 const createRouter = () =>
 	new Router({
 		scrollBehavior: () => ({x: 0, y: 0 }),
-    routes: constantRoutes.concat(asyncRoutes),
-    fallback: false,
+		routes: constantRoutes.concat(asyncRoutes),
+		fallback: false,
 	});
 const router = createRouter();
 

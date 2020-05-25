@@ -28,7 +28,9 @@ export default {
         }
     },
     beforeMount () {},
-    mounted(){},
+    mounted(){
+        // this.$store.dispatch('setTabColumns', intelligenceManageTable);
+    },
     methods: {
         viewsRow(row){
             alert(row.row.waybillCode)

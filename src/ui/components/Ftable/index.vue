@@ -1,6 +1,6 @@
 <template>
 	<div class="fTableWrapper" >
-		<el-table style="height: 94%;" :data="data instanceof Array ? data : data.records" ref="table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
+		<el-table :show-header="showHeader"  style="height: 94%;" :data="data instanceof Array ? data : data.records" ref="table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
 			<template v-for="(colConfig, index1) in tableConfig">
 				<el-table-column v-if="colConfig.components" :show-overflow-tooltip="true" v-bind="colConfig" :key="index1 + '1'">
 					<template slot-scope="scope">
@@ -16,7 +16,7 @@
 				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index1 + '3'" :reserve-selection="true"> </el-table-column>
 			</template>
 		</el-table>
-		<el-pagination style="height: 6%;"  background v-if="data.current" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 10, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
+		<el-pagination v-if="data.current && showPage"  style="height: 6%;"  background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 10, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
 	</div>
 </template>
 <script>
@@ -25,7 +25,7 @@ import { fixPx } from '@lib/viewSize.js';
 
 export default {
 	name: 'Ftable',
-	props: ['tableConfig', 'data', 'offsetTop', 'page'],
+	props: ['tableConfig', 'data', 'offsetTop', 'page','showHeader','showPage'],
 	data() {
 		return {
 			// total: this.data ? this.data.total : 0,
