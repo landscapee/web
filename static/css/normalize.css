@@ -17,7 +17,7 @@ html {
 
 html *{
     box-sizing: border-box;
-    font-size: .14rem;
+    font-size: 14px;
 }
 /* Sections
    ========================================================================== */

@@ -9,11 +9,11 @@
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delQualifications()"><icon iconClass="remove" ></icon>删除</div>
+                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div><icon iconClass="export" ></icon>导出Excel</div>
-                    <div><icon iconClass="save" ></icon>保存</div>
-                    <div><icon iconClass="reset" ></icon>重置</div>
+                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
+                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
             </div>
             <div class="main-content">
@@ -79,10 +79,11 @@
                             </span>
                         </el-table-column>
                 </Ftable>
-                <Ftable  class="mainTable"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+                <Ftable  class="mainTable" @listenToCheckedChange="listenToCheckedChange" :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="80">
-                        <template slot-scope="scope">
-                            <icon iconClass="ky" class="tab_radio"></icon>
+                        <template slot-scope="{ row , $index}">
+                            <icon iconClass="sy" class="tab_radio" v-if="tableData.records[$index].selected"></icon>
+                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="120">
@@ -91,7 +92,6 @@
                             <span><icon iconClass="ks" class="tab_radio"></icon></span>
                         </template>
                     </el-table-column>
-                    
                 </Ftable>
             </div>
         </div>
@@ -121,8 +121,8 @@ export default {
             tableHeaderConfig:intelligenceManageHeaderTable,
             params:{
 				current: 1,
-				size: 10,
-			}
+				size: 15,
+            },
         };
     },
    created() {
@@ -137,6 +137,20 @@ export default {
         }
     },
     methods: {
+        listenToCheckedChange(row, column, event){
+            this.tableData.records.map(r =>{
+                   if(r.selected){
+                      r.selected = false;
+                   }
+             })
+            if(row.selected){
+               row.selected  = !row.selected;
+            }else{
+                row.selected  = true;
+            }
+            
+            this.$set(this.tableData.records,row.index,row);
+        },
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/addQualifications',query:{type:'add'}});
@@ -146,7 +160,7 @@ export default {
                 this.$router.push({path:'/addQualifications',query:{type:'info'}});
             }
         },
-        delQualifications(){
+        delData(){
             this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
@@ -172,8 +186,8 @@ export default {
         renderHeader(h,  { column, $index }) {
             return (
                 <div>
-                    <Icon iconClass="sort" nativeOnClick={ () => {this.headerSort() }  } ></Icon>
                     <span>{column.label}</span>
+                    <Icon iconClass="sort" nativeOnClick={ () => {this.headerSort() }  } ></Icon>
                 </div>
             );
         },
@@ -182,23 +196,9 @@ export default {
         },
         getList(){
             request({
-                // url:'/api/material/query', 
-                url:'/api/scc-ams-wise/work/queryListWorkItem', 
+                url:'/api/material/query', 
                 method: 'post',
-                // data:{searchKey: '',type: 'VEHICLE',deptId:JSON.parse(localStorage.getItem("userInfo")).administrativeDeptId},
-                data:{
-                    areaState: null,
-                    current: 1,
-                    deptId: "",
-                    roleVo: "",
-                    size: 15,
-                    state: null,
-                    workCategoryId: "",
-                    workName: ""
-                },
-                headers: {
-                    Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzYmFkNzRjYzEwZGU0NDI4YWNmOGRjMmExZGY0Njg3YiIsInVzZXJJZCI6IjNiYWQ3NGNjMTBkZTQ0MjhhY2Y4ZGMyYTFkZjQ2ODdiIiwidXNlckxvZ2luTmFtZSI6IuW-kOW4jCIsInVzZXJOYW1lIjoieHV4aSIsImRlcHRJZCI6Ijg2YzhhYzFkNzI5NDQ3MTRiODM1Zjk0MjRiYWY3YmJjIiwiZGVwdENvZGUiOiJPUi0xLTAxIiwiZGVwdE5hbWUiOiLpo57ooYzljLrnrqHnkIbpg6giLCJhZG1pbmlzdHJhdGl2ZUlkIjoiYWE4YWU3ZGNiZTk0NDAyMzhjZTc1MTMyOWNjYmE1Y2EiLCJhZG1pbmlzdHJhdGl2ZUNvZGUiOiJPUi0xLTAxLTAxIiwiYWRtaW5pc3RyYXRpdmVOYW1lIjoi5Zy65Yqh6YOoIiwiZ3JvdXBJZCI6IjNmMDI2NmNkYTljOTQwNTVhYzBjM2Q1MThlZWM0OTgwIiwiZ3JvdXBDb2RlIjoiT1ItMS0wMS0wMS0wMSIsImdyb3VwTmFtZSI6IuWcuumBk-i_kOihjOe7tOaKpOS4gOe7hCIsInJvbGVDb2RlcyI6IltBRE1JTklTVFJBVE9SLFJPLTAxLTAxLTA5LFJPLTAxLTAxLTAyX2xlYWRlcl0iLCJpYXQiOjE1OTAzNzM2NDgsImV4cCI6MTU5MDQ2MDA0OH0.-gmopSrummYLL1f8l7xWQiSjoVfO2kaYG99QA6RZEAY',
-                },
+                data:{searchKey: '',type: 'VEHICLE',deptId:JSON.parse(localStorage.getItem("userInfo")).administrativeDeptId},
                 params:{current: this.params.current,size: this.params.size}
             })
             .then((data) => {
@@ -240,6 +240,14 @@ export default {
         .top-toolbar{
             position: absolute;
             right: 0px;
+            .isDisabled{
+                background: rgba(208,208,208,1);
+                color: #6A7785;
+                cursor: not-allowed;
+                .svg-icon{
+                    fill: rgba(208,208,208,1);
+                }
+            }
             div{
                 user-select: none;
                 cursor: pointer;
@@ -267,11 +275,11 @@ export default {
     }
     
     .main-content{
-        width:100%;
+        width: 100%;
         height: 100%;
         position: relative;
         /deep/ .el-table{
-           width: 97%;
+           width:1700px;
            border:1px solid rgba(199,204,210,1);
            margin: 0 auto;
         }
@@ -281,7 +289,8 @@ export default {
             }
         }
         /deep/ .mainTable{
-             /deep/ .el-table{
+            height: 638px;
+            /deep/ .el-table{
                 border-top: 0px;
             }
             .tab_radio{

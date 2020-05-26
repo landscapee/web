@@ -32,18 +32,45 @@ let authRoutes = [
 				component: () => import('@views/qualityManage/personDoc/index'),
 				name: '人员档案',
 				meta: {	title: '人员档案',icon: ''},
+				children:[
+					{
+						path: '/addPersonDoc',
+						component: () => import('@views/qualityManage/personDoc/components/addPersonDoc'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					}
+				]
 			},
 			{
 				path: '/authorizeManage',
 				component: () => import('@views/qualityManage/authorizeManage/index'),
 				name: '授权管理',
 				meta: {title: '授权管理',	icon: ''},
+				children:[
+					{
+						path: '/addAuthorizeManage',
+						component: () => import('@views/qualityManage/authorizeManage/components/addAuthorizeManage'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					}
+				]
 			},
 			{
 				path: '/warningManage',
 				component: () => import('@views/qualityManage/warningManage/index'),
 				name: '预警管理',
 				meta: {title: '预警管理',icon: ''},
+				children:[
+					{
+						path: '/addWarningManage',
+						component: () => import('@views/qualityManage/warningManage/components/addWarningManage'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					}
+				]
 			},
 		],
 	}

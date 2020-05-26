@@ -116,7 +116,7 @@ import Icon from '@components/Icon-svg/index';
 			}
 			.bell_tips{
 				position: absolute;
-				left:103px;
+				left:109px;
 				top: -11px;
 				padding: 1px;
 				background: #E93570;
@@ -157,8 +157,8 @@ import Icon from '@components/Icon-svg/index';
 		.el-menu-item::before{
 			content: ' ';
             position: absolute;
-            right: 146px;
-    		top: 20px;
+			right: 169px;
+            top: 24px;
             width:4px;
 			height:4px;
 			background:rgba(255,255,255,1);

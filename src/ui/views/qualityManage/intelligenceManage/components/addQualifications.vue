@@ -13,23 +13,28 @@
            <el-form label-position="right" :model="form" :rules="rules" ref="rules"  class="">
                <div class="row_item">
                     <el-form-item label="员工姓名" prop="name" label-width="100px">
-                        <el-input v-model="form.name"></el-input>
+                        <span v-if="type=='info'">{{form.name}}</span>
+                        <el-input v-else v-model="form.name" ></el-input>
                     </el-form-item>
                     <el-form-item label="员工编号" prop="number" label-width="164px">
-                        <el-input v-model="form.number"></el-input>
+                        <span v-if="type=='info'">{{form.number}}</span>
+                        <el-input v-else v-model="form.number"></el-input>
                     </el-form-item>
                </div>
                <div class="row_item">   
                     <el-form-item label="资质证书号" prop="certificateNumber" label-width="100px">
-                        <el-input v-model="form.certificateNumber"></el-input>
+                        <span v-if="type=='info'">{{form.certificateNumber}}</span>
+                        <el-input v-else v-model="form.certificateNumber"></el-input>
                     </el-form-item>
                     <el-form-item label="资质名称" prop="qualificationsName" label-width="164px">
-                        <el-input v-model="form.qualificationsName"></el-input>
+                        <span v-if="type=='info'">{{form.qualificationsName}}</span>
+                        <el-input v-else v-model="form.qualificationsName"></el-input>
                     </el-form-item>
                </div>  
                <div class="row_item">
                     <el-form-item label="资质类型" prop="qualificationsType" label-width="100px">
-                        <el-select v-model="form.qualificationsType" placeholder="请选择资质类型">
+                        <span v-if="type=='info'">{{form.qualificationsType}}</span>
+                        <el-select v-else v-model="form.qualificationsType" placeholder="请选择资质类型">
                             <el-option label="桥载资质" value="桥载资质"></el-option>
                             <el-option label="勤务资质" value="勤务资质"></el-option>
                             <el-option label="维修勤务资质" value="维修勤务资质"></el-option>
@@ -38,23 +43,28 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="适用业务" prop="useBusiness" label-width="164px">
-                        <el-input v-model="form.useBusiness"></el-input>
+                        <span v-if="type=='info'">{{form.useBusiness}}</span>
+                        <el-input v-else v-model="form.useBusiness"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item">
                     <el-form-item label="颁发单位" prop="awardUnit" label-width="100px">
-                        <el-input v-model="form.awardUnit"></el-input>
+                        <span v-if="type=='info'">{{form.awardUnit}}</span>
+                        <el-input v-else v-model="form.awardUnit"></el-input>
                     </el-form-item>
                     <el-form-item label="颁发日期" prop="awardDate" label-width="164px">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="form.awardDate" style="width: 100%;"></el-date-picker>
+                        <span v-if="type=='info'">{{form.awardDate}}</span>
+                        <el-date-picker v-else type="date" placeholder="选择日期" v-model="form.awardDate" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </div>
                 <div class="row_item">
                     <el-form-item label="生效日期" prop="takeEffectDate" label-width="100px">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="form.takeEffectDate" style="width: 100%;"></el-date-picker>
+                        <span v-if="type=='info'">{{form.takeEffectDate}}</span>
+                        <el-date-picker v-else type="date" placeholder="选择日期" v-model="form.takeEffectDate" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="失效日期" prop="invalidDate" label-width="164px">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="form.invalidDate" style="width: 100%;"></el-date-picker>
+                        <span v-if="type=='info'">{{form.invalidDate}}</span>
+                        <el-date-picker v-else type="date" placeholder="选择日期" v-model="form.invalidDate" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </div>
             </el-form>
@@ -73,16 +83,16 @@ export default {
     data() {
         return {
             form:{
-                name:'xxxxx',
-                number:'xxxx',
-                certificateNumber:'xxx',
-                qualificationsName:'xxx',
-                qualificationsType:'xxx',
-                useBusiness:'xxxx',
-                awardUnit:'xxx',
-                awardDate:'xxx',
-                takeEffectDate:'xxx',
-                invalidDate:'xxx'
+                name:'XXX XXXX XXXXXXX',
+                number:'XXX XXXX XXXXXXX',
+                certificateNumber:'XXX XXXX XXXXXXX',
+                qualificationsName:'XXX XXXX XXXXXXX',
+                qualificationsType:'XXX XXXX XXXXXXX',
+                useBusiness:'XXX XXXX XXXXXXX',
+                awardUnit:'XXX XXXX XXXXXXX',
+                awardDate:'XXX XXXX XXXXXXX',
+                takeEffectDate:'XXX XXXX XXXXXXX',
+                invalidDate:'XXX XXXX XXXXXXX'
             },
             rules:{
                 name: [{ required: true, message: '请输入', trigger: 'change' }],
@@ -102,6 +112,7 @@ export default {
     created() {
         if(this.$route.query){
            this.type = this.$route.query.type;
+           this.$route.meta.title  = this.type =='add'? '新增':this.type =='edit'? '编辑':this.type =='info'?"详情":"";
         }
     },
     methods: {
@@ -163,13 +174,21 @@ export default {
         height: 100%;
         position: relative;
         margin-top: 80px;
+        text-align: center;
         .el-form{
-            width: 800px;
+            // width: 800px;
             margin: 0 auto;
             .row_item{
-                width: 800px;
+                // width: 800px;
                 .el-form-item {
                     display: inline-block;
+                    span{
+                        margin-left: 20px;
+                        font-size:16px;
+                        font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+                        font-weight:400;
+                        color:rgba(34,34,34,1);
+                    }
                     /deep/ .el-input,
                     /deep/ .el-select,
                     /deep/ .el-cascader {
@@ -178,6 +197,7 @@ export default {
                     /deep/ .el-form-item__content{
                         height: 40px;
                         width: 240px;
+                        text-align: left;
                     }
                     /deep/ .el-form-item__label{
                         font-size:16px;
