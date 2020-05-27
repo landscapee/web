@@ -1,5 +1,5 @@
 <template>
-        <Ftable class="index_table" ref="ftable"  :data="tableData" :tableConfig="tableConfig"  @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" @listenToCheckedChange="handleCheckedChange" @listenToSelectionChange="handleSelectionChange">
+        <SearchTable class="index_table" ref="searchtable"  :data="tableData" :tableConfig="tableConfig"  @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" @listenToCheckedChange="handleCheckedChange" @listenToSelectionChange="handleSelectionChange">
             <el-table-column slot="option" :width="400" fixed="right" label="操作" align="center">
                 <span slot-scope="{ row }">
                     <el-button class="option-item" @click="showInfo(row, 'query')">详情</el-button>
@@ -20,10 +20,10 @@
                     </el-button>
                 </span>
             </el-table-column>
-        </Ftable>
+        </SearchTable>
 </template>
 <script>
-import Ftable from '@/ui/components/Ftable';
+import SearchTable from '@/ui/components/SearchTable';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -59,7 +59,7 @@ export default {
         }
     },
     components: {
-        Ftable
+        SearchTable
     },
     watch:{
         params:{

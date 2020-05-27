@@ -17,112 +17,44 @@
                 </div>
             </div>
             <div class="main-content">
-                <Ftable class="headerTable" :data="tableHeaderData" :tableConfig="tableHeaderConfig" :showHeader="true" :showPage="false" >
-                        <el-table-column  :width="80"   slot="radio" label="选择" >
-                            <span slot-scope="{ row }">
-                                <div>筛选</div>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="userNumber" label="员工编号" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="userName" label="员工姓名" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="zhengshuh" label="资质证书号" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="zzmc" label="资质名称" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="zzlx" label="资质类型" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="bfrq" label="颁发日期" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="bfdw" label="颁发单位" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="syyw" label="适用业务" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="sxrqone" label="生效日期" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="sxrqtwo" label="失效日期" :render-header="renderHeader">
-                            <span slot-scope="{ row }">
-                                <el-input class="require_des" v-model="row.userNumber"></el-input>
-                            </span>
-                        </el-table-column>
-                        <el-table-column   slot="glxx" label="关联信息" :width="120" >
-                            <span slot-scope="{ row }">
-                                <el-button>搜索</el-button>
-                            </span>
-                        </el-table-column>
-                </Ftable>
-                <Ftable  class="mainTable"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="80">
-                        <template slot-scope="scope">
-                            <icon iconClass="ky" class="tab_radio"></icon>
+                <SearchTable  @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+                    <el-table-column slot="radio" label="选择" :width="49">
+                        <template slot-scope="{ row , $index}">
+                            <icon iconClass="sy" class="tab_radio" v-if="tableData.records[$index].selected"></icon>
+                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" label="关联信息" :width="120">
-                        <template slot-scope="scope">
-                            <span><icon iconClass="kh" class="tab_radio"></icon></span>
-                            <span><icon iconClass="ks" class="tab_radio"></icon></span>
+                   <el-table-column slot="relationInfo" label="关联信息" :width="149">
+                        <template >
+                            <span><icon iconClass="kh" class="action_radio"></icon></span>
+                            <span><icon iconClass="ks" class="action_radio"></icon></span>
                         </template>
                     </el-table-column>
-                    
-                </Ftable>
+                </SearchTable>
             </div>
         </div>
     </div>
 </template>
 <script>
-import Ftable from '@/ui/components/Ftable';
+import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { intelligenceManageTable,intelligenceManageHeaderTable } from '../tableConfig.js';
+import { intelligenceManageTable } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
     components: {
         Icon,
-        Ftable
+        SearchTable
 	},
     name: '',
     data() {
         return {
-            tableHeaderData:{
-                current: 1,
-                records: [{}],
-                size: 1,
-            },
             tableData:{},
             tableConfig:intelligenceManageTable,
-            tableHeaderConfig:intelligenceManageHeaderTable,
             params:{
 				current: 1,
-				size: 10,
-			}
+				size: 15,
+            },
         };
     },
    created() {
@@ -194,6 +126,7 @@ export default {
             });
         },
         handleSizeChange(size) {
+             this.params.current = 1;
 			this.params.size = size;
 		},
 		handleCurrentChange(current) {
@@ -256,50 +189,6 @@ export default {
          width: 100%;
         height: 100%;
         position: relative;
-        /deep/ .el-table{
-           width:1700px;
-           border:1px solid rgba(199,204,210,1);
-           margin: 0 auto;
-        }
-        /deep/ .headerTable{
-            /deep/ .el-table{
-                border-bottom: 0px;
-            }
-        }
-        /deep/ .mainTable{
-             /deep/ .el-table{
-                border-top: 0px;
-            }
-            .tab_radio{
-                height: 16px;
-                width: 16px;
-            }
-        }
-        /deep/ .el-table__header{
-            height:40px;
-        }
-        /deep/ th{
-             width: 148px;
-             height:40px;
-             background:#CFD4DC;
-             font-size:14px;
-             font-family:PingFangSC-Medium,PingFang SC;
-             font-weight:500;
-             color:rgba(34,34,34,1);
-             text-align: center;
-             border-right:solid 1px #C7CCD2;
-        }
-        /deep/ td{
-           width: 148px;
-           height:40px;
-           text-align: center;
-        }
-        /deep/.svg-icon{
-            height:13.59px;
-            width:10.57px;
-            margin-right: 4px;
-            vertical-align: text-top;
-        }
     }
 }
 </style>
