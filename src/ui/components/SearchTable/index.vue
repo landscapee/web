@@ -1,43 +1,48 @@
 <template>
 	<div class="searchTableWrapper" >
-		<el-table class="headerTable" :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
-			<template v-for="(colConfig, index) in tableConfig">
-				<el-table-column :width="colConfig.search.width"  :label="colConfig.label" v-if="colConfig.search.type=='text'"   :key="index" :reserve-selection="true"> 
-					<span >
-						<div>{{colConfig.search.label}}</div>
-					</span>
-				</el-table-column>
-				<el-table-column :width="colConfig.search.width"  :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true"> 
-					<span>
-						<el-button class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
-					</span>
-				</el-table-column>
-				<el-table-column :width="colConfig.search.width" :render-header="colConfig.search.sort?renderHeaderRow:()=>{}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true"> 
-				 	<span slot-scope="{ row }">
-						<el-input :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
-					</span>
-				</el-table-column>
-				<el-table-column :width="colConfig.search.width" :render-header="colConfig.search.sort?renderHeaderRow:()=>{}" :label="colConfig.label" v-if="colConfig.search.type=='select'"   :key="index" :reserve-selection="true"> 
-				 	<span slot-scope="{ row }">
-						<el-select class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
-							<el-option v-for="item in colConfig.search.data" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-					</span>
-				</el-table-column>
-				<el-table-column :width="colConfig.search.width" :render-header="colConfig.search.sort?renderHeaderRow:()=>{}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true"> 
-				 	<span slot-scope="{ row }">
-						 <el-date-picker class="adv_filter"  type="date" :placeholder="colConfig.search.placeholder" v-model="row[colConfig.search.prop]" style="width: 100%;"></el-date-picker>
-					</span>
-				</el-table-column>
+		<el-table class="headerTable" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
+			<template v-for="(colConfig, index) in cloneTableConfig">
+				<template v-if="colConfig.search">
+					<el-table-column :fixed="colConfig.search.fixed" :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true"> 
+						<span >
+							<div>{{colConfig.search.label}}</div>
+						</span>
+					</el-table-column>
+					<el-table-column :fixed="colConfig.search.fixed" :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true"> 
+						<span>
+							<el-button class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
+						</span>
+					</el-table-column>
+					<el-table-column :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true"> 
+						<span slot-scope="{ row }">
+							<el-input :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
+						</span>
+					</el-table-column>
+					<el-table-column :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='select'"   :key="index" :reserve-selection="true"> 
+						<span slot-scope="{ row }">
+							<el-select class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
+								<el-option v-for="item in colConfig.search.data" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
+						</span>
+					</el-table-column>
+					<el-table-column :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true"> 
+						<span slot-scope="{ row }">
+							<el-date-picker class="adv_filter"  type="date" :placeholder="colConfig.search.placeholder" v-model="row[colConfig.search.prop]" ></el-date-picker>
+						</span>
+					</el-table-column>
+				</template>
+				<template v-else>
+					<el-table-column :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true"></el-table-column>
+				</template>
 			</template>
 		</el-table>
-		<el-table class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
-			<template v-for="(colConfig, index) in tableConfig">
+		<el-table   @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="tableData instanceof Array ? tableData : tableData.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
+			<template v-for="(colConfig, index) in cloneTableConfig">
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
 				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index" :reserve-selection="true"> </el-table-column>
 			</template>
 		</el-table>
-		<el-pagination v-if="data.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
+		<el-pagination v-if="tableData.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="tableData.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="tableData.size" layout="total, sizes, prev, pager, next, jumper" :total="tableData.total"> </el-pagination>
 	</div>
 </template>
 <script>
@@ -53,11 +58,14 @@ export default {
 	data() {
 		return {
 			resizeCallback:[],
-			headerData:[{}]
+			headerData:[{}],
+			cloneTableConfig:this.tableConfig,
+			tableData:this.data
 		};
 	},
 	watch: {
 		data: function(newVal, oldVal) {
+			this.tableData = newVal;
 			// 重新计算element表格组件布局
 			setTimeout(() => {
 				this.$refs.body_table.doLayout();
@@ -65,9 +73,23 @@ export default {
 		},
 	},
 	created() {
-		console.log(this.tableConfig);
+	},
+	mounted() {
+		window.addEventListener('scroll', this.scroll, true);
 	},
 	methods: {
+		//计算滚动位置
+		scroll() {
+			if(this.$refs.body_table){
+				var scrollL = this.$refs.body_table.bodyWrapper.scrollLeft;
+		  		this.$refs.header_table.bodyWrapper.scrollLeft = scrollL;
+			}
+       },
+		//监听头部拉伸宽度改变表格主体宽度
+		headerDragend(newWidth, oldWidth, column, event){
+			this.cloneTableConfig[column.index].width = newWidth;
+			this.$set(this.cloneTableConfig,column.index,this.cloneTableConfig[column.index]);
+		},
 		requestTableData(){
 			this.$emit('requestTable', this.headerData);
 		},
@@ -107,7 +129,19 @@ export default {
 			this.$emit('selectAllCheckBox', cloneDeep(select));
 		},
 		checkRow(d, column, event) {
-			this.selectData = d;
+			let select = d.selected;
+			this.tableData.records.map(r =>{
+                if(r.selected){
+                    r.selected = false;
+                }
+			})
+			if(select){
+                this.$refs.body_table.setCurrentRow();
+            }else{
+				this.$refs.body_table.setCurrentRow(d);
+			}
+			d.selected  = !select;
+            this.$set(this.tableData.records,d.index,d);
 			this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(column), cloneDeep(event));
 		},
 		handleSelectionChange(val) {
@@ -115,9 +149,7 @@ export default {
 			this.$emit('listenToSelectionChange', val);
 		},
 	},
-	mounted() {
 	
-	},
 	beforeDestroy() {
 		
 	},
@@ -128,7 +160,7 @@ export default {
 .searchTableWrapper{
 	/deep/ .el-pagination {
 		text-align: center;
-		margin-top: 50px;
+		margin-top: 20px;
 	}
 	/deep/ .el-table{
 		width:1700px;
@@ -146,15 +178,36 @@ export default {
 			height:40px;
 			text-align: center;
 			padding: 0;
+			border-color:#C7CCD2 ;
+		}
+		/deep/ th{
+			border-color:#C7CCD2 ;
 		}
 		/deep/ .el-table__row{
 			height:40px;
 		}
+		
 	}
 	.headerTable{
-		border-bottom: 0px;
+		/deep/ .el-table__fixed{
+			height: 80px !important;
+		}
+		/deep/ .el-table__fixed-right{
+			height: 80px !important;
+		}
+		/deep/ .el-table__body-wrapper{
+			overflow-x: hidden;
+		}
+		/deep/ .el-table__row{
+			background: #EFF2F3;
+		}
+		/deep/ .el-input__icon {
+    		height: unset;
+		}
 		/deep/ .el-input{
 			text-align: center;
+			width: 140px;
+			height: 30px;
 		}
 		/deep/ .el-input__inner{
 			width:140px;
@@ -208,9 +261,28 @@ export default {
 			}
 		}
 	}
+	.el-table--scrollable-x + .mainTable{
+		height: 620px !important;
+		
+	}
 	.mainTable{
-		height: 600px;
+		// height: 600px;
 		border-top: 0px;
+		/deep/ .current-row > td {
+			background-color: #A0CBF6;
+		}
+		/deep/ .el-table__fixed{
+			height: 620px !important;
+		}
+		/deep/ .el-table__fixed-right{
+			height: 620px !important;
+		}
+		/deep/ .el-table__row:nth-child(even){
+			background: #EFF2F3;
+		}
+		/deep/ .el-table__row:nth-child(odd){
+			background: #FFFFFF;
+		}
 		/deep/ .tab_radio{
 			height: 16px;
 			width: 16px;

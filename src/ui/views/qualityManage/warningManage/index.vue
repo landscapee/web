@@ -19,8 +19,8 @@
             <div class="main-content">
                 <SearchTable  @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49">
-                        <template slot-scope="{ row , $index}">
-                            <icon iconClass="sy" class="tab_radio" v-if="tableData.records[$index].selected"></icon>
+                        <template slot-scope="{ row }">
+                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
@@ -38,7 +38,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { intelligenceManageTable } from '../tableConfig.js';
+import { warningManageTable } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -50,7 +50,7 @@ export default {
     data() {
         return {
             tableData:{},
-            tableConfig:intelligenceManageTable,
+            tableConfig:warningManageTable,
             params:{
 				current: 1,
 				size: 15,
@@ -69,6 +69,9 @@ export default {
         }
     },
     methods: {
+        requestTable(searchData){
+            console.log(searchData[0]);
+        },
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/addWarningManage',query:{type:'add'}});
@@ -112,6 +115,9 @@ export default {
         headerSort(){
             alert(123);
         },
+        listenToCheckedChange(row, column, event){
+
+        },
         getList(){
             request({
                 url:'/api/material/query', 
@@ -138,57 +144,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+@import "@/ui/styles/common_list.scss";
 .warningManage{
     margin-top:40px;
-    .top-content{
-        height: 82px;
-       justify-content: center;
-        position: relative;
-        display: flex;
-        align-items: center;
-        .top-content-title{
-            font-family:SourceHanSansCN-Medium,SourceHanSansCN;
-            font-weight:500;
-            color:rgba(34,34,34,1);
-            height:24px;
-            line-height:24px;
-            span{
-                font-size:24px ;
-            }
-        }
-        .top-toolbar{
-            position: absolute;
-            right: 0px;
-            div{
-                user-select: none;
-                cursor: pointer;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                height: 32px;
-                line-height: 32px;
-                padding: 7px;
-                border-radius:2px;
-                border:1px solid rgba(208,208,208,1);
-                margin-right: 12px;
-                color: #3D568E;
-                &:last-child{
-                    margin-right: 30px;
-                }
-                .svg-icon{
-                    height:18px;
-                    width:18px;
-                    margin-right: 4px;
-                    vertical-align: text-top;
-                }
-            }
-        }
-    }
-    
-    .main-content{
-         width: 100%;
-        height: 100%;
-        position: relative;
-    }
+ 
 }
 </style>

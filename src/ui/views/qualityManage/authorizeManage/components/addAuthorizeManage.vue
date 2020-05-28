@@ -93,6 +93,11 @@
                         <el-date-picker v-else type="date" placeholder="选择日期" v-model="form.invalidDate" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </div>
+                <div class="release_button">
+                    <el-button type="primary">授权发布</el-button>
+                    <el-button type="primary">授权取消</el-button>
+                    <el-button type="primary">授权延期</el-button>
+                </div>
             </el-form>
         </div> 
     </div> 
@@ -149,115 +154,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+@import "@/ui/styles/common_form.scss";
 .addAuthorizeManage{
     margin-top:40px;
-    .top-content{
-        height: 82px;
-       justify-content: center;
-        position: relative;
-        display: flex;
-        align-items: center;
-        .top-content-title{
-            font-family:SourceHanSansCN-Medium,SourceHanSansCN;
-            font-weight:500;
-            color:rgba(34,34,34,1);
-            height:24px;
-            line-height:24px;
-            span{
-                font-size:24px ;
-            }
-        }
-        .top-toolbar{
-            position: absolute;
-            right: 0px;
-            div{
-                user-select: none;
-                cursor: pointer;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                height: 32px;
-                line-height: 32px;
-                padding: 7px;
-                border-radius:2px;
-                border:1px solid rgba(208,208,208,1);
-                margin-right: 12px;
-                color: #3D568E;
-                &:last-child{
-                    margin-right: 30px;
-                }
-                .svg-icon{
-                    height:18px;
-                    width:18px;
-                    margin-right: 4px;
-                    vertical-align: text-top;
-                }
-            }
-        }
-    }
-    .main-content{
-        width:100%;
-        height: 100%;
-        position: relative;
-        margin-top: 80px;
-        text-align: center;
-        .el-form{
-            // width: 800px;
-            margin: 0 auto;
-            .row_item{
-                // width: 800px;
-                .el-form-item {
-                    display: inline-block;
-                    span{
-                        margin-left: 20px;
-                        font-size:16px;
-                        font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-                        font-weight:400;
-                        color:rgba(34,34,34,1);
-                    }
-                    /deep/ .el-input,
-                    /deep/ .el-select,
-                    /deep/ .el-cascader {
-                        width: 100% !important;
-                    }
-                    /deep/ .el-form-item__content{
-                        height: 40px;
-                        width: 240px;
-                        text-align: left;
-                    }
-                    /deep/ .el-form-item__label{
-                        font-size:16px;
-                        font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-                        font-weight:400;
-                        color:rgba(34,34,34,1);
-                    }
-                    /deep/ .el-input__inner{
-                        border-radius:2px;
-                        border:1px solid rgba(151,151,151,1);
-                        font-size:16px;
-                        padding-left: 16px;
-                    }
-                    /deep/ input::-webkit-input-placeholder {
-                        font-size:16px;
-                        font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-                        font-weight:400;
-                        color:rgba(136,136,136,1);
-                    }
-                    /deep/ .el-input__prefix{
-                           left: unset;
-                            right: 13px;
-                        .el-input__icon{
-                            width: 14px;
-                            font-size: 15px;
-                        }
-                    }
-                    /deep/ .el-form-item__label:before {
-                        content: '';
-                        color: unset;
-                        margin-right:unset;
-                    }
-                }
-            }
+    .release_button{
+        .el-button{
+            margin-top: 40px;
         }
     }
 }

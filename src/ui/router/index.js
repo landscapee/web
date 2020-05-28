@@ -24,6 +24,20 @@ let authRoutes = [
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
+					},
+					{
+						path: '/assRecord',
+						component: () => import('@views/qualityManage/intelligenceManage/components/assRecord'),
+						name: '资质培训考核记录',
+						meta: {	title: '资质培训考核记录',	icon: ''	},
+						hidden:true
+					},
+					{
+						path: '/exaRecord',
+						component: () => import('@views/qualityManage/intelligenceManage/components/exaRecord'),
+						name: '人员资质考试记录',
+						meta: {	title: '人员资质考试记录',	icon: ''	},
+						hidden:true
 					}
 				]
 			},

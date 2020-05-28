@@ -1,6 +1,8 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/exaRecord'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/assRecord'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/intelligenceManage'" class="intelligenceManage">
             <div class="top-content">
                 <div class="top-content-title">
@@ -18,16 +20,16 @@
             </div>
             <div class="main-content">
                 <SearchTable  @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49">
-                        <template slot-scope="{ row , $index}">
-                            <icon iconClass="sy" class="tab_radio" v-if="tableData.records[$index].selected"></icon>
+                    <el-table-column slot="radio" label="选择" :width="49" >
+                        <template slot-scope="{ row }">
+                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="149">
+                   <el-table-column slot="relationInfo" label="关联信息" :width="149" >
                         <template >
-                            <span><icon iconClass="kh" class="action_radio"></icon></span>
-                            <span><icon iconClass="ks" class="action_radio"></icon></span>
+                            <span @click="clickAction('ass')"><icon iconClass="kh" class="action_radio"></icon></span>
+                            <span @click="clickAction('exa')"><icon iconClass="ks" class="action_radio"></icon></span>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -69,20 +71,21 @@ export default {
         }
     },
     methods: {
+        clickAction(tag){
+            if(tag=='ass'){
+                 this.$router.push({path:'/assRecord',query:{id:"123"}});
+            }else if(tag=='exa'){
+                 this.$router.push({path:'/exaRecord',query:{id:"123"}});
+            }
+        },
         requestTable(searchData){
             console.log(searchData[0]);
         },
         headerSort(column){
-            
+            alert(123);
         },
         listenToCheckedChange(row, column, event){
-            this.tableData.records.map(r =>{
-                if(r.selected){
-                    r.selected = false;
-                }
-            })
-            row.selected  = !row.selected;
-            this.$set(this.tableData.records,row.index,row);
+          
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
@@ -146,64 +149,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+@import "@/ui/styles/common_list.scss"; 
 .intelligenceManage{
     margin-top:40px;
-    .top-content{
-        height: 82px;
-       justify-content: center;
-        position: relative;
-        display: flex;
-        align-items: center;
-        .top-content-title{
-            font-family:SourceHanSansCN-Medium,SourceHanSansCN;
-            font-weight:500;
-            color:rgba(34,34,34,1);
-            height:24px;
-            line-height:24px;
-            span{
-                font-size:24px ;
-            }
-        }
-        .top-toolbar{
-            position: absolute;
-            right: 0px;
-            .isDisabled{
-                background: rgba(208,208,208,1);
-                color: #6A7785;
-                cursor: not-allowed;
-                .svg-icon{
-                    fill: rgba(208,208,208,1);
-                }
-            }
-            div{
-                user-select: none;
-                cursor: pointer;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                height: 32px;
-                line-height: 32px;
-                padding: 7px;
-                border-radius:2px;
-                border:1px solid rgba(208,208,208,1);
-                margin-right: 12px;
-                color: #3D568E;
-                &:last-child{
-                    margin-right: 30px;
-                }
-                .svg-icon{
-                    height:18px;
-                    width:18px;
-                    margin-right: 4px;
-                    vertical-align: text-top;
-                }
-            }
-        }
-    }
-    .main-content{
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
+    
 }
 </style>
