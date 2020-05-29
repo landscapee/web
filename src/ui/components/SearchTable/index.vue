@@ -1,6 +1,6 @@
 <template>
 	<div class="searchTableWrapper" >
-		<el-table class="headerTable" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
+		<el-table   :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
 			<template v-for="(colConfig, index) in cloneTableConfig">
 				<template v-if="colConfig.search">
 					<el-table-column :fixed="colConfig.search.fixed" :index="index" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true"> 
@@ -54,7 +54,7 @@ export default {
         Icon,
 	},
 	name: 'SearchTable',
-	props: ['tableConfig', 'data', 'offsetTop', 'page'],
+	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch'],
 	data() {
 		return {
 			resizeCallback:[],
@@ -187,6 +187,11 @@ export default {
 			height:40px;
 		}
 		
+	}
+	.noSearchTable{
+		/deep/ .el-table__body-wrapper{
+			display: none;
+		}
 	}
 	.headerTable{
 		/deep/ .el-table__fixed{

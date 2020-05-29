@@ -26,7 +26,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="149" >
+                   <el-table-column slot="relationInfo" label="关联信息" :width="148" >
                         <template >
                             <span @click="clickAction('ass')"><icon iconClass="kh" class="action_radio"></icon></span>
                             <span @click="clickAction('exa')"><icon iconClass="ks" class="action_radio"></icon></span>

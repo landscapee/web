@@ -1,8 +1,8 @@
 <template>
-    <div  class="exaRecord">
+    <div  class="userAuth">
         <div class="top-content">
             <div class="top-content-title">
-                <span>{{$route.query.id}}-资质考试记录</span>
+                <span>{{$route.query.id}}-员工授权</span>
             </div>
             <div class="top-toolbar">
                 <div class="isDisabled" ><icon iconClass="add" ></icon>新增</div>
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="main-content">
-            <SearchTable  @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+            <SearchTable :noSearch="true" @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                 <el-table-column slot="radio" label="选择" :width="49" >
                     <template slot-scope="{ row }">
                         <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -32,7 +32,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { exaRecordTable } from '../../tableConfig.js';
+import { userAuthTable } from '../../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             tableData:{},
-            tableConfig:exaRecordTable,
+            tableConfig:userAuthTable,
             params:{
 				current: 1,
 				size: 15,
@@ -103,7 +103,7 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
-.exaRecord{
+.userAuth{
     margin-top:40px;
     
 }

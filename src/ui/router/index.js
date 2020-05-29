@@ -53,6 +53,27 @@ let authRoutes = [
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
+					},
+					{
+						path: '/userQuali',
+						component: () => import('@views/qualityManage/personDoc/components/userQuali'),
+						name: '员工资质',
+						meta: {	title: '员工资质',	icon: ''	},
+						hidden:true
+					},
+					{
+						path: '/userAuth',
+						component: () => import('@views/qualityManage/personDoc/components/userAuth'),
+						name: '员工授权',
+						meta: {	title: '员工授权',	icon: ''	},
+						hidden:true
+					},
+					{
+						path: '/userAssRecord',
+						component: () => import('@views/qualityManage/personDoc/components/userAssRecord'),
+						name: '培训考核',
+						meta: {	title: '培训考核',	icon: ''	},
+						hidden:true
 					}
 				]
 			},

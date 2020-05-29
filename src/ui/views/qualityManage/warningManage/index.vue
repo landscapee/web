@@ -12,8 +12,8 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div><icon iconClass="export" ></icon>导出Excel</div>
-                    <div><icon iconClass="save" ></icon>保存</div>
-                    <div><icon iconClass="reset" ></icon>重置</div>
+                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
+                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
             </div>
             <div class="main-content">
@@ -24,7 +24,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="149">
+                   <el-table-column slot="relationInfo" label="关联信息" :width="148">
                         <template >
                             <span><icon iconClass="kh" class="action_radio"></icon></span>
                             <span><icon iconClass="ks" class="action_radio"></icon></span>

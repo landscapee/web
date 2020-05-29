@@ -1,6 +1,9 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addPersonDoc'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/userAssRecord'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/userAuth'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/userQuali'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/personDoc'" class="personDoc">
             <div class="top-content">
                 <div class="top-content-title">
@@ -12,22 +15,23 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div><icon iconClass="export" ></icon>导出Excel</div>
-                    <div><icon iconClass="save" ></icon>保存</div>
-                    <div><icon iconClass="reset" ></icon>重置</div>
+                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
+                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
             </div>
             <div class="main-content">
                 <SearchTable  @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49">
+                    <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="149">
+                   <el-table-column slot="relationInfo" label="关联信息" :width="298" fixed="right">
                         <template >
-                            <span><icon iconClass="kh" class="action_radio"></icon></span>
-                            <span><icon iconClass="ks" class="action_radio"></icon></span>
+                            <el-button size="mini" @click="showUserList('quali')">员工资质</el-button>
+                            <el-button size="mini" @click="showUserList('auth')">员工授权</el-button>
+                            <el-button size="mini" @click="showUserList('exa')">培训考核</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -69,6 +73,15 @@ export default {
         }
     },
     methods: {
+       showUserList(tag){
+            if(tag=='quali'){
+                 this.$router.push({path:'/userQuali',query:{id:"123"}});
+            }else if(tag=='auth'){
+                 this.$router.push({path:'/userAuth',query:{id:"123"}});
+            }else if(tag=='exa'){
+                 this.$router.push({path:'/userAssRecord',query:{id:"123"}});
+            }
+        },
         requestTable(searchData){
             console.log(searchData[0]);
         },

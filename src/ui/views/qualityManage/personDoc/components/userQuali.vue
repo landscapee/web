@@ -1,8 +1,8 @@
 <template>
-    <div  class="exaRecord">
+    <div  class="userQuali">
         <div class="top-content">
             <div class="top-content-title">
-                <span>{{$route.query.id}}-资质考试记录</span>
+                <span>{{$route.query.id}}-员工资质</span>
             </div>
             <div class="top-toolbar">
                 <div class="isDisabled" ><icon iconClass="add" ></icon>新增</div>
@@ -32,7 +32,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { exaRecordTable } from '../../tableConfig.js';
+import { userQualiTable } from '../../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             tableData:{},
-            tableConfig:exaRecordTable,
+            tableConfig:userQualiTable,
             params:{
 				current: 1,
 				size: 15,
@@ -103,7 +103,7 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
-.exaRecord{
+.userQuali{
     margin-top:40px;
     
 }

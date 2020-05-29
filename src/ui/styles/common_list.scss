@@ -17,6 +17,14 @@
     .top-toolbar{
         position: absolute;
         right: 0px;
+        .isDisabled{
+            background: rgba(208,208,208,1);
+            color: #6A7785;
+            cursor: not-allowed;
+            .svg-icon{
+                fill: rgba(208,208,208,1);
+            }
+        }
         div{
             user-select: none;
             cursor: pointer;

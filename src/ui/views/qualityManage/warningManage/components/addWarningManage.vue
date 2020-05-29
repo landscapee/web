@@ -12,34 +12,31 @@
         <div class="main-content">
            <el-form label-position="right" :model="form" :rules="rules" ref="rules"  class="">
                <div class="row_item">
-                    <el-form-item label="员工姓名" prop="name" label-width="100px">
+                    <el-form-item label="预警发送日期" prop="name" label-width="164px">
                         <span v-if="type=='info'">{{form.name}}</span>
                         <el-input v-else v-model="form.name" ></el-input>
                     </el-form-item>
-                    <el-form-item label="员工编号" prop="number" label-width="164px">
+                    <el-form-item label="预警类型" prop="number" label-width="164px">
                         <span v-if="type=='info'">{{form.number}}</span>
                         <el-input v-else v-model="form.number"></el-input>
                     </el-form-item>
                </div>
                <div class="row_item">   
-                    <el-form-item label="身份证号" prop="certificateNumber" label-width="100px">
+                    <el-form-item label="预警来源" prop="certificateNumber" label-width="164px">
                         <span v-if="type=='info'">{{form.certificateNumber}}</span>
                         <el-input v-else v-model="form.certificateNumber"></el-input>
                     </el-form-item>
-                    <el-form-item label="性别" prop="qualificationsName" label-width="164px">
+                    <el-form-item label="来源员工编号" prop="qualificationsName" label-width="164px">
                         <span v-if="type=='info'">{{form.qualificationsName}}</span>
-                        <el-select v-else v-model="form.qualificationsName" placeholder="请选择性别">
-                            <el-option label="男" value="男"></el-option>
-                            <el-option label="女" value="女"></el-option>
-                        </el-select>
+                        <el-input v-else v-model="form.certificateNumber"></el-input>
                     </el-form-item>
                </div>  
                <div class="row_item">
-                    <el-form-item label="入职日期" prop="qualificationsType" label-width="100px">
+                    <el-form-item label="来源员工" prop="qualificationsType" label-width="164px">
                        <span v-if="type=='info'">{{form.qualificationsType}}</span>
                        <el-date-picker v-else type="date" placeholder="选择日期" v-model="form.qualificationsType" style="width: 100%;"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="在岗状态" prop="useBusiness" label-width="164px">
+                    <el-form-item label="员工上级" prop="useBusiness" label-width="164px">
                         <span v-if="type=='info'">{{form.useBusiness}}</span>
                         <el-select v-else v-model="form.useBusiness" placeholder="请选择在岗状态">
                             <el-option label="试用期" value="试用期"></el-option>
@@ -49,29 +46,26 @@
                         </el-select>
                     </el-form-item>
                 </div>
-                <div class="row_item">
-                    <el-form-item label="所在项目" prop="awardUnit" label-width="100px">
-                        <span v-if="type=='info'">{{form.awardUnit}}</span>
+                <div class="row_item row_item_row">
+                    <el-form-item label="预警状态" prop="awardUnit" label-width="164px">
+                        <span v-if="type=='info'">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
                         <el-select v-else v-model="form.awardUnit" placeholder="请选择所在项目">
                             <el-option label="桥载项目" value="桥载项目"></el-option>
                             <el-option label="勤务项目" value="勤务项目"></el-option>
                             <el-option label="维修项目" value="维修项目"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="上级编码" prop="awardDate" label-width="164px">
-                        <span v-if="type=='info'">{{form.awardDate}}</span>
-                        <el-input v-else v-model="form.awardDate"></el-input>
-                    </el-form-item>
                 </div>
-                <div class="row_item">
-                    <el-form-item label="上级姓名" prop="takeEffectDate" label-width="100px">
-                        <span v-if="type=='info'">{{form.takeEffectDate}}</span>
+                <div class="row_item_row row_item">
+                    <el-form-item label="预警内容" prop="takeEffectDate" label-width="164px">
+                        <span v-if="type=='info'">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
                          <el-input v-else v-model="form.takeEffectDate"></el-input>
                     </el-form-item>
-                    <el-form-item label="失效日期" prop="invalidDate" label-width="164px">
-                        <span v-if="type=='info'">{{form.invalidDate}}</span>
-                        <el-date-picker v-else type="date" placeholder="选择日期" v-model="form.invalidDate" style="width: 100%;"></el-date-picker>
-                    </el-form-item>
+                </div>
+                <div class="release_button">
+                    <el-button type="primary">收到预警消息确认</el-button>
+                    <el-button type="primary">预警业务处理确认</el-button>
+                    <el-button type="primary">关闭预警消息</el-button>
                 </div>
             </el-form>
         </div> 
@@ -132,6 +126,16 @@ export default {
 @import "@/ui/styles/common_form.scss";
 .addPersonDoc{
     margin-top:40px;
-
+    .release_button{
+        .el-button{
+            margin-top: 40px;
+        }
+    }
+    .row_item{
+        display: flex;
+    }
+    .el-form{
+         width: 796px;
+    }
 }
 </style>
