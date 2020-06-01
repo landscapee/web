@@ -24,12 +24,14 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="148">
+                   <el-table-column slot="relationInfo" label="关联信息" :width="298">
                         <template >
-                            <span><icon iconClass="kh" class="action_radio"></icon></span>
-                            <span><icon iconClass="ks" class="action_radio"></icon></span>
+                            <el-button size="mini" @click="clickAction('confirm')">收到确认</el-button>
+                            <el-button size="mini" @click="clickAction('business')">业务处理</el-button>
+                            <el-button size="mini" @click="clickAction('close')">关闭预警</el-button>
                         </template>
                     </el-table-column>
+                    
                 </SearchTable>
             </div>
         </div>
@@ -69,6 +71,15 @@ export default {
         }
     },
     methods: {
+        clickAction(tag){
+            if(tag=='confirm'){
+                
+            }else if(tag == 'business'){
+
+            }else if(tag == 'close'){
+
+            }
+        },
         requestTable(searchData){
             console.log(searchData[0]);
         },

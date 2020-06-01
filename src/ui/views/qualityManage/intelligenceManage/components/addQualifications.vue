@@ -103,8 +103,30 @@ export default {
                 useBusiness: [{ required: true, message: '请输入', trigger: 'change' }],
                 awardUnit: [{ required: true, message: '请输入', trigger: 'change' }],
                 awardDate: [{ required: true, message: '请输入', trigger: 'change' }],
-                takeEffectDate: [{ required: true, message: '请输入', trigger: 'change' }],
-                invalidDate: [{ required: true, message: '请输入', trigger: 'change' }],
+                takeEffectDate: [{ required: true, message: '请输入', trigger: 'change' },
+                    {
+						validator: (rule, value, callback) => {
+							if ( value >= this.invalidDate) {
+								callback(new Error('生效日期应小于失效日期'));
+							} else {
+								callback();
+							}
+						},
+						trigger: 'change',
+                    }
+                ],
+                invalidDate: [{ required: true, message: '请输入', trigger: 'change' },
+                    {
+						validator: (rule, value, callback) => {
+							if (value < this.takeEffectDate) {
+								callback(new Error('失效日期应大于等于生效日期'));
+							} else {
+								callback();
+							}
+						},
+						trigger: 'change',
+                    }
+                ],
             },
             type:'add'
         };

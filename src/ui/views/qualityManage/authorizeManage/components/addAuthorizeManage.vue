@@ -62,7 +62,7 @@
                     </el-form-item>
                     <el-form-item label="机型范围" prop="awardDate" label-width="164px">
                         <span v-if="type=='info'">{{form.awardDate}}</span>
-                        <el-select v-else v-model="form.awardDate" placeholder="请选择机型范围">
+                        <el-select v-else multiple  v-model="form.awardDate" placeholder="请选择机型范围">
                             <el-option label="A320" value="A320"></el-option>
                             <el-option label="A330" value="A330"></el-option>
                         </el-select>

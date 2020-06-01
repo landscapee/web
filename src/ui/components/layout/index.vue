@@ -187,9 +187,20 @@ import Icon from '@components/Icon-svg/index';
 	.left-menu{
 		width: 160px !important;
 		background: url('./assets/img/leftNav.png') no-repeat;
+		height: calc(100vh - 48px);
 		background-size:cover;
 		overflow-x: hidden;
 		padding-top: 55px;
+		&::-webkit-scrollbar-track-piece {
+			background: #d3dce6;
+		}
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #99a9bf;
+			border-radius: 20px;
+		}
 	}
 	
 }

@@ -1,6 +1,7 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addAuthorizeManage'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/authUserQuali'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/authorizeManage'" class="authorizeManage">
             <div class="top-content">
                 <div class="top-content-title">
@@ -24,10 +25,9 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="148" fixed="right">
-                        <template >
-                            <span><icon iconClass="kh" class="action_radio"></icon></span>
-                            <span><icon iconClass="ks" class="action_radio"></icon></span>
+                    <el-table-column slot="relationInfo" label="关联信息" :width="148" fixed="right">
+                        <template>
+                            <el-button size="mini" @click="showUserList()">员工资质</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -69,6 +69,9 @@ export default {
         }
     },
     methods: {
+        showUserList(){
+            this.$router.push({path:'/authUserQuali',query:{id:"123"}});
+        },
         requestTable(searchData){
             console.log(searchData[0]);
         },

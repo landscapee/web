@@ -67,6 +67,11 @@
                     <el-button type="primary">预警业务处理确认</el-button>
                     <el-button type="primary">关闭预警消息</el-button>
                 </div>
+                <div class="release_button">
+                    <el-button >已确认</el-button>
+                    <el-button >已处理</el-button>
+                    <el-button >已关闭</el-button>
+                </div>
             </el-form>
         </div> 
     </div> 

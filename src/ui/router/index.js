@@ -89,7 +89,14 @@ let authRoutes = [
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
-					}
+					},
+					{
+						path: '/authUserQuali',
+						component: () => import('@views/qualityManage/authorizeManage/components/userQuali'),
+						name: '员工资质',
+						meta: {	title: '员工资质',	icon: ''	},
+						hidden:true
+					},
 				]
 			},
 			{
@@ -107,8 +114,157 @@ let authRoutes = [
 					}
 				]
 			},
+			{
+				path: '/selfPlan',
+				component: () => import('@views/qualityManage/warningManage/index'),
+				name: '自查计划',
+				meta: {title: '自查计划',icon: ''},
+				children:[
+					
+				]
+			},
+			{
+				path: '/securityMerits',
+				component: () => import('@views/qualityManage/warningManage/index'),
+				name: '安全绩效',
+				meta: {title: '安全绩效',icon: ''},
+				children:[
+					
+				]
+			},
+			{
+				path: '/securityInfo',
+				component: () => import('@views/qualityManage/warningManage/index'),
+				name: '安全信息',
+				meta: {title: '安全信息',icon: ''},
+				children:[
+					
+				]
+			},
+			{
+				path: '/hazardData',
+				component: () => import('@views/qualityManage/warningManage/index'),
+				name: '危险数据',
+				meta: {title: '危险数据',icon: ''},
+				children:[
+				
+				]
+			},
+		],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '工单管理',
+		meta: {title: '工单管理',icon: 'gdgl' },
+		children: [],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '收费管理',
+		meta: {title: '收费管理',icon: 'sfgl' },
+		children: [],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '技术资料',
+		meta: {title: '技术资料',icon: 'jszl' },
+		children: [],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '培训考核',
+		meta: {title: '培训考核',icon: 'pxkh' },
+		children: [
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '课件维护',
+				meta: {title: '课件维护',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '试题维护',
+				meta: {title: '试题维护',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '培训管理',
+				meta: {title: '培训管理',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '考试管理',
+				meta: {title: '考试管理',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '在线考试',
+				meta: {title: '在线考试',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '考核管理',
+				meta: {title: '考核管理',icon: 'xxgl' },
+			},
+		],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '查询统计',
+		meta: {title: '查询统计',icon: 'cxtj' },
+		children: [],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '消息管理',
+		meta: {title: '消息管理',icon: 'xxgl' },
+		children: [],
+	},
+	{
+		path: '/WorkOrderManage',
+		component: Layout,
+		redirect: '/WorkOrderManage',
+		name: '基础数据',
+		meta: {title: '基础数据',icon: 'xxgl' },
+		children: [
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '业务数据类型',
+				meta: {title: '业务数据类型',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '系统参数',
+				meta: {title: '系统参数',icon: 'xxgl' },
+			},
+			{
+				path: '/WorkOrderManage',
+				component: ()=>{},
+				name: '机位电子围栏',
+				meta: {title: '机位电子围栏',icon: 'xxgl' },
+			}
 		],
 	}
+	
 ];
 let defaultRoutes = [
   {path: '/',name: 'login',	component: () => import('@views/login/login')},

@@ -117,5 +117,5 @@ export const warningManageTable=[
         { prop: 'deptName', label: '来源员工', align: 'center' ,sort:true,search:{type:'input',placeholder:"请输入来源员工",data:'123',prop:'bfDate'}},
         { prop: 'deptName', label: '员工上级', align: 'center' ,sort:true,search:{type:'input',placeholder:"请输入员工上级",data:'123',prop:'bfUnit'}},
         { prop: 'deptName', label: '预警状态', align: 'center',sort:true,search:{type:'select',placeholder:"请选择预警状态",data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}],prop:'syBusiness'} },
-        { slot: 'relationInfo', label: '操作' ,width:'148',search:{type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'relationInfo', label: '操作' ,width:'298',search:{type:'btn',label:'搜索',icon:"table_search"}}
 ];
