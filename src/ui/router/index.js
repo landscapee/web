@@ -177,7 +177,7 @@ let authRoutes = [
 		children: [],
 	},
 	{
-		path: '/WorkOrderManage',
+		path: '/peixunKaohe',
 		component: Layout,
 		redirect: '/WorkOrderManage',
 		name: '培训考核',
@@ -238,29 +238,38 @@ let authRoutes = [
 		children: [],
 	},
 	{
-		path: '/WorkOrderManage',
+		path: '/basicData',
 		component: Layout,
-		redirect: '/WorkOrderManage',
+		redirect: '/businessData',
 		name: '基础数据',
 		meta: {title: '基础数据',icon: 'xxgl' },
 		children: [
 			{
-				path: '/WorkOrderManage',
-				component: ()=>{},
+				path: '/businessData',
+				component: () => import('@views/basicData/businessData/index'),
 				name: '业务数据类型',
-				meta: {title: '业务数据类型',icon: 'xxgl' },
+				meta: {title: '业务数据类型',icon: '' },
+				children:[
+					{
+						path: '/editBusinessData',
+						component: () => import('@views/basicData/businessData/components/editBusinessData'),
+						name: '修改',
+						meta: {	title: '修改',	icon: ''	},
+						hidden:true
+					},
+				]
 			},
 			{
-				path: '/WorkOrderManage',
-				component: ()=>{},
+				path: '/sysParameter',
+				component:  () => import('@views/basicData/sysParameter/index'),
 				name: '系统参数',
-				meta: {title: '系统参数',icon: 'xxgl' },
+				meta: {title: '系统参数',icon: '' },
 			},
 			{
-				path: '/WorkOrderManage',
-				component: ()=>{},
+				path: '/electronicFence',
+				component: () => import('@views/basicData/electronicFence/index'),
 				name: '机位电子围栏',
-				meta: {title: '机位电子围栏',icon: 'xxgl' },
+				meta: {title: '机位电子围栏',icon: '' },
 			}
 		],
 	}
