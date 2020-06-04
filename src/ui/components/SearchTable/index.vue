@@ -39,13 +39,13 @@
 				</template>
 			</template>
 		</el-table>
-		<el-table   @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="(this[this.tableTag]?this[this.tableTag]:tableData) instanceof Array ? (this[this.tableTag]?this[this.tableTag]:tableData) : (this[this.tableTag]?this[this.tableTag].records:tableData.records)" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
+		<el-table   @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
 			<template v-for="(colConfig, index) in cloneTableConfig">
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
 				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index" :reserve-selection="true"> </el-table-column>
 			</template>
 		</el-table>
-		<el-pagination v-if="(this[this.tableTag]?this[this.tableTag].current:tableData.current)"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="(this[this.tableTag]?this[this.tableTag].current:tableData.current)" :page-sizes="[1, 15, 20, 50, 100]" :page-size="(this[this.tableTag]?this[this.tableTag].size:tableData.size)" layout="total, sizes, prev, pager, next, jumper" :total="(this[this.tableTag]?this[this.tableTag].total:tableData.total)"> </el-pagination>
+		<el-pagination v-if="data.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
 	</div>
 </template>
 <script>
@@ -57,28 +57,17 @@ export default {
         Icon,
 	},
 	name: 'SearchTable',
-	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag','tableTag'],
-	data() {
-		if(this.tableTag){
-			return {
-				resizeCallback:[],
-				headerData:[{}],
-				cloneTableConfig:this.tableConfig,
-				[this.tableTag]:this.data
-		   };
-
-		}else{
-			return {
-				resizeCallback:[],
-				headerData:[{}],
-				cloneTableConfig:this.tableConfig,
-				tableData:this.data
-		   };
-		}	
+	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag'],
+	data () {
+		return {
+			resizeCallback:[],
+			headerData:[{}],
+			cloneTableConfig:this.tableConfig,
+		};
 	},
 	watch: {
 		data: function(newVal, oldVal) {
-			this[this.tableTag]?this[this.tableTag]:this.tableData = newVal;
+			// this.data = newVal;
 			// 重新计算element表格组件布局
 			setTimeout(() => {
 				this.$refs.body_table.doLayout();
@@ -143,11 +132,6 @@ export default {
 		},
 		checkRow(d, column, event) {
 			let select = d.selected;
-			this[this.tableTag]?this[this.tableTag]:this.tableData.records.map(r =>{
-                if(r.selected){
-                    r.selected = false;
-                }
-			})
 			if(select){
 				if(this.refTag){
 					this.$parent.$refs[this.refTag].$refs.body_table.setCurrentRow();
@@ -162,9 +146,6 @@ export default {
 				}
 				
 			}
-			d.selected  = !select;
-			
-            this.$set(this[this.tableTag]?this[this.tableTag]:this.tableData.records,d.index,d);
 			this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(column), cloneDeep(event));
 		},
 		handleSelectionChange(val) {

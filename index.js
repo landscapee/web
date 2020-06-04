@@ -22,7 +22,7 @@ import VueKindEditor from '@/ui/components/Kindeditor/kindeditor.js'
 import './static/plugin/themes/default/default.css'
 import './static/plugin/kindeditor-all-min.js'
 import './static/plugin/lang/zh-CN.js'
-
+// Vue.prototype.$ip = "http://173.100.1.134:18000";
 Vue.use(VueKindEditor)
 Vue.use(ElementUI);
 // 把postal绑定到vue原型链上

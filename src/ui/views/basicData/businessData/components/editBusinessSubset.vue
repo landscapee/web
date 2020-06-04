@@ -16,27 +16,27 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_item">
-          <el-form-item label="类型" prop="dicType">
-            <span v-if="type=='info'">{{form.dicType}}</span>
-            <el-input v-else v-model="form.dicType" placeholder="请输入类型"></el-input>
+          <el-form-item label="业务数据" prop="valData">
+            <span v-if="type=='info'">{{form.valData}}</span>
+            <el-input v-else v-model="form.valData" placeholder="请输入业务数据"></el-input>
           </el-form-item>
-          <el-form-item label="类型编码" prop="dicCode">
-            <span v-if="type=='info'">{{form.dicCode}}</span>
-            <el-input v-else v-model="form.dicCode" placeholder="请输入类型编码"></el-input>
+          <el-form-item label="业务数据编码" prop="valCode">
+            <span v-if="type=='info'">{{form.valCode}}</span>
+            <el-input v-else v-model="form.valCode" placeholder="请输入业务数据编码"></el-input>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="类型说明" prop="dicSummary">
-            <span v-if="type=='info'">{{form.dicSummary}}</span>
-            <el-input v-else v-model="form.dicSummary" placeholder="请输入类型说明"></el-input>
+          <el-form-item label="业务数据说明" prop="valSummary">
+            <span v-if="type=='info'">{{form.valSummary}}</span>
+            <el-input v-else v-model="form.valSummary" placeholder="请输入业务数据说明"></el-input>
           </el-form-item>
         </div>
         <div class="row_item row_item_row">
-          <el-form-item label="允许维护" prop="enableMaintain">
-            <span v-if="type=='info'">{{form.enableMaintain}}</span>
-            <el-select v-else v-model="form.enableMaintain" placeholder="请选择是否允许维护">
-              <el-option label="允许" :value="1"></el-option>
-              <el-option label="禁止" :value="0"></el-option>
+          <el-form-item label="是否启用" prop="valStatus">
+            <span v-if="type=='info'">{{form.valStatus}}</span>
+            <el-select v-else v-model="form.valStatus" placeholder="请选择是否启用">
+              <el-option label="启用" :value="1"></el-option>
+              <el-option label="停用" :value="0"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -57,12 +57,10 @@ export default {
     return {
       form: {},
       rules: {
-        dicType: [{ required: true, message: "请输入", trigger: "change" }],
-        dicCode: [{ required: true, message: "请输入", trigger: "change" }],
-        dicSummary: [{ required: true, message: "请输入", trigger: "change" }],
-        enableMaintain: [
-          { required: true, message: "请输入", trigger: "change" }
-        ]
+        valData: [{ required: true, message: "请输入", trigger: "change" }],
+        valCode: [{ required: true, message: "请输入", trigger: "change" }],
+        valSummary: [{ required: true, message: "请输入", trigger: "change" }],
+        valStatus: [{ required: true, message: "请输入", trigger: "change" }]
       },
       type: "add"
     };
@@ -85,19 +83,19 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?"http://173.100.1.134:18000/rest-api/businessDictionary/add":"http://173.100.1.134:18000/rest-api/businessDictionary/update"
+           let url = this.type == "add"?"http://173.100.1.134:18000/rest-api/businessDictionaryValue/add":"http://173.100.1.134:18000/rest-api/businessDictionaryValue/update"
             request({
               url,
               method: "post",
               data: this.form
             })
-            .then(data => {
-              this.$message.success("保存成功！");
-              this.$router.go(-1);
-            })
-            .catch(error => {
-              this.$message.success(error);
-            });
+              .then(data => {
+                this.$message.success(this.type == "add"?"保存成功！":"修改成功");
+                this.$router.go(-1);
+              })
+              .catch(error => {
+                this.$message.success(error);
+              });
           } else {
             console.log("error submit!!");
             return false;

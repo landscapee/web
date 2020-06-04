@@ -253,8 +253,15 @@ let authRoutes = [
 					{
 						path: '/editBusinessData',
 						component: () => import('@views/basicData/businessData/components/editBusinessData'),
-						name: '修改',
-						meta: {	title: '修改',	icon: ''	},
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					},
+					{
+						path: '/editBusinessSubset',
+						component: () => import('@views/basicData/businessData/components/editBusinessSubset'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
 				]
