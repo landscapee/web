@@ -8,7 +8,7 @@
         <div @click="saveQualifications">
           <icon iconClass="save"></icon>保存
         </div>
-        <div>
+        <div @click="resetForm">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
@@ -33,10 +33,10 @@
         </div>
         <div class="row_item row_item_row">
           <el-form-item label="是否启用" prop="valStatus">
-            <span v-if="type=='info'">{{form.valStatus}}</span>
+            <span v-if="type=='info'">{{form.valStatus==1?"是":"否"}}</span>
             <el-select v-else v-model="form.valStatus" placeholder="请选择是否启用">
-              <el-option label="启用" :value="1"></el-option>
-              <el-option label="停用" :value="0"></el-option>
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -57,10 +57,10 @@ export default {
     return {
       form: {},
       rules: {
-        valData: [{ required: true, message: "请输入", trigger: "change" }],
-        valCode: [{ required: true, message: "请输入", trigger: "change" }],
-        valSummary: [{ required: true, message: "请输入", trigger: "change" }],
-        valStatus: [{ required: true, message: "请输入", trigger: "change" }]
+        valData: [{ required: true, message: "请输入业务数据", trigger: "change" }],
+        valCode: [{ required: true, message: "请输入业务数据编码", trigger: "change" }],
+        valSummary: [{ required: true, message: "请输入业务数据说明", trigger: "change" }],
+        valStatus: [{ required: true, message: "请选择是否启用", trigger: "change" }]
       },
       type: "add"
     };
@@ -76,18 +76,34 @@ export default {
           : this.type == "info"
           ? "详情"
           : "";
+          if(this.type == "edit"){
+            request({
+              url:`${this.$ip}/rest-api/businessDictionaryValue/info`,
+              method: "post",
+              data: {id:this.$route.query.id}
+            })
+            .then(data => {
+              this.form = data.data[0];
+            })
+            .catch(error => {
+              this.$message.success(error);
+            });
+          }
     }
   },
   methods: {
+    resetForm(){
+      this.form={};
+    },
     saveQualifications() {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-           let url = this.type == "add"?"http://173.100.1.134:18000/rest-api/businessDictionaryValue/add":"http://173.100.1.134:18000/rest-api/businessDictionaryValue/update"
+           let url = this.type == "add"?`${this.$ip}/rest-api/businessDictionaryValue/add`:`${this.$ip}/rest-api/businessDictionaryValue/update`
             request({
               url,
               method: "post",
-              data: this.form
+              data: {...this.form,id:this.$route.query.id}
             })
               .then(data => {
                 this.$message.success(this.type == "add"?"保存成功！":"修改成功");
@@ -126,15 +142,15 @@ export default {
     }
   }
   .el-form {
-    width: 754px;
+    width:814px;
     .el-form-item {
-      width: calc(100% - 90px);
+      width: calc(100% - 120px);
     }
     /deep/ .el-form-item__label {
-      width: 90px;
+      width:120px;
     }
     /deep/ .el-form-item__content {
-      margin-left: 90px;
+      margin-left: 120px;
     }
   }
 }

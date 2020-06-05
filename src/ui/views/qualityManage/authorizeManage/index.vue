@@ -119,7 +119,14 @@ export default {
             alert(123);
         },
         listenToCheckedChange(row, column, event){
-          
+          let select = row.selected;
+          this.tableData.records.map(r =>{
+                if(r.selected){
+                    r.selected = false;
+                }
+		  })
+          row.selected  = !select;
+          this.$set(this.tableData.records,row.index,row);
         },
         getList(){
             request({

@@ -30,10 +30,10 @@ module.exports = merge(common, {
                 target: `http://173.100.1.130:8080`, //飞行区登录开发
                 changeOrigin: true,
             },
-            '/apidev/': {
-                target: `http://173.100.1.134:18000`, //机务本地开发
-                changeOrigin: true,
-            },
+            // '/apidev/': {
+            //     target: `http://173.100.1.134:18000`, //机务本地开发
+            //     changeOrigin: true,
+            // },
         },
         // lazy: true, // 惰性模式
         // after(){

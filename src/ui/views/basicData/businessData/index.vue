@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable class="left-main-table" refTag="left-table" ref="left-table"  @requestTable="leftRequestTable"   @listenToCheckedChange="listenToLeftCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableLeftData" :tableConfig="businessTableConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable class="left-main-table" refTag="left-table" ref="left-table"  @requestTable="leftRequestTable"   @listenToCheckedChange="listenToLeftCheckedChange" @headerSort="leftHeaderSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableLeftData" :tableConfig="businessTableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -37,7 +37,7 @@
                         </template>
                     </el-table-column>
                 </SearchTable>
-                <SearchTable class="right-subset-table" refTag="right-table" ref="right-table"   @requestTable="rightRequestTable"   @listenToCheckedChange="listenToRightCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableRightData" :tableConfig="businessSubsetConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable class="right-subset-table" refTag="right-table" ref="right-table"   @requestTable="rightRequestTable"   @listenToCheckedChange="listenToRightCheckedChange" @headerSort="rightHeaderSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableRightData" :tableConfig="businessSubsetConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -71,14 +71,19 @@ export default {
 				current: 1,
 				size: 15,
             },
-            leftForm:{},
+            leftForm:{enableMaintain:1},
             rightForm:{},
             leftSelectId:null,
-            rightSelectId:null
+            rightSelectId:null,
+            leftRowState:false,
+            sorts:{}
         };
     },
    created() {
        this.getList('left');
+    },
+　　mounted() {
+       window.addEventListener('scroll', this.handleScroll,true);//监听函数
     },
     watch:{
         params:{
@@ -89,16 +94,43 @@ export default {
         }
     },
     methods: {
+        handleScroll($event){
+            var bady = $event.target;   // 获取滚动条的dom
+　　　　　　　　　// 获取距离顶部的距离
+            var scrollTop = bady.scrollTop;
+            // 获取可视区的高度
+            var windowHeight = bady.clientHeight;
+            // 获取滚动条的总高度
+            var scrollHeight = bady.scrollHeight;
+            if(scrollTop+windowHeight>=scrollHeight){
+               
+               
+            }
+        },
         leftRequestTable(searchData){
            this.leftForm = searchData[0];
+           this.leftSelectId=null,
+           this.rightSelectId=null,
+           this.leftRowState=false,
+           this.tableRightData={records:[]};
+           this.$refs["left-table"].$refs.body_table.setCurrentRow();
            this.getList('left');
         },
         rightRequestTable(searchData){
            this.rightForm = searchData[0];
+           this.rightSelectId=null;
+           this.$refs["right-table"].$refs.body_table.setCurrentRow();
            this.getList('right');
         },
-        headerSort(column){
-            alert(123);
+        leftHeaderSort(column){
+          column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
+          this.sorts[column.property] = column.order;
+          this.getList('left');
+        },
+        rightHeaderSort(column){
+          column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
+          this.sorts[column.property] = column.order;
+          this.getList('right');
         },
         listenToLeftCheckedChange(row, column, event){
             let select = row.selected;
@@ -109,6 +141,7 @@ export default {
 			})
           row.selected  = !select;
           this.leftSelectId = row.id;
+          this.leftRowState = row.enableMaintain==0?false:true;
           this.$set(this.tableLeftData.records,row.index,row);
           this.getList('right');
         },
@@ -126,28 +159,31 @@ export default {
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/editBusinessData',query:{type:'add'}});
-            }else if(tag == 'edit'){
+            }else if(tag == 'edit' || tag=='info'){
                 if(this.leftSelectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                    this.$router.push({path:'/editBusinessData',query:{type:'edit',id:this.leftSelectId}});
+                    this.$router.push({path:'/editBusinessData',query:{type:tag,id:this.leftSelectId}});
                 }
-               
-            }else{
-                this.$router.push({path:'/editBusinessData',query:{type:'info'}});
             }
         },
         rightAddOrEditOrInfo(tag){
             if(tag=='add'){
-                this.$router.push({path:'/editBusinessSubset',query:{type:'add'}});
-            }else if(tag == 'edit'){
+                if(this.leftSelectId==null){
+                   this.$message.error('请先选中左侧列表一行数据');
+                }else{
+                    if(!this.leftRowState){
+                         this.$message.error('当前运行状态为不可维护');
+                    }else{
+                         this.$router.push({path:'/editBusinessSubset',query:{type:'add',id:this.leftSelectId}});
+                    }
+                }
+            }else if(tag == 'edit' || tag=='info'){
                 if(this.rightSelectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                    this.$router.push({path:'/editBusinessSubset',query:{type:'edit',id:this.rightSelectId}});
+                    this.$router.push({path:'/editBusinessSubset',query:{type:tag,id:this.rightSelectId}});
                 }
-            }else{
-                this.$router.push({path:'/editBusinessSubset',query:{type:'info'}});
             }
         },
         rightDelData(){
@@ -157,14 +193,15 @@ export default {
 				type: 'warning',
 			})
             .then(() => {
-                // request({
-                //     url:'/api/delete', 
-                //     method: 'delete',
-                //     params:{id:""}
-                // })
-                // .then((data) => {
-                //    this.$message({type: 'success',message: '删除成功'});
-                // })
+                request({
+                    url:`${this.$ip}/rest-api/businessDictionaryValue/del`, 
+                    method: 'post',
+                    data:{id:this.rightSelectId}
+                })
+                .then((data) => {
+                   this.$message({type: 'success',message: '删除成功'});
+                   this.getList('right');
+                })
             })
             .catch(() => {
                 this.$message({
@@ -180,14 +217,15 @@ export default {
 				type: 'warning',
 			})
             .then(() => {
-                // request({
-                //     url:'/api/delete', 
-                //     method: 'delete',
-                //     params:{id:""}
-                // })
-                // .then((data) => {
-                //    this.$message({type: 'success',message: '删除成功'});
-                // })
+                request({
+                    url:`${this.$ip}/rest-api/businessDictionary/del`, 
+                    method: 'post',
+                    data:{id:this.leftSelectId}
+                })
+                .then((data) => {
+                   this.$message({type: 'success',message: '删除成功'});
+                   this.getList('left');
+                })
             })
             .catch(() => {
                 this.$message({
@@ -199,9 +237,9 @@ export default {
         getList(tag){
             if(tag=='left'){
                 request({
-                    url:'http://173.100.1.134:18000/rest-api/businessDictionary/query', 
+                    url:`${this.$ip}/rest-api/businessDictionary/query`, 
                     method: 'post',
-                    data:this.leftForm
+                    data:{...this.leftForm,...this.sorts}
                 })
                 .then((data) => {
                     this.tableLeftData.records =  data.data;
@@ -209,16 +247,18 @@ export default {
             
                 });
             }else{
-                request({
-                    url:'http://173.100.1.134:18000/rest-api/businessDictionaryValue/query', 
-                    method: 'post',
-                    data:this.rightForm
-                })
-                .then((data) => {
-                    this.tableRightData.records =  data.data;
-                }).catch((error) => {
-            
-                });
+                if(this.leftSelectId!=null){
+                    request({
+                        url:`${this.$ip}/rest-api/businessDictionaryValue/query`, 
+                        method: 'post',
+                        data:{...this.rightForm,dicId:this.leftSelectId,...this.sorts}
+                    })
+                    .then((data) => {
+                        this.tableRightData.records =  data.data;
+                    }).catch((error) => {
+                
+                    });
+                }
             }
         },
         handleSizeChange(size) {
@@ -269,6 +309,10 @@ export default {
                 width:824px;
             }
         }
+        /deep/ .mainTable{
+            height: 600px;
+            overflow: auto;
+        }    
     }
    
 }

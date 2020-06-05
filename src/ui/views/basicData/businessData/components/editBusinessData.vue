@@ -8,7 +8,7 @@
         <div @click="saveQualifications">
           <icon iconClass="save"></icon>保存
         </div>
-        <div>
+        <div @click="resetForm">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
@@ -33,10 +33,10 @@
         </div>
         <div class="row_item row_item_row">
           <el-form-item label="允许维护" prop="enableMaintain">
-            <span v-if="type=='info'">{{form.enableMaintain}}</span>
+            <span v-if="type=='info'">{{form.enableMaintain==1?"是":"否"}}</span>
             <el-select v-else v-model="form.enableMaintain" placeholder="请选择是否允许维护">
-              <el-option label="允许" :value="1"></el-option>
-              <el-option label="禁止" :value="0"></el-option>
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -57,11 +57,11 @@ export default {
     return {
       form: {},
       rules: {
-        dicType: [{ required: true, message: "请输入", trigger: "change" }],
-        dicCode: [{ required: true, message: "请输入", trigger: "change" }],
-        dicSummary: [{ required: true, message: "请输入", trigger: "change" }],
+        dicType: [{ required: true, message: "请输入类型", trigger: "change" }],
+        dicCode: [{ required: true, message: "请输入类型编码", trigger: "change" }],
+        dicSummary: [{ required: true, message: "请输入类型说明", trigger: "change" }],
         enableMaintain: [
-          { required: true, message: "请输入", trigger: "change" }
+          { required: true, message: "请选择是否允许维护", trigger: "change" }
         ]
       },
       type: "add"
@@ -78,18 +78,34 @@ export default {
           : this.type == "info"
           ? "详情"
           : "";
+          if(this.type == "edit"){
+              request({
+                url:`${this.$ip}/rest-api/businessDictionary/info`,
+                method: "post",
+                data: {id:this.$route.query.id}
+              })
+              .then(data => {
+                this.form = data.data[0];
+              })
+              .catch(error => {
+                this.$message.success(error);
+              });
+          }
     }
   },
   methods: {
+    resetForm(){
+      this.form={};
+    },
     saveQualifications() {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?"http://173.100.1.134:18000/rest-api/businessDictionary/add":"http://173.100.1.134:18000/rest-api/businessDictionary/update"
+            let url = this.type == "add"?`${this.$ip}/rest-api/businessDictionary/add`:`${this.$ip}/rest-api/businessDictionary/update`
             request({
               url,
               method: "post",
-              data: this.form
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
             })
             .then(data => {
               this.$message.success("保存成功！");
