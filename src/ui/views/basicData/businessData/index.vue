@@ -11,7 +11,7 @@
                     <div class="left-toolbar">
                         <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                         <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                        <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                         <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                         <div><icon iconClass="export" ></icon>导出Excel</div>
                         <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
@@ -20,7 +20,7 @@
                     <div class="right-toolbar">
                         <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                         <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="rightDelData()"><icon iconClass="remove" ></icon>删除</div>
+                        <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                         <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                         <div><icon iconClass="export" ></icon>导出Excel</div>
                         <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable class="left-main-table" refTag="left-table" ref="left-table"  @requestTable="leftRequestTable"   @listenToCheckedChange="listenToLeftCheckedChange" @headerSort="leftHeaderSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableLeftData" :tableConfig="businessTableConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable class="left-main-table" refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"   :data="tableLeftData" :tableConfig="businessTableConfig"   >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -37,7 +37,7 @@
                         </template>
                     </el-table-column>
                 </SearchTable>
-                <SearchTable class="right-subset-table" refTag="right-table" ref="right-table"   @requestTable="rightRequestTable"   @listenToCheckedChange="listenToRightCheckedChange" @headerSort="rightHeaderSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableRightData" :tableConfig="businessSubsetConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable class="right-subset-table" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"   :data="tableRightData" :tableConfig="businessSubsetConfig" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -67,95 +67,106 @@ export default {
             tableRightData:{records:[]},
             businessTableConfig:businessDataTable,
             businessSubsetConfig:businessSubsetTable,
-            params:{
+            leftParams:{
 				current: 1,
-				size: 15,
+				size: 20,
             },
-            leftForm:{enableMaintain:1},
+            rightParams:{
+				current: 1,
+				size: 20,
+            },
+            leftForm:{},
             rightForm:{},
             leftSelectId:null,
             rightSelectId:null,
             leftRowState:false,
-            sorts:{}
+            leftSort:{},
+            rightSort:{}
         };
     },
-   created() {
+    created() {
+       this.leftParams.current = 1;
        this.getList('left');
     },
 　　mounted() {
        window.addEventListener('scroll', this.handleScroll,true);//监听函数
     },
     watch:{
-        params:{
-            handler:function(val,oldval){
-                this.getList('left');
-            },
-            deep:true//对象内部的属性监听，也叫深度监听
-        }
+        
     },
     methods: {
+        //监听滚动
         handleScroll($event){
-            var bady = $event.target;   // 获取滚动条的dom
-　　　　　　　　　// 获取距离顶部的距离
+            // 获取滚动条的dom
+            var bady = $event.target;   
+　　　　　　 // 获取距离顶部的距离
             var scrollTop = bady.scrollTop;
             // 获取可视区的高度
             var windowHeight = bady.clientHeight;
             // 获取滚动条的总高度
             var scrollHeight = bady.scrollHeight;
+            //获取滚动元素标识
+            var tag = bady.parentElement.__vue__.refTag;
             if(scrollTop+windowHeight>=scrollHeight){
-               
-               
+                if(tag=='left-table'){
+                    this.leftParams.current = ++this.leftParams.current ;
+                    this.getList('left','scroll');
+                }else{
+                    this.rightParams.current = ++this.rightParams.current ;
+                    this.getList('right','scroll');
+                }
             }
         },
-        leftRequestTable(searchData){
-           this.leftForm = searchData[0];
-           this.leftSelectId=null,
-           this.rightSelectId=null,
-           this.leftRowState=false,
-           this.tableRightData={records:[]};
-           this.$refs["left-table"].$refs.body_table.setCurrentRow();
-           this.getList('left');
+        //查询表头数据
+        requestTable(searchData,tag,tableTag){
+            if(tag=='left'){
+                this.leftForm = searchData;
+                this.leftSelectId=null,
+                this.rightSelectId=null,
+                this.leftRowState=false,
+                this.tableRightData={records:[]};
+                this.leftParams.current = 1;
+            }else{
+                this.rightForm = searchData;
+                this.rightSelectId=null;
+                this.rightParams.current = 1;
+            }
+           this.$refs[tableTag].$refs.body_table.setCurrentRow();
+         
+           this.getList(tag);
         },
-        rightRequestTable(searchData){
-           this.rightForm = searchData[0];
-           this.rightSelectId=null;
-           this.$refs["right-table"].$refs.body_table.setCurrentRow();
-           this.getList('right');
+        //表头排序
+        HeaderSort(column,str,tag,sortTag){
+            column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
+            this[sortTag][column.property] = column.order;
+            if(tag=='left'){
+                this.$refs[str].$refs.body_table.setCurrentRow();
+                this.leftParams.current = 1;
+            }else{
+                this.rightParams.current = 1;
+            }
+            this.getList(tag);
         },
-        leftHeaderSort(column){
-          column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
-          this.sorts[column.property] = column.order;
-          this.getList('left');
-        },
-        rightHeaderSort(column){
-          column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
-          this.sorts[column.property] = column.order;
-          this.getList('right');
-        },
-        listenToLeftCheckedChange(row, column, event){
+        //表格选中事件
+        listenToCheckedChange(row,tag,tableTag){
             let select = row.selected;
-            this.tableLeftData.records.map(r =>{
+            this[tableTag].records.map(r =>{
                 if(r.selected){
                     r.selected = false;
                 }
-			})
-          row.selected  = !select;
-          this.leftSelectId = row.id;
-          this.leftRowState = row.enableMaintain==0?false:true;
-          this.$set(this.tableLeftData.records,row.index,row);
-          this.getList('right');
-        },
-        listenToRightCheckedChange(row, column, event){
-            let select = row.selected;
-            this.tableRightData.records.map(r =>{
-                if(r.selected){
-                    r.selected = false;
-                }
-			})
+            })
             row.selected  = !select;
-          this.rightSelectId = row.id;
-          this.$set(this.tableRightData.records,row.index,row);
+            if(tag=="left"){
+                this.leftSelectId = row.id;
+                this.leftRowState = row.enableMaintain==0?false:true;
+                this.rightParams.current = 1;
+                this.getList('right');
+            }else{
+                this.rightSelectId = row.id;
+            }
+            this.$set(this[tableTag].records,row.index,row);
         },
+        //左侧表格新增编辑
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/editBusinessData',query:{type:'add'}});
@@ -167,6 +178,7 @@ export default {
                 }
             }
         },
+        //右侧表格新增编辑
         rightAddOrEditOrInfo(tag){
             if(tag=='add'){
                 if(this.leftSelectId==null){
@@ -186,7 +198,8 @@ export default {
                 }
             }
         },
-        rightDelData(){
+        //删除表格行数据
+        delData(tag,idstr){
             this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
@@ -194,13 +207,19 @@ export default {
 			})
             .then(() => {
                 request({
-                    url:`${this.$ip}/rest-api/businessDictionaryValue/del`, 
+                    url:tag=='left'?`${this.$ip}/rest-api/businessDictionary/del`:`${this.$ip}/rest-api/businessDictionaryValue/del`, 
                     method: 'post',
-                    data:{id:this.rightSelectId}
+                    data:{id:this[idstr]}
                 })
                 .then((data) => {
                    this.$message({type: 'success',message: '删除成功'});
-                   this.getList('right');
+                   if(tag=='left'){
+                       this.leftParams.current = 1;
+                   }else{
+                       this.rightParams.current= 1;
+                   }
+                 
+                   this.getList(tag);
                 })
             })
             .catch(() => {
@@ -210,66 +229,47 @@ export default {
                 });
             });
         },
-        delData(){
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning',
-			})
-            .then(() => {
-                request({
-                    url:`${this.$ip}/rest-api/businessDictionary/del`, 
-                    method: 'post',
-                    data:{id:this.leftSelectId}
-                })
-                .then((data) => {
-                   this.$message({type: 'success',message: '删除成功'});
-                   this.getList('left');
-                })
-            })
-            .catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
-                });
-            });
-        },
-        getList(tag){
+        getList(tag,scroll){
             if(tag=='left'){
                 request({
                     url:`${this.$ip}/rest-api/businessDictionary/query`, 
                     method: 'post',
-                    data:{...this.leftForm,...this.sorts}
+                    data:{...this.leftForm,...this.leftSort,...this.leftParams}
                 })
                 .then((data) => {
-                    this.tableLeftData.records =  data.data;
+                    if(this.leftParams.current==1){
+                        this.tableLeftData.records = data.data.items;
+                    }else{
+                        this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.items);
+                    }
+                    if(scroll && data.data.items.length==0){
+                       this.leftParams.current = --this.leftParams.current;
+                    }
                 }).catch((error) => {
-            
+             
                 });
             }else{
                 if(this.leftSelectId!=null){
                     request({
                         url:`${this.$ip}/rest-api/businessDictionaryValue/query`, 
                         method: 'post',
-                        data:{...this.rightForm,dicId:this.leftSelectId,...this.sorts}
+                        data:{...this.rightForm,dicId:this.leftSelectId,...this.rightSort,...this.rightParams}
                     })
                     .then((data) => {
-                        this.tableRightData.records =  data.data;
+                        if(this.rightParams.current==1){
+                            this.tableRightData.records = data.data.items;
+                        }else{
+                            this.tableRightData.records.push.apply(this.tableRightData.records,data.data.items);
+                        }
+                        if(scroll && data.data.items.length==0){
+                            this.rightParams.current = --this.rightParams.current;
+                        }
                     }).catch((error) => {
                 
                     });
                 }
             }
         },
-        handleSizeChange(size) {
-            this.params.current = 1;
-			this.params.size = size;
-		},
-		handleCurrentChange(current) {
-			this.params.current = current;
-		},
-		handleCheckedChange() {},
-		handleSelectionChange() {},
     },
 };
 </script>
@@ -312,8 +312,14 @@ export default {
         /deep/ .mainTable{
             height: 600px;
             overflow: auto;
+            // /deep/ .el-table__body-wrapper{
+            //     /deep/ tr:last-child{
+            //         td{
+            //             border-bottom:0px;
+            //         }
+            //     }
+            // }
         }    
     }
-   
 }
 </style>

@@ -93,7 +93,7 @@ export default {
 			this.$set(this.cloneTableConfig,column.index,this.cloneTableConfig[column.index]);
 		},
 		requestTableData(){
-			this.$emit('requestTable', this.headerData);
+			this.$emit('requestTable', this.headerData[0]);
 		},
 		renderHeaderRow(h,  { column, $index }){
 			return (
@@ -144,7 +144,6 @@ export default {
 				}else{
 					this.$refs.body_table.setCurrentRow(d);
 				}
-				
 			}
 			this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(column), cloneDeep(event));
 		},
