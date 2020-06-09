@@ -144,7 +144,7 @@ export default {
     }
   }
   .el-form {
-    width: 754px;
+    width: 1000px;
     .el-form-item {
       width: calc(100% - 90px);
     }

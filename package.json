@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
-    "build": "webpack --config webpack.prod.js --Program jwxt.build"
+    "build": "webpack --config webpack.prod.js --Program jwxt.build",
+    "dev.deploy": "npm run build:dev && scp -r build/* root@173.100.1.134:/home/front-end/",
+    "prod.deploy": "npm run build:prod && scp -r build/* root@173.100.1.134:/home/front-end/"
   },
   "repository": {
     "type": "git",

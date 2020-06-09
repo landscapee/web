@@ -271,12 +271,30 @@ let authRoutes = [
 				component:  () => import('@views/basicData/sysParameter/index'),
 				name: '系统参数',
 				meta: {title: '系统参数',icon: '' },
+				children:[
+					{
+						path: '/addSysParameter',
+						component: () => import('@views/basicData/sysParameter/components/addSysParameter'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					},
+				]
 			},
 			{
 				path: '/electronicFence',
 				component: () => import('@views/basicData/electronicFence/index'),
 				name: '机位电子围栏',
 				meta: {title: '机位电子围栏',icon: '' },
+				children:[
+					{
+						path: '/addElectronicFence',
+						component: () => import('@views/basicData/electronicFence/components/addElectronicFence'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					},
+				]
 			}
 		],
 	}

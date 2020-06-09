@@ -1,8 +1,6 @@
 <template>
     <div>
-        <!-- <router-view v-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/exaRecord'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/assRecord'" :key="$route.path"></router-view> -->
+        <router-view v-if="this.$router.history.current.path == '/addSysParameter'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/sysParameter'" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
@@ -89,11 +87,11 @@ export default {
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
-                this.$router.push({path:'/addQualifications',query:{type:'add'}});
+                this.$router.push({path:'/addSysParameter',query:{type:'add'}});
             }else if(tag == 'edit'){
-                this.$router.push({path:'/addQualifications',query:{type:'edit'}});
+                this.$router.push({path:'/addSysParameter',query:{type:'edit'}});
             }else{
-                this.$router.push({path:'/addQualifications',query:{type:'info'}});
+                this.$router.push({path:'/addSysParameter',query:{type:'info'}});
             }
         },
         delData(){

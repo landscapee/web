@@ -132,24 +132,24 @@ export default {
   }
   .row_item {
     display: flex;
-    &:first-child {
+     &:nth-child(2) {
       .el-form-item {
         &:last-child {
-          margin-left: 93px;
+          margin-left:40px;
         }
       }
     }
   }
   .el-form {
-    width: 754px;
+    width: 763px;
     .el-form-item {
-      width: calc(100% - 90px);
+      width: calc(100% - 120px);
     }
     /deep/ .el-form-item__label {
-      width: 90px;
+      width:120px;
     }
     /deep/ .el-form-item__content {
-      margin-left: 90px;
+      margin-left: 120px;
     }
   }
 }
