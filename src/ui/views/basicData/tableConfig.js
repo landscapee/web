@@ -22,10 +22,10 @@ export const businessSubsetTable=[
 ];
 export const sysParameterTable=[
     { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-    { prop: '', label: '系统参数编码', align: 'center',sort:true,sortProp:"",search:{type:'input',placeholder:"请输入参数编码",data:'123',prop:'valData'} },
-    { prop: '', label: '系统参数', align: 'center',sort:true,sortProp:"",search:{type:'input',placeholder:"请输入系统参数",data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}],prop:'valCode'} },
-    { prop: '', label: '系统参数值', align: 'center',sort:true,sortProp:"",search:{type:'input',placeholder:"请输入参数值",data:'123',prop:'valSummary'} },
-    { prop: '', label: '系统参数说明',width:'990', align: 'center',sort:true,sortProp:"",search:{type:'input',extendType:'search',placeholder:"请输入系统参数说明",data:[{label:"是",value:1},{label:"否",value:0}],prop:'valStatus'}},
+    { prop: 'sysParamCode', label: '系统参数编码', align: 'center',sort:true,sortProp:"",search:{type:'input',placeholder:"请输入参数编码",data:'123',prop:'valData'} },
+    { prop: 'sysParamName', label: '系统参数', align: 'center',sort:true,sortProp:"",search:{type:'input',placeholder:"请输入系统参数",data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}],prop:'valCode'} },
+    { prop: 'sysParamValue', label: '系统参数值', align: 'center',sort:true,sortProp:"",search:{type:'input',placeholder:"请输入参数值",data:'123',prop:'valSummary'} },
+    { prop: 'sysParamComment', label: '系统参数说明',width:'990', align: 'center',sort:true,sortProp:"",search:{type:'input',extendType:'search',placeholder:"请输入系统参数说明",data:[{label:"是",value:1},{label:"否",value:0}],prop:'valStatus'}},
 ];
 export const electronicFenceTable=[
     { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},

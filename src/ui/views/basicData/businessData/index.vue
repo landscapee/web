@@ -69,11 +69,11 @@ export default {
             businessSubsetConfig:businessSubsetTable,
             leftParams:{
 				current: 1,
-				size: 20,
+				size: 18,
             },
             rightParams:{
 				current: 1,
-				size: 20,
+				size: 18,
             },
             leftForm:{},
             rightForm:{},

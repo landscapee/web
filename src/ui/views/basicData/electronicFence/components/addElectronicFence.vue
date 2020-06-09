@@ -75,7 +75,7 @@ export default {
           : this.type == "info"
           ? "详情"
           : "";
-          if(this.type == "edit"){
+         if(this.type == "edit" || this.type == "info"){
               request({
                 url:`${this.$ip}/rest-api/businessDictionary/info`,
                 method: "post",

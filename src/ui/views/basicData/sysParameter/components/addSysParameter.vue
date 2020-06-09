@@ -5,10 +5,10 @@
         <span>系统参数值-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="saveQualifications">
+        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="resetForm">
+        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
@@ -16,25 +16,25 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_item_row row_item">
-          <el-form-item label="系统参数编码" prop="dicType">
-            <span v-if="type=='info'">{{form.dicType}}</span>
-            <el-input v-else v-model="form.dicType" placeholder="请输入系统参数编码"></el-input>
+          <el-form-item label="系统参数编码" prop="sysParamCode">
+            <span v-if="type=='info'">{{form.sysParamCode}}</span>
+            <el-input v-else v-model="form.sysParamCode" placeholder="请输入系统参数编码"></el-input>
           </el-form-item>
         </div>
-        <div class="row_item">
-          <el-form-item label="系统参数" prop="dicSummary">
-            <span v-if="type=='info'">{{form.dicSummary}}</span>
-            <el-input v-else v-model="form.dicSummary" placeholder="请输入系统参数"></el-input>
+        <div class="row_custom">
+          <el-form-item label="系统参数" prop="sysParamName">
+            <span v-if="type=='info'">{{form.sysParamName}}</span>
+            <el-input v-else v-model="form.sysParamName" placeholder="请输入系统参数"></el-input>
           </el-form-item>
-          <el-form-item label="系统参数值" prop="dicSummary">
-            <span v-if="type=='info'">{{form.dicSummary}}</span>
-            <el-input v-else v-model="form.dicSummary" placeholder="请输入系统参数值"></el-input>
+          <el-form-item label="系统参数值" prop="sysParamValue">
+            <span v-if="type=='info'">{{form.sysParamValue}}</span>
+            <el-input v-else v-model="form.sysParamValue" placeholder="请输入系统参数值"></el-input>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="系统参数说明" prop="dicType">
-            <span v-if="type=='info'">{{form.dicType}}</span>
-            <el-input v-else v-model="form.dicType" placeholder="请输入系统参数说明"></el-input>
+          <el-form-item label="系统参数说明" prop="sysParamComment">
+            <span v-if="type=='info'">{{form.sysParamComment}}</span>
+            <el-input v-else v-model="form.sysParamComment" placeholder="请输入系统参数说明"></el-input>
           </el-form-item>
         </div>
       </el-form>
@@ -54,12 +54,10 @@ export default {
     return {
       form: {},
       rules: {
-        dicType: [{ required: true, message: "请输入类型", trigger: "change" }],
-        dicCode: [{ required: true, message: "请输入类型编码", trigger: "change" }],
-        dicSummary: [{ required: true, message: "请输入类型说明", trigger: "change" }],
-        enableMaintain: [
-          { required: true, message: "请选择是否允许维护", trigger: "change" }
-        ]
+        sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
+        sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
+        sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
+        sysParamComment: [{ required: true, message: "请输入系统参数说明", trigger: "change" }]
       },
       type: "add"
     };
@@ -75,9 +73,9 @@ export default {
           : this.type == "info"
           ? "详情"
           : "";
-          if(this.type == "edit"){
+         if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/rest-api/businessDictionary/info`,
+                url:`${this.$ip}/rest-api/sysParam/info`,
                 method: "post",
                 data: {id:this.$route.query.id}
               })
@@ -98,7 +96,7 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/rest-api/businessDictionary/add`:`${this.$ip}/rest-api/businessDictionary/update`
+            let url = this.type == "add"?`${this.$ip}/rest-api/sysParam/add`:`${this.$ip}/rest-api/sysParam/update`
             request({
               url,
               method: "post",
@@ -125,32 +123,34 @@ export default {
 @import "@/ui/styles/common_form.scss";
 .addSysParameter {
   margin-top: 40px;
-  .release_button {
-    .el-button {
-      margin-top: 40px;
-    }
-  }
-  .row_item {
-    display: flex;
-     &:nth-child(2) {
-      .el-form-item {
-        &:last-child {
-          margin-left:40px;
+   .el-form {
+      width: 1000px;
+      /deep/ .el-form-item__label {
+        width: 120px;
+      }
+      /deep/ .el-form-item__content {
+        margin-left: 120px;
+      }
+      .row_custom{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 377px;
+            text-align: left;
+        }
+        @include common-input;
+        &:first-child {
+          .el-form-item {
+            &:last-child {
+              margin-left: 93px;
+            }
+          }
         }
       }
-    }
-  }
-  .el-form {
-    width: 763px;
-    .el-form-item {
-      width: calc(100% - 120px);
-    }
-    /deep/ .el-form-item__label {
-      width:120px;
-    }
-    /deep/ .el-form-item__content {
-      margin-left: 120px;
-    }
+      .row_item_row{
+        .el-form-item {
+          width: calc(100% - 120px);
+        }
+      }
   }
 }
 </style>

@@ -1,21 +1,21 @@
 <template>
-  <div class="editBusinessData">
+  <div class="editBusinessSubset">
     <div class="top-content">
       <div class="top-content-title">
         <span>业务数据类型-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="saveQualifications">
+        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="resetForm">
+        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
     </div>
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
-        <div class="row_item">
+        <div class="row_custom">
           <el-form-item label="业务数据" prop="valData">
             <span v-if="type=='info'">{{form.valData}}</span>
             <el-input v-else v-model="form.valData" placeholder="请输入业务数据"></el-input>
@@ -124,34 +124,36 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_form.scss";
-.editBusinessData {
+.editBusinessSubset {
   margin-top: 40px;
-  .release_button {
-    .el-button {
-      margin-top: 40px;
-    }
-  }
-  .row_item {
-    display: flex;
-    &:first-child {
-      .el-form-item {
-        &:last-child {
-          margin-left: 93px;
+   .el-form {
+      width: 1000px;
+      /deep/ .el-form-item__label {
+        width: 120px;
+      }
+      /deep/ .el-form-item__content {
+        margin-left: 120px;
+      }
+      .row_custom{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 330px;
+            text-align: left;
+        }
+        @include common-input;
+        &:first-child {
+          .el-form-item {
+            &:last-child {
+              margin-left: 93px;
+            }
+          }
         }
       }
-    }
-  }
-  .el-form {
-    width:814px;
-    .el-form-item {
-      width: calc(100% - 120px);
-    }
-    /deep/ .el-form-item__label {
-      width:120px;
-    }
-    /deep/ .el-form-item__content {
-      margin-left: 120px;
-    }
+      .row_item_row{
+        .el-form-item {
+          width: calc(100% - 120px);
+        }
+      }
   }
 }
 </style>

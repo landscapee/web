@@ -5,17 +5,17 @@
         <span>业务数据类型-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="saveQualifications">
+        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="resetForm">
+        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
     </div>
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
-        <div class="row_item">
+        <div class="row_custom">
           <el-form-item label="类型" prop="dicType">
             <span v-if="type=='info'">{{form.dicType}}</span>
             <el-input v-else v-model="form.dicType" placeholder="请输入类型"></el-input>
@@ -128,32 +128,34 @@ export default {
 @import "@/ui/styles/common_form.scss";
 .editBusinessData {
   margin-top: 40px;
-  .release_button {
-    .el-button {
-      margin-top: 40px;
-    }
-  }
-  .row_item {
-    display: flex;
-    &:first-child {
-      .el-form-item {
-        &:last-child {
-          margin-left: 93px;
+   .el-form {
+      width: 1000px;
+      /deep/ .el-form-item__label {
+        width: 90px;
+      }
+      /deep/ .el-form-item__content {
+        margin-left: 90px;
+      }
+      .row_custom{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 360px;
+            text-align: left;
+        }
+        @include common-input;
+        &:first-child {
+          .el-form-item {
+            &:last-child {
+              margin-left: 93px;
+            }
+          }
         }
       }
-    }
-  }
-  .el-form {
-    width: 1000px;
-    .el-form-item {
-      width: calc(100% - 90px);
-    }
-    /deep/ .el-form-item__label {
-      width: 90px;
-    }
-    /deep/ .el-form-item__content {
-      margin-left: 90px;
-    }
+      .row_item_row{
+        .el-form-item {
+          width: calc(100% - 90px);
+        }
+      }
   }
 }
 </style>

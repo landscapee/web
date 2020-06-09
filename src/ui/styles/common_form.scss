@@ -1,3 +1,52 @@
+@mixin common-input {
+    .el-form-item {
+        display: inline-block;
+        span{
+            margin-left: 20px;
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:rgba(34,34,34,1);
+        }
+        /deep/ .el-input,
+        /deep/ .el-select,
+        /deep/ .el-cascader {
+            width: 100% !important;
+        }
+       
+        /deep/ .el-form-item__label{
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:rgba(34,34,34,1);
+        }
+        /deep/ .el-input__inner{
+            border-radius:2px;
+            border:1px solid rgba(151,151,151,1);
+            font-size:16px;
+            padding-left: 16px;
+        }
+        /deep/ input::-webkit-input-placeholder {
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:rgba(136,136,136,1);
+        }
+        /deep/ .el-input__prefix{
+            left: unset;
+                right: 13px;
+            .el-input__icon{
+                width: 14px;
+                font-size: 15px;
+            }
+        }
+        /deep/ .el-form-item__label:before {
+            content: '';
+            color: unset;
+            margin-right:unset;
+        }
+    }
+}
 .top-content{
     height: 82px;
    justify-content: center;
@@ -57,60 +106,14 @@
     margin-top: 80px;
     text-align: center;
     .el-form{
-        // width: 800px;
         margin: 0 auto;
         .row_item{
-            .el-form-item {
-                display: inline-block;
-                span{
-                    margin-left: 20px;
-                    font-size:16px;
-                    font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-                    font-weight:400;
-                    color:rgba(34,34,34,1);
-                }
-                /deep/ .el-input,
-                /deep/ .el-select,
-                /deep/ .el-cascader {
-                    width: 100% !important;
-                }
-                /deep/ .el-form-item__content{
-                    height: 40px;
-                    width: 240px;
-                    text-align: left;
-                }
-                /deep/ .el-form-item__label{
-                    font-size:16px;
-                    font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-                    font-weight:400;
-                    color:rgba(34,34,34,1);
-                }
-                /deep/ .el-input__inner{
-                    border-radius:2px;
-                    border:1px solid rgba(151,151,151,1);
-                    font-size:16px;
-                    padding-left: 16px;
-                }
-                /deep/ input::-webkit-input-placeholder {
-                    font-size:16px;
-                    font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-                    font-weight:400;
-                    color:rgba(136,136,136,1);
-                }
-                /deep/ .el-input__prefix{
-                       left: unset;
-                        right: 13px;
-                    .el-input__icon{
-                        width: 14px;
-                        font-size: 15px;
-                    }
-                }
-                /deep/ .el-form-item__label:before {
-                    content: '';
-                    color: unset;
-                    margin-right:unset;
-                }
+            /deep/ .el-form-item__content{
+                height: 40px;
+                width: 240px;
+                text-align: left;
             }
+            @include common-input;
         }
         .row_item_row{
             display: flex;
