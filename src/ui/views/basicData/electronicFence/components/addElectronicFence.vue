@@ -24,21 +24,21 @@
         <div class="row_custom">
           <el-form-item label="定点经度" prop="longitude">
             <span v-if="type=='info'">{{form.longitude}}</span>
-            <el-input v-else v-model="form.longitude" placeholder="请输入定点经度"></el-input>
+            <el-input v-else v-model.number="form.longitude" placeholder="请输入定点经度"></el-input>
           </el-form-item>
           <el-form-item label="定点纬度" prop="latitude">
             <span v-if="type=='info'">{{form.latitude}}</span>
-            <el-input v-else v-model="form.latitude" placeholder="请输入定点纬度"></el-input>
+            <el-input v-else v-model.number="form.latitude" placeholder="请输入定点纬度"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom">
           <el-form-item label="定点半径" prop="radius">
             <span v-if="type=='info'">{{form.radius}}</span>
-            <el-input v-else v-model="form.radius" placeholder="请输入定点半径"></el-input>
+            <el-input v-else v-model.number="form.radius" placeholder="请输入定点半径"></el-input>
           </el-form-item>
           <el-form-item label="允许最大误差值" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
-            <el-input v-else v-model="form.maxError" placeholder="请输入允许最大误差值"></el-input>
+            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"></el-input>
           </el-form-item>
         </div>
       </el-form>
