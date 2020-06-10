@@ -142,12 +142,18 @@ let authRoutes = [
 				]
 			},
 			{
-				path: '/hazardData',
-				component: () => import('@views/qualityManage/warningManage/index'),
+				path: '/dangerousDataIndex',
+				component: () => import('@views/qualityManage/dangerousData/index'),
 				name: '危险数据',
 				meta: {title: '危险数据',icon: ''},
 				children:[
-				
+					{
+                        path: '/dangerousDataAdd',
+                        component: () => import('@views/qualityManage/dangerousData/add'),
+                        name: '危险数据新增',
+                        meta: {title: '危险数据新增',icon: ''},
+					},
+
 				]
 			},
 		],
