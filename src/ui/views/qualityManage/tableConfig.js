@@ -123,7 +123,7 @@ export const authorizeManageTable = () => {
                 { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
         ]
 };
-export const warningManageTable= () => {
+export const warningManageTable = () => {
         return [
                 { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
                 { prop: 'deptName', label: '预警发送日期', align: 'center',sort:true,search:{type:'date',placeholder:"请选择预警发送日期",data:'123',prop:'userNumber'} },
