@@ -13,7 +13,7 @@
                         <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                         <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                         <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                        <div><icon iconClass="export" ></icon>导出Excel</div>
+                        <!-- <div><icon iconClass="export" ></icon>导出Excel</div> -->
                         <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                         <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                     </div>
@@ -22,7 +22,7 @@
                         <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                         <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                         <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                        <div><icon iconClass="export" ></icon>导出Excel</div>
+                        
                         <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                         <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                     </div>
@@ -65,8 +65,8 @@ export default {
         return {
             tableLeftData:{records:[]},
             tableRightData:{records:[]},
-            businessTableConfig:businessDataTable,
-            businessSubsetConfig:businessSubsetTable,
+            businessTableConfig:businessDataTable(),
+            businessSubsetConfig:businessSubsetTable(),
             leftParams:{
 				current: 1,
 				size: 18,

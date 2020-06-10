@@ -5,7 +5,7 @@
 				<img v-if="index == 0" :src="ic_arrow"  class="source_img"/>
 				<img v-if="index != 0" :src="ic_arrow_2" class="arrow_img"/>
 				<span v-if="index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
-				<a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+				<a v-else @click.prevent="handleLink(item)" class="no-redirect">{{ item.meta.title }}</a>
 			</span>
 		</transition-group>
 	</div>

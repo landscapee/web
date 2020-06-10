@@ -75,6 +75,7 @@ export default {
 		},
 	},
 	created() {
+		
 	},
 	mounted() {
 		window.addEventListener('scroll', this.scroll, true);

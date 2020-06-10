@@ -14,7 +14,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div><icon iconClass="export" ></icon>导出Excel</div>
+                    
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
@@ -54,7 +54,7 @@ export default {
     data() {
         return {
             tableData:{},
-            tableConfig:personDocTable,
+            tableConfig:personDocTable(),
             params:{
 				current: 1,
 				size: 15,
