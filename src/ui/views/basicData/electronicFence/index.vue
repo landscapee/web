@@ -4,7 +4,7 @@
         <div v-if="this.$router.history.current.path == '/electronicFence'" class="electronicFence">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>机位电子围栏</span>
+                    <span>系统参数</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
@@ -17,17 +17,11 @@
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable  @requestTable="requestTable"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                   <el-table-column slot="relationInfo" label="关联信息" :width="148" >
-                        <template >
-                            <span @click="clickAction('ass')"><icon iconClass="kh" class="action_radio"></icon></span>
-                            <span @click="clickAction('exa')"><icon iconClass="ks" class="action_radio"></icon></span>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -49,12 +43,15 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{},
+            tableData:{records:[]},
             tableConfig:electronicFenceTable(),
             params:{
 				current: 1,
-				size: 15,
+				size: 18,
             },
+            form:{},
+            sort:{},
+            selectId:null
         };
     },
    created() {
@@ -69,29 +66,42 @@ export default {
         }
     },
     methods: {
-        clickAction(tag){
-            if(tag=='ass'){
-                 this.$router.push({path:'/assRecord',query:{id:"123"}});
-            }else if(tag=='exa'){
-                 this.$router.push({path:'/exaRecord',query:{id:"123"}});
-            }
-        },
         requestTable(searchData){
-            console.log(searchData[0]);
+            this.form = searchData;
+            this.selectId=null,
+            this.tableData={records:[]};
+            this.params.current = 1;
+            this.$refs.searchTable.$refs.body_table.setCurrentRow();
+            this.getList();
         },
         headerSort(column){
-            alert(123);
+           column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
+            this.sort[column.property] = column.order;
+            this.$refs.searchTable.$refs.body_table.setCurrentRow();
+            this.params.current = 1;
+            this.getList();
         },
         listenToCheckedChange(row, column, event){
-          
+            let select = row.selected;
+            this.tableData.records.map(r =>{
+                if(r.selected){
+                    r.selected = false;
+                }
+            })
+            row.selected  = !select;
+            this.selectId = row.id;
+            this.params.current = 1;
+            this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/addElectronicFence',query:{type:'add'}});
-            }else if(tag == 'edit'){
-                this.$router.push({path:'/addElectronicFence',query:{type:'edit'}});
-            }else{
-                this.$router.push({path:'/addElectronicFence',query:{type:'info'}});
+            }else if(tag == 'edit' || tag == 'info'){
+                if(this.selectId==null){
+                    this.$message.error('请先选中一行数据');
+                }else{
+                     this.$router.push({path:'/addElectronicFence',query:{type:tag,id:this.selectId}});
+                }
             }
         },
         delData(){
@@ -101,14 +111,14 @@ export default {
 				type: 'warning',
 			})
             .then(() => {
-                // request({
-                //     url:'/api/delete', 
-                //     method: 'delete',
-                //     params:{id:""}
-                // })
-                // .then((data) => {
-                //    this.$message({type: 'success',message: '删除成功'});
-                // })
+                request({
+                    url:`${this.$ip}/rest-api/electronicFence/del`, 
+                    method: 'delete',
+                    params:{id:this.selectId}
+                })
+                .then((data) => {
+                   this.$message({type: 'success',message: '删除成功'});
+                })
             })
             .catch(() => {
                 this.$message({
@@ -118,20 +128,19 @@ export default {
             });
         },
         getList(){
-            request({
-                url:'/api/material/query', 
+           request({
+                url:`${this.$ip}/rest-api/electronicFence/query`, 
                 method: 'post',
-                data:{searchKey: '',type: 'VEHICLE',deptId: "aa8ae7dcbe9440238ce751329ccba5ca"},
-                params:{current: this.params.current,size: this.params.size},
-                headers: {
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzYmFkNzRjYzEwZGU0NDI4YWNmOGRjMmExZGY0Njg3YiIsInVzZXJJZCI6IjNiYWQ3NGNjMTBkZTQ0MjhhY2Y4ZGMyYTFkZjQ2ODdiIiwidXNlckxvZ2luTmFtZSI6IuW-kOW4jCIsInVzZXJOYW1lIjoieHV4aSIsImRlcHRJZCI6Ijg2YzhhYzFkNzI5NDQ3MTRiODM1Zjk0MjRiYWY3YmJjIiwiZGVwdENvZGUiOiJPUi0xLTAxIiwiZGVwdE5hbWUiOiLpo57ooYzljLrnrqHnkIbpg6giLCJhZG1pbmlzdHJhdGl2ZUlkIjoiYWE4YWU3ZGNiZTk0NDAyMzhjZTc1MTMyOWNjYmE1Y2EiLCJhZG1pbmlzdHJhdGl2ZUNvZGUiOiJPUi0xLTAxLTAxIiwiYWRtaW5pc3RyYXRpdmVOYW1lIjoi5Zy65Yqh6YOoIiwiZ3JvdXBJZCI6IjNmMDI2NmNkYTljOTQwNTVhYzBjM2Q1MThlZWM0OTgwIiwiZ3JvdXBDb2RlIjoiT1ItMS0wMS0wMS0wMSIsImdyb3VwTmFtZSI6IuWcuumBk-i_kOihjOe7tOaKpOS4gOe7hCIsInJvbGVDb2RlcyI6IltBRE1JTklTVFJBVE9SLFJPLTAxLTAxLTA5LFJPLTAxLTAxLTAyX2xlYWRlcl0iLCJpYXQiOjE1OTA1NzA1MjYsImV4cCI6MTU5MDY1NjkyNn0.3wUyJBsuet7PDHGBsFeI2ZK1LSACPTtqGvCAAFec-Rc',
-                    'Accept': 'application/json',
-                }
+                data:{...this.params,...this.sort,...this.form}
             })
             .then((data) => {
-               this.tableData = extend({}, this.tableData, data.data);
+                if(this.params.current==1){
+                    this.tableData.records = data.data.items;
+                }else{
+                    this.tableData.records.push.apply(this.tableData.records,data.data.items);
+                }
             }).catch((error) => {
-           
+            
             });
         },
         handleSizeChange(size) {

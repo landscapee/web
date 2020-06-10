@@ -100,7 +100,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/addSysParameter',query:{type:tag}});
+                     this.$router.push({path:'/addSysParameter',query:{type:tag,id:this.selectId}});
                 }
             }
         },
