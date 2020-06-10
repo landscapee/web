@@ -13,7 +13,8 @@
                 </div>
             </div>
         </div>
-        <div class="main-content">
+
+        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
             <el-form label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
@@ -105,7 +106,8 @@
                 <div class="row_item_row row_item">
 
                     <el-form-item label="措施：" prop="measures">
-                        <span v-if="type=='info'">{{form.measures}}</span>
+                        <span v-if="type=='info'">{{form.measures}}
+                         </span>
                         <el-input v-else v-model="form.measures" :rows="3" type="textarea" placeholder="请输入措施"></el-input>
                     </el-form-item>
                 </div>
@@ -155,7 +157,7 @@
                 form: {},
                 rules: {
                     number: [{ required: true, message: "请输入编号", trigger: "blur" }],
-                    system: [{ required: true, message: "请输入", trigger: "blur" }],
+                    // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
             };
@@ -224,6 +226,20 @@
         /*margin-top: 80px!important;*/
         .aRow_custom{
             text-align:left;
+        }
+    }
+    .main-info{
+        span{
+            font-weight: bold!important;
+            /*margin: 0!important;*/
+        }
+        /deep/ .el-form-item__label{
+            /*padding: 0!important;*/
+        }
+        .aRow_custom{
+            span{
+
+            }
         }
     }
     .addSysParameter {
