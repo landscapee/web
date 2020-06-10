@@ -24,7 +24,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="evaluationResults" label="关联信息" :width="190" fixed="right">
+                    <el-table-column :show-overflow-tooltip="true" slot="evaluationResults" label="关联信息" :width="190" fixed="right">
                         <template  slot-scope="{ row }">
                             <span>{{row.evaluationResults}}</span>
                         </template>
@@ -84,8 +84,7 @@ export default {
             this.getList();
         },
         listenToCheckedChange(row, column, event){
-            debugger
-            let select = row.selected;
+             let select = row.selected;
             this.tableData.records.map(r =>{
                 if(r.selected){
                     r.selected = false;
