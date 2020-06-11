@@ -15,7 +15,7 @@
 					</el-table-column>
 					<el-table-column :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true"> 
 						<span slot-scope="{ row }">
-							<el-input    clearable :placeholder="colConfig.search.placeholder" class="adv_filter" v-model.number="row[colConfig.search.prop]"></el-input>
+							<el-input    clearable :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
 						</span>
 					</el-table-column>
@@ -100,7 +100,13 @@ export default {
 			return (
                 <div>
                     <span>{column.label}</span>
-                    <Icon iconClass="sort" nativeOnClick={ () => {this.$emit('headerSort', column);}  } ></Icon>
+                    <Icon iconClass="sort" nativeOnClick={ 
+						() => {
+							column.order==""? column.order = 'desc':column.order=='desc'?column.order = 'asc':column.order == 'asc'?column.order="":column.order='desc';
+							this.$emit('headerSort', column);
+						}  
+					} >
+					</Icon>
                 </div>
             );
 		},

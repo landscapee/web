@@ -137,7 +137,7 @@ export default {
         },
         //表头排序
         HeaderSort(column,str,tag,sortTag){
-            column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
+            this[sortTag] = {};
             this[sortTag][column.property] = column.order;
             if(tag=='left'){
                 this.$refs[str].$refs.body_table.setCurrentRow();
@@ -157,12 +157,20 @@ export default {
             })
             row.selected  = !select;
             if(tag=="left"){
-                this.leftSelectId = row.id;
+                if(row.selected){
+                    this.leftSelectId = row.id;
+                }else{
+                    this.leftSelectId = null;
+                }
                 this.leftRowState = row.enableMaintain==0?false:true;
                 this.rightParams.current = 1;
                 this.getList('right');
             }else{
-                this.rightSelectId = row.id;
+                if(row.selected){
+                    this.rightSelectId = row.id;
+                }else{
+                    this.rightSelectId = null;
+                }
             }
             this.$set(this[tableTag].records,row.index,row);
         },
