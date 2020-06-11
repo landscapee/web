@@ -1,19 +1,17 @@
 <template>
     <div>
-         <router-view v-if="this.$router.history.current.path == '/dangerousDataAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/dangerousDataIndex'" :key="$route.path" class="sysParameter">
+         <router-view v-if="this.$router.history.current.path == '/safetyInformationAdd'" :key="$route.path"></router-view>
+        <div v-else-if="this.$router.history.current.path == '/safetyInformationIndex'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>危险数据</span>
+                    <span>安全信息</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
-                    <!--<div class="isDisabled"><icon iconClass="save" ></icon>保存</div>-->
-                    <div ><icon iconClass="export" ></icon>导出</div>
+                     <div ><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -24,9 +22,9 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" slot="evaluationResults" label="关联信息" :width="190" fixed="right">
+                    <el-table-column :show-overflow-tooltip="true" slot="remark" label="备注" :width="190" fixed="right">
                         <template  slot-scope="{ row }">
-                            <span>{{row.evaluationResults}}</span>
+                            <span>{{row.remark}}</span>
                         </template>
                     </el-table-column>
 
@@ -38,7 +36,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { dangerousConfig } from './tableConfig.js';
+import { sadetyInfoConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -50,7 +48,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:dangerousConfig(),
+            tableConfig:sadetyInfoConfig(),
             params:{
 				current: 1,
 				size: 15,
@@ -84,7 +82,8 @@ export default {
             this.getList();
         },
         listenToCheckedChange(row, column, event){
-             let select = row.selected;
+
+            let select = row.selected;
             this.tableData.records.map(r =>{
                 if(r.selected){
                     r.selected = false;
@@ -96,19 +95,20 @@ export default {
             }else {
                 this.selectId   = null;
             }
-            this.row = row;
+             this.row = row;
             this.params.current = 1;
+            console.log(row, column, event,199);
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
             let data=JSON.stringify(this.row)
             if(tag=='add'){
-                this.$router.push({path:'/dangerousDataAdd',query:{type:'add'}});
+                this.$router.push({path:'/safetyInformationAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/safetyInformationAdd',query:{type:tag,data:data}});
                 }
             }
         },
@@ -123,8 +123,8 @@ export default {
                 })
                     .then(() => {
                         request({
-                            url:`http://173.100.1.126:3000/mock/639/dangerData/delete`,
-                            // url:`${this.$ip}/dangerData/delete`,
+                            url:`http://173.100.1.126:3000/mock/639/securityInformation/delete`,
+                            // url:`${this.$ip}/securityInformation/delete`,
                             method: 'delete',
                             params:{id:this.selectId}
                         })
@@ -144,8 +144,8 @@ export default {
         },
         getList(){
            request({
-                // url:`${this.$ip}/dangerData/list`,
-                url:`http://173.100.1.126:3000/mock/639/dangerData/list`,
+                // url:`${this.$ip}/securityInformation/list`,
+                url:`http://173.100.1.126:3000/mock/639/securityInformation/list`,
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })
