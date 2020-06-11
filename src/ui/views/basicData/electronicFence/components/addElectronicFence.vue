@@ -5,10 +5,10 @@
         <span>机位电子围栏-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="saveQualifications">
+        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="resetForm">
+        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
@@ -48,7 +48,8 @@
 <script>
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
-import { extend } from "lodash";
+import  { debounce } from '@lib/tools.js';
+import { extend ,cloneDeep} from "lodash";
 export default {
   components: {
     Icon
@@ -57,8 +58,36 @@ export default {
   data() {
     return {
       form: {},
+      cloneForm:{},
       rules: {
-        parkingNo: [{ required: true, message: "请输入机位号", trigger: "change" }],
+        parkingNo: [{ required: true, message: "请输入机位号", trigger: "change" },
+          {
+						validator: (rule, value, callback) => {
+              if(value != this.cloneForm.parkingNo){
+                 debounce(() => {
+                  request({
+                    url:`${this.$ip}/rest-api/electronicFence/only`,
+                    method: "post",
+                    data: {parkingNo:value}
+                  })
+                  .then(data => {
+                    if(data.data.length!=0){
+                      callback(new Error('当前机位号已存在'));
+                    } else {
+                      callback();
+                    }
+                  })
+                  .catch(error => {
+                    this.$message.success(error);
+                  });
+                })();
+              }else{
+                  callback();
+              }
+						},
+						trigger: 'change',
+          }
+        ],
         longitude: [{ required: true, message: "请输入定点经度", trigger: "change" }],
         latitude: [{ required: true, message: "请输入定点纬度", trigger: "change" }],
         radius: [{ required: true, message: "请输入定点半径", trigger: "change" }],
@@ -86,6 +115,7 @@ export default {
               })
               .then(data => {
                 this.form = data.data[0];
+                this.cloneForm  = cloneDeep(data.data[0]);
               })
               .catch(error => {
                 this.$message.success(error);

@@ -100,7 +100,13 @@ export default {
 			return (
                 <div>
                     <span>{column.label}</span>
-                    <Icon iconClass="sort" nativeOnClick={ () => {this.$emit('headerSort', column);}  } ></Icon>
+                    <Icon iconClass="sort" nativeOnClick={ 
+						() => {
+							column.order==""? column.order = 'desc':column.order=='desc'?column.order = 'asc':column.order == 'asc'?column.order="":column.order='desc';
+							this.$emit('headerSort', column);
+						}  
+					} >
+					</Icon>
                 </div>
             );
 		},

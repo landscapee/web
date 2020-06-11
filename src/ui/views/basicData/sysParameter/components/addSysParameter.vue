@@ -17,8 +17,8 @@
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_item_row row_item">
           <el-form-item label="系统参数编码" prop="sysParamCode">
-            <span v-if="type=='info'">{{form.sysParamCode}}</span>
-            <el-input v-else v-model="form.sysParamCode" placeholder="请输入系统参数编码"></el-input>
+            <span v-if="type=='info' || type=='edit' ">{{form.sysParamCode}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请输入系统参数编码"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom">

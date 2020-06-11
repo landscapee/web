@@ -30,16 +30,16 @@ export const sysParameterTable = () => {
         { prop: 'sysParamCode', label: '系统参数编码', align: 'center',sort:true,sortProp:"sysParamCodeMode",search:{prop:'sysParamCode',type:'input',placeholder:"请输入参数编码"} },
         { prop: 'sysParamName', label: '系统参数', align: 'center',sort:true,sortProp:"sysParamNameMode",search:{prop:'sysParamName',type:'input',placeholder:"请输入系统参数"} },
         { prop: 'sysParamValue', label: '系统参数值', align: 'center',sort:true,sortProp:"sysParamValueMode",search:{prop:'sysParamValue',type:'input',placeholder:"请输入参数值"} },
-        { prop: 'sysParamComment', label: '系统参数说明',width:'990', align: 'center',sort:true,sortProp:"sysParamCommentMode",search:{prop:'sysParamComment',type:'input',extendType:'search',placeholder:"请输入系统参数说明"}},
+        { prop: 'sysParamComment', label: '系统参数说明',width:'990', align: 'center',search:{prop:'sysParamComment',type:'input',extendType:'search',placeholder:"请输入系统参数说明"}},
     ]
 };
 export const electronicFenceTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'parkingNo', label: '机位号', align: 'center',sort:true,sortProp:"parkingNo",search:{prop: 'parkingNo',type:'input',placeholder:"请输入机位号"} },
-        { prop: 'longitude', label: '定点经度', align: 'center',sort:true,sortProp:"longitude",search:{prop: 'longitude',type:'input',placeholder:"请输入定点经度"} },
-        { prop: 'latitude', label: '定点纬度', align: 'center',sort:true,sortProp:"latitude",search:{prop: 'latitude',type:'input',placeholder:"请输入定点纬度"} },
-        { prop: 'radius', label: '定点半径(米)', align: 'center',sort:true,sortProp:"radius",search:{prop: 'radius',type:'input',placeholder:"请输入定点半径(米)"} },
-        { prop: 'maxError', label: '允许最大误差值(米)',width:'540', align: 'center',sort:true,sortProp:"maxError",search:{prop: 'maxError',type:'input',extendType:'search',placeholder:"请输入允许最大误差值(米)"}},
+        { prop: 'longitude', label: '定点经度', align: 'center',search:{prop: 'longitude',type:'input',placeholder:"请输入定点经度"} },
+        { prop: 'latitude', label: '定点纬度', align: 'center',search:{prop: 'latitude',type:'input',placeholder:"请输入定点纬度"} },
+        { prop: 'radius', label: '定点半径(米)', align: 'center',search:{prop: 'radius',type:'input',placeholder:"请输入定点半径(米)"} },
+        { prop: 'maxError', label: '允许最大误差值(米)',width:'540', align: 'center',search:{prop: 'maxError',type:'input',extendType:'search',placeholder:"请输入允许最大误差值(米)"}},
     ]
 };

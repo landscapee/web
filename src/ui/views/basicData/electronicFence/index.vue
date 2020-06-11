@@ -75,7 +75,7 @@ export default {
             this.getList();
         },
         headerSort(column){
-           column.order==""? column.order = 'desc':column.order=='asc'?column.order = 'desc':column.order = 'asc';
+            this.sort = {};
             this.sort[column.property] = column.order;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
@@ -89,7 +89,11 @@ export default {
                 }
             })
             row.selected  = !select;
-            this.selectId = row.id;
+            if(row.selected){
+                this.selectId = row.id;
+            }else{
+                this.selectId = null;
+            }
             this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
         },
@@ -113,11 +117,12 @@ export default {
             .then(() => {
                 request({
                     url:`${this.$ip}/rest-api/electronicFence/del`, 
-                    method: 'delete',
-                    params:{id:this.selectId}
+                    method: 'post',
+                    data:{id:this.selectId}
                 })
                 .then((data) => {
                    this.$message({type: 'success',message: '删除成功'});
+                   this.getList();
                 })
             })
             .catch(() => {
