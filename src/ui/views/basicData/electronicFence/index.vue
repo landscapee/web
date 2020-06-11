@@ -140,8 +140,11 @@ export default {
             })
             .then((data) => {
                 if(this.params.current==1){
-                    this.tableData.records = data.data.items;
+                    this.tableData = {records: data.data.items,current:1,size:data.data.items.length,total:data.data.total}
                 }else{
+                    this.tableData.current = this.params.current;
+                    this.tableData.size = data.data.items.length;
+                    this.tableData.total = data.data.total;
                     this.tableData.records.push.apply(this.tableData.records,data.data.items);
                 }
             }).catch((error) => {
@@ -164,6 +167,11 @@ export default {
 @import "@/ui/styles/common_list.scss"; 
 .electronicFence{
     margin-top:40px;
-    
+    .main-content{
+        /deep/ .mainTable{
+            height: 600px;
+            overflow: auto;
+        }    
+    }
 }
 </style>
