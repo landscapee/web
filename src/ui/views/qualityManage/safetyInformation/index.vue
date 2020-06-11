@@ -123,10 +123,10 @@ export default {
                 })
                     .then(() => {
                         request({
-                            url:`http://173.100.1.126:3000/mock/639/securityInformation/delete`,
-                            // url:`${this.$ip}/securityInformation/delete`,
+                            // url:`http://173.100.1.126:3000/mock/639/securityInformation/delete`,
+                            url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
-                            params:{id:this.selectId}
+                            // params:{id:this.selectId}
                         })
                             .then((data) => {
                                 this.getList();
@@ -144,19 +144,18 @@ export default {
         },
         getList(){
            request({
-                // url:`${this.$ip}/securityInformation/list`,
-                url:`http://173.100.1.126:3000/mock/639/securityInformation/list`,
+                url:`${this.$ip}/qualification/securityInformation/list`,
+                // url:`http://173.100.1.126:3000/mock/639/securityInformation/list`,
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })
             .then((data) => {
                 // this.tableData = extend({}, this.tableData, data.data);
-                 this.tableData = extend({}, this.tableData,
-                    {
-                        records:data.data
-                    }
-                    );
-                console.log(this.tableData);
+                 this.tableData = extend({},
+                     {...data.data}
+                 );
+
+                console.log(this.tableData,111);
             })
         },
         handleSizeChange(size) {

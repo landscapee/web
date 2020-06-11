@@ -126,39 +126,39 @@ let authRoutes = [
                         name: '法定自查检查计划新增',
                         meta: {title: '法定自查检查计划新增',icon: ''},
                     },
-					{
-                        path: '/safetyInformationAddDetails',
-                        component: () => import('@views/qualityManage/safetyInformation/planDetailsAdd.vue'),
-                        name: '法定自查检查计划明细新增',
-                        meta: {title: '法定自查检查计划明细新增',icon: ''},
-                    },
-				]
-			},
-			{
-				path: '/safetyPerformance',
-				component: () => import('@views/qualityManage/safetyPerformance/index'),
-				name: '安全绩效',
-				meta: {title: '安全绩效',icon: ''},
-				children:[
-                    // {
-                    //     path: '/safetyInformationAdd',
-                    //     component: () => import('@views/qualityManage/safetyPerformance/addMonth'),
-                    //     name: '部门月度安全绩效新增',
-                    //     meta: {title: '部门月度安全绩效新增',icon: ''},
-                    // },
 					// {
-                    //     path: '/safetyInformationAdd',
-                    //     component: () => import('@views/qualityManage/safetyPerformance/add'),
-                    //     name: '安全绩效明细新增',
-                    //     meta: {title: '安全绩效明细新增',icon: ''},
-                    // },{
-                    //     path: '/safetyInformationAdd',
-                    //     component: () => import('@views/qualityManage/safetyPerformance/add'),
-                    //     name: '部门年度安全绩效',
-                    //     meta: {title: '部门年度安全绩效',icon: ''},
+                    //     path: '/safetyInformationAddDetails',
+                    //     component: () => import('@views/qualityManage/safetyInformation/planDetailsAdd.vue'),
+                    //     name: '法定自查检查计划明细新增',
+                    //     meta: {title: '法定自查检查计划明细新增',icon: ''},
                     // },
 				]
 			},
+			// {
+			// 	path: '/safetyPerformance',
+			// 	component: () => import('@views/qualityManage/safetyPerformance/index'),
+			// 	name: '安全绩效',
+			// 	meta: {title: '安全绩效',icon: ''},
+			// 	children:[
+            //         // {
+            //         //     path: '/safetyInformationAdd',
+            //         //     component: () => import('@views/qualityManage/safetyPerformance/addMonth'),
+            //         //     name: '部门月度安全绩效新增',
+            //         //     meta: {title: '部门月度安全绩效新增',icon: ''},
+            //         // },
+			// 		// {
+            //         //     path: '/safetyInformationAdd',
+            //         //     component: () => import('@views/qualityManage/safetyPerformance/add'),
+            //         //     name: '安全绩效明细新增',
+            //         //     meta: {title: '安全绩效明细新增',icon: ''},
+            //         // },{
+            //         //     path: '/safetyInformationAdd',
+            //         //     component: () => import('@views/qualityManage/safetyPerformance/add'),
+            //         //     name: '部门年度安全绩效',
+            //         //     meta: {title: '部门年度安全绩效',icon: ''},
+            //         // },
+			// 	]
+			// },
 			{
 				path: '/safetyInformationIndex',
 				component: () => import('@views/qualityManage/safetyInformation/index'),
