@@ -61,32 +61,32 @@ export default {
       cloneForm:{},
       rules: {
         parkingNo: [{ required: true, message: "请输入机位号", trigger: "change" },
-          {
-						validator: (rule, value, callback) => {
-              if(value != this.cloneForm.parkingNo){
-                 debounce(() => {
-                  request({
-                    url:`${this.$ip}/rest-api/electronicFence/only`,
-                    method: "post",
-                    data: {parkingNo:value}
-                  })
-                  .then(data => {
-                    if(data.data.length!=0){
-                      callback(new Error('当前机位号已存在'));
-                    } else {
-                      callback();
-                    }
-                  })
-                  .catch(error => {
-                    this.$message.success(error);
-                  });
-                })();
-              }else{
-                  callback();
-              }
-						},
-						trigger: 'change',
-          }
+          // {
+					// 	validator: (rule, value, callback) => {
+          //     if(value != this.cloneForm.parkingNo){
+          //        debounce(() => {
+          //         request({
+          //           url:`${this.$ip}/parameter/rest-api/electronicFence/only`,
+          //           method: "post",
+          //           data: {parkingNo:value}
+          //         })
+          //         .then(data => {
+          //           if(data.data.length!=0){
+          //             callback(new Error('当前机位号已存在'));
+          //           } else {
+          //             callback();
+          //           }
+          //         })
+          //         .catch(error => {
+          //           this.$message.success(error);
+          //         });
+          //       })();
+          //     }else{
+          //         callback();
+          //     }
+					// 	},
+					// 	trigger: 'change',
+          // }
         ],
         longitude: [{ required: true, message: "请输入定点经度", trigger: "change" }],
         latitude: [{ required: true, message: "请输入定点纬度", trigger: "change" }],
@@ -109,7 +109,7 @@ export default {
           : "";
          if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/rest-api/electronicFence/info`,
+                url:`${this.$ip}/parameter/rest-api/electronicFence/info`,
                 method: "post",
                 data: {id:this.$route.query.id}
               })
@@ -131,7 +131,7 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/rest-api/electronicFence/add`:`${this.$ip}/rest-api/electronicFence/update`
+            let url = this.type == "add"?`${this.$ip}/parameter/rest-api/electronicFence/add`:`${this.$ip}/parameter/rest-api/electronicFence/update`
             request({
               url,
               method: "post",

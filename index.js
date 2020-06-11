@@ -24,7 +24,7 @@ import './static/plugin/kindeditor-all-min.js'
 import './static/plugin/lang/zh-CN.js'
 import directives from '@lib/directive.js'
 //公共ip地址和端口
-Vue.prototype.$ip = "http://173.100.1.134:18000";
+Vue.prototype.$ip = "http://173.100.1.5:8011";
 Vue.use(directives)
 Vue.use(VueKindEditor)
 Vue.use(ElementUI);

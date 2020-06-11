@@ -4,7 +4,7 @@
         <div v-if="this.$router.history.current.path == '/electronicFence'" class="electronicFence">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>系统参数</span>
+                    <span>机位电子围栏</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
@@ -116,7 +116,7 @@ export default {
 			})
             .then(() => {
                 request({
-                    url:`${this.$ip}/rest-api/electronicFence/del`, 
+                    url:`${this.$ip}/parameter/rest-api/electronicFence/del`, 
                     method: 'post',
                     data:{id:this.selectId}
                 })
@@ -134,7 +134,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/rest-api/electronicFence/query`, 
+                url:`${this.$ip}/parameter/rest-api/electronicFence/query`, 
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })

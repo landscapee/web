@@ -215,7 +215,7 @@ export default {
 			})
             .then(() => {
                 request({
-                    url:tag=='left'?`${this.$ip}/rest-api/businessDictionary/del`:`${this.$ip}/rest-api/businessDictionaryValue/del`, 
+                    url:tag=='left'?`${this.$ip}/parameter/rest-api/businessDictionary/del`:`${this.$ip}/parameter/rest-api/businessDictionaryValue/del`, 
                     method: 'post',
                     data:{id:this[idstr]}
                 })
@@ -240,7 +240,7 @@ export default {
         getList(tag,scroll){
             if(tag=='left'){
                 request({
-                    url:`${this.$ip}/rest-api/businessDictionary/query`, 
+                    url:`${this.$ip}/parameter/rest-api/businessDictionary/query`, 
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,...this.leftParams}
                 })
@@ -259,7 +259,7 @@ export default {
             }else{
                 if(this.leftSelectId!=null){
                     request({
-                        url:`${this.$ip}/rest-api/businessDictionaryValue/query`, 
+                        url:`${this.$ip}/parameter/rest-api/businessDictionaryValue/query`, 
                         method: 'post',
                         data:{...this.rightForm,dicId:this.leftSelectId,...this.rightSort,...this.rightParams}
                     })
