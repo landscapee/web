@@ -133,12 +133,17 @@ let authRoutes = [
 				]
 			},
 			{
-				path: '/securityInfo',
-				component: () => import('@views/qualityManage/warningManage/index'),
+				path: '/safetyInformationIndex',
+				component: () => import('@views/qualityManage/safetyInformation/index'),
 				name: '安全信息',
 				meta: {title: '安全信息',icon: ''},
 				children:[
-					
+                    {
+                        path: '/safetyInformationAdd',
+                        component: () => import('@views/qualityManage/safetyInformation/add'),
+                        name: '安全信息新增',
+                        meta: {title: '安全信息新增',icon: ''},
+                    },
 				]
 			},
 			{

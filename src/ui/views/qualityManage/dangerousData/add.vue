@@ -5,7 +5,7 @@
                 <span>危险数据-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
             </div>
             <div v-if="type!='info'"  class="top-toolbar">
-                <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
+                <div @click="type!='info'?saveQualifications('form'):()=>{}" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save"></icon>保存
                 </div>
                 <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
@@ -15,7 +15,7 @@
         </div>
 
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
-            <el-form label-position="right" :model="form" :rules="rules" ref="form" >
+            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
                     <el-form-item label="编号：" prop="number">
@@ -128,13 +128,20 @@
                     </el-form-item>
                     <el-form-item label="控制状态：" prop="controlState">
                         <span v-if="type=='info'">{{form.controlState}}</span>
-                        <el-input v-else v-model="form.controlState" placeholder="请选择控制状态"></el-input>
+                        <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
+                            <el-option label="q" value="q"> </el-option>
+                            <el-option label="qq" value="qq"> </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
                     <el-form-item label="评定结果：" prop="evaluationResults">
                         <span v-if="type=='info'">{{form.evaluationResults}}</span>
-                        <el-input v-else v-model="form.evaluationResults" placeholder="请选择评定结果"></el-input>
+
+                        <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
+                            <el-option label="q" value="q"> </el-option>
+                            <el-option label="qq" value="qq"> </el-option>
+                        </el-select>
                     </el-form-item>
 
                 </div>
@@ -167,11 +174,11 @@
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
-                        ? "新增"
+                        ? "危险数据新增"
                         : this.type == "edit"
-                        ? "编辑"
+                        ? "危险数据编辑"
                         : this.type == "info"
-                            ? "详情"
+                            ? "危险数据详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
@@ -183,9 +190,9 @@
             resetForm(){
                 this.form={};
             },
-            saveQualifications() {
+            saveQualifications(form) {
                 if (this.type == "add" || this.type == "edit") {
-                    this.$refs.form.validate(valid => {
+                    this.$refs[form].validate(valid => {
                         if (valid) {
                             let url
                              if(this.type == "add"){
