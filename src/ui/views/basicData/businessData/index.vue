@@ -85,8 +85,8 @@ export default {
         };
     },
     created() {
-       this.leftParams.current = 1;
-       this.getList('left');
+        this.leftParams.current = 1;
+        this.getList('left');
     },
 　　mounted() {
        window.addEventListener('scroll', this.handleScroll,true);//监听函数
@@ -131,6 +131,7 @@ export default {
                 this.rightSelectId=null;
                 this.rightParams.current = 1;
             }
+            this.leftSelectId
            this.$refs[tableTag].$refs.body_table.setCurrentRow();
          
            this.getList(tag);

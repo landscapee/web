@@ -286,7 +286,7 @@ let authRoutes = [
 				path: '/businessData',
 				component: () => import('@views/basicData/businessData/index'),
 				name: '业务数据类型',
-				meta: {title: '业务数据类型',icon: '' },
+				meta: {title: '业务数据类型',icon: '',keepAlive: true },
 				children:[
 					{
 						path: '/editBusinessData',
