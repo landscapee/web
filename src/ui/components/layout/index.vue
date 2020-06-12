@@ -26,7 +26,10 @@
 		<el-container class="main-layout">
 			<el-main>
 				<breadcrumb  />
-				<router-view :key="routePath" />
+				<keep-alive>
+					<router-view v-if="$route.meta.keepAlive" :key="routePath"></router-view>
+				</keep-alive>
+				<router-view v-if="!$route.meta.keepAlive" :key="routePath"></router-view>
 			</el-main>
 		</el-container>
 		</el-container>

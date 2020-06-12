@@ -47,7 +47,7 @@ export default {
             tableConfig:sysParameterTable(),
             params:{
 				current: 1,
-				size: 18,
+				size: 15,
             },
             form:{},
             sort:{},
@@ -140,12 +140,9 @@ export default {
             })
             .then((data) => {
                 if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:data.data.items.length,total:data.data.total}
+                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
                 }else{
-                    this.tableData.current = this.params.current;
-                    this.tableData.size = data.data.items.length;
-                    this.tableData.total = data.data.total;
-                    this.tableData.records.push.apply(this.tableData.records,data.data.items);
+                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
                 }
             }).catch((error) => {
             

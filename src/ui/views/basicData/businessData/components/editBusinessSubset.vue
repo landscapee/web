@@ -107,7 +107,7 @@ export default {
             })
               .then(data => {
                 this.$message.success(this.type == "add"?"保存成功！":"修改成功");
-                this.$router.go(-1);
+                 this.$router.go(-1);
               })
               .catch(error => {
                 this.$message.success(error);
