@@ -2,7 +2,7 @@
     <div class="addSysParameter">
         <div class="top-content">
             <div class="top-content-title">
-                <span>法定自查检查计划-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+                <span>部门月度安全绩效-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
             </div>
             <div v-if="type!='info'"  class="top-toolbar">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
@@ -18,37 +18,30 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="计划年度：" prop="year">
-                        <span v-if="type=='info'">{{form.year}}</span>
-                        <el-input v-else v-model="form.year" placeholder="请输入计划年度"></el-input>
+                    <el-form-item label="绩效年月：" prop="year">
+                        <span v-if="type=='info'">{{form.yearMonth}}</span>
+                        <el-input v-else v-model="form.yearMonth" placeholder="请选择绩效年月"></el-input>
                     </el-form-item>
-                    <el-form-item label="计划部门：" prop="deptName">
+                    <el-form-item label="部门：" prop="deptName">
                         <span v-if="type=='info'">{{form.deptName}}</span>
-                        <el-select clearable v-else v-model="form.deptName" placeholder="请选择计划部门">
+                        <el-select clearable v-else v-model="form.deptName" placeholder="请选择部门">
                             <el-option label="sfsd" value="dfd"></el-option>
                         </el-select>
                      </el-form-item>
 
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="审批人：" prop="reviewerName">
+                    <el-form-item label="批准人：" prop="reviewerName">
                         <span v-if="type=='info'">{{form.reviewerName}}</span>
-                        <el-input v-else v-model="form.reviewerName" placeholder="请输入审批人"></el-input>
+                        <el-input v-else v-model="form.reviewerName" placeholder="请输入批准人"></el-input>
                     </el-form-item>
-                    <el-form-item label="审批日期：" prop="reviewerTime">
+                    <el-form-item label="批准日期：" prop="reviewerTime">
                         <span v-if="type=='info'">{{form.reviewerTime?form.reviewerTime.split(' ')[0]:''}}</span>
-                         <el-date-picker  v-else v-model="form.reviewerTime" placeholder="请选择审批日期"></el-date-picker>
+                         <el-date-picker  v-else v-model="form.reviewerTime" type="date" placeholder="请选择批准日期"></el-date-picker>
 
                     </el-form-item>
                 </div>
-                <div class="row_custom aRow_custom">
-                    <el-form-item label="计划版本：" prop="version">
-                        <span v-if="type=='info'">{{form.version}}</span>
-                        <el-input v-else v-model="form.version" placeholder="请输入计划版本"></el-input>
-                    </el-form-item>
-
-                </div>
-            </el-form>
+             </el-form>
         </div>
     </div>
 </template>
@@ -76,11 +69,11 @@
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
-                        ? "法定自查检查计划新增"
+                        ? "部门月度安全绩效新增"
                         : this.type == "edit"
-                        ? "法定自查检查计划编辑"
+                        ? "部门月度安全绩效编辑"
                         : this.type == "info"
-                            ? "法定自查检查计划详情"
+                            ? "部门月度安全绩效详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
@@ -98,11 +91,11 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/qualification/securityInformation/save`
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
+                                // url=`${this.$ip}/qualification/securityMerits/save`
+                                url=`http://173.100.1.126:3000/mock/639/securityMerits/save`
                             }else {
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                // url=`${this.$ip}/qualification/securityInformation/update`
+                                url=`http://173.100.1.126:3000/mock/639/securityMerits/update`
+                                // url=`${this.$ip}/qualification/securityMerits/update`
                             }
                             request({
                                 url,

@@ -149,7 +149,19 @@ export default {
         //表头排序
         HeaderSort(column,str,tag,sortTag){
             this[sortTag] = {};
-            this[sortTag][column.property] = column.order;
+
+            let num =null
+            if(column.order=='desc'){
+                num=0
+            }else if(column.order=='asc'){
+                num=1
+            }else{
+                num=2
+            }
+            if(num!=2){
+                this[sortTag]['order'] = column.property+','+num;
+            }
+
             if(tag=='left'){
                 this.$refs[str].$refs.body_table.setCurrentRow();
                 this.leftParams.current = 1;
@@ -348,7 +360,7 @@ export default {
                 width:562px;
             }
             .headDiv2{
-                width:1056px;
+                width:1096px;
             }
             .left-toolbar{
                  text-align: right;
@@ -369,9 +381,9 @@ export default {
             }
         }
         /deep/ .right-subset-table{
-            width:1056px;
+            width:1096px;
             /deep/ .el-table{
-                width:1056px;
+                width:1096px;
             }
         }
         /deep/ .mainTable{

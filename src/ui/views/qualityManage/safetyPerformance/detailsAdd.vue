@@ -2,7 +2,7 @@
     <div class="addSysParameter">
         <div class="top-content">
             <div class="top-content-title">
-                <span>法定自查检查计划明细-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+                <span>安全绩效明细-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
             </div>
             <div v-if="type!='info'"  class="top-toolbar">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
@@ -17,87 +17,70 @@
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
-
-                <div class="row_custom">
-                    <el-form-item label="序号：" prop="number">
+                <div class="row_custom aRow_custom">
+                    <el-form-item label="编号：" prop="number">
                         <span v-if="type=='info'">{{form.number}}</span>
-                        <el-input v-else v-model="form.number" placeholder="请输入序号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="检查项目：" prop="checkProject">
-                        <span v-if="type=='info'">{{form.checkProject}}</span>
-                        <el-input  v-else v-model="form.checkProject" placeholder="请输入检查项目"></el-input>
-                        <!--<el-date-picker ></el-date-picker>-->
-                    </el-form-item>
-
-                </div>
-                <div class="row_custom">
-                    <el-form-item label="检查内容：" prop="checkContents">
-                        <span v-if="type=='info'">{{form.checkContents}}</span>
-                        <el-input v-else v-model="form.checkContents" placeholder="请输入检查内容"></el-input>
-                    </el-form-item>
-                    <el-form-item label="检查方式：" prop="checkMethod">
-                        <span v-if="type=='info'">{{form.checkMethod}}</span>
-                        <el-input v-else v-model="form.checkMethod" placeholder="请输入检查方式"></el-input>
+                        <el-input v-else type="text"  v-model="form.number" placeholder="请输入编号"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
-
-                    <el-form-item label="检查标准：" prop="checkStandard">
-                        <span v-if="type=='info'">{{form.checkStandard}}</span>
-                        <el-input v-else v-model="form.checkStandard" type="text"  placeholder="请输入检查标准"></el-input>
+                    <el-form-item label="指标：" prop="quota">
+                        <span v-if="type=='info'">{{form.quota}}</span>
+                        <el-input v-else v-model="form.quota" type="text"  placeholder="请输入指标"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="row_custom aRow_custom">
+                    <el-form-item label="指标类型：" prop="quotaType">
+                        <span v-if="type=='info'">{{form.quotaType}}</span>
+                        <el-select v-else clearable v-model="form.quotaType" placeholder="请选择指标类型">
+                            <el-option label="违规" value="违规"> </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
-                    <el-form-item label="符合性判定标准：" prop="judgeStandard">
-                        <span v-if="type=='info'">{{form.judgeStandard}}</span>
-                        <el-input v-else v-model="form.judgeStandard" :rows="3" type="textarea"   placeholder="请输入符合性判定标准"></el-input>
+                    <el-form-item label="监控信息来源：" prop="sources">
+                        <span v-if="type=='info'">{{form.sources}}</span>
+                        <el-input v-else v-model="form.sources" type="text"  placeholder="请输入监控信息来源"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
-                    <el-form-item label="检查依据-局方：" prop="checkBasisOfficial">
-                        <span v-if="type=='info'">{{form.checkBasisOfficial}}</span>
-                        <el-input v-else v-model="form.checkBasisOfficial" :rows="3" type="textarea"   placeholder="请输入检查依据-局方"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="row_item_row row_item">
-                    <el-form-item label="检查依据-公司：" prop="checkBasisCompany">
-                        <span v-if="type=='info'">{{form.checkBasisCompany}}</span>
-                        <el-input v-else v-model="form.checkBasisCompany" :rows="3" type="textarea"   placeholder="请输入检查依据-公司"></el-input>
+                    <el-form-item label="计算公式：" prop="formulas">
+                        <span v-if="type=='info'">{{form.formulas}}</span>
+                        <el-input v-else v-model="form.formulas" type="textarea" :rows="3"  placeholder="请输入计算公式"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-
-                    <el-form-item label="检查对象：" prop="checkObject">
-                        <span v-if="type=='info'">{{form.checkObject}}</span>
-                         <el-select v-else clearable v-model="form.checkObject" placeholder="请选择检查对象">
-                            <el-option label="jiwu" value="jiwu"> </el-option>
-                         </el-select>
+                    <el-form-item label="目标值：" prop="targetValue">
+                        <span v-if="type=='info'">{{form.targetValue}}</span>
+                        <el-input v-else v-model="form.targetValue" placeholder="请输入目标值"></el-input>
                     </el-form-item>
-                    <el-form-item label="检查频次：" prop="checkFrequency">
-                        <span v-if="type=='info'">{{form.checkFrequency}}</span>
-                        <el-input v-else v-model="form.checkFrequency" placeholder="请输入检查频次"></el-input>
+                    <el-form-item label="预警规则：" prop="warningWules">
+                        <span v-if="type=='info'">{{form.warningWules}}</span>
+                        <el-input  v-else v-model="form.warningWules" placeholder="请输入预警规则"></el-input>
                     </el-form-item>
                 </div>
-
-                <div class="row_custom">
-
-
-                    <el-form-item label="检查时间：" prop="checkTime">
-                        <span v-if="type=='info'">{{form.checkTime}}</span>
-                        <el-input v-else v-model="form.checkTime" placeholder="请输入检查时间"></el-input>
+                <div class="row_item_row row_item">
+                    <el-form-item label="内容：" prop="content">
+                        <span v-if="type=='info'">{{form.content}}</span>
+                        <el-input v-else v-model="form.content" type="textarea" :rows="3"  placeholder="请输入内容"></el-input>
                     </el-form-item>
-                    <el-form-item label="检查人员：" prop="checkUser">
-                        <span v-if="type=='info'">{{form.checkUser}}</span>
-                        <el-input v-else v-model="form.checkUser" placeholder="请输入检查人员"></el-input>
+                </div>
+                <div class="row_custom">
+                    <el-form-item label="责任人/项目：" prop="project">
+                        <span v-if="type=='info'">{{form.project}}</span>
+                        <el-input v-else v-model="form.project" placeholder="请选择责任人/项目"></el-input>
+                    </el-form-item>
+                    <el-form-item label="落实情况：" prop="implementation">
+                        <span v-if="type=='info'">{{form.implementation}}</span>
+                        <el-input v-else v-model="form.implementation" placeholder="请输入落实情况"></el-input>
                     </el-form-item>
                 </div>
 
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="检查类别：" prop="checkType">
-                        <span v-if="type=='info'">{{form.checkType}}</span>
-                        <el-select v-else clearable v-model="form.checkType" placeholder="请选择检查类别">
-                            <el-option label="违规" value="违规"> </el-option>
-                         </el-select>
+                    <el-form-item label="状态监控：" prop="monitorState">
+                        <span v-if="type=='info'">{{form.monitorState}}</span>
+                        <el-input v-else   v-model="form.monitorState" placeholder="请输入状态监控">
+                          </el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -128,11 +111,11 @@
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
-                        ? "法定自查检查计划明细新增"
+                        ? "安全绩效明细新增"
                         : this.type == "edit"
-                        ? "法定自查检查计划明细编辑"
+                        ? "安全绩效明细编辑"
                         : this.type == "info"
-                            ? "法定自查检查计划明细详情"
+                            ? "安全绩效明细详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
@@ -150,11 +133,11 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/qualification/securityInformation/save`
+                                // url=`${this.$ip}/securityInformation/save`
                                 url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
                             }else {
                                 url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                // url=`${this.$ip}/qualification/securityInformation/update`
+                                // url=`${this.$ip}/securityInformation/update`
 
                             }
                             request({
