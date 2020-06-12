@@ -2,7 +2,7 @@
     <div class="addSysParameter">
         <div class="top-content">
             <div class="top-content-title">
-                <span>安全信息-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+                <span>法定自查检查计划-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
             </div>
             <div v-if="type!='info'"  class="top-toolbar">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
@@ -17,103 +17,37 @@
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
+                <div class="row_custom">
+                    <el-form-item label="计划年度：" prop="year">
+                        <span v-if="type=='info'">{{form.year}}</span>
+                        <el-input v-else v-model="form.year" placeholder="请输入计划年度"></el-input>
+                    </el-form-item>
+                    <el-form-item label="计划部门：" prop="dept_name">
+                        <span v-if="type=='info'">{{form.dept_name}}</span>
+                        <el-select clearable v-else v-model="form.dept_name" placeholder="请选择计划部门">
+                            <el-option label="sfsd" value="dfd"></el-option>
+                        </el-select>
+                     </el-form-item>
+
+                </div>
+                <div class="row_custom">
+                    <el-form-item label="审批人：" prop="reviewer_name">
+                        <span v-if="type=='info'">{{form.reviewer_name}}</span>
+                        <el-input v-else v-model="form.reviewer_name" placeholder="请输入审批人"></el-input>
+                    </el-form-item>
+                    <el-form-item label="审批日期：" prop="reviewer_time">
+                        <span v-if="type=='info'">{{form.reviewer_time?form.reviewer_time.split(' ')[0]:''}}</span>
+                         <el-date-picker  v-else v-model="form.reviewer_time" placeholder="请选择审批日期"></el-date-picker>
+
+                    </el-form-item>
+                </div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="信息编号：" prop="infNumber">
-                        <span v-if="type=='info'">{{form.infNumber}}</span>
-                        <el-input v-else v-model="form.infNumber" placeholder="请输入信息编号"></el-input>
+                    <el-form-item label="计划版本：" prop="version">
+                        <span v-if="type=='info'">{{form.version}}</span>
+                        <el-input v-else v-model="form.version" placeholder="请输入计划版本"></el-input>
                     </el-form-item>
 
                 </div>
-                <div class="row_item_row row_item">
-                    <el-form-item label="信息描述：" prop="infRemark">
-                        <span v-if="type=='info'">{{form.infRemark}}</span>
-                        <el-input v-else v-model="form.infRemark" type="textarea" :rows="3" placeholder="请输入信息描述"></el-input>
-                    </el-form-item>
-
-                </div>
-                <div class="row_custom">
-                    <el-form-item label="信息来源：" prop="infSources">
-                        <span v-if="type=='info'">{{form.infSources}}</span>
-                        <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
-                    </el-form-item>
-                    <el-form-item label="时间：" prop="infTime">
-                        <span v-if="type=='info'">{{form.infTime}}</span>
-                        <el-date-picker  v-else v-model="form.infTime" placeholder="请选择时间"></el-date-picker>
-                    </el-form-item>
-
-                </div>
-                <div class="row_custom">
-                    <el-form-item label="地点：" prop="place">
-                        <span v-if="type=='info'">{{form.place}}</span>
-                        <el-input v-else v-model="form.place" placeholder="请输入地点"></el-input>
-                    </el-form-item>
-                    <el-form-item label="负责人/单位：" prop="responsibleUnit">
-                        <span v-if="type=='info'">{{form.responsibleUnit}}</span>
-                        <el-input v-else v-model="form.responsibleUnit" placeholder="请输入负责人/单位"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="row_custom">
-                    <el-form-item label="所属系统：" prop="deptName">
-                        <span v-if="type=='info'">{{form.deptName}}</span>
-                        <el-input v-else v-model="form.deptName" placeholder="请输入所属系统"></el-input>
-                    </el-form-item>
-                    <el-form-item label="违规/差错：" prop="situation">
-                        <span v-if="type=='info'">{{form.situation}}</span>
-                         <el-select v-else v-model="form.situation" placeholder="请选择违规/差错">
-                            <el-option label="违规" value="违规"> </el-option>
-                            <el-option label="差错" value="差错"> </el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>
-                <div class="row_item_row row_item">
-
-                    <el-form-item label="原因分析：" prop="reason">
-                        <span v-if="type=='info'">{{form.reason}}</span>
-                        <el-input v-else v-model="form.reason" :rows="3" type="textarea"   placeholder="请输入原因分析"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="row_item_row row_item">
-
-                    <el-form-item label="整改措施：" prop="measures">
-                        <span v-if="type=='info'">{{form.measures}}</span>
-                        <el-input v-else v-model="form.measures" :rows="3" type="textarea" placeholder="请输入整改措施"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="row_custom">
-
-
-                    <el-form-item label="控制状态：" prop="controlSate">
-                        <span v-if="type=='info'">{{form.controlSate}}</span>
-                        <el-input v-else v-model="form.controlSate" placeholder="请输入控制状态"></el-input>
-                    </el-form-item>
-                    <el-form-item label="工作环节：" prop="workLink">
-                        <span v-if="type=='info'">{{form.workLink}}</span>
-                        <el-input v-else v-model="form.workLink" placeholder="请输入工作环节"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="row_custom">
-
-                    <el-form-item label="关键词：" prop="keyWord">
-                        <span v-if="type=='info'">{{form.keyWord}}</span>
-                        <el-input v-else v-model="form.keyWord" placeholder="请输入关键词"></el-input>
-                    </el-form-item>
-                    <el-form-item label="是否安全/服务事件：" prop="serviceEvents">
-                        <span v-if="type=='info'">{{form.serviceEvents}}</span>
-                        <el-select v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
-                            <el-option label="违规" value="违规"> </el-option>
-                            <el-option label="差错" value="差错"> </el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>
-
-                <div class="row_item_row row_item">
-                    <el-form-item label="备注：" prop="remark">
-                        <span v-if="type=='info'">{{form.remark}}</span>
-                        <el-input v-else v-model="form.remark" :rows="3" type="textarea" placeholder="请输入备注"></el-input>
-                    </el-form-item>
-
-                </div>
-
             </el-form>
         </div>
     </div>
@@ -131,7 +65,7 @@
             return {
                 form: {},
                 rules: {
-                    infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
+                    // infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
@@ -142,11 +76,11 @@
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
-                        ? "安全信息新增"
+                        ? "法定自查检查计划新增"
                         : this.type == "edit"
-                        ? "安全信息编辑"
+                        ? "法定自查检查计划编辑"
                         : this.type == "info"
-                            ? "安全信息详情"
+                            ? "法定自查检查计划详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
@@ -169,7 +103,6 @@
                             }else {
                                 url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
                                 // url=`${this.$ip}/securityInformation/update`
-
                             }
                             request({
                                 url,

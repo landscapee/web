@@ -18,9 +18,9 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="信息编号：" prop="infNumber">
+                    <el-form-item label="信息编号："  :prop="type=='edit'?'':'infNumber'">
                         <span v-if="type=='info'">{{form.infNumber}}</span>
-                        <el-input v-else v-model="form.infNumber" placeholder="请输入信息编号"></el-input>
+                        <el-input :disabled="type=='edit'" v-else v-model="form.infNumber" placeholder="请输入信息编号"></el-input>
                     </el-form-item>
 
                 </div>
@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
                     </el-form-item>
                     <el-form-item label="时间：" prop="infTime">
-                        <span v-if="type=='info'">{{form.infTime}}</span>
+                        <span v-if="type=='info'">{{  form.infTime?form.infTime.split(' ')[0]:''}}</span>
                         <el-date-picker  v-else v-model="form.infTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
 
@@ -59,7 +59,7 @@
                     </el-form-item>
                     <el-form-item label="违规/差错：" prop="situation">
                         <span v-if="type=='info'">{{form.situation}}</span>
-                         <el-select v-else v-model="form.situation" placeholder="请选择违规/差错">
+                         <el-select v-else clearable v-model="form.situation" placeholder="请选择违规/差错">
                             <el-option label="违规" value="违规"> </el-option>
                             <el-option label="差错" value="差错"> </el-option>
                         </el-select>
@@ -99,7 +99,7 @@
                     </el-form-item>
                     <el-form-item label="是否安全/服务事件：" prop="serviceEvents">
                         <span v-if="type=='info'">{{form.serviceEvents}}</span>
-                        <el-select v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
+                        <el-select clearable v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
                             <el-option label="违规" value="违规"> </el-option>
                             <el-option label="差错" value="差错"> </el-option>
                         </el-select>
@@ -128,12 +128,29 @@
         },
         name: "",
         data() {
+            const checkInfNumber = (rule, value, callback) => {
+                if (!value) {
+                     return callback(new Error('信息编号不能为空'));
+                } else {
+                    request({
+                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        method: 'get',
+                    }).then(response => {
+                        console.log(response,10);
+                        if (!response.data) {
+
+                            callback();
+                        } else {
+                            callback("该信息编号已存");
+                        }
+                    });
+                }
+            };
             return {
                 form: {},
                 rules: {
-                    infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
-                    // system: [{ required: true, message: "请输入", trigger: "blur" }],
-                 },
+                    infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
+                  },
                 type: "add"
             };
         },
@@ -164,11 +181,11 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/securityInformation/save`
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
+                                url=`${this.$ip}/qualification/securityInformation/save`
+                                // url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
                             }else {
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                // url=`${this.$ip}/securityInformation/update`
+                                // url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
+                                url=`${this.$ip}/qualification/securityInformation/update`
 
                             }
                             request({

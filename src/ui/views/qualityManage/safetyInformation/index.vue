@@ -38,7 +38,7 @@ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { sadetyInfoConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
-import {  extend } from 'lodash';
+import {  extend ,map} from 'lodash';
 export default {
     components: {
         Icon,
@@ -123,8 +123,7 @@ export default {
                 })
                     .then(() => {
                         request({
-                            // url:`http://173.100.1.126:3000/mock/639/securityInformation/delete`,
-                            url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
@@ -143,6 +142,11 @@ export default {
 
         },
         getList(){
+            map(this.form,((k,l)=>{
+                if(!k){
+                    this.form[l]=null
+                }
+            }))
            request({
                 url:`${this.$ip}/qualification/securityInformation/list`,
                 // url:`http://173.100.1.126:3000/mock/639/securityInformation/list`,

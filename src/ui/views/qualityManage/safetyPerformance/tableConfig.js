@@ -9,9 +9,10 @@ let timeInfo=(row)=>{
 export const selfCheckConfig = () => {
         return [
                 { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
-                { prop: 'year', label: '计划年度',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入计划年度"} },
-                { prop: 'dept_name', label: '部门',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'dept_name',placeholder:"请输入部门"} },
-                { prop: 'reviewer_name', label: '审批人',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'reviewer_name',placeholder:"请输入审批人"} },
+                { prop: 'year', label: '年份',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入计划年度"} },
+                { prop: 'dept_name', label: '月份',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'dept_name',placeholder:"请输入部门"} },
+                { prop: 'reviewer_name', label: '部门',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'reviewer_name',placeholder:"请输入审批人"} },
+                { prop: 'reviewer_name', label: '批准人',sortProp:"parkingNo", align: 'center',sort:true,search:{type:'input', prop:'reviewer_name',placeholder:"请输入审批人"} },
                 { prop: 'reviewer_time', label: '审批日期',formatter:timeInfo, sortProp:"parkingNo", align: 'center',sort:true,search:{type:'date', prop:'reviewer_time',placeholder:"请选择审批日期"}},
                 { prop: 'version', width:130,label: '计划版本',sortProp:"parkingNo", align: 'center' ,sort:true,search:{type:'input', prop:'version',placeholder:"请输入计划版本",extendType:'search'}}
               ]

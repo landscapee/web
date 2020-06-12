@@ -40,7 +40,7 @@ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
-import {  extend } from 'lodash';
+import {  extend,map } from 'lodash';
 export default {
     components: {
         Icon,
@@ -123,11 +123,10 @@ export default {
                 })
                     .then(() => {
                         request({
-                            url:`http://173.100.1.126:3000/mock/639/dangerData/delete`,
-                            // url:`${this.$ip}/dangerData/delete`,
+                            // url:`http://173.100.1.126:3000/mock/639/dangerData/delete`,
+                            url:`${this.$ip}/qualification/dangerData/delete/${this.selectId}`,
                             method: 'delete',
-                            params:{id:this.selectId}
-                        })
+                         })
                             .then((data) => {
                                 this.getList();
                                 this.selectId   = null;
@@ -143,19 +142,20 @@ export default {
 
         },
         getList(){
+            map(this.form,((k,l)=>{
+                console.log(k, l);
+                if(!k){
+                    this.form[l]=null
+                }
+            }))
            request({
-                // url:`${this.$ip}/dangerData/list`,
-                url:`http://173.100.1.126:3000/mock/639/dangerData/list`,
+                url:`${this.$ip}/qualification/dangerData/list`,
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })
             .then((data) => {
                 // this.tableData = extend({}, this.tableData, data.data);
-                 this.tableData = extend({}, this.tableData,
-                    {
-                        records:data.data
-                    }
-                    );
+                 this.tableData = extend({},{...data.data});
                 console.log(this.tableData);
             })
         },
