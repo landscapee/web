@@ -7,11 +7,11 @@
         <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="businessData">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>安全绩效</span>
+                    <span style="font-weight: 500;color:rgba(51,51,51,1)">安全绩效</span>
                 </div>
                 <div class="top-toolbar">
                     <div class="headDiv headDiv1">
-                        <div>部门月度安全绩效</div>
+                        <div style="font-weight: bold; ">部门月度安全绩效</div>
                         <div class="left-toolbar">
                             <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
@@ -24,10 +24,12 @@
                     </div>
                     <div class="headDiv headDiv2" >
                         <div>
-                            安全绩效明细--维修部2020-2月
+                            <span style="font-weight: bold; font-size: 16px">安全绩效明细</span>
+                            <span style="font-weight:400;color:rgba(136,136,136,1);font-size: 16px"">&nbsp;&nbsp;{{leftRow.deptName}}{{leftRow.year}}年-{{leftRow.month}}月</span>
+
                         </div>
                         <div class="right-toolbar">
-                            <div @click="rightyear('add')">部门年度安全绩效</div>
+                             <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
                             <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>

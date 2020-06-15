@@ -2,7 +2,7 @@
     <div class="addSysParameter">
         <div class="top-content">
             <div class="top-content-title">
-                <span>部门月度安全绩效-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+                <span style="font-weight: 500">部门月度安全绩效-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
             </div>
             <div v-if="type!='info'"  class="top-toolbar">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
@@ -20,7 +20,8 @@
                 <div class="row_custom">
                     <el-form-item label="绩效年月：" prop="year">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
-                        <el-input v-else v-model="form.yearMonth" placeholder="请选择绩效年月"></el-input>
+                        <el-date-picker @change="yearMonthChange" v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
+                        </el-date-picker>
                     </el-form-item>
                     <el-form-item label="部门：" prop="deptName">
                         <span v-if="type=='info'">{{form.deptName}}</span>
@@ -56,7 +57,10 @@
         name: "",
         data() {
             return {
-                form: {},
+                form: {
+                    year:null,
+                    month:null,
+                },
                 rules: {
                     // infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -82,6 +86,12 @@
             }
         },
         methods: {
+            yearMonthChange(val){
+                let date=val
+                console.log(date, val);
+                this.form.year=val.getFullYear()+''
+                this.form.month= val.getMonth()+''
+            },
             resetForm(){
                 this.form={};
             },
