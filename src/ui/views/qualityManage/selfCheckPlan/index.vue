@@ -10,19 +10,19 @@
                 <div class="top-toolbar">
 
                     <div class="headDiv headDiv1">
-                        <div>计划</div>
+                        <div style="font-weight: bold; font-size: 16px">计划</div>
                         <div class="left-toolbar">
                             <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                            <div><icon iconClass="export" ></icon>导出Excel</div>
+                            <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/examination/${this.leftSelectId}`"></a>导出</div>
                         </div>
 
 
                     </div>
                     <div class="headDiv headDiv2" >
-                        <div>
+                        <div style="font-weight: bold; font-size: 16px">
                             计划明细
                         </div>
                         <div class="right-toolbar">
@@ -30,14 +30,14 @@
                             <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                            <div><icon iconClass="export" ></icon>导出Excel</div>
+                            <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
                         </div>
 
 
                     </div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="main-content" ref="mainContent">
                 <SearchTable class="left-main-table" :data="tableLeftData" :tableConfig="businessTableConfig"  refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"     >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
@@ -87,6 +87,8 @@ export default {
             leftRow:{},
             rightRow:{},
             leftForm:{},
+            // toFrom:'',
+            // rightIndex:null,
             rightForm:{},
             leftSelectId:null,
             rightSelectId:null,
@@ -95,20 +97,41 @@ export default {
             rightSort:{}
         };
     },
+    watch:{
+        '$route':function(val,nm){
+            console.log(1,val,nm);
+            if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
+                val.meta.keepAlive=false
+            }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
+                this.getList('right');
+                // this.toFrom=nm.query.type
+            }
+        }
+    },
     created() {
-       this.leftParams.current = 1;
+         // console.log(this.$route,12);
+        this.leftParams.current = 1;
        this.getList('left');
     },
-　　mounted() {
-       window.addEventListener('scroll', this.handleScroll,true);//监听函数
+
+　　　　mounted() {
+        if( this.$refs.mainContent){
+            this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
+        }
     },
-    watch:{
-        
-    },
+
     methods: {
+        exportExcel(){
+            if(this.leftSelectId==null){
+                this.$message.error('请先选中一行数据');
+            }else{
+                this.$refs.a.click()
+            }
+        },
         //监听滚动
         handleScroll($event){
             // 获取滚动条的dom
+            console.log($event);
             var bady = $event.target;   
 　　　　　　 // 获取距离顶部的距离
             var scrollTop = bady.scrollTop;
@@ -165,21 +188,29 @@ export default {
             if(tag=='left'){
                 this.$refs[str].$refs.body_table.setCurrentRow();
                 this.leftParams.current = 1;
+                this.leftSelectId=null
+                this.rightSelectId=null
+                this.rightParams.current = 1;
+                this.tableRightData.records=[]
+
             }else{
+                this.rightSelectId=null
                 this.rightParams.current = 1;
             }
             this.getList(tag);
         },
         //表格选中事件
         listenToCheckedChange(row,tag,tableTag){
+            console.log(row, tag, tableTag);
             let select = row.selected;
-            this[tableTag].records.map(r =>{
+             this[tableTag].records.map((r,l) =>{
                 if(r.selected){
                     r.selected = false;
                 }
             })
             row.selected  = !select;
             if(tag=="left"){
+
                 if(row.selected){
                     this.leftSelectId = row.id;
                     this.leftRow={...row}
@@ -192,10 +223,13 @@ export default {
                 this.rightParams.current = 1;
                 this.getList('right');
             }else{
-                if(row.selected){
+
+                 if(row.selected){
+                     // this.rightIndex=row.index
                     this.rightSelectId = row.id;
                     this.rightRow={...row}
                 }else{
+                     // this.rightIndex=null
                     this.rightSelectId = null;
                 }
             }
@@ -239,12 +273,10 @@ export default {
         delData(tag,idstr){
             let url=null
             if(tag=='left'&&this.leftSelectId){
-                // url=`${this.$ip}/qualification/examination/delete/${this.leftSelectId}`
-                url=`http://173.100.1.126:3000/mock/639/examination/delete/{id}`
-            }else if(tag=='right'&&this.rightSelectId ){
-                // url=`${this.$ip}/qualification/examinationDetail/delete/${this.rightSelectId}`
-                url=`http://173.100.1.126:3000/mock/639/examinationDetail/delete/{id}`
-            }
+                url=`${this.$ip}/qualification/examination/delete/${this.leftSelectId}`
+             }else if(tag=='right'&&this.rightSelectId ){
+                url=`${this.$ip}/qualification/examinationDetail/delete/${this.rightSelectId}`
+             }
             if(url){
                 this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -267,6 +299,7 @@ export default {
                                         this.tableRightData.records=[]
                                     }else{
                                         this.rightSelectId=null
+                                        // this.rightIndex=null
                                         this.rightRow={}
                                         this.rightParams.current= 1;
                                     }
@@ -291,20 +324,22 @@ export default {
                     }
                 }))
                 request({
-                    url:`http://173.100.1.126:3000/mock/639/examination/list`,
-                    // url:`${this.$ip}/qualification/examination/list`,
+                    // url:`http://173.100.1.126:3000/mock/639/examination/list`,
+                    url:`${this.$ip}/qualification/examination/list`,
                     method: 'post',
-                    data:{...this.leftForm,...this.leftSort,...this.leftParams}
+                    data:{...this.leftForm,...this.leftSort,},
+                    params:{...this.leftParams}
                 })
                     .then((data) => {
                         if(this.leftParams.current==1){
-                            this.tableLeftData.records = data.data;
+                            this.tableLeftData.records = data.data.records;
                         }else{
-                            this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data);
+                            this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.records);
                         }
                         if(scroll && data.data.items.length==0){
                             this.leftParams.current = --this.leftParams.current;
                         }
+
                     }).catch((error) => {
 
                 });
@@ -316,20 +351,25 @@ export default {
                         }
                     }))
                     request({
-                        url:`http://173.100.1.126:3000/mock/639/examinationDetail/list`,
-                        // url:`${this.$ip}/qualification/examinationDetail/list`,
+                        // url:`http://173.100.1.126:3000/mock/639/examinationDetail/list`,
+                        url:`${this.$ip}/qualification/examinationDetail/list`,
                         method: 'post',
-                        data:{...this.rightForm,dicId:this.leftSelectId,...this.rightSort,...this.rightParams}
+                        data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
+                        params:{...this.rightParams}
                     })
                     .then((data) => {
+                        console.log(this.rightParams.current,111);
                         if(this.rightParams.current==1){
-                            this.tableRightData.records = data.data;
+                            this.tableRightData.records = data.data.records;
                         }else{
-                            this.tableRightData.records.push.apply(this.tableRightData.records,data.data);
+                            this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                         }
                         if(scroll && data.data.items.length==0){
                             this.rightParams.current = --this.rightParams.current;
                         }
+                        this.rightParams.current=data.data.current
+
+                        this.rightSelectId = null;
                     }).catch((error) => {
                 
                     });
@@ -386,17 +426,13 @@ export default {
                 width:1096px;
             }
         }
+
         /deep/ .mainTable{
-            height: 600px;
-            overflow: auto;
-            // /deep/ .el-table__body-wrapper{
-            //     /deep/ tr:last-child{
-            //         td{
-            //             border-bottom:0px;
-            //         }
-            //     }
-            // }
-        }    
+            height: 600px!important;
+            overflow: auto!important;
+        }
+
+
     }
 }
 </style>

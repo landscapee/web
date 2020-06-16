@@ -7,33 +7,39 @@
         <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="businessData">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>安全绩效</span>
+                    <span style="font-weight: 500;color:rgba(51,51,51,1)">安全绩效</span>
                 </div>
                 <div class="top-toolbar">
                     <div class="headDiv headDiv1">
-                        <div>部门月度安全绩效</div>
+                        <div style="font-weight: bold; " >部门月度安全绩效</div>
                         <div class="left-toolbar">
                             <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                            <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                            <div><icon iconClass="export" ></icon>导出Excel</div>
+
+                            <div @click="exportExcel()">
+                                  <icon iconClass="export" ></icon>导出
+                                  <a ref="a" :href="`${this.$ip}/qualification/download/securityMerits/${this.leftSelectId}`"></a>
+                              </div>
+
+
                         </div>
 
 
                     </div>
                     <div class="headDiv headDiv2" >
                         <div>
-                            安全绩效明细--维修部2020-2月
+                            <span style="font-weight: bold; font-size: 16px"  >安全绩效明细</span>
+                            <span v-if="leftRow.year" style="font-weight:400;color:rgba(136,136,136,1);font-size: 16px" >&nbsp;&nbsp;{{leftRow.deptName}}&nbsp;{{leftRow.year}}年-{{leftRow.month}}月</span>
+
                         </div>
                         <div class="right-toolbar">
-                            <div @click="rightyear('add')">部门年度安全绩效</div>
+                             <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
                             <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                            <div><icon iconClass="export" ></icon>导出Excel</div>
-                        </div>
+                         </div>
 
 
                     </div>
@@ -49,7 +55,7 @@
                     </el-table-column>
                     <el-table-column slot="option" label="操作" :width="130" >
                         <template slot-scope="{ row }">
-                            <span>
+                            <span @click.stop="copyDetails(row)">
                                 <el-button class="copyButton">复制绩效明细</el-button>
                             </span>
                           </template>
@@ -65,9 +71,11 @@
                 </SearchTable>
             </div>
         </div>
+        <CopyDetails ref="CopyDetails" @getList="getList('right')"></CopyDetails>
     </div>
 </template>
 <script>
+    import CopyDetails from './copyDetails'
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
     import { safetyConfig,safetyDetailsConfig } from './tableConfig.js';
@@ -77,6 +85,7 @@
         components: {
             Icon,
             SearchTable,
+            CopyDetails,
         },
         name: '',
         data() {
@@ -104,17 +113,41 @@
                 rightSort:{}
             };
         },
+        watch:{
+            '$route':function(val,nm){
+                console.log(1,val,nm);
+                if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceAdd'){
+                    val.meta.keepAlive=false
+                }else if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceDetailsAdd'){
+                    this.getList('right');
+                    // this.toFrom=nm.query.type
+                }
+            }
+        },
         created() {
             this.leftParams.current = 1;
-            this.getList('left');
+            if(this.$router.history.current.path == '/safetyPerformance'){
+                this.getList('left');
+            }
+
         },
         mounted() {
             window.addEventListener('scroll', this.handleScroll,true);//监听函数
         },
-        watch:{
 
-        },
         methods: {
+            exportExcel(){
+                console.log(1);
+                if(this.leftSelectId==null){
+                    this.$message.error('请先选中一行数据');
+                }else{
+                     this.$refs.a.click()
+                }
+            },
+            copyDetails(row){
+                console.log(row);
+                this.$refs.CopyDetails.open(row)
+            },
             //监听滚动
             handleScroll($event){
                 // 获取滚动条的dom
@@ -141,9 +174,9 @@
             requestTable(searchData,tag,tableTag){
                 if(tag=='left'){
                     this.leftForm = searchData;
-                    this.leftSelectId=null,
-                        this.rightSelectId=null,
-                        this.leftRowState=false,
+                    this.leftSelectId=null;
+                        this.rightSelectId=null;
+                        this.leftRowState=false;
                         this.tableRightData={records:[]};
                     this.leftParams.current = 1;
                 }else{
@@ -225,21 +258,14 @@
             },
             //右侧表格新增编辑
             rightyear(tag){
-                if(this.leftSelectId==null){
-                    this.$message.error('请先选中左侧列表一行数据');
-                }else{
-                    // let data=JSON.stringify(this.leftRow)
-                    this.$router.push({path:'/safetyPerformanceYear',query:{type:'add',id:this.leftSelectId}});
-                }
+                this.$router.push({path:'/safetyPerformanceYear'});
             },
             rightAddOrEditOrInfo(tag){
                 if(tag=='add'){
                     if(this.leftSelectId==null){
                         this.$message.error('请先选中左侧列表一行数据');
                     }else{
-
                         this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:'add',id:this.leftSelectId}});
-
                     }
                 }else if(tag == 'edit' || tag=='info'){
                     if(this.rightSelectId==null){
@@ -251,18 +277,14 @@
                     }
                 }
             },
+          
             //删除表格行数据
             delData(tag,idstr){
                 let url=null
-                let method=null
-                if(tag=='left'&&this.leftSelectId){
-                    // url=`${this.$ip}/qualification/securityMerits/delete/${this.leftSelectId}`
-                    url=`http://173.100.1.126:3000/mock/639/securityMerits/delete/{id}`
-                    method='delete'
+                 if(tag=='left'&&this.leftSelectId){
+                    url=`${this.$ip}/qualification/securityMerits/delete/${this.leftSelectId}`
                 }else if(tag=='right'&&this.rightSelectId ){
-                    // url=`${this.$ip}/qualification/securityMeritsDetail/delete/${this.rightSelectId}`
-                    url=`http://173.100.1.126:3000/mock/639/securityMeritsDetail/delete/{id}`
-                    method='get'
+                    url=`${this.$ip}/qualification/securityMeritsDetail/delete/${this.rightSelectId}`
                 }
                 if(url){
                     this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -273,18 +295,14 @@
                         .then(() => {
                             request({
                                 url:url,
-                                method: method,
+                                method: 'delete',
                             }).then((data) => {
                                 this.$message({type: 'success',message: '删除成功'});
                                 if(tag=='left'){
-                                    this.leftRow={}
-                                    this.rightRow={}
-                                    this.leftSelectId=null
-                                    this.rightSelectId=null
+
                                     this.leftParams.current = 1;
                                     this.rightParams.current= 1;
-                                    this.tableRightData.records=[]
-                                }else{
+                                 }else{
                                     this.rightSelectId=null
                                     this.rightRow={}
                                     this.rightParams.current= 1;
@@ -304,26 +322,32 @@
 
             getList(tag,scroll){
                 if(tag=='left'){
+
                     map(this.leftForm,((k,l)=>{
                         if(!k){
                             this.leftForm[l]=null
                         }
                     }))
                     request({
-                        url:`http://173.100.1.126:3000/mock/639/securityMerits/list`,
-                        // url:`${this.$ip}/qualification/securityMerits/list`,
+                         url:`${this.$ip}/qualification/securityMerits/list`,
                         method: 'post',
-                        data:{...this.leftForm,...this.leftSort,...this.leftParams}
+                        data:{...this.leftForm,...this.leftSort,},
+                        params:{...this.leftParams}
                     })
                         .then((data) => {
                              if(this.leftParams.current==1){
-                                this.tableLeftData.records = data.data;
+                                this.tableLeftData.records = data.data.records;
                             }else{
-                                this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data);
+                                this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.records);
                             }
                             if(scroll && data.data.items.length==0){
                                 this.leftParams.current = --this.leftParams.current;
                             }
+                            this.leftRow={}
+                            this.rightRow={}
+                            this.leftSelectId=null
+                            this.rightSelectId=null
+                            this.tableRightData.records=[]
                         }).catch((error) => {
 
                     });
@@ -335,21 +359,24 @@
                             }
                         }))
                         request({
-                            url:`http://173.100.1.126:3000/mock/639/securityMeritsDetail/list`,
-                            // url:`${this.$ip}/qualification/securityMeritsDetail/list`,
+                            url:`${this.$ip}/qualification/securityMeritsDetail/list`,
                             method: 'post',
-                            data:{...this.rightForm,dicId:this.leftSelectId,...this.rightSort,...this.rightParams}
-                        })
-                            .then((data) => {
+                            data:{...this.rightForm,securityMeritsId:this.leftSelectId,...this.rightSort},
+                            params:{...this.rightParams}
+                        }).then((data) => {
                                 if(this.rightParams.current==1){
-                                    this.tableRightData.records = data.data;
+                                    this.tableRightData.records = data.data.records;
                                 }else{
-                                    this.tableRightData.records.push.apply(this.tableRightData.records,data.data);
+                                    this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                                 }
                                 if(scroll && data.data.items.length==0){
                                     this.rightParams.current = --this.rightParams.current;
                                 }
-                            }).catch((error) => {
+                            this.rightParams.current=data.data.current
+
+                            this.rightSelectId = null;
+
+                        }).catch((error) => {
 
                         });
                     }

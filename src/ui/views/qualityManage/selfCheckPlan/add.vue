@@ -20,7 +20,7 @@
                 <div class="row_custom">
                     <el-form-item label="计划年度：" prop="year">
                         <span v-if="type=='info'">{{form.year}}</span>
-                        <el-input v-else v-model="form.year" placeholder="请输入计划年度"></el-input>
+                        <el-input v-else v-model="form.year" type="number" placeholder="请输入计划年度"></el-input>
                     </el-form-item>
                     <el-form-item label="计划部门：" prop="deptName">
                         <span v-if="type=='info'">{{form.deptName}}</span>
@@ -98,11 +98,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/qualification/securityInformation/save`
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
-                            }else {
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                // url=`${this.$ip}/qualification/securityInformation/update`
+                                url=`${this.$ip}/qualification/examination/save`
+                             }else {
+                                 url=`${this.$ip}/qualification/examination/update`
                             }
                             request({
                                 url,

@@ -19,9 +19,9 @@
                 <div></div>
 
                 <div class="row_custom">
-                    <el-form-item label="序号：" prop="number">
+                    <el-form-item label="序号：" :prop="type=='add'?'number':''">
                         <span v-if="type=='info'">{{form.number}}</span>
-                        <el-input v-else v-model="form.number" placeholder="请输入序号"></el-input>
+                        <el-input v-else :disabled="type=='edit'" v-model="form.number" placeholder="请输入序号"></el-input>
                     </el-form-item>
                     <el-form-item label="检查项目：" prop="checkProject">
                         <span v-if="type=='info'">{{form.checkProject}}</span>
@@ -114,10 +114,31 @@
         },
         name: "",
         data() {
+
+            const infNumberIs = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('序号不能为空'));
+                } else {
+                    request({
+                        url:`${this.$ip}/qualification/examinationDetail/numberExists`,
+                        method: 'POST',
+                        data:{
+                            examinationId: this.$route.query.id,
+                            number:value,
+                        }
+                    }).then(response => {
+                        if (!response.data) {
+                            callback();
+                        } else {
+                            callback("该序号已存");
+                        }
+                    });
+                }
+            };
             return {
                 form: {},
                 rules: {
-                    infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
+                    number: [{validator:infNumberIs, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
@@ -137,6 +158,9 @@
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
                     this.form={...data}
+                }else {
+                    // this.form.examinationId
+                    this.$set(this.form,'examinationId',this.$route.query.id)
                 }
             }
         },
@@ -150,12 +174,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/qualification/securityInformation/save`
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
-                            }else {
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                // url=`${this.$ip}/qualification/securityInformation/update`
-
+                                url=`${this.$ip}/qualification/examinationDetail/save`
+                             }else {
+                                 url=`${this.$ip}/qualification/examinationDetail/update`
                             }
                             request({
                                 url,

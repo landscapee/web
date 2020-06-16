@@ -9,8 +9,8 @@ let timeInfo=(row)=>{
 export const safetyConfig = () => {
         return [
                 { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
-                { prop: 'year', label: '年份',width:60,sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请选择年份"} },
-                { prop: 'month', label: '月份',width:60,sortProp:"month", align: 'center',sort:true,search:{type:'input', prop:'month',placeholder:"请选择月份"} },
+                { prop: 'year', label: '年份',width:60,sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入年份",clear:false} },
+                { prop: 'month', label: '月份',width:60,sortProp:"month", align: 'center',sort:true,search:{type:'input', prop:'month',placeholder:"请输入月份",clear:false} },
                 { prop: 'deptName', label: '部门',sortProp:"deptName", align: 'center', search:{type:'input', prop:'deptName',placeholder:"请输入部门"} },
                 { prop: 'reviewerName', label: '批准人',sortProp:"reviewerName", align: 'center', search:{type:'input', prop:'reviewerName',placeholder:"请输入批准人"} },
                 { prop: 'reviewerTime', label: '审批日期',formatter:timeInfo, sortProp:"reviewerTime", align: 'center',sort:true,search:{type:'date', prop:'reviewerTime',placeholder:"请选择审批日期"}},
@@ -31,6 +31,23 @@ export const safetyDetailsConfig = () => {
                 { prop: 'project', label: '责任人/项目', sortProp:"project", align: 'center',sort:true,search:{type:'input', prop:'project',placeholder:"请输入责任人/项目"} },
                 { prop: 'implementation', label: '落实情况', sortProp:"implementation", align: 'center' ,sort:true,search:{type:'input', prop:'implementation',placeholder:"请输入落实情况"}},
                  {  prop: 'monitorState', width:130, label: '状态监控（绩效）' , sortProp:"monitor_state", search:{type:'input',extendType:'search', prop:'monitor_state', placeholder:"请输入状态监控（绩效）"}},
+              ]
+};
+export const safetyYearConfig = () => {
+        return [
+
+            { prop: 'month', label: '月', width:49,   align: 'center', },
+                 { prop: 'number', label: '编号',    align: 'center',  },
+                { prop: 'quota', label: '指标',  align: 'center',  },
+                { prop: 'quotaType', label: '指标类型',   align: 'center',  },
+                { prop: 'sources', label: '监控信息来源',   align: 'center', },
+                { prop: 'formulas', label: '计算公式',   align: 'center' , },
+                { prop: 'targetValue', label: '目标值',   align: 'center' , },
+                { prop: 'warningWules', label: '预警规则',   align: 'center' , },
+                { prop: 'content', label: '内容',   align: 'center',  },
+                { prop: 'project', label: '责任人/项目',   align: 'center',  },
+                { prop: 'implementation', label: '落实情况',   align: 'center' , },
+                 {  prop: 'monitorState',  label: '状态监控（绩效）' ,  },
               ]
 };
  

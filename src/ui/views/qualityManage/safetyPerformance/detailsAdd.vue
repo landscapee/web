@@ -18,9 +18,9 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="编号：" prop="number">
+                    <el-form-item label="编号：" :prop="type=='add'?'number':''">
                         <span v-if="type=='info'">{{form.number}}</span>
-                        <el-input v-else type="text"  v-model="form.number" placeholder="请输入编号"></el-input>
+                        <el-input :disabled="type=='edit'"  v-else type="text"  v-model="form.number" placeholder="请输入编号"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -97,15 +97,37 @@
         },
         name: "",
         data() {
+            const number = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('编号不能为空'));
+                } else {
+                    request({
+                        url:`${this.$ip}/qualification/securityMeritsDetail/numberExists`,
+                        method: 'POST',
+                        data:{
+                            securityMeritsId: this.$route.query.id,
+                            number:value,
+                        }
+                    }).then(response => {
+                        if (!response.data) {
+                            callback();
+                        } else {
+                            callback("该编号已存");
+                        }
+                    });
+                }
+            };
+
             return {
                 form: {},
                 rules: {
-                    infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
+                    number: [{validator:number, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
             };
         },
+
         created() {
             if (this.$route.query) {
                 this.type = this.$route.query.type;
@@ -120,6 +142,9 @@
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
                     this.form={...data}
+                }else {
+                    this.form={securityMeritsId:this.$route.query.id}
+                    console.log(this.form,11111);
                 }
             }
         },
@@ -133,11 +158,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/securityInformation/save`
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
-                            }else {
-                                url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                // url=`${this.$ip}/securityInformation/update`
+                                url=`${this.$ip}/qualification/securityMeritsDetail/save`
+                             }else {
+                                 url=`${this.$ip}/qualification/securityMeritsDetail/update`
 
                             }
                             request({

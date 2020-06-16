@@ -11,9 +11,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
-                    <!--<div class="isDisabled"><icon iconClass="save" ></icon>保存</div>-->
-                    <div ><icon iconClass="export" ></icon>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/dangerData`"></a>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -68,6 +66,9 @@ export default {
 
     },
     methods: {
+        exportExcel(){
+          this.$refs.a.click()
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -161,8 +162,10 @@ export default {
            request({
                 url:`${this.$ip}/qualification/dangerData/list`,
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
-            })
+                data:{...this.sort,...this.form},
+               params:{...this.params,}
+
+           })
             .then((data) => {
                 // this.tableData = extend({}, this.tableData, data.data);
                  this.tableData = extend({},{...data.data});
