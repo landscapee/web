@@ -11,7 +11,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                     <div ><icon iconClass="export" ></icon>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -66,6 +66,9 @@ export default {
 
     },
     methods: {
+        exportExcel(){
+             this.$refs.a.click()
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -154,25 +157,29 @@ export default {
 
         },
         getList(){
-            map(this.form,((k,l)=>{
+            let data={...this.form}
+            map(data,((k,l)=>{
                 if(!k){
-                    this.form[l]=null
+                    data[l]=null
+                }else {
+                    if(l=='infTime'){
+                        data.infTimeStr=data.infTime.getFullYear()
+                    }
+                    delete data.infTime
                 }
             }))
            request({
                 url:`${this.$ip}/qualification/securityInformation/list`,
-                // url:`http://173.100.1.126:3000/mock/639/securityInformation/list`,
-                method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                 method: 'post',
+                data:{...this.sort,...data},
+               params:{...this.params,}
             })
             .then((data) => {
-                // this.tableData = extend({}, this.tableData, data.data);
-                 this.tableData = extend({},
+                  this.tableData = extend({},
                      {...data.data}
                  );
 
-                console.log(this.tableData,111);
-            })
+             })
         },
         handleSizeChange(size) {
             this.params.current = 1;

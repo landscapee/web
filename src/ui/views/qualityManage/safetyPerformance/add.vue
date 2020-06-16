@@ -18,9 +18,9 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="绩效年月：" prop="year">
+                    <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
-                        <el-date-picker @change="yearMonthChange" v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
+                        <el-date-picker :disabled="type=='edit'" @change="yearMonthChange" v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="部门：" prop="deptName">
@@ -56,13 +56,33 @@
         },
         name: "",
         data() {
+            const yearMonth = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('绩效年月不能为空'));
+                } else {
+                    let year=value.getFullYear()+''
+                    let month= value.getMonth()+1+''
+                    request({
+                        url:`${this.$ip}/qualification/securityMerits/numberExists/${year},${month}`,
+                        method: 'get',
+
+                    }).then(response => {
+                        if (!response.data) {
+                            callback();
+                        } else {
+                            callback("该绩效年月已存");
+                        }
+                    });
+                }
+            };
+
             return {
                 form: {
                     year:null,
                     month:null,
                 },
                 rules: {
-                    // infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
+                    yearMonth: [{ validator:yearMonth, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
@@ -81,7 +101,7 @@
                             : "";
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+                    this.form={...data,yearMonth:`${data.year}-${data.month}`}
                 }
             }
         },
@@ -90,7 +110,7 @@
                 let date=val
                 console.log(date, val);
                 this.form.year=val.getFullYear()+''
-                this.form.month= val.getMonth()+''
+                this.form.month= val.getMonth()+1+''
             },
             resetForm(){
                 this.form={};
@@ -101,11 +121,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                // url=`${this.$ip}/qualification/securityMerits/save`
-                                url=`http://173.100.1.126:3000/mock/639/securityMerits/save`
+                                url=`${this.$ip}/qualification/securityMerits/save`
                             }else {
-                                url=`http://173.100.1.126:3000/mock/639/securityMerits/update`
-                                // url=`${this.$ip}/qualification/securityMerits/update`
+                                url=`${this.$ip}/qualification/securityMerits/update`
                             }
                             request({
                                 url,
