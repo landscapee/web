@@ -87,7 +87,7 @@ export default {
 		width: 16px;
 	}
 	.arrow_img{
-		margin:0px 2px 0px 2px;
+		margin:1px 2px 0px 2px;
 		height: 14px;
 		width: 14px;
 	}

@@ -268,12 +268,77 @@ let authRoutes = [
 		children: [],
 	},
 	{
-		path: '/WorkOrderManage77',
+		path: '/msgManage',
 		component: Layout,
-		redirect: '/WorkOrderManage88',
+		redirect: '/warningConfig',
 		name: '消息管理',
 		meta: {title: '消息管理',icon: 'xxgl' },
-		children: [],
+		children: [
+			{
+				path: '/warningConfig',
+				component: () => import('@views/msgManage/warningConfig/index'),
+				name: '预警配置',
+				meta: {title: '预警配置',icon: '',keepAlive: true },
+				children:[
+					{
+						path: '/addWarningConfig',
+						component: () => import('@views/msgManage/warningConfig/components/addWarningConfig'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					}
+				]
+			},{
+				path: '/warningSearch',
+				component: () => import('@views/msgManage/warningSearch/index'),
+				name: '预警查询',
+				meta: {title: '预警查询',icon: '',keepAlive: true },
+				children:[
+					{
+						path: '/historyWarning',
+						component: () => import('@views/msgManage/warningSearch/components/historyWarning'),
+						name: '历史',
+						meta: {	title: '历史',	icon: ''	},
+						hidden:true
+					}
+				]
+			},{
+				path: '/subscribeConfig',
+				component: () => import('@views/msgManage/subscribeConfig/index'),
+				name: '订阅配置',
+				meta: {title: '订阅配置',icon: '',keepAlive: true },
+				children:[
+					{
+						path: '/addSubscribeConfig',
+						component: () => import('@views/msgManage/subscribeConfig/components/addSubscribeConfig'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					}
+				]
+			},{
+				path: '/infoPlate',
+				component: () => import('@views/msgManage/infoPlate/index'),
+				name: '信息平台',
+				meta: {title: '信息平台',icon: '',keepAlive: true },
+				children:[
+					{
+						path: '/addInfoPlate',
+						component: () => import('@views/msgManage/infoPlate/components/addInfoPlate'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					},
+					{
+						path: '/historyInfoPlate',
+						component: () => import('@views/msgManage/infoPlate/components/historyInfoPlate'),
+						name: '历史',
+						meta: {	title: '历史',	icon: ''	},
+						hidden:true
+					}
+				]
+			},
+		],
 	},
 	{
 		path: '/basicData',

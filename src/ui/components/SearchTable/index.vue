@@ -49,7 +49,7 @@
 	</div>
 </template>
 <script>
-import { cloneDeep } from 'lodash';
+import { cloneDeep ,forEach} from 'lodash';
 import { fixPx } from '@lib/viewSize.js';
 import Icon from '@components/Icon-svg/index';
 export default {
@@ -66,7 +66,16 @@ export default {
 		};
 	},
 	watch: {
-		data: function(newVal, oldVal) {
+		tableConfig:function(newVal, oldVal){
+			let that = this;
+			newVal.map((item,index)=>{
+				forEach(item, function(value, key) {
+					that.$set(that.cloneTableConfig[index],key,value);
+				});
+				this.$set(this.cloneTableConfig,index,this.cloneTableConfig[index]);
+			})
+		},
+		data: function(newVal, oldVal){
 			// this.data = newVal;
 			// 重新计算element表格组件布局
 			setTimeout(() => {
