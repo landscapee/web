@@ -3,16 +3,26 @@
          <div  class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <!--<span>{{yearData.deptName}}-{{yearData.year}}年度-安全绩效</span>-->
-                    <el-select v-model="form.dept" filterable >
-                        <el-option v-for="item in deptData" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                    <el-select v-model="form.year" filterable >
-                        <el-option v-for="item in yearS" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
+
+                     <span class="dept">
+                         <el-select  @change="deptFouce" ref="dept"  v-model="form.deptId" filterable >
+                            <el-option v-for="item in deptData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                         </el-select>
+                    </span>
+                    <span>
+                         <el-select style="width:100px"   ref="year"  v-model="form.year" filterable >
+                            <el-option v-for="item in yearS" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                        年度-安全绩效
+                    </span>
+
                 </div>
                 <div class="top-toolbar">
-                      <div ><icon iconClass="export" ></icon>导出</div>
+                     <div @click="exportExcel()">
+                        <icon iconClass="export" ></icon>导出
+                        <a ref="a" :href="`${this.$ip}/qualification/download/yearSecurityMerits?year=${form.year}&deptId=${form.deptId}`"></a>
+                    </div>
+
                 </div>
             </div>
 
@@ -39,26 +49,70 @@
         data() {
             return {
                 yearS:[],
-                deptData:[{label:1111,value:11111}],
+                 deptData:[{label:'qweqweqwe',value:'1'},{label:'qweqqsdfsdfsdweqwe',value:'ddfd'},],
+                deptDataObj:{
+                    ddfd:'qweqqsdfsdfsdweqwe',
+                    '1':'qweqweqwe',
+                },
                 tableData:[],
                 tableConfig:safetyYearConfig(),
                 form:{},
-                yearData:{},
-
             };
         },
         created() {
-            this.yearData = {
-                deptName:'',
-                year:new Date().getFullYear(),
+            this.form = {
+                deptId:'1',
+                year:new Date().getFullYear()+'',
             };
+
+
+            request({
+                url:`${this.$ip}/qualification/securityMerits/getYearList`,
+                method: 'get',
+             }).then((d)=>{
+                this.yearS=d.data.map((k,l)=>{
+                     return{
+                        label:k,
+                        value:k,
+                    }
+                })
+            })
+            request({
+                url:`${this.$ip}/qualification/businessDictionaryValue/listByCode/dept`,
+                method: 'get',
+             }).then((d)=>{
+                this.deptData=d.data.map((k,l)=>{
+                     return{
+                        label:k,
+                        value:k,
+                    }
+                })
+            })
             this.getList();
         },
         watch:{
 
         },
+        mounted(){
+            let num=this.deptDataObj[this.form.deptId].length*15+40
+            this.$refs.dept.$el.style.width=`${num}px`
+        },
         methods: {
+            deptFouce(val){
 
+                let num=0
+                console.log(val.length);
+                if(val.length){
+                    num=this.deptDataObj[this.form.deptId].length*15+40
+                }
+                console.log(num);
+                this.$refs.dept.$el.style.width=`${num}px`
+            },
+
+            exportExcel(){
+                console.log(this.form);
+                this.$refs.a.click()
+            },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
                     if (row.col>1&&rowIndex % row.col === 0) {
@@ -79,9 +133,8 @@
                 request({
                     url:`${this.$ip}/qualification/securityMerits/getList`,
                      method: 'post',
-                    data:{...this.yearData}
-                })
-                    .then((data) => {
+                    data:{deptName:this.form.dept,year:this.form.year}
+                }).then((data) => {
                         this.tableData =[]
                         data.data.map((k,l)=>{
                              let data={}
@@ -113,12 +166,22 @@
         /deep/ .el-select{
 
             .el-input__inner{
+                font-size: 24px;
+                color:black;
                 border: 0!important;
             }
             .el-input__suffix{
 
             }
         }
+
+    }
+    /deep/ .el-icon-arrow-up:before{
+        color: black;
+        font-size: 24px;
+        content:'\e78f';
+    }
+    .dept{
 
     }
 </style>
