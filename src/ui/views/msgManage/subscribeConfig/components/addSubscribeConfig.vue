@@ -16,23 +16,20 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="消息名称" prop="sysParamName">
-            <span v-if="type=='info' || type=='edit' ">{{form.sysParamCode}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请输入消息名称"></el-input>
-          </el-form-item>
-          <el-form-item label="推送对象" prop="sysParamValue">
+          <el-form-item label="信息类型" prop="sysParamName">
             <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择推送对象">
+            <el-select v-else  v-model="value1" multiple placeholder="请选择信息类型">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否启用" prop="sysParamValue">
+            <span v-if="type=='info'">{{form.sysParamValue}}</span>
+            <el-select v-else  v-model="value1" multiple placeholder="请选择是否启用">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </div>
-        <div class="row_item_row row_item">
-          <el-form-item label="消息模板" prop="sysParamComment">
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-else v-model="form.sysParamComment" placeholder="请输入消息模板"></el-input>
-          </el-form-item>
-        </div>
+        
       </el-form>
     </div>
   </div>
@@ -52,8 +49,6 @@ export default {
       rules: {
         sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
         sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
-        sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
-        sysParamComment: [{ required: true, message: "请输入系统参数说明", trigger: "change" }]
       },
       type: "add"
     };

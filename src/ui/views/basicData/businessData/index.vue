@@ -81,8 +81,28 @@ export default {
             rightSelectId:null,
             leftRowState:false,
             leftSort:{},
-            rightSort:{}
+            rightSort:{},
+            scroll:0
         };
+    },
+    watch:{
+        $route (to, from) {
+          if(from.path=='/editBusinessData'){
+              this.leftParams.current = 1;
+              this.getList('left');
+              if(this.scroll > 0){
+                //  this.$refs['left-table'].$refs.body_table.bodyWrapper.scrollTop = this.scroll;
+                  window.scrollTo(0, this.scroll);
+              }
+          }else if(from.path=='/editBusinessSubset'){
+              this.rightParams.current = 1;
+              this.getList('right');
+              if(this.scroll  > 0){
+                //  this.$refs['right-table'].$refs.body_table.bodyWrapper.scrollTop = this.scroll ;
+                  window.scrollTo(0, this.scroll);
+              }
+          }
+        }
     },
     created() {
         this.leftParams.current = 1;
@@ -90,9 +110,6 @@ export default {
     },
 　　mounted() {
        window.addEventListener('scroll', this.handleScroll,true);//监听函数
-    },
-    watch:{
-        
     },
     methods: {
         //监听滚动
@@ -107,6 +124,7 @@ export default {
             var scrollHeight = bady.scrollHeight;
             //获取滚动元素标识
             var tag = bady.parentElement.__vue__.refTag;
+            this.scroll = scrollTop;
             if(scrollTop+windowHeight>=scrollHeight){
                 if(tag=='left-table'){
                     this.leftParams.current = ++this.leftParams.current ;

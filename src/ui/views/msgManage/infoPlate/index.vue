@@ -119,7 +119,7 @@ export default {
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
-                this.$router.push({path:'/addWarningConfig',query:{type:'add'}});
+                this.$router.push({path:'/addInfoPlate',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info' ||  tag == 'history' ){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');

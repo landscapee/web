@@ -16,22 +16,51 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="消息名称" prop="sysParamName">
-            <span v-if="type=='info' || type=='edit' ">{{form.sysParamCode}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请输入消息名称"></el-input>
+          <el-form-item label="信息类型" prop="sysParamName">
+            <span v-if="type=='info'">{{form.sysParamComment}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择信息类型"></el-input>
           </el-form-item>
-          <el-form-item label="推送对象" prop="sysParamValue">
+          <el-form-item label="发送时间" prop="sysParamValue">
             <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择推送对象">
+            <el-select v-else  v-model="value1" multiple placeholder="请选择发送时间">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="消息模板" prop="sysParamComment">
+          <el-form-item label="发送内容" prop="sysParamComment">
             <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-else v-model="form.sysParamComment" placeholder="请输入消息模板"></el-input>
+            <el-input v-else type="textarea" v-model="form.sysParamComment" placeholder="请输入消息模板"></el-input>
           </el-form-item>
+        </div>
+        <div class="row_custom2">
+          <el-form-item label="接收单位" prop="sysParamName">
+            <span v-if="type=='info'">{{form.sysParamComment}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收单位"></el-input>
+          </el-form-item>
+          <el-form-item label="接收人" prop="sysParamValue">
+            <span v-if="type=='info'">{{form.sysParamValue}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收人"></el-input>
+          </el-form-item>
+          <el-button>按订阅方式</el-button>
+          <el-button>接收对象选择</el-button>
+        </div>
+        <div class="row_custom3">
+          <el-form-item label="是否要求处理" prop="sysParamValue">
+            <el-radio v-model="radio" label="1">是</el-radio>
+            <el-radio v-model="radio" label="2">否</el-radio>
+           </el-form-item>
+        </div>
+        <div class="row_custom4">
+          <el-form-item label="要求处理时间" prop="sysParamName">
+            <span v-if="type=='info'">{{form.sysParamComment}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收单位"></el-input>
+          </el-form-item>
+          <el-form-item label="处理人" prop="sysParamValue">
+            <span v-if="type=='info'">{{form.sysParamValue}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收人"></el-input>
+          </el-form-item>
+          <el-button>处理人选择</el-button>
         </div>
       </el-form>
     </div>
@@ -122,15 +151,26 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 90px;
+        width: 120px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 90px;
+        margin-left: 120px;
+      }
+      .row_custom3{
+        @include common-input;
+      }
+      .row_custom2{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 245px;
+            text-align: left;
+        }
+        @include common-input;
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 377px;
+            width: 350px;
             text-align: left;
         }
         @include common-input;
@@ -144,7 +184,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 90px);
+          width: calc(100% - 120px);
         }
       }
   }

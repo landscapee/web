@@ -29,7 +29,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { warningSearchTable } from '../../tableConfig.js';
+import { warningSearchHistoryTable } from '../../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:warningSearchTable(),
+            tableConfig:warningSearchHistoryTable(),
             params:{
 				current: 1,
 				size: 15,

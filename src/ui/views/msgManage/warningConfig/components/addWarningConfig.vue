@@ -16,21 +16,21 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="消息名称" prop="sysParamName">
-            <span v-if="type=='info' || type=='edit' ">{{form.sysParamCode}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请输入消息名称"></el-input>
+          <el-form-item label="消息名称" prop="subject">
+            <span v-if="type=='info' || type=='edit' ">{{form.subject}}</span>
+            <el-input v-if="type=='add'" v-model="form.subject" placeholder="请输入消息名称"></el-input>
           </el-form-item>
-          <el-form-item label="推送对象" prop="sysParamValue">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择推送对象">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-form-item label="推送对象" prop="recipients">
+            <span v-if="type=='info'">{{form.recipients}}</span>
+            <el-select v-else  v-model="form.recipients" multiple placeholder="请选择推送对象">
+                <el-option v-for="item in recipients" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="消息模板" prop="sysParamComment">
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-else v-model="form.sysParamComment" placeholder="请输入消息模板"></el-input>
+          <el-form-item label="消息模板" prop="contentTemplate">
+            <span v-if="type=='info'">{{form.contentTemplate}}</span>
+            <el-input v-else v-model="form.contentTemplate" placeholder="请输入消息模板"></el-input>
           </el-form-item>
         </div>
       </el-form>
@@ -49,11 +49,11 @@ export default {
   data() {
     return {
       form: {},
+      recipients:[],
       rules: {
-        sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
+        sysParamCode: [{ required: true, message: "请输入消息名称", trigger: "change" }],
         sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
         sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
-        sysParamComment: [{ required: true, message: "请输入系统参数说明", trigger: "change" }]
       },
       type: "add"
     };
@@ -130,7 +130,7 @@ export default {
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 377px;
+            width: 379px;
             text-align: left;
         }
         @include common-input;

@@ -90,8 +90,6 @@ export default {
 		window.addEventListener('scroll', this.scroll, true);
 	},
 	methods: {
-
-
 		//计算滚动位置
 		scroll($event) {
 			if(this.$refs.body_table){
