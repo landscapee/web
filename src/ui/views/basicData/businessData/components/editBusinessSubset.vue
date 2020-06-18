@@ -103,11 +103,11 @@ export default {
             request({
               url,
               method: "post",
-              data: {...this.form,id:this.$route.query.id}
+              data: {...this.form,dicId:this.$route.query.id}
             })
               .then(data => {
                 this.$message.success(this.type == "add"?"保存成功！":"修改成功");
-                 this.$router.go(-1);
+                this.$router.go(-1);
               })
               .catch(error => {
                 this.$message.success(error);

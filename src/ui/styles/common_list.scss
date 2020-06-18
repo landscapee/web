@@ -1,6 +1,6 @@
 .top-content{
     height: 82px;
-   justify-content: center;
+    justify-content: center;
     position: relative;
     display: flex;
     align-items: center;
@@ -12,6 +12,27 @@
         line-height:24px;
         span{
             font-size:24px ;
+        }
+    }
+    .top-left-toolbar{
+        position: absolute;
+        left: 30px;
+        display: flex;
+        align-items: center;
+        .isActive{
+            color: #fff;
+            background-color: #333;
+        }
+        span{
+           display: inline-block;
+           padding: 0px 10px;
+           height: 32px;
+           line-height: 32px;
+           text-align: center;
+           color: #333;
+           background-color: #fff;
+           border: solid 1px #333;
+           cursor: pointer;
         }
     }
     .top-toolbar{
