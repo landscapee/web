@@ -65,7 +65,10 @@ export default {
        this.getList();
     },
     watch:{
+        '$route':function(val,nm){
+            console.log(1,val,nm);
 
+        }
     },
     methods: {
         exportExcel(){

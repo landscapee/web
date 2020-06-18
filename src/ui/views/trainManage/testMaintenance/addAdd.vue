@@ -138,7 +138,8 @@
             };
 
             return {
-                form: {},
+                oldForm:{},
+                form: {infTime:'单选'},
                 rules: {
                     infSources: [{ validator:infSources, trigger: "blur" }],
                     infTime: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
@@ -176,10 +177,9 @@
                         : this.type == "info"
                             ? "试题维护详情"
                             : "";
-                if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
-                }
+                let data=JSON.parse( this.$route.query.data)
+                this.oldForm={...data}
+
             }
         },
         methods: {
@@ -187,34 +187,23 @@
               this.$set(this.form,'keyWord','')
             },
             resetForm(){
-                this.form={};
+                this.form={infTime:'单选'};
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
-                            let url
-                             if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityInformation/save`
-                             }else {
-                                 url=`${this.$ip}/qualification/securityInformation/update`
 
+                            let data
+                             if(this.type == "add"){
+                                 this.oldForm.arrTable.unshift({...this.form})
+                                 data=JSON.stringify( this.oldForm)
+                                 this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,form:data}})
+                             }else {
+
+                                 this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,index:this.$route.query.index}})
                             }
-                            request({
-                                url,
-                                method: "post",
-                                data: this.form
-                            })
-                                .then(data => {
-                                    this.$message.success("保存成功！");
-                                    this.$router.go(-1);
-                                })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
-                        } else {
-                            console.log("error submit!!");
-                            return false;
+
                         }
                     });
                 }

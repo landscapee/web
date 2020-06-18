@@ -98,7 +98,7 @@
             </el-form>
         </div>
         <div class="headDiv1">
-            <div style="font-size: 18px" >所含试题 <span style="color:#7F7F7F;font-size: 18px">（数量{{tableData.length}}）</span></div>
+            <div style="font-size: 18px" >所含试题 <span style="color:#7F7F7F;font-size: 18px">（数量{{form.arrTable.length}}）</span></div>
             <div class="topToolbar">
                 <div @click="importExcel"><icon iconClass="add" ></icon>导入</div>
                 <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
@@ -112,7 +112,7 @@
             </div>
         </div>
         <div class="TableContent main-content ">
-            <SearchTable  ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+            <SearchTable  ref="searchTable" :data="form.arrTable" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                 <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                     <template slot-scope="{ row }">
                         <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -159,24 +159,33 @@
                 }
             };
             return {
-                form: {},
+                form: {
+                    arrTable:[],
+                },
                 rules: {
                     infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
                   },
-                tableData:[],
-                tableConfig:testMainAddConfig(),
+                 tableConfig:testMainAddConfig(),
                 params:{
                   size:15,
                   current:1,
                 },
-
+                index:null,
                 row:{},
                 sort:{},
                 selectId:null,
                 type: "add"
             };
         },
+        watch:{
+            '$route':function(val,nm){
+                console.log(1,val,nm);
+
+            }
+        },
+
         created() {
+            console.log(1,1,this.$router);
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -209,11 +218,11 @@
 
             },
             resetForm() {
-                this.form = {};
+                this.form = { arrTable:[],};
             },
             requestTable(searchData){
                 this.form = searchData;
-                this.selectId=null,
+                this.selectId=null;
                     this.tableData={records:[]};
                 this.params.current = 1;
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
@@ -241,9 +250,12 @@
             listenToCheckedChange(row, column, event){
 
                 let select = row.selected;
-                this.tableData.records.map(r =>{
+                this.tableData.records.map((r,l) =>{
                     if(r.selected){
                         r.selected = false;
+                    }
+                    if(r.id==row.id){
+                        this.index=l
                     }
                 })
                 row.selected  = !select;
@@ -290,14 +302,14 @@
                 }
             },
             addOrEditOrInfo(tag){
-                let data=JSON.stringify(this.row)
+                let data=JSON.stringify(this.form)
                 if(tag=='add'){
-                    this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add'}});
+                    this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',data:data}});
                 }else if(tag == 'edit' || tag == 'info'){
                     if(this.selectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
-                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,data:data}});
+                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,data:data,index:this.index}});
                     }
                 }
             },

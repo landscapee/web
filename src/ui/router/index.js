@@ -237,7 +237,7 @@ let authRoutes = [
                         path: '/testMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
                         name: '试卷新增',
-                        meta: {title: '试卷新增',icon: 'xxgl' },
+                        meta: {title: '试卷新增',icon: 'xxgl',keepAlive:true },
                         children:[
 
                         ]
