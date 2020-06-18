@@ -25,6 +25,8 @@ import './static/plugin/lang/zh-CN.js'
 import directives from '@lib/directive.js'
 //公共ip地址和端口
 Vue.prototype.$ip = "http://173.100.1.5:8011";
+//事件总线指向全局vue对象
+Vue.prototype.$eventBus= new Vue();
 Vue.use(directives)
 Vue.use(VueKindEditor)
 Vue.use(ElementUI);

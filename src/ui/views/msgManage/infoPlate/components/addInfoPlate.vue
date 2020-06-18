@@ -42,8 +42,8 @@
             <span v-if="type=='info'">{{form.sysParamValue}}</span>
             <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收人"></el-input>
           </el-form-item>
-          <el-button>按订阅方式</el-button>
-          <el-button>接收对象选择</el-button>
+          <el-button @click="handleSelectUser('subscribe')">按订阅方式</el-button>
+          <el-button @click="handleSelectUser('object')">接收对象选择</el-button>
         </div>
         <div class="row_custom3">
           <el-form-item label="是否要求处理" prop="sysParamValue">
@@ -62,6 +62,13 @@
           </el-form-item>
           <el-button>处理人选择</el-button>
         </div>
+        <div class="row_custom5">
+          <el-form-item label="附件" prop="sysParamName">
+            <span v-if="type=='info'">{{form.sysParamComment}}</span>
+            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="支持多个附件上传"></el-input>
+          </el-form-item>
+          <el-button>上传</el-button>
+        </div>
       </el-form>
     </div>
   </div>
@@ -70,9 +77,10 @@
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
+
 export default {
   components: {
-    Icon
+    Icon,
   },
   name: "",
   data() {
@@ -86,6 +94,9 @@ export default {
       },
       type: "add"
     };
+  },
+  mounted(){
+   
   },
   created() {
     if (this.$route.query) {
@@ -114,6 +125,12 @@ export default {
     }
   },
   methods: {
+    handleUserSelected(users) {
+			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
+		},
+    handleSelectUser(currentDept) {
+			
+		},
     resetForm(){
       this.form={};
     },
@@ -156,7 +173,28 @@ export default {
       /deep/ .el-form-item__content {
         margin-left: 120px;
       }
+      .row_custom5{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 788px;
+            text-align: left;
+        }
+        @include common-input;
+      }
+      .row_custom4{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 310px;
+            text-align: left;
+        }
+        @include common-input;
+      }
       .row_custom3{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 870px;
+            text-align: left;
+        }
         @include common-input;
       }
       .row_custom2{
