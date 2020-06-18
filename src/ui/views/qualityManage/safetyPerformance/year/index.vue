@@ -4,13 +4,13 @@
             <div class="top-content">
                 <div class="top-content-title">
 
-                     <span class="dept">
+                    <span class="dept">
                          <el-select  @change="deptFouce" ref="dept"  v-model="form.deptId" filterable >
                             <el-option v-for="item in deptData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                          </el-select>
                     </span>
                     <span>
-                         <el-select style="width:100px"   ref="year"  v-model="form.year" filterable >
+                         <el-select @change="getList" style="width:100px"   ref="year"  v-model="form.year" filterable >
                             <el-option v-for="item in yearS" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                         年度-安全绩效
@@ -49,19 +49,21 @@
         data() {
             return {
                 yearS:[],
-                 deptData:[{label:'qweqweqwe',value:'1'},{label:'qweqqsdfsdfsdweqwe',value:'ddfd'},],
+                 deptData:[{label:'厂务部',value:'dfd'},{label:'我相信部',value:'ddfd'},],
                 deptDataObj:{
-                    ddfd:'qweqqsdfsdfsdweqwe',
-                    '1':'qweqweqwe',
+                    ddfd:'我相信部',
+                    'dfd':'厂务部',
                 },
                 tableData:[],
                 tableConfig:safetyYearConfig(),
                 form:{},
+                num:0,
+                sum:0,
             };
         },
         created() {
             this.form = {
-                deptId:'1',
+                deptId:'dfd',
                 year:new Date().getFullYear()+'',
             };
 
@@ -94,19 +96,19 @@
 
         },
         mounted(){
-            let num=this.deptDataObj[this.form.deptId].length*15+40
+            let num=this.deptDataObj[this.form.deptId].length*28+40
             this.$refs.dept.$el.style.width=`${num}px`
         },
         methods: {
             deptFouce(val){
-
                 let num=0
                 console.log(val.length);
                 if(val.length){
-                    num=this.deptDataObj[this.form.deptId].length*15+40
+                    num=this.deptDataObj[this.form.deptId].length*28+40
                 }
                 console.log(num);
                 this.$refs.dept.$el.style.width=`${num}px`
+                this.getList()
             },
 
             exportExcel(){
@@ -115,17 +117,15 @@
             },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
-                    if (row.col>1&&rowIndex % row.col === 0) {
+
+                    // console.log(rowIndex, columnIndex, row.col, row.oldCol);
+                    if ((rowIndex - row.oldCol) % row.col === 0) {
                         return {
                             rowspan: row.col,
                             colspan: 1
                         };
                     } else {
-                        return {
-                            rowspan: 1,
-                            colspan: 1 ,
-
-                        };
+                        return [0,0]
                     }
                 }
             },
@@ -133,23 +133,39 @@
                 request({
                     url:`${this.$ip}/qualification/securityMerits/getList`,
                      method: 'post',
-                    data:{deptName:this.form.dept,year:this.form.year}
-                }).then((data) => {
+                    data:{deptName:this.form.deptId,year:this.form.year}
+                }).then((d) => {
                         this.tableData =[]
-                        data.data.map((k,l)=>{
+                    let sss={...d}
+                    sss.data.map((k,l)=>{
                              let data={}
-                            console.log(k.month,111);
+                             let num=0
+                        for (let i =0;i<l;i++){
+                            num = (sss.data[i].securityMeritsDetails.length||1) + num
+                         }
+                         if(k.securityMeritsDetails.length){
+
                             k.securityMeritsDetails.map((q,w)=>{
-                              data={
-                                  month:k.month,
-                                      ...q,
-                                  col:k.securityMeritsDetails.length,
-                              }
+                                data={
+                                    month:k.month,
+                                    ...q,
+                                    col:k.securityMeritsDetails.length,
+                                    oldCol:num,
+                                }
                                 this.tableData.push(data)
-                             })
+                            })
+                        }else {
+
+                            this.tableData.push({
+                                month:k.month,
+                                col:1,
+                                oldCol:num,
+                            })
+                        }
 
                          })
-                     })
+                    console.log(this.tableData);
+                })
             },
 
 
@@ -163,15 +179,12 @@
 
     }
     .top-content-title{
+        height:38px!important;
         /deep/ .el-select{
-
             .el-input__inner{
                 font-size: 24px;
                 color:black;
                 border: 0!important;
-            }
-            .el-input__suffix{
-
             }
         }
 
@@ -181,7 +194,12 @@
         font-size: 24px;
         content:'\e78f';
     }
-    .dept{
-
+    /deep/ .mainTable{
+        height: 730px;
+        overflow: auto;
     }
+    /deep/ .el-table::before {
+
+        width: 0;
+     }
 </style>

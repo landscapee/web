@@ -217,7 +217,7 @@ let authRoutes = [
 	{
 		path: '/peixunKaohe',
 		component: Layout,
-		redirect: '/WorkOrderManage7',
+		redirect: '/testMaintenance',
 		name: '培训考核',
 		meta: {title: '培训考核',icon: 'pxkh' },
 		children: [
@@ -228,10 +228,30 @@ let authRoutes = [
 				meta: {title: '课件维护',icon: 'xxgl' },
 			},
 			{
-				path: '/WorkOrderManage9',
-				component: ()=>{},
-				name: '试题维护',
-				meta: {title: '试题维护',icon: 'xxgl' },
+				path: '/testMaintenance',
+				component: () => import('@views/trainManage/testMaintenance/index'),
+				name: '试卷维护',
+				meta: {title: '试卷维护',icon: 'xxgl' },
+                children:[
+					{
+                        path: '/testMaintenanceAdd',
+                        component: () => import('@views/trainManage/testMaintenance/add'),
+                        name: '试卷新增',
+                        meta: {title: '试卷新增',icon: 'xxgl' },
+                        children:[
+
+                        ]
+					},
+					{
+                        path: '/testMaintenanceAddAdd',
+                        component: () => import('@views/trainManage/testMaintenance/addAdd'),
+                        name: '试题维护',
+                        meta: {title: '试题维护',icon: 'xxgl' },
+                        children:[
+
+                        ]
+					},
+				]
 			},
 			{
 				path: '/WorkOrderManage11',

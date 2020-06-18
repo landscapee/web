@@ -1,22 +1,23 @@
 <template>
     <div>
-        <el-dialog title="复制绩效明细"  :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog title="试卷导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
-                <el-form-item label="目标安全绩效：">
-                    <span>{{row.year}}-{{row.month}}</span>
+                <el-form-item label="编号：">
+                    <span>{{row.year}} </span>
                 </el-form-item>
-                <el-form-item label="源安全绩效：">
-                    <el-select v-model="form.sourcesId">
-                        <el-option v-for="(opt,index) in sourcesList" :label="opt.year+'-'+opt.month" :value="opt.id" :key="index">
-
-                            <!--<span> {{opt.year}}-{{opt.month}}</span>-->
-                        </el-option>
-                    </el-select>
+                <el-form-item label="名称：">
+                    <span>{{row.year}} </span>
+                </el-form-item>
+                <el-form-item label="格式：">
+                    <el-radio-group v-model="form.sourcesId">
+                        <el-radio label="WORD" value="WORD"></el-radio>
+                        <el-radio label="PDF" value="PDF"></el-radio>
+                    </el-radio-group>
                 </el-form-item>
             </el-form>
             <div class="footer">
                 <el-button @click="close">取消</el-button>
-                <el-button type="primary" @click="submit('form')">确认</el-button>
+                <el-button type="primary" @click="submit('form')">导出</el-button>
             </div>
         </el-dialog>
 
@@ -32,26 +33,18 @@
         components: {},
         data() {
             return {
-                form:{},
+                form:{sourcesId:'WORD'},
                 rules:{},
-                sourcesList:[],
+
                 row:{},
                 dialogFormVisible:false,
             }
         },
         methods: {
-            open(data,id){
+            open(data){
                 this.dialogFormVisible=true
-                this.row={...data,selectedId:id}
-                request({
-                    url:`${this.$ip}/qualification/securityMerits/sourcesList`,
-                    method: 'post',
-                    data:{
-                        deptName:this.row.deptName,
-                    }
-                }).then((data) => {
-                    this.sourcesList=data.data
-                })
+                this.form={...data}
+
             },
 
     submit(formName) {
@@ -62,21 +55,11 @@
                              url:`${this.$ip}/qualification/securityMerits/copy`,
                              method:'post',
                              data:{
-                                 targetId:this.row.id,
-                                 ...this.form
+                                  ...this.form
                              }
                          }).then((d) => {
-
-                              if(d.data){
+                              if(d){
                                  this.close();
-                                 // if(this.row.id==this.row.selectedId){
-                                 //     this.$emit('getList');
-                                 // }
-                                  this.$emit('getList')
-                                 this.$message({
-                                     message: '复制成功',
-                                     type: 'success',
-                                 });
                              }else {
                                  this.$message({
                                      message: '复制失败',
@@ -104,7 +87,9 @@
 /deep/ .el-dialog{
     width: 600px;
     .el-dialog__body{
-
+        .el-form-item__label{
+            width:100px;
+        }
     }
 
 }

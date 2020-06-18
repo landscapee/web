@@ -92,8 +92,7 @@ export default {
             rightForm:{},
             leftSelectId:null,
             rightSelectId:null,
-            leftRowState:false,
-            leftSort:{},
+             leftSort:{},
             rightSort:{}
         };
     },
@@ -101,8 +100,12 @@ export default {
         '$route':function(val,nm){
             console.log(1,val,nm);
             if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
-                val.meta.keepAlive=false
+                this.leftParams.size=this.tableLeftData.records.length
+                this.leftParams.current=1
+                this.getList('left');
             }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
+                this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
+                this.rightParams.current = 1
                 this.getList('right');
                 // this.toFrom=nm.query.type
             }
@@ -131,9 +134,8 @@ export default {
         //监听滚动
         handleScroll($event){
             // 获取滚动条的dom
-            console.log($event);
-            var bady = $event.target;   
-　　　　　　 // 获取距离顶部的距离
+            var bady = $event.target;
+            // 获取距离顶部的距离
             var scrollTop = bady.scrollTop;
             // 获取可视区的高度
             var windowHeight = bady.clientHeight;
@@ -143,10 +145,20 @@ export default {
             var tag = bady.parentElement.__vue__.refTag;
             if(scrollTop+windowHeight>=scrollHeight){
                 if(tag=='left-table'){
-                    this.leftParams.current = ++this.leftParams.current ;
+                    if(this.leftParams.size!=18){
+                        this.leftParams.size=18
+                        this.leftParams.current = 1
+                    }else {
+                        this.leftParams.current = ++this.leftParams.current ;
+                    }
                     this.getList('left','scroll');
                 }else{
-                    this.rightParams.current = ++this.rightParams.current ;
+                    if(this.rightParams.size!=18){
+                        this.rightParams.size=18
+                        this.rightParams.current = 1
+                    }else {
+                        this.rightParams.current = ++this.rightParams.current ;
+                    }
                     this.getList('right','scroll');
                 }
             }
@@ -157,8 +169,7 @@ export default {
                 this.leftForm = searchData;
                 this.leftSelectId=null,
                 this.rightSelectId=null,
-                this.leftRowState=false,
-                this.tableRightData={records:[]};
+                 this.tableRightData={records:[]};
                 this.leftParams.current = 1;
             }else{
                 this.rightForm = searchData;
@@ -190,6 +201,7 @@ export default {
                 this.leftParams.current = 1;
                 this.leftSelectId=null
                 this.rightSelectId=null
+
                 this.rightParams.current = 1;
                 this.tableRightData.records=[]
 
@@ -219,18 +231,15 @@ export default {
                     this.rightSelectId = null;
                     this.tableRightData.records=[]
                 }
-                this.leftRowState = row.enableMaintain==0?false:true;
-                this.rightParams.current = 1;
+                 this.rightParams.current = 1;
                 this.getList('right');
             }else{
 
                  if(row.selected){
-                     // this.rightIndex=row.index
-                    this.rightSelectId = row.id;
+                     this.rightSelectId = row.id;
                     this.rightRow={...row}
                 }else{
-                     // this.rightIndex=null
-                    this.rightSelectId = null;
+                     this.rightSelectId = null;
                 }
             }
             this.$set(this[tableTag].records,row.index,row);
@@ -299,8 +308,7 @@ export default {
                                         this.tableRightData.records=[]
                                     }else{
                                         this.rightSelectId=null
-                                        // this.rightIndex=null
-                                        this.rightRow={}
+                                         this.rightRow={}
                                         this.rightParams.current= 1;
                                     }
 
@@ -324,19 +332,24 @@ export default {
                     }
                 }))
                 request({
-                    // url:`http://173.100.1.126:3000/mock/639/examination/list`,
-                    url:`${this.$ip}/qualification/examination/list`,
+                     url:`${this.$ip}/qualification/examination/list`,
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,},
                     params:{...this.leftParams}
                 })
                     .then((data) => {
+                        data.data.records.map((k,l)=>{
+                            if(k.id==this.leftSelectId){
+                                k.selected=true
+                                this.leftRow=k
+                            }
+                        })
                         if(this.leftParams.current==1){
                             this.tableLeftData.records = data.data.records;
                         }else{
                             this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.records);
                         }
-                        if(scroll && data.data.items.length==0){
+                        if(scroll && data.data.records.length==0){
                             this.leftParams.current = --this.leftParams.current;
                         }
 
@@ -351,25 +364,27 @@ export default {
                         }
                     }))
                     request({
-                        // url:`http://173.100.1.126:3000/mock/639/examinationDetail/list`,
-                        url:`${this.$ip}/qualification/examinationDetail/list`,
+                         url:`${this.$ip}/qualification/examinationDetail/list`,
                         method: 'post',
                         data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
                         params:{...this.rightParams}
                     })
                     .then((data) => {
-                        console.log(this.rightParams.current,111);
-                        if(this.rightParams.current==1){
+                        data.data.records.map((k,l)=>{
+                            if(k.id==this.rightSelectId){
+                                k.selected=true
+                                this.rightRow=k
+                            }
+                        })
+                         if(this.rightParams.current==1){
                             this.tableRightData.records = data.data.records;
                         }else{
                             this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                         }
-                        if(scroll && data.data.items.length==0){
+                        if(scroll && data.data.records.length==0){
                             this.rightParams.current = --this.rightParams.current;
                         }
-                        this.rightParams.current=data.data.current
 
-                        this.rightSelectId = null;
                     }).catch((error) => {
                 
                     });

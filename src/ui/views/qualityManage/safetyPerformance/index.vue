@@ -56,7 +56,7 @@
                     <el-table-column slot="option" label="操作" :width="130" >
                         <template slot-scope="{ row }">
                             <span @click.stop="copyDetails(row)">
-                                <el-button class="copyButton">复制绩效明细</el-button>
+                                <el-button :disabled="row.copy" class="copyButton">复制绩效明细</el-button>
                             </span>
                           </template>
                     </el-table-column>
@@ -71,7 +71,7 @@
                 </SearchTable>
             </div>
         </div>
-        <CopyDetails ref="CopyDetails" @getList="getList('right')"></CopyDetails>
+        <CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
     </div>
 </template>
 <script>
@@ -108,19 +108,24 @@
                 rightForm:{},
                 leftSelectId:null,
                 rightSelectId:null,
-                leftRowState:false,
-                leftSort:{},
+                 leftSort:{},
                 rightSort:{}
             };
         },
         watch:{
             '$route':function(val,nm){
-                console.log(1,val,nm);
+                console.log(1,val.path,nm.path);
                 if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceAdd'){
-                    val.meta.keepAlive=false
+
+                    this.leftParams.size=this.tableLeftData.records.length
+                    this.leftParams.current=1
+                    this.getList('left');
                 }else if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceDetailsAdd'){
+                    this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
+                    this.rightParams.current = 1
                     this.getList('right');
-                    // this.toFrom=nm.query.type
+                }else {
+
                 }
             }
         },
@@ -146,7 +151,8 @@
             },
             copyDetails(row){
                 console.log(row);
-                this.$refs.CopyDetails.open(row)
+
+                this.$refs.CopyDetails.open(row,this.leftSelectId)
             },
             //监听滚动
             handleScroll($event){
@@ -162,11 +168,21 @@
                 var tag = bady.parentElement.__vue__.refTag;
                 if(scrollTop+windowHeight>=scrollHeight){
                     if(tag=='left-table'){
-                        this.leftParams.current = ++this.leftParams.current ;
+                        if(this.leftParams.size!=18){
+                            this.leftParams.size=18
+                            this.leftParams.current = 1
+                        }else {
+                            this.leftParams.current = ++this.leftParams.current ;
+                        }
                         this.getList('left','scroll');
                     }else{
-                        this.rightParams.current = ++this.rightParams.current ;
-                        this.getList('right','scroll');
+                        if(this.rightParams.size!=18){
+                            this.rightParams.size=18
+                            this.rightParams.current = 1
+                        }else {
+                            this.rightParams.current = ++this.rightParams.current ;
+                        }
+                         this.getList('right','scroll');
                     }
                 }
             },
@@ -176,8 +192,7 @@
                     this.leftForm = searchData;
                     this.leftSelectId=null;
                         this.rightSelectId=null;
-                        this.leftRowState=false;
-                        this.tableRightData={records:[]};
+                         this.tableRightData={records:[]};
                     this.leftParams.current = 1;
                 }else{
                     this.rightForm = searchData;
@@ -229,8 +244,7 @@
                         this.rightSelectId = null;
                         this.tableRightData.records=[]
                     }
-                    this.leftRowState = row.enableMaintain==0?false:true;
-                    this.rightParams.current = 1;
+                     this.rightParams.current = 1;
                     this.getList('right');
                 }else{
                     if(row.selected){
@@ -299,15 +313,18 @@
                             }).then((data) => {
                                 this.$message({type: 'success',message: '删除成功'});
                                 if(tag=='left'){
-
                                     this.leftParams.current = 1;
                                     this.rightParams.current= 1;
+                                    this.rightSelectId=null
+                                    this.rightRow={}
+                                    this.leftSelectId=null
+                                    this.leftRow={}
+                                    this.tableRightData.records=[]
                                  }else{
                                     this.rightSelectId=null
                                     this.rightRow={}
                                     this.rightParams.current= 1;
                                 }
-
                                 this.getList(tag);
                             })
                         })
@@ -335,19 +352,22 @@
                         params:{...this.leftParams}
                     })
                         .then((data) => {
+                            data.data.records.map((k,l)=>{
+                                if(k.id==this.leftSelectId){
+                                    k.selected=true
+                                    this.leftRow=k
+                                }
+                            })
                              if(this.leftParams.current==1){
+
                                 this.tableLeftData.records = data.data.records;
                             }else{
                                 this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.records);
                             }
-                            if(scroll && data.data.items.length==0){
-                                this.leftParams.current = --this.leftParams.current;
+                            if(scroll && data.data.records.length==0){
+                                this.leftParams.current = this.leftParams.current-1;
                             }
-                            this.leftRow={}
-                            this.rightRow={}
-                            this.leftSelectId=null
-                            this.rightSelectId=null
-                            this.tableRightData.records=[]
+
                         }).catch((error) => {
 
                     });
@@ -364,17 +384,21 @@
                             data:{...this.rightForm,securityMeritsId:this.leftSelectId,...this.rightSort},
                             params:{...this.rightParams}
                         }).then((data) => {
+                            data.data.records.map((k,l)=>{
+                                if(k.id==this.rightSelectId){
+                                    k.selected=true
+                                    this.rightRow=k
+                                }
+                            })
                                 if(this.rightParams.current==1){
                                     this.tableRightData.records = data.data.records;
                                 }else{
                                     this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                                 }
-                                if(scroll && data.data.items.length==0){
+                                if(scroll && data.data.records.length==0){
                                     this.rightParams.current = --this.rightParams.current;
                                 }
-                            this.rightParams.current=data.data.current
-
-                            this.rightSelectId = null;
+                            // this.rightParams.current=data.data.current
 
                         }).catch((error) => {
 

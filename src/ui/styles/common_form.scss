@@ -11,7 +11,7 @@
         /deep/ .el-input,
         /deep/ .el-select,
         /deep/ .el-cascader {
-            width: 100% !important;
+            width: 100% ;
         }
        
         /deep/.el-form-item__label{
@@ -126,6 +126,41 @@
                 width: 100% !important;
                 text-align: left !important;
             }
+        }
+    }
+}
+.topToolbar{
+    //position: absolute;
+    //right: 0px;
+    .isDisabled{
+        background: rgba(208,208,208,1);
+        color: #6A7785;
+        cursor: not-allowed;
+        .svg-icon{
+            fill: rgba(208,208,208,1);
+        }
+    }
+    div{
+        user-select: none;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        line-height: 32px;
+        padding: 7px;
+        border-radius:2px;
+        border:1px solid rgba(208,208,208,1);
+        margin-right: 12px;
+        color: #3D568E;
+        &:last-child{
+            margin-right: 30px;
+        }
+        .svg-icon{
+            height:18px;
+            width:18px;
+            margin-right: 4px;
+            vertical-align: text-top;
         }
     }
 }
