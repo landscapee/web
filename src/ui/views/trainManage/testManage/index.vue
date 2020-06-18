@@ -1,35 +1,37 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testMaintenanceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceAddAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$router.history.current.path == '/testManageAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/testMaintenance'" :key="$route.path" class="sysParameter">
+        <div v-else-if="this.$router.history.current.path == '/testManage'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>试卷维护</span>
+                    <span>考试管理</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出Excel</div>
                 </div>
             </div>
             <div class="main-content">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49" fixed="left">
+                    <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <!--<el-table-column :show-overflow-tooltip="true" slot="remark" label="备注" :width="190" fixed="right">-->
-                        <!--<template  slot-scope="{ row }">-->
-                            <!--<span>{{row.remark}}</span>-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
+                    <el-table-column   slot="option" label="操作" :width="230"  >
+                        <template  slot-scope="{ row }">
+                            <el-button  class="copyButton copyButton1" @click="testPush('/testManagePushStaff',row)">考试推送员工</el-button>
+                            <el-button  class="copyButton" @click="testPush('/testManageResults',row)">员工考试结果</el-button>
+                        </template>
+                    </el-table-column>
 
                 </SearchTable>
             </div>
@@ -39,7 +41,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testMainConfig } from './tableConfig.js';
+import { testConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
@@ -51,7 +53,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testMainConfig(),
+            tableConfig:testConfig(),
             params:{
 				current: 1,
 				size: 15,
@@ -72,6 +74,9 @@ export default {
         }
     },
     methods: {
+        testPush(path,row){
+          this.$router.push(path,row)
+        },
         exportExcel(){
              this.$refs.a.click()
         },
@@ -124,12 +129,12 @@ export default {
         addOrEditOrInfo(tag){
             let data=JSON.stringify(this.row)
             if(tag=='add'){
-                this.$router.push({path:'/testMaintenanceAdd',query:{type:'add'}});
+                this.$router.push({path:'/testManageAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/testManageAdd',query:{type:tag,data:data}});
                 }
             }
         },
@@ -205,6 +210,15 @@ export default {
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
     margin-top:40px;
-    
+
+    .copyButton{
+        margin: 0;
+        padding:7px 10px;
+        background: black;
+        color:white;
+    }
+    .copyButton1{
+        margin-right: 3px;
+    }
 }
 </style>

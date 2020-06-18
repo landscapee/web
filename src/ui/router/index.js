@@ -183,7 +183,7 @@ let authRoutes = [
                         path: '/dangerousDataAdd',
                         component: () => import('@views/qualityManage/dangerousData/add'),
                         name: '危险数据新增',
-                        meta: {title: '危险数据新增',icon: ''},
+                        meta: {title: '危险数据新增',icon: '',keepAlive:true},
 					},
 
 				]
@@ -231,13 +231,13 @@ let authRoutes = [
 				path: '/testMaintenance',
 				component: () => import('@views/trainManage/testMaintenance/index'),
 				name: '试卷维护',
-				meta: {title: '试卷维护',icon: 'xxgl' },
+				meta: {title: '试卷维护',icon: 'xxgl' , },
                 children:[
 					{
                         path: '/testMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
                         name: '试卷新增',
-                        meta: {title: '试卷新增',icon: 'xxgl',keepAlive:true },
+                        meta: {title: '试卷新增',icon: 'xxgl' },
                         children:[
 
                         ]
@@ -260,10 +260,36 @@ let authRoutes = [
 				meta: {title: '培训管理',icon: 'xxgl' },
 			},
 			{
-				path: '/WorkOrderManage22',
-				component: ()=>{},
+				path: '/testManage',
+				component: () => import('@views/trainManage/testManage/index'),
 				name: '考试管理',
 				meta: {title: '考试管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/testManageAdd',
+                        component: () => import('@views/trainManage/testManage/add'),
+                        name: '考试管理-新增',
+                        meta: {title: '考试管理-新增',icon: 'xxgl' },
+                        children:[
+
+                        ]
+                    },
+                    {
+                        path: '/testManagePushStaff',
+                        component: () => import('@views/trainManage/testManage/pushStaff.vue'),
+                        name: '考试推送员工',
+                        meta: {title: '考试推送员工',icon: 'xxgl' },
+
+                    },
+
+                    {
+                        path: '/testManageResults',
+                        component: () => import('@views/trainManage/testManage/testResults.vue'),
+                        name: '员工考试结果',
+                        meta: {title: '员工考试结果',icon: 'xxgl' },
+
+                    },
+                ]
 			},
 			{
 				path: '/WorkOrderManage33',

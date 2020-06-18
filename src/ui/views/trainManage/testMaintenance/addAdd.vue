@@ -178,7 +178,12 @@
                             ? "试题维护详情"
                             : "";
                 let data=JSON.parse( this.$route.query.data)
-                this.oldForm={...data}
+                    this.oldForm={...data}
+                if(this.type!='add'){
+                    let row=JSON.parse( this.$route.query.row)
+                    this.form={...row}
+                }
+
 
             }
         },
@@ -193,18 +198,18 @@
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
-
-                            let data
+                            let row
                              if(this.type == "add"){
                                  this.oldForm.arrTable.unshift({...this.form})
-                                 data=JSON.stringify( this.oldForm)
-                                 this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,form:data}})
+                                 row=this.$route.query.row
                              }else {
-
-                                 this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,index:this.$route.query.index}})
-                            }
-
-                        }
+                                 this.oldForm.arrTable.splice(this.$route.query.index,1,{...this.form})
+                                 row=JSON.stringify(this.form)
+                             }
+                             // console.log(this.oldForm,row);
+                             let data=JSON.stringify(this.oldForm)
+                            this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,data:data,row:row}})
+                         }
                     });
                 }
             }

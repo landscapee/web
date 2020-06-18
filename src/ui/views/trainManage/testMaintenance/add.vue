@@ -171,22 +171,17 @@
                   current:1,
                 },
                 index:null,
-                row:{},
+                row:null,
                 sort:{},
                 selectId:null,
                 type: "add"
             };
         },
-        watch:{
-            '$route':function(val,nm){
-                console.log(1,val,nm);
 
-            }
-        },
 
         created() {
-            console.log(1,1,this.$router);
-            if (this.$route.query) {
+             if (this.$route.query ) {
+                console.log(1,1,this.$router);
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
@@ -196,10 +191,15 @@
                         : this.type == "info"
                             ? "试卷-详情"
                             : "";
-                if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
-                }
+                 if(this.$route.query.data){
+                     let data=JSON.parse( this.$route.query.data)
+                     this.form={...data}
+                 }
+                 if(this.$route.query.row){
+                     let row=JSON.parse( this.$route.query.row)
+                     this.row={...row}
+                     this.index=row.index
+                 }
             }
         },
         methods: {
@@ -219,6 +219,8 @@
             },
             resetForm() {
                 this.form = { arrTable:[],};
+                this.row=null
+                this.index=null
             },
             requestTable(searchData){
                 this.form = searchData;
@@ -250,24 +252,23 @@
             listenToCheckedChange(row, column, event){
 
                 let select = row.selected;
-                this.tableData.records.map((r,l) =>{
+                this.form.arrTable.map((r,l) =>{
                     if(r.selected){
                         r.selected = false;
                     }
-                    if(r.id==row.id){
-                        this.index=l
-                    }
+
                 })
+                this.index=row.index
                 row.selected  = !select;
                 if(row.selected ){
-                    this.selectId = row.id;
+                    this.row = row;
                 }else {
-                    this.selectId   = null;
+                    this.row  = null;
                 }
-                this.row = row;
+
                 this.params.current = 1;
                 console.log(row, column, event,199);
-                this.$set(this.tableData.records,row.index,row);
+                this.$set(this.form.arrTable,row.index,row);
             },
 
             saveForm(form) {
@@ -303,18 +304,25 @@
             },
             addOrEditOrInfo(tag){
                 let data=JSON.stringify(this.form)
+                let row
+                if(this.row){
+                      row=JSON.stringify(this.row)
+                }else {
+                    row=''
+                }
+
                 if(tag=='add'){
-                    this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',data:data}});
+                    this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',data:data,row:row,}});
                 }else if(tag == 'edit' || tag == 'info'){
-                    if(this.selectId==null){
+                    if(this.row==null){
                         this.$message.error('请先选中一行数据');
                     }else{
-                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,data:data,index:this.index}});
+                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,data:data,row:row,index:this.index}});
                     }
                 }
             },
             delData() {
-                if (this.selectId == null) {
+                if (this.row == null) {
                     this.$message.error('请先选中一行数据');
                 } else {
                     this.$confirm('此操作将删除该试题, 是否继续?', '提示', {
@@ -323,6 +331,9 @@
                         type: 'warning',
                     })
                         .then(() => {
+                            this.form.arrTable.splice(this.row.index,1)
+                            this.row=null
+                            this.index=null
                             this.$message({type: 'success', message: '删除成功'});
                         })
                 }
