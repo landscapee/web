@@ -23,7 +23,7 @@
           <el-form-item label="推送对象" prop="recipients">
             <span v-if="type=='info'">{{form.recipients}}</span>
             <el-select v-else  v-model="form.recipients" multiple placeholder="请选择推送对象">
-                <el-option v-for="item in recipients" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in recipients" :key="item.value" :label="item" :value="item"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -35,27 +35,31 @@
         </div>
       </el-form>
     </div>
+    <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
   </div>
 </template>
 <script>
+import userTree from '@components/userTree/index';
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
 export default {
   components: {
-    Icon
+    Icon,
+    userTree
   },
   name: "",
   data() {
     return {
       form: {},
-      recipients:[],
+      recipients:["员工","员工上级"],
       rules: {
         sysParamCode: [{ required: true, message: "请输入消息名称", trigger: "change" }],
         sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
         sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
       },
-      type: "add"
+      type: "add",
+      users:[]
     };
   },
   created() {
@@ -85,6 +89,12 @@ export default {
     }
   },
   methods: {
+    handleUserSelected(users) {
+			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
+		},
+    handleSelectUser(){
+       this.$refs.userBox.open(this.users, '选择人员', true);
+    },
     resetForm(){
       this.form={};
     },

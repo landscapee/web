@@ -2,7 +2,7 @@
   <div class="editBusinessSubset">
     <div class="top-content">
       <div class="top-content-title">
-        <span>业务数据类型-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+        <span>业务数据-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
         <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
@@ -108,6 +108,7 @@ export default {
               .then(data => {
                 this.$message.success(this.type == "add"?"保存成功！":"修改成功");
                 this.$router.go(-1);
+                 this.$eventBus.$emit('updatedata', 'right');
               })
               .catch(error => {
                 this.$message.success(error);
