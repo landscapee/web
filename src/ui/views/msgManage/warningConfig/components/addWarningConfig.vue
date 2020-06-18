@@ -33,6 +33,50 @@
             <el-input v-else v-model="form.contentTemplate" placeholder="请输入消息模板"></el-input>
           </el-form-item>
         </div>
+        <div class="row_custom2">
+          <el-form-item label="人员" prop="subject">
+              <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择人员</el-button>
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.userId" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.userName }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
+          </el-form-item>
+          <el-form-item label="岗位" prop="recipients">
+            <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择岗位</el-button>
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.userId" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.userName }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
+          </el-form-item>
+        </div>
+        <div class="row_custom2">
+           <el-form-item label="角色" prop="subject">
+              <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择岗位</el-button>
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.userId" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.userName }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
+           </el-form-item>
+           <el-form-item label="部门" prop="recipients">
+              <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择岗位</el-button>
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.userId" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.userName }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
+           </el-form-item>
+        </div>
       </el-form>
     </div>
     <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
@@ -59,7 +103,11 @@ export default {
         sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
       },
       type: "add",
-      users:[]
+      users:[],
+      userList:[],
+      stationList:[],
+      deptList:[],
+      roleList:[],
     };
   },
   created() {
@@ -74,7 +122,7 @@ export default {
           ? "详情"
           : "";
          if(this.type == "edit" || this.type == "info"){
-              request({
+          request({
                 url:`${this.$ip}/mms-warning/warningTemplate/getById`,
                 method: "get",
                 params: {id:this.$route.query.id}
@@ -89,12 +137,16 @@ export default {
     }
   },
   methods: {
+    handleClose(tag) {
+		
+		},
+    userOpen(){
+      debugger
+      this.$refs.userBox.open(this.users, '选择人员', true);
+    },
     handleUserSelected(users) {
 			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
 		},
-    handleSelectUser(){
-       this.$refs.userBox.open(this.users, '选择人员', true);
-    },
     resetForm(){
       this.form={};
     },
@@ -136,6 +188,14 @@ export default {
       }
       /deep/ .el-form-item__content {
         margin-left: 90px;
+      }
+      .row_custom2{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width:405px;
+            text-align: left;
+        }
+        @include common-input;
       }
       .row_custom{
         /deep/ .el-form-item__content{

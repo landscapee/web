@@ -52,6 +52,7 @@
 
 <script>
 import Tree from '@components/Tree/index';
+import { formatTreeData } from '@lib/tools.js';
 import { extend, get, cloneDeep, filter, some, flow, concat, map } from 'lodash';
 export default {
 	name: 'Users',
@@ -133,10 +134,27 @@ export default {
 			let fetch;
 			let param = { pageNum: 1, pageSize: 99999 };
 			if (this.type == 'ORG') {
-				fetch = getAllUserByOrgId;
+				fetch = (params)=>{
+          request({
+            headers: { 'Content-Type': 'text/plain' },
+            url: `/api/sys/user/getAllUserByOrgId`,
+            method: 'get',
+            params,
+          }).then((d) => {
+            return Promise.resolve(d);
+          });
+        } 
 				param.orgId = this.selectId;
 			} else {
-				fetch = getUsersByDeptId;
+				fetch = (params)=>{
+          request({
+            url: '/api/sys/user/getUsersByDeptId',
+            method: 'get',
+            params,
+          }).then((d) => {
+            return Promise.resolve(d);
+          });
+        } 
 				param.deptId = this.selectId;
 			}
 			fetch(param).then((d) => {
@@ -179,7 +197,11 @@ export default {
 		},
 		getTree(currentDept) {
 			let deptId = this.$store.getters.userInfo.administrativeDeptId;
-			getAllOrg().then((response) => {
+			request({
+				url: '/api/sys/org/getAllTree',
+				method: 'get',
+				params:{},
+			}).then((response) => {
 				if (currentDept) {
 					this.findCurrentDept(response.data[0], deptId);
 				} else {

@@ -101,7 +101,7 @@ export default {
                          if (data.responseCode != 1000) {
                             this.$message.error( data.responseMessage);
                          }else{
-							localStorage.setItem("userInfo",JSON.stringify(data));
+							this.$store.commit('SET_USER_INFO',data.data);
                             this.$router.push({ path: '/qualityManage' });
                          }
                          this.loading = false;
