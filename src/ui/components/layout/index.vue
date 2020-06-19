@@ -4,8 +4,9 @@
 			<img :src="logo" class="logo_icon" />
 			<span class="header_title">{{sysname}}</span>
 			<div class="header-right">
+				<i class="bell_tips">{{tipsNumber}}</i>
 				<span><img :src="usericon" />{{username}}</span>
-				<span><img :src="bell" /><span class="bell_tips">{{tipsNumber}}</span>消息</span>
+				<span><img :src="bell" />消息</span>
 				<span><img :src="esc" />退出</span>
 			</div>
 		</el-header>
@@ -52,7 +53,7 @@ import Icon from '@components/Icon-svg/index';
       return {
 		routeMenu:[],
 		asyncRoutes,
-		username:'杨丹丹',
+		username:this.$store.getters.userInfo.name,
 		sysname:'成都天府机场机务管理系统',
 		tipsNumber:'99+',
 		logo,
@@ -119,16 +120,17 @@ import Icon from '@components/Icon-svg/index';
 			}
 			.bell_tips{
 				position: absolute;
-				left:109px;
+				left:95px;
 				top: -11px;
 				padding: 1px;
 				background: #E93570;
 				color: #fff;
 				border-radius: 5px;
-				font-size:12px;
+				font-size:10px;
+				font-style:normal;
 				font-family:SourceHanSansCN-Medium,SourceHanSansCN;
 				font-weight:500;
-				line-height:12px;
+				line-height:10px;
 			}
 			span{
 				margin-right: 15px;

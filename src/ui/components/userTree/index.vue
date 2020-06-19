@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import request from '@lib/axios.js';
 import Tree from '@components/Tree/index';
 import { formatTreeData } from '@lib/tools.js';
 import { extend, get, cloneDeep, filter, some, flow, concat, map } from 'lodash';
@@ -67,6 +68,7 @@ export default {
 			data: {},
 			selectId: null,
 			selectNode: {},
+			type:""
 		};
 	},
 	methods: {
@@ -135,26 +137,26 @@ export default {
 			let param = { pageNum: 1, pageSize: 99999 };
 			if (this.type == 'ORG') {
 				fetch = (params)=>{
-          request({
-            headers: { 'Content-Type': 'text/plain' },
-            url: `/api/sys/user/getAllUserByOrgId`,
-            method: 'get',
-            params,
-          }).then((d) => {
-            return Promise.resolve(d);
-          });
-        } 
+					return request({
+						headers: { 'Content-Type': 'text/plain' },
+						url: `/api/sys/user/getAllUserByOrgId`,
+						method: 'get',
+						params,
+					}).then((d) => {
+						return Promise.resolve(d);
+					});
+				} 
 				param.orgId = this.selectId;
 			} else {
 				fetch = (params)=>{
-          request({
-            url: '/api/sys/user/getUsersByDeptId',
-            method: 'get',
-            params,
-          }).then((d) => {
-            return Promise.resolve(d);
-          });
-        } 
+					return request({
+						url: '/api/sys/user/getUsersByDeptId',
+						method: 'get',
+						params,
+					}).then((d) => {
+						return Promise.resolve(d);
+					});
+				} 
 				param.deptId = this.selectId;
 			}
 			fetch(param).then((d) => {
@@ -180,7 +182,7 @@ export default {
 							return {
 								id: f.id,
 								name: f.name,
-								idCard: f.userExt.idCard,
+								idCard: f.userExt==null?"":f.userExt.idCard,
 								selected: this.isSelected(f.id),
 							};
 						});
@@ -196,7 +198,7 @@ export default {
 			return idx > -1;
 		},
 		getTree(currentDept) {
-			let deptId = this.$store.getters.userInfo.administrativeDeptId;
+			let deptId = this.$store.getters.userInfo.administrativeId;
 			request({
 				url: '/api/sys/org/getAllTree',
 				method: 'get',

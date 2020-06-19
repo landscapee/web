@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import {setUserInfo,setToken,removeToken} from '@lib/auth';
 import { MessageBox, Message } from 'element-ui';
 import request from '@lib/axios.js';
 import logo from './assets/img/login-logo.png';
@@ -91,7 +92,8 @@ export default {
 		handleLogin() {
 			this.$refs.loginForm.validate((valid) => {
 				if (valid) {
-                    this.loading = true;
+					this.loading = true;
+					removeToken();
 					request({
 						url:'/api/sso/login/login', 
 						method: 'post',
@@ -101,7 +103,8 @@ export default {
                          if (data.responseCode != 1000) {
                             this.$message.error( data.responseMessage);
                          }else{
-							this.$store.commit('SET_USER_INFO',data.data);
+							setToken(data.data.token);
+							setUserInfo(data.data);
                             this.$router.push({ path: '/qualityManage' });
                          }
                          this.loading = false;

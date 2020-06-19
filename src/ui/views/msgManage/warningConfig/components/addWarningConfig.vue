@@ -35,17 +35,17 @@
         </div>
         <div class="row_custom2">
           <el-form-item label="人员" prop="subject">
-              <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择人员</el-button>
+              <el-button @click="userOpen('user')" size="mini" icon="el-icon-plus">选择人员</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.userId" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose(tag)">
-										{{ tag.userName }}
+									<el-tag :key="tag.id" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
 							</div>
           </el-form-item>
           <el-form-item label="岗位" prop="recipients">
-            <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择岗位</el-button>
+            <el-button @click="userOpen('station')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
 									<el-tag :key="tag.userId" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose(tag)">
@@ -57,7 +57,7 @@
         </div>
         <div class="row_custom2">
            <el-form-item label="角色" prop="subject">
-              <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择岗位</el-button>
+              <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
 									<el-tag :key="tag.userId" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose(tag)">
@@ -67,7 +67,7 @@
 							</div>
            </el-form-item>
            <el-form-item label="部门" prop="recipients">
-              <el-button @click="userOpen" size="mini" icon="el-icon-plus">选择岗位</el-button>
+              <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
 									<el-tag :key="tag.userId" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose(tag)">
@@ -86,7 +86,7 @@
 import userTree from '@components/userTree/index';
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
-import { extend } from "lodash";
+import { extend,without } from "lodash";
 export default {
   components: {
     Icon,
@@ -138,14 +138,13 @@ export default {
   },
   methods: {
     handleClose(tag) {
-		
+			this.userList = without(this.userList, tag);
 		},
-    userOpen(){
-      debugger
-      this.$refs.userBox.open(this.users, '选择人员', true);
+    userOpen(tag){
+      this.$refs.userBox.open(this.users, '选择人员', true,tag);
     },
     handleUserSelected(users) {
-			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
+      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
 		},
     resetForm(){
       this.form={};
@@ -190,12 +189,17 @@ export default {
         margin-left: 90px;
       }
       .row_custom2{
+        height: 166px;
         /deep/ .el-form-item__content{
             height: 40px;
             width:405px;
             text-align: left;
         }
         @include common-input;
+        /deep/ span{
+          font-size:12px!important; 
+          margin-left: 5px!important;
+        }
       }
       .row_custom{
         /deep/ .el-form-item__content{
