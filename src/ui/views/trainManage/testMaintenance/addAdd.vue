@@ -138,8 +138,7 @@
             };
 
             return {
-                oldForm:{},
-                form: {infTime:'单选'},
+                 form: {infTime:'单选'},
                 rules: {
                     infSources: [{ validator:infSources, trigger: "blur" }],
                     infTime: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
@@ -177,8 +176,7 @@
                         : this.type == "info"
                             ? "试题维护详情"
                             : "";
-                let data=JSON.parse( this.$route.query.data)
-                    this.oldForm={...data}
+
                 if(this.type!='add'){
                     let row=JSON.parse( this.$route.query.row)
                     this.form={...row}
@@ -198,17 +196,24 @@
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
-                            let row
-                             if(this.type == "add"){
-                                 this.oldForm.arrTable.unshift({...this.form})
-                                 row=this.$route.query.row
-                             }else {
-                                 this.oldForm.arrTable.splice(this.$route.query.index,1,{...this.form})
-                                 row=JSON.stringify(this.form)
-                             }
-                             // console.log(this.oldForm,row);
-                             let data=JSON.stringify(this.oldForm)
-                            this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,data:data,row:row}})
+                            let url
+                            if (this.type == "add"&&!this.form.id) {
+                                url = `${this.$ip}/mms-training/questionInfo/save`
+                            } else {
+                                url = `${this.$ip}/mms-training/questionInfo/update`
+                            }
+                            request({
+                                url,
+                                method: "post",
+                                data: this.form
+                            })
+                                .then(d => {
+                                    this.$message.success("保存成功！");
+                                    this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
+                                })
+                                .catch(error => {
+                                    this.$message.success(error);
+                                });
                          }
                     });
                 }

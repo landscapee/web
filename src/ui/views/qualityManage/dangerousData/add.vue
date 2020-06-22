@@ -138,7 +138,7 @@
                         <span v-if="type=='info'">{{form.evaluationResults}}</span>
 
                         <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
-                             <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                             <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
 

@@ -34,7 +34,7 @@
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/SearchTable';
+    import SearchTable from '@/ui/components/table/index';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -48,13 +48,13 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:dangerousConfig(),
+            tableConfig:dangerousConfig({}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
-            options:{},
+
             row:{},
             sort:{},
             selectId:null
@@ -65,10 +65,12 @@ export default {
        request({
            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
            method: 'post',
+           params:{delete:false},
            data:["commentResults", "controlState",]
        }).then(d => {
-           this.options=d.data
-           this.tableConfig=dangerousConfig(this.options)
+           let obj=d.data
+           this.tableConfig=dangerousConfig(obj)
+
        });
     },
     watch:{

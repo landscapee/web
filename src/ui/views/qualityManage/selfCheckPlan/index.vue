@@ -59,7 +59,7 @@
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/SearchTable';
+import SearchTable from '@/ui/components/table';
 import Icon from '@components/Icon-svg/index';
 import { selfCheckConfig,selfCheckDetailsConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -75,7 +75,7 @@ export default {
             tableLeftData:{records:[]},
             tableRightData:{records:[]},
             businessTableConfig:selfCheckConfig(),
-            businessSubsetConfig:selfCheckDetailsConfig(),
+            businessSubsetConfig:selfCheckDetailsConfig({}),
             leftParams:{
 				current: 1,
 				size: 18,
@@ -115,6 +115,16 @@ export default {
          // console.log(this.$route,12);
         this.leftParams.current = 1;
        this.getList('left');
+        request({
+            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+            method: 'post',
+            params:{delete:false},
+            data:["checkProject", "checkType",'checkObject','checkType']
+        }).then(d => {
+            let obj=d.data
+            this.businessSubsetConfig=selfCheckDetailsConfig(obj)
+
+        });
     },
 
 　　　　mounted() {
@@ -166,6 +176,7 @@ export default {
         //查询表头数据
         requestTable(searchData,tag,tableTag){
             if(tag=='left'){
+
                 this.leftForm = searchData;
                 this.leftSelectId=null,
                 this.rightSelectId=null,
@@ -173,6 +184,9 @@ export default {
                 this.leftParams.current = 1;
             }else{
                 this.rightForm = searchData;
+                if(searchData.checkMethod){
+                    this.rightForm.checkMethod=searchData.checkMethod.join('')||null
+                }
                 this.rightSelectId=null;
                 this.rightParams.current = 1;
             }
@@ -445,7 +459,7 @@ export default {
         /deep/ .mainTable{
             height: 600px!important;
             overflow: auto!important;
-        }
+         }
 
 
     }

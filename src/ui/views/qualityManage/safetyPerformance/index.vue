@@ -76,7 +76,7 @@
 </template>
 <script>
     import CopyDetails from './copyDetails'
-    import SearchTable from '@/ui/components/SearchTable';
+    import SearchTable from '@/ui/components/table/index';
     import Icon from '@components/Icon-svg/index';
     import { safetyConfig,safetyDetailsConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
@@ -92,8 +92,8 @@
             return {
                 tableLeftData:{records:[]},
                 tableRightData:{records:[]},
-                businessTableConfig:safetyConfig(),
-                businessSubsetConfig:safetyDetailsConfig(),
+                businessTableConfig:safetyConfig({}),
+                businessSubsetConfig:safetyDetailsConfig({}),
                 leftParams:{
                     current: 1,
                     size: 18,
@@ -134,6 +134,25 @@
             if(this.$router.history.current.path == '/safetyPerformance'){
                 this.getList('left');
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["dept",]
+            }).then(d => {
+                let obj=d.data
+                this.businessTableConfig=safetyConfig(obj)
+
+            });
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["indicateType",]
+            }).then(d => {
+                let obj=d.data
+                this.businessSubsetConfig=safetyDetailsConfig(obj)
+
+            });
 
         },
         mounted() {

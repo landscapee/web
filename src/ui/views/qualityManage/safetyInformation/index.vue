@@ -34,7 +34,7 @@
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/SearchTable';
+import SearchTable from '@/ui/components/table/index';
 import Icon from '@components/Icon-svg/index';
 import { sadetyInfoConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -48,12 +48,13 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:sadetyInfoConfig(),
+            tableConfig:sadetyInfoConfig({}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
+
             row:{},
             sort:{},
             selectId:null
@@ -61,6 +62,15 @@ export default {
     },
    created() {
        this.getList();
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           data:["Q_BadMistake", "Q_securityServices",]
+       }).then(d => {
+           let obj=d.data
+           this.tableConfig=sadetyInfoConfig(obj)
+
+       });
     },
     watch:{
 

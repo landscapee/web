@@ -33,7 +33,7 @@
                     <el-form-item label="指标类型：" prop="quotaType">
                         <span v-if="type=='info'">{{form.quotaType}}</span>
                         <el-select v-else clearable v-model="form.quotaType" placeholder="请选择指标类型">
-                            <el-option label="违规" value="违规"> </el-option>
+                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -120,6 +120,7 @@
 
             return {
                 form: {},
+                options: {},
                 rules: {
                     number: [{validator:number, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -129,6 +130,13 @@
         },
 
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["indicateType",]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =

@@ -22,10 +22,10 @@
                         <span v-if="type=='info'">{{form.year}}</span>
                         <el-input v-else v-model="form.year" type="number" placeholder="请输入计划年度"></el-input>
                     </el-form-item>
-                    <el-form-item label="计划部门：" prop="deptName">
-                        <span v-if="type=='info'">{{form.deptName}}</span>
-                        <el-select clearable v-else v-model="form.deptName" placeholder="请选择计划部门">
-                            <el-option label="sfsd" value="dfd"></el-option>
+                    <el-form-item label="计划部门：" prop="deptId">
+                        <span v-if="type=='info'">{{form.deptId}}</span>
+                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择计划部门">
+                            <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                      </el-form-item>
 
@@ -64,6 +64,7 @@
         data() {
             return {
                 form: {},
+                options: {},
                 rules: {
                     // infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -72,6 +73,13 @@
             };
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["dept",]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -89,6 +97,15 @@
             }
         },
         methods: {
+            deptNameChange(val){
+                let data
+                this.options.dept.map((k,l)=>{
+                    if(val==k.valCode){
+                        data=k.valData
+                    }
+                })
+                this.$set(this.form,'deptName',data)
+            },
             resetForm(){
                 if(this.type=='edit'){
                     this.form={id:this.form.id };
