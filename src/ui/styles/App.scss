@@ -1,3 +1,7 @@
+/*引入对话框样式*/
+@import "./common_dialog.scss";
+/*重置element样式*/
+@import "./resetElement.scss";
 /*svg图标样式*/
 .svg-icon {
     width:.16rem;

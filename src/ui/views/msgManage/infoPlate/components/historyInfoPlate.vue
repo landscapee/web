@@ -89,7 +89,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })

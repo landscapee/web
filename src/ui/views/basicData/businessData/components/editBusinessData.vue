@@ -80,7 +80,7 @@ export default {
           : "";
           if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/parameter/rest-api/businessDictionary/info`,
+                url:`${this.$ip}/mms-parameter/rest-api/businessDictionary/info`,
                 method: "post",
                 data: {id:this.$route.query.id}
               })
@@ -101,7 +101,7 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/parameter/rest-api/businessDictionary/add`:`${this.$ip}/parameter/rest-api/businessDictionary/update`
+            let url = this.type == "add"?`${this.$ip}/mms-parameter/rest-api/businessDictionary/add`:`${this.$ip}/mms-parameter/rest-api/businessDictionary/update`
             request({
               url,
               method: "post",

@@ -116,7 +116,7 @@ export default {
 			})
             .then(() => {
                 request({
-                    url:`${this.$ip}/parameter/rest-api/electronicFence/del`, 
+                    url:`${this.$ip}/mms-parameter/rest-api/electronicFence/del`, 
                     method: 'post',
                     data:{id:this.selectId}
                 })
@@ -134,7 +134,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/parameter/rest-api/electronicFence/query`, 
+                url:`${this.$ip}/mms-parameter/rest-api/electronicFence/query`, 
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })

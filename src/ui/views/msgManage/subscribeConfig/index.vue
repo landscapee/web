@@ -115,7 +115,7 @@ export default {
 			})
             .then(() => {
                 request({
-                    url:`${this.$ip}/parameter/rest-api/sysParam/del`, 
+                    url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
                     method: 'post',
                     data:{id:this.selectId}
                 })
@@ -133,7 +133,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })

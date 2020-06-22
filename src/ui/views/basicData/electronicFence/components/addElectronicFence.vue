@@ -66,7 +66,7 @@ export default {
           //     if(value != this.cloneForm.parkingNo){
           //        debounce(() => {
           //         request({
-          //           url:`${this.$ip}/parameter/rest-api/electronicFence/only`,
+          //           url:`${this.$ip}/mms-parameter/rest-api/electronicFence/only`,
           //           method: "post",
           //           data: {parkingNo:value}
           //         })
@@ -109,7 +109,7 @@ export default {
           : "";
          if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/parameter/rest-api/electronicFence/info`,
+                url:`${this.$ip}/mms-parameter/rest-api/electronicFence/info`,
                 method: "post",
                 data: {id:this.$route.query.id}
               })
@@ -131,7 +131,7 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/parameter/rest-api/electronicFence/add`:`${this.$ip}/parameter/rest-api/electronicFence/update`
+            let url = this.type == "add"?`${this.$ip}/mms-parameter/rest-api/electronicFence/add`:`${this.$ip}/mms-parameter/rest-api/electronicFence/update`
             request({
               url,
               method: "post",
