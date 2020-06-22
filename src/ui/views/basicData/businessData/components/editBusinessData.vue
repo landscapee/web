@@ -55,7 +55,7 @@ export default {
   name: "",
   data() {
     return {
-      form: {},
+      form: {deleted:false},
       rules: {
         dicType: [{ required: true, message: "请输入类型", trigger: "change" }],
         dicCode: [{ required: true, message: "请输入类型编码", trigger: "change" }],
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     resetForm(){
-      this.form={};
+      this.form={deleted:false};
     },
     saveQualifications() {
       if (this.type == "add" || this.type == "edit") {

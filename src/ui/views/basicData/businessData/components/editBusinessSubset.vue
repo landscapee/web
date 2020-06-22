@@ -55,7 +55,7 @@ export default {
   name: "",
   data() {
     return {
-      form: {},
+      form: {deleted:false},
       rules: {
         valData: [{ required: true, message: "请输入业务数据", trigger: "change" }],
         valCode: [{ required: true, message: "请输入业务数据编码", trigger: "change" }],
@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     resetForm(){
-      this.form={};
+      this.form={deleted:false};
     },
     saveQualifications() {
       if (this.type == "add" || this.type == "edit") {

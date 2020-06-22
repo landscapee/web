@@ -135,7 +135,8 @@ export default {
            request({
                 url:`${this.$ip}/mms-warning/warningTemplate/list`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{...this.sort,...this.form},
+                params:this.params
             })
             .then((data) => {
                

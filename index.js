@@ -18,6 +18,8 @@ import store from './src/ui/store';
 import './src/ui/icons';
 import Logger from './lib/logger';
 import './src/ui/config/ui';
+import VueDraggableResizable from 'vue-draggable-resizable';
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css';
 import VueKindEditor from '@/ui/components/Kindeditor/kindeditor.js'
 import './static/plugin/themes/default/default.css'
 import './static/plugin/kindeditor-all-min.js'
@@ -30,6 +32,7 @@ Vue.prototype.$eventBus= new Vue();
 Vue.use(directives)
 Vue.use(VueKindEditor)
 Vue.use(ElementUI);
+Vue.component('vue-draggable-resizable', VueDraggableResizable);
 // 把postal绑定到vue原型链上
 // Vue.prototype.postal = postal;
 Vue.prototype.$uuid = uuidv4;
