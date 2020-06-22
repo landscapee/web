@@ -16,7 +16,7 @@
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                            <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/examination/${this.leftSelectId}`"></a>导出</div>
+                            <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/examination/${this.leftSelectId}`"></a>导出</div>
                         </div>
 
 
@@ -282,9 +282,9 @@ export default {
         delData(tag,idstr){
             let url=null
             if(tag=='left'&&this.leftSelectId){
-                url=`${this.$ip}/qualification/examination/delete/${this.leftSelectId}`
+                url=`${this.$ip}/mms-qualification/examination/delete/${this.leftSelectId}`
              }else if(tag=='right'&&this.rightSelectId ){
-                url=`${this.$ip}/qualification/examinationDetail/delete/${this.rightSelectId}`
+                url=`${this.$ip}/mms-qualification/examinationDetail/delete/${this.rightSelectId}`
              }
             if(url){
                 this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -332,7 +332,7 @@ export default {
                     }
                 }))
                 request({
-                     url:`${this.$ip}/qualification/examination/list`,
+                     url:`${this.$ip}/mms-qualification/examination/list`,
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,},
                     params:{...this.leftParams}
@@ -364,7 +364,7 @@ export default {
                         }
                     }))
                     request({
-                         url:`${this.$ip}/qualification/examinationDetail/list`,
+                         url:`${this.$ip}/mms-qualification/examinationDetail/list`,
                         method: 'post',
                         data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
                         params:{...this.rightParams}

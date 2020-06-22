@@ -14,7 +14,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -47,7 +47,7 @@ export default {
         Icon,
         SearchTable
 	},
-    name: '',
+    name: 'textMindex',
     data() {
         return {
             tableData:{records:[]},
@@ -144,7 +144,7 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
@@ -175,7 +175,8 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                // url:`${this.$ip}/mms-qualification/paperInfo/list`,
+                url:`http://173.100.1.126:3000/mock/639/paperInfo/list?hg=88`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
@@ -184,7 +185,6 @@ export default {
                   this.tableData = extend({},
                      {...data.data}
                  );
-
              })
         },
         handleSizeChange(size) {

@@ -90,7 +90,11 @@
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id };
+                }else {
+                    this.form={};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -98,9 +102,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/examination/save`
+                                url=`${this.$ip}/mms-qualification/examination/save`
                              }else {
-                                 url=`${this.$ip}/qualification/examination/update`
+                                 url=`${this.$ip}/mms-qualification/examination/update`
                             }
                             request({
                                 url,

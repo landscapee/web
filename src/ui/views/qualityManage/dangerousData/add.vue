@@ -165,7 +165,7 @@
                     let val=value.replace(/^\s+|\s+$/g,"")
                     if(val){
                         request({
-                            url:`${this.$ip}/qualification/dangerData/numberExists/${value}`,
+                            url:`${this.$ip}/mms-qualification/dangerData/numberExists/${value}`,
                             method: 'get',
                         }).then(response => {
                             console.log(response,10);
@@ -213,10 +213,25 @@
                     this.form={...data}
                 }
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:[
+                    "exercitation"
+                ]
+            }).then(d => {
+                console.log(d,110);
+
+            });
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,number:this.form.number};
+                }else {
+                    this.form={};
+                }
+
             },
             saveQualifications(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -224,9 +239,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/dangerData/save`
+                                url=`${this.$ip}/mms-qualification/dangerData/save`
                              }else {
-                                 url=`${this.$ip}/qualification/dangerData/update`
+                                 url=`${this.$ip}/mms-qualification/dangerData/update`
                             }
                             request({
                                 url,

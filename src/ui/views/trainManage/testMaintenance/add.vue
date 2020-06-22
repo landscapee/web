@@ -107,7 +107,7 @@
                 <div @click="addOrEditOrInfo('info')"><icon iconClass="remove" ></icon>详情</div>
                 <div @click="exportExcel()">
                     <icon iconClass="export" ></icon>导出
-                    <a ref="a" :href="`${this.$ip}/qualification/download/securityMerits`"></a>
+                    <a ref="a" :href="`${this.$ip}/mms-qualification/download/securityMerits`"></a>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
                      return callback(new Error('试卷编码不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         console.log(response,10);
@@ -277,9 +277,9 @@
                         if (valid) {
                             let url
                             if (this.type == "add") {
-                                url = `${this.$ip}/qualification/securityInformation/save`
+                                url = `${this.$ip}/mms-qualification/securityInformation/save`
                             } else {
-                                url = `${this.$ip}/qualification/securityInformation/update`
+                                url = `${this.$ip}/mms-qualification/securityInformation/update`
                             }
                             request({
                                 url,

@@ -19,7 +19,7 @@
 
                             <div @click="exportExcel()">
                                   <icon iconClass="export" ></icon>导出
-                                  <a ref="a" :href="`${this.$ip}/qualification/download/securityMerits/${this.leftSelectId}`"></a>
+                                  <a ref="a" :href="`${this.$ip}/mms-qualification/download/securityMerits/${this.leftSelectId}`"></a>
                               </div>
 
 
@@ -55,7 +55,7 @@
                     </el-table-column>
                     <el-table-column slot="option" label="操作" :width="130" >
                         <template slot-scope="{ row }">
-                            <span @click.stop="copyDetails(row)">
+                            <span @click="copyDetails(row)">
                                 <el-button :disabled="row.copy" class="copyButton">复制绩效明细</el-button>
                             </span>
                           </template>
@@ -296,9 +296,9 @@
             delData(tag,idstr){
                 let url=null
                  if(tag=='left'&&this.leftSelectId){
-                    url=`${this.$ip}/qualification/securityMerits/delete/${this.leftSelectId}`
+                    url=`${this.$ip}/mms-qualification/securityMerits/delete/${this.leftSelectId}`
                 }else if(tag=='right'&&this.rightSelectId ){
-                    url=`${this.$ip}/qualification/securityMeritsDetail/delete/${this.rightSelectId}`
+                    url=`${this.$ip}/mms-qualification/securityMeritsDetail/delete/${this.rightSelectId}`
                 }
                 if(url){
                     this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -346,7 +346,7 @@
                         }
                     }))
                     request({
-                         url:`${this.$ip}/qualification/securityMerits/list`,
+                         url:`${this.$ip}/mms-qualification/securityMerits/list`,
                         method: 'post',
                         data:{...this.leftForm,...this.leftSort,},
                         params:{...this.leftParams}
@@ -379,7 +379,7 @@
                             }
                         }))
                         request({
-                            url:`${this.$ip}/qualification/securityMeritsDetail/list`,
+                            url:`${this.$ip}/mms-qualification/securityMeritsDetail/list`,
                             method: 'post',
                             data:{...this.rightForm,securityMeritsId:this.leftSelectId,...this.rightSort},
                             params:{...this.rightParams}

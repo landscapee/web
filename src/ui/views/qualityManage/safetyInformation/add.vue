@@ -133,7 +133,7 @@
                      return callback(new Error('信息编号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         console.log(response,10);
@@ -173,7 +173,12 @@
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,infNumber:this.form.infNumber};
+                }else {
+                    this.form={};
+                }
+
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -181,11 +186,11 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityInformation/save`
+                                url=`${this.$ip}/mms-qualification/securityInformation/save`
                                 // url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
                             }else {
                                 // url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                url=`${this.$ip}/qualification/securityInformation/update`
+                                url=`${this.$ip}/mms-qualification/securityInformation/update`
 
                             }
                             request({

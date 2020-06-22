@@ -102,7 +102,7 @@
                     return callback(new Error('编号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityMeritsDetail/numberExists`,
+                        url:`${this.$ip}/mms-qualification/securityMeritsDetail/numberExists`,
                         method: 'POST',
                         data:{
                             securityMeritsId: this.$route.query.id,
@@ -150,7 +150,12 @@
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={securityMeritsId:this.form.securityMeritsId,number:this.form.number, };
+                }else {
+                    this.form={};
+
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -158,9 +163,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityMeritsDetail/save`
+                                url=`${this.$ip}/mms-qualification/securityMeritsDetail/save`
                              }else {
-                                 url=`${this.$ip}/qualification/securityMeritsDetail/update`
+                                 url=`${this.$ip}/mms-qualification/securityMeritsDetail/update`
 
                             }
                             request({

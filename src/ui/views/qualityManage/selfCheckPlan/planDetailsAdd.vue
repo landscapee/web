@@ -120,7 +120,7 @@
                     return callback(new Error('序号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/examinationDetail/numberExists`,
+                        url:`${this.$ip}/mms-qualification/examinationDetail/numberExists`,
                         method: 'POST',
                         data:{
                             examinationId: this.$route.query.id,
@@ -166,7 +166,11 @@
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,number:this.form.number };
+                }else {
+                    this.form={};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -174,9 +178,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/examinationDetail/save`
+                                url=`${this.$ip}/mms-qualification/examinationDetail/save`
                              }else {
-                                 url=`${this.$ip}/qualification/examinationDetail/update`
+                                 url=`${this.$ip}/mms-qualification/examinationDetail/update`
                             }
                             request({
                                 url,

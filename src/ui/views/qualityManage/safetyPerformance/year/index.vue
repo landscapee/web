@@ -20,7 +20,7 @@
                 <div class="top-toolbar">
                      <div @click="exportExcel()">
                         <icon iconClass="export" ></icon>导出
-                        <a ref="a" :href="`${this.$ip}/qualification/download/yearSecurityMerits?year=${form.year}&deptId=${form.deptId}`"></a>
+                        <a ref="a" :href="`${this.$ip}/mms-qualification/download/yearSecurityMerits?year=${form.year}&deptId=${form.deptId}`"></a>
                     </div>
 
                 </div>
@@ -69,7 +69,7 @@
 
 
             request({
-                url:`${this.$ip}/qualification/securityMerits/getYearList`,
+                url:`${this.$ip}/mms-qualification/securityMerits/getYearList`,
                 method: 'get',
              }).then((d)=>{
                 this.yearS=d.data.map((k,l)=>{
@@ -80,7 +80,7 @@
                 })
             })
             request({
-                url:`${this.$ip}/qualification/businessDictionaryValue/listByCode/dept`,
+                url:`${this.$ip}/mms-qualification/businessDictionaryValue/listByCode/dept`,
                 method: 'get',
              }).then((d)=>{
                 this.deptData=d.data.map((k,l)=>{
@@ -131,7 +131,7 @@
             },
             getList(){
                 request({
-                    url:`${this.$ip}/qualification/securityMerits/getList`,
+                    url:`${this.$ip}/mms-qualification/securityMerits/getList`,
                      method: 'post',
                     data:{deptName:this.form.deptId,year:this.form.year}
                 }).then((d) => {

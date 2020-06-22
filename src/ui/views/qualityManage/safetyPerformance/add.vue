@@ -20,7 +20,7 @@
                 <div class="row_custom">
                     <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
-                        <el-date-picker :disabled="type=='edit'" @change="yearMonthChange" v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
+                        <el-date-picker :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="部门：" prop="deptName">
@@ -63,7 +63,7 @@
                     let year=value.getFullYear()+''
                     let month= value.getMonth()+1+''
                     request({
-                        url:`${this.$ip}/qualification/securityMerits/numberExists/${year},${month}`,
+                        url:`${this.$ip}/mms-qualification/securityMerits/numberExists/${year},${month}`,
                         method: 'get',
 
                     }).then(response => {
@@ -105,15 +105,23 @@
                 }
             }
         },
+        watch:{
+          'form.yearMonth':function (val) {
+
+              this.form.year=val.getFullYear()+''
+              this.form.month= val.getMonth()+1+''
+              console.log(val, this.form);
+          }
+        },
         methods: {
-            yearMonthChange(val){
-                let date=val
-                console.log(date, val);
-                this.form.year=val.getFullYear()+''
-                this.form.month= val.getMonth()+1+''
-            },
+
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:null, month:null,};
+                }else {
+                    this.form={};
+
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -121,9 +129,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityMerits/save`
+                                url=`${this.$ip}/mms-qualification/securityMerits/save`
                             }else {
-                                url=`${this.$ip}/qualification/securityMerits/update`
+                                url=`${this.$ip}/mms-qualification/securityMerits/update`
                             }
                             request({
                                 url,

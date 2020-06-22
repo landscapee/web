@@ -1,5 +1,6 @@
 <template>
     <div class="addSysParameter">
+
         <div class="top-content">
             <div class="top-content-title">
                 <span>试题维护-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
@@ -30,7 +31,7 @@
                             <el-option label="单选" value="单选"> </el-option>
                             <el-option label="多选" value="多选"> </el-option>
                         </el-select>
-                     </el-form-item>
+                    </el-form-item>
 
                 </div>
                 <div class="row_item_row row_item">
@@ -60,10 +61,7 @@
                         <el-input v-else v-model="form.situation" placeholder="请输入"></el-input>
                     </el-form-item>
                 </div>
-
                 <div class="row_custom">
-
-
                     <el-form-item label="选项E：" prop="controlSate">
                         <span v-if="type=='info'">{{form.controlSate}}</span>
                         <el-input v-else v-model="form.controlSate" placeholder="请输入"></el-input>
@@ -98,11 +96,13 @@
         name: "",
         data() {
             const infSources = (rule, value, callback) => {
+                callback();
+
                 if (!value) {
                      return callback(new Error('试题序号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         if (!response.data) {

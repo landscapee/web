@@ -1,20 +1,22 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testMaintenanceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceAddAdd'" :key="$route.path"></router-view>
-
-        <div v-else-if="this.$router.history.current.path == '/testMaintenance'" :key="$route.path" class="sysParameter">
+         <router-view v-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
+        <div v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>试卷维护</span>
+                    <span>员工考试结果</span>
                 </div>
                 <div class="top-toolbar">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
+                    <!--<div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>-->
+                    <!--<div @click="delData()"><icon iconClass="remove" ></icon>删除</div>-->
+                    <!--<div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
+                    <div @click="exportExcel">
+                        <icon iconClass="export" ></icon>
+                        <a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>
+                        导出Excel
+                    </div>
                 </div>
             </div>
             <div class="main-content">
@@ -25,33 +27,53 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <!--<el-table-column :show-overflow-tooltip="true" slot="remark" label="备注" :width="190" fixed="right">-->
-                        <!--<template  slot-scope="{ row }">-->
-                            <!--<span>{{row.remark}}</span>-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
+                    <el-table-column   slot="option" label="操作" :width="210"  >
+                        <template  slot-scope="{ row }">
+                            <el-button    @click="scoreEntry(row)"
+                                          style=" padding:3px 7px; background: black; color:white;margin: 0">
+                                <div>分数</div>
+                                <div>录入</div>
+                            </el-button>
+                            <el-button  class="copyButton" @click="testResults('/testManagePushStaff',row)"
+                                        style=" padding:3px 7px; background: black; color:white;margin: 0">
+
+                                <div>考试结果</div>
+                                <div>推送</div>
+                            </el-button>
+                            <el-button  class="copyButton" @click="uploadTest( row)"
+                                        style=" padding:3px 7px; background: black; color:white;margin: 0">
+
+                                <div>纸质试卷</div>
+                                <div>归档上传</div>
+                            </el-button>
+                        </template>
+                    </el-table-column>
 
                 </SearchTable>
             </div>
         </div>
+        <UploadTest ref="UploadTest"></UploadTest>
+        <ScoreEntry ref="ScoreEntry"></ScoreEntry>
     </div>
 </template>
 <script>
+    import UploadTest from './uploadTest'
+    import ScoreEntry from './scoreEntry'
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testMainConfig } from './tableConfig.js';
+import { testRuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable
+        SearchTable,UploadTest,ScoreEntry
 	},
     name: '',
     data() {
         return {
-            tableData:{records:[]},
-            tableConfig:testMainConfig(),
+            tableData:{records:[{infNumber:'dsd'}]},
+            tableConfig:testRuConfig(),
             params:{
 				current: 1,
 				size: 15,
@@ -72,6 +94,16 @@ export default {
         }
     },
     methods: {
+        testResults(path,row){
+            this.$router.push(path,row)
+        },
+        scoreEntry(row){
+            this.$refs.ScoreEntry.open(row)
+
+        },
+        uploadTest(row){
+            this.$refs.UploadTest.open(row)
+        },
         exportExcel(){
              this.$refs.a.click()
         },
@@ -144,7 +176,7 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
@@ -175,7 +207,7 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-qualification/securityInformation/list`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
