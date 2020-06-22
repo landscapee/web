@@ -53,7 +53,7 @@ export default {
         };
     },
    created() {
-       this.getList();
+     
     },
     watch:{
         params:{
@@ -132,9 +132,10 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-warning/warning/list`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{...this.sort,...this.form},
+                params:this.params
             })
             .then((data) => {
                 if(this.params.current==1){

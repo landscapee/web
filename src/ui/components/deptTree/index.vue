@@ -1,10 +1,10 @@
 <template>
-	<el-dialog :close-on-click-modal="false" class="dialog-roleTransfer" title="选择部门" center append-to-body :visible.sync="dialogVisible" width="1000px" :before-close="close">
+	<el-dialog :close-on-click-modal="false" class="dialog-deptTransfer" title="选择部门" center append-to-body :visible.sync="dialogVisible" width="1000px" :before-close="close">
 		<div class="contentWrapper">
-			<vue-draggable-resizable :w="lw" :z="1003" :min-width="100" :max-width="1170 - this.rw - 100" :y="60" axis="x" :active="true" :handles="['mr']" :parent="true" :draggable="false" @resizing="lResiz" :preventDeactivation="true">
+			<vue-draggable-resizable :w="lw" :z="1003" :min-width="100" :max-width="1170 - this.rw - 100" :y="0" axis="x" :active="true" :handles="['mr']" :parent="true" :draggable="false" @resizing="lResiz" :preventDeactivation="true">
 				<div class="header">部门结构</div>
-				<div width="100%" style="text-align:center;">
-					<Tree :data="result" :no-first="true" ref="tree" @handleSelect="getListById" class="aaa" :expand-on-click-node="false" :isShow="isShow" :defaultUnCheck="true"> </Tree>
+				<div width="100%" style="text-align:center;" class="main-Tree">
+					<Tree :data="result" :no-first="true" ref="tree" @handleSelect="getListById" class="resourceTree" :expand-on-click-node="false" :isShow="isShow" :defaultUnCheck="true"> </Tree>
 				</div>
 			</vue-draggable-resizable>
 			<div class="right-content">
@@ -35,8 +35,9 @@
 import Tree from '../Tree/index';
 import { debounce, formatTreeData } from '@lib/tools.js';
 import { extend, get, cloneDeep, filter, some, concat, map } from 'lodash';
+import request from '@lib/axios.js';
 export default {
-	name: 'roleTransfer1',
+	name: '',
 	data() {
 		return {
 			dialogVisible: false,
@@ -85,7 +86,10 @@ export default {
 	},
 	methods: {
 		handleSelect(department) {
-			this.departments = [department];
+			const idx = this.departments.findIndex((d) => d.id === department.id);
+			if (idx == -1) {
+				this.departments.push(department);
+			}
 			this.checkboxGroup.userId = this.userid;
 			this.checkboxGroup.deptId = department.id;
 		},
@@ -109,8 +113,6 @@ export default {
 			this.result = [];
 		},
 		onSubmit() {
-			let data = [];
-
 			if (!this.checkboxGroup.userId) {
 				this.$message({
 					message: '请选择相应的部门或班组',
@@ -118,23 +120,12 @@ export default {
 				});
 				return false;
 			}
-			data.push({
-				id: '',
-				userId: this.checkboxGroup.userId,
-				deptId: this.checkboxGroup.deptId,
-			});
-			request({
-                url: '/api/sys/department/saveUserMember',
-                method: 'post',
-                data,
-            }).then((d) => {
-				this.dialogVisible = false;
-				this.departments = [];
-				this.checkboxGroup = {};
-				this.showDepartment = [];
-				this.result = [];
-				this.$emit('roleTransferSuccess');
-			});
+			this.$emit('onSelected', this.departments);
+			this.dialogVisible = false;
+			this.departments = [];
+			this.checkboxGroup = {};
+			this.showDepartment = [];
+			this.result = [];
 		},
 		getAllorganization() {
 			request({
@@ -191,15 +182,29 @@ export default {
 };
 </script>
 <style lang="scss">
-.dialog-roleTransfer {
+.dialog-deptTransfer {
+	.main-Tree{
+		 height: calc(100% - 50px) !important;
+			.resourceTree {
+			height: 100%;
+			.el-tree {
+				height: calc(100% - 50px) !important;
+			}
+		}
+	}
 	.vdr {
 		top: 0 !important;
+		height: 100%!important;
+		border: none!important;
 		.handle-mr {
 			margin-top: 0 !important;
 			width: 0 !important;
 			border: none !important;
 			border-right: 1px solid black !important;
 			right: -1px !important;
+			height: 100%!important;
+            background-color: #2b2b2b;
+            top: 0!important;
 		}
 		.scroll {
 			height: calc(70vh - 60px);
@@ -208,15 +213,15 @@ export default {
 	}
 	.contentWrapper {
 		position: relative;
-		height: 73vh !important;
+		height:580px;
 		width: 100%;
 		display: flex;
 		border: 1px solid black;
 		.right-content {
 			position: absolute;
 			right: 0px;
-			width: 666px;
-			height: calc(100vh - 284px);
+			width: 646px;
+			height: calc(100vh - 360px);
 			overflow-y: auto;
 		}
 		.tree {
@@ -227,7 +232,7 @@ export default {
 			border-bottom: 1px solid black;
 			.selectPersonPanel {
 				overflow: auto;
-				height: 252px;
+				height: 216px;
 				padding: 10px;
 				.el-button {
 					margin-bottom: 10px;
@@ -240,8 +245,9 @@ export default {
 		}
 		.selectDepartment {
 			height: 50% !important;
-			overflow: auto;
 			.rolePersonPanel {
+				overflow: auto;
+				height: 259px;
 				padding: 10px;
 				.el-button {
 					margin-bottom: 10px;

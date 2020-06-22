@@ -53,7 +53,7 @@ export default {
             selectId:null
         };
     },
-   created() {
+    created() {
        this.getList();
     },
     watch:{
@@ -104,9 +104,10 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-warning/notification/find`, 
+                url:`${this.$ip}/mms-warning/warning/list`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{...this.sort,...this.form},
+                params:this.params
             })
             .then((data) => {
                 if(this.params.current==1){

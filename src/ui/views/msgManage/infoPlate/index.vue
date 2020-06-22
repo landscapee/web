@@ -8,12 +8,12 @@
                     <span :class="isActive==index?'isActive':''" @click="switchTable(index)" v-for="(name,index) in ['发布信息','接收信息']" :key="index">{{name}}</span>
                 </div>
                 <div class="top-content-title">
-                    <span>接收信息</span>
+                    <span>{{this.isActive==0?'发布信息':'接收信息'}}</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('history')"><icon iconClass="history" ></icon>历史</div>
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div :class="this.isActive!=0?'isDisabled':''" @click="this.isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
+                    <div :class="this.isActive!=0?'isDisabled':''" @click="this.isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
@@ -85,6 +85,7 @@ export default {
             }else{
                 this.tableConfig = infoPlateSendTable();
             }
+            this.getList();
         },
         requestTable(searchData){
             this.form = searchData;
@@ -158,9 +159,11 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
+                          
+                url:this.isActive==0?`${this.$ip}/mms-parameter/notificationPublish/list`:`${this.$ip}/mms-parameter/notificationRecipient/list`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{...this.sort,...this.form},
+                params:this.params
             })
             .then((data) => {
                 if(this.params.current==1){

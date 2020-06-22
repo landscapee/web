@@ -20,10 +20,10 @@
             <span v-if="type=='info' || type=='edit' ">{{form.subject}}</span>
             <el-input v-if="type=='add'" v-model="form.subject" placeholder="请输入消息名称"></el-input>
           </el-form-item>
-          <el-form-item label="推送对象" prop="recipients">
-            <span v-if="type=='info'">{{form.recipients}}</span>
-            <el-select v-else  v-model="form.recipients" multiple placeholder="请选择推送对象">
-                <el-option v-for="item in recipients" :key="item.value" :label="item" :value="item"></el-option>
+          <el-form-item label="推送对象" >
+            <span v-if="type=='info'">{{pushObject.join(",")}}</span>
+            <el-select v-else  v-model="selectPushObject" multiple placeholder="请选择推送对象">
+                <el-option v-for="item in pushObject" :key="item.valCode" :label="item.valData" :value="item.valCode"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -34,7 +34,7 @@
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="人员" prop="subject">
+          <el-form-item label="人员" >
               <el-button @click="userOpen('user')" size="mini" icon="el-icon-plus">选择人员</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
@@ -44,34 +44,34 @@
 								</el-scrollbar>
 							</div>
           </el-form-item>
-          <el-form-item label="岗位" prop="recipients">
+          <el-form-item label="岗位" >
             <el-button @click="userOpen('station')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.userId" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose(tag)">
-										{{ tag.userName }}
+									<el-tag :key="tag.id" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
 							</div>
           </el-form-item>
         </div>
         <div class="row_custom2">
-           <el-form-item label="角色" prop="subject">
+           <el-form-item label="角色" >
               <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.userId" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose(tag)">
-										{{ tag.userName }}
+									<el-tag :key="tag.id" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
 							</div>
            </el-form-item>
-           <el-form-item label="部门" prop="recipients">
+           <el-form-item label="部门" >
               <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.userId" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose(tag)">
-										{{ tag.userName }}
+									<el-tag :key="tag.id" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
 							</div>
@@ -80,7 +80,8 @@
       </el-form>
     </div>
     <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
-    <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+    <stationTree ref="stationBox" @onSelected="handleStationSelected"></stationTree>
+    <roleTree ref="roleBox" @onSelected="handleRoleSelected"></roleTree>
     <deptTree ref="deptBox" @onSelected="handleDeptSelected"></deptTree>
   </div>
 </template>
@@ -104,11 +105,10 @@ export default {
   data() {
     return {
       form: {},
-      recipients:["员工","员工上级"],
+      recipients:[],
       rules: {
-        sysParamCode: [{ required: true, message: "请输入消息名称", trigger: "change" }],
-        sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
-        sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
+        subject: [{ required: true, message: "请输入消息名称", trigger: "change" }],
+        contentTemplate: [{ required: true, message: "请输入消息模板", trigger: "change" }],
       },
       type: "add",
       users:[],
@@ -116,9 +116,13 @@ export default {
       stationList:[],
       deptList:[],
       roleList:[],
+      relationList:[],
+      pushObject:[],
+      selectPushObject:[]
     };
   },
   created() {
+    this.findDataDictionary();
     if (this.$route.query) {
       this.type = this.$route.query.type;
       this.$route.meta.title =
@@ -145,6 +149,19 @@ export default {
     }
   },
   methods: {
+    findDataDictionary(){
+        request({
+          url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+          method: "post",
+          data: ["pushObject"]
+        })
+        .then(data => {
+          this.pushObject = data.data["pushObject"];
+        })
+        .catch(error => {
+          this.$message.success(error);
+        });
+    },
     handleClose(tag) {
 			this.userList = without(this.userList, tag);
 		},
@@ -152,12 +169,21 @@ export default {
       if(tag=='user'){
          this.$refs.userBox.open(this.users, '选择人员', true);
       }else if(tag=='dept'){
-         this.$refs.deptBox.open(row);
+         this.$refs.deptBox.open({id:this.$store.getters.userInfo.id});
       }else if(tag=='role'){
-         this.$refs.deptBox.open(row);
+         this.$refs.roleBox.open({id:this.$store.getters.userInfo.id});
       }else if(tag=='station'){
-         this.$refs.deptBox.open(row);
+         this.$refs.stationBox.open({id:this.$store.getters.userInfo.id});
       }
+    },
+    handleDeptSelected(depts){
+      this.deptList = depts.map((item) => ({ id: item.id, name: item.name }));
+    },
+    handleStationSelected(stations){
+       this.stationList = stations.map((item) => ({ id: item.id, name: item.name }));
+    },
+    handleRoleSelected(roles){
+       this.roleList = roles.map((item) => ({ id: item.id, name: item.name }));
     },
     handleUserSelected(users) {
       this.userList = users.map((item) => ({ id: item.id, name: item.name }));
@@ -169,11 +195,20 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/mms-warning/warningTemplate/save`:`${this.$ip}/mms-warning/warningTemplate/update`
-            request({
+           let url = this.type == "add"?`${this.$ip}/mms-warning/warningTemplate/save`:`${this.$ip}/mms-warning/warningTemplate/update`
+           let pushObject = [];
+           this.pushObject.map((item,index)=>{
+             this.selectPushObject.map((item2,index2)=>{
+               if(this.pushObject[index].valCode==this.selectPushObject[index2]){
+                 pushObject[index] = {id:this.pushObject[index].valCode,name:this.pushObject[index].valData}
+               }
+             })
+           });
+           let content = {recipientType:[{type:"department",value:this.deptList},{type:"job",value:this.stationList},{type:"role",value:this.roleList},{type:"selected",value:pushObject}]} 
+           request({
               url,
               method: "post",
-              data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id,...content}:{...this.form,...content}
             })
             .then(data => {
               this.$message.success("保存成功！");

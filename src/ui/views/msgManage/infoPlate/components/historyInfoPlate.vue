@@ -91,7 +91,8 @@ export default {
            request({
                 url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{...this.sort,...this.form},
+                params:this.params
             })
             .then((data) => {
                 if(this.params.current==1){

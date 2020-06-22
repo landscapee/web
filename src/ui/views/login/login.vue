@@ -98,6 +98,10 @@ export default {
 						url:'/api/sso/login/login', 
 						method: 'post',
 						data:this.loginForm,
+						headers: {
+							'Authorization':'' ,
+							'Accept': 'application/json',
+						}
 					})
 					.then((data) => {
                          if (data.responseCode != 1000) {

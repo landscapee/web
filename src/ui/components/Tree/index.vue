@@ -4,7 +4,7 @@
 		<div class="elinput" v-if="isShow.input">
 			<el-input class="input" ref="input" placeholder="输入关键字进行搜索" v-model="filterText"> </el-input>
 		</div>
-		<el-tree :accordion="accordion ? true : false" :default-expand-all="defaultExpandAll ? false : true" :show-checkbox="showCheckbox" :default-checked-keys="checkedArr" :expand-on-click-node="expandOnClickNode || false" :highlight-current="highlightCurrent" node-key="id" :class="['filter-tree', isShow.heightClass]" :data="data" @node-click="getCurrentNode" @current-change="handleSelectChange" :props="defaultProps" :filter-node-method="filterNode" ref="tree">
+		<el-tree :accordion="accordion ? true : false" :default-expand-all="defaultExpandAll ? false : true" :show-checkbox="showCheckbox" :default-checked-keys="checkedArr" :expand-on-click-node="expandOnClickNode || false" :highlight-current="highlightCurrent" node-key="id" :class="['filter-tree', isShow.heightClass]" :data="data" @node-click="getCurrentNode" @current-change="handleSelectChange" :props="defaultProps" :filter-node-method="filterNode" @check="handleCheck" ref="tree">
 			<span class="custom-tree-node" slot-scope="{ node, data }">
 				<span><i :class="icon(data)"></i>{{ `${node.label}${extendInfo(data)}` }}</span>
 				<span v-if="isShow.tip">
@@ -72,6 +72,11 @@ export default {
 		},
 	},
 	methods: {
+				// 当复选框被选中的时候执行
+		handleCheck(data, checks) {
+			// checks中的数据为选中节点的keys
+			this.$emit('handleCheck', data, checks);
+		},
 		extendInfo(data) {
 			if (this.isShow.number) {
 				return `(${data.number ? data.number : 0})`;
