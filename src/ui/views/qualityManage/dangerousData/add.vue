@@ -129,9 +129,8 @@
                     <el-form-item label="控制状态：" prop="controlState">
                         <span v-if="type=='info'">{{form.controlState}}</span>
                         <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
-                            <el-option label="q" value="q"> </el-option>
-                            <el-option label="qq" value="qq"> </el-option>
-                        </el-select>
+                            <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
@@ -139,8 +138,7 @@
                         <span v-if="type=='info'">{{form.evaluationResults}}</span>
 
                         <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
-                            <el-option label="q" value="q"> </el-option>
-                            <el-option label="qq" value="qq"> </el-option>
+                             <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -188,7 +186,7 @@
 
             };
             return {
-
+                options:{},
                 form: {},
                 rules: {
                     number: [{ validator:checkNumber,trigger: "blur" }],
@@ -216,12 +214,9 @@
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
-                data:[
-                    "exercitation"
-                ]
+                data:["commentResults", "controlState",]
             }).then(d => {
-                console.log(d,110);
-
+                     this.options=d.data
             });
         },
         methods: {

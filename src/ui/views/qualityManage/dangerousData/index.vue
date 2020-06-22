@@ -54,6 +54,7 @@ export default {
 				size: 15,
             },
             form:{},
+            options:{},
             row:{},
             sort:{},
             selectId:null
@@ -61,6 +62,14 @@ export default {
     },
    created() {
        this.getList();
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           data:["commentResults", "controlState",]
+       }).then(d => {
+           this.options=d.data
+           this.tableConfig=dangerousConfig(this.options)
+       });
     },
     watch:{
 
