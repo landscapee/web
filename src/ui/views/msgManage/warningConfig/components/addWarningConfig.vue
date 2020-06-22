@@ -80,9 +80,14 @@
       </el-form>
     </div>
     <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+    <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+    <deptTree ref="deptBox" @onSelected="handleDeptSelected"></deptTree>
   </div>
 </template>
 <script>
+import roleTree from '@components/roleTree/index';
+import stationTree from '@components/stationTree/index';
+import deptTree from '@components/deptTree/index';
 import userTree from '@components/userTree/index';
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
@@ -90,7 +95,10 @@ import { extend,without } from "lodash";
 export default {
   components: {
     Icon,
-    userTree
+    userTree,
+    deptTree,
+    roleTree,
+    stationTree
   },
   name: "",
   data() {
@@ -141,7 +149,15 @@ export default {
 			this.userList = without(this.userList, tag);
 		},
     userOpen(tag){
-      this.$refs.userBox.open(this.users, '选择人员', true,tag);
+      if(tag=='user'){
+         this.$refs.userBox.open(this.users, '选择人员', true);
+      }else if(tag=='dept'){
+         this.$refs.deptBox.open(row);
+      }else if(tag=='role'){
+         this.$refs.deptBox.open(row);
+      }else if(tag=='station'){
+         this.$refs.deptBox.open(row);
+      }
     },
     handleUserSelected(users) {
       this.userList = users.map((item) => ({ id: item.id, name: item.name }));

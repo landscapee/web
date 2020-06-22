@@ -22,7 +22,7 @@
 					<el-table-column :fixed="colConfig.search.fixed"  :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='select'"   :key="index" :reserve-selection="true"> 
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
 							<el-select   clearable  class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
-								<el-option v-for="item in colConfig.search.data" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								<el-option v-for="item in colConfig.search.data" :key="item.value" :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label" :value="colConfig.search.selectProp?item[colConfig.search.selectProp[1]]:item.value"></el-option>
 							</el-select>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
 						</span>
