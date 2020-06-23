@@ -26,8 +26,8 @@
                     <el-form-item label="考试方式：" prop="infTime">
                         <span v-if="type=='info'">{{  form.infTime }}</span>
                         <el-select  v-else clearable v-model="form.infTime" placeholder="请选择考试方式">
-                            <el-option label="线上" value="线上"> </el-option>
-                            <el-option label="线下" value="线下"> </el-option>
+                            <el-option label="单选" value="单选"> </el-option>
+                            <el-option label="多选" value="多选"> </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -36,7 +36,7 @@
                 <div class="row_custom">
                     <el-form-item :label="form.infTime=='线上'?'截止时间：':'举行时间：'" prop="place">
                         <span v-if="type=='info'">{{form.place}}</span>
-                        <el-date-picker type="date" v-else v-model="form.place" placeholder="请选择时间"></el-date-picker>
+                        <el-input v-else v-model="form.place" placeholder="请选择时间"></el-input>
                     </el-form-item>
                     <el-form-item label="考试地点：" prop="responsibleUnit">
                         <span v-if="type=='info'">{{form.responsibleUnit}}</span>
@@ -47,8 +47,8 @@
                     <el-form-item label="考试试卷：" prop="infTime1">
                         <span v-if="type=='info'">{{  form.infTime1 }}</span>
                         <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择考试试卷">
-                            <el-option label="试卷一" value="试卷一"> </el-option>
-                            <el-option label="试卷二" value="试卷二"> </el-option>
+                            <el-option label="单选" value="单选"> </el-option>
+                            <el-option label="多选" value="多选"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="考试时长：" prop="situation">
@@ -62,17 +62,15 @@
                     <el-form-item label="考试类型：" prop="infTime1">
                         <span v-if="type=='info'">{{  form.infTime1 }}</span>
                         <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择考试类型">
-                            <el-option label="开卷" value="开卷"> </el-option>
-                            <el-option label="闭卷" value="闭卷"> </el-option>
+                            <el-option label="单选" value="单选"> </el-option>
+                            <el-option label="多选" value="多选"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="资质类型：" prop="infTime1">
                         <span v-if="type=='info'">{{  form.infTime1 }}</span>
                         <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择资质类型">
-                            <el-option label="桥载" value="桥载"> </el-option>
-                            <el-option label="勤务" value="勤务"> </el-option>
-                            <el-option label="维修" value="维修"> </el-option>
-                            <el-option label="质量" value="质量"> </el-option>
+                            <el-option label="单选" value="单选"> </el-option>
+                            <el-option label="多选" value="多选"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -80,17 +78,15 @@
                     <el-form-item label="业务类型：" prop="infTime1">
                         <span v-if="type=='info'">{{  form.infTime1 }}</span>
                         <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择业务类型">
-                            <el-option label="桥载" value="桥载"> </el-option>
-                            <el-option label="勤务" value="勤务"> </el-option>
-                            <el-option label="维修" value="维修"> </el-option>
-                            <el-option label="质量" value="质量"> </el-option>
+                            <el-option label="单选" value="单选"> </el-option>
+                            <el-option label="多选" value="多选"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="考题下载：" prop="infTime1">
                         <span v-if="type=='info'">{{  form.infTime1 }}</span>
                         <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择考题下载">
-                            <el-option label="允许" value="允许"> </el-option>
-                            <el-option label="禁止" value="禁止"> </el-option>
+                            <el-option label="单选" value="单选"> </el-option>
+                            <el-option label="多选" value="多选"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -98,9 +94,7 @@
                     <el-form-item label="考试状态：" prop="quotaType">
                         <span v-if="type=='info'">{{form.quotaType}}</span>
                         <el-select v-else clearable v-model="form.quotaType" placeholder="请选择考试状态">
-                            <el-option label="已推送" value="违规"> </el-option>
-                            <el-option label="已开始" value="违规"> </el-option>
-                            <el-option label="已评价" value="违规"> </el-option>
+                            <el-option label="违规" value="违规"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -129,7 +123,7 @@
                     return callback(new Error('试题序号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         if (!response.data) {

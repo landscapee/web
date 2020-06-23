@@ -236,8 +236,8 @@ let authRoutes = [
 					{
                         path: '/testMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
-                        name: 'testMAdd',
-                        meta: {title: '试卷新增',icon: 'xxgl' ,keepAlive:true},
+                        name: '试卷新增',
+                        meta: {title: '试卷新增',icon: 'xxgl' },
                         children:[
 
                         ]
@@ -292,22 +292,10 @@ let authRoutes = [
                 ]
 			},
 			{
-				path: '/onlineTestIndex',
-				component:  () => import('@views/trainManage/onlineTest/index'),
+				path: '/WorkOrderManage33',
+				component: ()=>{},
 				name: '在线考试',
 				meta: {title: '在线考试',icon: 'xxgl' },
-                children:[
-                    {
-                        path: '/onlineTestDo',
-                        component: () => import('@views/trainManage/onlineTest/add'),
-                        name: '在线考试',
-                        meta: {title: '在线考试',icon: 'xxgl' },
-                        children:[
-
-                        ]
-                    },
-
-                ]
 			},
 			{
 				path: '/WorkOrderManage44',
@@ -486,4 +474,3 @@ export function resetRouter() {
 	router.matcher = newRouter.matcher;
 }
 export default router;
-
