@@ -2,18 +2,10 @@
     <div>
         <el-dialog title="试卷导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
-                <el-form-item label="编号：">
-                    <span>{{row.year}} </span>
-                </el-form-item>
-                <el-form-item label="名称：">
-                    <span>{{row.year}} </span>
-                </el-form-item>
-                <el-form-item label="格式：">
-                    <el-radio-group v-model="form.sourcesId">
-                        <el-radio label="WORD" value="WORD"></el-radio>
-                        <el-radio label="PDF" value="PDF"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
+                <input type="file" @change="importFile" ref="imFile" id="imFile"
+                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                <Button type="primary" @click="uploadFile">浏览</Button>
+
             </el-form>
             <div class="footer">
                 <el-button @click="close">取消</el-button>
@@ -26,14 +18,14 @@
 </template>
 
 <script>
-    import request from '@lib/axios.js';
-
+     import request from '@lib/axios.js';
     export default {
         name: "copyDetails",
         components: {},
         data() {
             return {
-                form:{sourcesId:'WORD'},
+
+                form:{ },
                 rules:{},
 
                 row:{},
@@ -41,6 +33,11 @@
             }
         },
         methods: {
+            importFile(file){
+
+            }, uploadFile(){
+
+            },
             open(data){
                 this.dialogFormVisible=true
                 this.form={...data}
@@ -49,7 +46,6 @@
 
     submit(formName) {
                 this.$refs[formName].validate((valid) => {
-
                     if (valid) {
                          request({
                              url:`${this.$ip}/mms-qualification/securityMerits/copy`,
@@ -75,7 +71,9 @@
                 this.row={}
                 this.from={}
                 this.dialogFormVisible=false
-            }
+            },
+
+
         },
         created() {
 

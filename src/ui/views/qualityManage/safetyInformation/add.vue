@@ -60,9 +60,9 @@
                     <el-form-item label="违规/差错：" prop="situation">
                         <span v-if="type=='info'">{{form.situation}}</span>
                          <el-select v-else clearable v-model="form.situation" placeholder="请选择违规/差错">
-                            <el-option label="违规" value="违规"> </el-option>
-                            <el-option label="差错" value="差错"> </el-option>
-                        </el-select>
+                             <el-option v-for="(opt,index) in options.Q_BadMistake" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+
+                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -100,8 +100,8 @@
                     <el-form-item label="是否安全/服务事件：" prop="serviceEvents">
                         <span v-if="type=='info'">{{form.serviceEvents}}</span>
                         <el-select clearable v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
-                            <el-option label="违规" value="违规"> </el-option>
-                            <el-option label="差错" value="差错"> </el-option>
+                            <el-option v-for="(opt,index) in options.Q_securityServices" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+
                         </el-select>
                     </el-form-item>
                 </div>
@@ -133,7 +133,7 @@
                      return callback(new Error('信息编号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         console.log(response,10);
@@ -147,6 +147,7 @@
                 }
             };
             return {
+                options: {},
                 form: {},
                 rules: {
                     infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
@@ -170,10 +171,22 @@
                     this.form={...data}
                 }
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["Q_BadMistake", "Q_securityServices",]
+            }).then(d => {
+                this.options=d.data
+            });
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,infNumber:this.form.infNumber};
+                }else {
+                    this.form={};
+                }
+
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -181,11 +194,11 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityInformation/save`
+                                url=`${this.$ip}/mms-qualification/securityInformation/save`
                                 // url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
                             }else {
                                 // url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                url=`${this.$ip}/qualification/securityInformation/update`
+                                url=`${this.$ip}/mms-qualification/securityInformation/update`
 
                             }
                             request({

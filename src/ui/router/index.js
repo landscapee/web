@@ -236,8 +236,8 @@ let authRoutes = [
 					{
                         path: '/testMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
-                        name: '试卷新增',
-                        meta: {title: '试卷新增',icon: 'xxgl' },
+                        name: 'testMAdd',
+                        meta: {title: '试卷新增',icon: 'xxgl' ,keepAlive:true},
                         children:[
 
                         ]
@@ -292,10 +292,22 @@ let authRoutes = [
                 ]
 			},
 			{
-				path: '/WorkOrderManage33',
-				component: ()=>{},
+				path: '/onlineTestIndex',
+				component:  () => import('@views/trainManage/onlineTest/index'),
 				name: '在线考试',
 				meta: {title: '在线考试',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/onlineTestDo',
+                        component: () => import('@views/trainManage/onlineTest/add'),
+                        name: '在线考试',
+                        meta: {title: '在线考试',icon: 'xxgl' },
+                        children:[
+
+                        ]
+                    },
+
+                ]
 			},
 			{
 				path: '/WorkOrderManage44',

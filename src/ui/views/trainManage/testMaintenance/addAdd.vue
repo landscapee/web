@@ -1,5 +1,6 @@
 <template>
     <div class="addSysParameter">
+
         <div class="top-content">
             <div class="top-content-title">
                 <span>试题维护-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
@@ -30,7 +31,7 @@
                             <el-option label="单选" value="单选"> </el-option>
                             <el-option label="多选" value="多选"> </el-option>
                         </el-select>
-                     </el-form-item>
+                    </el-form-item>
 
                 </div>
                 <div class="row_item_row row_item">
@@ -60,10 +61,7 @@
                         <el-input v-else v-model="form.situation" placeholder="请输入"></el-input>
                     </el-form-item>
                 </div>
-
                 <div class="row_custom">
-
-
                     <el-form-item label="选项E：" prop="controlSate">
                         <span v-if="type=='info'">{{form.controlSate}}</span>
                         <el-input v-else v-model="form.controlSate" placeholder="请输入"></el-input>
@@ -98,11 +96,13 @@
         name: "",
         data() {
             const infSources = (rule, value, callback) => {
+                callback();
+
                 if (!value) {
                      return callback(new Error('试题序号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         if (!response.data) {
@@ -138,8 +138,7 @@
             };
 
             return {
-                oldForm:{},
-                form: {infTime:'单选'},
+                 form: {infTime:'单选'},
                 rules: {
                     infSources: [{ validator:infSources, trigger: "blur" }],
                     infTime: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
@@ -177,8 +176,7 @@
                         : this.type == "info"
                             ? "试题维护详情"
                             : "";
-                let data=JSON.parse( this.$route.query.data)
-                    this.oldForm={...data}
+
                 if(this.type!='add'){
                     let row=JSON.parse( this.$route.query.row)
                     this.form={...row}
@@ -198,17 +196,24 @@
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
-                            let row
-                             if(this.type == "add"){
-                                 this.oldForm.arrTable.unshift({...this.form})
-                                 row=this.$route.query.row
-                             }else {
-                                 this.oldForm.arrTable.splice(this.$route.query.index,1,{...this.form})
-                                 row=JSON.stringify(this.form)
-                             }
-                             // console.log(this.oldForm,row);
-                             let data=JSON.stringify(this.oldForm)
-                            this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,data:data,row:row}})
+                            let url
+                            if (this.type == "add"&&!this.form.id) {
+                                url = `${this.$ip}/mms-training/questionInfo/save`
+                            } else {
+                                url = `${this.$ip}/mms-training/questionInfo/update`
+                            }
+                            request({
+                                url,
+                                method: "post",
+                                data: this.form
+                            })
+                                .then(d => {
+                                    this.$message.success("保存成功！");
+                                    this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
+                                })
+                                .catch(error => {
+                                    this.$message.success(error);
+                                });
                          }
                     });
                 }
