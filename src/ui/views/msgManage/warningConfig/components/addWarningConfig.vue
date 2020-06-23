@@ -21,7 +21,7 @@
             <el-input v-if="type=='add'" v-model="form.subject" placeholder="请输入消息名称"></el-input>
           </el-form-item>
           <el-form-item label="推送对象" >
-            <span v-if="type=='info'">{{pushObject.join(",")}}</span>
+            <span v-if="type=='info'">{{selectPushObject.join(",")}}</span>
             <el-select v-else  v-model="selectPushObject" multiple placeholder="请选择推送对象">
                 <el-option v-for="item in pushObject" :key="item.valCode" :label="item.valData" :value="item.valCode"></el-option>
             </el-select>
@@ -140,7 +140,7 @@ export default {
               })
               .then(data => {
                 this.form = {subject:data.data.subject,contentTemplate:data.data.contentTemplate} ;
-                this.selectPushObject = data.data.recipientType.find((item) =>item.type==='selected').value.map(item=>item.name);
+                this.selectPushObject = data.data.recipientType.find((item) =>item.type==='relation').value.map(item=>item.name);
                 this.userList = data.data.recipientType.find((item) =>item.type==='selected').value;
                 this.stationList = data.data.recipientType.find((item) =>item.type==='job').value;
                 this.deptList = data.data.recipientType.find((item) =>item.type==='department').value;
@@ -177,7 +177,7 @@ export default {
       }else if(tag=='role'){
          this.$refs.roleBox.open({id:this.$store.getters.userInfo.id});
       }else if(tag=='station'){
-         this.$refs.stationBox.open({id:this.$store.getters.userInfo.id});
+        //  this.$refs.stationBox.open({id:this.$store.getters.userInfo.id});
       }
     },
     handleDeptSelected(depts){
@@ -208,7 +208,7 @@ export default {
                }
              })
            });
-           let content = {recipientType:[{type:"department",value:this.deptList},{type:"job",value:this.stationList},{type:"role",value:this.roleList},{type:"selected",value:pushObject}]} 
+           let content = {recipientType:[{type:"department",value:this.deptList},{type:"job",value:this.stationList},{type:"role",value:this.roleList},{type:"selected",value:this.userList},{type:"relation",value:pushObject}]} 
            request({
               url,
               method: "post",
