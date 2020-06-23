@@ -8,6 +8,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-upload
+                            :multiple="false"
                             class="upload-demo"
                             ref="file"
                             :http-request="handleSubmit"
@@ -26,14 +27,13 @@
             </el-form>
             <div class="footer">
                 <el-button @click="close">取消</el-button>
-                <el-button type="primary" @click="submit('form')">导出</el-button>
+                <el-button type="primary" @click="submit('form')">导入</el-button>
             </div>
         </el-dialog>
 
 
     </div>
 </template>
-
 <script>
     import Qs from 'qs'
      import request from '@lib/axios.js';
@@ -45,8 +45,7 @@
                 fileList: [],
                 form:{ filename:'',},
                 rules:{},
-
-                row:{},
+                id:'',
                 dialogFormVisible:false,
             }
         },
@@ -58,9 +57,9 @@
                 this.$refs.imFile.click()
             },
 
-            open(data){
+            open(id){
                 this.dialogFormVisible=true
-                this.row=data
+                this.id=id
 
             },
             submit() {
@@ -81,20 +80,28 @@
                 return isLt2M;
             },
 
-            handleSubmit(files) {
-                 let data={
-                    file:files.file,
-                    paperId:this.row.id
-                }
+            handleSubmit(files,q) {
+                 let data=new FormData()
+                data.append("file",files.file);
+                data.append("paperId",this.id);
+                console.log(data,files,q,111);
+                request.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
                 request({
-                    'Content-Type':'application/x-www-form-urlencoded',
+                    header:{
+                        'Content-Type':'application/x-www-form-urlencoded'
+                    },
                     url:`${this.$ip}/mms-training/questionInfo/import`,
                     method:'post',
-                    params:Qs.stringify(data)
+                    // data:data,
+                    data:data,
                 }).then((d) => {
                     if(d){
                         this.close();
                         this.$emit('getTableData')
+                        this.$message({
+                            message: '导入成功',
+                            type: 'success',
+                        });
                     }else {
                         this.$message({
                             message: '复制失败',
@@ -107,8 +114,9 @@
 
             close(){
                 this.row={}
-                this.form={}
+                this.form={filename:''}
                 this.dialogFormVisible=false
+                this.$refs.file.clearFiles()
             },
 
 

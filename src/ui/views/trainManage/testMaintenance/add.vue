@@ -34,9 +34,10 @@
                         <span v-if="type=='info'">{{  form.paperCode}}</span>
                         <el-input v-else v-model="form.paperCode" placeholder="请输入试卷编码"></el-input>
                     </el-form-item>
-                    <el-form-item label="考试时长：" prop="totalTime">
+                    <el-form-item style="position: relative" label="考试时长：" prop="totalTime">
                         <span v-if="type=='info'">{{form.totalTime}}</span>
-                        <el-input v-else type="number" v-model="form.totalTime" placeholder="请输入考试时长"></el-input>分
+                        <el-input v-else type="number" v-model="form.totalTime" placeholder="请输入考试时长"></el-input>
+                        <span style="position: absolute;top:0;right:-20px">分</span>
                     </el-form-item>
                     <el-form-item label="试卷类别：" prop="paperType">
                         <span v-if="type=='info'">{{form.paperType}}</span>
@@ -155,12 +156,11 @@
                      return callback(new Error('试卷编码不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/mms-training/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-training/paperInfo/verify?paperCode=${value}&id=${this.$route.query.id}`,
                         method: 'get',
                     }).then(response => {
                         console.log(response,10);
                         if (!response.data) {
-
                             callback();
                         } else {
                             callback("该试卷编码已存在");
@@ -169,7 +169,7 @@
                 }
             };
             return {
-                form: {id:1111111},
+                form: {},
                 formT:{},
                 rules: {
                     paperName: [{ required: true, message: "请输入试卷名称", trigger: "blur" }],
@@ -192,13 +192,16 @@
 
 
         created() {
-            request({
-                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-                method: 'post',
-                data:["testCategory", "paperCategory","qualificationType","businessType","applyObject",]
-            }).then(d => {
-                this.options=d.data
-            });
+            if(this.$router.history.current.path == '/testMaintenanceAdd'){
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    data:["testCategory", "paperCategory","qualificationType","businessType","applyObject",]
+                }).then(d => {
+                    this.options=d.data
+                });
+            }
+
              if (this.$route.query ) {
                 console.log(1,1,this.$router);
                 this.type = this.$route.query.type;
@@ -210,7 +213,7 @@
                         : this.type == "info"
                             ? "试卷-详情"
                             : "";
-                  if(this.type!=='add'){
+                  if(this.type!='add'){
                       this.getDetails()
 
                   }
@@ -226,7 +229,7 @@
             },
             importExcel() {
                 console.log(1);
-                if(this.form.id){
+                if(this.$route.query.id){
                     this.$refs.ImportExcel.open(this.form.id)
                 }else {
                     this.$message.error('请先保存试卷基本信息');
@@ -238,7 +241,7 @@
 
             getDetails() {
                 request({
-                    url:`${this.$ip}/mms-training/paperInfo/info/${value}`,
+                    url:`${this.$ip}/mms-training/paperInfo/info/${this.$route.query.id}`,
                     method: 'get',
                 }).then(data => {
                     console.log(data,10);
@@ -286,7 +289,7 @@
             listenToCheckedChange(row, column, event){
 
                 let select = row.selected;
-                this.form.arrTable.map((r,l) =>{
+                this.arrTable.map((r,l) =>{
                     if(r.selected){
                         r.selected = false;
                     }
@@ -301,7 +304,7 @@
 
                 this.params.current = 1;
                 console.log(row, column, event,199);
-                this.$set(this.form.arrTable,row.index,row);
+                this.$set(this.arrTable,row.index,row);
             },
 
             saveForm(form) {
@@ -321,7 +324,7 @@
                             })
                                 .then(d => {
                                     this.$message.success("保存成功！");
-                                    this.getDetails()
+                                     this.$router.push({path:'/testMaintenanceAdd',query:{type:"editor",id:d.data}})
                                  })
                                 .catch(error => {
                                     this.$message.success(error);
@@ -388,7 +391,7 @@
         }
     };
 </script>
-<style  lang="scss">
+<style scoped lang="scss">
     @import "@/ui/styles/common_list.scss";
 
     @import "@/ui/styles/common_form.scss";
@@ -396,21 +399,25 @@
         display: flex;
         justify-content: space-between;
     }
-    body /deep/ .el-select-dropdown {
-        min-width: 220px!important;
-    }
 
+.top-toolbar{
+    &>div{
+        margin-left: 12px;
+        margin-right: 0!important;
+    }
+}
     .addTest {
-        padding: 0 15px 0px 15px ;
+        padding: 0 40px ;
         margin-top: 40px;
         .main-content{
             overflow-y: auto;
+            overflow-x: hidden;
             /*height:calc(100vh - 260px);*/
             margin-top: 20px!important;
             .aRow_custom{
                 text-align:left;
                 /deep/ .el-form-item{
-                    width:calc( 100% - 30px)!important;
+                    width:100%!important;
                     .el-form-item__content{
                         width: calc( 100% - 95px)!important;
                     }
@@ -434,13 +441,23 @@
         .headDiv1{
             &>div{
                 line-height: 32px;
+
+
+            }
+            .topToolbar>div{
+                margin-left: 12px;
+                margin-right: 0!important;
             }
             margin: 15px 0 10px 0;
         }
         .TableContent.main-content{
             margin: 0!important;
         }
+        /deep/ .mainTable{
+            height: 400px;
+            overflow: auto;
 
+        }
         .el-form {
             width: 100%;
 
@@ -456,17 +473,13 @@
                 margin-right: 5px;
             }
 
-            /deep/ .mainTable{
-                height: 600px;
-                overflow: auto;
 
-            }
             .row_custom{
                 @include common-input;
                 display: flex;
                 justify-content: space-between;
                 /deep/ .el-form-item__content{
-                    width: 250px;
+                    width: 220px;
                     text-align: left;
                 }
                 &:first-child {

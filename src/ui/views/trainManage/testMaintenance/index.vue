@@ -206,4 +206,8 @@ export default {
     margin-top:40px;
     
 }
+/deep/ .mainTable{
+    height: 600px;
+
+}
 </style>
