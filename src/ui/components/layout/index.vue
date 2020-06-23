@@ -106,7 +106,7 @@ import Icon from '@components/Icon-svg/index';
 			font-family:SourceHanSansCN-Medium,SourceHanSansCN;
 			font-weight:500;
 			color:rgba(255,255,255,1);
-			margin-left:98px;
+			margin-left: 65px;
 		}
 		.header-right{
 			position: absolute;

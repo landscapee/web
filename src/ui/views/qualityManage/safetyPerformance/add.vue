@@ -20,13 +20,13 @@
                 <div class="row_custom">
                     <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
-                        <el-date-picker :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
+                        <el-date-picker :disabled="type=='edit'" @change="yearMonthChange" v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="部门：" prop="deptId">
-                        <span v-if="type=='info'">{{form.deptId}}</span>
-                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择部门">
-                            <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                    <el-form-item label="部门：" prop="deptName">
+                        <span v-if="type=='info'">{{form.deptName}}</span>
+                        <el-select clearable v-else v-model="form.deptName" placeholder="请选择部门">
+                            <el-option label="sfsd" value="dfd"></el-option>
                         </el-select>
                      </el-form-item>
 
@@ -63,7 +63,7 @@
                     let year=value.getFullYear()+''
                     let month= value.getMonth()+1+''
                     request({
-                        url:`${this.$ip}/mms-qualification/securityMerits/numberExists/${year},${month}`,
+                        url:`${this.$ip}/qualification/securityMerits/numberExists/${year},${month}`,
                         method: 'get',
 
                     }).then(response => {
@@ -81,7 +81,6 @@
                     year:null,
                     month:null,
                 },
-                options:{},
                 rules: {
                     yearMonth: [{ validator:yearMonth, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -90,14 +89,6 @@
             };
         },
         created() {
-            request({
-                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-                method: 'post',
-                params:{delete:false},
-                data:["dept",]
-            }).then(d => {
-                this.options=d.data
-            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -113,33 +104,16 @@
                     this.form={...data,yearMonth:`${data.year}-${data.month}`}
                 }
             }
-
-        },
-        watch:{
-          'form.yearMonth':function (val) {
-
-              this.form.year=val.getFullYear()+''
-              this.form.month= val.getMonth()+1+''
-              console.log(val, this.form);
-          }
         },
         methods: {
-            deptNameChange(val){
-                let data
-                this.options.dept.map((k,l)=>{
-                    if(val==k.valCode){
-                        data=k.valData
-                    }
-                })
-                this.$set(this.form,'deptName',data)
+            yearMonthChange(val){
+                let date=val
+                console.log(date, val);
+                this.form.year=val.getFullYear()+''
+                this.form.month= val.getMonth()+1+''
             },
             resetForm(){
-                if(this.type=='edit'){
-                    this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:null, month:null,};
-                }else {
-                    this.form={};
-
-                }
+                this.form={};
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -147,9 +121,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/mms-qualification/securityMerits/save`
+                                url=`${this.$ip}/qualification/securityMerits/save`
                             }else {
-                                url=`${this.$ip}/mms-qualification/securityMerits/update`
+                                url=`${this.$ip}/qualification/securityMerits/update`
                             }
                             request({
                                 url,
