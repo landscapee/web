@@ -19,8 +19,8 @@
                         </template>
                     </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="148" >
-                        <template >
-                            <el-button size="mini" @click="clickAction()">已读</el-button>
+                        <template slot-scope="{ row }" v-if="row.state==0">
+                            <el-button size="mini" @click="clickAction(row)">已读</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -48,7 +48,7 @@ export default {
 				current: 1,
 				size: 15,
             },
-            form:{},
+            form:{state:0},
             sort:{},
             selectId:null
         };
@@ -65,8 +65,17 @@ export default {
         }
     },
     methods: {
-        clickAction(){
+        clickAction(row){
+            request({
+                url:`${this.$ip}/mms-warning/warning/read/${row.id}`, 
+                method: 'get',
+            })
+            .then((data) => {
+                this.$message.success("已读成功！");
+                this.getList();
+            }).catch((error) => {
             
+            });
         },
         requestTable(searchData){
             this.form = searchData;
@@ -110,11 +119,7 @@ export default {
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+                 this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });

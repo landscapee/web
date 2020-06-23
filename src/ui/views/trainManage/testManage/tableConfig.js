@@ -23,23 +23,20 @@ export const testConfig = () => {
                 { slot: 'option', label: '操作',width:'230', align: 'center', search:{type:'btn',label:'搜索',icon:"table_search" } },
          ]
 };
-export const testRuConfig = () => {
+export const testMainAddConfig = () => {
         return [
                 { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
-                { prop: 'infNumber', label: '员工姓名',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'infNumber',placeholder:"请输入"} },
-                { prop: 'infRemark', label: '员工编号',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'select', prop:'infRemark',placeholder:"请选择"} },
-                { prop: 'infSources', label: '考试名称',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'infSources',placeholder:"请输入"} },
-                { prop: 'infTime', label: '分数', sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'infTime',placeholder:"请输入"}},
-                { prop: 'place', label: '时间',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'place',placeholder:"请输入"}},
-                { prop: 'responsibleUnit', label: '时长',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'responsibleUnit',placeholder:"请输入"}},
-                { prop: 'deptName', label: '地点',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'deptName',placeholder:"请输入"}},
-                { prop: 'situation', label: '方式',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'situation',placeholder:"请输入"} },
-                { prop: 'situation', label: '类型',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'situation',placeholder:"请输入"} },
-                { prop: 'reason', label: '资质类型',  sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'reason',placeholder:"请输入",} },
-                { prop: 'reason', label: '业务类型', sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'reason',placeholder:"请输入", } },
-                { prop: 'reason', label: '试卷名称',   sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'reason',placeholder:"请输入", } },
-                { prop: 'reason', label: '纸质试卷',   sortProp:"infNumber", align: 'center',sort:true, search:{type:'input', prop:'reason',placeholder:"请输入", } },
-            { slot: 'option', label: '操作',width:'210', align: 'center', search:{type:'btn',label:'搜索',icon:"table_search" } },
+                { prop: 'infNumber', label: '试题序号',  align: 'center', search:{type:'input', prop:'infNumber',placeholder:"请输入"} },
+                { prop: 'infRemark', label: '选择类型',  align: 'center', search:{type:'select', prop:'infRemark',placeholder:"请选择"} },
+                { prop: 'infSources', label: '题目',  align: 'center', search:{type:'input', prop:'infSources',placeholder:"请输入"} },
+                { prop: 'infTime', label: '选项A', align: 'center', search:{type:'input', prop:'infTime',placeholder:"请输入"}},
+                { prop: 'place', label: '选项B',  align: 'center' , search:{type:'input', prop:'place',placeholder:"请输入"}},
+                { prop: 'responsibleUnit', label: '选项C',  align: 'center' , search:{type:'input', prop:'responsibleUnit',placeholder:"请输入"}},
+                { prop: 'deptName', label: '选项D',  align: 'center' , search:{type:'input', prop:'deptName',placeholder:"请输入"}},
+                { prop: 'situation', label: '选项E',  align: 'center', search:{type:'input', prop:'situation',placeholder:"请输入"} },
+                { prop: 'situation', label: '选项F',  align: 'center', search:{type:'input', prop:'situation',placeholder:"请输入"} },
+                { prop: 'reason', label: '正确答案',width:'200',  align: 'center', search:{type:'input', prop:'reason',placeholder:"请输入",} },
+                { prop: 'reason', label: '分值',width:'200',  align: 'center', search:{type:'input', prop:'reason',placeholder:"请输入",extendType:'search',} },
          ]
 };
  

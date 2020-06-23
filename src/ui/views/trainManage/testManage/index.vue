@@ -15,7 +15,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>导出Excel</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出Excel</div>
                 </div>
             </div>
             <div class="main-content">
@@ -52,7 +52,7 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{records:[{}]},
+            tableData:{records:[]},
             tableConfig:testConfig(),
             params:{
 				current: 1,
@@ -149,7 +149,7 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/mms-qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
@@ -180,7 +180,7 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/mms-qualification/securityInformation/list`,
+                url:`${this.$ip}/qualification/securityInformation/list`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}

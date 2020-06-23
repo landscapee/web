@@ -22,7 +22,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { historyInfoPlateTable } from '../../tableConfig.js';
+import { historyPlateSendTable,historyPlateReceiveTable } from '../../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -34,7 +34,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:historyInfoPlateTable(),
+            tableConfig:historyPlateSendTable(),
             params:{
 				current: 1,
 				size: 15,
@@ -48,6 +48,13 @@ export default {
        this.getList();
     },
     watch:{
+        '$route' (to, from) {
+            if(from.query.tag=='send'){
+                  this.tableConfig=historyPlateSendTable();
+            }else{
+                 this.tableConfig=historyPlateReceiveTable();
+            }
+        },
         params:{
             handler:function(val,oldval){
                 this.getList();

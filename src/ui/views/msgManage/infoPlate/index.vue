@@ -126,7 +126,7 @@ export default {
                     this.$message.error('请先选中一行数据');
                 }else{
                     if(tag == 'history'){
-                         this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId}});
+                         this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
                     }else{
                         this.$router.push({path:'/addInfoPlate',query:{type:tag,id:this.selectId}});
                     }

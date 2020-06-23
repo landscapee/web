@@ -236,8 +236,8 @@ let authRoutes = [
 					{
                         path: '/testMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
-                        name: 'testMAdd',
-                        meta: {title: '试卷新增',icon: 'xxgl' ,keepAlive:true},
+                        name: '试卷新增',
+                        meta: {title: '试卷新增',icon: 'xxgl' },
                         children:[
 
                         ]
@@ -292,22 +292,10 @@ let authRoutes = [
                 ]
 			},
 			{
-				path: '/onlineTestIndex',
-				component:  () => import('@views/trainManage/onlineTest/index'),
+				path: '/WorkOrderManage33',
+				component: ()=>{},
 				name: '在线考试',
 				meta: {title: '在线考试',icon: 'xxgl' },
-                children:[
-                    {
-                        path: '/onlineTestDo',
-                        component: () => import('@views/trainManage/onlineTest/add'),
-                        name: '在线考试',
-                        meta: {title: '在线考试',icon: 'xxgl' },
-                        children:[
-
-                        ]
-                    },
-
-                ]
 			},
 			{
 				path: '/WorkOrderManage44',
@@ -336,7 +324,7 @@ let authRoutes = [
 				path: '/warningConfig',
 				component: () => import('@views/msgManage/warningConfig/index'),
 				name: '预警配置',
-				meta: {title: '预警配置',icon: '',keepAlive: true },
+				meta: {title: '预警配置',icon: '' },
 				children:[
 					{
 						path: '/addWarningConfig',
@@ -350,7 +338,7 @@ let authRoutes = [
 				path: '/warningSearch',
 				component: () => import('@views/msgManage/warningSearch/index'),
 				name: '预警查询',
-				meta: {title: '预警查询',icon: '',keepAlive: true },
+				meta: {title: '预警查询',icon: ''},
 				children:[
 					{
 						path: '/historyWarning',
@@ -364,7 +352,7 @@ let authRoutes = [
 				path: '/subscribeConfig',
 				component: () => import('@views/msgManage/subscribeConfig/index'),
 				name: '订阅配置',
-				meta: {title: '订阅配置',icon: '',keepAlive: true },
+				meta: {title: '订阅配置',icon: '' },
 				children:[
 					{
 						path: '/addSubscribeConfig',
@@ -378,7 +366,7 @@ let authRoutes = [
 				path: '/infoPlate',
 				component: () => import('@views/msgManage/infoPlate/index'),
 				name: '信息平台',
-				meta: {title: '信息平台',icon: '',keepAlive: true },
+				meta: {title: '信息平台',icon: ''},
 				children:[
 					{
 						path: '/addInfoPlate',
@@ -486,4 +474,3 @@ export function resetRouter() {
 	router.matcher = newRouter.matcher;
 }
 export default router;
-

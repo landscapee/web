@@ -14,7 +14,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -47,7 +47,7 @@ export default {
         Icon,
         SearchTable
 	},
-    name: 'textMindex',
+    name: '',
     data() {
         return {
             tableData:{records:[]},
@@ -63,10 +63,7 @@ export default {
         };
     },
    created() {
-        if(this.$router.history.current.path == '/testMaintenance'){
-            this.getList();
-        }
-
+       this.getList();
     },
     watch:{
         '$route':function(val,nm){
@@ -125,13 +122,14 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
-             if(tag=='add'){
+            let data=JSON.stringify(this.row)
+            if(tag=='add'){
                 this.$router.push({path:'/testMaintenanceAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,data:data}});
                 }
             }
         },
@@ -146,7 +144,7 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/mms-training/paperInfo/delete/`+this.selectId,
+                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
@@ -177,13 +175,16 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/mms-training/paperInfo/list`,
-                  method: 'post',
+                url:`${this.$ip}/qualification/securityInformation/list`,
+                 method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
-                  this.tableData = extend({}, {...data.data});
+                  this.tableData = extend({},
+                     {...data.data}
+                 );
+
              })
         },
         handleSizeChange(size) {

@@ -44,7 +44,7 @@
                 this.dialogFormVisible=true
                 this.row={...data,selectedId:id}
                 request({
-                    url:`${this.$ip}/mms-qualification/securityMerits/sourcesList`,
+                    url:`${this.$ip}/qualification/securityMerits/sourcesList`,
                     method: 'post',
                     data:{
                         deptName:this.row.deptName,
@@ -59,7 +59,7 @@
 
                     if (valid) {
                          request({
-                             url:`${this.$ip}/mms-qualification/securityMerits/copy`,
+                             url:`${this.$ip}/qualification/securityMerits/copy`,
                              method:'post',
                              data:{
                                  targetId:this.row.id,
