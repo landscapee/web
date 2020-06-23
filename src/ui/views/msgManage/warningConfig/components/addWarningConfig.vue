@@ -38,7 +38,7 @@
               <el-button @click="userOpen('user')" size="mini" icon="el-icon-plus">选择人员</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.id" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose(tag)">
+									<el-tag :key="tag.id" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose('userList',tag)">
 										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
@@ -48,7 +48,7 @@
             <el-button @click="userOpen('station')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.id" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose(tag)">
+									<el-tag :key="tag.id" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose('stationList',tag)">
 										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
@@ -60,7 +60,7 @@
               <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.id" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose(tag)">
+									<el-tag :key="tag.id" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose('roleList',tag)">
 										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
@@ -70,7 +70,7 @@
               <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.id" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose(tag)">
+									<el-tag :key="tag.id" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose('deptList',tag)">
 										{{ tag.name }}
 									</el-tag>
 								</el-scrollbar>
@@ -135,12 +135,16 @@ export default {
           : "";
          if(this.type == "edit" || this.type == "info"){
           request({
-                url:`${this.$ip}/mms-warning/warningTemplate/getById`,
+                url:`${this.$ip}/mms-warning/warningTemplate/getById/${this.$route.query.id}`,
                 method: "get",
-                params: {id:this.$route.query.id}
               })
               .then(data => {
-                this.form = data.data[0];
+                this.form = {subject:data.data.subject,contentTemplate:data.data.contentTemplate} ;
+                this.selectPushObject = data.data.recipientType.find((item) =>item.type==='selected').value.map(item=>item.name);
+                this.userList = data.data.recipientType.find((item) =>item.type==='selected').value;
+                this.stationList = data.data.recipientType.find((item) =>item.type==='job').value;
+                this.deptList = data.data.recipientType.find((item) =>item.type==='department').value;
+                this.roleList = data.data.recipientType.find((item) =>item.type==='role').value;
               })
               .catch(error => {
                 this.$message.success(error);
@@ -162,8 +166,8 @@ export default {
           this.$message.success(error);
         });
     },
-    handleClose(tag) {
-			this.userList = without(this.userList, tag);
+    handleClose(list,tag) {
+			this[list] = without(this[list], tag);
 		},
     userOpen(tag){
       if(tag=='user'){

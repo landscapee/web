@@ -5,11 +5,15 @@ export const warningConfigTable = () => {
         { prop: 'contentTemplate', label: '预警模板', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入预警模板"} },
         {  label: '推送对象',width:'540', align: 'center',
         formatter: (row, column, cellValue) => {
-            if(cellValue){
-                return cellValue.join(";"); 
-            }else{
-                return '';
-            }
+            let arr = [];
+            row.recipientType.map(item=>{
+                item.value.map(item2=>{
+                    if(item2.name != null && item2.name){
+                        arr.push(item2.name);
+                    }
+                })
+            })
+            return arr.join(",");
         },
         search:{prop: '',type:'input',extendType:'search',placeholder:"请输入推送对象"}},
     ]
