@@ -15,7 +15,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出Excel</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>
                 </div>
             </div>
             <div class="main-content">
@@ -27,9 +27,9 @@
                         </template>
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="230"  >
-                        <template  slot-scope="{ row }">
+                        <template  slot-scope="scope">
                             <el-button  class="copyButton copyButton1" @click="testPush('/testManagePushStaff',row)">考试推送员工</el-button>
-                            <el-button  class="copyButton" @click="testPush('/testManageResults',row)">员工考试结果</el-button>
+                            <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
                         </template>
                     </el-table-column>
 
@@ -52,7 +52,7 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{records:[]},
+            tableData:{records:[{}]},
             tableConfig:testConfig(),
             params:{
 				current: 1,
@@ -75,7 +75,7 @@ export default {
     },
     methods: {
         testPush(path,row){
-          this.$router.push(path,row)
+          this.$router.push({path:path,query:{row:JSON.stringify(row)}})
         },
         exportExcel(){
              this.$refs.a.click()
@@ -149,10 +149,9 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-training/examInfo/delete/`+this.selectId,
                             method: 'delete',
-                            // params:{id:this.selectId}
-                        })
+                         })
                             .then((data) => {
                                 this.getList();
                                 this.selectId   = null;
@@ -172,15 +171,10 @@ export default {
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
-                }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
-                    }
-                    delete data.infTime
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-training/examInfo/list`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}

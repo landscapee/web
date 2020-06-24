@@ -19,89 +19,96 @@
                 <div></div>
 
                 <div class="row_custom">
-                    <el-form-item label="考试名称：" prop="infSources">
-                        <span v-if="type=='info'">{{form.infSources}}</span>
-                        <el-input v-else v-model="form.infSources" placeholder="请输入考试名称"></el-input>
+                    <el-form-item label="考试名称：" prop="examName">
+                        <span v-if="type=='info'">{{form.examName}}</span>
+                        <el-input v-else v-model="form.examName" placeholder="请输入考试名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="考试方式：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime }}</span>
-                        <el-select  v-else clearable v-model="form.infTime" placeholder="请选择考试方式">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
+                    <el-form-item label="考试方式：" prop="examMode">
+                        <span v-if="type=='info'">{{  form.examMode }}</span>
+                        <el-select  v-else clearable v-model="form.examMode" placeholder="请选择考试方式">
+                            <el-option label="线上" value="线上"> </el-option>
+                            <el-option label="线下" value="线下"> </el-option>
                         </el-select>
                     </el-form-item>
 
                 </div>
 
                 <div class="row_custom">
-                    <el-form-item :label="form.infTime=='线上'?'截止时间：':'举行时间：'" prop="place">
-                        <span v-if="type=='info'">{{form.place}}</span>
-                        <el-input v-else v-model="form.place" placeholder="请选择时间"></el-input>
+                    <el-form-item :label="form.examMode=='线上'?'截止时间：':'举行时间：'" prop="examTime">
+                        <span v-if="type=='info'">{{form.examTime}}</span>
+                        <el-date-picker type="date" v-else v-model="form.examTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="考试地点：" prop="responsibleUnit">
-                        <span v-if="type=='info'">{{form.responsibleUnit}}</span>
-                        <el-input v-else v-model="form.responsibleUnit" placeholder="请输入考试地点"></el-input>
+                    <el-form-item label="考试地点：" prop="examSite">
+                        <span v-if="type=='info'">{{form.examSite}}</span>
+                        <el-input v-else v-model="form.examSite" placeholder="请输入考试地点"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="考试试卷：" prop="infTime1">
-                        <span v-if="type=='info'">{{  form.infTime1 }}</span>
-                        <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择考试试卷">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
+                    <el-form-item label="考试试卷：" prop="paperName">
+                        <span v-if="type=='info'">{{  form.paperName }}</span>
+                        <el-select  v-else clearable v-model="form.paperName" placeholder="请选择考试试卷">
+                            <el-option label="试卷一" value="试卷一"> </el-option>
+                            <el-option label="试卷二" value="试卷二"> </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="考试时长：" prop="situation">
-                        <span v-if="type=='info'">{{form.situation}}</span>
-                        <el-input v-else v-model="form.situation" placeholder="请输入考试时长"></el-input>&nbsp;&nbsp;分
+                    <el-form-item label="考试时长：" prop="totalTime">
+                        <span v-if="type=='info'">{{form.totalTime}}</span>
+                        <el-input v-else v-model="form.totalTime" placeholder="请输入考试时长"></el-input>&nbsp;&nbsp;分
                     </el-form-item>
                 </div>
 
                 <div class="row_custom">
 
-                    <el-form-item label="考试类型：" prop="infTime1">
-                        <span v-if="type=='info'">{{  form.infTime1 }}</span>
-                        <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择考试类型">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
+                    <el-form-item label="考试类型：" prop="examType">
+                        <span v-if="type=='info'">{{  form.examType }}</span>
+                        <el-select  v-else clearable v-model="form.examType" placeholder="请选择考试类型">
+                            <el-option label="开卷" value="开卷"> </el-option>
+                            <el-option label="闭卷" value="闭卷"> </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="资质类型：" prop="infTime1">
-                        <span v-if="type=='info'">{{  form.infTime1 }}</span>
-                        <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择资质类型">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>
-                <div class="row_custom">
-                    <el-form-item label="业务类型：" prop="infTime1">
-                        <span v-if="type=='info'">{{  form.infTime1 }}</span>
-                        <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择业务类型">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="考题下载：" prop="infTime1">
-                        <span v-if="type=='info'">{{  form.infTime1 }}</span>
-                        <el-select  v-else clearable v-model="form.infTime1" placeholder="请选择考题下载">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
+                    <el-form-item label="资质类型：" prop="qualificationType">
+                        <span v-if="type=='info'">{{  form.qualificationType }}</span>
+                        <el-select  v-else clearable v-model="form.qualificationType" placeholder="请选择资质类型">
+                            <el-option label="桥载" value="桥载"> </el-option>
+                            <el-option label="勤务" value="勤务"> </el-option>
+                            <el-option label="维修" value="维修"> </el-option>
+                            <el-option label="质量" value="质量"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
-                <div class="row_custom aRow_custom">
-                    <el-form-item label="考试状态：" prop="quotaType">
-                        <span v-if="type=='info'">{{form.quotaType}}</span>
-                        <el-select v-else clearable v-model="form.quotaType" placeholder="请选择考试状态">
-                            <el-option label="违规" value="违规"> </el-option>
+                <div :class="this.type=='add'?'row_custom aRow_custom':'row_custom'" >
+                    <el-form-item label="业务类型：" prop="businessType">
+                        <span v-if="type=='info'">{{  form.businessType }}</span>
+                        <el-select  v-else clearable v-model="form.businessType" placeholder="请选择业务类型">
+                            <el-option label="桥载" value="桥载"> </el-option>
+                            <el-option label="勤务" value="勤务"> </el-option>
+                            <el-option label="维修" value="维修"> </el-option>
+                            <el-option label="质量" value="质量"> </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <!--<el-form-item label="考题下载：" prop="examMode1">-->
+                        <!--<span v-if="type=='info'">{{  form.examMode1 }}</span>-->
+                        <!--<el-select  v-else clearable v-model="form.examMode1" placeholder="请选择考题下载">-->
+                            <!--<el-option label="允许" value="允许"> </el-option>-->
+                            <!--<el-option label="禁止" value="禁止"> </el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <el-form-item v-if="type=='edit'" label="考试状态：" prop="examStatus">
+                        <span v-if="type=='info'">{{form.examStatus}}</span>
+                        <el-select v-else clearable v-model="form.examStatus" placeholder="请选择考试状态">
+                            <el-option label="已推送" value="已推送"> </el-option>
+                            <el-option label="已开始" value="已开始"> </el-option>
+                            <el-option label="已评价" value="已评价"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
+                <!--<div class="row_custom aRow_custom">-->
+                    <!---->
+                <!--</div>-->
                 <div class="row_item_row row_item">
-                    <el-form-item label="考试简介：" prop="formulas">
-                        <span v-if="type=='info'">{{form.formulas}}</span>
-                        <el-input v-else v-model="form.formulas" type="textarea" :rows="3"  placeholder="请输入考试简介"></el-input>
+                    <el-form-item label="考试简介：" prop="description">
+                        <span v-if="type=='info'">{{form.description}}</span>
+                        <el-input v-else v-model="form.description" type="textarea" :rows="3"  placeholder="请输入考试简介"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -118,29 +125,13 @@
         },
         name: "",
         data() {
-            const infSources = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('试题序号不能为空'));
-                } else {
-                    request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
-                        method: 'get',
-                    }).then(response => {
-                        if (!response.data) {
-                            callback();
-                        } else {
-                            callback("该试题序号已存");
-                        }
-                    });
-                }
-            };
+
 
             return {
                 oldForm:{},
-                form: {infTime:'单选'},
+                form: {},
                 rules: {
-                    infSources: [{ validator:infSources, trigger: "blur" }],
-
+                    infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
                 },
                 type: "add"
             };
@@ -157,7 +148,7 @@
                             ? "考试管理详情"
                             : "";
                  if(this.type!='add'){
-                    let row=JSON.parse( this.$route.query.row)
+                    let row=JSON.parse( this.$route.query.data)
                     this.form={...row}
                 }
 
@@ -167,14 +158,30 @@
         methods: {
 
             resetForm(){
-                this.form={};
+                if(this.form.id){
+                    this.form = {id:this.form.id };
+                }else{
+                    this.form = { };
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
-
-
+                            let url
+                            if(this.type=='add'){
+                                url='/examInfo/save'
+                            }else {
+                                url='/examInfo/update'
+                            }
+                            request({
+                                url:`${this.$ip}/mms-training${url}`,
+                                method: 'post',
+                                data:{...this.form},
+                            }).then((data) => {
+                                this.$message.success("保存成功！");
+                                this.$router.go(-1)
+                            })
                               }
                     });
                 }

@@ -325,6 +325,7 @@
                                 .then(d => {
                                     this.$message.success("保存成功！");
                                      this.$router.push({path:'/testMaintenanceAdd',query:{type:"editor",id:d.data}})
+                                        this.$set(this.form,'id',d.data)
                                  })
                                 .catch(error => {
                                     this.$message.success(error);

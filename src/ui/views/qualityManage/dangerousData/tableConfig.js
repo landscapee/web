@@ -18,7 +18,7 @@ export const dangerousConfig = (obj) => {
                 {  prop: 'acceptability', label: '可接受程度' ,width:'148',sortProp:"acceptability", search:{type:'input', placeholder:"请输入可接受程度", prop:'acceptability'}},
                 {  prop: 'causeAnalysis', label: '根本原因分析' ,width:'148',sortProp:"causeAnalysis", search:{type:'input', placeholder:"请输入根本原因分析", prop:'causeAnalysis'}},
                 {  prop: 'measures', label: '措施' , width:'148',sortProp:"measures",search:{type:'input', placeholder:"请输入措施", prop:'measures'}},
-                {  prop: 'residuaPossibility', label: '剩余可能性' ,width:'148',sortProp:"residuaPossibility", search:{type:'input', placeholder:"请输入剩余可能性", prop:'residuaPossibility'}},
+                {  prop: 'residualPossibility', label: '剩余可能性' ,width:'148',sortProp:"residualPossibility", search:{type:'input', placeholder:"请输入剩余可能性", prop:'residualPossibility'}},
                 {  prop: 'residualSeverity', label: '剩余严重性' ,width:'148',sortProp:"residualSeverity", search:{type:'input', placeholder:"请输入剩余严重性", prop:'residualSeverity'}},
                 {  prop: 'residualRiskLevel', label: '剩余风险等级' ,width:'148',sortProp:"residualRiskLevel", search:{type:'input', placeholder:"请输入剩余风险等级", prop:'residualRiskLevel'}},
                 {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState", search:{type:'select', placeholder:"请选择控制状态", prop:'controlState',data:obj.controlState}},

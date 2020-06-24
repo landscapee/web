@@ -1,23 +1,15 @@
 <template>
     <div>
-        <el-dialog title="试卷导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog title="分数录入"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
-                <el-form-item label="编号：">
-                    <span>{{row.year}} </span>
-                </el-form-item>
-                <el-form-item label="名称：">
-                    <span>{{row.year}} </span>
-                </el-form-item>
-                <el-form-item label="格式：">
-                    <el-radio-group v-model="form.sourcesId">
-                        <el-radio label="WORD" value="WORD"></el-radio>
-                        <el-radio label="PDF" value="PDF"></el-radio>
-                    </el-radio-group>
+                <div>李梅 信息安全考试    考分：</div>
+                <el-form-item label="" prop="score">
+                    <el-input v-model="form.score" type="number"></el-input>
                 </el-form-item>
             </el-form>
             <div class="footer">
                 <el-button @click="close">取消</el-button>
-                <el-button type="primary" @click="submit('form')">导出</el-button>
+                <el-button type="primary" @click="submit('form')">确认</el-button>
             </div>
         </el-dialog>
 
@@ -34,16 +26,19 @@
         data() {
             return {
                 form:{sourcesId:'WORD'},
-                rules:{},
+                rules:{
+                    score:[{required:true,message: '请输入考试分数',trigger:'blur'}]
 
-                row:{},
+                },
+
+
                 dialogFormVisible:false,
             }
         },
         methods: {
             open(data){
                 this.dialogFormVisible=true
-                this.form={...data}
+                this.form={id:data.id}
 
             },
 
@@ -52,28 +47,33 @@
 
                     if (valid) {
                          request({
-                             url:`${this.$ip}/mms-qualification/securityMerits/copy`,
-                             method:'post',
-                             data:{
-                                  ...this.form
+                             url:`${this.$ip}/mms-training/examResult/addScore`,
+                             method:'get',
+                             params:{
+                                  ...this.form,
                              }
                          }).then((d) => {
-                              if(d){
-                                 this.close();
-                             }else {
-                                 this.$message({
-                                     message: '复制失败',
-                                     type: 'error',
-                                 });
-                             }
+                             this.close();
+                             this.$message({
+                                 message: '操作成功',
+                                 type: 'success',
+                             });
+                             this.$emit('getList')
+                             //  if(d.code==200){
+                             //
+                             // }else {
+                             //     this.$message({
+                             //         message: '操作失败',
+                             //         type: 'error',
+                             //     });
+                             // }
 
                         });
                     }
                 });
             },
             close(){
-                this.row={}
-                this.from={}
+                 this.from={}
                 this.dialogFormVisible=false
             }
         },

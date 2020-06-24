@@ -292,10 +292,17 @@ let authRoutes = [
                 ]
 			},
 			{
-				path: '/WorkOrderManage33',
-				component: ()=>{},
+				path: '/onlineTestIndex',
+				component:() => import('@views/trainManage/onlineTest/index.vue'),
 				name: '在线考试',
 				meta: {title: '在线考试',icon: 'xxgl' },
+                children:[
+					{   path: '/onlineTestDo',
+                        component: () => import('@views/trainManage/onlineTest/add.vue'),
+                        name: '在线考试',
+                        meta: {title: '在线考试',icon: 'xxgl' },
+					},
+				]
 			},
 			{
 				path: '/WorkOrderManage44',
