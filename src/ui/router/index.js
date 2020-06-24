@@ -212,7 +212,22 @@ let authRoutes = [
 		redirect: '/WorkOrderManage6',
 		name: '技术资料',
 		meta: {title: '技术资料',icon: 'jszl' },
-		children: [],
+		children: [
+            {
+				path: '/fileManage',
+				component: () => import('@views/techKnowledge/fileManage/index'),
+				name: '文件管理',
+                meta: {title: '文件管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/detail',
+                        component: () => import('@views/techKnowledge/fileManage/detail/index'),
+                        name: '工单',
+                        meta: {title: '工单',icon: 'xxgl' },
+                    },
+                ]
+            }
+        ],
 	},
 	{
 		path: '/peixunKaohe',
