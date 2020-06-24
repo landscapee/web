@@ -129,9 +129,8 @@
                     <el-form-item label="控制状态：" prop="controlState">
                         <span v-if="type=='info'">{{form.controlState}}</span>
                         <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
-                            <el-option label="q" value="q"> </el-option>
-                            <el-option label="qq" value="qq"> </el-option>
-                        </el-select>
+                            <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
@@ -139,8 +138,7 @@
                         <span v-if="type=='info'">{{form.evaluationResults}}</span>
 
                         <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
-                            <el-option label="q" value="q"> </el-option>
-                            <el-option label="qq" value="qq"> </el-option>
+                             <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -165,7 +163,7 @@
                     let val=value.replace(/^\s+|\s+$/g,"")
                     if(val){
                         request({
-                            url:`${this.$ip}/qualification/dangerData/numberExists/${value}`,
+                            url:`${this.$ip}/mms-qualification/dangerData/numberExists/${value}`,
                             method: 'get',
                         }).then(response => {
                             console.log(response,10);
@@ -188,7 +186,7 @@
 
             };
             return {
-
+                options:{},
                 form: {},
                 rules: {
                     number: [{ validator:checkNumber,trigger: "blur" }],
@@ -213,10 +211,22 @@
                     this.form={...data}
                 }
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["commentResults", "controlState",]
+            }).then(d => {
+                     this.options=d.data
+            });
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,number:this.form.number};
+                }else {
+                    this.form={};
+                }
+
             },
             saveQualifications(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -224,9 +234,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/dangerData/save`
+                                url=`${this.$ip}/mms-qualification/dangerData/save`
                              }else {
-                                 url=`${this.$ip}/qualification/dangerData/update`
+                                 url=`${this.$ip}/mms-qualification/dangerData/update`
                             }
                             request({
                                 url,
