@@ -18,13 +18,13 @@
         <div class="row_custom">
           <el-form-item label="信息类型" prop="type">
             <span v-if="type=='info'">{{form.type}}</span>
-            <el-select v-else  v-model="type" multiple placeholder="请选择信息类型">
-                <el-option v-for="item in infoType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-else  v-model="form.type"  placeholder="请选择信息类型">
+                <el-option v-for="item in infoType" :key="item.valCode" :label="item.valData" :value="item.valData"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="是否启用" prop="enable">
-            <span v-if="type=='info'">{{form.enable}}</span>
-            <el-select v-else  v-model="enable" multiple placeholder="请选择是否启用">
+            <span v-if="type=='info'">{{form.enable?'是':'否'}}</span>
+            <el-select v-else  v-model="form.enable"  placeholder="请选择是否启用">
                 <el-option v-for="item in [{label:'是',value:true},{label:'否',value:false}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
@@ -60,14 +60,14 @@ export default {
   data() {
     return {
       form: {},
-      userList:[],
       rules: {
-        sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
-        sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
+        type: [{ required: true, message: "请选择信息类型", trigger: "change" }],
+        enable: [{ required: true, message: "请选择是否启用", trigger: "change" }],
       },
       type: "add",
       userList:[],
-      infoType:[]
+      infoType:[],
+      deptList:[]
     };
   },
   created() {
@@ -85,11 +85,12 @@ export default {
          if(this.type == "edit" || this.type == "info"){
               request({
                 url:`${this.$ip}/mms-notice/notificationSubscribe/getById/${this.$route.query.id}`,
-                method: "post",
-                data: {id:this.$route.query.id}
+                method: "get",
               })
               .then(data => {
-                this.form = data.data[0];
+                 this.form = {type:data.data.type,enable:data.data.enable} ;
+                 this.userList = data.data.receiptPerson;
+                 this.deptList = data.data.receiptDepartment;
               })
               .catch(error => {
                 this.$message.success(error);
@@ -100,7 +101,7 @@ export default {
   methods: {
     findDataDictionary(){
         request({
-          url:`${this.$ip}/mms-notice/businessDictionaryValue/listByCodes`,
+          url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
           method: "post",
           data: ["infoTypeCode"]
         })
@@ -111,8 +112,17 @@ export default {
           this.$message.success(error);
         });
     },
-    handleUserSelected(users) {
+    handleUserSelected(users,deptList) {
       this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+      // 数组去重
+      let hash = {};
+      this.deptList = deptList.reduce(function(item, next) {
+        if (!hash[next.id]) {
+          hash[next.id] = true;
+          item.push(next);
+        }
+        return item;
+      }, []);
 		},
     handleClose(list,tag) {
 			this[list] = without(this[list], tag);
@@ -131,7 +141,7 @@ export default {
             request({
               url,
               method: "post",
-              data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id,receiptPerson:this.userList,receiptDepartment: this.deptList}:{...this.form,receiptPerson:this.userList,receiptDepartment: this.deptList}
             })
             .then(data => {
               this.$message.success("保存成功！");

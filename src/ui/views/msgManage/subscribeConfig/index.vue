@@ -116,8 +116,7 @@ export default {
             .then(() => {
                 request({
                     url:`${this.$ip}/mms-notice/notificationSubscribe/delete/${this.selectId}`, 
-                    method: 'post',
-                    data:{id:this.selectId}
+                    method: 'delete',
                 })
                 .then((data) => {
                    this.$message({type: 'success',message: '删除成功'});
@@ -139,11 +138,7 @@ export default {
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+               this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });
