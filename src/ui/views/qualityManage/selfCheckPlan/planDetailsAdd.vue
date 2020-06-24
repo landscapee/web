@@ -25,8 +25,9 @@
                     </el-form-item>
                     <el-form-item label="检查项目：" prop="checkProject">
                         <span v-if="type=='info'">{{form.checkProject}}</span>
-                        <el-input  v-else v-model="form.checkProject" placeholder="请输入检查项目"></el-input>
-                        <!--<el-date-picker ></el-date-picker>-->
+                         <el-select v-else v-model="form.checkProject" placeholder="请选择检查项目">
+                            <el-option v-for="(opt,index) in options.checkProject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                        </el-select>
                     </el-form-item>
 
                 </div>
@@ -35,9 +36,11 @@
                         <span v-if="type=='info'">{{form.checkContents}}</span>
                         <el-input v-else v-model="form.checkContents" placeholder="请输入检查内容"></el-input>
                     </el-form-item>
-                    <el-form-item label="检查方式：" prop="checkMethod">
+                    <el-form-item label="检查方式：" prop="checkMethod1">
                         <span v-if="type=='info'">{{form.checkMethod}}</span>
-                        <el-input v-else v-model="form.checkMethod" placeholder="请输入检查方式"></el-input>
+                         <el-select @change="checkMethodChange" v-else multiple v-model="form.checkMethod1" placeholder="请选择检查方式">
+                            <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -70,7 +73,7 @@
                     <el-form-item label="检查对象：" prop="checkObject">
                         <span v-if="type=='info'">{{form.checkObject}}</span>
                          <el-select v-else clearable v-model="form.checkObject" placeholder="请选择检查对象">
-                            <el-option label="jiwu" value="jiwu"> </el-option>
+                             <el-option v-for="(opt,index) in options.checkObject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                     <el-form-item label="检查频次：" prop="checkFrequency">
@@ -96,7 +99,7 @@
                     <el-form-item label="检查类别：" prop="checkType">
                         <span v-if="type=='info'">{{form.checkType}}</span>
                         <el-select v-else clearable v-model="form.checkType" placeholder="请选择检查类别">
-                            <el-option label="违规" value="违规"> </el-option>
+                            <el-option v-for="(opt,index) in options.checkCategory||[]" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                 </div>
@@ -120,7 +123,7 @@
                     return callback(new Error('序号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/examinationDetail/numberExists`,
+                        url:`${this.$ip}/mms-qualification/examinationDetail/numberExists`,
                         method: 'POST',
                         data:{
                             examinationId: this.$route.query.id,
@@ -136,15 +139,23 @@
                 }
             };
             return {
-                form: {},
+                form: {checkMethod:[]},
                 rules: {
                     number: [{validator:infNumberIs, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
+                options:{},
                 type: "add"
             };
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["checkProject", "checkType",'checkObject','checkType']
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -157,7 +168,7 @@
                             : "";
                 if(this.type == "edit" || this.type == "info"){
                     let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+                    this.form={...data,checkMethod:data.checkMethod||[]}
                 }else {
                     // this.form.examinationId
                     this.$set(this.form,'examinationId',this.$route.query.id)
@@ -165,8 +176,15 @@
             }
         },
         methods: {
+            checkMethodChange(val){
+              this.$set(this.form,'checkMethod',val.join(','))
+            },
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,checkMethod:[],number:this.form.number };
+                }else {
+                    this.form={checkMethod:[]};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -174,9 +192,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/examinationDetail/save`
+                                url=`${this.$ip}/mms-qualification/examinationDetail/save`
                              }else {
-                                 url=`${this.$ip}/qualification/examinationDetail/update`
+                                 url=`${this.$ip}/mms-qualification/examinationDetail/update`
                             }
                             request({
                                 url,

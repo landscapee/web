@@ -1,4 +1,4 @@
-export const dangerousConfig = () => {
+export const dangerousConfig = (obj) => {
         return [
                 { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
                 { prop: 'number', label: '编号', width:'148',sortProp:"number", align: 'center',sort:true,search:{type:'input',placeholder:"请输入编号", prop:'number'} },
@@ -21,8 +21,8 @@ export const dangerousConfig = () => {
                 {  prop: 'residuaPossibility', label: '剩余可能性' ,width:'148',sortProp:"residuaPossibility", search:{type:'input', placeholder:"请输入剩余可能性", prop:'residuaPossibility'}},
                 {  prop: 'residualSeverity', label: '剩余严重性' ,width:'148',sortProp:"residualSeverity", search:{type:'input', placeholder:"请输入剩余严重性", prop:'residualSeverity'}},
                 {  prop: 'residualRiskLevel', label: '剩余风险等级' ,width:'148',sortProp:"residualRiskLevel", search:{type:'input', placeholder:"请输入剩余风险等级", prop:'residualRiskLevel'}},
-                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState", search:{type:'select', placeholder:"请选择控制状态", prop:'controlState',data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}]}},
-                 {  slot:'evaluationResults',label: '评定结果' ,width:'190',sortProp:"evaluationResults",search:{fixed:"right",type:'select', placeholder:"请选择评定结果",extendType:'search', prop:'evaluationResults',data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}]}}
+                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState", search:{type:'select', placeholder:"请选择控制状态", prop:'controlState',data:obj.controlState}},
+                 {  slot:'evaluationResults',label: '评定结果' ,width:'190',sortProp:"evaluationResults",search:{fixed:"right",type:'select', placeholder:"请选择评定结果",extendType:'search', prop:'evaluationResults',data:obj.commentResults}}
         ]
 };
  
