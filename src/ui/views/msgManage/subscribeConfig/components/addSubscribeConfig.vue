@@ -16,16 +16,16 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="信息类型" prop="sysParamName">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择信息类型">
+          <el-form-item label="信息类型" prop="type">
+            <span v-if="type=='info'">{{form.type}}</span>
+            <el-select v-else  v-model="type" multiple placeholder="请选择信息类型">
                 <el-option v-for="item in infoType" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="是否启用" prop="sysParamValue">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择是否启用">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-form-item label="是否启用" prop="enable">
+            <span v-if="type=='info'">{{form.enable}}</span>
+            <el-select v-else  v-model="enable" multiple placeholder="请选择是否启用">
+                <el-option v-for="item in [{label:'是',value:true},{label:'否',value:false}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       form: {},
+      userList:[],
       rules: {
         sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
         sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
@@ -83,7 +84,7 @@ export default {
           : "";
          if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/mms-parameter/notificationSubscribe/getById/${this.$route.query.id}`,
+                url:`${this.$ip}/mms-notice/notificationSubscribe/getById/${this.$route.query.id}`,
                 method: "post",
                 data: {id:this.$route.query.id}
               })
@@ -99,7 +100,7 @@ export default {
   methods: {
     findDataDictionary(){
         request({
-          url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+          url:`${this.$ip}/mms-notice/businessDictionaryValue/listByCodes`,
           method: "post",
           data: ["infoTypeCode"]
         })
@@ -126,7 +127,7 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/mms-parameter/notificationSubscribe/save`:`${this.$ip}/mms-parameter/notificationSubscribe/update`
+            let url = this.type == "add"?`${this.$ip}/mms-notice/notificationSubscribe/save`:`${this.$ip}/mms-notice/notificationSubscribe/update`
             request({
               url,
               method: "post",

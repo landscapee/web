@@ -115,7 +115,7 @@ export default {
 			})
             .then(() => {
                 request({
-                    url:`${this.$ip}/mms-parameter/notificationSubscribe/delete/${this.selectId}`, 
+                    url:`${this.$ip}/mms-notice/notificationSubscribe/delete/${this.selectId}`, 
                     method: 'post',
                     data:{id:this.selectId}
                 })
@@ -133,7 +133,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/notificationSubscribe/list`, 
+                url:`${this.$ip}/mms-notice/notificationSubscribe/list`, 
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
