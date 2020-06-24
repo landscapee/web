@@ -1,5 +1,6 @@
 <template>
     <div class="addSysParameter">
+
         <div class="top-content">
             <div class="top-content-title">
                 <span>试题维护-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
@@ -20,67 +21,74 @@
 
 
                 <div class="row_custom">
-                    <el-form-item label="试题序号：" prop="infSources">
-                        <span v-if="type=='info'">{{form.infSources}}</span>
-                        <el-input v-else v-model="form.infSources" placeholder="请输入试题序号"></el-input>
+                    <el-form-item label="试题序号：" prop="questionNo">
+                        <span v-if="type=='info'">{{form.questionNo}}</span>
+                        <el-input  v-else v-model="form.questionNo"  placeholder="请输入试题序号"></el-input>
                     </el-form-item>
-                    <el-form-item label="选择类型：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime }}</span>
-                        <el-select @change="typeChange" v-else clearable v-model="form.infTime" placeholder="请选择选择类型">
-                            <el-option label="单选" value="单选"> </el-option>
-                            <el-option label="多选" value="多选"> </el-option>
+                    <el-form-item label="选择类型：" prop="optionType">
+                        <span v-if="type=='info'">{{  form.optionType }}</span>
+                        <el-select @change="typeChange" v-else clearable v-model="form.optionType" placeholder="请选择选择类型">
+                             <el-option v-for="(opt,index) in options.selectType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
-                     </el-form-item>
+                    </el-form-item>
 
                 </div>
                 <div class="row_item_row row_item">
-                    <el-form-item label="题目：" prop="infRemark">
-                        <span v-if="type=='info'">{{form.infRemark}}</span>
-                        <el-input v-else v-model="form.infRemark" type="text"   placeholder="请输入题目"></el-input>
+                    <el-form-item label="题目：" prop="questionName">
+                        <span v-if="type=='info'">{{form.questionName}}</span>
+                        <el-input v-else v-model="form.questionName" type="text"   placeholder="请输入题目"></el-input>
                     </el-form-item>
 
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="选项A：" prop="place">
-                        <span v-if="type=='info'">{{form.place}}</span>
-                        <el-input v-else v-model="form.place" placeholder="请输入"></el-input>
+                    <el-form-item label="选项A：" prop="optionA">
+                        <span v-if="type=='info'">{{form.optionA}}</span>
+                        <el-input v-else v-model="form.optionA" placeholder="请输入"></el-input>
                     </el-form-item>
-                    <el-form-item label="选项B：" prop="responsibleUnit">
-                        <span v-if="type=='info'">{{form.responsibleUnit}}</span>
-                        <el-input v-else v-model="form.responsibleUnit" placeholder="请输入"></el-input>
+                    <el-form-item label="选项B：" prop="optionB">
+                        <span v-if="type=='info'">{{form.optionB}}</span>
+                        <el-input v-else v-model="form.optionB" placeholder="请输入"></el-input>
+
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="选项C：" prop="deptName">
-                        <span v-if="type=='info'">{{form.deptName}}</span>
-                        <el-input v-else v-model="form.deptName" placeholder="请输入"></el-input>
+                    <el-form-item label="选项C：" prop="optionC">
+                        <span v-if="type=='info'">{{form.optionC}}</span>
+                        <el-input v-else v-model="form.optionC" placeholder="请输入"></el-input>
                     </el-form-item>
-                    <el-form-item label="选项D：" prop="situation">
-                        <span v-if="type=='info'">{{form.situation}}</span>
-                        <el-input v-else v-model="form.situation" placeholder="请输入"></el-input>
-                    </el-form-item>
-                </div>
-
-                <div class="row_custom">
-
-
-                    <el-form-item label="选项E：" prop="controlSate">
-                        <span v-if="type=='info'">{{form.controlSate}}</span>
-                        <el-input v-else v-model="form.controlSate" placeholder="请输入"></el-input>
-                    </el-form-item>
-                    <el-form-item label="选项F：" prop="workLink">
-                        <span v-if="type=='info'">{{form.workLink}}</span>
-                        <el-input v-else v-model="form.workLink" placeholder="请输入"></el-input>
+                    <el-form-item label="选项D：" prop="optionD">
+                        <span v-if="type=='info'">{{form.optionD}}</span>
+                        <el-input v-else v-model="form.optionD" placeholder="请输入"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="正确答案：" prop="keyWord">
-                        <span v-if="type=='info'">{{form.keyWord}}</span>
-                        <el-input   v-else v-model="form.keyWord" placeholder="请输入正确答案"></el-input>
+                    <el-form-item label="选项E：" prop="optionE">
+                        <span v-if="type=='info'">{{form.optionE}}</span>
+                        <el-input v-else v-model="form.optionE" placeholder="请输入"></el-input>
                     </el-form-item>
-                    <el-form-item label="分值：" prop="serviceEvents">
-                        <span v-if="type=='info'">{{form.serviceEvents}}</span>
-                        <el-input v-else v-model="form.serviceEvents" placeholder="请输入分值"></el-input>
+                    <el-form-item label="选项F：" prop="optionF">
+                        <span v-if="type=='info'">{{form.optionF}}</span>
+                        <el-input v-else v-model="form.optionF" placeholder="请输入"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="row_custom">
+                    <el-form-item label="正确答案：" prop="answer">
+                        <span v-if="type=='info'">{{form.answer}}</span>
+                        <el-select :multiple="form.optionType=='多选'" v-else clearable v-model="form.answer" placeholder="请选择选择类型">
+                            <el-option label="A" value="A"> </el-option>
+                            <el-option label="B" value="B"> </el-option>
+                            <el-option label="C" value="C"> </el-option>
+                            <el-option label="D" value="D"> </el-option>
+                            <el-option label="E" value="E"> </el-option>
+                            <el-option label="F" value="F"> </el-option>
+
+                        </el-select>
+                        <el-input   v-else v-model="form.answer" placeholder="请输入正确答案"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分值：" prop="score">
+                        <span v-if="type=='info'">{{form.score}}</span>
+                        <el-input v-else v-model="form.score" placeholder="请输入分值"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
@@ -98,58 +106,57 @@
         name: "",
         data() {
             const infSources = (rule, value, callback) => {
+                // callback();
+                console.log(!value,11,value);
                 if (!value) {
                      return callback(new Error('试题序号不能为空'));
                 } else {
-                    request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
-                        method: 'get',
-                    }).then(response => {
-                        if (!response.data) {
-                            callback();
-                        } else {
-                            callback("该试题序号已存");
-                        }
-                    });
+                    if (typeof Number(value) == 'number' && !window.isNaN(Number(value))) {
+                        request({
+                        // /
+                            url:`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${this.form.id||null}`,
+                            method: 'get',
+                        }).then(d => {
+                            if(d.code==200){
+                                if (!d.data.exists) {
+                                    callback();
+                                } else {
+                                    callback("该试题序号已存,可用序号："+d.data.availableNo);
+                                }
+                            }else{
+                                callback(d.message)
+                            }
+
+                        });
+                    } else {
+                        callback(new Error('必须为数字类型'));
+                    }
                 }
             };
             const keyWord = (rule, value, callback) => {
                 if (!value) {
                      return callback(new Error('正确答案不能为空'));
                 } else {
-                    if(this.form.infTime){
-                        if(this.form.infTime=='单选'){
-                            if(value.length>1){
-                                return callback(new Error('只有一个正确答案'));
-                            }else {
-                                return callback();
-                            }
-                        }else {
-                            if(value.length>6){
-                                return callback(new Error('最多只有6个正确答案'));
-                            }else {
-                                return callback();
-                            }
-                        }
-                    }else {
-                        return callback(new Error('请先选择选择类型'));
-                    }
+                   return callback()
                 }
             };
 
             return {
-                oldForm:{},
-                form: {infTime:'单选'},
+                options:{},
+                 form: {optionType:'单选',paperId:''},
                 rules: {
-                    infSources: [{ validator:infSources, trigger: "blur" }],
-                    infTime: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
-                    keyWord: [{ validator:keyWord, trigger: "change" }],
-                    serviceEvents: [
+                    questionNo: [
+
+
+                        { validator:infSources, trigger: "blur" },
+                    ],
+                    optionType: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
+                    answer: [{ validator:keyWord, trigger: "change" }],
+                    score: [
                         { required: true, message: '请输入分值', trigger: 'blur' },
                          {
                             validator: (rule, value, callback) => {
-                                console.log(value.split('.').length,11111);
-                                if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&value.split('.').length===1) {
+                                 if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&(value+'').split('.').length===1) {
                                     if (value <= 0) {
                                         callback(new Error('分值必须大于0'));
                                     } else {
@@ -167,6 +174,13 @@
             };
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["selectType"]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -177,11 +191,15 @@
                         : this.type == "info"
                             ? "试题维护详情"
                             : "";
-                let data=JSON.parse( this.$route.query.data)
-                    this.oldForm={...data}
+                this.form.paperId= this.$route.query.id
                 if(this.type!='add'){
                     let row=JSON.parse( this.$route.query.row)
-                    this.form={...row}
+                    if(row.optionType=='多选'){
+                        row.answer= row.answer.split(';')
+                    }
+                    this.form={...row,paperId:this.$route.query.id}
+
+
                 }
 
 
@@ -189,26 +207,44 @@
         },
         methods: {
             typeChange(val){
-              this.$set(this.form,'keyWord','')
+                let data=null
+                if(val=='多选'){
+                    data=[]
+                }
+              this.$set(this.form,'answer',data)
+
             },
             resetForm(){
-                this.form={infTime:'单选'};
+                this.form={optionType:'单选',paperId:''};
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
+                        let data={...this.form}
+                        if(this.form.optionType=='多选'){
+                            data.answer= data.answer.join(';')
+                        }
+                         data.questionNo=Number( data.questionNo)
+                         data.score=Number( data.score)
                         if (valid) {
-                            let row
-                             if(this.type == "add"){
-                                 this.oldForm.arrTable.unshift({...this.form})
-                                 row=this.$route.query.row
-                             }else {
-                                 this.oldForm.arrTable.splice(this.$route.query.index,1,{...this.form})
-                                 row=JSON.stringify(this.form)
-                             }
-                             // console.log(this.oldForm,row);
-                             let data=JSON.stringify(this.oldForm)
-                            this.$router.push({path:'/testMaintenanceAdd',query:{type:this.type,data:data,row:row}})
+                            let url
+                            if (this.type == "add"&&!this.form.id) {
+                                url = `${this.$ip}/mms-training/questionInfo/save`
+                            } else {
+                                url = `${this.$ip}/mms-training/questionInfo/update`
+                            }
+                            request({
+                                url,
+                                method: "post",
+                                data: data
+                            })
+                                .then(d => {
+                                    this.$message.success("保存成功！");
+                                    this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
+                                })
+                                .catch(error => {
+                                    this.$message.success(error);
+                                });
                          }
                     });
                 }

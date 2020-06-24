@@ -16,44 +16,62 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="信息类型" prop="sysParamName">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择信息类型">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-form-item label="信息类型" prop="type">
+            <span v-if="type=='info'">{{form.type}}</span>
+            <el-select v-else  v-model="form.type"  placeholder="请选择信息类型">
+                <el-option v-for="item in infoType" :key="item.valCode" :label="item.valData" :value="item.valData"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="是否启用" prop="sysParamValue">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择是否启用">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-form-item label="是否启用" prop="enable">
+            <span v-if="type=='info'">{{form.enable?'是':'否'}}</span>
+            <el-select v-else  v-model="form.enable"  placeholder="请选择是否启用">
+                <el-option v-for="item in [{label:'是',value:true},{label:'否',value:false}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </div>
-        
+        <div class="row_custom2">
+          <el-form-item label="人员" >
+              <el-button @click="userOpen()" size="mini" icon="el-icon-plus">选择人员</el-button>
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.id" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose('userList',tag)">
+										{{ tag.name }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
+          </el-form-item>
+        </div>
       </el-form>
     </div>
+    <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
   </div>
 </template>
 <script>
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
+import userTree from '@components/userTree/index';
 import { extend } from "lodash";
 export default {
   components: {
-    Icon
+    Icon,
+    userTree,
   },
   name: "",
   data() {
     return {
       form: {},
       rules: {
-        sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
-        sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
+        type: [{ required: true, message: "请选择信息类型", trigger: "change" }],
+        enable: [{ required: true, message: "请选择是否启用", trigger: "change" }],
       },
-      type: "add"
+      type: "add",
+      userList:[],
+      infoType:[],
+      deptList:[]
     };
   },
   created() {
+     this.findDataDictionary();
     if (this.$route.query) {
       this.type = this.$route.query.type;
       this.$route.meta.title =
@@ -66,12 +84,13 @@ export default {
           : "";
          if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/mms-parameter/notificationSubscribe/getById/${this.$route.query.id}`,
-                method: "post",
-                data: {id:this.$route.query.id}
+                url:`${this.$ip}/mms-notice/notificationSubscribe/getById/${this.$route.query.id}`,
+                method: "get",
               })
               .then(data => {
-                this.form = data.data[0];
+                 this.form = {type:data.data.type,enable:data.data.enable} ;
+                 this.userList = data.data.receiptPerson;
+                 this.deptList = data.data.receiptDepartment;
               })
               .catch(error => {
                 this.$message.success(error);
@@ -80,6 +99,37 @@ export default {
     }
   },
   methods: {
+    findDataDictionary(){
+        request({
+          url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+          method: "post",
+          data: ["infoTypeCode"]
+        })
+        .then(data => {
+          this.infoType = data.data["infoTypeCode"];
+        })
+        .catch(error => {
+          this.$message.success(error);
+        });
+    },
+    handleUserSelected(users,deptList) {
+      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+      // 数组去重
+      let hash = {};
+      this.deptList = deptList.reduce(function(item, next) {
+        if (!hash[next.id]) {
+          hash[next.id] = true;
+          item.push(next);
+        }
+        return item;
+      }, []);
+		},
+    handleClose(list,tag) {
+			this[list] = without(this[list], tag);
+		},
+    userOpen(){
+      this.$refs.userBox.open(this.users, '选择人员', true);
+    },
     resetForm(){
       this.form={};
     },
@@ -87,11 +137,11 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/mms-parameter/notificationSubscribe/save`:`${this.$ip}/mms-parameter/notificationSubscribe/update`
+            let url = this.type == "add"?`${this.$ip}/mms-notice/notificationSubscribe/save`:`${this.$ip}/mms-notice/notificationSubscribe/update`
             request({
               url,
               method: "post",
-              data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id,receiptPerson:this.userList,receiptDepartment: this.deptList}:{...this.form,receiptPerson:this.userList,receiptDepartment: this.deptList}
             })
             .then(data => {
               this.$message.success("保存成功！");
@@ -121,6 +171,19 @@ export default {
       }
       /deep/ .el-form-item__content {
         margin-left: 90px;
+      }
+      .row_custom2{
+        height: 166px;
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 910px;
+            text-align: left;
+        }
+        @include common-input;
+        /deep/ span{
+          font-size:12px!important; 
+          margin-left: 5px!important;
+        }
       }
       .row_custom{
         /deep/ .el-form-item__content{

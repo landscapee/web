@@ -12,8 +12,8 @@
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('history')"><icon iconClass="history" ></icon>历史</div>
-                    <div :class="this.isActive!=0?'isDisabled':''" @click="this.isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
-                    <div :class="this.isActive!=0?'isDisabled':''" @click="this.isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
+                    <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
+                    <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
@@ -126,7 +126,7 @@ export default {
                     this.$message.error('请先选中一行数据');
                 }else{
                     if(tag == 'history'){
-                         this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId}});
+                         this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
                     }else{
                         this.$router.push({path:'/addInfoPlate',query:{type:tag,id:this.selectId}});
                     }
@@ -166,11 +166,7 @@ export default {
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+                this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });

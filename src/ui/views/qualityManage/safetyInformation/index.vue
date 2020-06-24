@@ -11,7 +11,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -34,7 +34,7 @@
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/SearchTable';
+import SearchTable from '@/ui/components/table/index';
 import Icon from '@components/Icon-svg/index';
 import { sadetyInfoConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -48,12 +48,13 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:sadetyInfoConfig(),
+            tableConfig:sadetyInfoConfig({}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
+
             row:{},
             sort:{},
             selectId:null
@@ -61,6 +62,15 @@ export default {
     },
    created() {
        this.getList();
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           data:["Q_BadMistake", "Q_securityServices",]
+       }).then(d => {
+           let obj=d.data
+           this.tableConfig=sadetyInfoConfig(obj)
+
+       });
     },
     watch:{
 
@@ -138,7 +148,7 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
@@ -169,7 +179,7 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-qualification/securityInformation/list`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}

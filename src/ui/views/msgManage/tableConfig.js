@@ -21,27 +21,51 @@ export const warningConfigTable = () => {
 export const warningSearchTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-        { prop: '', label: '日期', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
-        { prop: '', label: '来源', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
-        { prop: '', label: '内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入内容"} },
+        { prop: 'sendDate', label: '日期', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
+        { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
+        { prop: 'content', label: '内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入内容"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const warningSearchHistoryTable = () => {
     return [
-        { prop: '', label: '日期', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
-        { prop: '', label: '来源', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
-        { prop: '', label: '内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入内容"} },
+        { prop: 'sendDate', label: '日期', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
+        { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
+        { prop: 'content', label: '内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入内容"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const subscribeConfigTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-        { prop: '', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
-        { prop: '', label: '是否启用', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
-        { prop: '', label: '接收单位', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入内容"} },
-        { prop: '', label: '接收人',width:'540', align: 'center',search:{prop: '',type:'select',extendType:'search',placeholder:"请选择接收人"}},
+        { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
+        { prop: 'enable', label: '是否启用', formatter: (row, column, cellValue) => {
+            return cellValue?'是':'否';
+        },align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
+        { prop: '',formatter: (row, column, cellValue) => {
+            let arr = [];
+            if(row.receiptPerson){
+                row.receiptPerson.map(item=>{
+                    arr.push(item.name);
+                })
+                return arr.join(",");
+            }else{
+                return '';
+            }
+        }, label: '接收单位', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入内容"} },
+        { prop: '', formatter: (row, column, cellValue) => {
+            let arr = [];
+            if(row.receiptDepartment){
+                row.receiptDepartment.map(item=>{
+                    arr.push(item.name);
+                })
+                return arr.join(",");
+            }else{
+                return '';
+            }
+           
+           
+        },label: '接收人',width:'540', align: 'center',search:{prop: '',type:'select',extendType:'search',placeholder:"请选择接收人"}},
     ]
 };
 export const infoPlateSendTable = () => {
@@ -74,7 +98,21 @@ export const infoPlateReceiveTable = () => {
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
-export const historyInfoPlateTable = () => {
+export const historyPlateSendTable = () => {
+    return [
+        { prop: '', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
+        { prop: '', label: '发送时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择发送时间"} },
+        { prop: '', label: '发送内容', width:300,align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
+        { prop: '', label: '接收单位', align: 'center',search:{prop:'',type:'input',placeholder:"请输入接收单位"} },
+        { prop: '', label: '接收人', align: 'center',search:{prop:'',type:'input',placeholder:"请输入接收人"} },
+        { prop: '', label: '是否接收处理', align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
+        { prop: '', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
+        { prop: '', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
+        { prop: '', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
+        { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+    ]
+};
+export const historyPlateReceiveTable = () => {
     return [
         { prop: '', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
         { prop: '', label: '发送时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择发送时间"} },

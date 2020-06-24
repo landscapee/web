@@ -68,7 +68,8 @@ export default {
 			data: {},
 			selectId: null,
 			selectNode: {},
-			type:""
+			type:"",
+			deptList:[]
 		};
 	},
 	methods: {
@@ -81,6 +82,7 @@ export default {
 			if (item.selected) {
 				const idx = this.selectedPersonList.findIndex((d) => d.id === item.id);
 				if (idx == -1) {
+					
 					this.selectedPersonList.push({
 						id: item.id,
 						name: item.name,
@@ -176,6 +178,13 @@ export default {
 				} else {
 					this.selectAll = true;
 				}
+				this.deptList = d.data.map(d => {
+					return {
+						id: d.administrativeId,
+						name: d.administrativeName,
+					};
+				});
+					
 				flow([
 					(d) => {
 						return map(d, (f) => {
@@ -187,6 +196,7 @@ export default {
 							};
 						});
 					},
+					
 					(d) => {
 						this.personList = d;
 					},
@@ -229,7 +239,7 @@ export default {
 		},
 		handleSave() {
 			this.handleClose();
-			this.$emit('onSelected', this.selectedPersonList);
+			this.$emit('onSelected', this.selectedPersonList,this.deptList);
 		},
 		open(inputList, title, currentDept) {
 			this.getTree(currentDept || false);

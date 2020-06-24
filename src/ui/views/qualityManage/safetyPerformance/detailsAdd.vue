@@ -33,7 +33,7 @@
                     <el-form-item label="指标类型：" prop="quotaType">
                         <span v-if="type=='info'">{{form.quotaType}}</span>
                         <el-select v-else clearable v-model="form.quotaType" placeholder="请选择指标类型">
-                            <el-option label="违规" value="违规"> </el-option>
+                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -102,7 +102,7 @@
                     return callback(new Error('编号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityMeritsDetail/numberExists`,
+                        url:`${this.$ip}/mms-qualification/securityMeritsDetail/numberExists`,
                         method: 'POST',
                         data:{
                             securityMeritsId: this.$route.query.id,
@@ -120,6 +120,7 @@
 
             return {
                 form: {},
+                options: {},
                 rules: {
                     number: [{validator:number, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -129,6 +130,13 @@
         },
 
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["indicateType",]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -150,7 +158,12 @@
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={securityMeritsId:this.form.securityMeritsId,number:this.form.number, };
+                }else {
+                    this.form={};
+
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -158,9 +171,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityMeritsDetail/save`
+                                url=`${this.$ip}/mms-qualification/securityMeritsDetail/save`
                              }else {
-                                 url=`${this.$ip}/qualification/securityMeritsDetail/update`
+                                 url=`${this.$ip}/mms-qualification/securityMeritsDetail/update`
 
                             }
                             request({

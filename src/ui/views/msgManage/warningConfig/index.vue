@@ -139,7 +139,6 @@ export default {
                 params:this.params
             })
             .then((data) => {
-               
                 this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
