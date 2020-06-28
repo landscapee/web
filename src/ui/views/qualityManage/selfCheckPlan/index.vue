@@ -119,7 +119,7 @@ export default {
             url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
             method: 'post',
             params:{delete:false},
-            data:["checkProject", "checkType",'checkObject','checkType']
+            data:["checkProject", "checkType",'checkObject','checkCategory']
         }).then(d => {
             let obj=d.data
             this.businessSubsetConfig=selfCheckDetailsConfig(obj)

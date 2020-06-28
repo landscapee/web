@@ -1,6 +1,9 @@
+import moment from 'moment'
 let timeInfo=(row)=>{
         if(row.infTime){
-            return row.infTime.split(' ')[0]
+            // return row.infTime.split(' ')[0]
+
+            return  moment(row.infTime).format('YYYY-MM-DD')
         }else {
                 return ''
         }

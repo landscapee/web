@@ -1,11 +1,11 @@
+import moment from "moment";
+
 let timeInfo=(row)=>{
     if(row.reviewerTime){
-        if(row.reviewerTime.split){
-            return row.reviewerTime.split(' ')[0]
 
-        }else {
-            return ''
-        }
+        return  moment(row.reviewerTime).format('YYYY-MM-DD')
+
+
     }else {
         return ''
     }
