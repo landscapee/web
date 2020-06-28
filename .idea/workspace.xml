@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ebe1991-e112-4ef2-870a-d9e8d8efaaf9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/see.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/seeImg.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/components/layout/components/Breadcrumb/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/layout/components/Breadcrumb/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/styles/lp.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/styles/lp.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/add.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/add.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/tableConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/tableConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/onlineTest/add.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/onlineTest/add.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/onlineTest/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/onlineTest/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/add.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/add.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/addAdd.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/addAdd.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/tableConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/tableConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/add.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/add.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/pushStaff.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/pushStaff.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/scoreEntry.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/scoreEntry.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/tableConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/tableConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/testResults.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/testResults.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/uploadTest.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/views/trainManage/testManage/uploadTest.vue" afterDir="false" />
-    </list>
+    <list default="true" id="2ebe1991-e112-4ef2-870a-d9e8d8efaaf9" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -64,14 +41,14 @@
         <counts>
           <entry key="js" value="268" />
           <entry key="scss" value="48" />
-          <entry key="vue" value="7096" />
+          <entry key="vue" value="7099" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JavaScript" value="268" />
           <entry key="SCSS" value="48" />
-          <entry key="Vue.js" value="7096" />
+          <entry key="Vue.js" value="7099" />
         </counts>
       </usages-collector>
     </session>
@@ -133,8 +110,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ui/views/trainManage/testManage/uploadTest.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3201">
-              <caret line="128" selection-start-line="128" selection-end-line="128" />
+            <state relative-caret-position="297">
+              <caret line="122" column="41" selection-start-line="122" selection-start-column="41" selection-end-line="122" selection-end-column="41" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#el-form#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -227,7 +204,6 @@
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/onlineTest/index.vue" />
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/testManage/add.vue" />
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/testManage/scoreEntry.vue" />
-        <option value="$PROJECT_DIR$/src/ui/views/trainManage/testManage/uploadTest.vue" />
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/testManage/pushStaff.vue" />
         <option value="$PROJECT_DIR$/src/ui/styles/lp.scss" />
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/testManage/testResults.vue" />
@@ -239,6 +215,7 @@
         <option value="$PROJECT_DIR$/src/ui/views/qualityManage/selfCheckPlan/tableConfig.js" />
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/add.vue" />
         <option value="$PROJECT_DIR$/src/ui/views/trainManage/testMaintenance/tableConfig.js" />
+        <option value="$PROJECT_DIR$/src/ui/views/trainManage/testManage/uploadTest.vue" />
       </list>
     </option>
   </component>
@@ -411,12 +388,12 @@
       <workItem from="1592791788813" duration="22589000" />
       <workItem from="1592875876768" duration="19090000" />
       <workItem from="1593154520101" duration="20046000" />
-      <workItem from="1593307665216" duration="4989000" />
+      <workItem from="1593307665216" duration="5480000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92647000" />
+    <option name="totallyTimeSpent" value="93138000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -428,7 +405,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16438356" />
@@ -837,8 +814,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ui/views/trainManage/testManage/uploadTest.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3201">
-          <caret line="128" selection-start-line="128" selection-end-line="128" />
+        <state relative-caret-position="297">
+          <caret line="122" column="41" selection-start-line="122" selection-start-column="41" selection-end-line="122" selection-end-column="41" />
           <folding>
             <element signature="n#style#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#el-form#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
