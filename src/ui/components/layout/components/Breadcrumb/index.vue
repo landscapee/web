@@ -75,7 +75,7 @@ export default {
 	align-items: center;
 	height: 40px;
 	width: 100%;
-	/*float: left;*/
+
 	color: #6A7785;
 	border-bottom:solid 1px #E4E8EB;
 	img{

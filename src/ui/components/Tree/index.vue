@@ -194,6 +194,7 @@ export default {
 
 		handleSelectChange(node, fNode) {
 			this.selectedId = node.id;
+			
 			this.$emit('handleSelect', node, fNode);
 		},
 	},

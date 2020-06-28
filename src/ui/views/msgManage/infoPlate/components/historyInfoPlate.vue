@@ -102,11 +102,7 @@ export default {
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+               this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });
