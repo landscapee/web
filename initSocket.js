@@ -36,7 +36,6 @@ import io from 'socket.io-client';
     var socket = io.connect('http://173.100.1.141:9090?userId=tom&device=device2');
     // 监听 news 会话
     socket.on('message', function (data) {
-      debugger
        console.log(data);
     });
 };

@@ -163,7 +163,7 @@ export default {
         getList(){
            request({
                           
-                url:this.isActive==0?`${this.$ip}/mms-parameter/notificationPublish/list`:`${this.$ip}/mms-parameter/notificationRecipient/list`, 
+                url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params

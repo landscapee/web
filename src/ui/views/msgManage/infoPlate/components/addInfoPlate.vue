@@ -66,10 +66,22 @@
         </div>
         <div class="row_custom5">
           <el-form-item label="附件" >
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="支持多个附件上传"></el-input>
+            <span v-if="type=='info'">{{filename}}</span>
+            <el-input v-if="type=='add'" v-model="filename" placeholder="支持多个附件上传"></el-input>
           </el-form-item>
-          <el-button>上传</el-button>
+          <el-upload
+              :multiple="false"
+              class="upload-demo"
+              ref="file"
+              :http-request="handleSubmit"
+              :on-change="handleChange"
+              accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg"
+              action=""
+              :before-upload="beforeAvatarUpload"
+              :auto-upload="true"
+              :show-file-list="false">
+            <el-button slot="trigger" >上传</el-button>
+          </el-upload>
         </div>
       </el-form>
     </div>
@@ -97,6 +109,8 @@ export default {
       receivingUnit:'',
       receiver:'',
       infoType:[],
+      fileList: [],
+      filename:'',
       type: "add"
     };
   },
@@ -130,6 +144,69 @@ export default {
     }
   },
   methods: {
+     handleChange(file, fileList) {
+        if (fileList.length > 0) {
+            this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
+        }
+        this.filename=file.name
+        console.log(file, fileList);
+    },
+    beforeAvatarUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 5;
+        if (!isLt2M) {
+            this.$message.error('上传图片大小不能超过 5MB!');
+        }
+        return isLt2M;
+    },
+    handleSubmit(files,q) {
+        let data=new FormData()
+        data.append("file",files.file);
+          console.log(data,files,q,111);
+        request.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+        request({
+            header:{
+                'Content-Type':'multipart/form-data'
+            },
+              url:`${this.$ip}/mms-file/upload`,
+            method:'post',
+
+            data:data,
+        }).then((d) => {
+            if(d){
+
+                this.form.file=d.data
+
+                this.$message({
+                    message: '上传成功',
+                    type: 'success',
+                });
+            }else {
+                this.$message({
+                    message: '上传失败',
+                    type: 'info',
+                });
+            }
+
+        });
+    },
+    close(d){
+        this.form={file:null}
+        this.dialogFormVisible=false
+        this.$refs.file.clearFiles()
+        if(d&&this.form.file){
+            request({
+                // application/x-www-form-urlencoded
+                header:{
+                    'Content-Type':'multipart/form-data'
+                },
+                url:`${this.$ip}/mms-file/${this.form.file}`,
+                method:'delete',
+
+            }).then((d) => {
+
+            });
+        }
+    },
     findDataDictionary(){
         request({
           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -185,6 +262,9 @@ export default {
   margin-top: 40px;
    .el-form {
       width: 1000px;
+      /deep/ .upload-demo{
+        display: inline-block;
+      }
       /deep/ .el-form-item__label {
         width: 120px;
       }
