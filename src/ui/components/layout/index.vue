@@ -72,6 +72,9 @@ import Icon from '@components/Icon-svg/index';
 			deep: true
 		}
 	},
+	created(){
+		
+	},
 	methods:{
 		
 	}

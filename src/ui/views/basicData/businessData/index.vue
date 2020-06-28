@@ -219,34 +219,38 @@ export default {
         },
         //删除表格行数据
         delData(tag,idstr){
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning',
-			})
-            .then(() => {
-                request({
-                    url:tag=='left'?`${this.$ip}/mms-parameter/rest-api/businessDictionary/del`:`${this.$ip}/mms-parameter/rest-api/businessDictionaryValue/del`, 
-                    method: 'post',
-                    data:{id:this[idstr]}
+            if(this[idstr]!=null){
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
                 })
-                .then((data) => {
-                   this.$message({type: 'success',message: '删除成功'});
-                   if(tag=='left'){
-                       this.leftParams.current = 1;
-                   }else{
-                       this.rightParams.current= 1;
-                   }
-                 
-                   this.getList(tag);
+                .then(() => {
+                    request({
+                        url:tag=='left'?`${this.$ip}/mms-parameter/rest-api/businessDictionary/del`:`${this.$ip}/mms-parameter/rest-api/businessDictionaryValue/del`, 
+                        method: 'post',
+                        data:{id:this[idstr]}
+                    })
+                    .then((data) => {
+                    this.$message({type: 'success',message: '删除成功'});
+                    if(tag=='left'){
+                        this.leftParams.current = 1;
+                    }else{
+                        this.rightParams.current= 1;
+                    }
+                    
+                    this.getList(tag);
+                    })
                 })
-            })
-            .catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除',
+                    });
                 });
-            });
+            }else{
+                this.$message.error('请先选中一行数据');
+            }
         },
         getList(tag,scroll){
             if(tag=='left'){

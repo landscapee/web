@@ -15,46 +15,48 @@
     </div>
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
-        <div class="row_custom">
-          <el-form-item label="信息类型" prop="sysParamName">
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择信息类型"></el-input>
+        <div class="row_custom6">
+          <el-form-item label="信息类型" prop="type">
+            <span v-if="type=='info'">{{form.type}}</span>
+            <el-select v-else  v-model="form.type"  placeholder="请选择信息类型">
+                <el-option v-for="item in infoType" :key="item.valCode" :label="item.valData" :value="item.valData"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="发送时间" prop="sysParamValue">
+          <!-- <el-form-item label="发送时间" prop="sysParamValue">
             <span v-if="type=='info'">{{form.sysParamValue}}</span>
             <el-select v-else  v-model="value1" multiple placeholder="请选择发送时间">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="发送内容" prop="sysParamComment">
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-else type="textarea" v-model="form.sysParamComment" placeholder="请输入消息模板"></el-input>
+          <el-form-item label="发送内容" prop="content">
+            <span v-if="type=='info'">{{form.content}}</span>
+            <el-input v-else type="textarea" v-model="form.content" placeholder="请输入消息模板"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="接收单位" prop="sysParamName">
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收单位"></el-input>
+          <el-form-item label="接收单位" >
+            <span v-if="type=='info'">{{receivingUnit}}</span>
+            <el-input v-if="type=='add'" v-model="receivingUnit" placeholder="请选择接收单位"></el-input>
           </el-form-item>
-          <el-form-item label="接收人" prop="sysParamValue">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收人"></el-input>
+          <el-form-item label="接收人" >
+            <span v-if="type=='info'">{{receiver}}</span>
+            <el-input v-if="type=='add'" v-model="receiver" placeholder="请选择接收人"></el-input>
           </el-form-item>
           <el-button @click="handleSelectUser('subscribe')">按订阅方式</el-button>
           <el-button @click="handleSelectUser('object')">接收对象选择</el-button>
         </div>
         <div class="row_custom3">
-          <el-form-item label="是否要求处理" prop="sysParamValue">
-            <el-radio v-model="radio" label="1">是</el-radio>
-            <el-radio v-model="radio" label="2">否</el-radio>
+          <el-form-item label="是否要求处理" prop="require">
+            <el-radio v-model="form.require" label="1">是</el-radio>
+            <el-radio v-model="form.require" label="2">否</el-radio>
            </el-form-item>
         </div>
         <div class="row_custom4">
-          <el-form-item label="要求处理时间" prop="sysParamName">
-            <span v-if="type=='info'">{{form.sysParamComment}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收单位"></el-input>
+          <el-form-item label="要求处理时间" prop="deadline">
+            <span v-if="type=='info'">{{form.deadline}}</span>
+            <el-date-picker v-model="form.deadline" type="date" placeholder="请选择要求处理时间"></el-date-picker>
           </el-form-item>
           <el-form-item label="处理人" prop="sysParamValue">
             <span v-if="type=='info'">{{form.sysParamValue}}</span>
@@ -63,7 +65,7 @@
           <el-button>处理人选择</el-button>
         </div>
         <div class="row_custom5">
-          <el-form-item label="附件" prop="sysParamName">
+          <el-form-item label="附件" >
             <span v-if="type=='info'">{{form.sysParamComment}}</span>
             <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="支持多个附件上传"></el-input>
           </el-form-item>
@@ -87,11 +89,14 @@ export default {
     return {
       form: {},
       rules: {
-        sysParamCode: [{ required: true, message: "请输入系统参数编码", trigger: "change" }],
-        sysParamName: [{ required: true, message: "请输入系统参数", trigger: "change" }],
-        sysParamValue: [{ required: true, message: "请输入系统参数值", trigger: "change" }],
-        sysParamComment: [{ required: true, message: "请输入系统参数说明", trigger: "change" }]
+        type: [{ required: true, message: "请选择信息类型", trigger: "change" }],
+        content: [{ required: true, message: "请输入发送内容", trigger: "change" }],
+        require: [{ required: true, message: "请选择是否要求处理", trigger: "change" }],
+        deadline: [{ required: true, message: "请选择要求处理时间", trigger: "change" }],
       },
+      receivingUnit:'',
+      receiver:'',
+      infoType:[],
       type: "add"
     };
   },
@@ -99,6 +104,7 @@ export default {
    
   },
   created() {
+    this.findDataDictionary();
     if (this.$route.query) {
       this.type = this.$route.query.type;
       this.$route.meta.title =
@@ -111,12 +117,11 @@ export default {
           : "";
          if(this.type == "edit" || this.type == "info"){
               request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/info`,
+                url:`${this.$ip}/mms-notice/notificationPublish/getById/${this.$route.query.id}`,
                 method: "post",
-                data: {id:this.$route.query.id}
               })
               .then(data => {
-                this.form = data.data[0];
+                this.form = data.data;
               })
               .catch(error => {
                 this.$message.success(error);
@@ -125,6 +130,19 @@ export default {
     }
   },
   methods: {
+    findDataDictionary(){
+        request({
+          url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+          method: "post",
+          data: ["infoType"]
+        })
+        .then(data => {
+          this.infoType = data.data["infoType"];
+        })
+        .catch(error => {
+          this.$message.success(error);
+        });
+    },
     handleUserSelected(users) {
 			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
 		},
@@ -138,7 +156,7 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let url = this.type == "add"?`${this.$ip}/mms-parameter/rest-api/sysParam/add`:`${this.$ip}/mms-parameter/rest-api/sysParam/update`
+            let url = this.type == "add"?`${this.$ip}/mms-notice/notificationPublish/save`:`${this.$ip}/mms-notice/notificationPublish/update`
             request({
               url,
               method: "post",
@@ -172,6 +190,14 @@ export default {
       }
       /deep/ .el-form-item__content {
         margin-left: 120px;
+      }
+       .row_custom6{
+        /deep/ .el-form-item__content{
+            height: 40px;
+            width: 880px;
+            text-align: left;
+        }
+        @include common-input;
       }
       .row_custom5{
         /deep/ .el-form-item__content{
