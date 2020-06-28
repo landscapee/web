@@ -28,7 +28,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" label="关联信息" :width="148" >
+                    <el-table-column slot="relationInfo" label="关联信息" :width="148" align="center" >
                         <template >
                              <el-button size="mini" @click="clickAction()">发布</el-button>
                              <el-button size="mini" @click="clickAction()">接收处理</el-button>
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:infoPlateReceiveTable(),
+            tableConfig:infoPlateSendTable(),
             params:{
 				current: 1,
 				size: 15,
@@ -81,9 +81,9 @@ export default {
         switchTable(index){
             this.isActive = index;
             if(index==0){
-                this.tableConfig = infoPlateReceiveTable();
-            }else{
                 this.tableConfig = infoPlateSendTable();
+            }else{
+                this.tableConfig = infoPlateReceiveTable();
             }
             this.getList();
         },

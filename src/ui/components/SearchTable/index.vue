@@ -8,7 +8,7 @@
 							<div>{{colConfig.search.label}}</div>
 						</span>
 					</el-table-column>
-					<el-table-column :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true"> 
+					<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true"> 
 						<span>
 							<el-button class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
 						</span>
@@ -63,17 +63,20 @@ export default {
 			resizeCallback:[],
 			headerData:[{}],
 			cloneTableConfig:this.tableConfig,
+			updateWidth:false
 		};
 	},
 	watch: {
 		tableConfig:function(newVal, oldVal){
 			let that = this;
-			newVal.map((item,index)=>{
-				forEach(item, function(value, key) {
-					that.$set(that.cloneTableConfig[index],key,value);
-				});
-				this.$set(this.cloneTableConfig,index,this.cloneTableConfig[index]);
-			})
+			if(!this.updateWidth){
+				newVal.map((item,index)=>{
+					forEach(item, function(value, key) {
+						that.$set(that.cloneTableConfig[index],key,value);
+					});
+					this.$set(this.cloneTableConfig,index,this.cloneTableConfig[index]);
+				})
+			}
 		},
 		data: function(newVal, oldVal){
 			// this.data = newVal;
@@ -99,8 +102,8 @@ export default {
        },
 		//监听头部拉伸宽度改变表格主体宽度
 		headerDragend(newWidth, oldWidth, column, event){
-			this.cloneTableConfig[column.index].width = newWidth;
-			this.$set(this.cloneTableConfig,column.index,this.cloneTableConfig[column.index]);
+			this.updateWidth = true;
+			this.$set(this.cloneTableConfig[column.index],'width',newWidth);
 		},
 		requestTableData(){
 			this.$emit('requestTable', this.headerData[0]);
@@ -195,9 +198,11 @@ export default {
 		/deep/ td{
 			width: 148px;
 			height:40px;
-			text-align: center;
 			padding: 0;
 			border-color:#C7CCD2 ;
+		}
+		/deep/ td:first-child{
+		  text-align: center;
 		}
 		/deep/ th{
 			border-color:#C7CCD2 ;
