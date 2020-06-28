@@ -68,7 +68,10 @@ export default {
     },
     methods: {
         lineTest(path,row){
-          this.$router.push(path,row)
+          this.$router.push({
+              path:path,
+              query:{row:JSON.stringify(row)}
+          })
         },
 
         requestTable(searchData){
@@ -129,7 +132,7 @@ export default {
            request({
                 url:`${this.$ip}/mms-training/examLine/list`,
                  method: 'post',
-                data:{...this.sort,...data},
+                   data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
@@ -156,7 +159,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
 
     .copyButton{
         margin: 0;

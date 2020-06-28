@@ -282,8 +282,7 @@
         }
     }
     .addSysParameter {
-        margin-top: 40px;
-        .el-form {
+         .el-form {
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;

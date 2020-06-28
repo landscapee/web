@@ -1,34 +1,39 @@
 <template>
     <div>
-        <el-dialog title="纸质试卷上传归档"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
-            <el-form :inline="true" :model="form" ref="form" :rules="rules">
-                <el-form-item>
-                    <el-input style="width:300px" type="text" v-model="filename"  placeholder="仅支持Excel导入"></el-input>
+        <el-dialog title="纸质试卷上传归档"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close(1)">
+            <div style=" padding: 32px 61px 28px 61px; ">
+                <el-form :inline="true" :model="form" ref="form" :rules="rules">
+                    <div style="margin-bottom: 20px;color:#000000;font-size: 16px">试卷上传</div>
 
-                </el-form-item>
-                <el-form-item>
-                    <el-upload
-                            :multiple="false"
-                            class="upload-demo"
-                            ref="file"
-                            :http-request="handleSubmit"
-                            :on-change="handleChange"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                            action=""
-                            :before-upload="beforeAvatarUpload"
-                            :auto-upload="true">
-                        <el-button slot="trigger" size="small" type="primary">文件上传</el-button>
-                        <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-                    </el-upload>
-                </el-form-item>
+                    <el-form-item style="margin-right: 20px">
+                        <el-input  type="text" v-model="filename"  placeholder="仅支持Excel导入"></el-input>
+
+                    </el-form-item>
+                    <el-form-item>
+                        <el-upload
+                                :multiple="false"
+                                class="upload-demo"
+                                ref="file"
+                                :http-request="handleSubmit"
+                                :on-change="handleChange"
+                                accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg"
+                                action=""
+                                :before-upload="beforeAvatarUpload"
+                                :auto-upload="true">
+                            <el-button slot="trigger" size="small" type="primary">文件上传</el-button>
+                            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+                        </el-upload>
+                    </el-form-item>
 
 
 
-            </el-form>
-            <div class="footer">
-                <el-button @click="close(1)">取消</el-button>
-                <el-button type="primary" @click="submit('form')">确认</el-button>
+                </el-form>
+                <div class="footer">
+                    <el-button @click="close(1)">取消</el-button>
+                    <el-button type="primary" @click="submit('form')">确认</el-button>
+                </div>
             </div>
+
         </el-dialog>
 
 
@@ -169,27 +174,33 @@
     /deep/ .el-dialog{
         width: 600px;
         .el-dialog__body{
+            padding: 0;
             .el-form-item__label{
                 width:100px;
+            }
+            .el-input{
+                width: 355px;
+            }
+            .el-form{
+                margin-bottom: 10px;
             }
         }
 
     }
     .footer{
+
         display: flex;
         justify-content: center;
         .el-button{
-            padding: 10px 30px;
-            margin: 20px 0;
+            padding: 8px 56px;
+            margin: 0px 0;
+
         }
         .el-button:first-child{
             margin-right: 20px;
         }
     }
-    /deep/ .el-form {
-        margin: 20px;
-        text-align: center;
-    }
+
     /deep/ .el-upload-list   {
         display: none;
     }

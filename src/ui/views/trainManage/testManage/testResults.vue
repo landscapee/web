@@ -27,31 +27,44 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
+                    <el-table-column   slot="employeeFileId" label="试卷名称"   >
+                        <template  slot-scope="scope">
+                            <div @click="upload(scope.row)" class="G_cursor" style="color:#0a76a4;">
+                                附件
+                                <a href="" ref="aA"></a>
+                            </div>
+
+                        </template>
+                    </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="210"  >
                         <template  slot-scope="scope">
-                            <el-button    @click="scoreEntry(scope.row)"
-                                          style=" padding:3px 7px; background: black; color:white;margin: 0">
-                                <div>分数</div>
-                                <div>录入</div>
-                            </el-button>
-                            <el-button  class="copyButton" @click="testResults('/testManagePushStaff',scope.row)"
-                                        style=" padding:3px 7px; background: black; color:white;margin: 0">
+                            <div style="height:40px;line-height: 26px">
+                                <el-button    @click="scoreEntry(scope.row)"
+                                              style=" padding:3px 7px; background: black; color:white;margin: 0">
+                                    <div>分数</div>
+                                    <div>录入</div>
+                                </el-button>
+                                <el-button  class="copyButton" @click="testResults('/testManagePushStaff',scope.row)"
+                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
 
-                                <div>考试结果</div>
-                                <div>推送</div>
-                            </el-button>
-                            <el-button  class="copyButton" @click="uploadTest( scope.row)"
-                                        style=" padding:3px 7px; background: black; color:white;margin: 0">
+                                    <div>考试结果</div>
+                                    <div>推送</div>
+                                </el-button>
+                                <el-button  class="copyButton" @click="uploadTest( scope.row)"
+                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
 
-                                <div>纸质试卷</div>
-                                <div>归档上传</div>
-                            </el-button>
+                                    <div>纸质试卷</div>
+                                    <div>归档上传</div>
+                                </el-button>
+                            </div>
+
                         </template>
                     </el-table-column>
 
                 </SearchTable>
             </div>
         </div>
+        <SeeImg ref="SeeImg"></SeeImg>
         <UploadTest ref="UploadTest"></UploadTest>
         <ScoreEntry ref="ScoreEntry" @getList="getList"></ScoreEntry>
     </div>
@@ -59,6 +72,7 @@
 <script>
     import UploadTest from './uploadTest'
     import ScoreEntry from './scoreEntry'
+    import SeeImg from './seeImg'
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { testRuConfig } from './tableConfig.js';
@@ -67,7 +81,7 @@ import {  extend ,map} from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable,UploadTest,ScoreEntry
+        SearchTable,UploadTest,ScoreEntry,SeeImg
 	},
     name: '',
     data() {
@@ -86,7 +100,9 @@ export default {
         };
     },
    created() {
-        this.lastData=JSON.parse(this.$route.query.row)
+
+       this.lastData=JSON.parse(this.$route.query.row)
+       this.$set(this.form,'examId',this.lastData.id)
        this.getList();
     },
     watch:{
@@ -96,6 +112,20 @@ export default {
         }
     },
     methods: {
+        upload(row){
+            request({
+                // application/x-www-form-urlencoded
+                header:{
+                    'Content-Type':'multipart/form-data'
+                },
+                url:`${this.$ip}/mms-file//get-file-by-id/${row.employeeFileId||'3b36a5997e2b95a240378a7bb7d020e3'}`,
+                method:'GET',
+
+            }).then((d) => {
+
+                this.$refs.SeeImg.open(d.data)
+            });
+        },
         testResults(path,row){
             this.$router.push(path,row)
         },

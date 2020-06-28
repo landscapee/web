@@ -1,6 +1,11 @@
 let timeInfo=(row)=>{
     if(row.reviewerTime){
-         return row.reviewerTime.split(' ')[0]
+        if(row.reviewerTime.split){
+            return row.reviewerTime.split(' ')[0]
+
+        }else {
+            return ''
+        }
     }else {
         return ''
     }

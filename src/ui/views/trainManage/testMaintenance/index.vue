@@ -3,6 +3,7 @@
 
          <router-view v-if="this.$router.history.current.path == '/testMaintenanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceAddAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceSee'" :key="$route.path"></router-view>
 
         <div v-else-if="this.$router.history.current.path == '/testMaintenance'" :key="$route.path" class="sysParameter">
             <div class="top-content">
@@ -65,6 +66,17 @@ export default {
    created() {
         if(this.$router.history.current.path == '/testMaintenance'){
             this.getList();
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["testCategory", "paperCategory","qualificationType", "businessType","applyObject", "selectType",]
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig=testMainConfig(obj)
+
+            });
+
         }
 
     },
@@ -203,7 +215,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
     
 }
 /deep/ .mainTable{

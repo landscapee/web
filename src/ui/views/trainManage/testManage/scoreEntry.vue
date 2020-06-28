@@ -1,16 +1,19 @@
 <template>
     <div>
         <el-dialog title="分数录入"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
-            <el-form :model="form" ref="form" :rules="rules">
-                <div>李梅 信息安全考试    考分：</div>
-                <el-form-item label="" prop="score">
-                    <el-input v-model="form.score" type="number"></el-input>
-                </el-form-item>
-            </el-form>
-            <div class="footer">
-                <el-button @click="close">取消</el-button>
-                <el-button type="primary" @click="submit('form')">确认</el-button>
-            </div>
+           <div style=" padding: 32px 61px 28px 61px; ">
+               <el-form :model="form" ref="form" :rules="rules">
+                   <div style="margin-bottom: 20px;color:#000000;font-size: 16px">李梅 &nbsp;&nbsp;{{row.examName}}   &nbsp;&nbsp; 考分：</div>
+                   <el-form-item label="" prop="score">
+                       <el-input v-model="form.score" type="number"></el-input>
+                   </el-form-item>
+               </el-form>
+               <div class="footer">
+                   <el-button @click="close">取消</el-button>
+                   <el-button type="primary" @click="submit('form')">确认</el-button>
+               </div>
+           </div>
+
         </el-dialog>
 
 
@@ -31,12 +34,13 @@
 
                 },
 
-
+                row:{},
                 dialogFormVisible:false,
             }
         },
         methods: {
             open(data){
+                this.row={...data}
                 this.dialogFormVisible=true
                 this.form={id:data.id}
 
@@ -85,20 +89,29 @@
 
 <style lang="scss" scoped>
 /deep/ .el-dialog{
-    width: 600px;
+    width: 522px;
     .el-dialog__body{
+        padding: 0;
         .el-form-item__label{
             width:100px;
+        }
+        .el-input{
+            width: 400px;
+        }
+        .el-form{
+            margin-bottom: 32px;
         }
     }
 
 }
 .footer{
+
     display: flex;
     justify-content: center;
     .el-button{
-        padding: 10px 30px;
-        margin: 20px 0;
+        padding: 8px 56px;
+        margin: 0px 0;
+
     }
     .el-button:first-child{
         margin-right: 20px;

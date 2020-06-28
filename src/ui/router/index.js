@@ -250,6 +250,14 @@ let authRoutes = [
                         children:[
 
                         ]
+					},{
+                        path: '/testMaintenanceSee',
+                        component: () => import('@views/trainManage/testMaintenance/see'),
+                        name: '预览',
+                        meta: {title: '预览',icon: 'xxgl' },
+                        children:[
+
+                        ]
 					},
 				]
 			},

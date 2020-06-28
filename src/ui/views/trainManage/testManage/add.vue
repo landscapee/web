@@ -47,8 +47,8 @@
                     <el-form-item label="考试试卷：" prop="paperName">
                         <span v-if="type=='info'">{{  form.paperName }}</span>
                         <el-select  v-else clearable v-model="form.paperName" placeholder="请选择考试试卷">
-                            <el-option label="试卷一" value="试卷一"> </el-option>
-                            <el-option label="试卷二" value="试卷二"> </el-option>
+                            <el-option v-for="(opt,index) in testList" :key="index" :label="opt.paperName" :value="opt.id"> </el-option>
+
                         </el-select>
                     </el-form-item>
                     <el-form-item label="考试时长：" prop="totalTime">
@@ -93,7 +93,7 @@
                             <!--<el-option label="禁止" value="禁止"> </el-option>-->
                         <!--</el-select>-->
                     <!--</el-form-item>-->
-                    <el-form-item v-if="type=='edit'" label="考试状态：" prop="examStatus">
+                    <el-form-item v-if="type=='edit'||type=='info'" label="考试状态：" prop="examStatus">
                         <span v-if="type=='info'">{{form.examStatus}}</span>
                         <el-select v-else clearable v-model="form.examStatus" placeholder="请选择考试状态">
                             <el-option label="已推送" value="已推送"> </el-option>
@@ -130,8 +130,30 @@
             return {
                 oldForm:{},
                 form: {},
+                testList: [],
                 rules: {
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
+                    totalTime: [
+                        { required:true,message:'请输入', trigger: "blur" },
+                        {
+                        validator: (rule, value, callback) => {
+                            if(value!=''){
+                                if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&(value+'').split('.').length===1) {
+                                    if (value <= 0) {
+                                        callback(new Error('考试时长应该大于0'));
+                                    } else {
+                                        callback();
+                                    }
+                                } else {
+                                    callback(new Error('必须为整数类型'));
+                                }
+                            }else{
+                                callback();
+                            }
+
+                        },
+                        trigger: 'change',
+                    },],
                 },
                 type: "add"
             };
@@ -151,9 +173,16 @@
                     let row=JSON.parse( this.$route.query.data)
                     this.form={...row}
                 }
-
-
             }
+            request({
+                url:`${this.$ip}/mms-training/paperInfo/list`,
+                method: 'post',
+                data:{},
+                params:{size:10000,current:1}
+            })
+                .then((data) => {
+                    this.testList = data.data.records||[]
+                })
         },
         methods: {
 
@@ -217,7 +246,7 @@
         }
     }
     .addSysParameter {
-        margin-top: 40px;
+        margin-top: 14px;
         .el-form {
             width: 1000px;
             /deep/ .el-form-item__label {
