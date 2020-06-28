@@ -205,11 +205,7 @@
                         row.answer= row.answer.split(';')
                     }
                     this.form={...row,paperId:this.$route.query.id}
-
-
                 }
-
-
             }
         },
         methods: {
