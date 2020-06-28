@@ -38,10 +38,34 @@ export const warningSearchHistoryTable = () => {
 export const subscribeConfigTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-        { prop: '', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
-        { prop: '', label: '是否启用', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
-        { prop: '', label: '接收单位', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入内容"} },
-        { prop: '', label: '接收人',width:'540', align: 'center',search:{prop: '',type:'select',extendType:'search',placeholder:"请选择接收人"}},
+        { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
+        { prop: 'enable', label: '是否启用', formatter: (row, column, cellValue) => {
+            return cellValue?'是':'否';
+        },align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
+        { prop: '',formatter: (row, column, cellValue) => {
+            let arr = [];
+            if(row.receiptPerson){
+                row.receiptPerson.map(item=>{
+                    arr.push(item.name);
+                })
+                return arr.join(",");
+            }else{
+                return '';
+            }
+        }, label: '接收单位', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入内容"} },
+        { prop: '', formatter: (row, column, cellValue) => {
+            let arr = [];
+            if(row.receiptDepartment){
+                row.receiptDepartment.map(item=>{
+                    arr.push(item.name);
+                })
+                return arr.join(",");
+            }else{
+                return '';
+            }
+           
+           
+        },label: '接收人',width:'540', align: 'center',search:{prop: '',type:'select',extendType:'search',placeholder:"请选择接收人"}},
     ]
 };
 export const infoPlateSendTable = () => {
