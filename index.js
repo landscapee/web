@@ -12,6 +12,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { v4 as uuidv4 } from 'uuid';
 import App from './src/ui/App.vue';
+import { initWebsocket } from './initSocket.js';
 // import WorkerRegist from './workerRegist.js';  // 引入webworker注册文件
 import router from './src/ui/router';
 import store from './src/ui/store';
@@ -32,6 +33,9 @@ Vue.prototype.$eventBus= new Vue();
 Vue.use(directives)
 Vue.use(VueKindEditor)
 Vue.use(ElementUI);
+
+
+
 Vue.component('vue-draggable-resizable', VueDraggableResizable);
 // 把postal绑定到vue原型链上
 // Vue.prototype.postal = postal;
@@ -53,6 +57,6 @@ new Vue({
         // 注册并启动webworker
         // const workerProces = new WorkerRegist();
         // workerProces.start()
-       
+		initWebsocket();
     }
 })

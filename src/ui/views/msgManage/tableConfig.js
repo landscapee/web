@@ -71,30 +71,30 @@ export const subscribeConfigTable = () => {
 export const infoPlateSendTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-        { prop: '', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
-        { prop: '', label: '发送时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择发送时间"} },
-        { prop: '', label: '发送内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
-        { prop: '', label: '接收单位', align: 'center',search:{prop:'',type:'input',placeholder:"请输入接收单位"} },
-        { prop: '', label: '接收人', align: 'center',search:{prop:'',type:'input',placeholder:"请输入接收人"} },
-        { prop: '', label: '是否接收处理', align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
-        { prop: '', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
-        { prop: '', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
-        { prop: '', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
+        { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
+        { prop: 'sendDate', label: '发送时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择发送时间"} },
+        { prop: 'content', label: '发送内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
+        { prop: 'receiptDepartment', label: '接收单位', align: 'center',search:{prop:'',type:'input',placeholder:"请输入接收单位"} },
+        { prop: 'receiptPerson', label: '接收人', align: 'center',search:{prop:'',type:'input',placeholder:"请输入接收人"} },
+        { prop: 'require', label: '是否接收处理', align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
+        { prop: 'deadline', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
+        { prop: 'attachment', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
+        { prop: 'state', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const infoPlateReceiveTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-        { prop: '', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
-        { prop: '', label: '发送时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择发送时间"} },
+        { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
+        { prop: 'sendDate', label: '发送时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择发送时间"} },
         { prop: '', label: '发送单位', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送单位"} },
         { prop: '', label: '发送人', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送人"} },
-        { prop: '', label: '发送内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
-        { prop: '', label: '是否接收处理', align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
-        { prop: '', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
-        { prop: '', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
-        { prop: '', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
+        { prop: 'content', label: '发送内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
+        { prop: 'require', label: '是否接收处理', align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
+        { prop: 'deadline', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
+        { prop: 'attachment', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
+        { prop: 'state', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };

@@ -108,27 +108,31 @@ export default {
             }
         },
         delData(){
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning',
-			})
-            .then(() => {
-                request({
-                    url:`${this.$ip}/mms-notice/notificationSubscribe/delete/${this.selectId}`, 
-                    method: 'delete',
+            if(this.selectId!=null){
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
                 })
-                .then((data) => {
-                   this.$message({type: 'success',message: '删除成功'});
-                    this.getList();
+                .then(() => {
+                    request({
+                        url:`${this.$ip}/mms-notice/notificationSubscribe/delete/${this.selectId}`, 
+                        method: 'delete',
+                    })
+                    .then((data) => {
+                    this.$message({type: 'success',message: '删除成功'});
+                        this.getList();
+                    })
                 })
-            })
-            .catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除',
+                    });
                 });
-            });
+            }else{
+                this.$message.error('请先选中一行数据');
+            }
         },
         getList(){
            request({

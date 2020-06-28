@@ -15,7 +15,7 @@
                     <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
                     <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="isActive==0?addOrEditOrInfo('info'):()=>{}"><icon iconClass="info" ></icon>详情</div>
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
@@ -134,33 +134,36 @@ export default {
             }
         },
         delData(){
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning',
-			})
-            .then(() => {
-                request({
-                    url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
-                    method: 'post',
-                    data:{id:this.selectId}
+            if(this.selectId!=null){
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
                 })
-                .then((data) => {
-                   this.$message({type: 'success',message: '删除成功'});
-                    this.getList();
+                .then(() => {
+                    request({
+                        url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/delete/${this.selectId}`:`${this.$ip}/mms-notice/notificationRecipient/delete/${this.selectId}`, 
+                        method: 'delete',
+                    })
+                    .then((data) => {
+                    this.$message({type: 'success',message: '删除成功'});
+                        this.getList();
+                    })
                 })
-            })
-            .catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除',
+                    });
                 });
-            });
+            }else{
+                this.$message.error('请先选中一行数据');
+            }
         },
         getList(){
            request({
                           
-                url:this.isActive==0?`${this.$ip}/mms-parameter/notificationPublish/list`:`${this.$ip}/mms-parameter/notificationRecipient/list`, 
+                url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
