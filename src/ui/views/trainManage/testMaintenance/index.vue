@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testMainConfig(),
+            tableConfig:testMainConfig({}),
             params:{
 				current: 1,
 				size: 15,

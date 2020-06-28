@@ -19219,11 +19219,70 @@
 .addSysParameter .el-form[data-v-483aa6a6] {
     width: 71.42857rem;
 }
+.addSysParameter .el-form[data-v-483aa6a6] .upload-demo {
+      display: inline-block;
+}
 .addSysParameter .el-form[data-v-483aa6a6] .el-form-item__label {
       width: 8.57143rem;
 }
 .addSysParameter .el-form[data-v-483aa6a6] .el-form-item__content {
       margin-left: 8.57143rem;
+}
+.addSysParameter .el-form .row_custom6[data-v-483aa6a6] .el-form-item__content {
+      height: 2.85714rem;
+      width: 62.85714rem;
+      text-align: left;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] {
+      display: inline-block;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item span[data-v-483aa6a6] {
+        margin-left: 1.42857rem;
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-input,
+      .addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-select,
+      .addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-cascader {
+        width: 100%;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-form-item__label {
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+        color: #222222;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-textarea__inner, .addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-input__inner {
+        border-radius: 0.14286rem;
+        border: 0.07143rem solid #979797;
+        font-size: 1.14286rem;
+        padding-left: 1.14286rem;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] input::-webkit-input-placeholder {
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+        color: #888888;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] textarea::-webkit-input-placeholder {
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+        color: #888888;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-input__prefix {
+        left: unset;
+        right: 0.92857rem;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-input__prefix .el-input__icon {
+          width: 1rem;
+          font-size: 1.07143rem;
+}
+.addSysParameter .el-form .row_custom6 .el-form-item[data-v-483aa6a6] .el-form-item__label:before {
+        content: '';
+        color: unset;
+        margin-right: unset;
 }
 .addSysParameter .el-form .row_custom5[data-v-483aa6a6] .el-form-item__content {
       height: 2.85714rem;

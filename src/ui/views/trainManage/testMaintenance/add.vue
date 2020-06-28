@@ -9,9 +9,9 @@
                 <div @click="preview"  >
                     <icon iconClass="info"></icon>预览
                 </div>
-                <div @click="exportTest"  v-if="type!='add1'">
-                    <icon iconClass="export"></icon>导出
-                </div>
+                <!--<div @click="exportTest"  v-if="type!='add1'">-->
+                    <!--<icon iconClass="export"></icon>导出-->
+                <!--</div>-->
                 <div @click="type!='info'?saveForm('form'):()=>{}" v-if="type!='info'" >
                     <icon iconClass="save"></icon>保存
                 </div>
@@ -116,10 +116,10 @@
                 <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                 <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                 <div @click="addOrEditOrInfo('info')"><icon iconClass="remove" ></icon>详情</div>
-                <div @click="exportExcel()">
-                    <icon iconClass="export" ></icon>导出
-                    <a ref="a" :href="`${this.$ip}/mms-training/download/securityMerits`"></a>
-                </div>
+                <!--<div @click="exportExcel()">-->
+                    <!--<icon iconClass="export" ></icon>导出-->
+                    <!--<a ref="a" :href="`${this.$ip}/mms-training/download/securityMerits`"></a>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="TableContent main-content ">
@@ -177,7 +177,7 @@
                     paperCode: [{ required: true, message: "请输入试卷编码", trigger: "blur" }],
                     // paperCode: [{ validator:paperCode, trigger: "change" }],
                   },
-                 tableConfig:testMainAddConfig(),
+                 tableConfig:testMainAddConfig({}),
                 params:{
                   size:15,
                   current:1,
@@ -197,20 +197,13 @@
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
-                    data:["testCategory", "paperCategory","qualificationType","businessType","applyObject",]
+                    data:["testCategory",'selectType', "paperCategory","qualificationType","businessType","applyObject",]
                 }).then(d => {
                     this.options=d.data
-                });
-                request({
-                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-                    method: 'post',
-                    params:{delete:false},
-                    data:["selectType", ]
-                }).then(d => {
                     let obj=d.data
                     this.tableConfig=testMainAddConfig(obj)
-
                 });
+
             }
 
              if (this.$route.query ) {
