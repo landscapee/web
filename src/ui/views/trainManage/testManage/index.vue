@@ -86,7 +86,7 @@ export default {
     },
     methods: {
         testPush(path,row){
-          this.$router.push({path:path,query:{row:JSON.stringify(row)}})
+          this.$router.push({path:path,query:{id:row.id}})
         },
         exportExcel(){
              this.$refs.a.click()

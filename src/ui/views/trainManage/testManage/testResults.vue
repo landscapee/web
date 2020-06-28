@@ -39,7 +39,7 @@
                     <el-table-column   slot="option" label="操作" :width="210"  >
                         <template  slot-scope="scope">
                             <div style="height:40px;line-height: 26px">
-                                <el-button    @click="scoreEntry(scope.row)"
+                                <el-button  :disabled="scope.row.examMode=='线上'"  @click="scoreEntry(scope.row)"
                                               style=" padding:3px 7px; background: black; color:white;margin: 0">
                                     <div>分数</div>
                                     <div>录入</div>
@@ -127,13 +127,21 @@ export default {
             });
         },
         testResults(path,row){
-            this.$router.push(path,row)
+            request({
+                url:`${this.$ip}/mms-training/examResult/send` ,
+                method: 'post',
+                data:{employeeId:row.employeeId,examId:row.examId,employeeName:row.employeeName}
+            }).then((d) => {
+                if(d.code==200){}
+                    this.getList();
+                    this.$message({type: 'success',message: '推送成功'});
+                })
         },
         scoreEntry(row){
             this.$refs.ScoreEntry.open(row)
         },
         uploadTest(row){
-            this.$refs.UploadTest.open(row.id)
+             this.$refs.UploadTest.open(row.id)
         },
         exportExcel(){
              this.$refs.a.click()
@@ -196,35 +204,7 @@ export default {
                 }
             }
         },
-        delData(){
-            if(this.selectId==null){
-                this.$message.error('请先选中一行数据');
-            }else{
-                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                })
-                    .then(() => {
-                        request({
-                             url:`${this.$ip}/mms-qualification/securityInformation/delete/`+this.selectId,
-                            method: 'delete',
-                            // params:{id:this.selectId}
-                        })
-                            .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
-                            })
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除',
-                        });
-                    });            }
 
-        },
         getList(){
             let data={...this.form}
             map(data,((k,l)=>{

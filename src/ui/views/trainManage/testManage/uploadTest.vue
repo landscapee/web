@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog title="纸质试卷上传归档"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close(1)">
+        <el-dialog title="纸质试卷上传归档"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close1">
             <div style=" padding: 32px 61px 28px 61px; ">
                 <el-form :inline="true" :model="form" ref="form" :rules="rules">
                     <div style="margin-bottom: 20px;color:#000000;font-size: 16px">试卷上传</div>
@@ -65,7 +65,8 @@
 
             open(id){
                 this.dialogFormVisible=true
-                this.id=id
+                debugger
+                this.id=id||1
 
             },
             submit() {
@@ -146,8 +147,32 @@
             close(d){
                 this.form={file:null}
                 this.dialogFormVisible=false
-                this.$refs.file.clearFiles()
+                if( this.$refs.file){
+                    this.$refs.file.clearFiles()
+                }
+
                 if(d&&this.form.file){
+                    request({
+                        // application/x-www-form-urlencoded
+                        header:{
+                            'Content-Type':'multipart/form-data'
+                        },
+                        url:`${this.$ip}/mms-file/${this.form.file}`,
+                        method:'delete',
+
+                    }).then((d) => {
+
+                    });
+                }
+            },
+            close1( ){
+                this.form={file:null}
+                this.dialogFormVisible=false
+                if( this.$refs.file){
+                    this.$refs.file.clearFiles()
+                }
+
+                if( this.form.file){
                     request({
                         // application/x-www-form-urlencoded
                         header:{

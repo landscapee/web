@@ -6,10 +6,10 @@
             </div>
             <div  class="QheadRight">
 
-                <div @click="handleClear()"  >
+                <div @click="handleClear"  >
                     <icon  iconClass="reset "></icon>重置
                 </div>
-                <div @click="pushStaff()"  >
+                <div @click="pushStaff"  >
                     <icon iconClass="save" style="width: 0"></icon>推送
                 </div>
             </div>
@@ -103,13 +103,10 @@
         },
 
         created() {
-            let row
-              if (this.$route.query) {
-               row=JSON.parse( this.$route.query.row)||{}
-             }
+
             this.getTree(true );
             this.selectAll = false;
-             this.selectedPersonList = row.staff || [];
+             this.selectedPersonList =   [];
          },
         mounted(){
 
@@ -117,7 +114,26 @@
         methods: {
 
             pushStaff(){
-
+                let employeeList=[]
+                employeeList=  this.selectedPersonList.map((k,l)=>{
+                    return{
+                        employeeId:k.id,
+                        employeeName:k.name,
+                    }
+                })
+                   request({
+                    url: `${this.$ip}/mms-training/examInfo/send`,
+                    method: 'post',
+                    data:{
+                        id:this.$route.query.id,
+                        employeeList
+                    },
+                }).then((d) => {
+                    if(d.code==200){
+                        this.$message.success('推送成功')
+                        this.$router.go((-1))
+                    }
+                });
             },
             resetForm(){
 

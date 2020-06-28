@@ -19,7 +19,7 @@
                 <div></div>
 
                 <div class="row_custom">
-                    <el-form-item label="考试名称：" prop="examName">
+                    <el-form-item  label="考试名称：" prop="examName">
                         <span v-if="type=='info'">{{form.examName}}</span>
                         <el-input v-else v-model="form.examName" placeholder="请输入考试名称"></el-input>
                     </el-form-item>
@@ -44,11 +44,10 @@
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="考试试卷：" prop="paperName">
-                        <span v-if="type=='info'">{{  form.paperName }}</span>
-                        <el-select  v-else clearable v-model="form.paperName" placeholder="请选择考试试卷">
+                    <el-form-item  label="考试试卷：" prop="paperId">
+                        <span v-if="type=='info'">{{  form.paperId }}</span>
+                        <el-select   v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
                             <el-option v-for="(opt,index) in testList" :key="index" :label="opt.paperName" :value="opt.id"> </el-option>
-
                         </el-select>
                     </el-form-item>
                     <el-form-item label="考试时长：" prop="totalTime">
@@ -133,6 +132,8 @@
                 testList: [],
                 rules: {
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
+                    paperId: [{ required:true,message:'请选择', trigger: "blur" }],
+                    examName: [{ required:true,message:'请输入考试名次', trigger: "blur" }],
                     totalTime: [
                         { required:true,message:'请输入', trigger: "blur" },
                         {
@@ -181,6 +182,7 @@
                 params:{size:10000,current:1}
             })
                 .then((data) => {
+
                     this.testList = data.data.records||[]
                 })
         },
