@@ -1,0 +1,69 @@
+
+.QfooterTest{
+    text-align:center;
+    /deep/ .el-button{
+        width: 140px;
+        height: 36px;
+        border: 1px solid #b9b9b9;
+        border-radius: 2px;
+    }
+    /deep/ .el-button:last-child{
+        border: 0;
+        color:white;
+        background: #3280e7;
+    }
+}
+
+.QCenterRight{
+    margin: 34px 0px 24px 0px;
+    position: relative;
+    .QHead{
+        font-size: 24px;
+        font-family: SourceHanSansCN, SourceHanSansCN-Medium;
+        font-weight: bold;
+        text-align: center;
+        color: #222222;
+    }
+    .QheadRight{
+        position: absolute;
+        right:0;
+        top:0;
+        .isDisabled{
+            background: rgba(208,208,208,1);
+            color: #6A7785;
+            cursor: not-allowed;
+            .svg-icon{
+                fill: rgba(208,208,208,1);
+            }
+        }
+        &>div{
+            user-select: none;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            height: 2.28571rem;
+            line-height: 2.28571rem;
+            padding: 0.5rem;
+            border-radius: 0.14286rem;
+            border: 0.07143rem solid #d0d0d0;
+            margin-right: 0.85714rem;
+            color: #3D568E;
+        }
+        .svg-icon{
+            height:18px;
+            width:18px;
+            margin-right: 4px;
+            vertical-align: text-top;
+        }
+    }
+
+}
+
+
+
+
+
+.G_cursor:hover{
+    cursor: pointer;
+}

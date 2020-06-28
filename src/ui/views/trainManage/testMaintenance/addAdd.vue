@@ -215,7 +215,12 @@
 
             },
             resetForm(){
-                this.form={optionType:'单选',paperId:''};
+
+                if(this.form.id){
+                    this.form={optionType:'单选',paperId:this.$route.query.id,id:this.form.id};
+                }else{
+                    this.form={optionType:'单选',paperId:this.$route.query.id,};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -277,8 +282,7 @@
         }
     }
     .addSysParameter {
-        margin-top: 40px;
-        .el-form {
+         .el-form {
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;

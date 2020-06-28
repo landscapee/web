@@ -6,19 +6,20 @@
         <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>{{}}-需参加的在线考试</span>
+                    <!--this.$store.state.user.userInfo.administrativeId-->
+                    <span>{{this.$store.state.user.userInfo.name}}-需参加的在线考试</span>
                 </div>
 
             </div>
             <div class="main-content">
-                <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable ref="searchTable" :data="tableData1" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="160"  >
+                    <el-table-column   slot="option" label="操作" :width="120"  >
                         <template  slot-scope="{ row }">
                             <el-button  class="copyButton copyButton1" @click="lineTest('/onlineTestDo',row)">参加考试</el-button>
                          </template>
@@ -44,6 +45,7 @@ export default {
     data() {
         return {
             tableData:{records:[{}]},
+            tableData1:{records:[{}]},
             tableConfig:lineTestConfig(),
             params:{
 				current: 1,
@@ -66,7 +68,10 @@ export default {
     },
     methods: {
         lineTest(path,row){
-          this.$router.push(path,row)
+          this.$router.push({
+              path:path,
+              query:{row:JSON.stringify(row)}
+          })
         },
 
         requestTable(searchData){
@@ -122,17 +127,12 @@ export default {
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
-                }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
-                    }
-                    delete data.infTime
                 }
             }))
            request({
-                url:`${this.$ip}/mms-qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-training/examLine/list`,
                  method: 'post',
-                data:{...this.sort,...data},
+                   data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
@@ -159,7 +159,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
 
     .copyButton{
         margin: 0;

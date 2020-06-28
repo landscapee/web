@@ -52,7 +52,7 @@
 
                     if (valid) {
                          request({
-                             url:`${this.$ip}/qualification/securityMerits/copy`,
+                             url:`${this.$ip}/mms-qualification/securityMerits/copy`,
                              method:'post',
                              data:{
                                   ...this.form

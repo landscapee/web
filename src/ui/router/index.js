@@ -265,6 +265,14 @@ let authRoutes = [
                         children:[
 
                         ]
+					},{
+                        path: '/testMaintenanceSee',
+                        component: () => import('@views/trainManage/testMaintenance/see'),
+                        name: '预览',
+                        meta: {title: '预览',icon: 'xxgl' },
+                        children:[
+
+                        ]
 					},
 				]
 			},
@@ -307,10 +315,17 @@ let authRoutes = [
                 ]
 			},
 			{
-				path: '/WorkOrderManage33',
-				component: ()=>{},
+				path: '/onlineTestIndex',
+				component:() => import('@views/trainManage/onlineTest/index.vue'),
 				name: '在线考试',
 				meta: {title: '在线考试',icon: 'xxgl' },
+                children:[
+					{   path: '/onlineTestDo',
+                        component: () => import('@views/trainManage/onlineTest/add.vue'),
+                        name: '在线考试',
+                        meta: {title: '在线考试',icon: 'xxgl' },
+					},
+				]
 			},
 			{
 				path: '/WorkOrderManage44',

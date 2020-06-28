@@ -174,6 +174,7 @@
                 rules: {
                     paperName: [{ required: true, message: "请输入试卷名称", trigger: "blur" }],
                     totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" }],
+                    paperCode: [{ required: true, message: "请输入试卷编码", trigger: "blur" }],
                     // paperCode: [{ validator:paperCode, trigger: "change" }],
                   },
                  tableConfig:testMainAddConfig(),
@@ -200,6 +201,16 @@
                 }).then(d => {
                     this.options=d.data
                 });
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:["selectType", ]
+                }).then(d => {
+                    let obj=d.data
+                    this.tableConfig=testMainAddConfig(obj)
+
+                });
             }
 
              if (this.$route.query ) {
@@ -220,7 +231,15 @@
             }
         },
         methods: {
-            preview() {
+
+            preview(){
+
+                if(this.form.id){
+                    this.$router.push({path:'/testMaintenanceSee',query:{ id:this.form.id, }});
+
+                }else {
+                    this.$message.error('请先保存试卷基本信息');
+                }
 
             },
             exportTest() {
@@ -325,6 +344,7 @@
                                 .then(d => {
                                     this.$message.success("保存成功！");
                                      this.$router.push({path:'/testMaintenanceAdd',query:{type:"editor",id:d.data}})
+                                        this.$set(this.form,'id',d.data)
                                  })
                                 .catch(error => {
                                     this.$message.success(error);
@@ -408,8 +428,7 @@
 }
     .addTest {
         padding: 0 40px ;
-        margin-top: 40px;
-        .main-content{
+         .main-content{
             overflow-y: auto;
             overflow-x: hidden;
             /*height:calc(100vh - 260px);*/
@@ -454,7 +473,7 @@
             margin: 0!important;
         }
         /deep/ .mainTable{
-            height: 400px;
+            height: 360px;
             overflow: auto;
 
         }

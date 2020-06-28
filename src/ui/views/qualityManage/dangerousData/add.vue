@@ -129,7 +129,7 @@
                     <el-form-item label="控制状态：" prop="controlState">
                         <span v-if="type=='info'">{{form.controlState}}</span>
                         <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
-                            <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                            <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                 </div>
