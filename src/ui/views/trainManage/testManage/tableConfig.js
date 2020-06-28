@@ -1,6 +1,9 @@
+import moment from "moment";
+
 let timeInfo=(row)=>{
-        if(row.infTime){
-            return row.infTime.split(' ')[0]
+        if(row.examTime){
+         return  moment(row.infTime).format('YYYY-MM-DD')
+
         }else {
                 return ''
         }
@@ -11,7 +14,7 @@ export const testConfig = (testList,obj) => {
                 { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
                 { prop: 'examName', label: '考试名称', sortProp:"examName", align: 'center',sort:true,search:{type:'input', prop:'examName',placeholder:"请输入"} },
                 { prop: 'examMode', label: '方式',sortProp:"examMode", align: 'center',sort:true,search:{type:'select', prop:'examMode',placeholder:"请选择"} },
-                { prop: 'examTime', label: '时间',sortProp:"examTime", align: 'center',sort:true,search:{type:'date', prop:'examTime',placeholder:"请选择"} },
+                { prop: 'examTime', label: '时间',formatter:timeInfo,sortProp:"examTime", align: 'center',sort:true,search:{type:'date', prop:'examTime',placeholder:"请选择"} },
                 { prop: 'totalTime', label: '时长(分)',sortProp:"totalTime", align: 'center',sort:true,search:{type:'select', prop:'totalTime',placeholder:"请选择"}},
                 { prop: 'examSite', label: '地点',sortProp:"examSite", align: 'center' ,sort:true,search:{type:'input', prop:'examSite',placeholder:"请输入"}},
                 { prop: 'paperName', label: '试卷',sortProp:"paperName", align: 'center' ,sort:true,search:{type:'select', prop:'paperId',placeholder:"请选择",selectProp:['paperName','id'],data:testList}},

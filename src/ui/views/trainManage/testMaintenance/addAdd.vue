@@ -112,9 +112,16 @@
                      return callback(new Error('试题序号不能为空'));
                 } else {
                     if (typeof Number(value) == 'number' && !window.isNaN(Number(value))) {
+                        let url
+                        if(this.form.id){
+                           url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${this.form.id }`
+                        }else{
+                            url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${null} `
+
+                        }
                         request({
                         // /
-                            url:`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${this.form.id||null}`,
+                            url:url,
                             method: 'get',
                         }).then(d => {
                             if(d.code==200){
@@ -198,11 +205,7 @@
                         row.answer= row.answer.split(';')
                     }
                     this.form={...row,paperId:this.$route.query.id}
-
-
                 }
-
-
             }
         },
         methods: {

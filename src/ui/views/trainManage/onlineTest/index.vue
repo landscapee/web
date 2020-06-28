@@ -46,7 +46,7 @@ export default {
         return {
             tableData:{records:[{}]},
             tableData1:{records:[{}]},
-            tableConfig:lineTestConfig(),
+            tableConfig:lineTestConfig({}),
             params:{
 				current: 1,
 				size: 15,

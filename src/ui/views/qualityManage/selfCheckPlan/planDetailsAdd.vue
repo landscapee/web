@@ -36,7 +36,7 @@
                         <span v-if="type=='info'">{{form.checkContents}}</span>
                         <el-input v-else v-model="form.checkContents" placeholder="请输入检查内容"></el-input>
                     </el-form-item>
-                    <el-form-item label="检查方式：" prop="checkMethod1">
+                    <el-form-item label="检查方式：" prop="checkMethod">
                         <span v-if="type=='info'">{{form.checkMethod}}</span>
                          <el-select @change="checkMethodChange" v-else multiple v-model="form.checkMethod1" placeholder="请选择检查方式">
                             <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
@@ -152,7 +152,7 @@
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
-                data:["checkProject", "checkType",'checkObject','checkType']
+                data:["checkProject", "checkType",'checkObject','checkCategory']
             }).then(d => {
                 this.options=d.data
             });
