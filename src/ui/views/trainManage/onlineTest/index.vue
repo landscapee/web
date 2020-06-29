@@ -12,7 +12,7 @@
 
             </div>
             <div class="main-content">
-                <SearchTable ref="searchTable" :data="tableData1" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -48,8 +48,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableData1:{records:[]},
-            tableConfig:lineTestConfig({}),
+             tableConfig:lineTestConfig({}),
             params:{
 				current: 1,
 				size: 15,

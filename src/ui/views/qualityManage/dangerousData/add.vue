@@ -112,9 +112,9 @@
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="剩余可能性：" prop="residuaPossibility">
-                        <span v-if="type=='info'">{{form.residuaPossibility}}</span>
-                        <el-input v-else v-model="form.residuaPossibility" placeholder="请输入剩余可能性"></el-input>
+                    <el-form-item label="剩余可能性：" prop="residualPossibility">
+                        <span v-if="type=='info'">{{form.residualPossibility}}</span>
+                        <el-input v-else v-model="form.residualPossibility" placeholder="请输入剩余可能性"></el-input>
                     </el-form-item>
                     <el-form-item label="剩余严重性：" prop="residualSeverity">
                         <span v-if="type=='info'">{{form.residualSeverity}}</span>
