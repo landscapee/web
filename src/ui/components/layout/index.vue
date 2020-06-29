@@ -7,12 +7,12 @@
 				<i class="bell_tips">{{tipsNumber}}</i>
 				<span><img :src="usericon" />{{username}}</span>
 				<span><img :src="bell" />消息</span>
-				<span><img :src="esc" />退出</span>
+				<span @click="logout"><img :src="esc" />退出</span>
 			</div>
 		</el-header>
 		  <el-container>
-		<el-aside  class="left-menu" >
-			<el-menu  router :default-active="routePath">
+		<el-aside  :class="isOpen?'open-menu':'left-menu'" >
+			<el-menu  router :default-active="routePath" :unique-opened="true">
 				<el-submenu :index="item.path" v-for="(item,index) in asyncRoutes" :key="index">
 					<template slot="title">
 						<icon :iconClass="item.meta.icon" ></icon>
@@ -23,6 +23,7 @@
 					</el-menu-item>
 				</el-submenu>
 			</el-menu>
+			<icon  iconClass="spread" :class="isOpen?'spread-icon open-spread-icon':'spread-icon'" @click.native="onSpread"></icon>
 		</el-aside>
 		<el-container class="main-layout">
 			<el-main>
@@ -37,6 +38,7 @@
 	</el-container>
 </template>
 <script>
+import postal from 'postal';
 import { asyncRoutes } from '@/ui/router';
 import logo from './assets/img/logo.png';
 import bell from './assets/img/ic_bell.png';
@@ -60,7 +62,8 @@ import Icon from '@components/Icon-svg/index';
 		bell,
 		esc,
 		usericon,
-		routePath:this.$route.path
+		routePath:this.$route.path,
+		isOpen:false
       }
 	},
 	watch: {
@@ -75,8 +78,22 @@ import Icon from '@components/Icon-svg/index';
 	created(){
 		
 	},
+	mounted(){
+      postal.subscribe({
+			channel: 'websocket_msg',
+			topic: 'message',
+			callback: async data => {
+				console.log(123123123123,data);
+			}
+		})
+	},
 	methods:{
-		
+		logout(){
+			this.$router.push({ path: '/' });
+		},
+		onSpread(){
+			this.isOpen = !this.isOpen;
+		}
 	}
   };
 </script>
@@ -192,7 +209,36 @@ import Icon from '@components/Icon-svg/index';
 			background: #3280E7;
 		}
 	}
+	.open-menu{
+		width: 3px !important;
+		transition: width 0.28s;
+		background: url('./assets/img/leftNav.png') no-repeat;
+		height: calc(100vh - 48px);
+		background-size:cover;
+		overflow-x: hidden;
+		padding-top: 55px;
+		&::-webkit-scrollbar-track-piece {
+			background: #d3dce6;
+		}
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: #99a9bf;
+			border-radius: 20px;
+		}
+		&::after{
+			content: '';
+			height: calc(100% - 48px);
+			width: 3px;
+			position: absolute;
+			top: 48px;
+			left: 0px;
+			background: #265FE2;
+		}
+	}
 	.left-menu{
+		transition: width 0.28s;
 		width: 160px !important;
 		background: url('./assets/img/leftNav.png') no-repeat;
 		height: calc(100vh - 48px);
@@ -209,6 +255,28 @@ import Icon from '@components/Icon-svg/index';
 			background: #99a9bf;
 			border-radius: 20px;
 		}
+		&::after{
+			content: '';
+			height: calc(100% - 48px);
+			width: 3px;
+			position: absolute;
+			top: 48px;
+			left: 157px;
+			background: #265FE2;
+		}
+	}
+	/deep/ .spread-icon{
+		position: absolute;
+		left: 150px;
+		top: 50%;
+		width: 8px;
+		height:45px;
+		cursor: pointer;
+		z-index: 9999999999;
+	}
+	/deep/ .open-spread-icon{
+		left: 0px;
+		transform:rotate(180deg);
 	}
 	
 }

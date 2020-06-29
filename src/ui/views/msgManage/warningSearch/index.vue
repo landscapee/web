@@ -18,7 +18,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" label="关联信息" :width="148" >
+                    <el-table-column slot="relationInfo" align='center' :width="148" >
                         <template slot-scope="{ row }" v-if="row.state==0">
                             <el-button size="mini" @click="clickAction(row)">已读</el-button>
                         </template>

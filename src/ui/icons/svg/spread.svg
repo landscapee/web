@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="45px" viewBox="0 0 8 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title></title>
+    <desc>Created with Sketch.</desc>
+    <g id="7-综合查询" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="7-1-1综合查询" transform="translate(-159.000000, -529.000000)" fill="#265FE2">
+            <g id="menu-left" transform="translate(0.000000, 40.000000)">
+                <g id="arrow备份" transform="translate(159.000000, 0.000000)">
+                    <path d="M7.67814033,508.723691 L0.965660431,489.438128 C0.765607507,488.854854 0.525006616,488.854854 0.321941091,489.432767 C0.120341157,490.016041 0,491.049342 0,492.21053 L0,530.786505 C0,531.947437 0.120341157,532.985844 0.321941091,533.564012 C0.423473853,533.852969 0.534451524,534 0.643800761,534 C0.754778431,534 0.86567468,533.853224 0.965660431,533.564012 L7.67814033,514.278194 C7.87974027,513.700281 8,512.657025 8,511.500942 C8,510.340266 7.87965884,509.296754 7.67814033,508.723691 Z" id="路径备份" transform="translate(4.000000, 511.500000) scale(-1, 1) translate(-4.000000, -511.500000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
