@@ -72,16 +72,18 @@
         </div>
       </el-form>
     </div>
+    <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
   </div>
 </template>
 <script>
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
-
+import userTree from '@components/userTree/index';
 export default {
   components: {
     Icon,
+    userTree
   },
   name: "",
   data() {
@@ -97,6 +99,7 @@ export default {
       receiver:'',
       infoType:[],
       fileList: [],
+      userList:[],
       filename:'',
       type: "add"
     };
@@ -131,6 +134,9 @@ export default {
     }
   },
   methods: {
+    handleUserSelected(users) {
+      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+		},
      handleChange(file, fileList) {
         if (fileList.length > 0) {
             this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
@@ -214,7 +220,7 @@ export default {
 			if(tag=='subscribe'){
 
       }else{
-        
+        this.$refs.userBox.open(this.users, '选择人员', true);
       }
 		},
     resetForm(){
@@ -232,6 +238,7 @@ export default {
             })
             .then(data => {
               this.$message.success("保存成功！");
+              this.$parent.selectId = null;
               this.$router.go(-1);
             })
             .catch(error => {

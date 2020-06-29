@@ -135,8 +135,9 @@ export default {
                         method: 'delete',
                     })
                     .then((data) => {
-                    this.$message({type: 'success',message: '删除成功'});
+                        this.$message({type: 'success',message: '删除成功'});
                         this.getList();
+                         this.selectId = null;
                     })
                 })
                 .catch(() => {
