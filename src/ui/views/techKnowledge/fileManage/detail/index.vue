@@ -1,5 +1,6 @@
 <template>
     <div class='index'>
+        <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
         <div class='inner'>
             <div class='top_content'>
                 <div class='header'><span>工单</span></div>
@@ -17,7 +18,7 @@
                         <div @click="rightMethods"><icon iconClass="add" ></icon>下载</div>
                         <div @click="rightMethods"><icon iconClass="edit" ></icon>移动到</div>
                         <div @click="rightMethods"><icon iconClass="remove" ></icon>批量推送</div>
-                        <div @click="rightMethods"><icon iconClass="info" ></icon>新增</div>
+                        <div @click="rightMethods('/addFile','add')"><icon iconClass="info"></icon>新增</div>
                         <div @click="rightMethods"><icon iconClass="save" ></icon>编辑</div>
                         <div @click="rightMethods"><icon iconClass="reset" ></icon>删除</div>
                         <div @click="rightMethods"><icon iconClass="reset" ></icon>详情</div>
@@ -31,14 +32,20 @@
                     ref="searchTable"  
                     @requestTable="requestTable(arguments[0])"   
                     @listenToCheckedChange="listenToCheckedChange(arguments[0])" 
-                    @headerSort="HeaderSort(arguments[0])"   
-                    :data="tableLeftData" 
+                    @headerSort="headerSort(arguments[0])"  
+                    :data="tableData" 
                     :tableConfig="businessTableConfig"   
                 >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                        </template>
+                    </el-table-column>
+                    <el-table-column   slot="option" label="操作" :width="230"  >
+                        <template  slot-scope="{ row }">
+                            <el-button size='mini' class="copyButton copyButton1" >历史版本</el-button>
+                            <el-button size='mini' class="copyButton" >阅读推送</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -66,28 +73,60 @@ export default {
             },
             form:{},
             sort:{},
-            tableLeftData:{records:[]},
+            tableData:{records:[]},
+            selectId:null
         };
     },
+    mounted(){
+        // if(!this.$route.query.id){
+        //     this.$router.push({path:'/fileManage'});
+        // }
+        this.init()
+    },
     methods:{
-        rightMethods(){
+        init(){
+            this.getList()
+        },
+        rightMethods(type,query){
+            this.$router.push({path:type,query:{type:query}});
+        },
+        fileAddFn(){
+            request({
+                url:`${this.$ip}/mms-knowledge/file/save`,
+                method: 'post',
+                data:{
 
+                }
+            })
+            .then((data) => {
+                this.getList();
+                this.selectId   = null;
+                this.$message({type: 'success',message: '删除成功'});
+            })
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{
+                    folderId: this.$route.query.id,
+                    //...this.params,
+                    ...this.sort,
+                    ...this.form
+                }
             })
             .then((data) => {
+                // order:'number,0' // 0 倒序 1 正序 
+                console.log(data)
+                // this.sort = {
+                //     order:`${number},${data.order==='desc'?'0':'1'}`
+                // }
                 if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
+                    this.tableData = {records: data.data.records,current:1,size:this.params.size,total:data.data.total}
                 }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
+                    this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
-            }).catch((error) => {
-            
-            });
+            })
        },
        requestTable(searchData){
             this.form = searchData;
@@ -99,7 +138,11 @@ export default {
         },
         headerSort(column){
             this.sort = {};
-            this.sort[column.property] = column.order;
+            console.log(column)
+            this.sort = {
+                order:`${column['property']},${column.order==='desc'?'0':'1'}`
+            }
+            //this.sort[column.property] = column.order;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
@@ -107,29 +150,19 @@ export default {
         //表格选中事件
         listenToCheckedChange(row,tag,tableTag){
             let select = row.selected;
-            this[tableTag].records.map(r =>{
+            this.tableData.records.map(r =>{
                 if(r.selected){
                     r.selected = false;
                 }
             })
             row.selected  = !select;
-            if(tag=="left"){
-                if(row.selected){
-                    this.leftSelectId = row.id;
-                }else{
-                    this.leftSelectId = null;
-                }
-                this.leftRowState = row.enableMaintain==0?false:true;
-                this.rightParams.current = 1;
-                this.getList('right');
+            if(row.selected){
+                this.selectId = row.id;
             }else{
-                if(row.selected){
-                    this.rightSelectId = row.id;
-                }else{
-                    this.rightSelectId = null;
-                }
+                this.selectId = null;
             }
-            this.$set(this[tableTag].records,row.index,row);
+            this.params.current = 1;
+            this.$set(this.tableData.records,row.index,row);
         },
     },
     watch: {
