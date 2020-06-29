@@ -1,16 +1,18 @@
 <template>
     <div class='index'>
         <router-view v-if="this.$router.history.current.path == '/detail'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view>
         <div class='inner' v-else>
             <div class='top_content'>
                 <div class='header'><span>文件管理</span></div>
                 <div class='i_main'  @contextmenu.prevent.stop="openMainMenuFn($event)">
-                    <div class="list" v-for="item in fileList" :key='item.id' :class='item.isClickEd?"isClickEd":""'  @dblclick="openFile(item)" @click.prevent='showClickFn($event,item)' @contextmenu.prevent.stop="openMenu($event,item)" >
+                    <div class="list" v-for="(item,index) in fileList" :key='index' :class='item.isClickEd?"isClickEd":""'  @dblclick="openFile(item)" @click.prevent='showClickFn($event,item)' @contextmenu.prevent.stop="openMenu($event,item)" >
                         <div class='icon'>
                             <icon :iconClass="item.icon" ></icon>
                         </div>
                         <div class='label'>
-                            {{item.label}}
+                            <span class='text' v-if='!item.nameEditing' :title='item.label'>{{item.label}}</span>
+                            <span v-else><el-input v-focus :ref="item.icon+index" type='textarea' rows='1' v-model="item.label" placeholder="请输入文件名" @blur="onBlurFn(item)"></el-input></span>
                         </div>
                         <div v-show='item.isClickEd&&item.fileUpdateTime' class='time'>修改日期:{{item.fileUpdateTime}}</div>
                     </div>
@@ -19,13 +21,13 @@
             </div>
         </div>
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li>打开</li>
-            <li>重命名</li>
-            <li>删除</li>
+            <li @click='contextmenuOpenFileFn'>打开</li>
+            <li @click='contextmenuEditNameFn'>重命名</li>
+            <li @click='contextmenuDeleteFn'>删除</li>
         </ul>
         <ul v-show="mainVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li>新建文件夹</li>
-            <li>刷新</li>
+            <li @click="createFileFn">新建文件夹</li>
+            <li @click="updateFn">刷新</li>
         </ul>
     </div>
 </template>
@@ -39,26 +41,25 @@ export default {
        Icon
 	},
     name: '',
+    directives: {
+	    //注册一个局部的自定义指令 v-focus
+	    focus: {
+	        // 指令的定义
+	        inserted: function (el) {
+                // 聚焦元素
+                console.log(el);
+	            el.querySelector('textarea').focus()
+	        }
+	    }
+	},
     data() {
         return {
-            fileList:[
-                // {
-                //     id:1,
-                //     label: '工单',
-                //     icon: 'wenjianjia',
-                //     isClickEd:false
-                // },
-                // {
-                //     id:2,
-                //     label: '其他',
-                //     icon: 'wenjianjia',
-                //     isClickEd:false
-                // }
-            ],
+            fileList:[],
             visible: false,
             top: 0,
             left: 0,
-            mainVisible:false
+            mainVisible:false,
+            activeItem: {}
         }
     },
     mounted(){
@@ -68,46 +69,59 @@ export default {
         init(){
             this.getFileList()
         },
-        getFileList(){
-            request({
-                url:`${this.$ip}/mms-knowledge/folder/list`, 
-                method: 'post',
-            })
-            .then((data) => {
-                if(data.code==200){
-                    this.fileList = data.data
-                    this.fileList = this.fileList.map((item,index)=>{
-                        return {
-                            label: item.name,
-                            icon: 'wenjianjia',
-                            isClickEd: false,
-                            id: index+1,
-                            fileUpdateTime: item.fileUpdateTime?moment(parseInt(item.fileUpdateTime)).format('YYYY-MM-DD HH:mm:ss'):'',
-                            clickFn:(item)=>{
-                                item.isClickEd = true
-                            }
-                        }
-                    })
-                    console.log(this.fileList)
-                }else{
-                    this.fileList = []
-                }
+        updateFn(){
+            this.getFileList(()=>{
+                this.$message({
+                    showClose: true,
+                    message: '刷新成功',
+                    type: 'success'
+                });
+                return
             })
         },
-        openMenu(e) {
+        getFileList(fn){
+            return new Promise((resolve,reject)=>{
+                request({
+                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    method: 'post',
+                })
+                .then((data) => {
+                    if(data.code==200){
+                        this.fileList = data.data
+                        this.fileList = this.fileList.map((item,index)=>{
+                            return {
+                                index: index,
+                                label: item.name,
+                                icon: 'wenjianjia',
+                                isClickEd: false,
+                                id: item.id,
+                                fileUpdateTime: item.fileUpdateTime?moment(parseInt(item.fileUpdateTime)).format('YYYY-MM-DD HH:mm:ss'):'',
+                                nameEditing:false,
+                            }
+                        })
+                        console.log(this.fileList)
+                    }else{
+                        this.fileList = []
+                    }
+                    fn&&fn()
+                })
+            })
+        },
+        openMenu(e, item) {
             console.log(e)
             const left = e.clientX// - offsetLeft // 15: margin right
             this.left = left
             this.top = e.clientY// - 60 // fix 位置bug
             this.visible = true
             this.mainVisible = false
+            this.activeItem = item
         },
         openMainMenuFn(e){
             const left = e.clientX// - offsetLeft // 15: margin right
             this.left = left
             this.top = e.clientY// - 60 // fix 位置bug
             this.mainVisible = true
-             this.visible = false
+            this.visible = false
         },
         closeMenu() {
             this.visible = false
@@ -132,7 +146,176 @@ export default {
             // })
         },
         openFile(item){
-            this.$router.push({path:'/detail',query:{type:item.id}});
+            if(item.id){
+                this.$router.push({path:'/detail',query:{id:item.id}});
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '文件夹出现错误',
+                    type: 'error'
+                });
+                return
+            }
+        },
+        createFileFn(){
+            this.fileList.push({
+                index: this.fileList.length,
+                label: '',
+                icon: 'wenjianjia',
+                isClickEd: false,
+                id: null,
+                fileUpdateTime:null,
+                nameEditing:true
+            })
+        },
+        deleteFileFn(item){
+            request({
+                url:`${this.$ip}/mms-knowledge/folder/delete/${item.id}`, 
+                method: 'delete',
+            })
+            .then((data) => {
+                if(data.code==200){
+                    this.$message({
+                        showClose: true,
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    this.init()
+                }else{
+                    this.$message({
+                        showClose: true,
+                        message: '保存文件夹错误'+data.code,
+                        type: 'error'
+                    });
+                }
+            })
+        },
+        fileSaveFn(item){
+            request({
+                url:`${this.$ip}/mms-knowledge/folder/save`, 
+                method: 'post',
+                data:{
+                    name:item.label
+                }
+            })
+            .then((data) => {
+                if(data.code==200){
+                    this.$message({
+                        showClose: true,
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                    this.init()
+                    item.nameEditing = false
+                }else{
+                    this.$message({
+                        showClose: true,
+                        message: '保存文件夹错误'+data.code,
+                        type: 'error'
+                    });
+                }
+            })
+        },
+        fileUpdateFn(item){
+            request({
+                url:`${this.$ip}/mms-knowledge/folder/update`, 
+                method: 'post',
+                data:{
+                    name:item.label,
+                    id:item.id
+                }
+            })
+            .then((data) => {
+                if(data.code==200){
+                    this.$message({
+                        showClose: true,
+                        message: '修改成功',
+                        type: 'success'
+                    });
+                    this.init()
+                    item.nameEditing = false
+                }else{
+                    this.$message({
+                        showClose: true,
+                        message: '保存文件夹错误'+data.code,
+                        type: 'error'
+                    });
+                }
+            })
+        },
+        async onBlurFn(item){
+            let isExist = await this.judgeNameExistsFn(item)
+            if(isExist){
+                this.$message({
+                    showClose: true,
+                    message: '该文件名已存在',
+                    type: 'error'
+                });
+                return
+            }
+            if(item.id){ // 文件价有id表示编辑，
+                this.fileUpdateFn(item)
+            }else{
+                this.fileSaveFn(item)  // 没有id表示新建
+            }
+            
+            
+        },
+        judgeNameExistsFn(item){
+            return new Promise((resolve,reject)=>{
+                request({
+                    url:`${this.$ip}/mms-knowledge/folder/nameExists`, 
+                    method: 'post',
+                    data:{
+                        name: item.label,
+                        id: item.id
+                    }
+                })
+                .then((data) => {
+                    if(data.code==200){
+                        resolve(data.data) // 为true表示名称已存在
+                    }else{
+                        this.$message({
+                            showClose: true,
+                            message: '文件夹判断重名错误'+data.code,
+                            type: 'error'
+                        });
+                    }
+                })
+            })
+        },
+        contextmenuOpenFileFn(){
+            if(this.activeItem.id){
+                this.openFile(this.activeItem)
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '文件夹出现错误',
+                    type: 'error'
+                });
+            }
+        },
+        contextmenuEditNameFn(){
+            if(this.activeItem.id){
+                this.activeItem.nameEditing = true
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '文件夹出现错误',
+                    type: 'error'
+                });
+            }
+        },
+        contextmenuDeleteFn(){
+            if(this.activeItem.id){
+                this.deleteFileFn(this.activeItem)
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '文件夹出现错误',
+                    type: 'error'
+                });
+            }
         }
     },
     watch: {
@@ -209,6 +392,8 @@ export default {
                     width:100%;
                     height:700px;
                     display: flex;
+                    align-content:flex-start;
+                    flex-wrap: wrap;
                     .list{
                         margin-left:30px;
                         width: 160px;
@@ -228,7 +413,7 @@ export default {
                             left:50%;
                             width: 300px;
                             background: rgba(255,255,255, 0.44);
-                            font-size:12px;
+                            font-size:14px;
                             border: 1px solid #d9d9d9;
                             line-height: 34px;
                             padding: 4px;
@@ -244,6 +429,13 @@ export default {
                             width:136px;
                             line-height: 34px;
                             text-align: center;
+                            .text{
+                                display: block;
+                                width:100%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space:nowrap;
+                            }
                         }
                     }
                 }

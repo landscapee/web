@@ -223,8 +223,14 @@ let authRoutes = [
                         path: '/detail',
                         component: () => import('@views/techKnowledge/fileManage/detail/index'),
                         name: '工单',
-                        meta: {title: '工单',icon: 'xxgl' },
+                        meta: {title: '工单',icon: 'xxgl' }
                     },
+                    {
+                        path: '/addFile',
+                        component: () => import('@views/techKnowledge/fileManage/detail/addFile'),
+                        name: '新增文件',
+                        meta: {title: '新增文件',icon: 'xxgl' },
+                    }
                 ]
             }
         ],
