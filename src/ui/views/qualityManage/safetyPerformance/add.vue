@@ -60,12 +60,12 @@
         data() {
             const yearMonth = (rule, value, callback) => {
 
-                    if (!value) {
+                    if (!this.form.yearMonth) {
                         return callback(new Error('绩效年月不能为空'));
                     } else {
                         if(this.form.deptId){
-                            let year=value.getFullYear()+''
-                            let month= value.getMonth()+1+''
+                            let year=this.form.yearMonth.getFullYear()+''
+                            let month= this.form.yearMonth.getMonth()+1+''
                             request({
                                 url:`${this.$ip}/mms-qualification/securityMerits/numberExists`,
                                 method: 'post',
@@ -99,8 +99,8 @@
                 rules: {
                     yearMonth: [{ validator:yearMonth, trigger: "blur" }],
                     deptId: [{ required: true, message: "请选择", trigger: "blur" },
-                        { validator:()=>{this.$refs.form.validateField('yearMonth');
-                        }}],
+
+                        ],
                  },
                 type: "add"
             };
@@ -150,6 +150,7 @@
         methods: {
             deptNameChange(val){
                 let data
+                this.$refs.form.validateField('yearMonth')
                 this.options.dept.map((k,l)=>{
                     if(val==k.valCode){
                         data=k.valData
@@ -167,7 +168,7 @@
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
-                    this.$refs[form].validate(valid => {
+                     this.$refs[form].validate(valid => {
                         if (valid) {
                             let url
                              if(this.type == "add"){
@@ -209,7 +210,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{

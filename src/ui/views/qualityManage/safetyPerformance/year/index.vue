@@ -137,7 +137,7 @@
                 request({
                     url:`${this.$ip}/mms-qualification/securityMerits/getList`,
                      method: 'post',
-                    data:{deptName:this.form.deptId,year:Number(this.form.year)}
+                    data:{deptId:this.form.deptId,year:Number(this.form.year)}
                 }).then((d) => {
                         this.tableData =[]
                     let sss={...d}

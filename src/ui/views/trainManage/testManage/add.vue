@@ -26,8 +26,8 @@
                     <el-form-item label="考试方式：" prop="examMode">
                         <span v-if="type=='info'">{{  form.examMode }}</span>
                         <el-select  v-else clearable v-model="form.examMode" placeholder="请选择考试方式">
-                            <el-option label="线上" value="线上"> </el-option>
-                            <el-option label="线下" value="线下"> </el-option>
+                            <el-option v-for="(opt,index) in options.testType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
 
@@ -35,7 +35,7 @@
 
                 <div class="row_custom">
                     <el-form-item :label="form.examMode=='线上'?'截止时间：':'举行时间：'" prop="examTime">
-                        <span v-if="type=='info'">{{form.examTime}}</span>
+                        <span v-if="type=='info'">{{ form.examTime?moment(form.examTime).format('YYYY-MM-DD'):''}}</span>
                         <el-date-picker type="date" v-else v-model="form.examTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="考试地点：" prop="examSite">
@@ -61,17 +61,15 @@
                     <el-form-item label="考试类型：" prop="examType">
                         <span v-if="type=='info'">{{  form.examType }}</span>
                         <el-select  v-else clearable v-model="form.examType" placeholder="请选择考试类型">
-                            <el-option label="开卷" value="开卷"> </el-option>
-                            <el-option label="闭卷" value="闭卷"> </el-option>
+                            <el-option v-for="(opt,index) in options.testCategory1" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
                     <el-form-item label="资质类型：" prop="qualificationType">
                         <span v-if="type=='info'">{{  form.qualificationType }}</span>
                         <el-select  v-else clearable v-model="form.qualificationType" placeholder="请选择资质类型">
-                            <el-option label="桥载" value="桥载"> </el-option>
-                            <el-option label="勤务" value="勤务"> </el-option>
-                            <el-option label="维修" value="维修"> </el-option>
-                            <el-option label="质量" value="质量"> </el-option>
+                            <el-option v-for="(opt,index) in options.zizhiType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
                 </div>
@@ -79,10 +77,8 @@
                     <el-form-item label="业务类型：" prop="businessType">
                         <span v-if="type=='info'">{{  form.businessType }}</span>
                         <el-select  v-else clearable v-model="form.businessType" placeholder="请选择业务类型">
-                            <el-option label="桥载" value="桥载"> </el-option>
-                            <el-option label="勤务" value="勤务"> </el-option>
-                            <el-option label="维修" value="维修"> </el-option>
-                            <el-option label="质量" value="质量"> </el-option>
+                            <el-option v-for="(opt,index) in options.businessType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
                     <!--<el-form-item label="考题下载：" prop="examMode1">-->
@@ -95,9 +91,11 @@
                     <el-form-item v-if="type=='edit'||type=='info'" label="考试状态：" prop="examStatus">
                         <span v-if="type=='info'">{{form.examStatus}}</span>
                         <el-select v-else clearable v-model="form.examStatus" placeholder="请选择考试状态">
-                            <el-option label="已推送" value="已推送"> </el-option>
-                            <el-option label="已开始" value="已开始"> </el-option>
-                            <el-option label="已评价" value="已评价"> </el-option>
+                            <!--<el-option label="已推送" value="已推送"> </el-option>-->
+                            <!--<el-option label="已开始" value="已开始"> </el-option>-->
+                            <!--<el-option label="已评价" value="已评价"> </el-option>-->
+                            <el-option v-for="(opt,index) in options.testState"  :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
                 </div>
@@ -115,6 +113,8 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -129,6 +129,7 @@
             return {
                 oldForm:{},
                 form: {},
+                options: {},
                 testList: [],
                 rules: {
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
@@ -162,6 +163,16 @@
         created() {
             if (this.$route.query) {
                 this.type = this.$route.query.type;
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
+                }).then(d => {
+                    let obj=d.data
+                    this.options=obj
+
+                });
                 this.$route.meta.title =
                     this.type == "add"
                         ? "考试管理新增"

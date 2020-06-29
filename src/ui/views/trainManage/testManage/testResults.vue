@@ -86,8 +86,8 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{records:[{infNumber:'dsd'}]},
-            tableConfig:testRuConfig({}),
+            tableData:{records:[ ]},
+            tableConfig:testRuConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
@@ -100,7 +100,23 @@ export default {
         };
     },
    created() {
+       request({
+           url:`${this.$ip}/mms-training/paperInfo/list`,
+           method: 'post',
+           data:{},
+           params:{size:10000,current:1}
+       }).then((data) => {
+           request({
+               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+               method: 'post',
+               params:{delete:false},
+               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
+           }).then(d => {
+               let obj=d.data
+               this.tableConfig =testRuConfig(data.data.records||[],obj)
 
+           });
+       })
 
        this.getList();
     },
@@ -112,18 +128,22 @@ export default {
     },
     methods: {
         upload(row){
-            request({
-                // application/x-www-form-urlencoded
-                header:{
-                    'Content-Type':'multipart/form-data'
-                },
-                url:`${this.$ip}/mms-file//get-file-by-id/${row.employeeFileId||'3b36a5997e2b95a240378a7bb7d020e3'}`,
-                method:'GET',
+            if(row.employeeFileId){
+                request({
+                    // application/x-www-form-urlencoded
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-file//get-file-by-id/${row.employeeFileId }`,
+                    method:'GET',
 
-            }).then((d) => {
+                }).then((d) => {
+                    this.$refs.SeeImg.open(d.data)
+                });
+            }else {
+                this.$message.info('暂无附件')
+            }
 
-                this.$refs.SeeImg.open(d.data)
-            });
         },
         testResults(path,row){
             request({
@@ -223,7 +243,7 @@ export default {
                     method: "get",
                 }).then(d1 => {
                     d.data.records= d.data.records.map((k,l)=>{
-                        return {...d1.data,...k,id:k.examId}
+                        return {...d1.data,...k,id:l+1}
                     })
                     this.tableData = extend({},
                         {...d.data}

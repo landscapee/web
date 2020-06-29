@@ -126,18 +126,18 @@
                         <span v-if="type=='info'">{{form.residualRiskLevel}}</span>
                         <el-input v-else v-model="form.residualRiskLevel" placeholder="请输入剩余风险等级"></el-input>
                     </el-form-item>
-                    <el-form-item label="控制状态：" prop="controlStateTemp">
-                        <span v-if="type=='info'">{{form.controlStateTemp}}</span>
-                        <el-select v-else v-model="form.controlStateTemp" placeholder="请选择控制状态">
+                    <el-form-item label="控制状态：" prop="controlState">
+                        <span v-if="type=='info'">{{form.controlState}}</span>
+                        <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
                             <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="评定结果：" prop="evaluationResultsTemp">
-                        <span v-if="type=='info'">{{form.evaluationResultsTemp}}</span>
+                    <el-form-item label="评定结果：" prop="evaluationResults">
+                        <span v-if="type=='info'">{{form.evaluationResults}}</span>
 
-                        <el-select v-else v-model="form.evaluationResultsTemp" placeholder="请选择评定结果">
+                        <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
                              <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -283,7 +283,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
