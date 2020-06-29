@@ -54,9 +54,9 @@
                         <span v-if="type=='info'">{{form.targetValue}}</span>
                         <el-input v-else v-model="form.targetValue" placeholder="请输入目标值"></el-input>
                     </el-form-item>
-                    <el-form-item label="预警规则：" prop="warningWules">
-                        <span v-if="type=='info'">{{form.warningWules}}</span>
-                        <el-input  v-else v-model="form.warningWules" placeholder="请输入预警规则"></el-input>
+                    <el-form-item label="预警规则：" prop="warningRules">
+                        <span v-if="type=='info'">{{form.warningRules}}</span>
+                        <el-input  v-else v-model="form.warningRules" placeholder="请输入预警规则"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -150,7 +150,7 @@
                 if(this.type == "edit" || this.type == "info"){
 
                     request({
-                        url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
+                        url:`${this.$ip}/mms-qualification/securityMeritsDetail/getById/${this.$route.query.id}`,
                         method: "get",
                     }).then(d => {
 

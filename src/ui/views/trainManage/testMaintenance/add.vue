@@ -363,7 +363,7 @@
                         if(this.row==null){
                             this.$message.error('请先选中一行数据');
                         }else{
-                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,}});
+                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,sId:this.row.id}});
                         }
                     }
                 }else {

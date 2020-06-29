@@ -95,6 +95,7 @@
                     year:null,
                     month:null,
                 },
+                moment:moment,
                 options:{},
                 rules: {
                     yearMonth: [{ validator:yearMonth, trigger: "blur" }],

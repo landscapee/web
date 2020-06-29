@@ -288,7 +288,7 @@ export default {
                 }else{
                     let data=JSON.stringify(this.rightRow)
 
-                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag,data:data,id:this.rightSelectId}});
+                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag, id:this.rightSelectId}});
                 }
             }
         },

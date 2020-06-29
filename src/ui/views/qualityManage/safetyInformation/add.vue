@@ -150,6 +150,7 @@
             };
             return {
                 options: {},
+                moment: moment,
                 form: {},
                 rules: {
                     infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
@@ -177,9 +178,7 @@
 
                         this.form={...d.data }
                     })
-                        .catch(error => {
-                            this.$message.error(error);
-                        });
+
                 }
             }
             request({

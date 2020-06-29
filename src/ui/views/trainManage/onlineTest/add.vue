@@ -116,34 +116,26 @@
         watch:{
             adata:function () {
                 console.log(1,12);
-                if(this.testData[this.numIndex]&&this.testData[this.numIndex].employeeAnswer){
-                    if(this.testData[this.numIndex].optionType=='多选'){
-                        this.form.employeeAnswer=this.testData[this.numIndex].employeeAnswer.split(';')
-                    }else {
-                        this.form.employeeAnswer=this.testData[this.numIndex].employeeAnswer
-
-                    }
-                }else {
-                    if(this.testData[this.numIndex].optionType=='多选'){
-                        this.form.employeeAnswer=[]
-                    }else {
-                        this.form.employeeAnswer=''
-
-                    }
-                }
+            },
+            '$router':function (t,f) {
+                console.log(t,f,1,12);
             }
         },
         created() {
+            this.$router.beforeEach((to, from, next) => {
+                console.log(to, from, next,11111);
+                next();
+            })
             console.log(this.adata,'asdas');
             if (this.$route.query) {
                 let row=JSON.parse( this.$route.query.row)
                 this.params={
                     employeeId:this.$store.state.user.userInfo.administrativeId,
-                    examId:row.id,
+                    examId:row.examId,
                     paperId:row.paperId,
                 }
                 this.infoData={...row}
-                this.testime=row.totalTime-1||120-1
+                this.testime=row.totalTime-1
                 this.getList(1)
                
             }
@@ -169,14 +161,39 @@
                     this.$message.success('已重置')
                  })
             },
+            getAnser(){
+                request({
+                    url: `${this.$ip}/mms-training/examLine/getAnswer`,
+                    method:'post',
+                    data:{...this.params,questionId:this.testData[this.numIndex].id}
+                }).then((d)=>{
+                    if(d.code==200&&d.data){
+                        if(this.testData[this.numIndex].optionType=='多选'){
+                            this.form.employeeAnswer=this.testData[this.numIndex].employeeAnswer.split(';')
+                        }else {
+                            this.form.employeeAnswer=this.testData[this.numIndex].employeeAnswer
+
+                        }
+                    }else {
+                        if(this.testData[this.numIndex].optionType=='多选'){
+                            this.form.employeeAnswer=[]
+                        }else {
+                            this.form.employeeAnswer=''
+
+                        }
+                    }
+                })
+            },
             next(){
                 if(this.numIndex<this.testData.length-1){
                     this.numIndex++
+                    this.getAnser()
                 }
 
             },
             last(){
                 this.numIndex--
+                this.getAnser()
             },
             saveForm(form) {
                 if ((this.type == "add" || this.type == "edit" )&&   this.$refs[form]) {
@@ -217,26 +234,7 @@
                      data:this.params
                  }).then((d)=>{
                      // d.data
-                     this.testData=[
-                         {totalTime:120,questionNo:'1',score:2,optionType:'多选',questionName:'sfasfa',
-                             optionA:"asfsfasfs",
-                             optionB:"asfsfasfs",
-                             optionC:"asfsfasfs",
-                             optionD:"asfsfasfs",
-                             optionE:"asfsfasfs",
-                             optionF:"asfsfasfs",
-                             employeeAnswer:'A;C'
-                         },{totalTime:100,questionNo:'2',score:3,optionType:'单选',questionName:'sfasfa',
-                             optionA:"asfsfasfs1",
-                             optionB:"asfsfasfs1",
-                             optionC:"asfsfasfs1",
-                             optionD:"asfsfasfs1",
-                             optionE:"asfsfasfs1",
-                             optionF:"asfsfasfs1",
-                             employeeAnswer:'B'
-                         },
-                     ]
-
+                     this.testData=d.data
                      if(num==1){
                         this.timer= setInterval(()=>{
                              this.testime--

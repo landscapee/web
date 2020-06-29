@@ -45,8 +45,8 @@
                 </div>
                 <div class="row_custom">
                     <el-form-item  label="考试试卷：" prop="paperId">
-                        <span v-if="type=='info'">{{  form.paperId }}</span>
-                        <el-select   v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
+                        <span v-if="type=='info'">{{  form.paperName }}</span>
+                        <el-select :disabled="type=='edit'"  v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
                             <el-option v-for="(opt,index) in testList" :key="index" :label="opt.paperName" :value="opt.id"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -127,6 +127,7 @@
 
 
             return {
+                moment:moment,
                 oldForm:{},
                 form: {},
                 options: {},
@@ -134,6 +135,7 @@
                 rules: {
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
                     paperId: [{ required:true,message:'请选择', trigger: "blur" }],
+                    examMode: [{ required:true,message:'请选择', trigger: "blur" }],
                     examName: [{ required:true,message:'请输入考试名次', trigger: "blur" }],
                     totalTime: [
                         { required:true,message:'请输入', trigger: "blur" },
@@ -191,18 +193,31 @@
                      }).catch(error => {
                              this.$message.error(error);
                          });
+                     request({
+                         url:`${this.$ip}/mms-training/paperInfo/list`,
+                         method: 'post',
+                         data:{},
+                         params:{size:10000,current:1}
+                     })
+                         .then((data) => {
+
+                             this.testList = data.data.records||[]
+                         })
+                 }else{
+                     request({
+                         url:`${this.$ip}/mms-training/examInfo/getPaperList`,
+                         method: 'get',
+
+                     })
+                         .then((data) => {
+
+                             this.testList = data.data||[]
+                         })
                  }
             }
-            request({
-                url:`${this.$ip}/mms-training/paperInfo/list`,
-                method: 'post',
-                data:{},
-                params:{size:10000,current:1}
-            })
-                .then((data) => {
 
-                    this.testList = data.data.records||[]
-                })
+
+
         },
         methods: {
 
@@ -253,7 +268,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
