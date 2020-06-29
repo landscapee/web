@@ -11926,9 +11926,11 @@
 .searchTableWrapper[data-v-7bb6a102] .el-table /deep/ td {
     width: 10.57143rem;
     height: 2.85714rem;
-    text-align: center;
     padding: 0;
     border-color: #C7CCD2;
+}
+.searchTableWrapper[data-v-7bb6a102] .el-table /deep/ td:first-child {
+    text-align: center;
 }
 .searchTableWrapper[data-v-7bb6a102] .el-table /deep/ th {
     border-color: #C7CCD2;
@@ -21254,7 +21256,36 @@
 .layout-container[data-v-c54342b8] .el-menu--inline /deep/ .is-active {
     background: #3280E7;
 }
+.layout-container .open-menu[data-v-c54342b8] {
+    width: 0.21429rem !important;
+    transition: width 0.28s;
+    background: url(/leftNav.png) no-repeat;
+    height: calc(100vh - 3.42857rem);
+    background-size: cover;
+    overflow-x: hidden;
+    padding-top: 3.92857rem;
+}
+.layout-container .open-menu[data-v-c54342b8]::-webkit-scrollbar-track-piece {
+      background: #d3dce6;
+}
+.layout-container .open-menu[data-v-c54342b8]::-webkit-scrollbar {
+      width: 0.42857rem;
+}
+.layout-container .open-menu[data-v-c54342b8]::-webkit-scrollbar-thumb {
+      background: #99a9bf;
+      border-radius: 1.42857rem;
+}
+.layout-container .open-menu[data-v-c54342b8]::after {
+      content: '';
+      height: calc(100% - 3.42857rem);
+      width: 0.21429rem;
+      position: absolute;
+      top: 3.42857rem;
+      left: 0rem;
+      background: #265FE2;
+}
 .layout-container .left-menu[data-v-c54342b8] {
+    transition: width 0.28s;
     width: 11.42857rem !important;
     background: url(/leftNav.png) no-repeat;
     height: calc(100vh - 3.42857rem);
@@ -21271,6 +21302,28 @@
 .layout-container .left-menu[data-v-c54342b8]::-webkit-scrollbar-thumb {
       background: #99a9bf;
       border-radius: 1.42857rem;
+}
+.layout-container .left-menu[data-v-c54342b8]::after {
+      content: '';
+      height: calc(100% - 3.42857rem);
+      width: 0.21429rem;
+      position: absolute;
+      top: 3.42857rem;
+      left: 11.21429rem;
+      background: #265FE2;
+}
+.layout-container[data-v-c54342b8] .spread-icon {
+    position: absolute;
+    left: 10.71429rem;
+    top: 50%;
+    width: 0.57143rem;
+    height: 3.21429rem;
+    cursor: pointer;
+    z-index: 9999999999;
+}
+.layout-container[data-v-c54342b8] .open-spread-icon {
+    left: 0rem;
+    transform: rotate(180deg);
 }
 .component-scroll-container {
   position: absolute;

@@ -78,6 +78,7 @@ export default {
             });
         },
         requestTable(searchData){
+            this.form.state = 0;
             this.form = searchData;
             this.selectId=null,
             this.tableData={records:[]};
