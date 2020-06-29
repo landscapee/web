@@ -26,7 +26,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="230"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="230"  >
                         <template  slot-scope="scope">
                             <el-button  class="copyButton copyButton1" @click="pushStaff('/testManagePushStaff',scope.row)">考试推送员工</el-button>
                             <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
@@ -52,8 +52,8 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{records:[{}]},
-            tableConfig:testConfig({}),
+            tableData:{records:[]},
+            tableConfig:testConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
@@ -75,7 +75,16 @@ export default {
            data:{},
            params:{size:10000,current:1}
        }).then((data) => {
-               this.tableConfig =testConfig(data.data.records||[])
+           request({
+               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+               method: 'post',
+               params:{delete:false},
+               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
+           }).then(d => {
+               let obj=d.data
+                this.tableConfig =testConfig(data.data.records||[],obj)
+
+           });
            })
     },
     watch:{
@@ -85,11 +94,12 @@ export default {
         }
     },
     methods: {
+        // row:JSON.stringify(row)
         testPush(path,row){
-          this.$router.push({path:path,query:{row:JSON.stringify(row)}})
+          this.$router.push({path:path,query:{id:row.id,}})
         },
         pushStaff(path,row){
-          this.$router.push({path:path,query:{id:row.id}})
+          this.$router.push({path:path,query:{id:row.id,paperId:row.paperId}})
         },
         exportExcel(){
              this.$refs.a.click()
@@ -148,7 +158,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },

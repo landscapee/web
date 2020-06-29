@@ -22,9 +22,9 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" slot="evaluationResults" label="关联信息" :width="190" fixed="right">
+                    <el-table-column :show-overflow-tooltip="true" align='center'  slot="evaluationResultsTemp" label="关联信息" :width="190" fixed="right">
                         <template  slot-scope="{ row }">
-                            <span>{{row.evaluationResults}}</span>
+                            <div>{{row.evaluationResults}}</div>
                         </template>
                     </el-table-column>
 
@@ -34,7 +34,7 @@
     </div>
 </template>
 <script>
-    import SearchTable from '@/ui/components/table/index';
+    import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -130,7 +130,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -200,7 +200,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
     
 }
 </style>

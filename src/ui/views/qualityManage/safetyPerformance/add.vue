@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.reviewerName" placeholder="请输入批准人"></el-input>
                     </el-form-item>
                     <el-form-item label="批准日期：" prop="reviewerTime">
-                        <span v-if="type=='info'">{{form.reviewerTime?form.reviewerTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{form.reviewerTime?moment(form.reviewerTime).format('YYYY-MM-DD'):''}}</span>
                          <el-date-picker  v-else v-model="form.reviewerTime" type="date" placeholder="请选择批准日期"></el-date-picker>
 
                     </el-form-item>
@@ -47,6 +47,8 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -57,23 +59,35 @@
         name: "",
         data() {
             const yearMonth = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('绩效年月不能为空'));
-                } else {
-                    let year=value.getFullYear()+''
-                    let month= value.getMonth()+1+''
-                    request({
-                        url:`${this.$ip}/mms-qualification/securityMerits/numberExists/${year},${month}`,
-                        method: 'get',
 
-                    }).then(response => {
-                        if (!response.data) {
-                            callback();
-                        } else {
-                            callback("该绩效年月已存");
+                    if (!this.form.yearMonth) {
+                        return callback(new Error('绩效年月不能为空'));
+                    } else {
+                        if(this.form.deptId){
+                            let year=this.form.yearMonth.getFullYear()+''
+                            let month= this.form.yearMonth.getMonth()+1+''
+                            request({
+                                url:`${this.$ip}/mms-qualification/securityMerits/numberExists`,
+                                method: 'post',
+                                data:{
+                                    deptId:this.form.deptId,
+                                    month:month,
+                                    year:year,
+                                }
+                            }).then(response => {
+                                if (!response.data) {
+                                    callback();
+                                } else {
+                                    callback("该绩效年月已存");
+                                }
+                            });
+                        }else {
+                            callback("选择部门后将校验");
                         }
-                    });
-                }
+
+                    }
+
+
             };
 
             return {
@@ -84,7 +98,9 @@
                 options:{},
                 rules: {
                     yearMonth: [{ validator:yearMonth, trigger: "blur" }],
-                    // system: [{ required: true, message: "请输入", trigger: "blur" }],
+                    deptId: [{ required: true, message: "请选择", trigger: "blur" },
+
+                        ],
                  },
                 type: "add"
             };
@@ -109,8 +125,16 @@
                             ? "部门月度安全绩效详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data,yearMonth:`${data.year}-${data.month}`}
+                     request({
+                        url:`${this.$ip}/mms-qualification/securityMerits/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data ,yearMonth:`${data.year}-${data.month}`}
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
 
@@ -118,14 +142,15 @@
         watch:{
           'form.yearMonth':function (val) {
 
-              this.form.year=val.getFullYear()+''
-              this.form.month= val.getMonth()+1+''
+              this.form.year=Number(val.getFullYear() )
+              this.form.month= Number(val.getMonth()+1 )
               console.log(val, this.form);
           }
         },
         methods: {
             deptNameChange(val){
                 let data
+                this.$refs.form.validateField('yearMonth')
                 this.options.dept.map((k,l)=>{
                     if(val==k.valCode){
                         data=k.valData
@@ -143,7 +168,7 @@
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
-                    this.$refs[form].validate(valid => {
+                     this.$refs[form].validate(valid => {
                         if (valid) {
                             let url
                              if(this.type == "add"){
@@ -185,7 +210,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{

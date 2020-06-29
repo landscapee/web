@@ -125,6 +125,7 @@
                     url: `${this.$ip}/mms-training/examInfo/send`,
                     method: 'post',
                     data:{
+                        paperId:this.$route.query.paperId,
                         id:this.$route.query.id,
                         employeeList
                     },

@@ -1,6 +1,7 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addInfoPlate'" :key="$route.path"></router-view>
+        <router-view v-if="this.$router.history.current.path == '/infoPlateDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/historyInfoPlate'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/infoPlate'" class="sysParameter">
             <div class="top-content">
@@ -11,11 +12,11 @@
                     <span>{{this.isActive==0?'发布信息':'接收信息'}}</span>
                 </div>
                 <div class="top-toolbar">
-                    <div @click="addOrEditOrInfo('history')"><icon iconClass="history" ></icon>历史</div>
+                    <div :class="isActive==0?'isDisabled':''" @click="isActive==0?()=>{}:addOrEditOrInfo('history')"><icon iconClass="history" ></icon>历史</div>
                     <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
                     <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-                    <div @click="isActive==0?addOrEditOrInfo('info'):()=>{}"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
@@ -28,11 +29,16 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
+                    <el-table-column slot="attachment" label="附件"  align="center" >
+                        <template slot-scope="{ row }">
+                            <a :href="row.attachment">{{row.attachment}}</a>
+                        </template>
+                    </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="148" align="center" >
-                        <template >
-                             <el-button size="mini" @click="clickAction()">发布</el-button>
-                             <el-button size="mini" @click="clickAction()">接收处理</el-button>
-                             <el-button size="mini" @click="clickAction()">关闭</el-button>
+                        <template slot-scope="{ row }">
+                             <el-button size="mini" @click="clickAction('release')" v-if="isActive==0 && row.state==0">发布</el-button>
+                             <el-button size="mini" @click="clickAction('receive')" v-if="isActive==1 && row.state==0">接收处理</el-button>
+                             <el-button size="mini" @click="clickAction('close')" v-if="isActive==1 && row.state==1">关闭</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -63,10 +69,13 @@ export default {
             form:{},
             sort:{},
             selectId:null,
-            isActive:0
+            isActive:0,
+            selectRow:{},
+            infoSelect:[]
         };
     },
    created() {
+       this.findDataDictionary();
        this.getList();
     },
     watch:{
@@ -78,12 +87,51 @@ export default {
         }
     },
     methods: {
+        findDataDictionary(){
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: "post",
+                data: ["infoTypeCode"]
+            })
+            .then(data => {
+              this.infoSelect = data.data["infoTypeCode"];
+              this.tableConfig = infoPlateSendTable(this.infoSelect);
+            })
+            .catch(error => {
+             this.$message.success(error);
+            });
+        },
+        clickAction(action){
+            let url = "";
+            if(action=='release'){
+                url =`${this.$ip}/mms-notice/notificationPublish/publish/${this.selectId}` ;
+            }else if(action=='receive'){
+                url =`${this.$ip}/mms-notice/notificationRecipient/handle/${this.selectId}` ;
+            }else if(action=='close'){
+                url =`${this.$ip}/mms-notice/notificationRecipient/close/${this.selectId}`  ;
+            }
+            request({url,method: 'get'}).then((data) => {
+                if(action=='release'){
+                    this.$message.success('发布成功');
+                }else if(action=='receive'){
+                    this.$message.success('处理成功');
+                }else if(action=='close'){
+                    this.$message.success('关闭成功');
+                }
+                this.selectId=null,
+                this.$refs.searchTable.$refs.body_table.setCurrentRow();
+                this.params.current = 1;
+                this.getList();
+            }).catch((error) => {
+            
+            });
+        },
         switchTable(index){
             this.isActive = index;
             if(index==0){
-                this.tableConfig = infoPlateSendTable();
+                this.tableConfig = infoPlateSendTable(this.infoSelect);
             }else{
-                this.tableConfig = infoPlateReceiveTable();
+                this.tableConfig = infoPlateReceiveTable(this.infoSelect);
             }
             this.getList();
         },
@@ -103,6 +151,7 @@ export default {
             this.getList();
         },
         listenToCheckedChange(row, column, event){
+            this.selectRow = row;
             let select = row.selected;
             this.tableData.records.map(r =>{
                 if(r.selected){
@@ -126,7 +175,13 @@ export default {
                     this.$message.error('请先选中一行数据');
                 }else{
                     if(tag == 'history'){
-                         this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
+                        if(this.selectRow.state!=-1){
+                            this.$message.error('该数据暂无历史');
+                        }else{
+                            this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
+                        }
+                    }else if(tag == 'info'){
+                        this.$router.push({path:'/infoPlateDetails',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
                     }else{
                         this.$router.push({path:'/addInfoPlate',query:{type:tag,id:this.selectId}});
                     }
@@ -161,8 +216,7 @@ export default {
             }
         },
         getList(){
-           request({
-                          
+            request({
                 url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
                 data:{...this.sort,...this.form},

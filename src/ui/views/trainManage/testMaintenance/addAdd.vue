@@ -75,7 +75,7 @@
                 <div class="row_custom">
                     <el-form-item label="正确答案：" prop="answer">
                         <span v-if="type=='info'">{{form.answer}}</span>
-                        <el-select :multiple="form.optionType=='多选'" v-else clearable v-model="form.answer" placeholder="请选择选择类型">
+                        <el-select :multiple="form.optionType=='多选'" v-else clearable v-model="form.answer" placeholder="请选择正确答案">
                             <el-option label="A" value="A"> </el-option>
                             <el-option label="B" value="B"> </el-option>
                             <el-option label="C" value="C"> </el-option>
@@ -140,13 +140,7 @@
                     }
                 }
             };
-            const keyWord = (rule, value, callback) => {
-                if (!value) {
-                     return callback(new Error('正确答案不能为空'));
-                } else {
-                   return callback()
-                }
-            };
+
 
             return {
                 options:{},
@@ -158,7 +152,7 @@
                         { validator:infSources, trigger: "blur" },
                     ],
                     optionType: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
-                    answer: [{ validator:keyWord, trigger: "change" }],
+                    answer: [{required: true, message: '正确答案不能为空', trigger: "blur" }],
                     score: [
                         { required: true, message: '请输入分值', trigger: 'blur' },
                          {
@@ -200,11 +194,18 @@
                             : "";
                 this.form.paperId= this.$route.query.id
                 if(this.type!='add'){
-                    let row=JSON.parse( this.$route.query.row)
-                    if(row.optionType=='多选'){
-                        row.answer= row.answer.split(';')
-                    }
-                    this.form={...row,paperId:this.$route.query.id}
+                    request({
+                        url:`${this.$ip}/mms-training/questionInfo/info/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+                        if(row.optionType=='多选'){
+                            d.data.answer= d.data.answer.split(';')
+                        }
+                        this.form={...d.data,paperId:this.$route.query.id}
+                        })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
         },

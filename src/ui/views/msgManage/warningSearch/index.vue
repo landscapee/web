@@ -78,8 +78,8 @@ export default {
             });
         },
         requestTable(searchData){
-            this.form.state = 0;
             this.form = searchData;
+            this.form.state = 0;
             this.selectId=null,
             this.tableData={records:[]};
             this.params.current = 1;

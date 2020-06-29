@@ -12,7 +12,7 @@
 
             </div>
             <div class="main-content">
-                <SearchTable ref="searchTable" :data="tableData1" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -21,7 +21,10 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="120"  >
                         <template  slot-scope="{ row }">
-                            <el-button  class="copyButton copyButton1" @click="lineTest('/onlineTestDo',row)">参加考试</el-button>
+                            <div style="text-align: center">
+                                <el-button  class="copyButton copyButton1" @click="lineTest('/onlineTestDo',row)">参加考试</el-button>
+
+                            </div>
                          </template>
                     </el-table-column>
 
@@ -44,9 +47,8 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{records:[{}]},
-            tableData1:{records:[{}]},
-            tableConfig:lineTestConfig({}),
+            tableData:{records:[]},
+             tableConfig:lineTestConfig({}),
             params:{
 				current: 1,
 				size: 15,
@@ -58,6 +60,16 @@ export default {
         };
     },
    created() {
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           params:{delete:false},
+           data:["testType", "testCategory1","zizhiType",'businessType', ]
+       }).then(d => {
+           let obj=d.data
+           this.tableConfig =lineTestConfig( obj)
+
+       });
        this.getList();
     },
     watch:{
@@ -132,7 +144,7 @@ export default {
            request({
                 url:`${this.$ip}/mms-training/examLine/list`,
                  method: 'post',
-                   data:{...this.sort,...data},
+                   data:{...this.sort,...data,employeeId:this.$store.state.user.userInfo.id},
                params:{...this.params,}
             })
             .then((data) => {
