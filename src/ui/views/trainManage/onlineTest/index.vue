@@ -132,7 +132,7 @@ export default {
            request({
                 url:`${this.$ip}/mms-training/examLine/list`,
                  method: 'post',
-                   data:{...this.sort,...data},
+                   data:{...this.sort,...data,employeeId:this.$store.state.user.id},
                params:{...this.params,}
             })
             .then((data) => {

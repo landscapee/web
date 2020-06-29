@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
                     </el-form-item>
                     <el-form-item label="时间：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime?form.infTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{  form.infTime? moment(form.infTime).format('YYYY-MM-DD'):''}}</span>
                         <el-date-picker  v-else v-model="form.infTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
 
@@ -119,6 +119,8 @@
     </div>
 </template>
 <script>
+    import moment from 'moment'
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
