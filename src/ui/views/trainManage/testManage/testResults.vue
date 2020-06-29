@@ -221,13 +221,13 @@ export default {
             .then((d) => {
                 console.log(this.lastData,1);
                 d.data.records= d.data.records.map((k,l)=>{
-                    return {...k,...this.lastData}
+                    return {...this.lastData,...k,id:k.examId}
                 })
                   this.tableData = extend({},
                      {...d.data}
                  );
-
-             })
+                console.log(this.tableData,1,1);
+            })
         },
         handleSizeChange(size) {
             this.params.current = 1;

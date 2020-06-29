@@ -28,7 +28,7 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="230"  >
                         <template  slot-scope="scope">
-                            <el-button  class="copyButton copyButton1" @click="testPush('/testManagePushStaff',scope.row)">考试推送员工</el-button>
+                            <el-button  class="copyButton copyButton1" @click="pushStaff('/testManagePushStaff',scope.row)">考试推送员工</el-button>
                             <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
                         </template>
                     </el-table-column>
@@ -86,6 +86,9 @@ export default {
     },
     methods: {
         testPush(path,row){
+          this.$router.push({path:path,query:{row:JSON.stringify(row)}})
+        },
+        pushStaff(path,row){
           this.$router.push({path:path,query:{id:row.id}})
         },
         exportExcel(){
