@@ -22,12 +22,6 @@
                 <el-option v-for="item in infoType" :key="item.valCode" :label="item.valData" :value="item.valData"></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="发送时间" prop="sysParamValue">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-select v-else  v-model="value1" multiple placeholder="请选择发送时间">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item> -->
         </div>
         <div class="row_item_row row_item">
           <el-form-item label="发送内容" prop="content">
@@ -52,17 +46,10 @@
             <el-radio v-model="form.require" label="1">是</el-radio>
             <el-radio v-model="form.require" label="2">否</el-radio>
            </el-form-item>
-        </div>
-        <div class="row_custom4">
-          <el-form-item label="要求处理时间" prop="deadline">
+           <el-form-item label="要求处理时间" prop="deadline">
             <span v-if="type=='info'">{{form.deadline}}</span>
             <el-date-picker v-model="form.deadline" type="date" placeholder="请选择要求处理时间"></el-date-picker>
           </el-form-item>
-          <el-form-item label="处理人" prop="sysParamValue">
-            <span v-if="type=='info'">{{form.sysParamValue}}</span>
-            <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请选择接收人"></el-input>
-          </el-form-item>
-          <el-button>处理人选择</el-button>
         </div>
         <div class="row_custom5">
           <el-form-item label="附件" >
@@ -85,16 +72,18 @@
         </div>
       </el-form>
     </div>
+    <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
   </div>
 </template>
 <script>
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
-
+import userTree from '@components/userTree/index';
 export default {
   components: {
     Icon,
+    userTree
   },
   name: "",
   data() {
@@ -110,6 +99,7 @@ export default {
       receiver:'',
       infoType:[],
       fileList: [],
+      userList:[],
       filename:'',
       type: "add"
     };
@@ -144,6 +134,9 @@ export default {
     }
   },
   methods: {
+    handleUserSelected(users) {
+      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+		},
      handleChange(file, fileList) {
         if (fileList.length > 0) {
             this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
@@ -223,8 +216,12 @@ export default {
     handleUserSelected(users) {
 			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
 		},
-    handleSelectUser(currentDept) {
-			
+    handleSelectUser(tag) {
+			if(tag=='subscribe'){
+
+      }else{
+        this.$refs.userBox.open(this.users, '选择人员', true);
+      }
 		},
     resetForm(){
       this.form={};
@@ -241,6 +238,7 @@ export default {
             })
             .then(data => {
               this.$message.success("保存成功！");
+              this.$parent.selectId = null;
               this.$router.go(-1);
             })
             .catch(error => {
@@ -282,7 +280,7 @@ export default {
       .row_custom5{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 788px;
+            width: 798px;
             text-align: left;
         }
         @include common-input;
@@ -298,7 +296,7 @@ export default {
       .row_custom3{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 870px;
+            width: 375px;
             text-align: left;
         }
         @include common-input;
@@ -306,7 +304,7 @@ export default {
       .row_custom2{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 245px;
+            width: 248px;
             text-align: left;
         }
         @include common-input;

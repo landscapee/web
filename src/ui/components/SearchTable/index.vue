@@ -10,18 +10,18 @@
 					</el-table-column>
 					<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true"> 
 						<span>
-							<el-button class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
+							<el-button  class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
 						</span>
 					</el-table-column>
 					<el-table-column :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true"> 
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-input  :width="140"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
+							<el-input @keyup.enter.native="requestTableData" :width="140"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
 						</span>
 					</el-table-column>
 					<el-table-column :fixed="colConfig.search.fixed"  :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='select'"   :key="index" :reserve-selection="true"> 
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-select   clearable  class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
+							<el-select @change="requestTableData"  clearable  class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
 								<el-option v-for="item in colConfig.search.data" :key="item.value" :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label" :value="colConfig.search.selectProp?item[colConfig.search.selectProp[1]]:item.value"></el-option>
 							</el-select>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
@@ -29,7 +29,7 @@
 					</el-table-column>
 					<el-table-column  :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true"> 
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-date-picker class="adv_filter"  :type="colConfig.search.time||'date'" :placeholder="colConfig.search.placeholder" v-model="row[colConfig.search.prop]" ></el-date-picker>
+							<el-date-picker @blur="requestTableData" class="adv_filter"  :type="colConfig.search.time||'date'" :placeholder="colConfig.search.placeholder" v-model="row[colConfig.search.prop]" ></el-date-picker>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
 						</span>
 					</el-table-column>
@@ -112,7 +112,7 @@ export default {
 			return (
                 <div>
                     <span>{column.label}</span>
-                    <Icon iconClass="sort" nativeOnClick={ 
+                    <Icon iconClass="sort" class="tableSort" nativeOnClick={ 
 						() => {
 							column.order==""? column.order = 'desc':column.order=='desc'?column.order = 'asc':column.order == 'asc'?column.order="":column.order='desc';
 							this.$emit('headerSort', column);
@@ -180,6 +180,12 @@ export default {
 
 <style lang="scss" scoped >
 .searchTableWrapper{
+	/deep/ .tableSort {
+		fill: #222;
+	}
+	/deep/ .tableSort:hover {
+		fill: #eee;
+	}
 	/deep/ .el-pagination {
 		text-align: center;
 		margin-top: 20px;
@@ -242,6 +248,12 @@ export default {
 			padding:0 3px;
 		}
 		/deep/ .el-input{
+			text-align: center;
+			width: 100%;
+			/*width:140px;*/
+			height: 30px;
+		}
+		/deep/ .el-select{
 			text-align: center;
 			width: 100%;
 			/*width:140px;*/
@@ -310,6 +322,12 @@ export default {
 	.el-table--scrollable-x + .mainTable{
 		height: 620px !important;
 		
+	}
+	/deep/ .el-table--scrollable-x .el-table__body-wrapper{
+		height: 100%;
+	}
+	/deep/ .is-scrolling-left{
+		height: 100%;
 	}
 	.mainTable{
 		// height: 600px;

@@ -139,6 +139,7 @@ export default {
             })
             .then(data => {
               this.$message.success("保存成功！");
+              this.$parent.selectId = null;
               this.$router.go(-1);
             })
             .catch(error => {

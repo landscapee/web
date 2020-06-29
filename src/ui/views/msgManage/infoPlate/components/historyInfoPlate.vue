@@ -2,7 +2,7 @@
         <div  class="historyInfoPlate">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>发布信息-历史</span>
+                    <span>接收信息-历史</span>
                 </div>
             </div>
             <div class="main-content">
@@ -11,6 +11,11 @@
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                        </template>
+                    </el-table-column>
+                     <el-table-column slot="attachment" label="附件"  align="center" >
+                        <template slot-scope="{ row }">
+                            <a :href="row.attachment">{{row.attachment}}</a>
                         </template>
                     </el-table-column>
                      <el-table-column slot="relationInfo" label="关联信息" :width="148" >
@@ -22,7 +27,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { historyPlateSendTable,historyPlateReceiveTable } from '../../tableConfig.js';
+import { historyPlateReceiveTable } from '../../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
@@ -34,7 +39,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:historyPlateSendTable(),
+            tableConfig:historyPlateReceiveTable(),
             params:{
 				current: 1,
 				size: 15,
@@ -45,16 +50,10 @@ export default {
         };
     },
    created() {
+       this.findDataDictionary();
        this.getList();
     },
     watch:{
-        '$route' (to, from) {
-            if(from.query.tag=='send'){
-                  this.tableConfig=historyPlateSendTable();
-            }else{
-                 this.tableConfig=historyPlateReceiveTable();
-            }
-        },
         params:{
             handler:function(val,oldval){
                 this.getList();
@@ -63,6 +62,20 @@ export default {
         }
     },
     methods: {
+         findDataDictionary(){
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: "post",
+                data: ["infoTypeCode"]
+            })
+            .then(data => {
+              let infoSelect = data.data["infoTypeCode"];
+              this.tableConfig = historyPlateReceiveTable(infoSelect);
+            })
+            .catch(error => {
+             this.$message.success(error);
+            });
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -96,9 +109,9 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
-                data:{...this.sort,...this.form},
+                data:{...this.sort,...this.form,state:-1},
                 params:this.params
             })
             .then((data) => {
