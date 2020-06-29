@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanAdd'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="businessData">
@@ -100,7 +101,7 @@ export default {
         '$route':function(val,nm){
             console.log(1,val,nm);
             if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
-                this.leftParams.size=this.tableLeftData.records.length
+                this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                 this.leftParams.current=1
                 this.getList('left');
             }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
@@ -108,6 +109,17 @@ export default {
                 this.rightParams.current = 1
                 this.getList('right');
                 // this.toFrom=nm.query.type
+            }else if(nm.path!='/selfCheckPlan'){
+                this.leftParams.size=18
+                this.leftParams.current=1
+                 this.rightParams.current = 1
+                this.leftRow={}
+                this.rightRow={}
+                this.leftForm={}
+                this.rightForm={}
+                this.leftSelectId=null
+                this.leftSelectId=null
+                this.getList('left');
             }
         }
     },

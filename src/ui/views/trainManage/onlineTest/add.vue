@@ -94,7 +94,7 @@
                 timer:null,
                 params:{},
                 infoData:{},
-                
+                pathBlo:true,
                 testData:[]
             };
         },
@@ -113,19 +113,19 @@
               }
             },
         },
-        watch:{
-            adata:function () {
-                console.log(1,12);
-            },
-            '$router':function (t,f) {
-                console.log(t,f,1,12);
-            }
+
+
+        beforeRouteLeave(to, from, next){
+            console.log(to, from,112222);
+                if(from.path=='/onlineTestDo'&&this.pathBlo){
+                   this.endTest(1)
+                   next();
+               }else{
+                   next();
+               }
         },
         created() {
-            this.$router.beforeEach((to, from, next) => {
-                console.log(to, from, next,11111);
-                next();
-            })
+
             console.log(this.adata,'asdas');
             if (this.$route.query) {
                 let row=JSON.parse( this.$route.query.row)
@@ -224,7 +224,11 @@
                     data:this.params
                 }).then((d)=>{
                         this.$message.success('考试已结束')
-                    this.$router.go(-1)
+                    this.pathBlo=false
+                    if(num!=1){
+                        this.$router.go(-1)
+                    }
+
                 })
             },
             getList(num){
