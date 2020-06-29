@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
                     </el-form-item>
                     <el-form-item label="时间：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime?form.infTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{  form.infTime? moment(form.infTime).format('YYYY-MM-DD'):''}}</span>
                         <el-date-picker  v-else v-model="form.infTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
 
@@ -82,9 +82,9 @@
                 <div class="row_custom">
 
 
-                    <el-form-item label="控制状态：" prop="controlSate">
-                        <span v-if="type=='info'">{{form.controlSate}}</span>
-                        <el-input v-else v-model="form.controlSate" placeholder="请输入控制状态"></el-input>
+                    <el-form-item label="控制状态：" prop="controlState">
+                        <span v-if="type=='info'">{{form.controlState}}</span>
+                        <el-input v-else v-model="form.controlState" placeholder="请输入控制状态"></el-input>
                     </el-form-item>
                     <el-form-item label="工作环节：" prop="workLink">
                         <span v-if="type=='info'">{{form.workLink}}</span>
@@ -119,6 +119,8 @@
     </div>
 </template>
 <script>
+    import moment from 'moment'
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -167,8 +169,17 @@
                             ? "安全信息详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                    request({
+                        url:`${this.$ip}/mms-qualification/securityInformation/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data }
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
             request({
@@ -235,7 +246,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{

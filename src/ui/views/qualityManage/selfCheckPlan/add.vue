@@ -36,9 +36,8 @@
                         <el-input v-else v-model="form.reviewerName" placeholder="请输入审批人"></el-input>
                     </el-form-item>
                     <el-form-item label="审批日期：" prop="reviewerTime">
-                        <span v-if="type=='info'">{{form.reviewerTime?form.reviewerTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{form.reviewerTime? moment(form.reviewerTime).format('YYYY-MM-DD'):''}}</span>
                          <el-date-picker  v-else v-model="form.reviewerTime" placeholder="请选择审批日期"></el-date-picker>
-
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
@@ -53,6 +52,7 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -157,7 +157,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{

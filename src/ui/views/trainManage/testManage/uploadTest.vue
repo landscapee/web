@@ -6,7 +6,7 @@
                     <div style="margin-bottom: 20px;color:#000000;font-size: 16px">试卷上传</div>
 
                     <el-form-item style="margin-right: 20px">
-                        <el-input  type="text" v-model="filename"  placeholder="仅支持Excel导入"></el-input>
+                        <el-input  type="text" v-model="filename"  placeholder="仅支持图片上传"></el-input>
 
                     </el-form-item>
                     <el-form-item>

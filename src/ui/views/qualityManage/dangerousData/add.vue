@@ -112,9 +112,9 @@
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="剩余可能性：" prop="residuaPossibility">
-                        <span v-if="type=='info'">{{form.residuaPossibility}}</span>
-                        <el-input v-else v-model="form.residuaPossibility" placeholder="请输入剩余可能性"></el-input>
+                    <el-form-item label="剩余可能性：" prop="residualPossibility">
+                        <span v-if="type=='info'">{{form.residualPossibility}}</span>
+                        <el-input v-else v-model="form.residualPossibility" placeholder="请输入剩余可能性"></el-input>
                     </el-form-item>
                     <el-form-item label="剩余严重性：" prop="residualSeverity">
                         <span v-if="type=='info'">{{form.residualSeverity}}</span>
@@ -207,8 +207,19 @@
                             ? "危险数据详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                      request({
+                        url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data }
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
+
+
                 }
             }
             request({
@@ -272,7 +283,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{

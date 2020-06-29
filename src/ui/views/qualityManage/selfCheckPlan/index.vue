@@ -59,7 +59,7 @@
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/table';
+import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { selfCheckConfig,selfCheckDetailsConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
