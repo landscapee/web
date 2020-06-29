@@ -50,10 +50,11 @@ export default {
             },
             form:{},
             sort:{},
-            selectId:null
+            selectId:null,
         };
     },
    created() {
+       this.findDataDictionary();
        this.getList();
     },
     watch:{
@@ -65,6 +66,20 @@ export default {
         }
     },
     methods: {
+        findDataDictionary(){
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: "post",
+                data: ["infoTypeCode"]
+            })
+            .then(data => {
+              let infoSelect = data.data["infoTypeCode"];
+              this.tableConfig = subscribeConfigTable(infoSelect);
+            })
+            .catch(error => {
+             this.$message.success(error);
+            });
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,

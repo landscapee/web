@@ -6,7 +6,7 @@
 			<div class="header-right">
 				<i class="bell_tips">{{tipsNumber}}</i>
 				<span><img :src="usericon" />{{username}}</span>
-				<span><img :src="bell" />消息</span>
+				<span @click="goInfo"><img :src="bell" />消息</span>
 				<span @click="logout"><img :src="esc" />退出</span>
 			</div>
 		</el-header>
@@ -83,11 +83,18 @@ import Icon from '@components/Icon-svg/index';
 			channel: 'websocket_msg',
 			topic: 'message',
 			callback: async data => {
-				console.log(123123123123,data);
+				this.$notify({
+					title: '收到一条消息',
+					message: data.content.content,
+					position: 'bottom-right'
+				});
 			}
 		})
 	},
 	methods:{
+		goInfo(){
+
+		},
 		logout(){
 			this.$router.push({ path: '/' });
 		},

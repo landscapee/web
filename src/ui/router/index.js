@@ -406,6 +406,13 @@ let authRoutes = [
 						hidden:true
 					},
 					{
+						path: '/infoPlateDetails',
+						component: () => import('@views/msgManage/infoPlate/components/infoPlateDetails'),
+						name: '详情',
+						meta: {	title: '详情',	icon: ''	},
+						hidden:true
+					},
+					{
 						path: '/historyInfoPlate',
 						component: () => import('@views/msgManage/infoPlate/components/historyInfoPlate'),
 						name: '历史',
