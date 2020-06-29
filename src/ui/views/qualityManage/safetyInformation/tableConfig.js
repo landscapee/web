@@ -19,13 +19,13 @@ export const sadetyInfoConfig = (obj) => {
                 { prop: 'place', label: '地点',width:'148',sortProp:"place", align: 'center' ,sort:true,search:{type:'input', prop:'place',placeholder:"请输入地点"}},
                 { prop: 'responsibleUnit', label: '负责人/单位',width:'148',sortProp:"responsibleUnit", align: 'center' ,sort:true,search:{type:'input', prop:'responsibleUnit',placeholder:"请输入负责人/单位"}},
                 { prop: 'deptName', label: '所属系统',width:'148',sortProp:"deptName", align: 'center' ,sort:true,search:{type:'input', prop:'deptName',placeholder:"请输入所属系统"}},
-                { prop: 'situation', label: '违规/差错',width:'148',sortProp:"situation", align: 'center',sort:true,search:{type:'select', prop:'situation',placeholder:"请选择违规/差错",data:obj.Q_BadMistake,} },
+                { prop: 'situation', label: '违规/差错',width:'148',sortProp:"situation", align: 'center',sort:true,search:{type:'select', prop:'situation',placeholder:"请选择违规/差错",selectProp:['valCode','valCode'],data:obj.Q_BadMistake,} },
                 { prop: 'reason', label: '原因分析',width:'148',sortProp:"reason", align: 'center',sort:true,search:{type:'input', prop:'reason',placeholder:"请输入原因分析"} },
                 { prop: 'measures', label: '整改措施',width:'148',sortProp:"measures", align: 'center' ,sort:true,search:{type:'input', prop:'measures',placeholder:"请输入整改措施"}},
-                {  prop: 'controlSate', label: '控制状态' ,width:'148',sortProp:"controlSate", search:{type:'input', prop:'controlSate', placeholder:"请输入控制状态"}},
+                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState", search:{type:'input', prop:'controlState', placeholder:"请输入控制状态"}},
                 {  prop: 'workLink', label: '工作环节' ,width:'148',sortProp:"workLink", search:{type:'input', prop:'workLink', placeholder:"请输入工作环节"}},
                 {  prop: 'keyWord', label: '关键词' ,width:'148',sortProp:"keyWord", search:{type:'input', prop:'keyWord', placeholder:"请输入关键词"}},
-                {  prop: 'serviceEvents', label: '是否安全/服务事件' ,width:'148',sortProp:"serviceEvents", search:{type:'select',prop:'serviceEvents', placeholder:"请选择是否安全/服务事件", data:obj.Q_securityServices,}},
+                {  prop: 'serviceEvents', label: '是否安全/服务事件' ,width:'148',sortProp:"serviceEvents", search:{type:'select',prop:'serviceEvents', placeholder:"请选择是否安全/服务事件",selectProp:['valCode','valCode'], data:obj.Q_securityServices,}},
                  {  slot:'remark',label: '备注' ,width:'190',sortProp:"remark",search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
         ]
 };

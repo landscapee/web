@@ -350,20 +350,20 @@
                 }
             },
             addOrEditOrInfo(tag){
-                 let row
-                if(this.row){
-                      row=JSON.stringify(this.row)
-                }else {
-                    row=''
-                }
+                //  let row
+                // if(this.row){
+                //       row=JSON.stringify(this.row)
+                // }else {
+                //     row=''
+                // }
                 if(this.form.id){
                     if(tag=='add'){
-                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',id:this.form.id,row:row,}});
+                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',id:this.form.id, }});
                     }else if(tag == 'edit' || tag == 'info'){
                         if(this.row==null){
                             this.$message.error('请先选中一行数据');
                         }else{
-                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id,row:row,}});
+                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,}});
                         }
                     }
                 }else {

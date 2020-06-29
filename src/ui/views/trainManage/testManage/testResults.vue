@@ -29,7 +29,7 @@
                     </el-table-column>
                     <el-table-column   slot="employeeFileId" label="试卷名称"   >
                         <template  slot-scope="scope">
-                            <div @click="upload(scope.row)" class="G_cursor" style="color:#0a76a4;">
+                            <div @click="upload(scope.row)" class="G_cursor" style="color:#0a76a4;text-align: center">
                                 附件
                                 <a href="" ref="aA"></a>
                             </div>
@@ -38,7 +38,7 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="210"  >
                         <template  slot-scope="scope">
-                            <div style="height:40px;line-height: 26px">
+                            <div style="height:40px;line-height: 26px;text-align: center">
                                 <el-button  :disabled="scope.row.examMode=='线上'"  @click="scoreEntry(scope.row)"
                                               style=" padding:3px 7px; background: black; color:white;margin: 0">
                                     <div>分数</div>
@@ -94,15 +94,14 @@ export default {
             },
             form:{},
             row:{},
-            lastData:{},
+
             sort:{},
             selectId:null,
         };
     },
    created() {
 
-       this.lastData=JSON.parse(this.$route.query.row)
-       this.$set(this.form,'examId',this.lastData.id)
+
        this.getList();
     },
     watch:{
@@ -219,15 +218,20 @@ export default {
                params:{...this.params,}
             })
             .then((d) => {
-                console.log(this.lastData,1);
-                d.data.records= d.data.records.map((k,l)=>{
-                    return {...this.lastData,...k,id:k.examId}
+                request({
+                    url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                    method: "get",
+                }).then(d1 => {
+                    d.data.records= d.data.records.map((k,l)=>{
+                        return {...d1.data,...k,id:k.examId}
+                    })
+                    this.tableData = extend({},
+                        {...d.data}
+                    );
+                    console.log(this.tableData,1,1);
                 })
-                  this.tableData = extend({},
-                     {...d.data}
-                 );
-                console.log(this.tableData,1,1);
-            })
+
+             })
         },
         handleSizeChange(size) {
             this.params.current = 1;
@@ -246,7 +250,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
     
 }
 </style>

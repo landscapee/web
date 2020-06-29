@@ -34,7 +34,7 @@
     </div>
 </template>
 <script>
-    import SearchTable from '@/ui/components/table/index';
+    import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -130,7 +130,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },

@@ -85,8 +85,9 @@ export default {
         }
     },
     methods: {
+        // row:JSON.stringify(row)
         testPush(path,row){
-          this.$router.push({path:path,query:{row:JSON.stringify(row)}})
+          this.$router.push({path:path,query:{id:row.id,}})
         },
         pushStaff(path,row){
           this.$router.push({path:path,query:{id:row.id}})
@@ -148,7 +149,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },

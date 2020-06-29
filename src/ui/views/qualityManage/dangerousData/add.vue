@@ -126,18 +126,18 @@
                         <span v-if="type=='info'">{{form.residualRiskLevel}}</span>
                         <el-input v-else v-model="form.residualRiskLevel" placeholder="请输入剩余风险等级"></el-input>
                     </el-form-item>
-                    <el-form-item label="控制状态：" prop="controlState">
-                        <span v-if="type=='info'">{{form.controlState}}</span>
-                        <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
+                    <el-form-item label="控制状态：" prop="controlStateTemp">
+                        <span v-if="type=='info'">{{form.controlStateTemp}}</span>
+                        <el-select v-else v-model="form.controlStateTemp" placeholder="请选择控制状态">
                             <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="评定结果：" prop="evaluationResults">
-                        <span v-if="type=='info'">{{form.evaluationResults}}</span>
+                    <el-form-item label="评定结果：" prop="evaluationResultsTemp">
+                        <span v-if="type=='info'">{{form.evaluationResultsTemp}}</span>
 
-                        <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
+                        <el-select v-else v-model="form.evaluationResultsTemp" placeholder="请选择评定结果">
                              <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -207,8 +207,19 @@
                             ? "危险数据详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                      request({
+                        url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data }
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
+
+
                 }
             }
             request({

@@ -148,12 +148,20 @@
                             ? "安全绩效明细详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                    request({
+                        url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data,securityMeritsId:this.$route.query.securityMeritsId }
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }else {
-                    this.form={securityMeritsId:this.$route.query.id}
-                    console.log(this.form,11111);
-                }
+                    this.form={securityMeritsId:this.$route.query.securityMeritsId}
+                 }
             }
         },
         methods: {

@@ -76,7 +76,7 @@
 </template>
 <script>
     import CopyDetails from './copyDetails'
-    import SearchTable from '@/ui/components/table/index';
+    import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
     import { safetyConfig,safetyDetailsConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
@@ -285,7 +285,7 @@
                         this.$message.error('请先选中一行数据');
                     }else{
                         let data=JSON.stringify(this.leftRow)
-                        this.$router.push({path:'/safetyPerformanceAdd',query:{type:tag,data:data,id:this.leftSelectId}});
+                        this.$router.push({path:'/safetyPerformanceAdd',query:{type:tag, id:this.leftSelectId}});
                     }
                 }
             },
@@ -298,7 +298,7 @@
                     if(this.leftSelectId==null){
                         this.$message.error('请先选中左侧列表一行数据');
                     }else{
-                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:'add',id:this.leftSelectId}});
+                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:'add',securityMeritsId:this.leftSelectId}});
                     }
                 }else if(tag == 'edit' || tag=='info'){
                     if(this.rightSelectId==null){
@@ -306,7 +306,7 @@
                     }else{
                         let data=JSON.stringify(this.rightRow)
 
-                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:tag,data:data,id:this.rightSelectId}});
+                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:tag,securityMeritsId:this.leftSelectId,id:this.rightSelectId}});
                     }
                 }
             },
@@ -360,9 +360,15 @@
                 if(tag=='left'){
 
                     map(this.leftForm,((k,l)=>{
-                        if(!k){
+                        console.log(k, l);
+                        if(k==''){
                             this.leftForm[l]=null
+                        }else{
+                            if(l=='year'||l=='month'){
+                                this.leftForm[l]=Number(k)
+                            }
                         }
+
                     }))
                     request({
                          url:`${this.$ip}/mms-qualification/securityMerits/list`,

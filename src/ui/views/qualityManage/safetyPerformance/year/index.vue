@@ -49,10 +49,9 @@
         data() {
             return {
                 yearS:[],
-                 deptData:[{label:'厂务部',value:'dfd'},{label:'我相信部',value:'ddfd'},],
+                 deptData:[ ],
                 deptDataObj:{
-                    ddfd:'我相信部',
-                    'dfd':'厂务部',
+
                 },
                 tableData:[],
                 tableConfig:safetyYearConfig(),
@@ -63,7 +62,7 @@
         },
         created() {
             this.form = {
-                deptId:'dfd',
+                deptId:'server',
                 year:new Date().getFullYear()+'',
             };
 
@@ -73,6 +72,7 @@
                 method: 'get',
              }).then((d)=>{
                 this.yearS=d.data.map((k,l)=>{
+
                      return{
                         label:k,
                         value:k,
@@ -80,15 +80,20 @@
                 })
             })
             request({
-                url:`${this.$ip}/mms-qualification/businessDictionaryValue/listByCode/dept`,
-                method: 'get',
-             }).then((d)=>{
-                this.deptData=d.data.map((k,l)=>{
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["dept",]
+
+            }).then((d)=>{
+                this.deptData=d.data.dept.map((k,l)=>{
+                    this.deptDataObj[k.valCode]=k.valData
                      return{
-                        label:k,
-                        value:k,
+                        label:k.valData,
+                        value:k.valCode,
                     }
                 })
+                let num=this.deptDataObj[this.form.deptId].length*28+40
+                this.$refs.dept.$el.style.width=`${num}px`
             })
             this.getList();
         },
@@ -96,8 +101,7 @@
 
         },
         mounted(){
-            let num=this.deptDataObj[this.form.deptId].length*28+40
-            this.$refs.dept.$el.style.width=`${num}px`
+
         },
         methods: {
             deptFouce(val){
@@ -133,7 +137,7 @@
                 request({
                     url:`${this.$ip}/mms-qualification/securityMerits/getList`,
                      method: 'post',
-                    data:{deptName:this.form.deptId,year:this.form.year}
+                    data:{deptName:this.form.deptId,year:Number(this.form.year)}
                 }).then((d) => {
                         this.tableData =[]
                     let sss={...d}
@@ -175,7 +179,7 @@
 <style scoped lang="scss">
     @import "@/ui/styles/common_list.scss";
     .sysParameter{
-        margin-top:40px;
+        margin-top:14px;
 
     }
     .top-content-title{

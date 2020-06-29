@@ -171,9 +171,16 @@
                             ? "考试管理详情"
                             : "";
                  if(this.type!='add'){
-                    let row=JSON.parse( this.$route.query.data)
-                    this.form={...row}
-                }
+                     request({
+                         url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                         method: "get",
+                     }).then(d => {
+
+                         this.form={...d.data }
+                     }).catch(error => {
+                             this.$message.error(error);
+                         });
+                 }
             }
             request({
                 url:`${this.$ip}/mms-training/paperInfo/list`,

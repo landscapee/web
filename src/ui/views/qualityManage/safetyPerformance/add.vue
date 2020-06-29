@@ -57,23 +57,35 @@
         name: "",
         data() {
             const yearMonth = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('绩效年月不能为空'));
-                } else {
-                    let year=value.getFullYear()+''
-                    let month= value.getMonth()+1+''
-                    request({
-                        url:`${this.$ip}/mms-qualification/securityMerits/numberExists/${year},${month}`,
-                        method: 'get',
 
-                    }).then(response => {
-                        if (!response.data) {
-                            callback();
-                        } else {
-                            callback("该绩效年月已存");
+                    if (!value) {
+                        return callback(new Error('绩效年月不能为空'));
+                    } else {
+                        if(this.form.deptId){
+                            let year=value.getFullYear()+''
+                            let month= value.getMonth()+1+''
+                            request({
+                                url:`${this.$ip}/mms-qualification/securityMerits/numberExists`,
+                                method: 'post',
+                                data:{
+                                    deptId:this.form.deptId,
+                                    month:month,
+                                    year:year,
+                                }
+                            }).then(response => {
+                                if (!response.data) {
+                                    callback();
+                                } else {
+                                    callback("该绩效年月已存");
+                                }
+                            });
+                        }else {
+                            callback("选择部门后将校验");
                         }
-                    });
-                }
+
+                    }
+
+
             };
 
             return {
@@ -84,7 +96,9 @@
                 options:{},
                 rules: {
                     yearMonth: [{ validator:yearMonth, trigger: "blur" }],
-                    // system: [{ required: true, message: "请输入", trigger: "blur" }],
+                    deptId: [{ required: true, message: "请选择", trigger: "blur" },
+                        { validator:()=>{this.$refs.form.validateField('yearMonth');
+                        }}],
                  },
                 type: "add"
             };
@@ -109,8 +123,16 @@
                             ? "部门月度安全绩效详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data,yearMonth:`${data.year}-${data.month}`}
+                     request({
+                        url:`${this.$ip}/mms-qualification/securityMerits/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data ,yearMonth:`${data.year}-${data.month}`}
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
 
@@ -118,8 +140,8 @@
         watch:{
           'form.yearMonth':function (val) {
 
-              this.form.year=val.getFullYear()+''
-              this.form.month= val.getMonth()+1+''
+              this.form.year=Number(val.getFullYear() )
+              this.form.month= Number(val.getMonth()+1 )
               console.log(val, this.form);
           }
         },

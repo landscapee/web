@@ -200,11 +200,18 @@
                             : "";
                 this.form.paperId= this.$route.query.id
                 if(this.type!='add'){
-                    let row=JSON.parse( this.$route.query.row)
-                    if(row.optionType=='多选'){
-                        row.answer= row.answer.split(';')
-                    }
-                    this.form={...row,paperId:this.$route.query.id}
+                    request({
+                        url:`${this.$ip}/mms-training/questionInfo/info/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+                        if(row.optionType=='多选'){
+                            d.data.answer= d.data.answer.split(';')
+                        }
+                        this.form={...d.data,paperId:this.$route.query.id}
+                        })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
         },
