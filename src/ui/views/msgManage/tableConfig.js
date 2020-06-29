@@ -1,3 +1,4 @@
+import { formatDate } from '@lib/tools.js';
 export const warningConfigTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
@@ -23,7 +24,8 @@ export const warningSearchTable = () => {
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'sendDate', label: '日期',
         formatter: (row, column, cellValue) => {
-            console.log(row);
+            return formatDate(cellValue, 'YYYY-MM-DD', '--');
+           
         },align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择日期"} },
         { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入来源"} },
         { prop: 'content', label: '内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入内容"} },
@@ -87,7 +89,11 @@ export const infoPlateSendTable = () => {
         formatter: (row, column, cellValue) => {
             return cellValue?'是':'否';
         }, align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
-        { prop: 'deadline', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
+        { prop: 'deadline', label: '要求处理时间',
+        formatter: (row, column, cellValue) => {
+            return formatDate(cellValue, 'YYYY-MM-DD', '--');
+           
+        }, align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
         { prop: 'attachment', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
         { prop: 'state', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
@@ -102,7 +108,9 @@ export const infoPlateReceiveTable = () => {
         { prop: '', label: '发送人', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送人"} },
         { prop: 'content', label: '发送内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
         { prop: 'require', label: '是否接收处理', align: 'center',search:{prop:'',type:'input',placeholder:"请选择是否接收处理"} },
-        { prop: 'deadline', label: '要求处理时间', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
+        { prop: 'deadline', label: '要求处理时间', formatter: (row, column, cellValue) => {
+            return formatDate(cellValue, 'YYYY-MM-DD', '--');
+        },align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择要求处理时间"} },
         { prop: 'attachment', label: '附件', align: 'center',search:{prop:'',type:'input',placeholder:"请输入附件"} },
         { prop: 'state', label: '信息状态', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请输入信息状态"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
