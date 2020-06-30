@@ -103,6 +103,7 @@
               return this.testData[this.numIndex]||{}
           },
             answer(){
+
               if(this.testData[this.numIndex]){
                   if(this.adata.optionType=='多选'){
                       return this.form.employeeAnswer.join(';')
@@ -161,17 +162,23 @@
                     this.$message.success('已重置')
                  })
             },
+
+            //
+            // employeeId: "dep3f75d281a88d45a888f6f1ec28859e3e"
+            // examId: "6dea4d1fdac5eb5ad17876c614ef9f37"
+            // paperId: "94c50b2d4d05c890f955ef5afdc389a8"
+            // questionId: "1275328574826823681
             getAnser(){
                 request({
                     url: `${this.$ip}/mms-training/examLine/getAnswer`,
                     method:'post',
                     data:{...this.params,questionId:this.testData[this.numIndex].id}
                 }).then((d)=>{
-                    if(d.code==200&&d.data){
-                        if(this.testData[this.numIndex].optionType=='多选'){
-                            this.form.employeeAnswer=this.testData[this.numIndex].employeeAnswer.split(';')
+                     if(d.code==200&&d.data&&d.data.length!=0){
+                         if(this.testData[this.numIndex].optionType=='多选'){
+                            this.form.employeeAnswer=d.data
                         }else {
-                            this.form.employeeAnswer=this.testData[this.numIndex].employeeAnswer
+                            this.form.employeeAnswer=d.data
 
                         }
                     }else {
@@ -208,7 +215,7 @@
                             request({
                                 url: `${this.$ip}/mms-training/examLine/save`,
                                 method:'post',
-                                data:{...this.params,employeeAnswer,questionId:this.testData[this.numIndex]}
+                                data:{...this.params,employeeAnswer,questionId:this.testData[this.numIndex].id}
                             }).then((d)=>{
                                 this.$message.success('保存成功')
                             })
