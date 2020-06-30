@@ -21,7 +21,7 @@
             <div class="form"   >
 
                 <el-row>
-                    <el-col :span="12">
+                    <el-col class="rightBorder" :span="10">
                         <div>
                             <el-card class="box-card" shadow="never" border-radius="2px">
                                 <el-scrollbar style="height:500px">
@@ -30,7 +30,7 @@
                             </el-card>
                         </div>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="14">
                         <div>
                         <el-card class="box-card" shadow="never" border-radius="2px">
                             <el-scrollbar style="height:500px">
@@ -60,9 +60,9 @@
                         <!--</div>-->
                     <!--</el-col>-->
                 <!--</el-row>-->
-                <el-row>
-                    <el-col :span="24"></el-col>
-                </el-row>
+                <!--<el-row>-->
+                    <!--<el-col :span="24"></el-col>-->
+                <!--</el-row>-->
 
             </div>
 
@@ -318,6 +318,24 @@
             width: 800px;
         }
 
+    }
+    /deep/ .el-row{
+        border: 1px solid #888888;
+        .rightBorder{
+            border-right: 1px solid #888888;
+        }
+        .el-card{
+            border:0;
+            .item{
+                margin: 20px 0;
+            }
+            .el-checkbox__label{
+                padding-left: 15px;
+            }
+            .el-scrollbar__wrap{
+                overflow-x: hidden;
+            }
+        }
     }
 
 </style>
