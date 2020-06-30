@@ -126,21 +126,26 @@
                }
         },
         created() {
-
             console.log(this.adata,'asdas');
             if (this.$route.query) {
-                let row=JSON.parse( this.$route.query.row)
-                this.params={
-                    employeeId:this.$store.state.user.userInfo.administrativeId,
-                    examId:row.examId,
-                    paperId:row.paperId,
-                }
-                this.infoData={...row}
-                this.testime=row.totalTime-1
-                this.getList(1)
-               
-            }
+                request({
+                    url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                    method: "get",
+                }).then(d => {
+                    let row=d.data
+                    this.params={
+                        employeeId:this.$store.state.user.userInfo.administrativeId,
+                        examId:row.id,
+                        paperId:row.paperId,
+                    }
+                    this.infoData={...row}
+                    this.testime=row.totalTime-1
+                    this.getList(1)
+                }).catch(error => {
+                    this.$message.error(error);
+                });
 
+            }
         },
         mounted(){
 
@@ -152,7 +157,6 @@
                     this.form.employeeAnswer=[]
                 }else {
                     this.form={employeeAnswer:''};
-
                 }
                 request({
                     url: `${this.$ip}/mms-training/examLine/reset`,

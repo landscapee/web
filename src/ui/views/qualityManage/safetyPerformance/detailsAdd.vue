@@ -105,7 +105,7 @@
                         url:`${this.$ip}/mms-qualification/securityMeritsDetail/numberExists`,
                         method: 'POST',
                         data:{
-                            securityMeritsId: this.$route.query.id,
+                            securityMeritsId: this.$route.query.securityMeritsId,
                             number:value,
                         }
                     }).then(response => {
@@ -154,7 +154,7 @@
                         method: "get",
                     }).then(d => {
 
-                        this.form={...d.data,securityMeritsId:this.$route.query.securityMeritsId }
+                        this.form={...d.data,securityMeritsId:this.$route.query.securityMeritsId ,id:this.$route.query.id}
                     })
                         .catch(error => {
                             this.$message.error(error);

@@ -82,7 +82,7 @@ export default {
         lineTest(path,row){
           this.$router.push({
               path:path,
-              query:{row:JSON.stringify(row)}
+              query:{id:row.examId}
           })
         },
 
