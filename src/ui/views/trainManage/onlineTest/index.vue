@@ -2,8 +2,7 @@
     <div>
 
          <router-view v-if="this.$router.history.current.path == '/onlineTestDo'" :key="$route.path"></router-view>
-
-        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="sysParameter">
+        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="onlineTest">
             <div class="top-content">
                 <div class="top-content-title">
                     <!--this.$store.state.user.userInfo.administrativeId-->
@@ -181,7 +180,7 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
-.sysParameter{
+.onlineTest{
     margin-top:14px;
 
     .copyButton{
@@ -192,6 +191,9 @@ export default {
     }
     .copyButton1{
         margin-right: 3px;
+    }
+    .mainTable{
+        height:400px;
     }
 }
 </style>

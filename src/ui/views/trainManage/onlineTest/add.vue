@@ -32,7 +32,9 @@
                  </div>
                  <div class="formRight">
                      <el-form    :model="form" :rules="rules" ref="form" >
-                         <div style="font-size: 20px;font-weight: bold">题目描述{{adata.questionName}}  （{{answer}}）</div>
+                         <div style="font-size: 20px;font-weight: bold">题目描述{{adata.questionName}}
+                             （{{this.testData[this.numIndex]=='多选'?this.form.employeeAnswer.join(';'):this.form.employeeAnswer}}）
+                         </div>
                          <el-form-item label="" prop="infTime1">
                              <el-checkbox-group v-if="adata.optionType=='多选'" v-model="form.employeeAnswer"  >
                                  <el-checkbox     label="A">A、{{adata.optionA}}</el-checkbox>
@@ -103,9 +105,9 @@
               return this.testData[this.numIndex]||{}
           },
             answer(){
-
+debugger
               if(this.testData[this.numIndex]){
-                  if(this.adata.optionType=='多选'){
+                   if(this.testData[this.numIndex]=='多选'){
                       return this.form.employeeAnswer.join(';')
                   }else {
                       return this.form.employeeAnswer
@@ -195,6 +197,7 @@
 
                         }
                     }
+                     console.log(this.form.employeeAnswer,1,2);
                 })
             },
             next(){
