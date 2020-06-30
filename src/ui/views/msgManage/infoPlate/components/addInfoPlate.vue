@@ -30,13 +30,14 @@
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="接收单位：" >
-            <span v-if="type=='info'">{{receivingUnit}}</span>
-            <el-input v-if="type=='add'" v-model="receivingUnit" placeholder="请选择接收单位"></el-input>
-          </el-form-item>
-          <el-form-item label="接收人：" >
-            <span v-if="type=='info'">{{receiver}}</span>
-            <el-input v-if="type=='add'" v-model="receiver" placeholder="请选择接收人"></el-input>
+          <el-form-item label="接收人和单位：" >
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.id" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.name }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
           </el-form-item>
           <el-button @click="handleSelectUser('subscribe')">按订阅方式</el-button>
           <el-button @click="handleSelectUser('object')">接收对象选择</el-button>
@@ -73,6 +74,7 @@
       </el-form>
     </div>
     <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+    <selectSubscribe ref="selectSubscribe" @handleSelectSubscribe="handleSelectSubscribe" ></selectSubscribe>
   </div>
 </template>
 <script>
@@ -80,10 +82,12 @@ import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
 import userTree from '@components/userTree/index';
+import selectSubscribe from './selectSubscribe';
 export default {
   components: {
     Icon,
-    userTree
+    userTree,
+    selectSubscribe
   },
   name: "",
   data() {
@@ -100,6 +104,8 @@ export default {
       infoType:[],
       fileList: [],
       userList:[],
+      receiptDepartment:[],
+      receiptPerson:[],
       filename:'',
       type: "add"
     };
@@ -134,9 +140,27 @@ export default {
     }
   },
   methods: {
-    handleUserSelected(users) {
-      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+    handleClose(tag) {
+			this.userList = without(this.userList, tag);
 		},
+    handleUserSelected(users,deptList) {
+      this.receiptPerson = users.map((item) => ({ id: item.id, name: item.name }));
+      // 数组去重
+      let hash = {};
+       this.receiptDepartment  = deptList.reduce(function(item, next) {
+        if (!hash[next.id]) {
+          hash[next.id] = true;
+          item.push(next);
+        }
+        return item;
+      }, []);
+      this.userList =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+    },
+    handleSelectSubscribe(row){
+      this.receiptDepartment = row.receiptDepartment;
+      this.receiptPerson =  row.receiptPerson;
+      this.userList =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+    },
      handleChange(file, fileList) {
         if (fileList.length > 0) {
             this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
@@ -167,7 +191,7 @@ export default {
         }).then((d) => {
             if(d){
 
-                this.form.file=d.data
+                this.form.attachment=d.data
 
                 this.$message({
                     message: '上传成功',
@@ -218,7 +242,7 @@ export default {
 		},
     handleSelectUser(tag) {
 			if(tag=='subscribe'){
-
+        this.$refs.selectSubscribe.open();
       }else{
         this.$refs.userBox.open(this.users, '选择人员', true);
       }
@@ -234,7 +258,7 @@ export default {
             request({
               url,
               method: "post",
-              data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson}:{...this.form,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson}
             })
             .then(data => {
               this.$message.success("保存成功！");
@@ -278,6 +302,12 @@ export default {
         @include common-input;
       }
       .row_custom5{
+         position: relative;
+        top: 20px;
+        /deep/ .el-button{
+          position: relative;
+          top: -2px;
+        }
         /deep/ .el-form-item__content{
             height: 40px;
             width: 788px;
@@ -294,6 +324,8 @@ export default {
         @include common-input;
       }
       .row_custom3{
+        position: relative;
+        top: 20px;
         /deep/ .el-form-item__content{
             height: 40px;
             width: 365px;
@@ -302,9 +334,12 @@ export default {
         @include common-input;
       }
       .row_custom2{
+        /deep/ .el-button{
+           vertical-align: top;
+        }
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 238px;
+            width: 610px;
             text-align: left;
         }
         @include common-input;

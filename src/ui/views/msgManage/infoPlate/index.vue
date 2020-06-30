@@ -99,7 +99,7 @@ export default {
     },
     methods: {
         downloadFile(row){
-            this.$refs.downloadFile.open();
+            this.$refs.downloadFile.open(row.fileInfoList);
         },
         findDataDictionary(){
             request({
@@ -255,7 +255,7 @@ export default {
             request({
                 url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
-                data:this.isActive==0?{...this.sort,...this.form}:{...this.sort,...this.form,state:[0,1]},
+                data:this.isActive==0?{...this.sort,...this.form}:{...this.sort,...this.form,states:[0,1]},
                 params:this.params
             })
             .then((data) => {
@@ -282,7 +282,6 @@ export default {
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-            overflow: auto;
         }    
     }
 }

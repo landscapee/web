@@ -34,6 +34,7 @@ import Icon from '@components/Icon-svg/index';
 import { warningSearchTable } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
+import postal from 'postal';
 export default {
     components: {
         Icon,
@@ -65,6 +66,21 @@ export default {
         }
     },
     methods: {
+         findUnread(){
+			request({
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				method: 'get',
+			})
+			.then((data) => {
+				postal.publish({
+					channel: 'websocket_count',
+					topic: 'count',
+					data: data.data
+				});
+			}).catch((error) => {
+					
+			});
+		},
         clickAction(row){
             request({
                 url:`${this.$ip}/mms-warning/warning/read/${row.id}`, 
@@ -72,6 +88,7 @@ export default {
             })
             .then((data) => {
                 this.$message.success("已读成功！");
+                this.findUnread();
                 this.getList();
             }).catch((error) => {
             

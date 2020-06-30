@@ -15,16 +15,18 @@
                     </el-table-column>
                      <el-table-column slot="attachment" label="附件"  align="center" >
                         <template slot-scope="{ row }">
-                            <a :href="row.attachment">{{row.attachment}}</a>
+                              <el-button @click="downloadFile(row)" size="mini">下载</el-button>
                         </template>
                     </el-table-column>
                      <el-table-column slot="relationInfo" label="关联信息" :width="148" >
                     </el-table-column>
                 </SearchTable>
             </div>
+             <Download ref="downloadFile"></Download>
         </div>
 </template>
 <script>
+import Download from '@/ui/components/download';
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { historyPlateReceiveTable } from '../../tableConfig.js';
@@ -33,7 +35,8 @@ import {  extend } from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable
+        SearchTable,
+          Download
 	},
     name: '',
     data() {
@@ -62,6 +65,9 @@ export default {
         }
     },
     methods: {
+        downloadFile(row){
+            this.$refs.downloadFile.open(row.fileInfoList);
+        },
          findDataDictionary(){
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,

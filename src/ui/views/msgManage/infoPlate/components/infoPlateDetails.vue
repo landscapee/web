@@ -20,12 +20,12 @@
                 <span >{{form.sendDate}}</span>
             </el-form-item>
             <el-form-item :label="this.parentType=='send'?'接收单位：':'发送单位：'"  label-width="164px">
-                <span >{{form.receiptDepartment}}</span>
+                <span >{{this.receivingUnit}}</span>
             </el-form-item>
         </div>
         <div class="row_item_row row_item">
             <el-form-item :label="this.parentType=='send'?'接收人：':'发送人：'"  label-width="164px">
-                <span >{{form.receiptPerson}}</span>
+                <span >{{this.receiver}}</span>
             </el-form-item>
         </div>
         <div class="row_item_row row_item">
@@ -51,20 +51,21 @@
             <span >{{form.type}}</span>
           </el-form-item>
           <el-form-item label="是否要求接收处理：" label-width="164px">
-             <span >{{form.require}}</span>
+             <span >{{form.require?'是':form.require==false?'否':''}}</span>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
           <el-form-item label="附件：" label-width="164px">
-            <span >{{filename}}</span>
-            <el-button>下载</el-button>
+             <el-button @click="downloadFile" size="mini">下载</el-button>
           </el-form-item>
         </div>
       </el-form>
     </div>
+     <Download ref="downloadFile"></Download>
   </div>
 </template>
 <script>
+import Download from '@/ui/components/download';
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
@@ -72,6 +73,7 @@ import { extend } from "lodash";
 export default {
   components: {
     Icon,
+     Download
   },
   name: "",
   data() {
@@ -104,6 +106,33 @@ export default {
         })
         .then(data => {
             this.form = data.data;
+            if(this.form.state){
+              if(this.parentType=='send'){
+                this.form.state = this.form.state==0?'未发布':'已发布';
+              }else{
+                this.form.state = this.form.state==0?'未处理':this.form.state==1?'已处理':this.form.state==-1?'已关闭':'';
+              }
+            }
+            if(this.form.receiptDepartment){
+               let arr = [];
+              this.form.receiptDepartment.map(item=>{
+                  arr.push(item.name);
+              })
+              this.receivingUnit =  arr.join(",");
+            }
+            if(this.form.receiptPerson){
+              let arr1 = [];
+              this.form.receiptPerson.map(item=>{
+                  arr1.push(item.name);
+              })
+              this.receiver =  arr1.join(",");
+            }
+            if(this.form.sendDepartment){
+              this.receivingUnit = this.form.sendDepartment;
+            }
+            if(this.form.sendPerson){
+              this.receiver =  this.form.sendPerson;
+            }
         })
         .catch(error => {
             this.$message.success(error);
@@ -111,7 +140,14 @@ export default {
     }
   },
   methods: {
-    
+    downloadFile(){
+      if(this.form.fileInfoList){
+         this.$refs.downloadFile.open( this.form.fileInfoList);
+      }else{
+        this.$message.warning("暂无文件可以下载");
+      }
+       
+    },
   }
 };
 </script>

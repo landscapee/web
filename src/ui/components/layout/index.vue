@@ -57,7 +57,7 @@ import Icon from '@components/Icon-svg/index';
 		asyncRoutes,
 		username:this.$store.getters.userInfo.name,
 		sysname:'成都天府机场机务管理系统',
-		tipsNumber:0,
+		tipsNumber:localStorage.getItem("msg_count")?localStorage.getItem("msg_count"):0,
 		logo,
 		bell,
 		esc,
@@ -95,6 +95,7 @@ import Icon from '@components/Icon-svg/index';
 			channel: 'websocket_count',
 			topic: 'count',
 			callback: async data => {
+				localStorage.setItem("msg_count",data);
 				this.tipsNumber = data;
 			}
 		})

@@ -43,6 +43,7 @@ export const warningSearchHistoryTable = () => {
 export const subscribeConfigTable = (infoSelect) => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
+        { prop: 'name', label: '订阅名称', align: 'center',search:{prop:'name',type:'input',placeholder:"请输入订阅名称"} },
         { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"typeMode",search:{prop:'type',type:'select',selectProp:["valData","valData"],data:infoSelect,placeholder:"请选择信息类型"} },
         { prop: 'enable', label: '是否启用', formatter: (row, column, cellValue) => {
             return cellValue?'是':'否';
@@ -234,7 +235,8 @@ export const historyPlateReceiveTable = (infoSelect) => {
 };
 export const selectSubscribeTable = () => {
     return [
-        { prop: '', label: '', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
+        { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
+        { prop: 'name', label: '订阅名称', align: 'center',search:{prop:'',type:'input',placeholder:""} },
         { prop: '',formatter: (row, column, cellValue) => {
             let arr = [];
             if(row.receiptDepartment){
