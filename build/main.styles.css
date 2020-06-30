@@ -14102,6 +14102,9 @@
 [data-v-d9ef3e24] .el-dialog {
   width: 42.85714rem;
 }
+[data-v-d9ef3e24] .el-dialog .el-dialog__body {
+    padding: 2.14286rem 2.14286rem 0 3.57143rem;
+}
 .footer[data-v-d9ef3e24] {
   display: flex;
   justify-content: center;

@@ -126,6 +126,8 @@
                }
         },
         created() {
+
+
             console.log(this.adata,'asdas');
             if (this.$route.query) {
                 request({
