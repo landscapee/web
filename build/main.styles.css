@@ -17736,17 +17736,20 @@
   height: 100%;
   position: relative;
 }
-.sysParameter[data-v-ca526346] {
+.onlineTest[data-v-ca526346] {
   margin-top: 1rem;
 }
-.sysParameter .copyButton[data-v-ca526346] {
+.onlineTest .copyButton[data-v-ca526346] {
     margin: 0;
     padding: 0.5rem 0.71429rem;
     background: black;
     color: white;
 }
-.sysParameter .copyButton1[data-v-ca526346] {
+.onlineTest .copyButton1[data-v-ca526346] {
     margin-right: 0.21429rem;
+}
+.onlineTest .mainTable[data-v-ca526346] {
+    height: 28.57143rem;
 }
 .top-content[data-v-74d2ff6c] {
   height: 5.85714rem;

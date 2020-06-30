@@ -234,7 +234,7 @@ export default {
            request({
                 url:`${this.$ip}/mms-training/examResult/list`,
                  method: 'post',
-                data:{...this.sort,...data},
+                data:{...this.sort,...data,examId:this.$route.query.id},
                params:{...this.params,}
             })
             .then((d) => {
