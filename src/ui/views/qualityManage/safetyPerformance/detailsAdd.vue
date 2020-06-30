@@ -33,7 +33,7 @@
                     <el-form-item label="指标类型：" prop="quotaType">
                         <span v-if="type=='info'">{{form.quotaType}}</span>
                         <el-select v-else clearable v-model="form.quotaType" placeholder="请选择指标类型">
-                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>

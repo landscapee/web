@@ -50,6 +50,7 @@
                 <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
                     <el-table-column slot="radio" label="选择" :width="49"   >
                         <template slot-scope="{ row }">
+
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
@@ -110,7 +111,7 @@ export default {
                 this.getList('right');
                 // this.toFrom=nm.query.type
             }else if(nm.path!='/selfCheckPlan'){
-                this.leftParams.size=18
+                 this.leftParams.size=18
                 this.leftParams.current=1
                  this.rightParams.current = 1
                 this.leftRow={}
@@ -118,7 +119,8 @@ export default {
                 this.leftForm={}
                 this.rightForm={}
                 this.leftSelectId=null
-                this.leftSelectId=null
+                this.rightSelectId=null
+                this.tableRightData.records=[]
                 this.getList('left');
             }
         }
@@ -252,6 +254,8 @@ export default {
                 if(row.selected){
                     this.leftSelectId = row.id;
                     this.leftRow={...row}
+                    this.rightSelectId = null;
+
                 }else{
                     this.leftSelectId = null;
                     this.rightSelectId = null;
@@ -364,7 +368,7 @@ export default {
                     params:{...this.leftParams}
                 })
                     .then((data) => {
-                        data.data.records.map((k,l)=>{
+                         data.data.records.map((k,l)=>{
                             if(k.id==this.leftSelectId){
                                 k.selected=true
                                 this.leftRow=k
@@ -402,8 +406,8 @@ export default {
                                 this.rightRow=k
                             }
                         })
-                         if(this.rightParams.current==1){
-                            this.tableRightData.records = data.data.records;
+                          if(this.rightParams.current==1){
+                            this.tableRightData.records = data.data.records
                         }else{
                             this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                         }

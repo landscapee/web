@@ -80,10 +80,18 @@ export default {
     },
     methods: {
         lineTest(path,row){
-          this.$router.push({
-              path:path,
-              query:{id:row.examId}
-          })
+            // console.log(row.examTime,new Date().getTime()- 8.64e7);
+
+            if(row.examTime>new Date().getTime()- 8.64e7){
+
+                this.$router.push({
+                    path:path,
+                    query:{id:row.examId}
+                })
+            }else{
+                this.$message.info('考试已过期，下次请提前参加')
+            }
+
         },
 
         requestTable(searchData){

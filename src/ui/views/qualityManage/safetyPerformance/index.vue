@@ -131,7 +131,7 @@ this.aaa()
         },
         activated(q,b){
 
-            this.getList('left');
+            // this.getList('left');
         },
             created() {
 
@@ -174,7 +174,8 @@ this.leftParams.size=18
                 this.leftForm={}
                 this.rightForm={}
                 this.leftSelectId=null
-                this.leftSelectId=null
+                this.rightSelectId=null
+                this.tableRightData.records=[]
                 this.getList('left');
 
                  console.log(1,2,3);
@@ -276,8 +277,12 @@ this.leftParams.size=18
                 if(tag=="left"){
                     if(row.selected){
                         this.leftSelectId = row.id;
+                        this.rightSelectId = null;
+
                         this.leftRow={...row}
                     }else{
+
+                        this.leftRow={}
                         this.leftSelectId = null;
                         this.rightSelectId = null;
                         this.tableRightData.records=[]

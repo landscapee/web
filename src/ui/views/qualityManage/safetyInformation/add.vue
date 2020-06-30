@@ -60,7 +60,7 @@
                     <el-form-item label="违规/差错：" prop="situation">
                         <span v-if="type=='info'">{{form.situation}}</span>
                          <el-select v-else clearable v-model="form.situation" placeholder="请选择违规/差错">
-                             <el-option v-for="(opt,index) in options.Q_BadMistake" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                             <el-option v-for="(opt,index) in options.Q_BadMistake" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                          </el-select>
                     </el-form-item>
@@ -100,7 +100,7 @@
                     <el-form-item label="是否安全/服务事件：" prop="serviceEvents">
                         <span v-if="type=='info'">{{form.serviceEvents}}</span>
                         <el-select clearable v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
-                            <el-option v-for="(opt,index) in options.Q_securityServices" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                            <el-option v-for="(opt,index) in options.Q_securityServices" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                         </el-select>
                     </el-form-item>

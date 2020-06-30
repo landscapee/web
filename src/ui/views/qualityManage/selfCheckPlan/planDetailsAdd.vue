@@ -38,7 +38,7 @@
                     </el-form-item>
                     <el-form-item label="检查方式：" prop="checkMethod">
                         <span v-if="type=='info'">{{form.checkMethod }}</span>
-                         <el-select @change="checkMethodChange" v-else multiple v-model="form.checkMethod1" placeholder="请选择检查方式">
+                         <el-select   v-else multiple v-model="form.checkMethod" placeholder="请选择检查方式">
                             <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -176,19 +176,17 @@
                         url:`${this.$ip}/mms-qualification/examinationDetail/getById/${this.$route.query.id}`,
                         method: "get",
                     }).then(d => {
-                        this.form={...d.data }
+                        debugger
+                        this.form={...d.data,checkMethod:d.data.checkMethod?d.data.checkMethod.split(','):[] }
                     })
-
-                }else {
+                 }else {
                     // this.form.examinationId
                     this.$set(this.form,'examinationId',this.$route.query.id)
                 }
             }
         },
         methods: {
-            checkMethodChange(val){
-              this.$set(this.form,'checkMethod',val.join(','))
-            },
+
             resetForm(){
                 if(this.type=='edit'){
                     this.form={id:this.form.id,checkMethod:[],number:this.form.number };
@@ -206,10 +204,14 @@
                              }else {
                                  url=`${this.$ip}/mms-qualification/examinationDetail/update`
                             }
+                            let data={...this.form}
+                            if(data.checkMethod){
+                                data.checkMethod=data.checkMethod.join(',')
+                            }
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data: data
                             })
                                 .then(data => {
                                     this.$message.success("保存成功！");
