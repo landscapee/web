@@ -37,8 +37,8 @@
                         <el-input v-else v-model="form.checkContents" placeholder="请输入检查内容"></el-input>
                     </el-form-item>
                     <el-form-item label="检查方式：" prop="checkMethod">
-                        <span v-if="type=='info'">{{form.checkMethod}}</span>
-                         <el-select @change="checkMethodChange" v-else multiple v-model="form.checkMethod1" placeholder="请选择检查方式">
+                        <span v-if="type=='info'">{{form.checkMethod }}</span>
+                         <el-select   v-else multiple v-model="form.checkMethod" placeholder="请选择检查方式">
                             <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -86,7 +86,7 @@
 
 
                     <el-form-item label="检查时间：" prop="checkTime">
-                        <span v-if="type=='info'">{{form.checkTime}}</span>
+                        <span v-if="type=='info'">{{form.checkTime?moment(form.checkTime).format('YYYY-MM-DD'):''}}</span>
                         <el-input v-else v-model="form.checkTime" placeholder="请输入检查时间"></el-input>
                     </el-form-item>
                     <el-form-item label="检查人员：" prop="checkUser">
@@ -108,6 +108,8 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -139,6 +141,7 @@
                 }
             };
             return {
+                moment:moment,
                 form: {checkMethod:[]},
                 rules: {
                     number: [{validator:infNumberIs, trigger: "blur" }],
@@ -167,18 +170,23 @@
                             ? "法定自查检查计划明细详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data,checkMethod:data.checkMethod||[]}
-                }else {
+
+
+                    request({
+                        url:`${this.$ip}/mms-qualification/examinationDetail/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+                        debugger
+                        this.form={...d.data,checkMethod:d.data.checkMethod?d.data.checkMethod.split(','):[] }
+                    })
+                 }else {
                     // this.form.examinationId
                     this.$set(this.form,'examinationId',this.$route.query.id)
                 }
             }
         },
         methods: {
-            checkMethodChange(val){
-              this.$set(this.form,'checkMethod',val.join(','))
-            },
+
             resetForm(){
                 if(this.type=='edit'){
                     this.form={id:this.form.id,checkMethod:[],number:this.form.number };
@@ -196,10 +204,14 @@
                              }else {
                                  url=`${this.$ip}/mms-qualification/examinationDetail/update`
                             }
+                            let data={...this.form}
+                            if(data.checkMethod){
+                                data.checkMethod=data.checkMethod.join(',')
+                            }
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data: data
                             })
                                 .then(data => {
                                     this.$message.success("保存成功！");

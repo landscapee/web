@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanAdd'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="businessData">
@@ -49,6 +50,7 @@
                 <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
                     <el-table-column slot="radio" label="选择" :width="49"   >
                         <template slot-scope="{ row }">
+
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
@@ -100,7 +102,7 @@ export default {
         '$route':function(val,nm){
             console.log(1,val,nm);
             if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
-                this.leftParams.size=this.tableLeftData.records.length
+                this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                 this.leftParams.current=1
                 this.getList('left');
             }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
@@ -108,6 +110,18 @@ export default {
                 this.rightParams.current = 1
                 this.getList('right');
                 // this.toFrom=nm.query.type
+            }else if(nm.path!='/selfCheckPlan'){
+                 this.leftParams.size=18
+                this.leftParams.current=1
+                 this.rightParams.current = 1
+                this.leftRow={}
+                this.rightRow={}
+                this.leftForm={}
+                this.rightForm={}
+                this.leftSelectId=null
+                this.rightSelectId=null
+                this.tableRightData.records=[]
+                this.getList('left');
             }
         }
     },
@@ -240,6 +254,8 @@ export default {
                 if(row.selected){
                     this.leftSelectId = row.id;
                     this.leftRow={...row}
+                    this.rightSelectId = null;
+
                 }else{
                     this.leftSelectId = null;
                     this.rightSelectId = null;
@@ -288,7 +304,7 @@ export default {
                 }else{
                     let data=JSON.stringify(this.rightRow)
 
-                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag,data:data,id:this.rightSelectId}});
+                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag, id:this.rightSelectId}});
                 }
             }
         },
@@ -352,7 +368,7 @@ export default {
                     params:{...this.leftParams}
                 })
                     .then((data) => {
-                        data.data.records.map((k,l)=>{
+                         data.data.records.map((k,l)=>{
                             if(k.id==this.leftSelectId){
                                 k.selected=true
                                 this.leftRow=k
@@ -390,8 +406,8 @@ export default {
                                 this.rightRow=k
                             }
                         })
-                         if(this.rightParams.current==1){
-                            this.tableRightData.records = data.data.records;
+                          if(this.rightParams.current==1){
+                            this.tableRightData.records = data.data.records
                         }else{
                             this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                         }

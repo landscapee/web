@@ -17256,7 +17256,7 @@
     text-align: left;
 }
 .main-info span[data-v-13014f04] {
-  font-weight: bold !important;
+  /*font-weight: bold!important;*/
   /*margin: 0!important;*/
 }
 .main-info[data-v-13014f04] .el-form-item__label {

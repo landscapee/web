@@ -22,10 +22,10 @@ export const sadetyInfoConfig = (obj) => {
                 { prop: 'situation', label: '违规/差错',width:'148',sortProp:"situation", align: 'center',sort:true,search:{type:'select', prop:'situation',placeholder:"请选择违规/差错",selectProp:['valData','valData'],data:obj.Q_BadMistake,} },
                 { prop: 'reason', label: '原因分析',width:'148',sortProp:"reason", align: 'center',sort:true,search:{type:'input', prop:'reason',placeholder:"请输入原因分析"} },
                 { prop: 'measures', label: '整改措施',width:'148',sortProp:"measures", align: 'center' ,sort:true,search:{type:'input', prop:'measures',placeholder:"请输入整改措施"}},
-                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState", search:{type:'input', prop:'controlState', placeholder:"请输入控制状态"}},
-                {  prop: 'workLink', label: '工作环节' ,width:'148',sortProp:"workLink", search:{type:'input', prop:'workLink', placeholder:"请输入工作环节"}},
-                {  prop: 'keyWord', label: '关键词' ,width:'148',sortProp:"keyWord", search:{type:'input', prop:'keyWord', placeholder:"请输入关键词"}},
-                {  prop: 'serviceEvents', label: '是否安全/服务事件' ,width:'148',sortProp:"serviceEvents", search:{type:'select',prop:'serviceEvents', placeholder:"请选择是否安全/服务事件",selectProp:['valData','valData'], data:obj.Q_securityServices,}},
+                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState",align: 'center', search:{type:'input', prop:'controlState', placeholder:"请输入控制状态"}},
+                {  prop: 'workLink', label: '工作环节' ,width:'148',sortProp:"workLink",align: 'center', search:{type:'input', prop:'workLink', placeholder:"请输入工作环节"}},
+                {  prop: 'keyWord', label: '关键词' ,width:'148',sortProp:"keyWord", align: 'center',search:{type:'input', prop:'keyWord', placeholder:"请输入关键词"}},
+                {  prop: 'serviceEvents', label: '是否安全/服务事件' ,width:'148',align: 'center',sortProp:"serviceEvents", search:{type:'select',prop:'serviceEvents', placeholder:"请选择是否安全/服务事件",selectProp:['valData','valData'], data:obj.Q_securityServices,}},
                  {  slot:'remark',label: '备注' ,width:'190',sortProp:"remark",search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
         ]
 };

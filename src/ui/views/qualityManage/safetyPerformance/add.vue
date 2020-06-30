@@ -20,7 +20,7 @@
                 <div class="row_custom">
                     <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
-                        <el-date-picker :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
+                        <el-date-picker @change="yearMonth" :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="部门：" prop="deptId">
@@ -95,6 +95,7 @@
                     year:null,
                     month:null,
                 },
+                moment:moment,
                 options:{},
                 rules: {
                     yearMonth: [{ validator:yearMonth, trigger: "blur" }],
@@ -130,7 +131,7 @@
                         method: "get",
                     }).then(d => {
 
-                        this.form={...d.data ,yearMonth:`${data.year}-${data.month}`}
+                        this.form={...d.data ,yearMonth:`${d.data.year}-${d.data.month}`}
                     })
                         .catch(error => {
                             this.$message.error(error);
@@ -141,13 +142,22 @@
         },
         watch:{
           'form.yearMonth':function (val) {
+if(val){
+    // this.form.year=Number(val.getFullYear() )
+    // this.form.month= Number(val.getMonth()+1 )
+    console.log(val, this.form);
+}
 
-              this.form.year=Number(val.getFullYear() )
-              this.form.month= Number(val.getMonth()+1 )
-              console.log(val, this.form);
           }
         },
         methods: {
+            yearMonth(val){
+                if(val){
+                    this.form.year=Number(val.getFullYear() )
+                    this.form.month= Number(val.getMonth()+1 )
+                    console.log(val, this.form);
+                }
+            },
             deptNameChange(val){
                 let data
                 this.$refs.form.validateField('yearMonth')

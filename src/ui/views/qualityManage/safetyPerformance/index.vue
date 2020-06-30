@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceYear'" :key="$route.path"></router-view>
         <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="businessData">
@@ -53,10 +53,10 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="option" label="操作" :width="130" >
-                        <template slot-scope="{ row }">
-                            <span @click="copyDetails(row)">
-                                <el-button :disabled="row.copy" class="copyButton">复制绩效明细</el-button>
+                    <el-table-column slot="option" label="操作" align="center" :width="130" >
+                        <template slot-scope="{ row }" >
+                            <span >
+                                <el-button @click="copyDetails(row)" :disabled="row.copy" class="copyButton">复制绩效明细</el-button>
                             </span>
                           </template>
                     </el-table-column>
@@ -114,22 +114,27 @@
         },
         watch:{
             '$route':function(val,nm){
-                console.log(1,val.path,nm.path);
+                 console.log(1,val.path,nm.path);
                 if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceAdd'){
-
-                    this.leftParams.size=this.tableLeftData.records.length
+                     this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
                 }else if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceDetailsAdd'){
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
                     this.getList('right');
-                }else {
-
-                }
+                }else if(nm.path!='/safetyPerformance'){
+                    console.log(this,11111,11111 );
+this.aaa()
+                 }
             }
         },
-        created() {
+        activated(q,b){
+
+            // this.getList('left');
+        },
+            created() {
+
             this.leftParams.current = 1;
             if(this.$router.history.current.path == '/safetyPerformance'){
                 this.getList('left');
@@ -160,6 +165,21 @@
         },
 
         methods: {
+            aaa(){
+this.leftParams.size=18
+                this.leftParams.current=1
+                 this.rightParams.current = 1
+                this.leftRow={}
+                this.rightRow={}
+                this.leftForm={}
+                this.rightForm={}
+                this.leftSelectId=null
+                this.rightSelectId=null
+                this.tableRightData.records=[]
+                this.getList('left');
+
+                 console.log(1,2,3);
+            },
             exportExcel(){
                 console.log(1);
                 if(this.leftSelectId==null){
@@ -257,8 +277,12 @@
                 if(tag=="left"){
                     if(row.selected){
                         this.leftSelectId = row.id;
+                        this.rightSelectId = null;
+
                         this.leftRow={...row}
                     }else{
+
+                        this.leftRow={}
                         this.leftSelectId = null;
                         this.rightSelectId = null;
                         this.tableRightData.records=[]
@@ -357,7 +381,7 @@
             },
 
             getList(tag,scroll){
-                if(tag=='left'){
+                 if(tag=='left'){
 
                     map(this.leftForm,((k,l)=>{
                         console.log(k, l);
@@ -384,8 +408,7 @@
                                 }
                             })
                              if(this.leftParams.current==1){
-
-                                this.tableLeftData.records = data.data.records;
+                                 this.tableLeftData.records = data.data.records;
                             }else{
                                 this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.records);
                             }

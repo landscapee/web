@@ -156,15 +156,20 @@
                      return callback(new Error('试卷编码不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/mms-training/paperInfo/verify?paperCode=${value}&id=${this.$route.query.id}`,
+                        url:`${this.$ip}/mms-training/paperInfo/verify?paperCode=${value}&id=${this.$route.query.id||null}`,
                         method: 'get',
-                    }).then(response => {
-                        console.log(response,10);
-                        if (!response.data) {
-                            callback();
-                        } else {
+                    }).then(d => {
+                        console.log(d,10);
+                        if(d.code==200){
+                            if (!d.data) {
+                                callback();
+                            } else {
+                                callback("该试卷编码已存在");
+                            }
+                        }else {
                             callback("该试卷编码已存在");
                         }
+
                     });
                 }
             };
@@ -174,8 +179,8 @@
                 rules: {
                     paperName: [{ required: true, message: "请输入试卷名称", trigger: "blur" }],
                     totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" }],
-                    paperCode: [{ required: true, message: "请输入试卷编码", trigger: "blur" }],
-                    // paperCode: [{ validator:paperCode, trigger: "change" }],
+                    // paperCode: [{ required: true, message: "请输入试卷编码", trigger: "blur" }],
+                    paperCode: [{ validator:paperCode, trigger: "blur" }],
                   },
                  tableConfig:testMainAddConfig({}),
                 params:{
@@ -363,7 +368,7 @@
                         if(this.row==null){
                             this.$message.error('请先选中一行数据');
                         }else{
-                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,}});
+                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,sId:this.row.id}});
                         }
                     }
                 }else {

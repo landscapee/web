@@ -22,7 +22,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" align='center'  slot="evaluationResultsTemp" label="关联信息" :width="190" fixed="right">
+                    <el-table-column :show-overflow-tooltip="true" align='center'  slot="evaluationResults" label="关联信息" :width="190" fixed="right">
                         <template  slot-scope="{ row }">
                             <div>{{row.evaluationResults}}</div>
                         </template>

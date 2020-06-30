@@ -6,7 +6,7 @@
                     <span>{{row.year}}-{{row.month}}</span>
                 </el-form-item>
                 <el-form-item label="源安全绩效：">
-                    <el-select v-model="form.sourcesId">
+                    <el-select style="width:400px" v-model="form.sourcesId">
                         <el-option v-for="(opt,index) in sourcesList" :label="opt.year+'-'+opt.month" :value="opt.id" :key="index">
 
                             <!--<span> {{opt.year}}-{{opt.month}}</span>-->
@@ -47,7 +47,7 @@
                     url:`${this.$ip}/mms-qualification/securityMerits/sourcesList`,
                     method: 'post',
                     data:{
-                        deptName:this.row.deptName,
+                        deptId:this.row.deptId,
                     }
                 }).then((data) => {
                     this.sourcesList=data.data
@@ -104,7 +104,7 @@
 /deep/ .el-dialog{
     width: 600px;
     .el-dialog__body{
-
+        padding: 30px 30px 0 50px;
     }
 
 }

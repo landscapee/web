@@ -19,9 +19,9 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="120"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="120"  >
                         <template  slot-scope="{ row }">
-                            <div style="text-align: center">
+                            <div >
                                 <el-button  class="copyButton copyButton1" @click="lineTest('/onlineTestDo',row)">参加考试</el-button>
 
                             </div>
@@ -80,10 +80,18 @@ export default {
     },
     methods: {
         lineTest(path,row){
-          this.$router.push({
-              path:path,
-              query:{row:JSON.stringify(row)}
-          })
+            // console.log(row.examTime,new Date().getTime()- 8.64e7);
+
+            if(row.examTime>new Date().getTime()- 8.64e7){
+
+                this.$router.push({
+                    path:path,
+                    query:{id:row.examId}
+                })
+            }else{
+                this.$message.info('考试已过期，下次请提前参加')
+            }
+
         },
 
         requestTable(searchData){
@@ -141,13 +149,16 @@ export default {
                     data[l]=null
                 }
             }))
-           request({
+            request({
                 url:`${this.$ip}/mms-training/examLine/list`,
                  method: 'post',
                    data:{...this.sort,...data,employeeId:this.$store.state.user.userInfo.id},
                params:{...this.params,}
             })
             .then((data) => {
+                data.data.records.map((k,l)=>{
+                    k.id=l+1
+                })
                   this.tableData = extend({},
                      {...data.data}
                  );

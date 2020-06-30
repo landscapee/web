@@ -28,7 +28,7 @@
                     <el-form-item label="选择类型：" prop="optionType">
                         <span v-if="type=='info'">{{  form.optionType }}</span>
                         <el-select @change="typeChange" v-else clearable v-model="form.optionType" placeholder="请选择选择类型">
-                             <el-option v-for="(opt,index) in options.selectType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                            <el-option v-for="(opt,index) in options.selectType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                         </el-select>
                     </el-form-item>
@@ -75,7 +75,7 @@
                 <div class="row_custom">
                     <el-form-item label="正确答案：" prop="answer">
                         <span v-if="type=='info'">{{form.answer}}</span>
-                        <el-select :multiple="form.optionType=='多选'" v-else clearable v-model="form.answer" placeholder="请选择正确答案">
+                        <el-select ref="answer" :multiple="form.optionType=='多选'" v-else clearable v-model="form.answer" placeholder="请选择正确答案">
                             <el-option label="A" value="A"> </el-option>
                             <el-option label="B" value="B"> </el-option>
                             <el-option label="C" value="C"> </el-option>
@@ -84,8 +84,7 @@
                             <el-option label="F" value="F"> </el-option>
 
                         </el-select>
-                        <el-input   v-else v-model="form.answer" placeholder="请输入正确答案"></el-input>
-                    </el-form-item>
+                     </el-form-item>
                     <el-form-item label="分值：" prop="score">
                         <span v-if="type=='info'">{{form.score}}</span>
                         <el-input v-else v-model="form.score" placeholder="请输入分值"></el-input>
@@ -117,10 +116,8 @@
                            url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${this.form.id }`
                         }else{
                             url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${null} `
-
                         }
                         request({
-                        // /
                             url:url,
                             method: 'get',
                         }).then(d => {
@@ -133,31 +130,24 @@
                             }else{
                                 callback(d.message)
                             }
-
                         });
                     } else {
                         callback(new Error('必须为数字类型'));
                     }
                 }
             };
-
-
             return {
                 options:{},
                  form: {optionType:'单选',paperId:''},
                 rules: {
-                    questionNo: [
-
-
-                        { validator:infSources, trigger: "blur" },
-                    ],
+                    // questionNo: [{ validator:infSources, trigger: "blur" },],
                     optionType: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
                     answer: [{required: true, message: '正确答案不能为空', trigger: "blur" }],
                     score: [
                         { required: true, message: '请输入分值', trigger: 'blur' },
-                         {
+                        {
                             validator: (rule, value, callback) => {
-                                 if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&(value+'').split('.').length===1) {
+                                if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&(value+'').split('.').length===1) {
                                     if (value <= 0) {
                                         callback(new Error('分值必须大于0'));
                                     } else {
@@ -171,11 +161,12 @@
                         },
                     ],
                   },
-                type: "add"
-            };
+                type: "add",
+            }
         },
         created() {
             request({
+
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
                 data:["selectType"]
@@ -195,27 +186,28 @@
                 this.form.paperId= this.$route.query.id
                 if(this.type!='add'){
                     request({
-                        url:`${this.$ip}/mms-training/questionInfo/info/${this.$route.query.id}`,
+                        url:`${this.$ip}/mms-training/questionInfo/info/${this.$route.query.sId}`,
                         method: "get",
                     }).then(d => {
-                        if(row.optionType=='多选'){
+                        if(d.data.optionType=='多选'){
                             d.data.answer= d.data.answer.split(';')
                         }
                         this.form={...d.data,paperId:this.$route.query.id}
-                        })
-                        .catch(error => {
-                            this.$message.error(error);
-                        });
+                    })
+
                 }
             }
         },
         methods: {
             typeChange(val){
-                let data=null
+                let data=''
                 if(val=='多选'){
                     data=[]
+                 }else {
+                    data=''
                 }
               this.$set(this.form,'answer',data)
+                console.log(this.form,1111);
 
             },
             resetForm(){

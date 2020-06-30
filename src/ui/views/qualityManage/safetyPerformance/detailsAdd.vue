@@ -33,7 +33,7 @@
                     <el-form-item label="指标类型：" prop="quotaType">
                         <span v-if="type=='info'">{{form.quotaType}}</span>
                         <el-select v-else clearable v-model="form.quotaType" placeholder="请选择指标类型">
-                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
+                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -54,9 +54,9 @@
                         <span v-if="type=='info'">{{form.targetValue}}</span>
                         <el-input v-else v-model="form.targetValue" placeholder="请输入目标值"></el-input>
                     </el-form-item>
-                    <el-form-item label="预警规则：" prop="warningWules">
-                        <span v-if="type=='info'">{{form.warningWules}}</span>
-                        <el-input  v-else v-model="form.warningWules" placeholder="请输入预警规则"></el-input>
+                    <el-form-item label="预警规则：" prop="warningRules">
+                        <span v-if="type=='info'">{{form.warningRules}}</span>
+                        <el-input  v-else v-model="form.warningRules" placeholder="请输入预警规则"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -105,7 +105,7 @@
                         url:`${this.$ip}/mms-qualification/securityMeritsDetail/numberExists`,
                         method: 'POST',
                         data:{
-                            securityMeritsId: this.$route.query.id,
+                            securityMeritsId: this.$route.query.securityMeritsId,
                             number:value,
                         }
                     }).then(response => {
@@ -150,11 +150,11 @@
                 if(this.type == "edit" || this.type == "info"){
 
                     request({
-                        url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
+                        url:`${this.$ip}/mms-qualification/securityMeritsDetail/getById/${this.$route.query.id}`,
                         method: "get",
                     }).then(d => {
 
-                        this.form={...d.data,securityMeritsId:this.$route.query.securityMeritsId }
+                        this.form={...d.data,securityMeritsId:this.$route.query.securityMeritsId ,id:this.$route.query.id}
                     })
                         .catch(error => {
                             this.$message.error(error);
