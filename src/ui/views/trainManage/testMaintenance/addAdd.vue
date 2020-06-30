@@ -111,12 +111,9 @@
                      return callback(new Error('试题序号不能为空'));
                 } else {
                     if (typeof Number(value) == 'number' && !window.isNaN(Number(value))) {
-                        let url
-                        if(this.form.id){
-                           url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${this.form.id }`
-                        }else{
-                            url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${null} `
-                        }
+                        let   url=`${this.$ip}/mms-training/questionInfo/verify?questionNo=${value}&paperId=${this.$route.query.id}&id=${this.form.id ||null}`
+
+
                         request({
                             url:url,
                             method: 'get',
@@ -140,7 +137,7 @@
                 options:{},
                  form: {optionType:'单选',paperId:''},
                 rules: {
-                    // questionNo: [{ validator:infSources, trigger: "blur" },],
+                    questionNo: [{ validator:infSources, trigger: "blur" },],
                     optionType: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
                     answer: [{required: true, message: '正确答案不能为空', trigger: "blur" }],
                     score: [
@@ -241,7 +238,9 @@
                             })
                                 .then(d => {
                                     this.$message.success("保存成功！");
-                                    this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
+                                    // this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
+                                    this.$router.go(-1)
+
                                 })
                                 .catch(error => {
                                     this.$message.success(error);

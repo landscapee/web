@@ -136,7 +136,7 @@
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
                     paperId: [{ required:true,message:'请选择', trigger: "blur" }],
                     examMode: [{ required:true,message:'请选择', trigger: "blur" }],
-                    examName: [{ required:true,message:'请输入考试名次', trigger: "blur" }],
+                    examName: [{ required:true,message:'请输入考试名称', trigger: "blur" }],
                     totalTime: [
                         { required:true,message:'请输入', trigger: "blur" },
                         {
@@ -183,6 +183,12 @@
                         : this.type == "info"
                             ? "考试管理详情"
                             : "";
+                request({
+                    url:`${this.$ip}/mms-training/examInfo/getPaperList`,
+                    method: 'get',
+                }).then((data) => {
+                    this.testList = data.data||[]
+                })
                  if(this.type!='add'){
                      request({
                          url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
@@ -193,12 +199,7 @@
                      }).catch(error => {
                              this.$message.error(error);
                          });
-                     request({
-                         url:`${this.$ip}/mms-training/examInfo/getPaperList`,
-                         method: 'get',
-                     }).then((data) => {
-                             this.testList = data.data||[]
-                         })
+
                  }
             }
 

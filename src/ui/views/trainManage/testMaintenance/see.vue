@@ -9,9 +9,9 @@
                 <div @click="editorForm()"  >
                     <icon  iconClass="reset "></icon>修改
                 </div>
-                <!--<div @click="endTest('form')"  >-->
-                    <!--&lt;!&ndash;<icon iconClass="save" style="width: 0"></icon>导出&ndash;&gt;-->
-                <!--</div>-->
+                <div @click="exportTest"  v-if="type!='add1'">
+                    <icon iconClass="export"></icon>导出
+                </div>
             </div>
         </div>
 
@@ -81,11 +81,14 @@
                 <!--暂无试题-->
             <!--</div>-->
         </div>
+        <ExportTest ref="ExportTest" ></ExportTest>
 
 
     </div>
 </template>
 <script>
+    import ExportTest from './exportTest';
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -121,7 +124,10 @@
             editorForm(){
                this.$router.go(-1)
             },
-
+            exportTest() {
+                console.log(1);
+                this.$refs.ExportTest.open(this.form)
+            },
             saveForm(form) {
              },
 

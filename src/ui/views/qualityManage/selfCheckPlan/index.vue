@@ -284,7 +284,7 @@ export default {
                     this.$message.error('请先选中一行数据');
                 }else{
                     let data=JSON.stringify(this.leftRow)
-                    this.$router.push({path:'/selfCheckPlanAdd',query:{type:tag,data:data,id:this.leftSelectId}});
+                    this.$router.push({path:'/selfCheckPlanAdd',query:{type:tag, id:this.leftSelectId}});
                 }
             }
         },
