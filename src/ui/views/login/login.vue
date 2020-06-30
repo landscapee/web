@@ -35,6 +35,7 @@ import logo from './assets/img/login-logo.png';
 import userimg from './assets/img/login-username.png';
 import pwdimg from './assets/img/login-password.png';
 import './assets/index.scss';
+import postal from 'postal';
 export default {
 	name: 'Login',
 	data() {
@@ -89,6 +90,21 @@ export default {
 				this.$refs.password.focus();
 			});
 		},
+		findUnread(){
+			request({
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				method: 'get',
+			})
+			.then((data) => {
+				postal.publish({
+					channel: 'websocket_count',
+					topic: 'count',
+					data: data.data
+				});
+			}).catch((error) => {
+					
+			});
+		},
 		handleLogin() {
 			this.$refs.loginForm.validate((valid) => {
 				if (valid) {
@@ -109,6 +125,7 @@ export default {
                          }else{
 							setToken(data.data.token);
 							setUserInfo(data.data);
+							this.findUnread();
                             this.$router.push({ path: '/qualityManage' });
                          }
                          this.loading = false;

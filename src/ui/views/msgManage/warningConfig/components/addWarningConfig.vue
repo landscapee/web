@@ -16,11 +16,11 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="消息名称" prop="subject">
+          <el-form-item label="消息名称：" prop="subject">
             <span v-if="type=='info' || type=='edit' ">{{form.subject}}</span>
             <el-input v-if="type=='add'" v-model="form.subject" placeholder="请输入消息名称"></el-input>
           </el-form-item>
-          <el-form-item label="推送对象" >
+          <el-form-item label="推送对象：" >
             <span v-if="type=='info'">{{selectPushObject.join(",")}}</span>
             <el-select v-else  v-model="selectPushObject" multiple placeholder="请选择推送对象">
                 <el-option v-for="item in pushObject" :key="item.valCode" :label="item.valData" :value="item.valCode"></el-option>
@@ -28,13 +28,13 @@
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="消息模板" prop="contentTemplate">
+          <el-form-item label="消息模板：" prop="contentTemplate">
             <span v-if="type=='info'">{{form.contentTemplate}}</span>
             <el-input v-else v-model="form.contentTemplate" placeholder="请输入消息模板"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="人员" >
+          <el-form-item label="人员：" >
               <el-button @click="userOpen('user')" size="mini" icon="el-icon-plus">选择人员</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
@@ -44,7 +44,7 @@
 								</el-scrollbar>
 							</div>
           </el-form-item>
-          <el-form-item label="岗位" >
+          <el-form-item label="岗位：" >
             <el-button @click="userOpen('station')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
@@ -56,7 +56,7 @@
           </el-form-item>
         </div>
         <div class="row_custom2">
-           <el-form-item label="角色" >
+           <el-form-item label="角色：" >
               <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
@@ -66,7 +66,7 @@
 								</el-scrollbar>
 							</div>
            </el-form-item>
-           <el-form-item label="部门" >
+           <el-form-item label="部门：" >
               <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择岗位</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
@@ -239,16 +239,16 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 90px;
+        width: 100px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 90px;
+        margin-left: 100px;
       }
       .row_custom2{
         height: 166px;
         /deep/ .el-form-item__content{
             height: 40px;
-            width:405px;
+            width:395px;
             text-align: left;
         }
         @include common-input;
@@ -260,7 +260,7 @@ export default {
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 379px;
+            width: 369px;
             text-align: left;
         }
         @include common-input;
@@ -274,7 +274,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 90px);
+          width: calc(100% - 100px);
         }
       }
   }

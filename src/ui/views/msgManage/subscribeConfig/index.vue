@@ -178,7 +178,6 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;

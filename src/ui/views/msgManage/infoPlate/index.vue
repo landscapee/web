@@ -31,31 +31,35 @@
                     </el-table-column>
                     <el-table-column slot="attachment" label="附件"  align="center" >
                         <template slot-scope="{ row }">
-                            <a :href="row.attachment">{{row.attachment}}</a>
+                            <el-button @click="downloadFile(row)" size="mini">下载</el-button>
                         </template>
                     </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="148" align="center" >
                         <template slot-scope="{ row }">
-                             <el-button size="mini" @click="clickAction('release')" v-if="isActive==0 && row.state==0">发布</el-button>
-                             <el-button size="mini" @click="clickAction('receive')" v-if="isActive==1 && row.state==0">接收处理</el-button>
-                             <el-button size="mini" @click="clickAction('close')" v-if="isActive==1 && row.state==1">关闭</el-button>
+                             <el-button size="mini" @click="clickAction('release',row.id)" v-if="isActive==0 && row.state==0">发布</el-button>
+                             <el-button size="mini" @click="clickAction('receive',row.id)" v-if="isActive==1 && row.state==0">接收处理</el-button>
+                             <el-button size="mini" @click="clickAction('close',row.id)" v-if="isActive==1 && row.state==1">关闭</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
             </div>
         </div>
+        <Download ref="downloadFile"></Download>
     </div>
 </template>
 <script>
+import Download from '@/ui/components/download';
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { infoPlateReceiveTable,infoPlateSendTable } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
+import postal from 'postal';
 export default {
     components: {
         Icon,
-        SearchTable
+        SearchTable,
+        Download
 	},
     name: '',
     data() {
@@ -76,7 +80,14 @@ export default {
     },
    created() {
        this.findDataDictionary();
-       this.getList();
+      
+    },
+    mounted(){
+        this.$eventBus.$on('infoPlate', msg => {
+            if(msg == 'receive'){
+                this.switchTable(1);
+            }
+        });
     },
     watch:{
         params:{
@@ -87,6 +98,9 @@ export default {
         }
     },
     methods: {
+        downloadFile(row){
+            this.$refs.downloadFile.open();
+        },
         findDataDictionary(){
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -96,19 +110,39 @@ export default {
             .then(data => {
               this.infoSelect = data.data["infoTypeCode"];
               this.tableConfig = infoPlateSendTable(this.infoSelect);
+               if(this.$route.query && this.$route.query.type=='receive'){
+                    this.switchTable(1);
+                }else{
+                    this.getList();
+                }
             })
             .catch(error => {
              this.$message.success(error);
             });
         },
-        clickAction(action){
+        findUnread(){
+			request({
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				method: 'get',
+			})
+			.then((data) => {
+				postal.publish({
+					channel: 'websocket_count',
+					topic: 'count',
+					data: data.data
+				});
+			}).catch((error) => {
+					
+			});
+		},
+        clickAction(action,id){
             let url = "";
             if(action=='release'){
-                url =`${this.$ip}/mms-notice/notificationPublish/publish/${this.selectId}` ;
+                url =`${this.$ip}/mms-notice/notificationPublish/publish/${id}` ;
             }else if(action=='receive'){
-                url =`${this.$ip}/mms-notice/notificationRecipient/handle/${this.selectId}` ;
+                url =`${this.$ip}/mms-notice/notificationRecipient/handle/${id}` ;
             }else if(action=='close'){
-                url =`${this.$ip}/mms-notice/notificationRecipient/close/${this.selectId}`  ;
+                url =`${this.$ip}/mms-notice/notificationRecipient/close/${id}`  ;
             }
             request({url,method: 'get'}).then((data) => {
                 if(action=='release'){
@@ -118,6 +152,7 @@ export default {
                 }else if(action=='close'){
                     this.$message.success('关闭成功');
                 }
+                this.findUnread();
                 this.selectId=null,
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
@@ -220,7 +255,7 @@ export default {
             request({
                 url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
-                data:{...this.sort,...this.form},
+                data:this.isActive==0?{...this.sort,...this.form}:{...this.sort,...this.form,state:[0,1]},
                 params:this.params
             })
             .then((data) => {
@@ -244,7 +279,6 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;

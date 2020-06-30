@@ -16,13 +16,13 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="信息类型" prop="type">
+          <el-form-item label="信息类型：" prop="type">
             <span v-if="type=='info'">{{form.type}}</span>
             <el-select v-else  v-model="form.type"  placeholder="请选择信息类型">
                 <el-option v-for="item in infoType" :key="item.valCode" :label="item.valData" :value="item.valData"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="是否启用" prop="enable">
+          <el-form-item label="是否启用：" prop="enable">
             <span v-if="type=='info'">{{form.enable?'是':'否'}}</span>
             <el-select v-else  v-model="form.enable"  placeholder="请选择是否启用">
                 <el-option v-for="item in [{label:'是',value:true},{label:'否',value:false}]" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -30,7 +30,7 @@
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="人员" >
+          <el-form-item label="人员：" >
               <el-button @click="userOpen()" size="mini" icon="el-icon-plus">选择人员</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
@@ -168,16 +168,16 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 90px;
+        width: 100px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 90px;
+        margin-left: 100px;
       }
       .row_custom2{
         height: 166px;
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 910px;
+            width: 900px;
             text-align: left;
         }
         @include common-input;
@@ -189,7 +189,7 @@ export default {
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 377px;
+            width: 367px;
             text-align: left;
         }
         @include common-input;
@@ -203,7 +203,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 90px);
+          width: calc(100% - 100px);
         }
       }
   }

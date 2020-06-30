@@ -16,7 +16,7 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom6">
-          <el-form-item label="信息类型" prop="type">
+          <el-form-item label="信息类型：" prop="type">
             <span v-if="type=='info'">{{form.type}}</span>
             <el-select v-else  v-model="form.type"  placeholder="请选择信息类型">
                 <el-option v-for="item in infoType" :key="item.valCode" :label="item.valData" :value="item.valData"></el-option>
@@ -24,17 +24,17 @@
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="发送内容" prop="content">
+          <el-form-item label="发送内容：" prop="content">
             <span v-if="type=='info'">{{form.content}}</span>
             <el-input v-else type="textarea" v-model="form.content" placeholder="请输入消息模板"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="接收单位" >
+          <el-form-item label="接收单位：" >
             <span v-if="type=='info'">{{receivingUnit}}</span>
             <el-input v-if="type=='add'" v-model="receivingUnit" placeholder="请选择接收单位"></el-input>
           </el-form-item>
-          <el-form-item label="接收人" >
+          <el-form-item label="接收人：" >
             <span v-if="type=='info'">{{receiver}}</span>
             <el-input v-if="type=='add'" v-model="receiver" placeholder="请选择接收人"></el-input>
           </el-form-item>
@@ -42,17 +42,17 @@
           <el-button @click="handleSelectUser('object')">接收对象选择</el-button>
         </div>
         <div class="row_custom3">
-          <el-form-item label="是否要求处理" prop="require">
+          <el-form-item label="是否要求处理：" prop="require">
             <el-radio v-model="form.require" label="1">是</el-radio>
             <el-radio v-model="form.require" label="2">否</el-radio>
            </el-form-item>
-           <el-form-item label="要求处理时间" prop="deadline">
+           <el-form-item label="要求处理时间：" prop="deadline">
             <span v-if="type=='info'">{{form.deadline}}</span>
             <el-date-picker v-model="form.deadline" type="date" placeholder="请选择要求处理时间"></el-date-picker>
           </el-form-item>
         </div>
         <div class="row_custom5">
-          <el-form-item label="附件" >
+          <el-form-item label="附件：" >
             <span v-if="type=='info'">{{filename}}</span>
             <el-input v-if="type=='add'" v-model="filename" placeholder="支持多个附件上传"></el-input>
           </el-form-item>
@@ -264,15 +264,15 @@ export default {
         display: inline-block;
       }
       /deep/ .el-form-item__label {
-        width: 120px;
+        width: 130px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 120px;
+        margin-left: 130px;
       }
        .row_custom6{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 880px;
+            width: 870px;
             text-align: left;
         }
         @include common-input;
@@ -280,7 +280,7 @@ export default {
       .row_custom5{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 798px;
+            width: 788px;
             text-align: left;
         }
         @include common-input;
@@ -288,7 +288,7 @@ export default {
       .row_custom4{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 310px;
+            width: 300px;
             text-align: left;
         }
         @include common-input;
@@ -296,7 +296,7 @@ export default {
       .row_custom3{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 375px;
+            width: 365px;
             text-align: left;
         }
         @include common-input;
@@ -304,7 +304,7 @@ export default {
       .row_custom2{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 248px;
+            width: 238px;
             text-align: left;
         }
         @include common-input;
@@ -312,7 +312,7 @@ export default {
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 350px;
+            width: 340px;
             text-align: left;
         }
         @include common-input;
@@ -326,7 +326,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 120px);
+          width: calc(100% - 130px);
         }
       }
   }
