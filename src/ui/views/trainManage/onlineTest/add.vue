@@ -133,8 +133,8 @@
                     method: "get",
                 }).then(d => {
                     let row=d.data
-                    this.params={
-                        employeeId:this.$store.state.user.userInfo.administrativeId,
+                     this.params={
+                        employeeId:this.$store.state.user.userInfo.id,
                         examId:row.id,
                         paperId:row.paperId,
                     }
