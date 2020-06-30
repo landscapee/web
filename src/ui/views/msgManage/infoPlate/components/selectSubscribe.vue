@@ -20,6 +20,7 @@ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import request from '@lib/axios.js';
 import { formatTreeData } from '@lib/tools.js';
+import { selectSubscribeTable } from '../tableConfig.js';
 import { extend, get, cloneDeep, filter, some, flow, concat, map } from 'lodash';
 export default {
      components: {
@@ -29,13 +30,83 @@ export default {
 	name: '',
 	data() {
 		return {
-			dialogVisible:false
+			dialogVisible:false,
+			tableData:{records:[]},
+            tableConfig:selectSubscribeTable(),
+            params:{
+				current: 1,
+				size: 15,
+            },
+            form:{},
+            sort:{},
+            selectId:null,
 		};
 	},
+	watch:{
+        params:{
+            handler:function(val,oldval){
+                this.getList();
+            },
+            deep:true//对象内部的属性监听，也叫深度监听
+        }
+    },
 	methods: {
         handleClose(){
             this.dialogVisible = false;
+		},
+		listenToCheckedChange(row, column, event){
+            let select = row.selected;
+            this.tableData.records.map(r =>{
+                if(r.selected){
+                    r.selected = false;
+                }
+            })
+            row.selected  = !select;
+            if(row.selected){
+                this.selectId = row.id;
+            }else{
+                this.selectId = null;
+            }
+            this.params.current = 1;
+            this.$set(this.tableData.records,row.index,row);
         },
+		requestTable(searchData){
+            this.form = searchData;
+            this.selectId=null,
+            this.tableData={records:[]};
+            this.params.current = 1;
+            this.$refs.searchTable.$refs.body_table.setCurrentRow();
+            this.getList();
+        },
+        headerSort(column){
+            this.sort = {};
+            this.sort[column.property] = column.order;
+            this.$refs.searchTable.$refs.body_table.setCurrentRow();
+            this.params.current = 1;
+            this.getList();
+		},
+		getList(){
+           request({
+                url:`${this.$ip}/mms-notice/notificationSubscribe/list`, 
+                method: 'post',
+                data:{...this.sort,...this.form},
+                params:this.params
+            })
+            .then((data) => {
+               this.tableData = extend({}, this.tableData, data.data);
+            }).catch((error) => {
+            
+            });
+        },
+        handleSizeChange(size) {
+            this.params.current = 1;
+			this.params.size = size;
+		},
+		handleCurrentChange(current) {
+			this.params.current = current;
+		},
+		handleCheckedChange() {},
+		handleSelectionChange() {},
 		open() {
 		
 			

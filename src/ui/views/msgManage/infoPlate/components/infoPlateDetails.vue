@@ -15,47 +15,47 @@
     </div>
     <div class="main-content">
       <el-form label-position="right" :model="form"  ref="form" >
-        <div class="row_custom">
-            <el-form-item label="发送时间"  >
+        <div class="row_item">   
+            <el-form-item label="发送时间：" label-width="164px" >
                 <span >{{form.sendDate}}</span>
             </el-form-item>
-            <el-form-item :label="this.parentType=='send'?'接收单位':'发送单位'"  >
+            <el-form-item :label="this.parentType=='send'?'接收单位：':'发送单位：'"  label-width="164px">
                 <span >{{form.receiptDepartment}}</span>
             </el-form-item>
         </div>
-        <div class="row_custom2">
-            <el-form-item :label="this.parentType=='send'?'接收人':'发送人'"  >
+        <div class="row_item_row row_item">
+            <el-form-item :label="this.parentType=='send'?'接收人：':'发送人：'"  label-width="164px">
                 <span >{{form.receiptPerson}}</span>
             </el-form-item>
         </div>
-        <div class="row_custom2">
-            <el-form-item label="发送内容"  >
+        <div class="row_item_row row_item">
+            <el-form-item label="发送内容："  label-width="164px">
                 <span >{{form.content}}</span>
             </el-form-item>
         </div>
-        <div class="row_custom">
-          <el-form-item label="信息类型" >
+        <div class="row_item">   
+          <el-form-item label="信息类型：" label-width="164px">
             <span >{{form.type}}</span>
           </el-form-item>
-          <el-form-item label="信息状态" >
+          <el-form-item label="信息状态：" label-width="164px">
              <span >{{form.state}}</span>
           </el-form-item>
         </div>
-       <div class="row_custom2">
-          <el-form-item label="要求处理时间" >
+       <div class="row_item_row row_item">
+          <el-form-item label="要求处理时间：" label-width="164px">
             <span >{{form.deadline}}</span>
           </el-form-item>
         </div>
-        <div class="row_custom">
-          <el-form-item label="实际处理时间" >
+         <div class="row_item">   
+          <el-form-item label="实际处理时间：" label-width="164px">
             <span >{{form.type}}</span>
           </el-form-item>
-          <el-form-item label="是否要求接收处理" >
+          <el-form-item label="是否要求接收处理：" label-width="164px">
              <span >{{form.require}}</span>
           </el-form-item>
         </div>
-        <div class="row_custom2">
-          <el-form-item label="附件" >
+        <div class="row_item_row row_item">
+          <el-form-item label="附件：" label-width="164px">
             <span >{{filename}}</span>
             <el-button>下载</el-button>
           </el-form-item>
@@ -100,7 +100,7 @@ export default {
       this.$route.meta.title ="详情";
         request({
             url:`${this.$ip}/mms-notice/notificationPublish/getById/${this.$route.query.id}`,
-            method: "post",
+            method: "get",
         })
         .then(data => {
             this.form = data.data;
@@ -119,37 +119,13 @@ export default {
 @import "@/ui/styles/common_form.scss";
 .addSysParameter {
   margin-top: 40px;
+   .row_item{
+        display: flex;
+    }
    .el-form {
-      width: 1000px;
+        width: 796px;
       /deep/ .upload-demo{
         display: inline-block;
-      }
-      /deep/ .el-form-item__label {
-        width: 140px;
-      }
-      /deep/ .el-form-item__content {
-        margin-left: 140px;
-      }
-      .row_custom{
-        /deep/ .el-form-item__content{
-            height: 40px;
-            width: 340px;
-            text-align: left;
-        }
-        @include common-input;
-      }
-      .row_custom2{
-        /deep/ .el-form-item__content{
-            height: 40px;
-            width:800px;
-            text-align: left;
-        }
-        @include common-input;
-      }
-      .row_item_row{
-        .el-form-item {
-          width: calc(100% - 140px);
-        }
       }
   }
 }

@@ -57,7 +57,7 @@ import Icon from '@components/Icon-svg/index';
 		asyncRoutes,
 		username:this.$store.getters.userInfo.name,
 		sysname:'成都天府机场机务管理系统',
-		tipsNumber:'99+',
+		tipsNumber:0,
 		logo,
 		bell,
 		esc,
@@ -83,17 +83,26 @@ import Icon from '@components/Icon-svg/index';
 			channel: 'websocket_msg',
 			topic: 'message',
 			callback: async data => {
+				this.tipsNumber = data.content.count;
 				this.$notify({
 					title: '收到一条消息',
 					message: data.content.content,
 					position: 'bottom-right'
 				});
 			}
+		});
+		postal.subscribe({
+			channel: 'websocket_count',
+			topic: 'count',
+			callback: async data => {
+				this.tipsNumber = data;
+			}
 		})
 	},
 	methods:{
 		goInfo(){
-
+			this.$router.push({ path: '/infoPlate' ,query:{type:'receive'}});
+			this.$eventBus.$emit('infoPlate', 'receive');
 		},
 		logout(){
 			this.$router.push({ path: '/' });

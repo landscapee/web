@@ -232,3 +232,31 @@ export const historyPlateReceiveTable = (infoSelect) => {
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
+export const selectSubscribeTable = () => {
+    return [
+        { prop: '', label: '', align: 'center',sort:true,sortProp:"",search:{prop:'',type:'input',placeholder:"请选择信息类型"} },
+        { prop: '',formatter: (row, column, cellValue) => {
+            let arr = [];
+            if(row.receiptDepartment){
+                row.receiptDepartment.map(item=>{
+                    arr.push(item.name);
+                })
+                return arr.join(",");
+            }else{
+                return '';
+            }
+            
+        }, label: '接收单位', align: 'center',search:{prop:'receiptDepartment',type:'input',placeholder:"请输入接收单位"} },
+        { prop: '', formatter: (row, column, cellValue) => {
+            let arr = [];
+            if(row.receiptPerson){
+                row.receiptPerson.map(item=>{
+                    arr.push(item.name);
+                })
+                return arr.join(",");
+            }else{
+                return '';
+            }
+        },label: '接收人',width:'540', align: 'center',search:{prop:'receiptPerson',type:'input',extendType:'search',placeholder:"请输入接收人"}},
+    ]
+};

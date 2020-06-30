@@ -299,7 +299,6 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
 .businessData{
-    margin-top:40px;
     .top-content{
         .top-toolbar{
             padding: 0px 30px 0px 30px;

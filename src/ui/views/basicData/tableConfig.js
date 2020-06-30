@@ -15,7 +15,7 @@ export const businessSubsetTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'valCode', label: '业务数据编码', align: 'center',sort:true,sortProp:"valCodeMode",search:{type:'input',placeholder:"请输入编码",prop:'valCode'} },
-        { prop: 'valData', label: '业务数据', align: 'center',sort:true,sortProp:"valDataMode",search:{type:'select',placeholder:"请选择数据",data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}],prop:'valData'} },
+        { prop: 'valData', label: '业务数据', align: 'center',sort:true,sortProp:"valDataMode",search:{type:'input',placeholder:"请输入数据",prop:'valData'} },
         { prop: 'valSummary', label: '业务数据说明', align: 'center',sort:true,sortProp:"valSummaryMode",search:{type:'input',placeholder:"请输入说明",prop:'valSummary'} },
         { prop: 'valStatus', label: '是否启用', align: 'center',
         formatter: function(row) {

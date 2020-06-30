@@ -16,23 +16,23 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="类型" prop="dicType">
+          <el-form-item label="类型：" prop="dicType">
             <span v-if="type=='info'">{{form.dicType}}</span>
             <el-input v-else v-model="form.dicType" placeholder="请输入类型"></el-input>
           </el-form-item>
-          <el-form-item label="类型编码" prop="dicCode">
+          <el-form-item label="类型编码：" prop="dicCode">
             <span v-if="type=='info'">{{form.dicCode}}</span>
             <el-input v-else v-model="form.dicCode" placeholder="请输入类型编码"></el-input>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="类型说明" prop="dicSummary">
+          <el-form-item label="类型说明：" prop="dicSummary">
             <span v-if="type=='info'">{{form.dicSummary}}</span>
             <el-input v-else v-model="form.dicSummary" placeholder="请输入类型说明"></el-input>
           </el-form-item>
         </div>
         <div class="row_item row_item_row">
-          <el-form-item label="允许维护" prop="enableMaintain">
+          <el-form-item label="允许维护：" prop="enableMaintain">
             <span v-if="type=='info'">{{form.enableMaintain==1?"是":"否"}}</span>
             <el-select v-else v-model="form.enableMaintain" placeholder="请选择是否允许维护">
               <el-option label="是" :value="1"></el-option>
@@ -132,15 +132,15 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 90px;
+        width: 100px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 90px;
+        margin-left: 100px;
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 360px;
+            width: 350px;
             text-align: left;
         }
         @include common-input;
@@ -154,7 +154,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 90px);
+          width: calc(100% - 100px);
         }
       }
   }
