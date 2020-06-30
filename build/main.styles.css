@@ -17519,6 +17519,24 @@
 .onlineTest .form[data-v-6b41dcfa] {
     width: 57.14286rem;
 }
+[data-v-6b41dcfa] .el-row {
+  border: 0.07143rem solid #888888;
+}
+[data-v-6b41dcfa] .el-row .rightBorder {
+    border-right: 0.07143rem solid #888888;
+}
+[data-v-6b41dcfa] .el-row .el-card {
+    border: 0;
+}
+[data-v-6b41dcfa] .el-row .el-card .item {
+      margin: 1.42857rem 0;
+}
+[data-v-6b41dcfa] .el-row .el-card .el-checkbox__label {
+      padding-left: 1.07143rem;
+}
+[data-v-6b41dcfa] .el-row .el-card .el-scrollbar__wrap {
+      overflow-x: hidden;
+}
 [data-v-56027c34] .el-dialog {
   width: 42.85714rem;
 }

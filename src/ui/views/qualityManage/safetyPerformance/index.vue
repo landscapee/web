@@ -124,8 +124,18 @@
                     this.rightParams.current = 1
                     this.getList('right');
                 }else if(nm.path!='/safetyPerformance'){
-                    console.log(this,11111,11111 );
-this.aaa()
+
+                    this.leftParams.size=18
+                    this.leftParams.current=1
+                    this.rightParams.current = 1
+                    this.leftRow={}
+                    this.rightRow={}
+                    this.leftForm={}
+                    this.rightForm={}
+                    this.leftSelectId=null
+                    this.rightSelectId=null
+                    this.tableRightData.records=[]
+                    this.getList('left');
                  }
             }
         },
@@ -165,21 +175,7 @@ this.aaa()
         },
 
         methods: {
-            aaa(){
-this.leftParams.size=18
-                this.leftParams.current=1
-                 this.rightParams.current = 1
-                this.leftRow={}
-                this.rightRow={}
-                this.leftForm={}
-                this.rightForm={}
-                this.leftSelectId=null
-                this.rightSelectId=null
-                this.tableRightData.records=[]
-                this.getList('left');
 
-                 console.log(1,2,3);
-            },
             exportExcel(){
                 console.log(1);
                 if(this.leftSelectId==null){

@@ -136,7 +136,7 @@
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
                     paperId: [{ required:true,message:'请选择', trigger: "blur" }],
                     examMode: [{ required:true,message:'请选择', trigger: "blur" }],
-                    examName: [{ required:true,message:'请输入考试名次', trigger: "blur" }],
+                    examName: [{ required:true,message:'请输入考试名称', trigger: "blur" }],
                     totalTime: [
                         { required:true,message:'请输入', trigger: "blur" },
                         {

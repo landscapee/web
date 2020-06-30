@@ -33,7 +33,8 @@
                  <div class="formRight">
                      <el-form    :model="form" :rules="rules" ref="form" >
                          <div style="font-size: 20px;font-weight: bold">题目描述{{adata.questionName}}
-                             （{{this.testData[this.numIndex]=='多选'?this.form.employeeAnswer.join(';'):this.form.employeeAnswer}}）
+
+                             （<i v-if="form.employeeAnswer">{{this.testData[this.numIndex].optionType=='多选'?form.employeeAnswer.join(";"):form.employeeAnswer}}</i>）
                          </div>
                          <el-form-item label="" prop="infTime1">
                              <el-checkbox-group v-if="adata.optionType=='多选'" v-model="form.employeeAnswer"  >
@@ -69,7 +70,7 @@
         <div class="QfooterTest" v-if="testData.length" >
             <el-button @click="last" :disabled="numIndex<=0">上一题</el-button>
             <el-button @click="saveForm('form')">保存</el-button>
-            <el-button @click="next" :disabled="numIndex>=testData.length-1">下一题</el-button>
+            <el-button type="primary" @click="next" :disabled="numIndex>=testData.length-1">下一题</el-button>
         </div>
     </div>
 </template>
@@ -104,17 +105,7 @@
           adata(){
               return this.testData[this.numIndex]||{}
           },
-            answer(){
-debugger
-              if(this.testData[this.numIndex]){
-                   if(this.testData[this.numIndex]=='多选'){
-                      return this.form.employeeAnswer.join(';')
-                  }else {
-                      return this.form.employeeAnswer
 
-                  }
-              }
-            },
         },
 
 
@@ -182,9 +173,9 @@ debugger
                     method:'post',
                     data:{...this.params,questionId:this.testData[this.numIndex].id}
                 }).then((d)=>{
-                     if(d.code==200&&d.data&&d.data.length!=0){
+                      if(d.code==200&&d.data&&d.data.length!=0){
                          if(this.testData[this.numIndex].optionType=='多选'){
-                            this.form.employeeAnswer=d.data
+                            this.form.employeeAnswer=d.data.split(';')
                         }else {
                             this.form.employeeAnswer=d.data
 
@@ -255,6 +246,7 @@ debugger
                  }).then((d)=>{
                      // d.data
                      this.testData=d.data
+                     this.getAnser()
                      if(num==1){
                         this.timer= setInterval(()=>{
                              this.testime--

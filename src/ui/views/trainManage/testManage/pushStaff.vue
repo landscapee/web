@@ -21,7 +21,7 @@
             <div class="form"   >
 
                 <el-row>
-                    <el-col class="rightBorder" :span="10">
+                    <el-col class="rightBorder" :span="12">
                         <div>
                             <el-card class="box-card" shadow="never" border-radius="2px">
                                 <el-scrollbar style="height:500px">
@@ -30,7 +30,7 @@
                             </el-card>
                         </div>
                     </el-col>
-                    <el-col :span="14">
+                    <el-col :span="12">
                         <div>
                         <el-card class="box-card" shadow="never" border-radius="2px">
                             <el-scrollbar style="height:500px">

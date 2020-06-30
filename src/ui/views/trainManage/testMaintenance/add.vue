@@ -9,9 +9,9 @@
                 <div @click="preview"  >
                     <icon iconClass="info"></icon>预览
                 </div>
-                <!--<div @click="exportTest"  v-if="type!='add1'">-->
-                    <!--<icon iconClass="export"></icon>导出-->
-                <!--</div>-->
+                <div @click="exportTest"  v-if="type!='add1'">
+                    <icon iconClass="export"></icon>导出
+                </div>
                 <div @click="type!='info'?saveForm('form'):()=>{}" v-if="type!='info'" >
                     <icon iconClass="save"></icon>保存
                 </div>
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div style="  font-size: 18px" >试卷基本信息</div>
+        <div style="  font-size: 18px;font-weight: bold" >试卷基本信息</div>
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
 
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
@@ -35,18 +35,14 @@
                         <el-input v-else v-model="form.paperCode" placeholder="请输入试卷编码"></el-input>
                     </el-form-item>
                     <el-form-item style="position: relative" label="考试时长：" prop="totalTime">
-                        <span v-if="type=='info'">{{form.totalTime}}</span>
+                        <span v-if="type=='info'">{{form.totalTime}}分钟</span>
                         <el-input v-else type="number" v-model="form.totalTime" placeholder="请输入考试时长"></el-input>
-                        <span style="position: absolute;top:0;right:-20px">分</span>
+                        <span v-if="type!='info'" style="position: absolute;top:0;right:-20px">分</span>
                     </el-form-item>
                     <el-form-item label="试卷类别：" prop="paperType">
                         <span v-if="type=='info'">{{form.paperType}}</span>
                         <el-select v-else clearable v-model="form.paperType" placeholder="请选择试卷类别">
-                            <!--<el-option label="资质类" value="资质类"> </el-option>-->
-                            <!--<el-option label="资质类" value="资质类"> </el-option>-->
-                            <!--<el-option label="入职培训类" value="入职培训类"> </el-option>-->
-                            <!--<el-option label="日常管理类" value="日常管理类"> </el-option>-->
-                            <!--<el-option label="专业类" value="专业类"> </el-option>-->
+
                             <el-option v-for="(opt,index) in options.paperCategory" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                         </el-select>
@@ -56,8 +52,6 @@
                     <el-form-item label="考试类型：" prop="testType">
                         <span v-if="type=='info'">{{form.testType}}</span>
                          <el-select v-else clearable v-model="form.testType" placeholder="请选择考试类型">
-                            <!--<el-option label="开放式" value="开放式"> </el-option>-->
-                            <!--<el-option label="封闭式" value="封闭式"> </el-option>-->
                              <el-option v-for="(opt,index) in options.testCategory" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                          </el-select>
@@ -65,21 +59,12 @@
                     <el-form-item label="资质类型：" prop="qualificationType">
                         <span v-if="type=='info'">{{form.qualificationType}}</span>
                          <el-select v-else clearable v-model="form.qualificationType" placeholder="请选择考试资质类型">
-                            <!--<el-option label="维修" value="维修"> </el-option>-->
-                            <!--<el-option label="桥载" value="桥载"> </el-option>-->
-                            <!--<el-option label="勤务" value="勤务"> </el-option>-->
-                            <!--<el-option label="安全" value="安全"> </el-option>-->
                              <el-option v-for="(opt,index) in options.qualificationType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
-
                          </el-select>
                     </el-form-item>
                     <el-form-item label="业务类型：" prop="businessType">
                     <span v-if="type=='info'">{{form.businessType}}</span>
                     <el-select v-else clearable v-model="form.businessType" placeholder="请选择业务类型">
-                        <!--<el-option label="维修" value="维修"> </el-option>-->
-                        <!--<el-option label="桥载" value="桥载"> </el-option>-->
-                        <!--<el-option label="勤务" value="勤务"> </el-option>-->
-                        <!--<el-option label="质量" value="质量"> </el-option>-->
                         <el-option v-for="(opt,index) in options.businessType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                     </el-select>
@@ -87,13 +72,6 @@
                     <el-form-item label="适用对象：" prop="suitableUser">
                     <span v-if="type=='info'">{{form.suitableUser}}</span>
                     <el-select v-else clearable v-model="form.suitableUser" placeholder="请选择适用对象">
-                        <!--<el-option label="机务部" value="机务部"> </el-option>-->
-                        <!--<el-option label="桥载项目" value="桥载项目"> </el-option>-->
-                        <!--<el-option label="勤务项目" value="勤务项目"> </el-option>-->
-                        <!--<el-option label="维修项目" value="维修项目"> </el-option>-->
-                        <!--<el-option label="质量室" value="质量室"> </el-option>-->
-                        <!--<el-option label="培训室" value="培训室"> </el-option>-->
-                        <!--<el-option label="工程技术资料室" value="工程技术资料室"> </el-option>-->
                         <el-option v-for="(opt,index) in options.applyObject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
 
                     </el-select>
@@ -109,7 +87,7 @@
             </el-form>
         </div>
         <div class="headDiv1">
-            <div style="font-size: 18px" >所含试题 <span style="color:#7F7F7F;font-size: 18px">（数量{{arrTable.length}}）</span></div>
+            <div  > <span style="font-size: 18px;font-weight: bold">所含试题</span>  <span style="color:#7F7F7F;font-size: 18px">（数量{{arrTable.length}}）</span></div>
             <div class="topToolbar">
                 <div @click="importExcel"><icon iconClass="add" ></icon>导入</div>
                 <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
@@ -173,14 +151,35 @@
                     });
                 }
             };
+            const paperName = (rule, value, callback) => {
+                if (!value) {
+                     return callback(new Error('试卷编码不能为空'));
+                } else {
+                    request({
+                        url:`${this.$ip}/mms-training/paperInfo/verifyName?paperCode=${value}&id=${this.$route.query.id||null}`,
+                        method: 'get',
+                    }).then(d => {
+                         if(d.code==200){
+                            if (!d.data) {
+                                callback();
+                            } else {
+                                callback("该试卷名称已存在");
+                            }
+                        }else {
+                            callback("该试卷名称已存在");
+                        }
+
+                    });
+                }
+            };
             return {
                 form: {},
                 formT:{},
                 rules: {
-                    paperName: [{ required: true, message: "请输入试卷名称", trigger: "blur" }],
+                    paperName: [{ validator:paperName, trigger: "blur" }],
                     totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" }],
-                    // paperCode: [{ required: true, message: "请输入试卷编码", trigger: "blur" }],
-                    paperCode: [{ validator:paperCode, trigger: "blur" }],
+                    testType: [{ required: true, message: "请选择考试类型", trigger: "blur" }],
+                     paperCode: [{ validator:paperCode, trigger: "blur" }],
                   },
                  tableConfig:testMainAddConfig({}),
                 params:{
@@ -210,26 +209,29 @@
                 });
 
             }
+            this.initPage()
 
-             if (this.$route.query ) {
-                console.log(1,1,this.$router);
-                this.type = this.$route.query.type;
-                this.$route.meta.title =
-                    this.type == "add"
-                        ? "试卷-新增"
-                        : this.type == "edit"
-                        ? "试卷-编辑"
-                        : this.type == "info"
-                            ? "试卷-详情"
-                            : "";
-                  if(this.type!='add'){
-                      this.getDetails()
-
-                  }
-            }
         },
         methods: {
+            initPage(){
+                if (this.$route.query ) {
+                    console.log(1,1,this.$router);
+                    this.type = this.$route.query.type;
 
+                    this.$route.meta.title =
+                        this.type == "add"
+                            ? "试卷-新增"
+                            : this.type == "edit"
+                            ? "试卷-编辑"
+                            : this.type == "info"
+                                ? "试卷-详情"
+                                : "";
+                    if(this.type!='add'){
+                        this.getDetails()
+
+                    }
+                }
+            },
             preview(){
 
                 if(this.form.id){
@@ -341,8 +343,12 @@
                             })
                                 .then(d => {
                                     this.$message.success("保存成功！");
-                                     this.$router.push({path:'/testMaintenanceAdd',query:{type:"editor",id:d.data}})
+                                    if(this.type == "add"){
+                                        this.$router.push({path:'/testMaintenanceAdd',query:{type:"edit",id:d.data}})
                                         this.$set(this.form,'id',d.data)
+                                        this.initPage()
+                                    }
+
                                  })
                                 .catch(error => {
                                     this.$message.success(error);
@@ -447,7 +453,7 @@
         }
         .main-info{
             span{
-                font-weight: bold!important;
+                /*font-weight: bold!important;*/
             }
 
 

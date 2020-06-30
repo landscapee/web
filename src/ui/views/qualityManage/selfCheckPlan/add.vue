@@ -18,10 +18,11 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="计划年度：" prop="year">
+                    <el-form-item label="计划年度：" prop="year1">
                         <span v-if="type=='info'">{{form.year}}</span>
-                        <el-input v-else v-model="form.year" type="number" placeholder="请输入计划年度"></el-input>
-                    </el-form-item>
+                        <el-date-picker @change="year1"    v-else v-model="form.year1" placeholder="请选择计划年度" type="year"></el-date-picker>
+                        <!--:disabled="type=='edit'"-->
+                     </el-form-item>
                     <el-form-item label="计划部门：" prop="deptId">
                         <span v-if="type=='info'">{{form.deptId}}</span>
                         <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择计划部门">
@@ -66,7 +67,7 @@
                 form: {},
                 options: {},
                 rules: {
-                    // infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
+                    year1: [{ required: true, message: "请选择", trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
@@ -91,12 +92,24 @@
                             ? "法定自查检查计划详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+                    let id= this.$route.query.id
+                     request({
+                        url:`${this.$ip}/mms-qualification/examination/getById/${id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data,year1:new Date(d.data.year)}
+                        debugger
+                    })
                 }
             }
         },
         methods: {
+            year1(val){
+                if(val){
+                    this.form.year=Number(val.getFullYear() )
+                 }
+            },
             deptNameChange(val){
                 let data
                 this.options.dept.map((k,l)=>{

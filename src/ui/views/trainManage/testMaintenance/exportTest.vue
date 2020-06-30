@@ -3,10 +3,10 @@
         <el-dialog title="试卷导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
                 <el-form-item label="编号：">
-                    <span>{{row.year}} </span>
+                    <span>{{row.paperCode}} </span>
                 </el-form-item>
                 <el-form-item label="名称：">
-                    <span>{{row.year}} </span>
+                    <span>{{row.paperName}} </span>
                 </el-form-item>
                 <el-form-item label="格式：">
                     <el-radio-group v-model="form.sourcesId">
@@ -15,7 +15,8 @@
                     </el-radio-group>
                 </el-form-item>
             </el-form>
-            <div class="footer">
+            <div class="QfooterTest">
+                <a ref="a" :href="`${this.$ip}/mms-training/paperInfo/export/${this.row.id}`"></a>
                 <el-button @click="close">取消</el-button>
                 <el-button type="primary" @click="submit('form')">导出</el-button>
             </div>
@@ -43,7 +44,8 @@
         methods: {
             open(data){
                 this.dialogFormVisible=true
-                this.form={...data}
+                debugger
+                this.row={...data}
 
             },
 
@@ -51,23 +53,7 @@
                 this.$refs[formName].validate((valid) => {
 
                     if (valid) {
-                         request({
-                             url:`${this.$ip}/mms-qualification/securityMerits/copy`,
-                             method:'post',
-                             data:{
-                                  ...this.form
-                             }
-                         }).then((d) => {
-                              if(d){
-                                 this.close();
-                             }else {
-                                 this.$message({
-                                     message: '复制失败',
-                                     type: 'error',
-                                 });
-                             }
-
-                        });
+                          this.$refs.a.click()
                     }
                 });
             },
