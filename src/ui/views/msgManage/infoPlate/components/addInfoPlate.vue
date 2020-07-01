@@ -58,7 +58,7 @@
             <el-input v-if="type=='add'" v-model="filename" placeholder="支持多个附件上传"></el-input>
           </el-form-item>
           <el-upload
-              :multiple="false"
+              :multiple="true"
               class="upload-demo"
               ref="file"
               :http-request="handleSubmit"
@@ -154,19 +154,29 @@ export default {
         }
         return item;
       }, []);
-      this.userList =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+      let list =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+      this.userList = [];
+      list.map((item,index)=>{
+        this.$set(this.userList, index, item);
+      })
     },
     handleSelectSubscribe(row){
       this.receiptDepartment = row.receiptDepartment;
       this.receiptPerson =  row.receiptPerson;
-      this.userList =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+      let list =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+      this.userList = [];
+      list.map((item,index)=>{
+        this.$set(this.userList, index, item);
+      })
     },
      handleChange(file, fileList) {
         if (fileList.length > 0) {
             this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
         }
-        this.filename=file.name
-        console.log(file, fileList);
+        this.filename = fileList.map(item=>
+            item.name
+        ).join(",");
+        console.log( this.filename );
     },
     beforeAvatarUpload(file) {
         const isLt2M = file.size / 1024 / 1024 < 5;
@@ -237,9 +247,6 @@ export default {
           this.$message.success(error);
         });
     },
-    handleUserSelected(users) {
-			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
-		},
     handleSelectUser(tag) {
 			if(tag=='subscribe'){
         this.$refs.selectSubscribe.open();

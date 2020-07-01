@@ -16408,7 +16408,7 @@
           width: 100% !important;
 }
 .addTest .main-info span[data-v-2fa08cae] {
-    font-weight: bold !important;
+    /*font-weight: bold!important;*/
 }
 .addTest[data-v-2fa08cae] .el-table {
     margin: 0 !important;
@@ -18692,12 +18692,8 @@
   height: 100%;
   position: relative;
 }
-.sysParameter[data-v-5215b80a] {
-  margin-top: 2.85714rem;
-}
 .sysParameter .main-content[data-v-5215b80a] .mainTable {
-    height: 42.85714rem;
-    overflow: auto;
+  height: 42.85714rem;
 }
 .top-content[data-v-2ef51e23] {
   height: 5.85714rem;
@@ -18945,6 +18941,66 @@
 .addSysParameter .el-form[data-v-07173335] .el-form-item__content {
       margin-left: 7.14286rem;
 }
+.addSysParameter .el-form .row_custom3[data-v-07173335] .el-form-item__content {
+      height: 2.85714rem;
+      width: 64.28571rem;
+      text-align: left;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] {
+      display: inline-block;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item span[data-v-07173335] {
+        margin-left: 1.42857rem;
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-input,
+      .addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-select,
+      .addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-cascader {
+        width: 100%;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-form-item__label {
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+        color: #222222;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-textarea__inner, .addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-input__inner {
+        border-radius: 0.14286rem;
+        border: 0.07143rem solid #979797;
+        font-size: 1.14286rem;
+        padding-left: 1.14286rem;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] input::-webkit-input-placeholder {
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+        color: #888888;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] textarea::-webkit-input-placeholder {
+        font-size: 1.14286rem;
+        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+        font-weight: 400;
+        color: #888888;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-input__prefix {
+        left: unset;
+        right: 0.92857rem;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-input__prefix .el-input__icon {
+          width: 1rem;
+          font-size: 1.07143rem;
+}
+.addSysParameter .el-form .row_custom3 .el-form-item[data-v-07173335] .el-form-item__label:before {
+        content: '';
+        color: unset;
+        margin-right: unset;
+}
+.addSysParameter .el-form .row_custom3[data-v-07173335] span {
+      font-size: 0.85714rem !important;
+      margin-left: 0.35714rem !important;
+}
 .addSysParameter .el-form .row_custom2[data-v-07173335] {
       height: 11.85714rem;
 }
@@ -19010,7 +19066,7 @@
 }
 .addSysParameter .el-form .row_custom[data-v-07173335] .el-form-item__content {
       height: 2.85714rem;
-      width: 26.21429rem;
+      width: 28.35714rem;
       text-align: left;
 }
 .addSysParameter .el-form .row_custom .el-form-item[data-v-07173335] {
@@ -19168,6 +19224,9 @@
 }
 .sysParameter .main-content[data-v-3d103402] .mainTable {
   height: 42.85714rem;
+}
+.users-dialog[data-v-174d0258] .mainTable {
+  height: 32.14286rem;
   overflow: auto;
 }
 .top-content[data-v-483aa6a6] {
@@ -19396,61 +19455,69 @@
         color: unset;
         margin-right: unset;
 }
+.addSysParameter .el-form .row_custom5[data-v-483aa6a6] {
+      position: relative;
+      top: 1.42857rem;
+}
+.addSysParameter .el-form .row_custom5[data-v-483aa6a6] .el-button {
+        position: relative;
+        top: -0.14286rem;
+}
 .addSysParameter .el-form .row_custom5[data-v-483aa6a6] .el-form-item__content {
-      height: 2.85714rem;
-      width: 56.28571rem;
-      text-align: left;
+        height: 2.85714rem;
+        width: 56.28571rem;
+        text-align: left;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] {
-      display: inline-block;
+        display: inline-block;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item span[data-v-483aa6a6] {
-        margin-left: 1.42857rem;
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
+          margin-left: 1.42857rem;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-input,
-      .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-select,
-      .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-cascader {
-        width: 100%;
+        .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-select,
+        .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-cascader {
+          width: 100%;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-form-item__label {
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
-        color: #222222;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
+          color: #222222;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-textarea__inner, .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-input__inner {
-        border-radius: 0.14286rem;
-        border: 0.07143rem solid #979797;
-        font-size: 1.14286rem;
-        padding-left: 1.14286rem;
+          border-radius: 0.14286rem;
+          border: 0.07143rem solid #979797;
+          font-size: 1.14286rem;
+          padding-left: 1.14286rem;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] input::-webkit-input-placeholder {
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
-        color: #888888;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
+          color: #888888;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] textarea::-webkit-input-placeholder {
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
-        color: #888888;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
+          color: #888888;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-input__prefix {
-        left: unset;
-        right: 0.92857rem;
+          left: unset;
+          right: 0.92857rem;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-input__prefix .el-input__icon {
-          width: 1rem;
-          font-size: 1.07143rem;
+            width: 1rem;
+            font-size: 1.07143rem;
 }
 .addSysParameter .el-form .row_custom5 .el-form-item[data-v-483aa6a6] .el-form-item__label:before {
-        content: '';
-        color: unset;
-        margin-right: unset;
+          content: '';
+          color: unset;
+          margin-right: unset;
 }
 .addSysParameter .el-form .row_custom4[data-v-483aa6a6] .el-form-item__content {
       height: 2.85714rem;
@@ -19508,65 +19575,72 @@
         color: unset;
         margin-right: unset;
 }
+.addSysParameter .el-form .row_custom3[data-v-483aa6a6] {
+      position: relative;
+      top: 1.42857rem;
+}
 .addSysParameter .el-form .row_custom3[data-v-483aa6a6] .el-form-item__content {
-      height: 2.85714rem;
-      width: 26.07143rem;
-      text-align: left;
+        height: 2.85714rem;
+        width: 26.07143rem;
+        text-align: left;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] {
-      display: inline-block;
+        display: inline-block;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item span[data-v-483aa6a6] {
-        margin-left: 1.42857rem;
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
+          margin-left: 1.42857rem;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-input,
-      .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-select,
-      .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-cascader {
-        width: 100%;
+        .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-select,
+        .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-cascader {
+          width: 100%;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-form-item__label {
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
-        color: #222222;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
+          color: #222222;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-textarea__inner, .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-input__inner {
-        border-radius: 0.14286rem;
-        border: 0.07143rem solid #979797;
-        font-size: 1.14286rem;
-        padding-left: 1.14286rem;
+          border-radius: 0.14286rem;
+          border: 0.07143rem solid #979797;
+          font-size: 1.14286rem;
+          padding-left: 1.14286rem;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] input::-webkit-input-placeholder {
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
-        color: #888888;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
+          color: #888888;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] textarea::-webkit-input-placeholder {
-        font-size: 1.14286rem;
-        font-family: SourceHanSansCN-Regular,SourceHanSansCN;
-        font-weight: 400;
-        color: #888888;
+          font-size: 1.14286rem;
+          font-family: SourceHanSansCN-Regular,SourceHanSansCN;
+          font-weight: 400;
+          color: #888888;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-input__prefix {
-        left: unset;
-        right: 0.92857rem;
+          left: unset;
+          right: 0.92857rem;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-input__prefix .el-input__icon {
-          width: 1rem;
-          font-size: 1.07143rem;
+            width: 1rem;
+            font-size: 1.07143rem;
 }
 .addSysParameter .el-form .row_custom3 .el-form-item[data-v-483aa6a6] .el-form-item__label:before {
-        content: '';
-        color: unset;
-        margin-right: unset;
+          content: '';
+          color: unset;
+          margin-right: unset;
+}
+.addSysParameter .el-form .row_custom2[data-v-483aa6a6] .el-button {
+      vertical-align: top;
 }
 .addSysParameter .el-form .row_custom2[data-v-483aa6a6] .el-form-item__content {
       height: 2.85714rem;
-      width: 17rem;
+      width: 43.57143rem;
       text-align: left;
 }
 .addSysParameter .el-form .row_custom2 .el-form-item[data-v-483aa6a6] {
@@ -21312,7 +21386,6 @@
 .QfooterTest /deep/ .el-button:last-child {
     border: 0;
     color: white;
-    background: #3280e7;
 }
 .QCenterRight {
   margin: 2.42857rem 0rem 1.71429rem 0rem;

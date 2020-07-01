@@ -66,7 +66,11 @@ export default {
     },
     methods: {
         downloadFile(row){
-            this.$refs.downloadFile.open(row.fileInfoList);
+            if(row.fileInfoList){
+                this.$refs.downloadFile.open(row.fileInfoList);
+            }else{
+                this.$message.warning("暂无文件可以下载");
+            }
         },
          findDataDictionary(){
             request({
@@ -141,11 +145,9 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .historyInfoPlate{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-            overflow: auto;
         }    
     }
 }
