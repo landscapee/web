@@ -19998,12 +19998,8 @@
   height: 100%;
   position: relative;
 }
-.historyInfoPlate[data-v-44cdbc9a] {
-  margin-top: 2.85714rem;
-}
 .historyInfoPlate .main-content[data-v-44cdbc9a] .mainTable {
-    height: 42.85714rem;
-    overflow: auto;
+  height: 42.85714rem;
 }
 .top-content[data-v-652ef5d7] {
   height: 8.57143rem;

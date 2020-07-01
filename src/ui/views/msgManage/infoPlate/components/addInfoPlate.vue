@@ -44,8 +44,8 @@
         </div>
         <div class="row_custom3">
           <el-form-item label="是否要求处理：" prop="require">
-            <el-radio v-model="form.require" label="1">是</el-radio>
-            <el-radio v-model="form.require" label="2">否</el-radio>
+            <el-radio v-model="form.require" :label="true">是</el-radio>
+            <el-radio v-model="form.require" :label="false">否</el-radio>
            </el-form-item>
            <el-form-item label="要求处理时间：" prop="deadline">
             <span v-if="type=='info'">{{form.deadline}}</span>
@@ -55,7 +55,7 @@
         <div class="row_custom5">
           <el-form-item label="附件：" >
             <span v-if="type=='info'">{{filename}}</span>
-            <el-input v-if="type=='add'" v-model="filename" placeholder="支持多个附件上传"></el-input>
+            <el-input v-else v-model="filename" placeholder="支持多个附件上传"></el-input>
           </el-form-item>
           <el-upload
               :multiple="true"
@@ -128,10 +128,14 @@ export default {
          if(this.type == "edit" || this.type == "info"){
               request({
                 url:`${this.$ip}/mms-notice/notificationPublish/getById/${this.$route.query.id}`,
-                method: "post",
+                method: "get",
               })
               .then(data => {
-                this.form = data.data;
+               this.form = data.data;
+               this.filename =  data.data.fileInfoList.map(item=>
+                  item.fileName
+              ).join(",");
+               this.userList =  data.data.receiptDepartment.concat(data.data.receiptPerson);
               })
               .catch(error => {
                 this.$message.success(error);
@@ -309,8 +313,6 @@ export default {
         @include common-input;
       }
       .row_custom5{
-         position: relative;
-        top: 20px;
         /deep/ .el-button{
           position: relative;
           top: -2px;
@@ -331,8 +333,6 @@ export default {
         @include common-input;
       }
       .row_custom3{
-        position: relative;
-        top: 20px;
         /deep/ .el-form-item__content{
             height: 40px;
             width: 365px;
@@ -342,7 +342,8 @@ export default {
       }
       .row_custom2{
         /deep/ .el-button{
-           vertical-align: top;
+          position: relative;
+          top: -85px;
         }
         /deep/ .el-form-item__content{
             height: 40px;
