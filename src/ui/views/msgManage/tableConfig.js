@@ -183,34 +183,8 @@ export const historyPlateReceiveTable = (infoSelect) => {
             },
          align: 'center',sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'date',placeholder:"请选择发送时间"} },
         { prop: 'content', label: '发送内容', width:300,align: 'center',search:{prop:'content',type:'input',placeholder:"请输入发送内容"} },
-        { prop: 'receiptDepartment', label: '接收单位', 
-            formatter: (row, column, cellValue) => {
-                let arr = [];
-                if(row.receiptDepartment){
-                    row.receiptDepartment.map(item=>{
-                        arr.push(item.name);
-                    })
-                    return arr.join(",");
-                }else{
-                    return '';
-                }
-            },
-            align: 'center',search:{prop:'receiptDepartment',type:'input',placeholder:"请输入接收单位"} 
-        },
-        { prop: 'receiptPerson', label: '接收人',  
-            formatter: (row, column, cellValue) => {
-                let arr = [];
-                if(row.receiptPerson){
-                    row.receiptPerson.map(item=>{
-                        arr.push(item.name);
-                    })
-                    return arr.join(",");
-                }else{
-                    return '';
-                }
-            },
-            align: 'center',search:{prop:'receiptPerson',type:'input',placeholder:"请输入接收人"} 
-        },
+        { prop: 'sendDepartment', label: '发送单位', align: 'center',search:{prop:'receiptDepartment',type:'input',placeholder:"请输入接收单位"} },
+        { prop: 'sendPerson', label: '发送人', align: 'center',search:{prop:'receiptPerson',type:'input',placeholder:"请输入接收人"} },
         { prop: 'require', label: '是否接收处理',  
             formatter: (row, column, cellValue) => {
                 return cellValue?'是':'否';
