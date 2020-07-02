@@ -225,7 +225,7 @@ export default {
             padding-bottom: 20px;
             .header{
                 margin: 0 auto;
-                // margin-bottom: 30px;
+                margin-bottom: 30px;
                 width: 271px;
                 font-family:SourceHanSansCN-Medium,SourceHanSansCN;
                 font-weight:500;
@@ -279,8 +279,8 @@ export default {
             display: flex;
             justify-content: space-between;
             /deep/ .mainTable{
-                // height: 500px!important;
-                // overflow: auto;
+                height: 500px!important;
+                overflow: auto;
                 // /deep/ .el-table__body-wrapper{
                 //     /deep/ tr:last-child{
                 //         td{
