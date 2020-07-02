@@ -42,7 +42,7 @@
 		<el-table  :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
 			<template v-for="(colConfig, index) in cloneTableConfig">
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index" :reserve-selection="true"> </el-table-column>
+				<el-table-column v-else :show-overflow-tooltip="true"     v-bind="colConfig" :key="index" :reserve-selection="true"> </el-table-column>
 			</template>
 		</el-table>
 		<el-pagination v-if="data.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
@@ -104,6 +104,7 @@ export default {
 		headerDragend(newWidth, oldWidth, column, event){
 			this.updateWidth = true;
 			this.$set(this.cloneTableConfig[column.index],'width',newWidth);
+			this.$refs.body_table.columns[column.index].realWidth = newWidth;
 		},
 		requestTableData(){
 			this.$emit('requestTable', this.headerData[0]);
