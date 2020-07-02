@@ -81,7 +81,7 @@ export const infoPlateSendTable = (infoSelect) => {
         formatter: (row, column, cellValue) => {
             return formatDate(cellValue, 'YYYY-MM-DD', '--');
         }, 
-        sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'input',placeholder:"请选择发送时间"} },
+        sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'date',placeholder:"请选择发送时间"} },
         { prop: 'content', label: '发送内容', align: 'center',search:{prop:'',type:'input',placeholder:"请输入发送内容"} },
         { prop: '', label: '接收单位',
         formatter: (row, column, cellValue) => {
@@ -118,7 +118,7 @@ export const infoPlateSendTable = (infoSelect) => {
         formatter: (row, column, cellValue) => {
             return formatDate(cellValue, 'YYYY-MM-DD', '--');
         },
-         align: 'center',sort:true,sortProp:"deadlineMode",search:{prop:'deadline',type:'input',placeholder:"请选择要求处理时间"} },
+         align: 'center',sort:true,sortProp:"deadlineMode",search:{prop:'deadline',type:'date',placeholder:"请选择要求处理时间"} },
         { slot: 'attachment', label: '附件', align: 'center',search:{prop:'attachment',type:'input',placeholder:"请输入附件"} },
         { prop: 'state', label: '信息状态', 
         formatter: (row, column, cellValue) => {
@@ -135,7 +135,7 @@ export const infoPlateReceiveTable = (infoSelect) => {
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             }, 
-            align: 'center',sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'input',placeholder:"请选择发送时间"} 
+            align: 'center',sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'date',placeholder:"请选择发送时间"} 
         },
         { prop: 'sendDepartment', label: '发送单位',
             formatter: (row, column, cellValue) => {
@@ -162,7 +162,7 @@ export const infoPlateReceiveTable = (infoSelect) => {
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            align: 'center',sort:true,sortProp:"deadlineMode",search:{prop:'deadline',type:'input',placeholder:"请选择要求处理时间"} 
+            align: 'center',sort:true,sortProp:"deadlineMode",search:{prop:'deadline',type:'date',placeholder:"请选择要求处理时间"} 
         },
         { slot: 'attachment', label: '附件', align: 'center',search:{prop:'attachment',type:'input',placeholder:"请输入附件"} },
         { prop: 'state', label: '信息状态',
@@ -195,7 +195,7 @@ export const historyPlateReceiveTable = (infoSelect) => {
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            align: 'center',sort:true,sortProp:"deadlineMode",search:{prop:'deadline',type:'input',placeholder:"请选择要求处理时间"} 
+            align: 'center',sort:true,sortProp:"deadlineMode",search:{prop:'deadline',type:'date',placeholder:"请选择要求处理时间"} 
         },
         { prop: 'state', label: '信息状态',
             formatter: (row, column, cellValue) => {
