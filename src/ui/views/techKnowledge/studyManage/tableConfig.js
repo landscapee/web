@@ -31,7 +31,7 @@ export const sysParameterTable = () => {
         },
         { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",search:{prop:'downloadRate',type:'input',placeholder:"请选择下载率"} },
         { prop: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",search:{prop:'readingRate',type:'input',placeholder:"请选择阅读率"} },
-        { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)"} },
+        { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)",extendType:'search',} },
     ]
 };
 export const userParameterTable = () => {
