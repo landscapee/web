@@ -250,6 +250,18 @@ let authRoutes = [
                         meta: {title: '工单阅读推送',icon: 'xxgl' },
                     }
                 ]
+            },
+            {
+                path:'/studyManage',
+                component:() => import('@views/techKnowledge/studyManage/index'),
+                name:'学习管理',
+                meta: {title: '学习管理',icon: 'xxgl' }
+            },
+            {
+                path:'/userManage',
+                component:() => import('@views/techKnowledge/studyManage/userManage'),
+                name:'学习管理(用户)',
+                meta: {title: '学习管理(用户)',icon: 'xxgl' }
             }
         ],
 	},
