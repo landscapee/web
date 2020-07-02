@@ -54,7 +54,7 @@
                 </div>
                 <div :class="this.type=='add'?'row_custom aRow_custom':'row_custom'" >
                     <el-form-item label="有效期限：" prop="time"  style="width:100%;">
-                        <span v-if="type=='info'">{{form.startTime}}-{{form.endTime}}</span>
+                        <span v-if="type=='info'">{{form.startTime | formatDate}}-{{form.endTime | formatDate}}</span>
                         <el-date-picker
                             v-else
                             v-model="form.time"
@@ -84,10 +84,22 @@
     import userTree from '@components/userTree/index';
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
+    import moment from 'moment'
     export default {
         components: {
             Icon,
             userTree
+        },
+        filters: {
+            formatDate (val, format='YYYY-MM-DD') {
+                var val = Number(val);
+                if (!isNaN(val)){
+                    return moment(val).format(format)
+                }else{
+                    return ''
+                }
+                
+            }
         },
         name: "",
         data() {
