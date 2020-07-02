@@ -230,6 +230,24 @@ let authRoutes = [
                         component: () => import('@views/techKnowledge/fileManage/detail/addFile'),
                         name: '新增文件',
                         meta: {title: '新增文件',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/batchPush',
+                        component: () => import('@views/techKnowledge/fileManage/detail/batchPush'),
+                        name: '批量推送',
+                        meta: {title: '批量推送',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/fileHistory',
+                        component: () => import('@views/techKnowledge/fileManage/detail/fileHistory'),
+                        name: '工单历史版本',
+                        meta: {title: '工单历史版本',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/readTrack',
+                        component: () => import('@views/techKnowledge/fileManage/detail/readTrack'),
+                        name: '工单阅读推送',
+                        meta: {title: '工单阅读推送',icon: 'xxgl' },
                     }
                 ]
             }
