@@ -3,7 +3,7 @@
         <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
         <div class='inner'>
             <div class='top_content'>
-                <div class='header'><span>工单</span></div>
+                <div class='header'><span id='fileName'>工单</span></div>
                 <div class="top-toolbar">
                     <div class="left-toolbar">
                         <!-- <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
@@ -79,6 +79,8 @@ export default {
             sort:{},
             tableData:{records:[]},
             selectObjs:[],
+            issueDeptArr:[],
+            positionArr:[]
         };
     },
     mounted(){
@@ -86,6 +88,32 @@ export default {
         //     this.$router.push({path:'/fileManage'});
         // }
         this.init()
+        this.$nextTick(()=>{
+            request({
+                url:`${this.$ip}/mms-knowledge/folder/getById/${this.$route.query.folderId}`,
+                method: 'get',
+            })
+            .then((data) => {
+                if(data.code==200){
+                    document.querySelector(".no-redirect-last").innerHTML = data.data.name
+                    document.querySelector("#fileName").innerHTML = data.data.name
+                }
+            })
+        })
+        request({
+            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+            method: 'post',
+            data:["issueDept", "position",]
+        }).then(d => {
+            if(d.code == 200){
+                this.issueDeptArr = d.data.issueDept
+                this.positionArr = d.data.position
+            }else{
+                this.issueDeptArr = []
+                this.positionArr = []
+            }
+            this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
+        })
     },
     methods:{
         init(){
@@ -324,7 +352,7 @@ export default {
             .header{
                 margin: 0 auto;
                 margin-bottom: 30px;
-                width: 271px;
+                text-align: center;
                 font-family:SourceHanSansCN-Medium,SourceHanSansCN;
                 font-weight:500;
                 color:rgba(34,34,34,1);

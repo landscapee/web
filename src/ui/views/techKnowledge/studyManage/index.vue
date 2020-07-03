@@ -68,7 +68,10 @@ export default {
             selectObjs:[],
             selectedPersonList:[],
             deptList:[],
-            users:[]
+            users:[],
+            fileList:[],
+            issueDeptArr:[],
+            positionArr:[]
         };
     },
     mounted(){
@@ -76,6 +79,18 @@ export default {
         //     this.$router.push({path:'/fileManage'});
         // }
         this.init()
+        Promise.all([this.listByCodesFn(),this.getFileList()]).then(res=>{
+            console.log(res)
+            this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
+        })
+        // try{
+        //     await this.listByCodesFn()
+        //     await this.getFileList()
+        //     console.log(this.fileList)
+        //     this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
+        // }catch(err){
+        //     throw new Error(err)
+        // }
     },
     methods:{
         init(){
@@ -105,8 +120,8 @@ export default {
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
             })
-       },
-       requestTable(searchData){
+        },
+        requestTable(searchData){
             this.form = searchData
             this.selectObjs=[]
             this.tableData={records:[]}
@@ -146,7 +161,7 @@ export default {
             this.params.current = 1
             this.$set(this.tableData.records,row.index,row)
         },
-         arrRemEleFn(arr, val){
+        arrRemEleFn(arr, val){
             var index = arr.indexOf(val);
             if (index > -1) {
                 arr.splice(index, 1);
@@ -208,7 +223,49 @@ export default {
                     return
                 }
             })
-        }
+        },
+        listByCodesFn(){
+            return new Promise((resolve, reject)=>{
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    data:["issueDept", "position",]
+                }).then(d => {
+                    if(d.code == 200){
+                        this.issueDeptArr = d.data.issueDept
+                        this.positionArr = d.data.position
+                    }else{
+                        this.issueDeptArr = []
+                        this.positionArr = []
+                    }
+                    resolve()
+                    // this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
+                })
+            })
+        },
+        getFileList(){
+            return new Promise((resolve,reject)=>{
+                request({
+                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    method: 'post',
+                })
+                .then((data) => {
+                    if(data.code==200){
+                        this.fileList = data.data
+                        this.fileList = this.fileList.map((item,index)=>{
+                            return {
+                                index: index,
+                                label: item.name,
+                                id: item.id,
+                            }
+                        })
+                    }else{
+                        this.fileList = []
+                    }
+                    resolve()
+                })
+            })
+        },
     },
     watch: {
     },

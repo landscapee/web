@@ -65,6 +65,9 @@ export default {
             sort:{},
             tableData:{records:[]},
             selectObjs:[],
+            fileList:[],
+            issueDeptArr:[],
+            positionArr:[]
         };
     },
     mounted(){
@@ -72,6 +75,10 @@ export default {
         //     this.$router.push({path:'/fileManage'});
         // }
         this.init()
+        Promise.all([this.listByCodesFn(),this.getFileList()]).then(res=>{
+            console.log(res)
+            this.businessTableConfig = userParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
+        })
     },
     methods:{
         init(){
@@ -153,7 +160,8 @@ export default {
             this.sort = {}
             console.log(column)
             this.sort = {
-                order:`${column['property']},${column.order==='desc'?'0':'1'}`
+                order:`${column['property']}`,
+                orderBy:`${column.order}`
             }
             //this.sort[column.property] = column.order
             this.$refs.searchTable.$refs.body_table.setCurrentRow()
@@ -195,7 +203,49 @@ export default {
 		handleCurrentChange(current) {
             this.params.current = current
             this.getList()
-        }
+        },
+        listByCodesFn(){
+            return new Promise((resolve, reject)=>{
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    data:["issueDept", "position",]
+                }).then(d => {
+                    if(d.code == 200){
+                        this.issueDeptArr = d.data.issueDept
+                        this.positionArr = d.data.position
+                    }else{
+                        this.issueDeptArr = []
+                        this.positionArr = []
+                    }
+                    resolve()
+                    // this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
+                })
+            })
+        },
+        getFileList(){
+            return new Promise((resolve,reject)=>{
+                request({
+                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    method: 'post',
+                })
+                .then((data) => {
+                    if(data.code==200){
+                        this.fileList = data.data
+                        this.fileList = this.fileList.map((item,index)=>{
+                            return {
+                                index: index,
+                                label: item.name,
+                                id: item.id,
+                            }
+                        })
+                    }else{
+                        this.fileList = []
+                    }
+                    resolve()
+                })
+            })
+        },
     },
     watch: {
     },

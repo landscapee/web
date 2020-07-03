@@ -1,10 +1,10 @@
 import { formatDate } from '@lib/tools.js';
-export const sysParameterTable = () => {
+export const sysParameterTable = (issueDeptArr, positionArr) => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
-        { prop: 'issueDept', label: '发行单位', align: 'center',sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'input',placeholder:"请输入发行单位"} },
-        { prop: 'position', label: '所属岗位', align: 'center',sort:true,sortProp:"position",search:{prop:'position',type:'input',placeholder:"请输入所属岗位"} },
+        { prop: 'issueDept', label: '发行单位', align: 'center',sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr, placeholder:"请输入发行单位"} },
+        { prop: 'position', label: '所属岗位', align: 'center',sort:true,sortProp:"position",search:{prop:'position', type:'select',selectProp:["valData","valData"], data: positionArr, placeholder:"请输入所属岗位"} },
         { 
             prop: 'startTime', label: '生效日期', align: 'center',
             formatter: (row, column, cellValue) => {

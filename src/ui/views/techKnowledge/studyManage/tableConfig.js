@@ -1,12 +1,12 @@
 import { formatDate } from '@lib/tools.js';
-export const sysParameterTable = () => {
+export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
         { prop: 'size', label: '大小', align: 'center', sort:true,sortProp:"size",search:{prop:'size',type:'input',placeholder:"请输入大小"} },
-        { prop: 'folder.name', label: '所属主题', align: 'center', sort:true,sortProp:"folder.name",search:{prop:'folder.name',type:'input',placeholder:"请选择所属主题"} },
-        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'input',placeholder:"请输入发行单位"} },
-        { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'input',placeholder:"请输入所属岗位"} },
+        { prop: 'folder.name', label: '所属主题', align: 'center', sort:true,sortProp:"folderId",search:{prop:'folderId',type:'select',selectProp:["label","id"], data: folderArr,placeholder:"请选择所属主题"} },
+        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
+        { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
         { prop: 'version', label: '版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入版本"} },
         { 
             prop: 'startTime', label: '生效日期', align: 'center', width:'120',
@@ -34,13 +34,13 @@ export const sysParameterTable = () => {
         { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)",extendType:'search',} },
     ]
 };
-export const userParameterTable = () => {
+export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
         { prop: 'size', label: '大小', align: 'center', sort:true,sortProp:"size",search:{prop:'size',type:'input',placeholder:"请输入大小"} },
-        { prop: 'folderName', label: '所属主题', align: 'center', sort:true,sortProp:"folder.name",search:{prop:'folder.name',type:'input',placeholder:"请选择所属主题"} },
-        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'input',placeholder:"请输入发行单位"} },
-        { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'input',placeholder:"请输入所属岗位"} },
+        { prop: 'folderName', label: '所属主题', align: 'center', sort:true,sortProp:"folderName",search:{prop:'folderId',type:'select',selectProp:["label","id"], data: folderArr,placeholder:"请选择所属主题"} },
+        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
+        { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
         { prop: 'version', label: '版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入版本"} },
         { 
             prop: 'startTime', label: '生效日期', align: 'center', width:'120',

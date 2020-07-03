@@ -138,8 +138,6 @@ export default {
             // })
         },
         closeOrdersClickFn(item){
-            console.log("remove")
-            console.log(item)
             //this.fileList.forEach(item=>item.isClickEd=false)
             item.isClickEd = false
             // document.body.removeEventListener('click',()=>{
