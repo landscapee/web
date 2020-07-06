@@ -126,6 +126,7 @@ export default {
 							setToken(data.data.token);
 							setUserInfo(data.data);
 							this.$store.commit('user/SET_TOKEN',data.data.token);
+							this.$store.commit('user/SET_USER_INFO',data.data);
 							this.findUnread();
                             this.$router.push({ path: '/qualityManage' });
                          }

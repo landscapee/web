@@ -46,6 +46,7 @@ import esc from './assets/img/ic_esc.png';
 import usericon from './assets/img/usericon.png';
 import Breadcrumb from './components/Breadcrumb/index';
 import Icon from '@components/Icon-svg/index';
+import {setUserInfo,setToken,removeToken,removeUserInfo} from '@lib/auth';
   export default {
 	components: {
 		Breadcrumb,
@@ -106,6 +107,10 @@ import Icon from '@components/Icon-svg/index';
 			this.$eventBus.$emit('infoPlate', 'receive');
 		},
 		logout(){
+			this.$store.commit('user/SET_TOKEN','');
+			this.$store.commit('user/SET_USER_INFO','');
+			removeToken();
+			removeUserInfo();
 			this.$router.push({ path: '/' });
 		},
 		onSpread(){
