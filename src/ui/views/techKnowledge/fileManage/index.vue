@@ -450,6 +450,7 @@ export default {
             margin:0;
             padding:0;
             border: 1px solid #d9d9d9;
+            z-index: 110;
             li{
                 list-style:none;
                 text-indent: 2em;
