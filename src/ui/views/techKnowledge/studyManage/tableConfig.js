@@ -29,8 +29,18 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             }, 
             search:{prop:'endTime',type:'date',placeholder:"请输入推送时间"} 
         },
-        { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",search:{prop:'downloadRate',type:'input',placeholder:"请选择下载率"} },
-        { prop: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",search:{prop:'readingRate',type:'input',placeholder:"请选择阅读率"} },
+        { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",
+            search:{prop:'downloadRate',type:'input',placeholder:"请选择下载率"},
+            formatter: (row, column, cellValue) => {
+                return row.downloadRate?row.downloadRate+'%':'0%'
+            }
+        },
+        { prop: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",
+            search:{prop:'readingRate',type:'input',placeholder:"请选择阅读率"},
+            formatter: (row, column, cellValue) => {
+                return row.readingRate?row.readingRate+'%':'0%'
+            }
+        },
         { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)",extendType:'search',} },
     ]
 };
@@ -63,7 +73,18 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
             }, 
             search:{prop:'endTime',type:'date',placeholder:"请输入推送时间"} 
         },
-        { prop: 'read', label: '是否阅读', align: 'center',sort:true,sortProp:"read",search:{prop:'read',type:'input',placeholder:"请选择"} },
+        { prop: 'read', label: '是否阅读', align: 'center',sort:true,sortProp:"read",
+            search:{prop:'read',type:'input',placeholder:"请选择"},
+            formatter: (row, column, cellValue) => {
+                let readStatus = {
+                    '0': '未阅读',
+                    '1': '阅读中',
+                    '2': '已阅读'
+                }
+                return readStatus[row.read]
+            }, 
+           
+         },
         { prop: 'readingTime', label: '阅读时长', align: 'center',sort:true,sortProp:"readingTime",search:{prop:'readingTime',type:'input',placeholder:"请选择阅读时长"} },
         { slot: 'option', label: '操作',width:'230', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
