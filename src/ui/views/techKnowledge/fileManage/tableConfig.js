@@ -29,7 +29,18 @@ export const sysParameterTable = (issueDeptArr, positionArr) => {
         },
         { prop: 'formats', label: '格式', align: 'center',search:{prop:'formats',type:'input',placeholder:"请输入格式"}},
         { prop: 'version', label: '最新版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入最新版本"} },
-        { prop: 'size', label: '大小', align: 'center',sort:true,sortProp:"size",search:{prop:'size',type:'input',placeholder:"请输入大小"} },
+        { prop: 'size', label: '大小(kb)', align: 'center',sort:true,sortProp:"size",
+            search:{prop:'size',type:'input',placeholder:"请输入大小"},
+            formatter:(row, column, cellValue) => {
+                console.log(isNaN(parseInt(row.size)))
+                if(row.size&&!isNaN(parseInt(row.size))){
+                    return (row.size/1024).toFixed(1)
+                }else{
+                    return 'size is not number!'
+                }
+                
+            }
+        },
         // { prop: 'sysParamComment', label: '操作', align: 'center',search:{prop:'sysParamComment',extendType:'search',type:'btn',label:"历史版本"}},
         { slot: 'option', label: '操作',width:'230', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
