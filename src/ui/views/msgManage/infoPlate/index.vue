@@ -99,7 +99,11 @@ export default {
     },
     methods: {
         downloadFile(row){
-            this.$refs.downloadFile.open();
+            if(row.fileInfoList){
+                this.$refs.downloadFile.open(row.fileInfoList);
+            }else{
+                this.$message.warning("暂无文件可以下载");
+            }
         },
         findDataDictionary(){
             request({
@@ -168,6 +172,7 @@ export default {
             }else{
                 this.tableConfig = infoPlateReceiveTable(this.infoSelect);
             }
+            this.tableData = {records:[]};
             this.getList();
         },
         requestTable(searchData){
@@ -199,23 +204,19 @@ export default {
             }else{
                 this.selectId = null;
             }
-            this.params.current = 1;
+            // this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/addInfoPlate',query:{type:'add'}});
-            }else if(tag == 'edit' || tag == 'info' ||  tag == 'history' ){
+            }else if(tag == 'history' ){
+                 this.$router.push({path:'/historyInfoPlate'});
+            }else if(tag == 'edit' || tag == 'info'  ){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                    if(tag == 'history'){
-                        if(this.selectRow.state!=-1){
-                            this.$message.error('该数据暂无历史');
-                        }else{
-                            this.$router.push({path:'/historyInfoPlate',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
-                        }
-                    }else if(tag == 'info'){
+                   if(tag == 'info'){
                         this.$router.push({path:'/infoPlateDetails',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
                     }else{
                         this.$router.push({path:'/addInfoPlate',query:{type:tag,id:this.selectId}});
@@ -255,7 +256,7 @@ export default {
             request({
                 url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
-                data:this.isActive==0?{...this.sort,...this.form}:{...this.sort,...this.form,state:[0,1]},
+                data:this.isActive==0?{...this.sort,...this.form}:{...this.sort,...this.form,states:[0,1]},
                 params:this.params
             })
             .then((data) => {
@@ -282,7 +283,6 @@ export default {
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-            overflow: auto;
         }    
     }
 }

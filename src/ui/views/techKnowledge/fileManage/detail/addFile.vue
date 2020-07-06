@@ -4,7 +4,7 @@
             <div class="top-content-title">
                 <span>文件-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
             </div>
-            <div v-if="type!='info'"  class="top-toolbar">
+            <div  class="top-toolbar">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save"></icon>保存
                 </div>
@@ -13,12 +13,13 @@
                 </div>
             </div>
         </div>
-        <div class="upload_box">
+        <div class="upload_box" v-if="type!='info'">
             <el-upload
                 class="upload_demo"
                 ref="upload"
                 :on-success='fileUploadSuccessFn'
                 :on-remove='fileRemoveFn'
+                :before-upload='beforeUploadFn'
                 drag
                 :action='$ip+"/mms-file/upload2"'
             >
@@ -32,28 +33,30 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div class="row_custom">
                     <el-form-item  label="文档名称：" prop="fileName" style="width:100%;">
-                        <!-- <span  v-else v-if="type=='info'">{{form.fileName}}</span> -->
-                        <el-input v-model="form.fileName" readonly placeholder="自动获取上传文件的名称，同文件夹下不可重复" style='width: 642px;'></el-input>
+                        <span v-if="type=='info'">{{form.fileName}}</span>
+                        <el-input v-else v-model="form.fileName" readonly placeholder="自动获取上传文件的名称，同文件夹下不可重复" style='width: 642px;'></el-input>
                     </el-form-item>
                 </div>
 
                 <div class="row_custom">
                     <el-form-item label="发行单位：" prop="issueDeptId">
                         <span v-if="type=='info'">{{form.issueDept}}</span>
-                        <el-select clearable v-model="form.issueDeptId" placeholder="请选择发行单位" style='width:242px'>
+                        <el-select v-else clearable v-model="form.issueDeptId" placeholder="请选择发行单位" style='width:242px'>
                             <el-option  v-for='item in issueDeptArr' :key='item.valCode' :label="item.valData" :value="item.valCode"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="所属岗位：" prop="position">
                         <span v-if="type=='info'">{{form.position}}</span>
-                        <el-select clearable v-model="form.position" placeholder="请输入所属岗位" style='width:242px'>
-                            <el-option  v-for='item in positionArr' :key='item.valCode' :label="item.valData" :value="item.valCode"> </el-option>
+                        <el-select v-else clearable v-model="form.position" placeholder="请输入所属岗位" style='width:242px'>
+                            <el-option  v-for='item in positionArr' :key='item.valCode' :label="item.valData" :value="item.valData"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                 <div :class="this.type=='add'?'row_custom aRow_custom':'row_custom'" >
                     <el-form-item label="有效期限：" prop="time"  style="width:100%;">
+                        <span v-if="type=='info'">{{form.startTime | formatDate}}-{{form.endTime | formatDate}}</span>
                         <el-date-picker
+                            v-else
                             v-model="form.time"
                             type="daterange"
                             style="width:400px"
@@ -63,19 +66,15 @@
                         </el-date-picker>
                     </el-form-item>
                 </div>
-                <!--<div class="row_custom aRow_custom">-->
-                    <!---->
-                <!--</div>-->
-                <div class="row_item_row row_item">
-                    <el-form-item label="阅读推送：" prop="description">
-                        <span v-if="type=='info'">{{form.description}}</span>
-                        <el-input v-else v-model="form.description" readonly type="textarea" :rows="3"  placeholder="请输入阅读推送"></el-input>
+                <div class="row_item_row row_item" v-if='type=="add"'>
+                    <el-form-item label="阅读推送：">
+                        <el-input v-model="form.description" readonly type="textarea" :rows="3"  placeholder="请输入阅读推送"></el-input>
                     </el-form-item>
                 </div>
             </el-form>
         </div>
         <br>
-        <div class="list2">
+        <div class="list2"  v-if='type=="add"'>
             <span class="text">已选{{selectedPersonList.length}}对象</span><el-button type="primary" @click="choiceSelectFn">对象选择</el-button>
         </div>
         <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
@@ -85,11 +84,22 @@
     import userTree from '@components/userTree/index';
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
-    import { extend } from "lodash";
+    import moment from 'moment'
     export default {
         components: {
             Icon,
             userTree
+        },
+        filters: {
+            formatDate (val, format='YYYY-MM-DD') {
+                var val = Number(val);
+                if (!isNaN(val)){
+                    return moment(val).format(format)
+                }else{
+                    return ''
+                }
+                
+            }
         },
         name: "",
         data() {
@@ -135,9 +145,10 @@
                         : this.type == "info"
                             ? "详情"
                             : "";
-                 if(this.type!='add'){
-                    let row=JSON.parse( this.$route.query.data)
-                    this.form={...row}
+                if(this.type!='add'){
+                    // let row=JSON.parse( this.$route.query.data)
+                    // this.form={...row}
+                    this.getFileInfo()
                 }
             }
             request({
@@ -155,6 +166,41 @@
             })
         },
         methods: {
+            getFileInfo(){
+                request({
+                    url: `${this.$ip}/mms-knowledge/file/getById/${this.$route.query.id}`,
+                    method: 'get'
+                }).then(d => {
+                    console.log(d)
+                    if(d.code==200){
+                        let data = d.data
+                        this.form = {
+                            fileName:data.fileName,
+                            description:'',
+                            issueDept:data.issueDept,
+                            position:data.position,
+                            folderId: data.folderId,
+                            fileUrl: data.fileUrl,
+                            issueDeptId: data.issueDeptId,
+                            startTime: data.startTime,
+                            endTime: data.endTime,
+                            formats: data.formats,
+                            size: data.size,
+                            time:[data.startTime, data.endTime]
+                        }
+                    }else{
+                        this.$message({
+                            showClose: true,
+                            message: '获取文件信息错误',
+                            type: 'error'
+                        });
+                        return
+                    }
+                    
+                })
+            },
+
+
             choiceSelectFn(){
                 this.$refs.userBox.open(this.users, '选择推送对象', true);
             },
@@ -162,8 +208,6 @@
                 this.selectedPersonList = selectedPersonList
                 this.deptList = deptList
                 this.form.description = this.selectedPersonList.map(item=>item.name).join(",")
-                console.log(selectedPersonList)
-                console.log(deptList)
             },
             resetForm(){
                 if(this.form.id){
@@ -194,7 +238,7 @@
                                         fileName: this.form.fileName,
                                         issueDept: this.form.issueDept,
                                         position: this.form.position,
-                                        folderId: this.form.folderId,
+                                        folderId: this.$route.query.folderId,
                                         fileUrl: this.form.fileUrl,
                                         issueDeptId: this.form.issueDeptId,
                                         startTime: this.form.startTime,
@@ -205,7 +249,24 @@
                                     userVOList:select
                                 }
                             }else {
-                                url='/examInfo/update'
+                                url='/file/update'
+                                this.form.startTime = this.form.time[0]
+                                this.form.endTime = this.form.time[1]
+                                this.form.issueDept = this.issueDeptArr.find(item=>item.valCode==this.form.issueDeptId).valData
+                                data = {
+                                    //fileParam: {
+                                        fileName: this.form.fileName,
+                                        issueDept: this.form.issueDept,
+                                        position: this.form.position,
+                                        id: this.$route.query.id,
+                                        fileUrl: this.form.fileUrl,
+                                        issueDeptId: this.form.issueDeptId,
+                                        startTime: this.form.startTime,
+                                        endTime: this.form.endTime,
+                                        formats: this.form.formats,
+                                        size: this.form.size
+                                    //}
+                                }
                             }
                             request({
                                 url:`${this.$ip}/mms-knowledge${url}`,
@@ -228,16 +289,44 @@
                     });
                 }
             },
+            fileExistsFn(fileName){
+                return new Promise((resolve,reject) => {
+                    request({
+                        url: `${this.$ip}/mms-knowledge/file/nameExists`,
+                        method: 'post',
+                        data:{
+                            fileName,
+                            folderId: this.$route.query.folderId
+                        }
+                    }).then(d => {
+                        if(d.code==200&&!d.data){
+                            resolve()
+                        }else{
+                            this.$confirm('文件名字重复，是否继续?', '提示', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }).then(() => {
+                                resolve()
+                            }).catch(() => {
+                                this.$message({
+                                    type: 'info',
+                                    message: '已取消成功'
+                                });
+                                reject()
+                            });
+                            return
+                            
+                        }
+                    })
+                })
+            },
             fileUploadSuccessFn(response, file, fileList){
-                console.log(response)
-                console.log(file)
-                console.log(fileList)
-                console.log(this.form)
                 if(response.code==200){
                     // this.$set(this.form,'fileName', response.data.fileName)
                     this.form.fileName = response.data.fileName
                     this.form.formats = response.data.fileSuffix
-                    this.form.folderId = response.data.id
+                    //this.form.folderId = response.data.id
                     this.form.fileUrl = response.data.filePath
                     this.form.size = file.size
                 }else{
@@ -254,6 +343,9 @@
                 this.form.folderId = ''
                 this.form.fileUrl = ''
                 this.form.size = ''
+            },
+            async beforeUploadFn(file){
+                await this.fileExistsFn(file.name)
             }
         }
     };

@@ -3,7 +3,7 @@
         <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
         <div class='inner'>
             <div class='top_content'>
-                <div class='header'><span id='fileName'>工单</span></div>
+                <div class='header'><span>学习管理（管理员界面）</span></div>
                 <div class="top-toolbar">
                     <div class="left-toolbar">
                         <!-- <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
@@ -14,13 +14,7 @@
                         <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
                     </div>
                     <div class="right-toolbar">
-                        <div @click="rightMethods('','download')"><icon iconClass="add" ></icon>下载</div>
-                        <div @click="rightMethods('','move')"><icon iconClass="edit" ></icon>移动到</div>
-                        <div @click="batchPushFn"><icon iconClass="remove" ></icon>批量推送</div>
-                        <div @click="rightMethods('/addFile','add')"><icon iconClass="info"></icon>新增</div>
-                        <div @click="rightMethods('/addFile','edit')"><icon iconClass="save" ></icon>编辑</div>
-                        <div @click="rightMethods('','delete')"><icon iconClass="reset" ></icon>删除</div>
-                        <div @click="rightMethods('/addFile','info')"><icon iconClass="reset" ></icon>详情</div>
+                        <div @click="readPushFn">阅读推送</div>
                         <!-- <div @click="rightMethods"><icon iconClass="reset" ></icon>导出Excel</div> -->
                     </div>
                 </div>
@@ -31,42 +25,35 @@
                     ref="searchTable"  
                     @requestTable="requestTable(arguments[0])"   
                     @listenToCheckedChange="listenToCheckedChange(arguments[0])" 
-                    @headerSort="headerSort(arguments[0])"  
+                    @headerSort="headerSort(arguments[0])"
                     :data="tableData" 
                     :tableConfig="businessTableConfig"
                     @handleSizeChange="handleSizeChange" 
                     @handleCurrentChange="handleCurrentChange"
                 >
-                    <el-table-column slot="radio" label="选择" :width="49" >
+                    <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="option" align='center' label="操作" :width="230"  >
-                        <template  slot-scope="{ row }">
-                            <el-button size='mini' @click="toHistoryListFn(row)" class="copyButton copyButton1" >历史版本</el-button>
-                            <el-button size='mini' @click="toReadTrackFn(row)" class="copyButton" >阅读推送</el-button>
-                        </template>
-                    </el-table-column>
                 </SearchTable>
             </div>
         </div>
-        <file-move ref="fileMove" @onupdate='fileMoveSuccessFn'></file-move>
+        <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
     </div>
 </template>
 <script>
 import request from '@lib/axios.js';
-import {  extend ,map} from 'lodash';
 import Icon from '@components/Icon-svg/index';
-import { sysParameterTable } from '../tableConfig.js';
+import { sysParameterTable } from './tableConfig.js';
 import SearchTable from '@/ui/components/SearchTable';
-import fileMove from '@/ui/components/fileMove';
+import userTree from '@components/userTree/index';
 export default {
     components: {
        Icon,
        SearchTable,
-       fileMove
+       userTree
 	},
     data() {
         return {
@@ -79,6 +66,10 @@ export default {
             sort:{},
             tableData:{records:[]},
             selectObjs:[],
+            selectedPersonList:[],
+            deptList:[],
+            users:[],
+            fileList:[],
             issueDeptArr:[],
             positionArr:[]
         };
@@ -88,127 +79,22 @@ export default {
         //     this.$router.push({path:'/fileManage'});
         // }
         this.init()
-        this.$nextTick(()=>{
-            request({
-                url:`${this.$ip}/mms-knowledge/folder/getById/${this.$route.query.folderId}`,
-                method: 'get',
-            })
-            .then((data) => {
-                if(data.code==200){
-                    document.querySelector(".no-redirect-last").innerHTML = data.data.name
-                    document.querySelector("#fileName").innerHTML = data.data.name
-                }
-            })
+        Promise.all([this.listByCodesFn(),this.getFileList()]).then(res=>{
+            console.log(res)
+            this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
         })
-        request({
-            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-            method: 'post',
-            data:["issueDept", "position",]
-        }).then(d => {
-            if(d.code == 200){
-                this.issueDeptArr = d.data.issueDept
-                this.positionArr = d.data.position
-            }else{
-                this.issueDeptArr = []
-                this.positionArr = []
-            }
-            this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
-        })
+        // try{
+        //     await this.listByCodesFn()
+        //     await this.getFileList()
+        //     console.log(this.fileList)
+        //     this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
+        // }catch(err){
+        //     throw new Error(err)
+        // }
     },
     methods:{
         init(){
             this.getList()
-        },
-        rightMethods(type,query){
-            if(query!='add'){
-                if(this.selectObjs.length==1){
-                    if(query === 'delete'){
-                        this.deleteConfirmFn()
-                    }else if(query === 'move'){
-                        this.fileMoveFn()
-                    }else if(query==='download'){
-                        this.fileDownloadFn()
-                    }
-                    else{
-                        this.$router.push({path: type,query: {type:query, id: this.selectObjs[0].id, folderId: this.$route.query.folderId}})
-                    }
-                }else if(this.selectObjs.length>1){
-                    this.$message({
-                        showClose: true,
-                        message: '只能选择一个文件操作',
-                        type: 'warning'
-                    });
-                    return
-                }else if(this.selectObjs.length==0){
-                    this.$message({
-                        showClose: true,
-                        message: '必须选择一个文件操作',
-                        type: 'warning'
-                    });
-                    return
-                }
-            }else{
-                this.$router.push({path:type,query:{type:query, folderId: this.$route.query.folderId}})
-            }
-        },
-        deleteConfirmFn(){
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(async () => {
-                let res = await this.fileDeleteFn()
-                if(res.code == 200 && res.data){
-                    this.getList();
-                    this.selectObjs = [];
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                }else{
-                    this.$message({
-                        type: 'error',
-                        message: '删除失败!'
-                    });
-                    this.getList();
-                    this.selectObjs = [];
-                }
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-            return
-        },
-        fileDeleteFn(){
-            let _this = this
-            return new Promise((resolve, reject)=>{
-                request({
-                    url:`${this.$ip}/mms-knowledge/file/delete/${_this.selectObjs[0].id}`,
-                    method: 'delete',
-                })
-                .then((data) => {
-                    resolve(data)
-                    // this.getList();
-                    // this.selectObjs = [];
-                    // this.$message({type: 'success',message: '删除成功'});
-                })
-            })
-        },
-        fileAddFn(){
-            request({
-                url:`${this.$ip}/mms-knowledge/file/save`,
-                method: 'post',
-                data:{
-
-                }
-            })
-            .then((data) => {
-                this.getList();
-                this.selectObjs   = [];
-                this.$message({type: 'success',message: '删除成功'});
-            })
         },
         getList(){
            request({
@@ -234,8 +120,8 @@ export default {
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
             })
-       },
-       requestTable(searchData){
+        },
+        requestTable(searchData){
             this.form = searchData
             this.selectObjs=[]
             this.tableData={records:[]}
@@ -275,46 +161,11 @@ export default {
             this.params.current = 1
             this.$set(this.tableData.records,row.index,row)
         },
-        fileMoveFn(){
-            this.$refs.fileMove.openFn(this.selectObjs[0].id)
-        },
-        fileMoveSuccessFn(val){
-            this.getList()
-        },
         arrRemEleFn(arr, val){
             var index = arr.indexOf(val);
             if (index > -1) {
                 arr.splice(index, 1);
             }
-        },
-        // 批量推送
-        batchPushFn(){
-            if(this.selectObjs.length>0){
-                this.$router.push({path: '/batchPush',query: {id: this.selectObjs.map(i=>i.id).join(','), folderId: this.$route.query.folderId}})
-            }else{
-                this.$message({
-                    showClose: true,
-                    message: '必须选择文件才能批量推送',
-                    type: 'warning'
-                });
-                return
-            }
-        },
-        fileDownloadFn(){
-            let Url = `${this.$ip}/mms-file/get-file-stream-by-file-path/?filePath=${this.selectObjs[0].fileUrl}`
-            let a = document.createElement('a')
-            document.body.appendChild(a)
-            a.href = Url
-            a.click()
-            document.body.removeChild(a)
-            this.getList()
-            this.selectObjs=[]
-        },
-        toHistoryListFn(row){
-            this.$router.push({path: '/fileHistory', query: {id:row.id}})
-        },
-        toReadTrackFn(row){
-            this.$router.push({path: '/readTrack', query: {id:row.id}})
         },
         handleSizeChange(size) {
             this.params.current = 1
@@ -324,17 +175,97 @@ export default {
 		handleCurrentChange(current) {
             this.params.current = current
             this.getList()
-		},
-            // request({
-            //     url:`${this.$ip}/mms-file/get-file-stream-by-file-path/`, 
-            //     method: 'get',
-            //     params:{
-            //         filePath:'/M00/00/01/rWQBjl78OA2ABsKmAAApuVAdayM314.jpg'
-            //     }
-            // })
-            // .then((data) => {
-            //     console.log(data)
-            // }) 
+        },
+        handleUserSelected(selectedPersonList,deptList){
+            this.selectedPersonList = selectedPersonList
+            this.deptList = deptList
+            this.pushBatchFn()
+        },
+        readPushFn(){
+            if(this.selectObjs.length){
+                this.$refs.userBox.open(this.users, '选择推送对象', true);
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '必须选择文件进行操作',
+                    type: 'warning'
+                });
+                return
+            }
+        },
+        pushBatchFn(){
+            let data
+            let select = this.selectedPersonList.map(item=>{
+                return {
+                    userId:item.id,
+                    userName:item.name
+                }
+            })
+            data = {
+                ids: this.selectObjs.map(i=>i.id),
+                userVOList: select
+            }
+            request({
+                url:`${this.$ip}/mms-knowledge/file/pushBatch`,
+                method: 'post',
+                data:data
+            })
+            .then((data) => {
+                if(data.code==200){
+                    this.$message.success("推送成功！");
+                    this.init()
+                }else{
+                    this.$message({
+                        showClose: true,
+                        message: '推送失败',
+                        type: 'error'
+                    });
+                    return
+                }
+            })
+        },
+        listByCodesFn(){
+            return new Promise((resolve, reject)=>{
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    data:["issueDept", "position",]
+                }).then(d => {
+                    if(d.code == 200){
+                        this.issueDeptArr = d.data.issueDept
+                        this.positionArr = d.data.position
+                    }else{
+                        this.issueDeptArr = []
+                        this.positionArr = []
+                    }
+                    resolve()
+                    // this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
+                })
+            })
+        },
+        getFileList(){
+            return new Promise((resolve,reject)=>{
+                request({
+                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    method: 'post',
+                })
+                .then((data) => {
+                    if(data.code==200){
+                        this.fileList = data.data
+                        this.fileList = this.fileList.map((item,index)=>{
+                            return {
+                                index: index,
+                                label: item.name,
+                                id: item.id,
+                            }
+                        })
+                    }else{
+                        this.fileList = []
+                    }
+                    resolve()
+                })
+            })
+        },
     },
     watch: {
     },
@@ -352,7 +283,7 @@ export default {
             .header{
                 margin: 0 auto;
                 margin-bottom: 30px;
-                text-align: center;
+                width: 271px;
                 font-family:SourceHanSansCN-Medium,SourceHanSansCN;
                 font-weight:500;
                 color:rgba(34,34,34,1);
@@ -405,7 +336,7 @@ export default {
             display: flex;
             justify-content: space-between;
             /deep/ .mainTable{
-                height: 500px;
+                height: 500px!important;
                 overflow: auto;
                 // /deep/ .el-table__body-wrapper{
                 //     /deep/ tr:last-child{

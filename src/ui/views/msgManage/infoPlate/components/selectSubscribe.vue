@@ -1,6 +1,6 @@
 <template lang="html">
-	<el-dialog :close-on-click-modal="false" class="users-dialog" :title="title" center append-to-body :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
-		 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+	<el-dialog :close-on-click-modal="false" class="users-dialog" :title="title" center append-to-body :visible.sync="dialogVisible" width="900px" :before-close="handleClose">
+		 <SearchTable :noSearch="true" ref="searchTable"  @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
             <el-table-column slot="radio" label="选择" :width="49" >
                 <template slot-scope="{ row }">
                     <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -20,7 +20,7 @@ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import request from '@lib/axios.js';
 import { formatTreeData } from '@lib/tools.js';
-import { selectSubscribeTable } from '../tableConfig.js';
+import { selectSubscribeTable } from '../../tableConfig.js';
 import { extend, get, cloneDeep, filter, some, flow, concat, map } from 'lodash';
 export default {
      components: {
@@ -40,6 +40,8 @@ export default {
             form:{},
             sort:{},
             selectId:null,
+            selectRow:{},
+            title:'按订阅方式选择'
 		};
 	},
 	watch:{
@@ -51,10 +53,15 @@ export default {
         }
     },
 	methods: {
+        handleSave(){
+            this.$emit('handleSelectSubscribe',this.selectRow);
+            this.dialogVisible = false;
+        },
         handleClose(){
             this.dialogVisible = false;
 		},
 		listenToCheckedChange(row, column, event){
+            this.selectRow = row;
             let select = row.selected;
             this.tableData.records.map(r =>{
                 if(r.selected){
@@ -87,7 +94,7 @@ export default {
 		},
 		getList(){
            request({
-                url:`${this.$ip}/mms-notice/notificationSubscribe/list`, 
+                 url:`${this.$ip}/mms-notice/notificationSubscribe/list`, 
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
@@ -108,8 +115,7 @@ export default {
 		handleCheckedChange() {},
 		handleSelectionChange() {},
 		open() {
-		
-			
+            this.getList();
 			this.dialogVisible = true;
 		},
 	},
@@ -117,6 +123,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.users-dialog{
+    /deep/ .mainTable{
+        height: 450px;
+        overflow: auto;
+    }    
+}
 
 </style>

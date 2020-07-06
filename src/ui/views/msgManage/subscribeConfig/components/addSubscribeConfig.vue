@@ -15,6 +15,12 @@
     </div>
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
+        <div class="row_custom3">
+           <el-form-item label="订阅名称：" prop="name">
+            <span v-if="type=='info'">{{form.name}}</span>
+            <el-input v-else v-model="form.name" placeholder="请输入订阅名称"></el-input>
+          </el-form-item>
+        </div>
         <div class="row_custom">
           <el-form-item label="信息类型：" prop="type">
             <span v-if="type=='info'">{{form.type}}</span>
@@ -50,7 +56,7 @@
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import userTree from '@components/userTree/index';
-import { extend } from "lodash";
+import { extend, without} from "lodash";
 export default {
   components: {
     Icon,
@@ -61,13 +67,43 @@ export default {
     return {
       form: {},
       rules: {
+        name: [{ required: true, message: "请输入订阅名称", trigger: "change" },
+          {
+            validator: (rule, value, callback) => {
+              let flag = false;
+               request({
+                url:`${this.$ip}/mms-notice/notificationSubscribe/checkName`,
+                method: "get",
+                params:{name:value}
+              })
+              .then(data => {
+                if(data.data){
+                   flag = false;
+                }else{
+                   flag = true;
+                }
+              }).catch(error => {
+                this.$message.error(error);
+              });
+              if (this.nowValue == value) {
+								callback();
+							} else if (flag) {
+								callback(new Error('该名称已存在'));
+							} else {
+								callback();
+							}
+            },
+            trigger: 'change',
+					},
+        ],
         type: [{ required: true, message: "请选择信息类型", trigger: "change" }],
         enable: [{ required: true, message: "请选择是否启用", trigger: "change" }],
       },
       type: "add",
       userList:[],
       infoType:[],
-      deptList:[]
+      deptList:[],
+      nowValue: null,
     };
   },
   created() {
@@ -88,7 +124,8 @@ export default {
                 method: "get",
               })
               .then(data => {
-                 this.form = {type:data.data.type,enable:data.data.enable} ;
+                 this.nowValue = data.data.name;
+                 this.form = {type:data.data.type,enable:data.data.enable,name:data.data.name} ;
                  this.userList = data.data.receiptPerson;
                  this.deptList = data.data.receiptDepartment;
               })
@@ -173,6 +210,18 @@ export default {
       /deep/ .el-form-item__content {
         margin-left: 100px;
       }
+      .row_custom3{
+         /deep/ .el-form-item__content{
+            height: 40px;
+            width: 900px;
+            text-align: left;
+        }
+        @include common-input;
+        /deep/ span{
+          font-size:12px!important; 
+          margin-left: 5px!important;
+        }
+      }
       .row_custom2{
         height: 166px;
         /deep/ .el-form-item__content{
@@ -189,7 +238,7 @@ export default {
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 367px;
+            width: 397px;
             text-align: left;
         }
         @include common-input;

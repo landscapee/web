@@ -30,21 +30,22 @@
           </el-form-item>
         </div>
         <div class="row_custom2">
-          <el-form-item label="接收单位：" >
-            <span v-if="type=='info'">{{receivingUnit}}</span>
-            <el-input v-if="type=='add'" v-model="receivingUnit" placeholder="请选择接收单位"></el-input>
-          </el-form-item>
-          <el-form-item label="接收人：" >
-            <span v-if="type=='info'">{{receiver}}</span>
-            <el-input v-if="type=='add'" v-model="receiver" placeholder="请选择接收人"></el-input>
+          <el-form-item label="接收人和单位：" >
+							<div class="tagBox">
+								<el-scrollbar style="height:100px">
+									<el-tag :key="tag.id" v-for="tag in userList" closable :disable-transitions="false" @close="handleClose(tag)">
+										{{ tag.name }}
+									</el-tag>
+								</el-scrollbar>
+							</div>
           </el-form-item>
           <el-button @click="handleSelectUser('subscribe')">按订阅方式</el-button>
           <el-button @click="handleSelectUser('object')">接收对象选择</el-button>
         </div>
         <div class="row_custom3">
           <el-form-item label="是否要求处理：" prop="require">
-            <el-radio v-model="form.require" label="1">是</el-radio>
-            <el-radio v-model="form.require" label="2">否</el-radio>
+            <el-radio v-model="form.require" :label="true">是</el-radio>
+            <el-radio v-model="form.require" :label="false">否</el-radio>
            </el-form-item>
            <el-form-item label="要求处理时间：" prop="deadline">
             <span v-if="type=='info'">{{form.deadline}}</span>
@@ -54,10 +55,10 @@
         <div class="row_custom5">
           <el-form-item label="附件：" >
             <span v-if="type=='info'">{{filename}}</span>
-            <el-input v-if="type=='add'" v-model="filename" placeholder="支持多个附件上传"></el-input>
+            <el-input v-else v-model="filename" placeholder="支持多个附件上传"></el-input>
           </el-form-item>
           <el-upload
-              :multiple="false"
+              :multiple="true"
               class="upload-demo"
               ref="file"
               :http-request="handleSubmit"
@@ -73,17 +74,20 @@
       </el-form>
     </div>
     <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+    <selectSubscribe ref="selectSubscribe" @handleSelectSubscribe="handleSelectSubscribe" ></selectSubscribe>
   </div>
 </template>
 <script>
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
-import { extend } from "lodash";
+import { extend,without } from "lodash";
 import userTree from '@components/userTree/index';
+import selectSubscribe from './selectSubscribe';
 export default {
   components: {
     Icon,
-    userTree
+    userTree,
+    selectSubscribe
   },
   name: "",
   data() {
@@ -100,8 +104,12 @@ export default {
       infoType:[],
       fileList: [],
       userList:[],
+      receiptDepartment:[],
+      receiptPerson:[],
       filename:'',
-      type: "add"
+      type: "add",
+      subscribeId:null,
+      bySubscribe:false
     };
   },
   mounted(){
@@ -122,10 +130,18 @@ export default {
          if(this.type == "edit" || this.type == "info"){
               request({
                 url:`${this.$ip}/mms-notice/notificationPublish/getById/${this.$route.query.id}`,
-                method: "post",
+                method: "get",
               })
               .then(data => {
-                this.form = data.data;
+               this.subscribeId = data.data.subscribeId;
+               this.bySubscribe = data.data.bySubscribe;
+               this.receiptDepartment = data.data.receiptDepartment;
+               this.receiptPerson = data.data.receiptPerson;
+               this.form = data.data;
+               this.filename =  data.data.fileInfoList.map(item=>
+                  item.fileName
+              ).join(",");
+               this.userList =  data.data.receiptPerson;
               })
               .catch(error => {
                 this.$message.success(error);
@@ -134,15 +150,47 @@ export default {
     }
   },
   methods: {
-    handleUserSelected(users) {
-      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+    handleClose(tag) {
+			this.userList = without(this.userList, tag);
 		},
+    handleUserSelected(users,deptList) {
+      this.subscribeId = null;
+      this.bySubscribe = false;
+      this.receiptPerson = users.map((item) => ({ id: item.id, name: item.name }));
+      // 数组去重
+      let hash = {};
+       this.receiptDepartment  = deptList.reduce(function(item, next) {
+        if (!hash[next.id]) {
+          hash[next.id] = true;
+          item.push(next);
+        }
+        return item;
+      }, []);
+      let list =   this.receiptPerson.map((item) => ({ id: item.id, name: item.name }));
+      this.userList = [];
+      list.map((item,index)=>{
+        this.$set(this.userList, index, item);
+      })
+    },
+    handleSelectSubscribe(row){
+      this.subscribeId = row.id;
+      this.bySubscribe = true;
+      this.receiptDepartment = row.receiptDepartment;
+      this.receiptPerson =  row.receiptPerson;
+      let list =   this.receiptPerson.map((item) => ({ id: item.id, name: item.name }));
+      this.userList = [];
+      list.map((item,index)=>{
+        this.$set(this.userList, index, item);
+      })
+    },
      handleChange(file, fileList) {
         if (fileList.length > 0) {
             this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
         }
-        this.filename=file.name
-        console.log(file, fileList);
+        this.filename = fileList.map(item=>
+            item.name
+        ).join(",");
+        console.log( this.filename );
     },
     beforeAvatarUpload(file) {
         const isLt2M = file.size / 1024 / 1024 < 5;
@@ -167,7 +215,7 @@ export default {
         }).then((d) => {
             if(d){
 
-                this.form.file=d.data
+                this.form.attachment=d.data
 
                 this.$message({
                     message: '上传成功',
@@ -213,12 +261,9 @@ export default {
           this.$message.success(error);
         });
     },
-    handleUserSelected(users) {
-			let data = users.map((item) => ({ userId: item.id, userName: item.name }));
-		},
     handleSelectUser(tag) {
 			if(tag=='subscribe'){
-
+        this.$refs.selectSubscribe.open();
       }else{
         this.$refs.userBox.open(this.users, '选择人员', true);
       }
@@ -234,7 +279,7 @@ export default {
             request({
               url,
               method: "post",
-              data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson,subscribeId:this.subscribeId,bySubscribe:this.bySubscribe}:{...this.form,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson,subscribeId:this.subscribeId,bySubscribe:this.bySubscribe}
             })
             .then(data => {
               this.$message.success("保存成功！");
@@ -278,6 +323,10 @@ export default {
         @include common-input;
       }
       .row_custom5{
+        /deep/ .el-button{
+          position: relative;
+          top: -2px;
+        }
         /deep/ .el-form-item__content{
             height: 40px;
             width: 788px;
@@ -302,9 +351,13 @@ export default {
         @include common-input;
       }
       .row_custom2{
+        /deep/ .el-button{
+          position: relative;
+          top: -85px;
+        }
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 238px;
+            width: 610px;
             text-align: left;
         }
         @include common-input;

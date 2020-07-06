@@ -2,6 +2,9 @@
     <div class='index'>
         <router-view v-if="this.$router.history.current.path == '/detail'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/batchPush'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/fileHistory'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/readTrack'" :key="$route.path"></router-view>
         <div class='inner' v-else>
             <div class='top_content'>
                 <div class='header'><span>文件管理</span></div>
@@ -80,31 +83,29 @@ export default {
             })
         },
         getFileList(fn){
-            return new Promise((resolve,reject)=>{
-                request({
-                    url:`${this.$ip}/mms-knowledge/folder/list`, 
-                    method: 'post',
-                })
-                .then((data) => {
-                    if(data.code==200){
-                        this.fileList = data.data
-                        this.fileList = this.fileList.map((item,index)=>{
-                            return {
-                                index: index,
-                                label: item.name,
-                                icon: 'wenjianjia',
-                                isClickEd: false,
-                                id: item.id,
-                                fileUpdateTime: item.fileUpdateTime?moment(parseInt(item.fileUpdateTime)).format('YYYY-MM-DD HH:mm:ss'):'',
-                                nameEditing:false,
-                            }
-                        })
-                        console.log(this.fileList)
-                    }else{
-                        this.fileList = []
-                    }
-                    fn&&fn()
-                })
+            request({
+                url:`${this.$ip}/mms-knowledge/folder/list`, 
+                method: 'post',
+            })
+            .then((data) => {
+                if(data.code==200){
+                    this.fileList = data.data
+                    this.fileList = this.fileList.map((item,index)=>{
+                        return {
+                            index: index,
+                            label: item.name,
+                            icon: 'wenjianjia',
+                            isClickEd: false,
+                            id: item.id,
+                            fileUpdateTime: item.fileUpdateTime?moment(parseInt(item.fileUpdateTime)).format('YYYY-MM-DD HH:mm:ss'):'',
+                            nameEditing:false,
+                        }
+                    })
+                    console.log(this.fileList)
+                }else{
+                    this.fileList = []
+                }
+                fn&&fn()
             })
         },
         openMenu(e, item) {
@@ -137,8 +138,6 @@ export default {
             // })
         },
         closeOrdersClickFn(item){
-            console.log("remove")
-            console.log(item)
             //this.fileList.forEach(item=>item.isClickEd=false)
             item.isClickEd = false
             // document.body.removeEventListener('click',()=>{
@@ -147,7 +146,7 @@ export default {
         },
         openFile(item){
             if(item.id){
-                this.$router.push({path:'/detail',query:{id:item.id}});
+                this.$router.push({path:'/detail',query:{folderId:item.id}});
             }else{
                 this.$message({
                     showClose: true,
@@ -412,12 +411,13 @@ export default {
                             bottom:-42px;
                             left:50%;
                             width: 300px;
-                            background: rgba(255,255,255, 0.44);
+                            background: rgba(255,255,255, 0.9);
                             font-size:14px;
                             border: 1px solid #d9d9d9;
                             line-height: 34px;
                             padding: 4px;
                             border-radius: 4px;
+                            z-index: 100;
                         }
                         .icon{
                             .svg-icon{
@@ -450,6 +450,7 @@ export default {
             margin:0;
             padding:0;
             border: 1px solid #d9d9d9;
+            z-index: 110;
             li{
                 list-style:none;
                 text-indent: 2em;

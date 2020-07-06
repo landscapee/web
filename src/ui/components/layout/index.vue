@@ -46,6 +46,7 @@ import esc from './assets/img/ic_esc.png';
 import usericon from './assets/img/usericon.png';
 import Breadcrumb from './components/Breadcrumb/index';
 import Icon from '@components/Icon-svg/index';
+import {setUserInfo,setToken,removeToken,removeUserInfo} from '@lib/auth';
   export default {
 	components: {
 		Breadcrumb,
@@ -57,7 +58,7 @@ import Icon from '@components/Icon-svg/index';
 		asyncRoutes,
 		username:this.$store.getters.userInfo.name,
 		sysname:'成都天府机场机务管理系统',
-		tipsNumber:0,
+		tipsNumber:localStorage.getItem("msg_count")?localStorage.getItem("msg_count"):0,
 		logo,
 		bell,
 		esc,
@@ -95,6 +96,7 @@ import Icon from '@components/Icon-svg/index';
 			channel: 'websocket_count',
 			topic: 'count',
 			callback: async data => {
+				localStorage.setItem("msg_count",data);
 				this.tipsNumber = data;
 			}
 		})
@@ -105,6 +107,10 @@ import Icon from '@components/Icon-svg/index';
 			this.$eventBus.$emit('infoPlate', 'receive');
 		},
 		logout(){
+			this.$store.commit('user/SET_TOKEN','');
+			this.$store.commit('user/SET_USER_INFO','');
+			removeToken();
+			removeUserInfo();
 			this.$router.push({ path: '/' });
 		},
 		onSpread(){

@@ -15,8 +15,7 @@
 </template>
 
 <script>
-// import { getFileUrl } from '@/api/fileUpload';
-
+import request from '@lib/axios.js';
 export default {
 	name: 'download',
 	data() {
@@ -33,15 +32,13 @@ export default {
 			this.dialogRow = [];
 		},
 		xiazai(row) {
-			// this.filePath = `http://${location.hostname}:${location.port}/api/file/get-file-stream-by-id/${row.id}`;
-			// this.$refs.formLoad.action = this.filePath;
-			// this.$refs.formLoad.submit();
+			let filePath = `${this.$ip}/mms-file/get-file-stream-by-id/${row.id}`;
+			this.$refs.formLoad.action = filePath;
+			this.$refs.formLoad.submit();
 		},
-		open(id) {
+		open(data) {
 			this.dialogVisible = true;
-			// getFileUrl({ fileIds: id }).then((d) => {
-			// 	this.dialogRow = d;
-			// });
+			this.dialogRow = data;
 		},
 	},
 };
