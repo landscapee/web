@@ -1,21 +1,23 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testManageAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path"></router-view>
+         <router-view v-if="this.$router.history.current.path == '/trainManageAdminAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminPush'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/testManage'" :key="$route.path" class="sysParameter">
+        <div v-else-if="this.$router.history.current.path == '/trainManageAdmin'" :key="$route.path" class="trainManageAdmin">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>考试管理</span>
+                    <span>培训管理 <span style="color:#888888">（管理员）</span></span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
+                    <!--<a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>-->
+                    <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -26,34 +28,43 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="230"  >
+                     <el-table-column align="center" slot="option" label="操作" :width="190" >
                         <template  slot-scope="scope">
-                            <el-button  class="copyButton copyButton1" @click="pushStaff('/testManagePushStaff',scope.row)">考试推送员工</el-button>
-                            <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
+
+                                <el-button class="QoptionButton" @click="pushStaff(scope.row)">推送员工</el-button>
+                                <el-button class="QoptionButton" @click="trainResults(scope.row)">培训结果</el-button>
+
                         </template>
                     </el-table-column>
 
                 </SearchTable>
+                <el-button
+                        plain
+                        @click="open1">
+                    右上角
+                </el-button>
             </div>
         </div>
+        <ExportTrain ref="ExportTrain"></ExportTrain>
     </div>
 </template>
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testConfig } from './tableConfig.js';
+import { trainManageAdminConfig } from './tableConfig.js';
+import ExportTrain from './exportTrain';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable
+        SearchTable,ExportTrain
 	},
-    name: '',
+    name: 'trainManageAdmin',
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testConfig({},{}),
+            tableConfig:trainManageAdminConfig({}),
             params:{
 				current: 1,
 				size: 15,
@@ -61,31 +72,22 @@ export default {
             form:{},
             row:{},
             sort:{},
-
             selectId:null
         };
     },
    created() {
-        if(this.$router.history.current.path == '/testManage'){
+        if(this.$router.history.current.path == '/trainManageAdmin'){
             this.getList();
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:['trainType']
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig=trainManageAdminConfig(obj)
+            });
         }
-       request({
-           url:`${this.$ip}/mms-training/paperInfo/list`,
-           method: 'post',
-           data:{},
-           params:{size:10000,current:1}
-       }).then((data) => {
-           request({
-               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-               method: 'post',
-               params:{delete:false},
-               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
-           }).then(d => {
-               let obj=d.data
-                this.tableConfig =testConfig(data.data.records||[],obj)
-
-           });
-           })
     },
     watch:{
         '$route':function(val,nm){
@@ -94,15 +96,24 @@ export default {
         }
     },
     methods: {
-        // row:JSON.stringify(row)
-        testPush(path,row){
-          this.$router.push({path:path,query:{id:row.id,}})
+        open1() {
+            this.$notify({
+                title: '自定义位置',
+                message: '右上角弹出的消息',
+                position: 'center'
+
+            });
         },
-        pushStaff(path,row){
-          this.$router.push({path:path,query:{id:row.id,paperId:row.paperId}})
+        pushStaff(row){
+            this.$router.push({path:'/trainManageAdminPush',query:{id:row.id}})
+         },
+        trainResults(row){
+            this.$router.push({path:'/trainManageAdminResults',query:{id:row.id}})
+
         },
         exportExcel(){
-             this.$refs.a.click()
+             // this.$refs.a.click()
+            this.$refs.ExportTrain.open(this.row)
         },
         requestTable(searchData){
             this.form = searchData;
@@ -125,14 +136,12 @@ export default {
             if(num!=2){
                 this.sort['order'] = column.property+','+num;
             }
-
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
-            console.log(column.property,column.order, this.sort,11);
+            // console.log(column.property,column.order, this.sort,11);
             this.getList();
         },
         listenToCheckedChange(row, column, event){
-
             let select = row.selected;
             this.tableData.records.map(r =>{
                 if(r.selected){
@@ -151,14 +160,13 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let data=JSON.stringify(this.row)
-            if(tag=='add'){
-                this.$router.push({path:'/testManageAdd',query:{type:'add'}});
+             if(tag=='add'){
+                this.$router.push({path:'/trainManageAdminAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:'/trainManageAdminAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -173,12 +181,13 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/mms-training/examInfo/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-training/trainingInfo/delete/`+this.selectId,
                             method: 'delete',
-                         })
-                            .then((data) => {
+                            // params:{id:this.selectId}
+                        }).then((data) => {
                                 this.getList();
-                                this.selectId   = null;
+                                this.selectId  = null;
+                                this.row  = {};
                                 this.$message({type: 'success',message: '删除成功'});
                             })
                     })
@@ -187,8 +196,8 @@ export default {
                             type: 'info',
                             message: '已取消删除',
                         });
-                    });            }
-
+                    });
+            }
         },
         getList(){
             let data={...this.form}
@@ -198,18 +207,13 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/mms-training/examInfo/list`,
-                 method: 'post',
+                url:`${this.$ip}/mms-training/trainingInfo/list`,
+                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
-                if(data.code==200){
-                    this.tableData = extend({}, {...data.data});
-                }
-
-
-
+                  this.tableData = extend({}, {...data.data});
              })
         },
         handleSizeChange(size) {
@@ -228,20 +232,11 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
-.sysParameter{
+.trainManageAdmin{
     margin-top:14px;
+    /deep/ .mainTable{
+        height: 600px;
+    }
+}
 
-    .copyButton{
-        margin: 0;
-        padding:7px 10px;
-        background: black;
-        color:white;
-    }
-    .copyButton1{
-        margin-right: 3px;
-    }
-}
-/deep/ .mainTable{
-    height: 600px;
-}
 </style>

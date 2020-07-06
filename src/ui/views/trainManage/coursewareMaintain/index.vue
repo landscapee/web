@@ -1,21 +1,19 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testManageAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path"></router-view>
+         <router-view v-if="this.$router.history.current.path == '/coursewareMaintainAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/testManage'" :key="$route.path" class="sysParameter">
+        <div v-else-if="this.$router.history.current.path == '/coursewareMaintain'" :key="$route.path" class="coursewareMaintain">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>考试管理</span>
+                    <span>课件维护</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
+                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出</div>-->
                 </div>
             </div>
             <div class="main-content">
@@ -26,10 +24,12 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="230"  >
+                    <!--:show-overflow-tooltip="true"-->
+                    <el-table-column align="center" slot="fileDown" label="操作" :width="120" >
                         <template  slot-scope="scope">
-                            <el-button  class="copyButton copyButton1" @click="pushStaff('/testManagePushStaff',scope.row)">考试推送员工</el-button>
-                            <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
+                            <form action="#" method="GET" ref="formLoad"></form>
+                            <el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton"  >课件下载</el-button>
+                            <!--<el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton" @click="fileDown(scope.row)">课件下载</el-button>-->
                         </template>
                     </el-table-column>
 
@@ -41,7 +41,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testConfig } from './tableConfig.js';
+import { coursewareConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
@@ -49,43 +49,38 @@ export default {
         Icon,
         SearchTable
 	},
-    name: '',
+    name: 'coursewareMaintain',
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testConfig({},{}),
+            tableConfig:coursewareConfig({}),
             params:{
 				current: 1,
 				size: 15,
             },
+            filePath:'#',
             form:{},
             row:{},
             sort:{},
-
             selectId:null
         };
     },
    created() {
-        if(this.$router.history.current.path == '/testManage'){
+        if(this.$router.history.current.path == '/coursewareMaintain'){
             this.getList();
-        }
-       request({
-           url:`${this.$ip}/mms-training/paperInfo/list`,
-           method: 'post',
-           data:{},
-           params:{size:10000,current:1}
-       }).then((data) => {
-           request({
-               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-               method: 'post',
-               params:{delete:false},
-               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
-           }).then(d => {
-               let obj=d.data
-                this.tableConfig =testConfig(data.data.records||[],obj)
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["isUse", "loadPermission","CourseBusinessType",'coursewareType','applyObject' ]
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig=coursewareConfig(obj)
 
-           });
-           })
+            });
+
+        }
+
     },
     watch:{
         '$route':function(val,nm){
@@ -94,13 +89,26 @@ export default {
         }
     },
     methods: {
-        // row:JSON.stringify(row)
-        testPush(path,row){
-          this.$router.push({path:path,query:{id:row.id,}})
-        },
-        pushStaff(path,row){
-          this.$router.push({path:path,query:{id:row.id,paperId:row.paperId}})
-        },
+        fileDown(row){
+            if(row.courseFileId){
+                request({
+                    // application/x-www-form-urlencoded
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-file/get-file-by-id/${row.courseFileId }`,
+                     method:'GET',
+
+                }).then((d) => {
+                    if( d.data){
+                        this.$refs.formLoad.action =  d.data.filePath;
+                         this.$refs.formLoad.submit();
+                     }
+                });
+            }else {
+                this.$message.info('暂无附件')
+            }
+         },
         exportExcel(){
              this.$refs.a.click()
         },
@@ -125,14 +133,12 @@ export default {
             if(num!=2){
                 this.sort['order'] = column.property+','+num;
             }
-
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
-            console.log(column.property,column.order, this.sort,11);
+            // console.log(column.property,column.order, this.sort,11);
             this.getList();
         },
         listenToCheckedChange(row, column, event){
-
             let select = row.selected;
             this.tableData.records.map(r =>{
                 if(r.selected){
@@ -151,14 +157,13 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let data=JSON.stringify(this.row)
-            if(tag=='add'){
-                this.$router.push({path:'/testManageAdd',query:{type:'add'}});
+             if(tag=='add'){
+                this.$router.push({path:'/coursewareMaintainAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:'/coursewareMaintainAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -173,9 +178,10 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/mms-training/examInfo/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-training/courseInfo/delete/`+this.selectId,
                             method: 'delete',
-                         })
+                            // params:{id:this.selectId}
+                        })
                             .then((data) => {
                                 this.getList();
                                 this.selectId   = null;
@@ -198,18 +204,13 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/mms-training/examInfo/list`,
-                 method: 'post',
+                url:`${this.$ip}/mms-training/courseInfo/list`,
+                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
-                if(data.code==200){
-                    this.tableData = extend({}, {...data.data});
-                }
-
-
-
+                  this.tableData = extend({}, {...data.data});
              })
         },
         handleSizeChange(size) {
@@ -228,20 +229,11 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
-.sysParameter{
+.coursewareMaintain{
     margin-top:14px;
+    /deep/ .mainTable{
+        height: 600px;
+    }
+}
 
-    .copyButton{
-        margin: 0;
-        padding:7px 10px;
-        background: black;
-        color:white;
-    }
-    .copyButton1{
-        margin-right: 3px;
-    }
-}
-/deep/ .mainTable{
-    height: 600px;
-}
 </style>

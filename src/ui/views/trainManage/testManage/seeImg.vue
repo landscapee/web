@@ -3,9 +3,7 @@
         <el-dialog title="纸制试卷查看"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
            <div style=" padding: 20px 61px 28px 61px; ">
                <!--<img :src="src" alt="" >-->
-
-
-            <el-card :body-style="{ padding: '10px' }">
+            <el-card style="width: 478px" :body-style="{ padding: '10px' }">
                 <img :src="file.filePath" class="image">
                 <div style="padding: 14px;">
                     <span>名称：{{file.fileName}}</span>
@@ -54,8 +52,9 @@
     width: 600px;
     .el-dialog__body{
         padding: 0;
-        .img   {
-            width: 478px;
+        width: 478px;
+        .image {
+            height:400px
         }
     }
 

@@ -1,0 +1,134 @@
+
+//// 滚动条 /////
+::-webkit-scrollbar {
+    width: 8px; /* 纵向滚动条*/
+    height: 8px; /* 横向滚动条 */
+    border-radius: 4px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+/*定义滚动条轨道 内阴影*/
+::-webkit-scrollbar-track {
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: rgba(255,255,255,0.4);
+
+}
+
+/*定义滑块 内阴影*/
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: rgba(0,0,0,0.3);
+}
+///////// 标题 /////////
+/deep/ .el-scrollbar__wrap{
+    overflow: hidden!important;
+}
+.el-scrollbar__wrap{
+    overflow-x: hidden!important;
+}
+.QoptionButton{
+    margin: 0;
+    padding:7px 10px;
+    background: black;
+    color:white;
+}
+  .QoptionButton:focus{
+      //background: black;
+      //color:white;
+  }
+.Qfooter{
+    text-align:center;
+    /deep/ .el-button{
+        width: 140px;
+        height: 36px;
+        border: 1px solid #b9b9b9;
+         border-radius: 5px;
+    }
+    /deep/ .el-button:last-child{
+        border: 0;
+        color:white;
+        //background: #3280e7;
+    }
+}
+.Qdisplay{
+    display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+    display: -moz-box; /* 老版本语法: Firefox (buggy) */
+    display: -ms-flexbox; /* 混合版本语法: IE 10 */
+    display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+    display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+}
+.QDjusty{
+
+}
+.G_cursor:hover{
+    cursor: pointer;
+}
+
+.QCenterRight{
+    margin: 34px 0px 24px 0px;
+    position: relative;
+    .QHead{
+        font-size: 24px;
+        font-family: SourceHanSansCN, SourceHanSansCN-Medium;
+        font-weight: bold;
+        text-align: center;
+        color: #222222;
+    }
+    .QHead_list{
+        text-align: center;
+       span{
+           font-size: 24px;
+           font-family: SourceHanSansCN, SourceHanSansCN-Medium;
+
+           color: #222222;
+       }
+    }
+    .QheadRight{
+        position: absolute;
+        right:0;
+        top:0;
+        .isDisabled{
+            background: rgba(208,208,208,1);
+            color: #6A7785;
+            cursor: not-allowed;
+            .svg-icon{
+                fill: rgba(208,208,208,1);
+            }
+        }
+        &>div{
+            user-select: none;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            height: 2.28571rem;
+            line-height: 2.28571rem;
+            padding: 0.5rem;
+            border-radius: 0.14286rem;
+            border: 0.07143rem solid #d0d0d0;
+            margin-right: 0.85714rem;
+            color: #3D568E;
+        }
+        .svg-icon{
+            height:18px;
+            width:18px;
+            margin-right: 4px;
+            vertical-align: text-top;
+        }
+    }
+
+}
+
+
+.G_isDisabled{
+    background: rgba(208,208,208,1);
+    color: #6A7785;
+    cursor: not-allowed;
+    .svg-icon{
+        fill: rgba(208,208,208,1);
+    }
+}
+//////////////////////////////// lp form///////////
+

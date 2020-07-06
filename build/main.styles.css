@@ -21300,16 +21300,16 @@
   display: flex;
   justify-content: center;
 }
-.QfooterTest {
+.Qfooter {
   text-align: center;
 }
-.QfooterTest /deep/ .el-button {
+.Qfooter /deep/ .el-button {
     width: 10rem;
     height: 2.57143rem;
     border: 0.07143rem solid #b9b9b9;
     border-radius: 0.14286rem;
 }
-.QfooterTest /deep/ .el-button:last-child {
+.Qfooter /deep/ .el-button:last-child {
     border: 0;
     color: white;
     background: #3280e7;

@@ -1,0 +1,354 @@
+<template>
+    <div>
+
+        <router-view v-if="this.$router.history.current.path == '/12312312'" :key="$route.path"></router-view>
+         <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
+            <div class="QCenterRight">
+                <div class="QHead_list">
+                    <span>考核管理<span style="color:#888888">（管理员）</span></span>
+                </div>
+                <div class="QlistBody Qdisplay">
+                    <div class="QlistLeft" style="width:45%">
+                        <div class="QCenterRight" >
+                            <div style="font-weight: bold; font-size: 16px">
+                                培训
+                            </div>
+                        </div>
+                        <SearchTable ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                            <el-table-column slot="radio" label="选择" :width="49"  >
+                                <template slot-scope="{ row }">
+                                    <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                    <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                                </template>
+                            </el-table-column>
+
+
+                        </SearchTable>
+
+                    </div>
+                    <div class="QlistRight " style="width:calc(55% - 30px)">
+                        <div class="QCenterRight" >
+                            <div style="font-weight: bold; font-size: 16px">
+                                员工考核情况
+                            </div>
+                            <div class="QheadRight">
+                                <div @click="conclusion(null,3)"><icon iconClass="add" style="width:0" ></icon>批量合格</div>
+                                <div @click="moreRelative('edit')"><icon iconClass="edit" style="width:0"  ></icon>批量关联</div>
+                                <div @click="morePush"><icon iconClass="remove" style="width:0" ></icon>批量推送</div>
+                                <div @click="exportExcel()"><icon iconClass="export" ></icon>导出员工考核情况</div>
+                                <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
+                            </div>
+                        </div>
+                        <SearchTable ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
+                            <!--<el-table-column slot="radio" label="选择" :width="49"  >-->
+                                <!--<template slot-scope="{ row }">-->
+                                    <!--<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
+                                    <!--<icon  iconClass="ky" class="tab_radio" v-else></icon>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
+
+                            <el-table-column slot="checkbox" align="center" label="选择" :width="50"   >
+                                <template slot-scope="scope">
+                                    <el-checkbox v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
+                                </template>
+                            </el-table-column>
+                            <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140"   >
+                                <template slot-scope="scope">
+                                    <el-input class="rowinput" v-model="scope.row.certificateNumber"
+                                               @keyup.enter.native="saveNumber(scope.row)"
+                                             placeholder="操作合格后可编辑"
+                                               :disabled="scope.row.certificateNumber!='合格'">
+                                    </el-input>
+                                 </template>
+                            </el-table-column>
+                            <el-table-column slot="option" align="center" label="操作" :width="140"   >
+                                <template slot-scope="scope">
+                                    <el-button class="QoptionButton" @click="conclusion(scope.row,1)">合格</el-button>
+                                    <el-button class="QoptionButton" @click="conclusion(scope.row,2)">不合格</el-button>
+                                </template>
+                            </el-table-column>
+                        </SearchTable>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+<script>
+import SearchTable from '@/ui/components/SearchTable';
+import Icon from '@components/Icon-svg/index';
+import { rightConfig,leftConfig } from './tableConfig.js';
+import request from '@lib/axios.js';
+import {  extend,map } from 'lodash';
+export default {
+    components: {
+        Icon,
+        SearchTable,
+	},
+    name: '',
+    data() {
+        return {
+            checkArr:[],
+            tableLeftData:{records:[{},{}],size:10,current:1,total:2000},
+            tableRightData:{records:[{paperName:'sdfsd',id:123123}],size:10,current:1,total:20},
+            leftTableConfig:leftConfig({}),
+            rightTableConfig:rightConfig({}),
+            leftParams:{
+				current: 1,
+				size: 10,
+            },
+            rightParams:{
+				current: 1,
+				size: 10,
+            },
+            leftRow:{},
+            rightRow:{},
+            leftForm:{},
+            rightForm:{},
+            leftSelectId:null,
+            rightSelectId:null,
+             leftSort:{},
+            rightSort:{}
+        };
+    },
+    watch:{
+
+    },
+    created() {
+         this.leftParams.current = 1;
+       // this.getList('left');
+        request({
+            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+            method: 'post',
+            params:{delete:false},
+            data:["trainSign", "trainType",'assessConclusion' ]
+        }).then(d => {
+            let obj=d.data
+            this.rightTableConfig=rightConfig(obj)
+            this.leftTableConfig=leftConfig(obj)
+
+        });
+    },
+watch:{
+    checkArr:function () {
+        console.log(this.checkArr);
+    }
+},
+　　　　mounted() {
+
+    },
+
+    methods: {
+        saveNumber(row){
+            console.log(row);
+        },
+        morePush(){
+
+        },
+        moreRelative(){
+
+        },
+        conclusion(row,num){
+            if(row){
+                let msg = num==1?'合格':'不合格'
+                if(this.rightSelectId){
+                    this.$confirm(`此操作将操作${row.name}的考核结论为${msg}, 是否继续?`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    })
+                        .then(() => {
+                            request({
+                                url:url,
+                                method: 'delete',
+                            }).then((data) => {
+                                if(num){
+
+                                }else{
+
+                                }
+                                this.$message({type: 'success',message: '操作成功'});
+                            })
+                        })
+                        .catch(() => {
+                            this.$message.info('已取消删除');
+                        });
+                }
+            }else {
+                this.$message.error('请先选中一行或多行数据');
+            }
+        },
+        exportExcel(){
+            if(this.leftSelectId==null){
+                this.$message.error('请先选中一行数据');
+            }else{
+                this.$refs.a.click()
+            }
+        },
+
+
+        //查询表头数据
+        requestTable(searchData,tag,tableTag){
+            if(tag=='left'){
+
+                this.leftForm = searchData;
+                this.leftSelectId=null,
+                this.rightSelectId=null,
+                 this.tableRightData={records:[]};
+                this.leftParams.current = 1;
+            }else{
+                this.rightForm = searchData;
+                if(searchData.checkMethod){
+                    this.rightForm.checkMethod=searchData.checkMethod.join('')||null
+                }
+                this.rightSelectId=null;
+                this.rightParams.current = 1;
+            }
+           this.$refs[tableTag].$refs.body_table.setCurrentRow();
+         
+           this.getList(tag);
+        },
+        //表头排序
+        headerSort(column,str,tag,sortTag){
+            console.log(column, str, tag, sortTag);
+            this[sortTag] = {};
+            let num =null
+            if(column.order=='desc'){
+                num=0
+            }else if(column.order=='asc'){
+                num=1
+            }else{
+                num=2
+            }
+            if(num!=2){
+                this[sortTag]['order'] = column.property+','+num;
+            }
+
+            if(tag=='left'){
+                this.$refs[str].$refs.body_table.setCurrentRow();
+                this.leftParams.current = 1;
+                this.leftSelectId=null
+                this.rightSelectId=null
+
+                this.rightParams.current = 1;
+                this.tableRightData.records=[]
+
+            }else{
+                this.rightSelectId=null
+                this.rightParams.current = 1;
+            }
+            this.getList(tag);
+        },
+        //表格选中事件
+        listenToCheckedChange(row,tag,tableTag){
+             let select = row.selected;
+             this[tableTag].records.map((r,l) =>{
+                if(r.selected){
+                    r.selected = false;
+                }
+            })
+            row.selected  = !select;
+            if(tag=="left"){
+
+                if(row.selected){
+                    this.leftSelectId = row.id;
+                    this.leftRow={...row}
+                    this.rightSelectId = null;
+
+                }else{
+                    this.leftSelectId = null;
+                    this.rightSelectId = null;
+                    this.tableRightData.records=[]
+                }
+                 this.rightParams.current = 1;
+                this.getList('right');
+            }else{
+
+                 if(row.selected){
+                     this.rightSelectId = row.id;
+                    this.rightRow={...row}
+                }else{
+                     this.rightSelectId = null;
+                }
+            }
+            this.$set(this[tableTag].records,row.index,row);
+        },
+
+
+        getList(tag,scroll){
+            if(tag=='left'){
+                map(this.leftForm,((k,l)=>{
+                    if(!k){
+                        this.leftForm[l]=null
+                    }
+                }))
+                request({
+                     url:`${this.$ip}/mms-training/examination/list`,
+                    method: 'post',
+                    data:{...this.leftForm,...this.leftSort,},
+                    params:{...this.leftParams}
+                })
+                    .then((d) => {
+                        this.tableLeftData={...d.data}
+                    })
+            }else{
+                if(this.leftSelectId!=null){
+                    map(this.rightForm,((k,l)=>{
+                        if(!k){
+                            this.rightForm[l]=null
+                        }
+                    }))
+                    request({
+                         url:`${this.$ip}/mms-training/examinationDetail/list`,
+                        method: 'post',
+                        data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
+                        params:{...this.rightParams}
+                    })
+                    .then((d) => {
+                        this.tableRightData={...d.data}
+
+                    })
+                }
+            }
+        },
+        handleSizeChange(size) {
+            this.leftParams.current = 1;
+            this.leftParams.size = size;
+            this.getList("left");
+        },
+        handleCurrentChange(current) {
+            this.leftParams.current = current;
+            this.getList('left');
+        }, handleSizeChange1(size) {
+            this.rightParams.current = 1;
+            this.rightParams.size = size;
+            this.getList('right');
+        },
+        handleCurrentChange1(current) {
+            this.rightParams.current = current;
+            this.getList('right');
+        },
+    },
+
+};
+</script>
+<style scoped lang="scss">
+ .G_listTwo{
+     /deep/ .mainTable{
+         height:calc(100vh - 400px)
+     }
+     /deep/ .el-checkbox__label{
+         display: none;
+     }
+     .rowinput{
+         /deep/ .el-input__inner{
+             border: 0;
+             height:30px
+         }
+         /deep/ .el-input{
+             height:30px;
+          }
+     }
+}
+</style>

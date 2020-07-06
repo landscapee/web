@@ -2,18 +2,27 @@
     <div>
         <el-dialog title="试卷导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
-                <el-form-item label="编号：">
-                    <span>{{row.paperCode}} </span>
+                <el-form-item label="培训名称：">
+                    <span>{{row.trainingName}} </span>
                 </el-form-item>
-                <el-form-item label="名称：">
-                    <span>{{row.paperName}} </span>
+                  <el-form-item label="时间：">
+                      <el-date-picker
+                              v-model="form.time"
+                              type="datetimerange"
+                              range-separator="至"
+                              start-placeholder="开始日期"
+                              end-placeholder="结束日期">
+                      </el-date-picker>
+                      <el-date-picker
+                              v-model="form.time"
+                              type="yearrange"
+                              range-separator="至"
+                              start-placeholder="开始日期"
+                              end-placeholder="结束日期">
+                      </el-date-picker>
                 </el-form-item>
-                <el-form-item label="格式：" prop="type">
-                    <el-radio-group v-model="form.type">
-                        <el-radio label="WORD" value="WORD"></el-radio>
-                        <el-radio label="PDF" value="PDF"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
+
+
             </el-form>
             <div class="Qfooter">
                 <a ref="a" :href="`${this.$ip}/mms-training/paperInfo/export/${this.row.id}/${form.type}`"></a>
@@ -34,7 +43,7 @@
         components: {},
         data() {
             return {
-                form:{type:'WORD'},
+                form:{ },
                 rules:{
                     type:[
                         {required:true,message:'请选择格式',trigger:'blur'}

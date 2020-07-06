@@ -14,7 +14,7 @@
                     </el-select>
                 </el-form-item>
             </el-form>
-            <div class="footer">
+            <div class="Qfooter">
                 <el-button @click="close">取消</el-button>
                 <el-button type="primary" @click="submit('form')">确认</el-button>
             </div>
@@ -108,15 +108,5 @@
     }
 
 }
-.footer{
-    display: flex;
-    justify-content: center;
-    .el-button{
-        padding: 10px 30px;
-        margin: 20px 0;
-    }
-    .el-button:first-child{
-        margin-right: 20px;
-    }
-}
+
 </style>

@@ -1,0 +1,91 @@
+
+
+//////////////////////////////// lp form///////////
+.G_formInfo{
+    /deep/ .el-form-item{
+        margin :0  0 10px 0!important;
+    }
+}
+
+.G_form{
+    margin-top:80px ;
+    margin-left: calc(50% - 480px);
+    /deep/.el-form {
+        height:calc(100vh - 270px);
+        overflow-y:auto;
+        padding: 0 20px;
+        width:890px;
+         .el-form-item__error{
+            //left:180px;
+        }
+        .el-form-item__label{
+            width: 180px;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 0 15px 0 0;
+             text-align: right;
+            color:#222222;
+            font-family: SourceHanSansCN, SourceHanSansCN-Regular;
+
+        }
+        .el-form-item__label:before {
+            top: 3px;
+            position: relative;
+
+        }
+        .el-textarea__inner,  .el-input__inner{
+            border-radius:2px;
+            border:1px solid rgba(151,151,151,1);
+            font-size:16px;
+            color:#222222
+        }
+        input::-webkit-input-placeholder ,
+        textarea::-webkit-input-placeholder {
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:#888888
+        }
+
+        .el-input{
+            width:240px;
+        }
+        .el-form-item{
+            display: inline-block;
+        }
+        .el-form-item__content{
+            width: calc(100% - 180px);
+        }
+        .row_tow{
+            width: 100%;
+            text-align: left;
+            .el-form-item__content{
+                 &>.el-input{
+                    width:calc(100%  )!important;
+                }
+                &>.el-select{
+                      width:calc(100%   )!important;
+                  }
+            }
+
+            .el-form-item{
+                margin-right: 0px!important;
+                width: calc(50% - 3px);
+            }
+        }
+        .row_one{
+            width: 100%;
+            .el-input{
+                width:calc(100%  );
+            }
+            .el-textarea{
+                  width:calc(100% );
+              }
+            .el-form-item{
+                margin-right: 0px!important;
+                width: calc(100% - 2px);
+            }
+        }
+
+    }
+}

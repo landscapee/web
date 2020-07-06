@@ -243,10 +243,19 @@ let authRoutes = [
 		meta: {title: '培训考核',icon: 'pxkh' },
 		children: [
 			{
-				path: '/WorkOrderManage8',
-				component: ()=>{},
+				path: '/coursewareMaintain',
+                component: () => import('@views/trainManage/coursewareMaintain/index'),
 				name: '课件维护',
 				meta: {title: '课件维护',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/coursewareMaintainAdd',
+                        component: () => import('@views/trainManage/coursewareMaintain/add'),
+                        name: '课件维护新增',
+                        meta: {title: '课件维护新增',icon: 'xxgl' },
+
+                    },
+                ]
 			},
 			{
 				path: '/testMaintenance',
@@ -283,10 +292,53 @@ let authRoutes = [
 				]
 			},
 			{
-				path: '/WorkOrderManage11',
-				component: ()=>{},
-				name: '培训管理',
+				path: '/trainManageAdmin',
+                component: () => import('@views/trainManage/trainManageAdmin/index'),
+				name: '培训管理(管理员)',
 				meta: {title: '培训管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/trainManageAdminAdd',
+                        component: () => import('@views/trainManage/trainManageAdmin/add'),
+                        name: '培训管理新增',
+                        meta: {title: '培训管理新增',icon: 'xxgl' },
+                    },
+					{
+                        path: '/trainManageAdminPush',
+                        component: () => import('@views/trainManage/trainManageAdmin/pushStaff.vue'),
+                        name: '培训推送员工',
+                        meta: {title: '培训推送员工',icon: 'xxgl' },
+                    },
+					{
+                        path: '/trainManageAdminResults',
+                        component: () => import('@views/trainManage/trainManageAdmin/trainResults/index'),
+                        name: '员工培训结果',
+                        meta: {title: '员工培训结果',icon: 'xxgl' },
+                        children:[
+                            {
+                                path: '/trainManageAdminResultsAdd',
+                                component: () => import('@views/trainManage/trainManageAdmin/trainResults/add'),
+                                name: '培训管理新增',
+                                meta: {title: '培训管理新增',icon: 'xxgl' },
+                            },
+                        ]
+                    },
+
+                ]
+			},
+			{
+				path: '/trainManageUser',
+                component: () => import('@views/trainManage/trainManageUser/index'),
+				name: '培训管理(用户)',
+				meta: {title: '培训管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/trainManageUserAdd',
+                        component: () => import('@views/trainManage/trainManageUser/add'),
+                        name: '培训管理新增',
+                        meta: {title: '培训管理新增',icon: 'xxgl' },
+                    },
+                ]
 			},
 			{
 				path: '/testManage',
@@ -334,10 +386,12 @@ let authRoutes = [
 				]
 			},
 			{
-				path: '/WorkOrderManage44',
-				component: ()=>{},
+				path: '/assessManageAdmin',
+                component: () => import('@views/trainManage/assessManageAdmin/index'),
 				name: '考核管理',
 				meta: {title: '考核管理',icon: 'xxgl' },
+
+
 			},
 		],
 	},
