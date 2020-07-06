@@ -107,7 +107,9 @@ export default {
       receiptDepartment:[],
       receiptPerson:[],
       filename:'',
-      type: "add"
+      type: "add",
+      subscribeId:null,
+      bySubscribe:false
     };
   },
   mounted(){
@@ -131,11 +133,15 @@ export default {
                 method: "get",
               })
               .then(data => {
+               this.subscribeId = data.data.subscribeId;
+               this.bySubscribe = data.data.bySubscribe;
+               this.receiptDepartment = data.data.receiptDepartment;
+               this.receiptPerson = data.data.receiptPerson;
                this.form = data.data;
                this.filename =  data.data.fileInfoList.map(item=>
                   item.fileName
               ).join(",");
-               this.userList =  data.data.receiptDepartment.concat(data.data.receiptPerson);
+               this.userList =  data.data.receiptPerson;
               })
               .catch(error => {
                 this.$message.success(error);
@@ -148,6 +154,8 @@ export default {
 			this.userList = without(this.userList, tag);
 		},
     handleUserSelected(users,deptList) {
+      this.subscribeId = null;
+      this.bySubscribe = false;
       this.receiptPerson = users.map((item) => ({ id: item.id, name: item.name }));
       // 数组去重
       let hash = {};
@@ -158,16 +166,18 @@ export default {
         }
         return item;
       }, []);
-      let list =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+      let list =   this.receiptPerson.map((item) => ({ id: item.id, name: item.name }));
       this.userList = [];
       list.map((item,index)=>{
         this.$set(this.userList, index, item);
       })
     },
     handleSelectSubscribe(row){
+      this.subscribeId = row.id;
+      this.bySubscribe = true;
       this.receiptDepartment = row.receiptDepartment;
       this.receiptPerson =  row.receiptPerson;
-      let list =  this.receiptDepartment.concat( this.receiptPerson).map((item) => ({ id: item.id, name: item.name }));
+      let list =   this.receiptPerson.map((item) => ({ id: item.id, name: item.name }));
       this.userList = [];
       list.map((item,index)=>{
         this.$set(this.userList, index, item);
@@ -269,7 +279,7 @@ export default {
             request({
               url,
               method: "post",
-              data: this.type == "edit"?{...this.form,id:this.$route.query.id,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson}:{...this.form,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson}
+              data: this.type == "edit"?{...this.form,id:this.$route.query.id,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson,subscribeId:this.subscribeId,bySubscribe:this.bySubscribe}:{...this.form,receiptDepartment:this.receiptDepartment,receiptPerson:this.receiptPerson,subscribeId:this.subscribeId,bySubscribe:this.bySubscribe}
             })
             .then(data => {
               this.$message.success("保存成功！");

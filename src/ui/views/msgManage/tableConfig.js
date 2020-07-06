@@ -34,7 +34,11 @@ export const warningSearchTable = () => {
 };
 export const warningSearchHistoryTable = () => {
     return [
-        { prop: 'sendDate', label: '日期', align: 'center',sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'date',placeholder:"请选择日期"} },
+        { prop: 'sendDate', label: '日期', 
+        formatter: (row, column, cellValue) => {
+            return formatDate(cellValue, 'YYYY-MM-DD', '--');
+           
+        },align: 'center',sort:true,sortProp:"sendDateMode",search:{prop:'sendDate',type:'date',placeholder:"请选择日期"} },
         { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"sourceMode",search:{prop:'source',type:'input',placeholder:"请输入来源"} },
         { prop: 'content', label: '内容', align: 'center',search:{prop:'content',type:'input',placeholder:"请输入内容"} },
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}

@@ -70,21 +70,28 @@ export default {
         name: [{ required: true, message: "请输入订阅名称", trigger: "change" },
           {
             validator: (rule, value, callback) => {
-              request({
+              let flag = false;
+               request({
                 url:`${this.$ip}/mms-notice/notificationSubscribe/checkName`,
                 method: "get",
                 params:{name:value}
               })
               .then(data => {
                 if(data.data){
-                  callback();
+                   flag = false;
                 }else{
-                  callback(new Error('该名称已存在'));
+                   flag = true;
                 }
-              })
-              .catch(error => {
+              }).catch(error => {
                 this.$message.error(error);
               });
+              if (this.nowValue == value) {
+								callback();
+							} else if (flag) {
+								callback(new Error('该名称已存在'));
+							} else {
+								callback();
+							}
             },
             trigger: 'change',
 					},
@@ -95,7 +102,8 @@ export default {
       type: "add",
       userList:[],
       infoType:[],
-      deptList:[]
+      deptList:[],
+      nowValue: null,
     };
   },
   created() {
@@ -116,6 +124,7 @@ export default {
                 method: "get",
               })
               .then(data => {
+                 this.nowValue = data.data.name;
                  this.form = {type:data.data.type,enable:data.data.enable,name:data.data.name} ;
                  this.userList = data.data.receiptPerson;
                  this.deptList = data.data.receiptDepartment;
