@@ -80,7 +80,7 @@
 <script>
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
-import { extend } from "lodash";
+import { extend,without } from "lodash";
 import userTree from '@components/userTree/index';
 import selectSubscribe from './selectSubscribe';
 export default {
