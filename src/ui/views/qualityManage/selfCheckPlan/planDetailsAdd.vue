@@ -234,7 +234,7 @@
     @import "@/ui/styles/common_form.scss";
     .main-content{
         overflow-y: auto;
-        height:calc(100vh - 260px);
+        height:calc(100vh - 300px);
         /*margin-top: 80px!important;*/
         .aRow_custom{
             text-align:left;

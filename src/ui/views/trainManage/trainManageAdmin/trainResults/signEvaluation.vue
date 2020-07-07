@@ -1,14 +1,20 @@
 <template>
     <div>
-        <el-dialog title="分数录入"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog :title="`${row.name}签到与评价`"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
            <div style=" padding: 32px 61px 28px 61px; ">
                <el-form :model="form" ref="form" :rules="rules">
-                   <div style="margin-bottom: 20px;color:#000000;font-size: 16px">李梅 &nbsp;&nbsp;{{row.examName}}   &nbsp;&nbsp; 考分：</div>
-                   <el-form-item label="" prop="score">
-                       <el-input v-model="form.score" type="number"></el-input>
+                    <el-form-item label="培训签到" prop="score1">
+                        <el-select v-model="form.score1">
+                            <el-option v-for="(opt,index) in options.trainSign" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                        </el-select>
+                   </el-form-item>
+
+                   <el-form-item label="培训评价" prop="score">
+                       <el-input v-model="form.score" type="textarea" :rows="4"></el-input>
                    </el-form-item>
                </el-form>
-               <div class="footer">
+
+               <div class="Qfooter">
                    <el-button @click="close">取消</el-button>
                    <el-button type="primary" @click="submit('form')">确认</el-button>
                </div>
@@ -22,7 +28,6 @@
 
 <script>
     import request from '@lib/axios.js';
-
     export default {
         name: "copyDetails",
         components: {},
@@ -31,9 +36,8 @@
                 form:{sourcesId:'WORD'},
                 rules:{
                     score:[{required:true,message: '请输入考试分数',trigger:'blur'}]
-
                 },
-
+                options:{},
                 row:{},
                 dialogFormVisible:false,
             }
@@ -79,25 +83,33 @@
             close(){
                  this.from={}
                 this.dialogFormVisible=false
-                this.$emit('getList')
             }
         },
         created() {
-
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:['trainSign']
+            }).then(d => {
+                this.options=d.data
+             });
         },
     }
 </script>
 
 <style lang="scss" scoped>
 /deep/ .el-dialog{
-    width: 522px;
+    width: 600px;
     .el-dialog__body{
         padding: 0;
         .el-form-item__label{
             width:100px;
         }
         .el-input{
-            width: 400px;
+            width: 300px;
+        } .el-textarea{
+            width: 300px;
         }
         .el-form{
             margin-bottom: 32px;
@@ -105,17 +117,4 @@
     }
 
 }
-.footer{
-
-    display: flex;
-    justify-content: center;
-    .el-button{
-        padding: 8px 56px;
-        margin: 0px 0;
-
-    }
-    .el-button:first-child{
-        margin-right: 20px;
-    }
-}
-</style>
+ </style>

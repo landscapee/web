@@ -155,12 +155,15 @@ export default {
                params:{...this.params,}
             })
             .then((data) => {
-                data.data.records.map((k,l)=>{
-                    k.id=l+1
-                })
-                  this.tableData = extend({},
-                     {...data.data}
-                 );
+                if(data.code==200){
+                    data.data.records.map((k,l)=>{
+                        k.id=l+1
+                    })
+                    this.tableData = extend({},
+                        {...data.data}
+                    );
+                }
+
 
              })
         },
@@ -192,8 +195,8 @@ export default {
     .copyButton1{
         margin-right: 3px;
     }
-    .mainTable{
-        height:400px;
+    /deep/ .mainTable{
+        height: 600px;
     }
 }
 </style>

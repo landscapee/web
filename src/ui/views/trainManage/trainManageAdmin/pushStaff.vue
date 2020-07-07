@@ -2,7 +2,7 @@
     <div class="onlineTest "  >
         <div class="QCenterRight">
             <div class="QHead">
-               考试推送员工
+               培训推送员工
             </div>
             <div  class="QheadRight">
 
@@ -19,7 +19,14 @@
         </div>
         <div style="display: flex;justify-content: center" >
             <div class="form"   >
-
+                <div style="display: flex;justify-content: space-between;margin-top: 16px">
+                    <span class="form_div_span" >培训名称：{{showInfo.trainingName}}</span>
+                    <span  >时间：{{$moment(showInfo.startTime).format('YYYY-MM-DD HH:mm:ss')}}~{{$moment(showInfo.endTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+                    <span  >地点：{{showInfo.trainingPlace}}</span>
+                </div>
+                <div style="margin: 20px 0 10px 0">
+                    <span style="font-size: 14px; color: #222222;">已选择&nbsp;<span style="color:#3280e7">{{selectedPersonList.length}}</span>&nbsp;人</span>
+                </div>
                 <el-row>
                     <el-col class="rightBorder" :span="12">
                         <div>
@@ -43,32 +50,11 @@
                                 </div>
                             </el-scrollbar>
                         </el-card>
-                    </div></el-col
-                    >
+                    </div>
+                    </el-col>
                 </el-row>
-                <!--<el-row>-->
-                    <!--<el-col :span="24">-->
-                        <!--<div>-->
-                            <!--<el-card class="box-card" shadow="never" border-radius="2px">-->
-                                <!--<div>已选择({{ selectedPersonList.length }})：<el-button style="float:right" size="mini" @click="handleClear">清空</el-button></div>-->
-                                <!--<el-scrollbar style="height:120px ">-->
-                                    <!--<el-tag :key="tag.id" v-for="tag in selectedPersonList" closable :disable-transitions="false" @close="handleRemove(tag.id)">-->
-                                        <!--{{ tag.name }}-->
-                                    <!--</el-tag>-->
-                                <!--</el-scrollbar>-->
-                            <!--</el-card>-->
-                        <!--</div>-->
-                    <!--</el-col>-->
-                <!--</el-row>-->
-                <!--<el-row>-->
-                    <!--<el-col :span="24"></el-col>-->
-                <!--</el-row>-->
-
             </div>
-
-
         </div>
-
      </div>
 </template>
 <script>
@@ -86,6 +72,7 @@
         data() {
 
             return {
+                showInfo:{},
                 form: {employeeAnswer:'' },
                 rules: {
                     aa:[{required:true,message:'请输入',trigger:'blue'}]
@@ -103,14 +90,20 @@
         },
 
         created() {
-
-            this.getTree(true );
-            this.selectAll = false;
-             this.selectedPersonList =   [];
-         },
-        mounted(){
+            if(this.$router.history.current.path == '/trainManageAdminPush'){
+                this.getTree(true );
+                this.selectAll = false;
+                this.selectedPersonList =   [];
+                request({
+                    url:`${this.$ip}/mms-training/trainingInfo/info/${this.$route.query.id}`,
+                    method: "get",
+                }).then(d => {
+                    this.showInfo={...d.data }
+                })
+            }
 
         },
+
         methods: {
 
             pushStaff(){
@@ -122,7 +115,7 @@
                     }
                 })
                    request({
-                    url: `${this.$ip}/mms-training/examInfo/send`,
+                    url: `${this.$ip}/mms-training/trainingInfo/send`,
                     method: 'post',
                     data:{
                         paperId:this.$route.query.paperId,
@@ -311,10 +304,15 @@
     };
 </script>
 <style scoped lang="scss">
+    @import "@/ui/styles/common_form.scss";
     .onlineTest{
         padding: 0 30px ;
         .form{
             width: 800px;
+            .form_div_span{
+                font-size: 14px;
+                color: #222222;
+            }
         }
 
     }

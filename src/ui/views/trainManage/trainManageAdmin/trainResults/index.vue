@@ -1,22 +1,21 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path" class="sysParameter">
+        <div   class="trainResults">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>员工考试结果</span>
+                    <span>员工培训结果<span style="color:#888888">（管理员）</span></span>
                 </div>
                 <div class="top-toolbar">
                     <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
                     <!--<div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>-->
                     <!--<div @click="delData()"><icon iconClass="remove" ></icon>删除</div>-->
-                    <!--<div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                    <!--<div @click="exportExcel">-->
-                        <!--<icon iconClass="export" ></icon>-->
-                        <!--<a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>-->
-                        <!--导出Excel-->
-                    <!--</div>-->
+                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="exportExcel">
+                        <icon iconClass="export" ></icon>
+                        <a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>
+                        导出Excel
+                    </div>
                 </div>
             </div>
             <div class="main-content">
@@ -36,26 +35,22 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="210"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="260"  >
                         <template  slot-scope="scope">
-                            <div style="height:40px;line-height: 26px;text-align: center">
-                                <el-button  :disabled="scope.row.examMode=='线上'"  @click="scoreEntry(scope.row)"
-                                              style=" padding:3px 7px; background: black; color:white;margin: 0">
-                                    <div>分数</div>
-                                    <div>录入</div>
+                            <!--style="height:40px;line-height: 26px;text-align: center"-->
+                            <div style="position:relative">
+                                <!--style=" padding:3px 7px; background: black; color:white;margin: 0"-->
+                                <el-button  class="QoptionButton"  @click="SignEvaluation(scope.row)">
+                                    <!--<div>分数</div>-->
+                                    <!--<div>录入</div>-->
+                                    培训签到&评价
                                 </el-button>
-                                <el-button  class="copyButton" @click="testResults('/testManagePushStaff',scope.row)"
-                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
+                                <el-button  class="QoptionButton" @click="testResults(scope.row)">
+                                    <!--<div>考试结果</div>-->
+                                    <!--<div>推送</div>-->
+                                    评价推送上级
+                                </el-button>
 
-                                    <div>考试结果</div>
-                                    <div>推送</div>
-                                </el-button>
-                                <el-button  class="copyButton" @click="uploadTest( scope.row)"
-                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
-
-                                    <div>纸质试卷</div>
-                                    <div>归档上传</div>
-                                </el-button>
                             </div>
 
                         </template>
@@ -64,61 +59,52 @@
                 </SearchTable>
             </div>
         </div>
-        <SeeImg ref="SeeImg"></SeeImg>
-        <UploadTest ref="UploadTest" @getList="getList"></UploadTest>
-        <ScoreEntry ref="ScoreEntry" @getList="getList"></ScoreEntry>
+         <SignEvaluation ref="SignEvaluation" @getList="getList"></SignEvaluation>
     </div>
 </template>
 <script>
-    import UploadTest from './uploadTest'
-    import ScoreEntry from './scoreEntry'
-    import SeeImg from './seeImg'
-import SearchTable from '@/ui/components/SearchTable';
+     import SignEvaluation from './signEvaluation'
+ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testRuConfig } from './tableConfig.js';
+import { trainAdminResultsConfig } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
     components: {
-        Icon,
-        SearchTable,UploadTest,ScoreEntry,SeeImg
+        Icon, SearchTable,SignEvaluation, 
 	},
     name: '',
     data() {
         return {
             tableData:{records:[ ]},
-            tableConfig:testRuConfig({},{}),
+            tableConfig:trainAdminResultsConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
             row:{},
-
+            visible:false,
             sort:{},
             selectId:null,
         };
     },
    created() {
-       request({
-           url:`${this.$ip}/mms-training/paperInfo/list`,
-           method: 'post',
-           data:{},
-           params:{size:10000,current:1}
-       }).then((data) => {
-           request({
-               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-               method: 'post',
-               params:{delete:false},
-               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
-           }).then(d => {
-               let obj=d.data
-               this.tableConfig =testRuConfig(data.data.records||[],obj)
+        if(this.$router.history.current.path == '/trainManageAdminResults'){
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:['trainType']
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig =trainAdminResultsConfig( obj)
+            });
+            this.getList();
+        }
 
-           });
-       })
 
-       this.getList();
+
     },
     watch:{
         '$route':function(val,nm){
@@ -134,7 +120,7 @@ export default {
                     header:{
                         'Content-Type':'multipart/form-data'
                     },
-                    url:`${this.$ip}/mms-file/get-file-by-id/${row.employeeFileId }`,
+                    url:`${this.$ip}/mms-file//get-file-by-id/${row.employeeFileId }`,
                     method:'GET',
 
                 }).then((d) => {
@@ -145,7 +131,7 @@ export default {
             }
 
         },
-        testResults(path,row){
+        testResults( row){
             request({
                 url:`${this.$ip}/mms-training/examResult/send` ,
                 method: 'post',
@@ -153,15 +139,13 @@ export default {
             }).then((d) => {
                 if(d.code==200){}
                     this.getList();
-                    this.$message({type: 'success',message: '推送成功'});
+                     this.$message({type: 'success',message: '推送成功'});
                 })
         },
-        scoreEntry(row){
-            this.$refs.ScoreEntry.open(row)
+        SignEvaluation(row){
+            this.$refs.SignEvaluation.open(row)
         },
-        uploadTest(row){
-             this.$refs.UploadTest.open(row.id)
-        },
+
         exportExcel(){
              this.$refs.a.click()
         },
@@ -212,14 +196,15 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
+
             let data=JSON.stringify(this.row)
             if(tag=='add'){
-                this.$router.push({path:'/testMaintenanceAdd',query:{type:'add'}});
+                this.$router.push({path:'/trainManageAdminResultsAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/trainManageAdminResultsAdd',query:{type:tag,id:this.selectId}});
                 }
             }
         },
@@ -238,19 +223,10 @@ export default {
                params:{...this.params,}
             })
             .then((d) => {
-                request({
-                    url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
-                    method: "get",
-                }).then(d1 => {
-                    d.data.records= d.data.records.map((k,l)=>{
-                        return {...d1.data,...k}
-                    })
-                    this.tableData = extend({},
-                        {...d.data}
-                    );
-                    console.log(this.tableData,1,1);
-                })
-
+                d.data.records=[{}]
+                this.tableData = extend({},
+                    {...d.data}
+                );
              })
         },
         handleSizeChange(size) {
@@ -269,8 +245,9 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
-.sysParameter{
+.trainResults{
     margin-top:14px;
-    
+
 }
+
 </style>

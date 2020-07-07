@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.reviewerName" placeholder="请输入审批人"></el-input>
                     </el-form-item>
                     <el-form-item label="审批日期：" prop="reviewerTime">
-                        <span v-if="type=='info'">{{form.reviewerTime? moment(form.reviewerTime).format('YYYY-MM-DD'):''}}</span>
+                        <span v-if="type=='info'">{{form.reviewerTime? this.$moment(form.reviewerTime).format('YYYY-MM-DD'):''}}</span>
                          <el-date-picker  v-else v-model="form.reviewerTime" placeholder="请选择审批日期"></el-date-picker>
                     </el-form-item>
                 </div>

@@ -9,5 +9,7 @@
 import Vue from 'vue';
 import ScrollBox from'@components/Scroll/scroll';
 import AdvTable from '@components/AdvTable/advTable';
+import UploadFile from '@components/upload/index';
 Vue.component('ScrollBox',ScrollBox);
+Vue.component('UploadFile',UploadFile);
 Vue.component('AdvTable',AdvTable);

@@ -1,0 +1,21 @@
+
+.G_listOne{
+     padding: 0 30px;
+    .QlistBody{
+
+    }
+}
+.G_listTwo{
+     padding: 0 30px;
+    .QlistBody{
+        justify-content: left;
+
+        .QlistLeft{
+            width:45%;
+            margin-right:30px;
+        }
+        .QlistRight{
+            width:calc(55% - 30px)
+        }
+    }
+}

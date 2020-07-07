@@ -1,11 +1,11 @@
 <template>
-    <div class="addSysParameter">
+    <div class="indexAdd">
 
-        <div class="top-content">
-            <div class="top-content-title">
-                <span>试题维护-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+        <div class="QCenterRight">
+            <div class="QHead">
+                 试题维护-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
-            <div v-if="type!='info'"  class="top-toolbar">
+            <div v-if="type!='info'"  class="QheadRight">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save"></icon>保存
                 </div>
@@ -15,12 +15,12 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
+        <div :class=" type=='info'?'G_form G_formInfo':'G_form'"  >
+            <el-form  label-position="right" :model="form" :rules="rules" ref="form"  :inline="true">
                 <div></div>
 
 
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="试题序号：" prop="questionNo">
                         <span v-if="type=='info'">{{form.questionNo}}</span>
                         <el-input  v-else v-model="form.questionNo"  placeholder="请输入试题序号"></el-input>
@@ -34,14 +34,14 @@
                     </el-form-item>
 
                 </div>
-                <div class="row_item_row row_item">
+                <div class="  row_one">
                     <el-form-item label="题目：" prop="questionName">
                         <span v-if="type=='info'">{{form.questionName}}</span>
                         <el-input v-else v-model="form.questionName" type="text"   placeholder="请输入题目"></el-input>
                     </el-form-item>
 
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="选项A：" prop="optionA">
                         <span v-if="type=='info'">{{form.optionA}}</span>
                         <el-input v-else v-model="form.optionA" placeholder="请输入"></el-input>
@@ -52,7 +52,7 @@
 
                     </el-form-item>
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="选项C：" prop="optionC">
                         <span v-if="type=='info'">{{form.optionC}}</span>
                         <el-input v-else v-model="form.optionC" placeholder="请输入"></el-input>
@@ -62,7 +62,7 @@
                         <el-input v-else v-model="form.optionD" placeholder="请输入"></el-input>
                     </el-form-item>
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="选项E：" prop="optionE">
                         <span v-if="type=='info'">{{form.optionE}}</span>
                         <el-input v-else v-model="form.optionE" placeholder="请输入"></el-input>
@@ -72,7 +72,7 @@
                         <el-input v-else v-model="form.optionF" placeholder="请输入"></el-input>
                     </el-form-item>
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="正确答案：" prop="answer">
                         <span v-if="type=='info'">{{form.answer}}</span>
                         <el-select ref="answer" :multiple="form.optionType=='多选'" v-else clearable v-model="form.answer" placeholder="请选择正确答案">
@@ -253,63 +253,7 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_form.scss";
-    .main-content{
-        overflow-y: auto;
-        height:calc(100vh - 260px);
-        /*margin-top: 80px!important;*/
-        .aRow_custom{
-            text-align:left;
-        }
-    }
-    .main-info{
-        span{
-            font-weight: bold!important;
-            /*margin: 0!important;*/
-        }
-        /deep/ .el-form-item__label{
-            /*padding: 0!important;*/
-        }
-        .aRow_custom{
-            span{
-
-            }
-        }
-    }
-    .addSysParameter {
-         .el-form {
-            width: 1000px;
-            /deep/ .el-form-item__label {
-                width: 165px;
-            }
-            /deep/ .el-form-item__content {
-                margin-left: 165px;
-            }
-            .row_item_row,.row_item{
-               /deep/ .el-input{
-                    /*width:600px!important;*/
-                }
-            }
-            .row_custom{
-                /deep/ .el-form-item__content{
-                    /*height: 40px;*/
-                    width: 332px;
-                    text-align: left;
-                }
-                @include common-input;
-                &:first-child {
-                    .el-form-item {
-                        &:last-child {
-                            margin-left: 93px;
-                        }
-                    }
-                }
-            }
-            .row_item_row{
-                .el-form-item {
-                    width: calc(100% - 165px);
-                }
-            }
-        }
-    }
+.indexAdd{
+    padding: 0 30px;
+}
 </style>

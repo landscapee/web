@@ -4,7 +4,6 @@
             <div style=" padding: 32px 61px 28px 61px; ">
                 <el-form :inline="true" :model="form" ref="form" :rules="rules">
                     <div style="margin-bottom: 20px;color:#000000;font-size: 16px">试卷上传</div>
-
                     <el-form-item style="margin-right: 20px">
                         <el-input  type="text" v-model="filename"  placeholder="仅支持图片上传"></el-input>
 
@@ -28,7 +27,7 @@
 
 
                 </el-form>
-                <div class="footer">
+                <div class="Qfooter">
                     <el-button @click="close(1)">取消</el-button>
                     <el-button type="primary" @click="submit('form')">确认</el-button>
                 </div>
@@ -65,10 +64,8 @@
 
             open(id){
                 this.dialogFormVisible=true
-                debugger
-                this.id=id||1
-
-            },
+                 this.id=id
+             },
             submit() {
                 console.log(this.form.file);
                 if(this.form.file){
@@ -111,7 +108,6 @@
                 }
                 return isLt2M;
             },
-
             handleSubmit(files,q) {
                 let data=new FormData()
                 data.append("file",files.file);
@@ -127,9 +123,7 @@
                     data:data,
                 }).then((d) => {
                     if(d){
-
                         this.form.file=d.data
-
                         this.$message({
                             message: '上传成功',
                             type: 'success',
@@ -140,7 +134,6 @@
                             type: 'info',
                         });
                     }
-
                 });
             },
 
@@ -164,6 +157,7 @@
 
                     });
                 }
+                this.$emit('getList')
             },
             close1( ){
                 this.form={file:null}
@@ -171,6 +165,7 @@
                 if( this.$refs.file){
                     this.$refs.file.clearFiles()
                 }
+                this.$emit('getList')
 
                 if( this.form.file){
                     request({
@@ -199,6 +194,7 @@
     /deep/ .el-dialog{
         width: 600px;
         .el-dialog__body{
+
             padding: 0;
             .el-form-item__label{
                 width:100px;
@@ -212,19 +208,7 @@
         }
 
     }
-    .footer{
 
-        display: flex;
-        justify-content: center;
-        .el-button{
-            padding: 8px 56px;
-            margin: 0px 0;
-
-        }
-        .el-button:first-child{
-            margin-right: 20px;
-        }
-    }
 
     /deep/ .el-upload-list   {
         display: none;

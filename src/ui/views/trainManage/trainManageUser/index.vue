@@ -1,37 +1,34 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testManageAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path"></router-view>
+         <router-view v-if="this.$router.history.current.path == '/trainManageUserAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/testManage'" :key="$route.path" class="sysParameter">
+        <div v-else-if="this.$router.history.current.path == '/trainManageUser'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>考试管理</span>
+                    <span>培训管理 <span style="color:#888888">（用户）</span></span>
                 </div>
                 <div class="top-toolbar">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
+                    <!--<div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>-->
+                    <!--<div @click="delData()"><icon iconClass="remove" ></icon>删除</div>-->
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
+                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出</div>-->
                 </div>
             </div>
             <div class="main-content">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49"  >
+                    <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="230"  >
-                        <template  slot-scope="scope">
-                            <el-button  class="copyButton copyButton1" @click="pushStaff('/testManagePushStaff',scope.row)">考试推送员工</el-button>
-                            <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
-                        </template>
-                    </el-table-column>
+                    <!--<el-table-column :show-overflow-tooltip="true" slot="remark" label="备注" :width="190" fixed="right">-->
+                        <!--<template  slot-scope="{ row }">-->
+                            <!--<span>{{row.remark}}</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
 
                 </SearchTable>
             </div>
@@ -41,7 +38,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testConfig } from './tableConfig.js';
+import { trainManageUserConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
@@ -49,11 +46,11 @@ export default {
         Icon,
         SearchTable
 	},
-    name: '',
+    name: 'textMindex',
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testConfig({},{}),
+            tableConfig:trainManageUserConfig({}),
             params:{
 				current: 1,
 				size: 15,
@@ -61,31 +58,25 @@ export default {
             form:{},
             row:{},
             sort:{},
-
             selectId:null
         };
     },
    created() {
-        if(this.$router.history.current.path == '/testManage'){
+        if(this.$router.history.current.path == '/trainManageUser'){
             this.getList();
-        }
-       request({
-           url:`${this.$ip}/mms-training/paperInfo/list`,
-           method: 'post',
-           data:{},
-           params:{size:10000,current:1}
-       }).then((data) => {
-           request({
-               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-               method: 'post',
-               params:{delete:false},
-               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
-           }).then(d => {
-               let obj=d.data
-                this.tableConfig =testConfig(data.data.records||[],obj)
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["trainType",  ]
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig=trainManageUserConfig(obj)
 
-           });
-           })
+            });
+
+        }
+
     },
     watch:{
         '$route':function(val,nm){
@@ -94,13 +85,6 @@ export default {
         }
     },
     methods: {
-        // row:JSON.stringify(row)
-        testPush(path,row){
-          this.$router.push({path:path,query:{id:row.id,}})
-        },
-        pushStaff(path,row){
-          this.$router.push({path:path,query:{id:row.id,paperId:row.paperId}})
-        },
         exportExcel(){
              this.$refs.a.click()
         },
@@ -151,14 +135,13 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let data=JSON.stringify(this.row)
-            if(tag=='add'){
-                this.$router.push({path:'/testManageAdd',query:{type:'add'}});
+             if(tag=='add'){
+                this.$router.push({path:'/trainManageUserAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:'/trainManageUserAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -173,9 +156,10 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/mms-training/examInfo/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-training/paperInfo/delete/`+this.selectId,
                             method: 'delete',
-                         })
+                            // params:{id:this.selectId}
+                        })
                             .then((data) => {
                                 this.getList();
                                 this.selectId   = null;
@@ -195,21 +179,21 @@ export default {
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
+                }else {
+                    if(l=='infTime'){
+                        data.infTimeStr=data.infTime.getFullYear()
+                    }
+                    delete data.infTime
                 }
             }))
            request({
-                url:`${this.$ip}/mms-training/examInfo/list`,
-                 method: 'post',
+                url:`${this.$ip}/mms-training/paperInfo/list`,
+                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
-                if(data.code==200){
-                    this.tableData = extend({}, {...data.data});
-                }
-
-
-
+                  this.tableData = extend({}, {...data.data});
              })
         },
         handleSizeChange(size) {
@@ -227,21 +211,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
-
-    .copyButton{
-        margin: 0;
-        padding:7px 10px;
-        background: black;
-        color:white;
-    }
-    .copyButton1{
-        margin-right: 3px;
-    }
+    
 }
 /deep/ .mainTable{
     height: 600px;
+
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
     <div class="addTest">
 
-        <div   class="top-content">
-            <div class="top-content-title">
-                <span>试卷{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+        <div   class="QCenterRight">
+            <div class="QHead">
+              试卷{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
-            <div    class="top-toolbar">
+            <div    class="QheadRight">
                 <div @click="preview"  >
                     <icon iconClass="info"></icon>预览
                 </div>
-                <div @click="exportTest"  v-if="type!='add1'">
+                <div :class="type!='add'?'':'isDisabled'" @click="exportTest"  >
                     <icon iconClass="export"></icon>导出
                 </div>
                 <div @click="type!='info'?saveForm('form'):()=>{}" v-if="type!='info'" >
@@ -156,7 +156,7 @@
                      return callback(new Error('试卷编码不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/mms-training/paperInfo/verifyName?paperCode=${value}&id=${this.$route.query.id||null}`,
+                        url:`${this.$ip}/mms-training/paperInfo/verifyName?paperName=${value}&id=${this.$route.query.id||null}`,
                         method: 'get',
                     }).then(d => {
                          if(d.code==200){
@@ -244,7 +244,9 @@
             },
             exportTest() {
                 console.log(1);
-                this.$refs.ExportTest.open(this.form)
+                if(this.type!='add'){
+                    this.$refs.ExportTest.open(this.form)
+                }
             },
             importExcel() {
                 console.log(1);
@@ -416,27 +418,31 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
 
     @import "@/ui/styles/common_form.scss";
     .headDiv1{
         display: flex;
         justify-content: space-between;
     }
-
-.top-toolbar{
-    &>div{
-        margin-left: 12px;
-        margin-right: 0!important;
+.main-info{
+    /deep/ .el-form-item{
+        margin-bottom: 10px!important;
     }
 }
+
     .addTest {
         padding: 0 40px ;
+        /deep/ .mainTable{
+            height: 360px!important;
+            overflow: auto;
+            /deep/ .el-table__fixed{
+                height: 359px !important;
+            }
+        }
          .main-content{
             overflow-y: auto;
             overflow-x: hidden;
-            /*height:calc(100vh - 260px);*/
-            margin-top: 20px!important;
+             margin-top: 20px!important;
             .aRow_custom{
                 text-align:left;
                 /deep/ .el-form-item{
@@ -476,11 +482,7 @@
         .TableContent.main-content{
             margin: 0!important;
         }
-        /deep/ .mainTable{
-            height: 360px;
-            overflow: auto;
 
-        }
         .el-form {
             width: 100%;
 

@@ -26,8 +26,10 @@ import './static/plugin/themes/default/default.css'
 import './static/plugin/kindeditor-all-min.js'
 import './static/plugin/lang/zh-CN.js'
 import directives from '@lib/directive.js'
+import moment from 'moment'
 //公共ip地址和端口
 Vue.prototype.$ip = "http://173.100.1.5:8011";
+Vue.prototype.$moment = moment;
 //事件总线指向全局vue对象
 Vue.prototype.$eventBus= new Vue();
 Vue.use(directives)
