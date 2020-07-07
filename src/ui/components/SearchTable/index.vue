@@ -313,6 +313,14 @@ export default {
 			font-family:SourceHanSansCN-Regular,SourceHanSansCN;
 			font-weight:400;
 			color:rgba(61,86,142,1);
+            padding:0;
+            /deep/ span{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
 			.table_search{
 				width: 14px;
 				height: 16px;
