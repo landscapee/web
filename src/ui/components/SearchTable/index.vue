@@ -41,7 +41,10 @@
 		</el-table>
 		<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
 			<template v-for="(colConfig, index) in cloneTableConfig">
+
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
+
+				<el-table-column v-else-if="colConfig.prop=='index'" type="index"  :index="(index1)=>{return index1+1}"  v-bind="colConfig"  :key="index" :reserve-selection="true"> </el-table-column>
 				<el-table-column v-else :show-overflow-tooltip="true"     v-bind="colConfig" :key="index" :reserve-selection="true"> </el-table-column>
 			</template>
 		</el-table>

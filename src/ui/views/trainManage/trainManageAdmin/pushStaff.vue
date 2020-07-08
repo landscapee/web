@@ -114,20 +114,26 @@
                         employeeName:k.name,
                     }
                 })
-                   request({
-                    url: `${this.$ip}/mms-training/trainingInfo/send`,
-                    method: 'post',
-                    data:{
-                        paperId:this.$route.query.paperId,
-                        id:this.$route.query.id,
-                        employeeList
-                    },
-                }).then((d) => {
-                    if(d.code==200){
-                        this.$message.success('推送成功')
-                        this.$router.go((-1))
-                    }
-                });
+                if(employeeList.length>0){
+                    request({
+                        url: `${this.$ip}/mms-training/trainingInfo/send`,
+                        method: 'post',
+                        data:{
+                            paperId:this.$route.query.paperId,
+                            id:this.$route.query.id,
+                            employeeList
+                        },
+                    }).then((d) => {
+                        if(d.code==200){
+                            this.$message.success('推送成功')
+                            this.$router.go((-1))
+                        }
+                    });
+                }else {
+                    this.$message.info('请选择需要推送的人员')
+
+                }
+
             },
             resetForm(){
 

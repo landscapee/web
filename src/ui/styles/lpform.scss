@@ -4,6 +4,10 @@
 .G_formInfo{
     /deep/ .el-form-item{
         margin :0  0 10px 0!important;
+        .el-form-item__label:before{
+            content: '';
+            display:none;
+        }
     }
 }
 

@@ -343,7 +343,7 @@ let authRoutes = [
                         path: '/trainManageAdminResults',
                         component: () => import('@views/trainManage/trainManageAdmin/trainResults/index'),
                         name: '员工培训结果',
-                        meta: {title: '员工培训结果',icon: 'xxgl' },
+                        meta: {title: '员工培训结果',icon: 'xxgl',  },
                         children:[
                             {
                                 path: '/trainManageAdminResultsAdd',
@@ -353,6 +353,7 @@ let authRoutes = [
                             },
                         ]
                     },
+
 
                 ]
 			},

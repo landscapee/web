@@ -2,6 +2,7 @@
 	<div class="breadcrumb_main">
 		<transition-group name="breadcrumb">
 			<span v-for="(item, index) in levelList" :key="item.path">
+
 				<img v-if="index == 0" :src="ic_arrow"  class="source_img"/>
 				<img v-if="index != 0" :src="ic_arrow_2" class="arrow_img"/>
 				<span v-if="index == levelList.length - 1" class="no-redirect no-redirect-last">{{ item.meta.title }}</span>

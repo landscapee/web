@@ -1,12 +1,18 @@
 
 .G_listOne{
      padding: 0 30px;
+    /deep/ .mainTable{
+        height: 600px;
+    }
     .QlistBody{
 
     }
 }
 .G_listTwo{
      padding: 0 30px;
+    /deep/ .mainTable{
+        height: 600px;
+    }
     .QlistBody{
         justify-content: left;
 

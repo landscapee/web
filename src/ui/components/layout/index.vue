@@ -10,9 +10,9 @@
 				<span @click="logout"><img :src="esc" />退出</span>
 			</div>
 		</el-header>
-		  <el-container>
+		<el-container>
 		<el-aside  :class="isOpen?'open-menu':'left-menu'" >
-			<el-menu  router :default-active="routePath" :unique-opened="true">
+ 			<el-menu  router :default-active="routePath" :unique-opened="true">
 				<el-submenu :index="item.path" v-for="(item,index) in asyncRoutes" :key="index">
 					<template slot="title">
 						<icon :iconClass="item.meta.icon" ></icon>

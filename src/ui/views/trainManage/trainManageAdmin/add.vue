@@ -111,27 +111,33 @@
                         </el-form-item>
                     </div>
 
-                    <div class="row_tow rowT">
+                    <div class="row_one oneFile">
                         <el-form-item label="课件：" prop="courseFileId">
-                            <span v-if="type=='info'">{{form.courseFileName}}</span>
+                            <span @click="fileDownload(form.courseFileId)" class="hoverSpanFile" v-if="type=='info'">{{form.courseFileName}}<i class="el-icon-download iClass"></i></span>
                             <div v-else style="display: flex;justify-content: left">
                                 <el-input   :disabled="true" v-model="form.courseFileName" type="text"    placeholder="请选择文件"></el-input>
                                 <UploadFile  ref="UploadFile" @getFile="getCourse"></UploadFile>
                             </div>
                         </el-form-item>
-                        <el-form-item v-if="type!='info'"  label="签到表：" prop="signFileId">
-                            <span v-if="type=='info'">{{form.signFileName}}</span>
+
+                    </div>
+                     <div class="row_one oneFile">
+
+                        <el-form-item    label="签到表：" prop="signFileId">
+                            <!--<a href="javascript"></a>-->
+                            <span @click="fileDownload(form.signFileId,1)" class="hoverSpanFile" v-if="type=='info'">{{form.signFileName}} <i class="el-icon-download iClass"></i></span>
                             <div style="display: flex;justify-content: left" v-else>
                                 <el-input  :disabled="true" v-model="form.signFileName" type="text"    placeholder="pdf/图片"></el-input>
                                 <UploadFile accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf," ref="UploadFile" @getFile="getFile"></UploadFile>
 
                             </div>
-
                         </el-form-item>
                     </div>
 
                 </el-form>
          </div>
+        <form action="#" method="GET" ref="formLoad"></form>
+
     </div>
 </template>
 <script>
@@ -204,7 +210,6 @@
                     }).then(d => {
                         let obj=d.data
                         this.options=obj
-
                     });
                     this.$route.meta.title =
                         this.type == "add"
@@ -214,7 +219,6 @@
                             : this.type == "info"
                                 ? "培训管理详情"
                                 : "";
-
                     if(this.type!='add'){
                         request({
                             url:`${this.$ip}/mms-training/trainingInfo/info/${this.$route.query.id}`,
@@ -225,12 +229,29 @@
                     }
                 }
             }
-
-
-
-
         },
         methods: {
+            fileDownload(id,num){
+                if(id){
+                    request({
+                         header:{
+                            'Content-Type':'multipart/form-data'
+                        },
+                        url:`${this.$ip}/mms-file/get-file-by-id/${id }`,
+                        method:'GET',
+
+                    }).then((d) => {
+                        if( d.data&&num){
+                           window.open( d.data.filePath)
+                        }else{
+                            this.$refs.formLoad.action =  d.data.filePath;
+                            this.$refs.formLoad.submit();
+                        }
+                    });
+                }else {
+                    this.$message.info('暂无附件')
+                }
+            },
             getCourse  (file){
                 this.$set(this.form,'courseFileId',file.id)
                 this.$set(this.form,'courseFileName',file.fileName)
@@ -250,8 +271,7 @@
                     this.$refs[form].validate(valid => {
                          if (valid) {
                                 let url
-                             debugger
-                                if(this.type=='add'){
+                                 if(this.type=='add'){
                                     url='/trainingInfo/save'
                                 }else {
                                     url='/trainingInfo/update'
@@ -270,8 +290,8 @@
                 }
             },
             focus(val){
-                let e=this.form.endTime
-                let s=this.form.startTime
+                let e=new Date(this.form.endTime)
+                let s=new Date(this.form.startTime)
                 this.pickerOptions = {
                     disabledDate(time) {
                          if (e) {
@@ -281,8 +301,8 @@
                 };
             } ,
             focus1(val){
-                let e=this.form.endTime
-                let s=this.form.startTime
+                 let e=new Date(this.form.endTime)
+                let s=new Date(this.form.startTime)
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         // console.log(1, 8);
@@ -293,8 +313,8 @@
                 };
             },
             blur(b) {
-                let e=this.form.endTime
-                let s=this.form.startTime
+                let e=new Date(this.form.endTime)
+                let s=new Date(this.form.startTime)
                 let msg;
                 if (e && s && e.getTime() <= s.getTime()) {
                     if (b) {
@@ -321,17 +341,28 @@
     .G_form{
         /*margin-left: calc(50% - 470px);*/
     }
-    .rowT{
+    .oneFile{
        /deep/  .el-form-item__content{
             .el-input {
                margin-right: 10px;
-               width:180px!important;
+               width:calc(100% - 98px)!important;
            }
         }
-
-
-
-
     }
+.iClass{
+    margin-left: 10px;
+    display: inline-block;
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #606266;
 
+}
+    .hoverSpanFile:hover  {
+        color: #5cb6ff;
+        cursor: pointer;
+    }
+    .hoverSpanFile:hover i{
+        color: #5cb6ff;
+        cursor: pointer;
+    }
 </style>

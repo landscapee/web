@@ -14,9 +14,8 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
-                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>导出</div>
+
                 </div>
             </div>
             <div class="main-content">
@@ -73,6 +72,10 @@ export default {
         }
     },
     methods: {
+        exportExcel(){
+            this.$refs.a.click()
+        },
+
        showUserList(tag){
             if(tag=='quali'){
                  this.$router.push({path:'/userQuali',query:{id:"123"}});
@@ -166,7 +169,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .personDoc{
-    margin-top:40px;
+    margin-top:15px;
 
 }
 </style>

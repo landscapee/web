@@ -28,8 +28,8 @@
                     <el-table-column align="center" slot="fileDown" label="操作" :width="120" >
                         <template  slot-scope="scope">
                             <form action="#" method="GET" ref="formLoad"></form>
-                            <el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton"  >课件下载</el-button>
-                            <!--<el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton" @click="fileDown(scope.row)">课件下载</el-button>-->
+                            <!--<el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton"  >课件下载</el-button>-->
+                            <el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton" @click="fileDown(scope.row)">课件下载</el-button>
                         </template>
                     </el-table-column>
 
