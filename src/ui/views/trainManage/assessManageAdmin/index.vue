@@ -32,7 +32,7 @@
                                 员工考核情况
                             </div>
                             <div class="QheadRight">
-                                <div @click="conclusion(null,3)"><icon iconClass="add" style="width:0" ></icon>批量合格</div>
+                                <div @click="moreconclusion(1)"><icon iconClass="add" style="width:0" ></icon>批量合格</div>
                                 <div @click="moreRelative('edit')"><icon iconClass="edit" style="width:0"  ></icon>批量关联</div>
                                 <div @click="morePush"><icon iconClass="remove" style="width:0" ></icon>批量推送</div>
                                 <div @click="exportExcel()"><icon iconClass="export" ></icon>导出员工考核情况</div>
@@ -49,7 +49,7 @@
 
                             <el-table-column slot="checkbox" align="center" label="选择" :width="50"   >
                                 <template slot-scope="scope">
-                                    <el-checkbox v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
+                                    <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row.id" value="dasdasd"> </el-checkbox>
                                 </template>
                             </el-table-column>
                             <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140"   >
@@ -57,14 +57,14 @@
                                     <el-input class="rowinput" v-model="scope.row.certificateNumber"
                                                @keyup.enter.native="saveNumber(scope.row)"
                                              placeholder="操作合格后可编辑"
-                                               :disabled="scope.row.certificateNumber!='合格'">
+                                               :disabled="scope.row.certificateNumber!=1">
                                     </el-input>
                                  </template>
                             </el-table-column>
                             <el-table-column slot="option" align="center" label="操作" :width="140"   >
                                 <template slot-scope="scope">
                                     <el-button class="QoptionButton" @click="conclusion(scope.row,1)">合格</el-button>
-                                    <el-button class="QoptionButton" @click="conclusion(scope.row,2)">不合格</el-button>
+                                    <el-button class="QoptionButton" @click="conclusion(scope.row,0)">不合格</el-button>
                                 </template>
                             </el-table-column>
                         </SearchTable>
@@ -90,8 +90,8 @@ export default {
     data() {
         return {
             checkArr:[],
-            tableLeftData:{records:[{},{}],size:10,current:1,total:2000},
-            tableRightData:{records:[{paperName:'sdfsd',id:123123}],size:10,current:1,total:20},
+            tableLeftData:{records:[ ], },
+            tableRightData:{records:[] },
             leftTableConfig:leftConfig({}),
             rightTableConfig:rightConfig({}),
             leftParams:{
@@ -117,7 +117,7 @@ export default {
     },
     created() {
          this.leftParams.current = 1;
-       // this.getList('left');
+       this.getList('left');
         request({
             url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
             method: 'post',
@@ -149,35 +149,42 @@ watch:{
         moreRelative(){
 
         },
+        hege(ids,t){
+            request({
+                url:`${this.$ip}/mms-training/trainingResult/batchqualified`,
+                method: 'post',
+                data:{ids:ids,qualifiedStatus:t}
+            }).then(d => {
+               if(d.code==200){
+                   this.$message.success('操作成功')
+               }
+
+            });
+        },
         conclusion(row,num){
-            if(row){
+             if(row){
                 let msg = num==1?'合格':'不合格'
-                if(this.rightSelectId){
-                    this.$confirm(`此操作将操作${row.name}的考核结论为${msg}, 是否继续?`, '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning',
+                this.$confirm(`此操作将操作${row.trainingName}的考核结论为${msg}, 是否继续?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                })
+                    .then(() => {
+                        this.hege(row.id,num)
                     })
-                        .then(() => {
-                            request({
-                                url:url,
-                                method: 'delete',
-                            }).then((data) => {
-                                if(num){
-
-                                }else{
-
-                                }
-                                this.$message({type: 'success',message: '操作成功'});
-                            })
-                        })
-                        .catch(() => {
-                            this.$message.info('已取消删除');
-                        });
-                }
-            }else {
-                this.$message.error('请先选中一行或多行数据');
+                    .catch(() => {
+                        this.$message.info('已取操作');
+                    });
             }
+        },
+        moreconclusion(num){
+             if(this.checkArr.length){
+                 let ids=this.checkArr.join(',')
+                 this.hege(ids,num)
+            }else {
+                 this.$message.error('请先选中一行或多行数据');
+
+             }
         },
         exportExcel(){
             if(this.leftSelectId==null){
@@ -242,6 +249,7 @@ watch:{
         },
         //表格选中事件
         listenToCheckedChange(row,tag,tableTag){
+
              let select = row.selected;
              this[tableTag].records.map((r,l) =>{
                 if(r.selected){
@@ -264,7 +272,12 @@ watch:{
                  this.rightParams.current = 1;
                 this.getList('right');
             }else{
-
+                let numIndex =this.checkArr.indexOf(row.id)
+                if(numIndex>-1){
+                    this.checkArr.splice(numIndex,1)
+                }else{
+                    this.checkArr.push(row.id)
+                }
                  if(row.selected){
                      this.rightSelectId = row.id;
                     this.rightRow={...row}
@@ -284,7 +297,7 @@ watch:{
                     }
                 }))
                 request({
-                     url:`${this.$ip}/mms-training/examination/list`,
+                     url:`${this.$ip}/mms-training/trainingInfo/list`,
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,},
                     params:{...this.leftParams}
@@ -300,7 +313,7 @@ watch:{
                         }
                     }))
                     request({
-                         url:`${this.$ip}/mms-training/examinationDetail/list`,
+                         url:`${this.$ip}/mms-training/trainingResult/manager/list`,
                         method: 'post',
                         data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
                         params:{...this.rightParams}

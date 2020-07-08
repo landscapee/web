@@ -2,7 +2,7 @@
     <div>
         <router-view v-if="this.$router.history.current.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
 
-        <div v-else="this.$router.history.current.path == '/trainManageAdminResults'" class="G_listOne">
+        <div v-else="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path" class="G_listOne">
             <div class="QCenterRight">
                 <div class="QHead_list">
                     <span>员工培训结果<span style="color:#888888">（管理员）</span></span>
@@ -81,6 +81,8 @@ export default {
     },
    created() {
         if(this.$router.history.current.path == '/trainManageAdminResults'){
+            this.$route.meta.paramsId={id:this.$route.query.id}
+
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',

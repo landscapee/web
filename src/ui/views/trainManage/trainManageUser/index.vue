@@ -9,12 +9,9 @@
                     <span>培训管理 <span style="color:#888888">（用户）</span></span>
                 </div>
                 <div class="top-toolbar">
-                    <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
-                    <!--<div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>-->
-                    <!--<div @click="delData()"><icon iconClass="remove" ></icon>删除</div>-->
+
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出</div>-->
-                </div>
+                 </div>
             </div>
             <div class="main-content">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
@@ -85,9 +82,7 @@ export default {
         }
     },
     methods: {
-        exportExcel(){
-             this.$refs.a.click()
-        },
+
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null;
@@ -145,49 +140,16 @@ export default {
                 }
             }
         },
-        delData(){
-            if(this.selectId==null){
-                this.$message.error('请先选中一行数据');
-            }else{
-                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                })
-                    .then(() => {
-                        request({
-                             url:`${this.$ip}/mms-training/paperInfo/delete/`+this.selectId,
-                            method: 'delete',
-                            // params:{id:this.selectId}
-                        })
-                            .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
-                            })
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除',
-                        });
-                    });            }
 
-        },
         getList(){
             let data={...this.form}
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
-                }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
-                    }
-                    delete data.infTime
                 }
             }))
            request({
-                url:`${this.$ip}/mms-training/paperInfo/list`,
+                url:`${this.$ip}/mms-training/trainingResult/user/list`,
                   method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}

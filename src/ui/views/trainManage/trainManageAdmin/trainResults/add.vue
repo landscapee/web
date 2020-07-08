@@ -22,6 +22,10 @@
                             <span v-if="type=='info'">{{form.employeeName}}</span>
                             <!--<el-input   v-else v-model="form.employeeName" placeholder="请输入员工名称"></el-input>-->
                         </el-form-item>
+
+                    </div>
+                     <div class="row_one">
+
                         <el-form-item  label="员工编号：" prop="employeeId">
                             <span v-if="type=='info'">{{form.employeeId}}</span>
                             <!--<el-input   v-else v-model="form.employeeId" placeholder="请输入员工编号"></el-input>-->
@@ -161,10 +165,9 @@
             };
         },
         created() {
-            if(this.$router.history.current.path == '/trainManageAdminResultsAdd'){
+             if(this.$router.history.current.path == '/trainManageAdminResultsAdd'){
                 if (this.$route.query) {
                     this.type = this.$route.query.type;
-                    this.$route.meta.title.paramsId=this.$route.query.id
                     this.$route.meta.title =
                         this.type == "add"
                             ? "员工培训结果新增"
@@ -188,10 +191,9 @@
         beforeRouteLeave(to,f,next){
             console.log(to,f,next);
             if(to.path=='/trainManageAdminResults'){
-
-                console.log(this.$router,1,1);
-
-
+                console.log(this.$router.history.pending,1,1);
+                // this.$router.push({path:'/trainManageAdminResults',query:{id:this.$router.history.pending.meta.paramsId}})
+                next()
             }else{
                 next()
             }

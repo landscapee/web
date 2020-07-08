@@ -60,12 +60,16 @@ export default {
 			return toPath(params);
 		},
 		handleLink(item) {
-			const { redirect, path } = item;
+            console.log(item,11111,111);
+            console.log(this.$router);
+            const { redirect, path ,meta} = item;
 			if (redirect) {
 				this.$router.push(redirect);
 				return;
 			}
-			this.$router.push(path);
+
+
+			this.$router.push({path,query:meta.paramsId});
 		},
 	},
 };
