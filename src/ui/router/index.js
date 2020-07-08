@@ -260,8 +260,8 @@ let authRoutes = [
             {
                 path:'/userManage',
                 component:() => import('@views/techKnowledge/studyManage/userManage'),
-                name:'学习管理(用户)',
-                meta: {title: '学习管理(用户)',icon: 'xxgl' }
+                name:'个人管理',
+                meta: {title: '个人管理',icon: 'xxgl' }
             }
         ],
 	},
