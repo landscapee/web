@@ -36,6 +36,8 @@
                                 <div @click="moreRelative('edit')"><icon iconClass="edit" style="width:0"  ></icon>批量关联</div>
                                 <div @click="morePush"><icon iconClass="remove" style="width:0" ></icon>批量推送</div>
                                 <div @click="exportExcel()"><icon iconClass="export" ></icon>导出员工考核情况</div>
+                                <a ref="a" :href="``"></a>
+
                                 <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
                             </div>
                         </div>
@@ -55,13 +57,14 @@
                             <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140"   >
                                 <template slot-scope="scope">
                                     <el-input class="rowinput" v-model="scope.row.certificateNumber"
+                                              @click.stop.native
                                                @keyup.enter.native="saveNumber(scope.row)"
-                                             placeholder="操作合格后可编辑"
-                                               :disabled="scope.row.certificateNumber!=1">
+                                             :placeholder="scope.row.qualifiedStatus!='合格'?'操作合格后可编辑':'可编辑'"
+                                               :disabled="scope.row.qualifiedStatus!='合格'">
                                     </el-input>
                                  </template>
                             </el-table-column>
-                            <el-table-column slot="option" align="center" label="操作" :width="140"   >
+                            <el-table-column slot="option" align="center" label="操作" :width="140"  fixed="right" >
                                 <template slot-scope="scope">
                                     <el-button class="QoptionButton" @click="conclusion(scope.row,1)">合格</el-button>
                                     <el-button class="QoptionButton" @click="conclusion(scope.row,0)">不合格</el-button>
@@ -80,7 +83,7 @@ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { rightConfig,leftConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
-import {  extend,map } from 'lodash';
+import {  extend,map,get } from 'lodash';
 export default {
     components: {
         Icon,
@@ -90,18 +93,20 @@ export default {
     data() {
         return {
             checkArr:[],
+            getGet:get,
             tableLeftData:{records:[ ], },
             tableRightData:{records:[] },
             leftTableConfig:leftConfig({}),
             rightTableConfig:rightConfig({}),
             leftParams:{
 				current: 1,
-				size: 10,
+				size: 15,
             },
             rightParams:{
 				current: 1,
-				size: 10,
+				size: 15,
             },
+            tableRightDataObj:{},
             leftRow:{},
             rightRow:{},
             leftForm:{},
@@ -144,19 +149,55 @@ watch:{
             console.log(row);
         },
         morePush(){
+            if(this.checkArr.length){
+                let ids=this.checkArr.join(',')
+                request({
+                    url:`${this.$ip}/mms-training/trainingResult/batchSend`,
+                    method: 'post',
+                    params:{ids:ids}
+                }).then(d => {
+                    if(d.code==200){
+                        this.$message.success('操作成功')
+                        this.checkArr=[]
+                        this.getList('right');
+                    }
+                });
+            }else {
+                this.$message.error('请先选中一行或多行数据');
 
+            }
         },
-        moreRelative(){
 
+        moreRelative(){
+            if(this.checkArr.length){
+                let ids=this.checkArr.join(',')
+                request({
+                    url:`${this.$ip}/mms-training/trainingResult/batchAssociated`,
+                    method: 'post',
+                    params:{ids:ids}
+                }).then(d => {
+                    if(d.code==200){
+                        this.checkArr=[]
+                        this.$message.success('操作成功')
+                        this.getList('right');
+                    }
+
+                });
+            }else {
+                this.$message.error('请先选中一行或多行数据');
+
+            }
         },
         hege(ids,t){
             request({
                 url:`${this.$ip}/mms-training/trainingResult/batchqualified`,
                 method: 'post',
-                data:{ids:ids,qualifiedStatus:t}
+                params:{ids:ids,qualifiedStatus:t}
             }).then(d => {
                if(d.code==200){
+                   this.checkArr=[]
                    this.$message.success('操作成功')
+                   this.getList('right');
                }
 
             });
@@ -187,10 +228,40 @@ watch:{
              }
         },
         exportExcel(){
-            if(this.leftSelectId==null){
-                this.$message.error('请先选中一行数据');
+            if(this.checkArr.length==1){
+                // ${this.$ip}/mms-training/trainingResult/exportByEmplpoyeeId/${getGet(tableRightDataObj[ checkArr[0]],'employeeId')}
+                request({
+                    'Content-Type':'application/vnd.ms-excel',
+                    // 'Content-Type':'application/octet-stream;charset=utf-8',
+                    url: `${this.$ip}/mms-training/trainingResult/exportByEmplpoyeeId/${get(this.tableRightDataObj[ this.checkArr[0]],'employeeId')}`,
+                    method: 'get',
+                    responseType: 'blob',
+                 }).then((d)=>{
+                     const content = d
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                     const fileName = `员工考核情况（${get(this.tableRightDataObj[ this.checkArr[0]],'employeeName')}）`
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+
+
+
+                })
             }else{
-                this.$refs.a.click()
+                if(this.checkArr.length){
+                    this.$message.error('只能选中一行数据');
+                }else {
+                    this.$message.error('请先选中一行数据');
+                }
             }
         },
 
@@ -304,6 +375,7 @@ watch:{
                 })
                     .then((d) => {
                         this.tableLeftData={...d.data}
+
                     })
             }else{
                 if(this.leftSelectId!=null){
@@ -320,7 +392,9 @@ watch:{
                     })
                     .then((d) => {
                         this.tableRightData={...d.data}
-
+this.tableRightData.records.map((k,l)=>{
+    this.tableRightDataObj[k.id]=k
+})
                     })
                 }
             }

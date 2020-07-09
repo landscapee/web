@@ -3,7 +3,7 @@
      padding: 0 30px;
     /deep/ .mainTable{
         height: 600px;
-        overflow-y: auto;
+        overflow: auto;
     }
     .QlistBody{
 
@@ -13,7 +13,7 @@
      padding: 0 30px;
     /deep/ .mainTable{
         height: 600px;
-        overflow-y: auto;
+        overflow: auto;
     }
     .QlistBody{
         justify-content: left;
