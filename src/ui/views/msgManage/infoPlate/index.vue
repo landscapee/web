@@ -31,7 +31,7 @@
                     </el-table-column>
                     <el-table-column slot="attachment" label="附件"  align="center" >
                         <template slot-scope="{ row }">
-                            <el-button @click="downloadFile(row)" size="mini">下载</el-button>
+                            <el-button :disabled="!(row.fileInfoList&&row.fileInfoList.length)" @click="downloadFile(row)" size="mini">下载</el-button>
                         </template>
                     </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="148" align="center" >
