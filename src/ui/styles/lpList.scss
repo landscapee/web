@@ -10,10 +10,19 @@
     }
 }
 .G_listTwo{
+    //.second{
+    //    //width: calc(100% + 10px);
+    //
+    //    overflow: auto;
+    //      /deep/ .cell:last-child{
+    //        width: calc(100% - 100px);
+    //     }
+    //}
+
      padding: 0 30px;
     /deep/ .mainTable{
-        height: 600px;
-        overflow: auto;
+        height:calc(100vh - 400px);
+        //overflow: auto;
     }
     .QlistBody{
         justify-content: left;

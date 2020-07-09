@@ -14,7 +14,7 @@
                                 培训
                             </div>
                         </div>
-                        <SearchTable ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                        <SearchTable scrollHeight="570" ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                             <el-table-column slot="radio" label="选择" :width="49"  >
                                 <template slot-scope="{ row }">
                                     <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -41,7 +41,7 @@
                                 <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
                             </div>
                         </div>
-                        <SearchTable ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
+                        <SearchTable scrollHeight="570" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
                             <!--<el-table-column slot="radio" label="选择" :width="49"  >-->
                                 <!--<template slot-scope="{ row }">-->
                                     <!--<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
@@ -64,7 +64,7 @@
                                     </el-input>
                                  </template>
                             </el-table-column>
-                            <el-table-column slot="option" align="center" label="操作" :width="140"  fixed="right" >
+                            <el-table-column slot="option" align="center" label="操作" :width="140"    >
                                 <template slot-scope="scope">
                                     <el-button class="QoptionButton" @click="conclusion(scope.row,1)">合格</el-button>
                                     <el-button class="QoptionButton" @click="conclusion(scope.row,0)">不合格</el-button>
@@ -191,7 +191,6 @@ watch:{
                         this.$message.success('操作成功')
                         this.getList('right');
                     }
-
                 });
             }else {
                 this.$message.error('请先选中一行或多行数据');
@@ -433,7 +432,7 @@ this.tableRightData.records.map((k,l)=>{
 <style scoped lang="scss">
  .G_listTwo{
      /deep/ .mainTable{
-         height:calc(100vh - 400px)
+         /*height:calc(100vh - 400px)*/
      }
      /deep/ .el-checkbox__label{
          display: none;

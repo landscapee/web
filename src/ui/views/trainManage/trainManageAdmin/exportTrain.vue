@@ -83,8 +83,9 @@
                             params:{startTime:this.form.startTime,endTime:this.form.endTime }
                         }).then((d)=>{
                             const content = d
-                            const blob = new Blob([content],{type:'application/vnd.ms-excel'})
-                             const fileName = '培训考核表'
+                             debugger
+                            const blob = new Blob([content],{type:'application/msword'})
+                             const fileName = '培训考核'
                             if ('download' in document.createElement('a')) { // 非IE下载
                                 const elink = document.createElement('a')
                                 elink.download = fileName

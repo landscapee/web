@@ -139,7 +139,7 @@
 
                     if(this.type!='add'){
                         request({
-                            url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                            url:`${this.$ip}/mms-training/trainingResult/info/${this.$route.query.id}`,
                             method: "get",
                         }).then(d => {
                             this.form={...d.data }
