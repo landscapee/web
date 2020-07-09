@@ -2,6 +2,7 @@
 	<div class="breadcrumb_main">
 		<transition-group name="breadcrumb">
 			<span v-for="(item, index) in levelList" :key="item.path">
+
 				<img v-if="index == 0" :src="ic_arrow"  class="source_img"/>
 				<img v-if="index != 0" :src="ic_arrow_2" class="arrow_img"/>
 				<span v-if="index == levelList.length - 1" class="no-redirect no-redirect-last">{{ item.meta.title }}</span>
@@ -59,12 +60,16 @@ export default {
 			return toPath(params);
 		},
 		handleLink(item) {
-			const { redirect, path } = item;
+            console.log(item,11111,111);
+            console.log(this.$router);
+            const { redirect, path ,meta} = item;
 			if (redirect) {
 				this.$router.push(redirect);
 				return;
 			}
-			this.$router.push(path);
+
+
+			this.$router.push({path,query:meta.paramsId});
 		},
 	},
 };

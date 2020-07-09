@@ -15,28 +15,32 @@
         </div>
 
         <div :class=" type=='info'?'G_form G_formInfo':'G_form'"  >
-                 <el-form ref="form" label-position="right" :model="form" :rules="rules" class="demo-form-inline" :line="true"  >
+                 <el-form ref="form" label-position="right" :model="form" :rules="rules" class="demo-form-inline" :inline="true"  >
 
                     <div class="row_tow">
-                        <el-form-item  label="员工名称：" prop="examName">
-                            <span v-if="type=='info'">{{form.examName}}</span>
-                            <!--<el-input   v-else v-model="form.examName" placeholder="请输入员工名称"></el-input>-->
+                        <el-form-item  label="员工名称：" prop="employeeName">
+                            <span v-if="type=='info'">{{form.employeeName}}</span>
+                            <!--<el-input   v-else v-model="form.employeeName" placeholder="请输入员工名称"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="员工编号：" prop="examName">
-                            <span v-if="type=='info'">{{form.examName}}</span>
-                            <!--<el-input   v-else v-model="form.examName" placeholder="请输入员工编号"></el-input>-->
+
+                    </div>
+                     <div class="row_one">
+
+                        <el-form-item  label="员工编号：" prop="employeeId">
+                            <span v-if="type=='info'">{{form.employeeId}}</span>
+                            <!--<el-input   v-else v-model="form.employeeId" placeholder="请输入员工编号"></el-input>-->
                         </el-form-item>
 
                     </div>
 
                     <div class="row_tow">
-                        <el-form-item  label="培训项目：" prop="examName">
-                            <span v-if="type=='info'">{{form.examName}}</span>
-                            <!--<el-input   v-else v-model="form.examName" placeholder="请输入培训项目"></el-input>-->
+                        <el-form-item  label="培训项目：" prop="trainingName">
+                            <span v-if="type=='info'">{{form.trainingName}}</span>
+                            <!--<el-input   v-else v-model="form.trainingName" placeholder="请输入培训项目"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="类别：" prop="paperName">
-                            <span v-if="type=='info'">{{  form.paperName }}</span>
-                            <!--<el-select filterable   v-else clearable v-model="form.paperName" placeholder="请选择类别">-->
+                        <el-form-item  label="类别：" prop="trainingType">
+                            <span v-if="type=='info'">{{  form.trainingType }}</span>
+                            <!--<el-select filterable   v-else clearable v-model="form.trainingType" placeholder="请选择类别">-->
                                 <!--<el-option v-for="(opt,index) in options.trainType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>-->
                             <!--</el-select>-->
                         </el-form-item>
@@ -60,70 +64,70 @@
                     </div>
 
                     <div class="row_tow">
-                        <el-form-item  label="课时：" prop="e1xamName">
-                            <span v-if="type=='info'">{{form.e1xamName}}</span>
-                            <!--<el-input   v-else v-model="form.e1xamName" placeholder="请输入课时"></el-input>-->
+                        <el-form-item  label="课时：" prop="classHour">
+                            <span v-if="type=='info'">{{form.classHour}}</span>
+                            <!--<el-input   v-else v-model="form.classHour" placeholder="请输入课时"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="地点：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入地点"></el-input>-->
+                        <el-form-item  label="地点：" prop="trainingPlace">
+                            <span v-if="type=='info'">{{form.trainingPlace}}</span>
+                            <!--<el-input   v-else v-model="form.trainingPlace" placeholder="请输入地点"></el-input>-->
                         </el-form-item>
 
                     </div>
 
                     <div class="row_tow">
-                        <el-form-item  label="培训单位：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入培训单位"></el-input>-->
+                        <el-form-item  label="培训单位：" prop="trainingUnit">
+                            <span v-if="type=='info'">{{form.trainingUnit}}</span>
+                            <!--<el-input   v-else v-model="form.trainingUnit" placeholder="请输入培训单位"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="讲师：" prop="e1xamName">
-                            <span v-if="type=='info'">{{form.e1xamName}}</span>
-                            <!--<el-input   v-else v-model="form.e1xamName" placeholder="请输入讲师"></el-input>-->
+                        <el-form-item  label="讲师：" prop="teacherName">
+                            <span v-if="type=='info'">{{form.teacherName}}</span>
+                            <!--<el-input   v-else v-model="form.teacherName" placeholder="请输入讲师"></el-input>-->
                         </el-form-item>
                     </div>
                     <div class="row_tow">
 
-                        <el-form-item  label="讲师等级：" prop="exam11Name">
-                            <span v-if="type=='info'">{{form.exam11Name}}</span>
-                            <!--<el-input   v-else v-model="form.exam11Name" placeholder="请输入讲师等级"></el-input>-->
+                        <el-form-item  label="讲师等级：" prop="teacherLevel">
+                            <span v-if="type=='info'">{{form.teacherLevel}}</span>
+                            <!--<el-input   v-else v-model="form.teacherLevel" placeholder="请输入讲师等级"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="联系方式：" prop="e1xamName">
-                            <span v-if="type=='info'">{{form.e1xamName}}</span>
-                            <!--<el-input   v-else v-model="form.e1xamName" placeholder="请输入联系方式"></el-input>-->
+                        <el-form-item  label="联系方式：" prop="contactInformation">
+                            <span v-if="type=='info'">{{form.contactInformation}}</span>
+                            <!--<el-input   v-else v-model="form.contactInformation" placeholder="请输入联系方式"></el-input>-->
                         </el-form-item>
                     </div>
                     <div class="row_tow aOne">
 
-                        <el-form-item  label="对象范围：" prop="exam11Name">
-                            <span v-if="type=='info'">{{form.exam11Name}}</span>
-                            <!--<el-input   v-else v-model="form.exam11Name" placeholder="请输入对象范围"></el-input>-->
+                        <el-form-item  label="对象范围：" prop="personScope">
+                            <span v-if="type=='info'">{{form.personScope}}</span>
+                            <!--<el-input   v-else v-model="form.personScope" placeholder="请输入对象范围"></el-input>-->
                         </el-form-item>
 
                     </div>
 
                     <div class="row_tow">
-                        <el-form-item  label="考核成绩：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入考核成绩"></el-input>-->
+                        <el-form-item  label="考核成绩：" prop="qualifiedStatus">
+                            <span v-if="type=='info'">{{form.qualifiedStatus}}</span>
+                            <!--<el-input   v-else v-model="form.qualifiedStatus" placeholder="请输入考核成绩"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="证书编号：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入证书编号"></el-input>-->
+                        <el-form-item  label="证书编号：" prop="certificateNo">
+                            <span v-if="type=='info'">{{form.certificateNo}}</span>
+                            <!--<el-input   v-else v-model="form.certificateNo" placeholder="请输入证书编号"></el-input>-->
                         </el-form-item>
                     </div>
                      <div class="row_tow">
-                        <el-form-item  label="培训签到：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入培训签到"></el-input>-->
+                        <el-form-item  label="培训签到：" prop="signStatus">
+                            <span v-if="type=='info'">{{form.signStatus}}</span>
+                            <!--<el-input   v-else v-model="form.signStatus" placeholder="请输入培训签到"></el-input>-->
                         </el-form-item>
-                        <el-form-item  label="培训评价：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入培训评价"></el-input>-->
+                        <el-form-item  label="培训评价：" prop="appraiseContent">
+                            <span v-if="type=='info'">{{form.appraiseContent}}</span>
+                            <!--<el-input   v-else v-model="form.appraiseContent" placeholder="请输入培训评价"></el-input>-->
                         </el-form-item>
                     </div> <div class="row_one">
-                        <el-form-item  label="备注：" prop="examName1">
-                            <span v-if="type=='info'">{{form.examName1}}</span>
-                            <!--<el-input   v-else v-model="form.examName1" placeholder="请输入备注"></el-input>-->
+                        <el-form-item  label="备注：" prop="remark">
+                            <span v-if="type=='info'">{{form.remark}}</span>
+                            <!--<el-input   v-else v-model="form.remark" placeholder="请输入备注"></el-input>-->
                         </el-form-item>
 
                     </div>
@@ -155,50 +159,15 @@
                 options: {},
 
                 rules: {
-                    infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
-                    paperId: [{ required:true,message:'请选择', trigger: "blur" }],
-                    examMode: [{ required:true,message:'请选择', trigger: "blur" }],
-                    examName: [{ required:true,message:'请输入课件编号', trigger: "blur" }],
-                    examName1: [{ required:true,message:'请输入课件名称', trigger: "blur" }],
-                    totalTime: [
-                        { required:true,message:'请输入', trigger: "blur" },
-                        {
-                        validator: (rule, value, callback) => {
-                            if(value!=''){
-                                if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&(value+'').split('.').length===1) {
-                                    if (value <= 0) {
-                                        callback(new Error('考试时长应该大于0'));
-                                    } else {
-                                        callback();
-                                    }
-                                } else {
-                                    callback(new Error('必须为整数类型'));
-                                }
-                            }else{
-                                callback();
-                            }
 
-                        },
-                        trigger: 'change',
-                    },],
                 },
                 type: "add"
             };
         },
         created() {
-            if(this.$router.history.current.path == '/trainManageAdminAdd'){
+             if(this.$router.history.current.path == '/trainManageAdminResultsAdd'){
                 if (this.$route.query) {
                     this.type = this.$route.query.type;
-                    request({
-                        url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-                        method: 'post',
-                        params:{delete:false},
-                        data:['trainType' ]
-                    }).then(d => {
-                        let obj=d.data
-                        this.options=obj
-
-                    });
                     this.$route.meta.title =
                         this.type == "add"
                             ? "员工培训结果新增"
@@ -210,7 +179,7 @@
 
                     if(this.type!='add'){
                         request({
-                            url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                            url:`${this.$ip}/mms-training/trainingResult/info/${this.$route.query.id}`,
                             method: "get",
                         }).then(d => {
                             this.form={...d.data }
@@ -218,10 +187,16 @@
                     }
                 }
             }
-
-
-
-
+        },
+        beforeRouteLeave(to,f,next){
+            console.log(to,f,next);
+            if(to.path=='/trainManageAdminResults'){
+                console.log(this.$router.history.pending,1,1);
+                // this.$router.push({path:'/trainManageAdminResults',query:{id:this.$router.history.pending.meta.paramsId}})
+                next()
+            }else{
+                next()
+            }
         },
         methods: {
             getFile(file){

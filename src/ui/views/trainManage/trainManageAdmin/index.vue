@@ -38,11 +38,7 @@
                     </el-table-column>
 
                 </SearchTable>
-                <el-button
-                        plain
-                        @click="open1">
-                    右上角
-                </el-button>
+
             </div>
         </div>
         <ExportTrain ref="ExportTrain"></ExportTrain>
@@ -85,7 +81,7 @@ export default {
                 data:['trainType']
             }).then(d => {
                 let obj=d.data
-                this.tableConfig=trainManageAdminConfig(obj)
+                this.tableConfig=trainManageAdminConfig(obj,this)
             });
         }
     },

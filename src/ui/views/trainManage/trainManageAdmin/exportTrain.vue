@@ -6,23 +6,10 @@
                     <span>{{row.trainingName}} </span>
                 </el-form-item>
                   <el-form-item label="时间：">
-                      <el-date-picker
-                              v-model="form.time"
-                              type="datetimerange"
-                              range-separator="至"
-                              start-placeholder="开始日期"
-                              end-placeholder="结束日期">
-                      </el-date-picker>
-                      <el-date-picker
-                              v-model="form.time"
-                              type="yearrange"
-                              range-separator="至"
-                              start-placeholder="开始日期"
-                              end-placeholder="结束日期">
-                      </el-date-picker>
+                      <el-date-picker v-model="form.start" type="year" placeholder="选择年"></el-date-picker>
+                      <el-date-picker v-model="form.end" type="year" placeholder="选择年"></el-date-picker>
+
                 </el-form-item>
-
-
             </el-form>
             <div class="Qfooter">
                 <a ref="a" :href="`${this.$ip}/mms-training/paperInfo/export/${this.row.id}/${form.type}`"></a>

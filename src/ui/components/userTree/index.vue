@@ -208,21 +208,23 @@ export default {
 			return idx > -1;
 		},
 		getTree(currentDept) {
-			let deptId = this.$store.getters.userInfo.administrativeId;
+            let orgId = this.$store.getters.userInfo.orgId;
+            let deptId = this.$store.getters.userInfo.deptId;
+            let administrativeId = this.$store.getters.userInfo.administrativeId;
 			request({
 				url: '/api/sys/org/getAllTree',
 				method: 'get',
 				params:{},
 			}).then((response) => {
 				if (currentDept) {
-					this.findCurrentDept(response.data[0], deptId);
+					this.findCurrentDept(response.data[4], orgId);
 				} else {
 					this.data = formatTreeData(response.data);
 				}
 			});
 		},
 		findCurrentDept(dept, deptId) {
-			if (dept.data.id == deptId) {
+ 			if (dept.data.id == deptId) {
 				// console.log('--------' + dept.data.id + '--' + dept.data.name + '---' + deptId);
 				this.data = formatTreeData([dept]);
 				return;

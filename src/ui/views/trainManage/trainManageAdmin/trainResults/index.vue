@@ -1,15 +1,13 @@
 <template>
     <div>
+        <router-view v-if="this.$router.history.current.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
 
-        <div   class="trainResults">
-            <div class="top-content">
-                <div class="top-content-title">
+        <div v-else="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path" class="G_listOne">
+            <div class="QCenterRight">
+                <div class="QHead_list">
                     <span>员工培训结果<span style="color:#888888">（管理员）</span></span>
                 </div>
-                <div class="top-toolbar">
-                    <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
-                    <!--<div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>-->
-                    <!--<div @click="delData()"><icon iconClass="remove" ></icon>删除</div>-->
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel">
                         <icon iconClass="export" ></icon>
@@ -26,15 +24,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="employeeFileId" label="试卷名称"   >
-                        <template  slot-scope="scope">
-                            <div @click="upload(scope.row)" class="G_cursor" style="color:#0a76a4;text-align: center">
-                                附件
-                                <a href="" ref="aA"></a>
-                            </div>
 
-                        </template>
-                    </el-table-column>
                     <el-table-column   slot="option" label="操作" align="center" :width="260"  >
                         <template  slot-scope="scope">
                             <!--style="height:40px;line-height: 26px;text-align: center"-->
@@ -91,6 +81,8 @@ export default {
     },
    created() {
         if(this.$router.history.current.path == '/trainManageAdminResults'){
+            this.$route.meta.paramsId={id:this.$route.query.id}
+
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -113,34 +105,17 @@ export default {
         }
     },
     methods: {
-        upload(row){
-            if(row.employeeFileId){
-                request({
-                    // application/x-www-form-urlencoded
-                    header:{
-                        'Content-Type':'multipart/form-data'
-                    },
-                    url:`${this.$ip}/mms-file//get-file-by-id/${row.employeeFileId }`,
-                    method:'GET',
 
-                }).then((d) => {
-                    this.$refs.SeeImg.open(d.data)
-                });
-            }else {
-                this.$message.info('暂无附件')
-            }
-
-        },
         testResults( row){
             request({
-                url:`${this.$ip}/mms-training/examResult/send` ,
-                method: 'post',
-                data:{employeeId:row.employeeId,examId:row.examId,employeeName:row.employeeName}
-            }).then((d) => {
-                if(d.code==200){}
+                url:`${this.$ip}/mms-training/trainingResult/sendAppraise/${row.id}` ,
+                method: 'get',
+             }).then((d) => {
+                if(d.code==200){
                     this.getList();
-                     this.$message({type: 'success',message: '推送成功'});
-                })
+                    this.$message({type: 'success',message: '推送成功'});
+                }
+            })
         },
         SignEvaluation(row){
             this.$refs.SignEvaluation.open(row)
@@ -217,14 +192,13 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/mms-training/examResult/list`,
-                 method: 'post',
-                data:{...this.sort,...data,examId:this.$route.query.id},
+               url:`${this.$ip}/mms-training/trainingResult/manager/list`,
+               method: 'post',
+               data:{...this.sort,...data,trainingId:this.$route.query.id},
                params:{...this.params,}
             })
             .then((d) => {
-                d.data.records=[{}]
-                this.tableData = extend({},
+                 this.tableData = extend({},
                     {...d.data}
                 );
              })
@@ -244,8 +218,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
-.trainResults{
+ .G_listOne{
     margin-top:14px;
 
 }

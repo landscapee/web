@@ -114,20 +114,26 @@
                         employeeName:k.name,
                     }
                 })
-                   request({
-                    url: `${this.$ip}/mms-training/trainingInfo/send`,
-                    method: 'post',
-                    data:{
-                        paperId:this.$route.query.paperId,
-                        id:this.$route.query.id,
-                        employeeList
-                    },
-                }).then((d) => {
-                    if(d.code==200){
-                        this.$message.success('推送成功')
-                        this.$router.go((-1))
-                    }
-                });
+                if(employeeList.length>0){
+                    request({
+                        url: `${this.$ip}/mms-training/trainingInfo/send`,
+                        method: 'post',
+                        data:{
+                            paperId:this.$route.query.paperId,
+                            id:this.$route.query.id,
+                            employeeList
+                        },
+                    }).then((d) => {
+                        if(d.code==200){
+                            this.$message.success('推送成功')
+                            this.$router.go((-1))
+                        }
+                    });
+                }else {
+                    this.$message.info('请选择需要推送的人员')
+
+                }
+
             },
             resetForm(){
 
@@ -255,20 +261,24 @@
                 return idx > -1;
             },
             getTree(currentDept) {
-                let deptId = this.$store.getters.userInfo.administrativeId;
+                  let orgId = this.$store.getters.userInfo.orgId;
+                 let deptId = this.$store.getters.userInfo.deptId;
+                let administrativeId = this.$store.getters.userInfo.administrativeId;
                 request({
+                    // url: 'http://173.100.1.5:8011/sys/org/getAllChildOrgById?id=en1c54531c057647cc8228f301384c08c3&pageNum=1&pageSize=9999',
                     url: '/api/sys/org/getAllTree',
                     method: 'get',
-                    params:{},
+                    // params:{},
                 }).then((response) => {
                     if (currentDept) {
-                        this.findCurrentDept(response.data[0], deptId);
+                        this.findCurrentDept(response.data[4], orgId);
                     } else {
                         this.data = formatTreeData(response.data);
                     }
                 });
             },
             findCurrentDept(dept, deptId) {
+
                 if (dept.data.id == deptId) {
                     // console.log('--------' + dept.data.id + '--' + dept.data.name + '---' + deptId);
                     this.data = formatTreeData([dept]);

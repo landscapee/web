@@ -49,7 +49,7 @@ router.afterEach((to, from) => {
 })
 
 
-new Vue({
+ new Vue({
     el: '#app',
     components: {App},
     router,
