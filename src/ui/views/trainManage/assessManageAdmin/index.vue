@@ -56,7 +56,7 @@
                             </el-table-column>
                             <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140"   >
                                 <template slot-scope="scope">
-                                    <el-input class="rowinput" v-model="scope.row.certificateNumber"
+                                    <el-input class="rowinput" v-model="scope.row.certificateNo"
                                               @click.stop.native
                                                @keyup.enter.native="saveNumber(scope.row)"
                                              :placeholder="scope.row.qualifiedStatus!='合格'?'操作合格后可编辑':'可编辑'"
@@ -147,6 +147,16 @@ watch:{
     methods: {
         saveNumber(row){
             console.log(row);
+            request({
+                url:`${this.$ip}/mms-training/trainingResult/updateNo`,
+                method: 'get',
+                params:{certificateNo:row.certificateNo,id:row.id}
+            }).then(d => {
+                if(d.code==200){
+                    this.$message.success('编辑成功')
+                    this.getList('right');
+                }
+            });
         },
         morePush(){
             if(this.checkArr.length){
@@ -378,7 +388,7 @@ watch:{
 
                     })
             }else{
-                if(this.leftSelectId!=null){
+                 if(this.leftSelectId!=null){
                     map(this.rightForm,((k,l)=>{
                         if(!k){
                             this.rightForm[l]=null
@@ -387,7 +397,7 @@ watch:{
                     request({
                          url:`${this.$ip}/mms-training/trainingResult/manager/list`,
                         method: 'post',
-                        data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
+                        data:{...this.rightForm,trainingId:this.leftSelectId,...this.rightSort,},
                         params:{...this.rightParams}
                     })
                     .then((d) => {

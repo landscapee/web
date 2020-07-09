@@ -22381,14 +22381,14 @@
 }
 .G_listOne /deep/ .mainTable {
     height: 42.85714rem;
-    overflow-y: auto;
+    overflow: auto;
 }
 .G_listTwo {
   padding: 0 2.14286rem;
 }
 .G_listTwo /deep/ .mainTable {
     height: 42.85714rem;
-    overflow-y: auto;
+    overflow: auto;
 }
 .G_listTwo .QlistBody {
     justify-content: left;
@@ -22486,6 +22486,8 @@
   /* 横向滚动条 */
   border-radius: 0.28571rem;
   background-color: rgba(0, 0, 0, 0.3);
+  display: block;
+  position: absolute;
 }
 
 /*定义滚动条轨道 内阴影*/
@@ -22493,6 +22495,8 @@
   border-radius: 0.28571rem;
   -webkit-box-shadow: inset 0 0 0.42857rem rgba(0, 0, 0, 0);
   background-color: rgba(255, 255, 255, 0.4);
+  position: absolute;
+  display: block;
 }
 
 /*定义滑块 内阴影*/
@@ -22500,6 +22504,8 @@
   border-radius: 0.28571rem;
   -webkit-box-shadow: inset 0 0 0.42857rem rgba(0, 0, 0, 0);
   background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  display: block;
 }
 /deep/ .el-scrollbar__wrap {
   overflow: hidden !important;
