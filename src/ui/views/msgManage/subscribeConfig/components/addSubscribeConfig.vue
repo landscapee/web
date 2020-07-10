@@ -150,7 +150,8 @@ export default {
         });
     },
     handleUserSelected(users,deptList) {
-      this.userList = users.map((item) => ({ id: item.id, name: item.name }));
+        console.log(users, deptList,12);
+        this.userList = users.map((item) => ({ id: item.id, name: item.name }));
       // 数组去重
       let hash = {};
       this.deptList = deptList.reduce(function(item, next) {

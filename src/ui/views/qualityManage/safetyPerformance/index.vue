@@ -19,7 +19,6 @@
 
                             <div @click="exportExcel()">
                                   <icon iconClass="export" ></icon>导出
-                                  <a ref="a" :href="`${this.$ip}/mms-qualification/download/securityMerits/${this.leftSelectId}`"></a>
                               </div>
 
 
@@ -178,10 +177,33 @@
 
             exportExcel(){
                 console.log(1);
+            // <a ref="a" :href="`${this.$ip}/mms-qualification/download/securityMerits/${this.leftSelectId}`"></a>
+
                 if(this.leftSelectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$refs.a.click()
+                    request({
+                        'Content-Type':'application/vnd.ms-excel',
+                         url: `${this.$ip}/mms-qualification/download/securityMerits/${this.leftSelectId}`,
+                        method: 'get',
+                        responseType: 'blob',
+                    }).then((d)=> {
+                        const content = d
+                        let blob = new Blob([content], {type: 'application/vnd.ms-excel'})
+                        const fileName = `月度安全绩效（${this.leftRow.deptName}部${this.leftRow.year}年${this.leftRow.month}月） `
+                        if ('download' in document.createElement('a')) { // 非IE下载
+                            const elink = document.createElement('a')
+                            elink.download = fileName
+                            elink.style.display = 'none'
+                            elink.href = URL.createObjectURL(blob)
+                            document.body.appendChild(elink)
+                            elink.click()
+                            URL.revokeObjectURL(elink.href) // 释放URL 对象
+                            document.body.removeChild(elink)
+                        } else { // IE10+下载
+                            navigator.msSaveBlob(blob, fileName)
+                        }
+                    })
                 }
             },
             copyDetails(row){
@@ -191,6 +213,8 @@
             },
             //监听滚动
             handleScroll($event){
+                console.log($event);
+
                 // 获取滚动条的dom
                 var bady = $event.target;
                 // 获取距离顶部的距离

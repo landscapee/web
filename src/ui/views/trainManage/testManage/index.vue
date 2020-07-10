@@ -68,24 +68,26 @@ export default {
    created() {
         if(this.$router.history.current.path == '/testManage'){
             this.getList();
-        }
-       request({
-           url:`${this.$ip}/mms-training/paperInfo/list`,
-           method: 'post',
-           data:{},
-           params:{size:10000,current:1}
-       }).then((data) => {
-           request({
-               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-               method: 'post',
-               params:{delete:false},
-               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
-           }).then(d => {
-               let obj=d.data
-                this.tableConfig =testConfig(data.data.records||[],obj)
+            request({
+                url:`${this.$ip}/mms-training/paperInfo/list`,
+                method: 'post',
+                data:{},
+                params:{size:10000,current:1}
+            }).then((data) => {
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
+                }).then(d => {
+                    let obj=d.data
+                    this.tableConfig =testConfig(data.data.records||[],obj)
 
-           });
-           })
+                });
+            })
+
+        }
+
     },
     watch:{
         '$route':function(val,nm){

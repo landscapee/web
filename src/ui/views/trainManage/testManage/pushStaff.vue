@@ -19,7 +19,14 @@
         </div>
         <div style="display: flex;justify-content: center" >
             <div class="form"   >
-
+                <div style="display: flex;justify-content: space-between;margin-top: 16px">
+                    <span class="form_div_span" >考试名称：{{showInfo.examName}}</span>
+                    <span  >时间：{{$moment(showInfo.examTime).format('YYYY-MM-DD HH:mm:ss')}} </span>
+                    <span  >地点：{{showInfo.examSite}}</span>
+                </div>
+                <div style="margin: 20px 0 10px 0">
+                    <span style="font-size: 14px; color: #222222;">已选择&nbsp;<span style="color:#3280e7">{{selectedPersonList.length}}</span>&nbsp;人</span>
+                </div>
                 <el-row>
                     <el-col class="rightBorder" :span="12">
                         <div>
@@ -95,6 +102,7 @@
                  personList: [],
                 selectedPersonList: [],
                 data: {},
+                showInfo: {},
                 selectId: null,
                 selectNode: {},
                 type:""
@@ -103,10 +111,18 @@
         },
 
         created() {
+            if(this.$router.history.current.path == '/testManagePushStaff'){
+                this.getTree(true );
+                this.selectAll = false;
+                this.selectedPersonList =   [];
+                request({
+                    url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                    method: "get",
+                }).then(d => {
+                    this.showInfo={...d.data }
+                })
+            }
 
-            this.getTree(true );
-            this.selectAll = false;
-             this.selectedPersonList =   [];
          },
         mounted(){
 
@@ -262,14 +278,16 @@
                 return idx > -1;
             },
             getTree(currentDept) {
-                let deptId = this.$store.getters.userInfo.administrativeId;
+                let orgId = this.$store.getters.userInfo.orgId;
+                let deptId = this.$store.getters.userInfo.deptId;
+                let administrativeId = this.$store.getters.userInfo.administrativeId;
                 request({
                     url: '/api/sys/org/getAllTree',
                     method: 'get',
                     params:{},
                 }).then((response) => {
                     if (currentDept) {
-                        this.findCurrentDept(response.data[0], deptId);
+                        this.findCurrentDept(response.data[4], orgId);
                     } else {
                         this.data = formatTreeData(response.data);
                     }

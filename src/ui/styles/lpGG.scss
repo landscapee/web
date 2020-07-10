@@ -1,6 +1,7 @@
 /deep/ .el-scrollbar__wrap {
     overflow-x: hidden;
 }
+
 //// 滚动条 /////
 ::-webkit-scrollbar {
     width: 8px; /* 纵向滚动条*/
@@ -89,42 +90,42 @@
            color: #222222;
        }
     }
-    .QheadRight{
-        position: absolute;
-        right:0;
-        top:0;
-        .isDisabled{
-            background: rgba(208,208,208,1);
-            color: #6A7785;
-            cursor: not-allowed;
-            .svg-icon{
-                fill: rgba(208,208,208,1);
-            }
-        }
-        &>div{
-            user-select: none;
-            cursor: pointer;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            height: 2.28571rem;
-            line-height: 2.28571rem;
-            padding: 0.5rem;
-            border-radius: 0.14286rem;
-            border: 0.07143rem solid #d0d0d0;
-            margin-left:10px;
-            color: #3D568E;
-        }
-        .svg-icon{
-            height:18px;
-            width:18px;
-            margin-right: 4px;
-            vertical-align: text-top;
-        }
-    }
+
 
 }
-
+.QheadRight{
+    position: absolute;
+    right:0;
+    top:0;
+    .isDisabled{
+        background: rgba(208,208,208,1);
+        color: #6A7785;
+        cursor: not-allowed;
+        .svg-icon{
+            fill: rgba(208,208,208,1);
+        }
+    }
+    &>div{
+        user-select: none;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        height: 2.28571rem;
+        line-height: 2.28571rem;
+        padding: 0.5rem;
+        border-radius: 0.14286rem;
+        border: 0.07143rem solid #d0d0d0;
+        margin-left:10px;
+        color: #3D568E;
+    }
+    .svg-icon{
+        height:18px;
+        width:18px;
+        margin-right: 4px;
+        vertical-align: text-top;
+    }
+}
 
 .G_isDisabled{
     background: rgba(208,208,208,1);

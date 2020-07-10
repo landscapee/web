@@ -16,7 +16,6 @@
                 </el-form-item>
             </el-form>
             <div class="Qfooter">
-                <a ref="a" :href="`${this.$ip}/mms-training/paperInfo/export/${this.row.id}/${form.type}`"></a>
                 <el-button @click="close">取消</el-button>
                 <el-button type="primary" @click="submit('form')">导出</el-button>
             </div>
@@ -55,7 +54,36 @@
     submit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                          this.$refs.a.click()
+                        let contentType
+                        if(this.form.type=='WORD'){
+                            contentType='application/msword'
+                        }else{
+                            contentType='application/pdf'
+                        }
+                         request({
+                            'Content-Type':contentType,
+                             url: `${this.$ip}/mms-training/paperInfo/export/${this.row.id}/${this.form.type}`,
+                            method: 'get',
+                            responseType: 'blob',
+                            params:{startTime:this.form.startTime,endTime:this.form.endTime }
+                        }).then((d)=>{
+
+                            const content = d
+                            const blob = new Blob([content],{type:contentType})
+                            const fileName = ` ${this.row.paperName}（编号：${this.row.paperCode} ）`
+                            if ('download' in document.createElement('a')) { // 非IE下载
+                                const elink = document.createElement('a')
+                                elink.download = fileName
+                                elink.style.display = 'none'
+                                elink.href = URL.createObjectURL(blob)
+                                document.body.appendChild(elink)
+                                elink.click()
+                                URL.revokeObjectURL(elink.href) // 释放URL 对象
+                                document.body.removeChild(elink)
+                            }
+                             this.close()
+                        })
+
                     }
                 });
             },

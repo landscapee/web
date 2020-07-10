@@ -1,6 +1,6 @@
 <template>
 	<div class="searchTableWrapper" >
-		<div class="first">
+
 			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
 				<template  v-for="(colConfig, index) in cloneTableConfig">
 					<template v-if="colConfig.search">
@@ -40,8 +40,7 @@
 					</template>
 				</template>
 			</el-table>
-		</div>
- 		<el-scrollbar v-if="scrollHeight" :style="`height:${scrollHeight||600}px`">
+
 			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
 				<template v-for="(colConfig, index) in cloneTableConfig">
 
@@ -52,16 +51,7 @@
 				</template>
 			</el-table>
 
-		</el-scrollbar>
-		<el-table v-else :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
-			<template v-for="(colConfig, index) in cloneTableConfig">
 
-				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-
-				<el-table-column v-else-if="colConfig.prop=='index'" type="index"  :index="(index1)=>{return index1+1}"  v-bind="colConfig"  :key="index" :reserve-selection="true"> </el-table-column>
-				<el-table-column v-else :show-overflow-tooltip="true"     v-bind="colConfig" :key="index" :reserve-selection="true"> </el-table-column>
-			</template>
-		</el-table>
 		<el-pagination v-if="data.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
 	</div>
 </template>
@@ -74,7 +64,7 @@ export default {
         Icon,
 	},
 	name: 'SearchTable',
-	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod', 'scrollHeight'],
+	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod'],
 	data () {
 		return {
 			resizeCallback:[],
@@ -362,10 +352,10 @@ export default {
 			background-color: #A0CBF6;
 		}
 		/deep/ .el-table__fixed{
-			height: 620px !important;
+			/*height: 620px !important;*/
 		}
 		/deep/ .el-table__fixed-right{
-			height: 620px !important;
+			/*height: 620px !important;*/
 		}
 		/deep/ .el-table__row:nth-child(even){
 			background: #EFF2F3;

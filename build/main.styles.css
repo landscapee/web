@@ -19022,7 +19022,7 @@
           background: #409EFF;
 }
 .G_listTwo[data-v-4555b7e4] .mainTable {
-  height: calc(100vh - 28.57143rem);
+  /*height:calc(100vh - 400px)*/
 }
 .G_listTwo[data-v-4555b7e4] .el-checkbox__label {
   display: none;
@@ -22387,8 +22387,7 @@
   padding: 0 2.14286rem;
 }
 .G_listTwo /deep/ .mainTable {
-    height: 42.85714rem;
-    overflow: auto;
+    height: calc(100vh - 28.57143rem);
 }
 .G_listTwo .QlistBody {
     justify-content: left;
@@ -22479,6 +22478,9 @@
         margin-right: 0rem !important;
         width: calc(100% - 0.14286rem);
 }
+/deep/ .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
 ::-webkit-scrollbar {
   width: 0.57143rem;
   /* 纵向滚动条*/
@@ -22486,8 +22488,7 @@
   /* 横向滚动条 */
   border-radius: 0.28571rem;
   background-color: rgba(0, 0, 0, 0.3);
-  display: block;
-  position: absolute;
+  float: right;
 }
 
 /*定义滚动条轨道 内阴影*/
@@ -22495,8 +22496,7 @@
   border-radius: 0.28571rem;
   -webkit-box-shadow: inset 0 0 0.42857rem rgba(0, 0, 0, 0);
   background-color: rgba(255, 255, 255, 0.4);
-  position: absolute;
-  display: block;
+  float: right;
 }
 
 /*定义滑块 内阴影*/
@@ -22504,8 +22504,7 @@
   border-radius: 0.28571rem;
   -webkit-box-shadow: inset 0 0 0.42857rem rgba(0, 0, 0, 0);
   background-color: rgba(0, 0, 0, 0.3);
-  position: absolute;
-  display: block;
+  float: right;
 }
 /deep/ .el-scrollbar__wrap {
   overflow: hidden !important;

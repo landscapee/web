@@ -20,7 +20,6 @@
                 <div class="top-toolbar">
                      <div @click="exportExcel()">
                         <icon iconClass="export" ></icon>导出
-                        <a ref="a" :href="`${this.$ip}/mms-qualification/download/yearSecurityMerits?year=${form.year}&deptId=${form.deptId}`"></a>
                     </div>
 
                 </div>
@@ -116,8 +115,28 @@
             },
 
             exportExcel(){
-                console.log(this.form);
-                this.$refs.a.click()
+                 request({
+                    'Content-Type':'application/vnd.ms-excel',
+                     url: `${this.$ip}/mms-qualification/download/yearSecurityMerits?year=${this.form.year}&deptId=${this.form.deptId}`,
+                    method: 'get',
+                    responseType: 'blob',
+                }).then((d)=>{
+                    const content = d
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `年度-安全绩效（${this.deptDataObj[this.form.deptId]}部${this.form.year}年） `
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                })
             },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {

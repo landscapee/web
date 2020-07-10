@@ -14,7 +14,7 @@
                                 培训
                             </div>
                         </div>
-                        <SearchTable scrollHeight="570" ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                        <SearchTable scrollHeight="400" ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                             <el-table-column slot="radio" label="选择" :width="49"  >
                                 <template slot-scope="{ row }">
                                     <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -36,12 +36,11 @@
                                 <div @click="moreRelative('edit')"><icon iconClass="edit" style="width:0"  ></icon>批量关联</div>
                                 <div @click="morePush"><icon iconClass="remove" style="width:0" ></icon>批量推送</div>
                                 <div @click="exportExcel()"><icon iconClass="export" ></icon>导出员工考核情况</div>
-                                <a ref="a" :href="``"></a>
 
                                 <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
                             </div>
                         </div>
-                        <SearchTable scrollHeight="570" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
+                        <SearchTable scrollHeight="400" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
                             <!--<el-table-column slot="radio" label="选择" :width="49"  >-->
                                 <!--<template slot-scope="{ row }">-->
                                     <!--<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
@@ -261,9 +260,6 @@ watch:{
                     }else { // IE10+下载
                         navigator.msSaveBlob(blob, fileName)
                     }
-
-
-
                 })
             }else{
                 if(this.checkArr.length){

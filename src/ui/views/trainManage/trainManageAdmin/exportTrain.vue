@@ -3,11 +3,11 @@
         <el-dialog title="培训项目导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form1" ref="form" :rules="rules">
 
-                  <el-form-item label="开始时间：">
+                  <el-form-item label="开始时间：" :prop="form1.end?'start':'start1'">
                       <el-date-picker @change="start"  v-model="form1.start" type="year" placeholder="选择年"></el-date-picker>
 
                 </el-form-item>
-                <el-form-item label="结束时间：">
+                <el-form-item label="结束时间：" :prop="form1.start?'end':'end1'">
                        <el-date-picker @change="end"  v-model="form1.end" type="year" placeholder="选择年"></el-date-picker>
                 </el-form-item>
             </el-form>
@@ -83,9 +83,17 @@
                             params:{startTime:this.form.startTime,endTime:this.form.endTime }
                         }).then((d)=>{
                             const content = d
-                             debugger
+                             let time=''
+                            if(this.form.startTime&&this.form.endTime){
+                                if(this.form.startTime==this.form.endTime){
+                                    time=this.form.startTime+'年'
+                                }else{
+                                    time=this.form.startTime+'年-'+this.form.startTime+'年'
+                                }
+
+                            }
                             const blob = new Blob([content],{type:'application/msword'})
-                             const fileName = '培训考核'
+                             const fileName = `年度培训实施登记表（${time} ）`
                             if ('download' in document.createElement('a')) { // 非IE下载
                                 const elink = document.createElement('a')
                                 elink.download = fileName
@@ -120,6 +128,10 @@
             width:100px;
         }
     }
+    .el-form-item__error{
+        left:100px;
+    }
+
 
 }
 
