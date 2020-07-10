@@ -47,6 +47,7 @@ import usericon from './assets/img/usericon.png';
 import Breadcrumb from './components/Breadcrumb/index';
 import Icon from '@components/Icon-svg/index';
 import {setUserInfo,setToken,removeToken,removeUserInfo} from '@lib/auth';
+import request from '@lib/axios.js';
   export default {
 	components: {
 		Breadcrumb,
@@ -84,7 +85,13 @@ import {setUserInfo,setToken,removeToken,removeUserInfo} from '@lib/auth';
 			channel: 'websocket_msg',
 			topic: 'message',
 			callback: async data => {
-				this.tipsNumber = data.content.count;
+                request({
+                    url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+                    method: 'get',
+                })
+                .then((data) => {
+                    this.tipsNumber = data.data
+                })
 				this.$notify({
 					title: '收到一条消息',
 					message: data.content.content,
