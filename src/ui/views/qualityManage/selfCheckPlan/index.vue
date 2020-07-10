@@ -17,7 +17,7 @@
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                            <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/examination/${this.leftSelectId}`"></a>导出</div>
+                            <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
                         </div>
 
 
@@ -149,10 +149,44 @@ export default {
 
     methods: {
         exportExcel(){
-            if(this.leftSelectId==null){
+             if(this.leftSelectId==null){
                 this.$message.error('请先选中一行数据');
             }else{
-                this.$refs.a.click()
+                 request.interceptors.response.use(function (response) {
+                     // Do something with response data
+                     console.log(response,1,1,1);
+                     return response;
+                 }, function (error) {
+                     // Do something with response error
+                     return Promise.reject(error);
+                 });
+                request({
+                    header:{
+                        'content-disposition':'attachment;filename=total.xls',
+                        'content-type':'application/octet-stream'
+                    },
+                    // 'Content-Type':'application/vnd.ms-excel',
+                     url: `${this.$ip}/mms-qualification/download/examination/${this.leftSelectId}`,
+                    method: 'get',
+                    responseType: 'blob',
+                    // responseType: 'arraybuffer',
+                }).then((d,q,w)=>{
+                    const content = d
+                     let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `法定自查检查计划（${this.leftRow.deptName}部${this.leftRow.year}年）`
+                     if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                })
             }
         },
         //监听滚动

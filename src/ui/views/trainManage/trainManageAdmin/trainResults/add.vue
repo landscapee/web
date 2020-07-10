@@ -150,16 +150,12 @@
         },
         name: "",
         data() {
-
-
             return {
                 moment:moment,
                 oldForm:{},
                 form: {fileName1:''},
                 options: {},
-
                 rules: {
-
                 },
                 type: "add"
             };

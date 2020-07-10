@@ -11,13 +11,13 @@
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel">
                         <icon iconClass="export" ></icon>
-                        <a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>
+                        <a ref="a" :href="`${this.$ip}/mms-training/trainingResult/exportByTrainingId/${this.$route.query.id}`"></a>
                         导出Excel
                     </div>
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable scrollHeight="370"  ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -58,7 +58,7 @@
 import Icon from '@components/Icon-svg/index';
 import { trainAdminResultsConfig } from '../tableConfig.js';
 import request from '@lib/axios.js';
-import {  extend ,map} from 'lodash';
+import {  extend ,map,get} from 'lodash';
 export default {
     components: {
         Icon, SearchTable,SignEvaluation, 
@@ -122,7 +122,36 @@ export default {
         },
 
         exportExcel(){
-             this.$refs.a.click()
+            if(this.tableData.records.length){
+
+
+            request({
+                'Content-Type':'application/vnd.ms-excel',
+                // 'Content-Type':'application/octet-stream;charset=utf-8',
+                url: `${this.$ip}/mms-training/trainingResult/exportByTrainingId/${this.$route.query.id}`,
+                method: 'get',
+                responseType: 'blob',
+            }).then((d)=>{
+                const content = d
+                const blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                console.log(blob);
+                const fileName = `${this.tableData.records[0].trainingName }员工培训结果`
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }else { // IE10+下载
+                    navigator.msSaveBlob(blob, fileName)
+                }
+            })
+            }else {
+                this.$message.info('暂无数据')
+            }
         },
         requestTable(searchData){
             this.form = searchData;

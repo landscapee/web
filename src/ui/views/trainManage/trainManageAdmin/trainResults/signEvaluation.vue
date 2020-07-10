@@ -81,7 +81,7 @@
                 });
             },
             close(){
-                 this.from={}
+                 this.form={}
                 this.dialogFormVisible=false
             }
         },

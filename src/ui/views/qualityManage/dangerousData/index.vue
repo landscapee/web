@@ -1,20 +1,23 @@
 <template>
     <div>
          <router-view v-if="this.$router.history.current.path == '/dangerousDataAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/dangerousDataIndex'" :key="$route.path" class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
+        <div v-else-if="this.$router.history.current.path == '/dangerousDataIndex'" :key="$route.path" class="  G_listOne">
+            <div class="  QCenterRight">
+                <div class="  QHead_list">
                     <span>危险数据</span>
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/dangerData`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon>
+                        <!--<a ref="a" :href="`${this.$ip}/mms-qualification/download/dangerData`"></a>-->
+                        导出
+                    </div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class=" ">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
@@ -78,7 +81,28 @@ export default {
     },
     methods: {
         exportExcel(){
-          this.$refs.a.click()
+            request({
+                headers: {
+                    'Content-Type': 'application/vnd.ms-excel',
+                },
+                 url: `${this.$ip}/mms-qualification/download/dangerData`,
+                method: 'get',
+                responseType: 'blob',
+             }).then((d)=>{
+                const content = d
+                const blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = '危险数据'
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }
+            })
         },
         requestTable(searchData){
             this.form = searchData;
@@ -198,8 +222,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
-.sysParameter{
+/*@import "@/ui/styles/common_list.scss"; */
+.G_listOne{
     margin-top:14px;
     
 }

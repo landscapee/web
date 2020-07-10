@@ -11,7 +11,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon> 导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -77,7 +77,29 @@ export default {
     },
     methods: {
         exportExcel(){
-             this.$refs.a.click()
+            request({
+                'Content-Type':'application/vnd.ms-excel',
+                // 'Content-Type':'application/octet-stream;charset=utf-8',
+                url: `${this.$ip}/mms-qualification/download/securityInformation`,
+                method: 'get',
+                responseType: 'blob',
+                params:{startTime:this.form.startTime,endTime:this.form.endTime }
+            }).then((d)=>{
+                const content = d
+
+                const blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = '安全信息'
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }
+            })
         },
         requestTable(searchData){
             this.form = searchData;
@@ -210,5 +232,9 @@ export default {
 .sysParameter{
     margin-top:14px;
     
+}
+/deep/ .mainTable{
+    height:calc(100vh - 370px);
+    overflow: auto;
 }
 </style>

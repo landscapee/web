@@ -130,7 +130,8 @@ export default {
 			}
 		},
 		getListById(node) {
-			if (node && node.id) {
+            console.log(node,12312);
+            if (node && node.id) {
 				this.selectId = node.id;
 				this.selectNode = node;
 				this.type = node.type;
@@ -161,8 +162,10 @@ export default {
 				} 
 				param.deptId = this.selectId;
 			}
+
 			fetch(param).then((d) => {
 				let list = d.data.list ? d.data.list : d.data;
+
 				let idArry = [];
 				this.selectedPersonList.forEach((item) => {
 					idArry.push(item.id);
@@ -178,10 +181,11 @@ export default {
 				} else {
 					this.selectAll = true;
 				}
-				this.deptList = d.data.map(d => {
-					return {
-						id: d.administrativeId,
-						name: d.administrativeName,
+ 				this.deptList = d.data.map(k => {
+                    console.log(k);
+                    return {
+						id: k.administrativeId,
+						name: k.administrativeName,
 					};
 				});
 					
