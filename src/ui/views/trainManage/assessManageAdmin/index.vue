@@ -139,7 +139,7 @@ watch:{
         console.log(this.checkArr);
     }
 },
-　　　　mounted() {
+　　mounted() {
 
     },
 
@@ -154,6 +154,8 @@ watch:{
                 if(d.code==200){
                     this.$message.success('编辑成功')
                     this.getList('right');
+                }else if(d.code==416){
+                    this.$message.error(d.message)
                 }
             });
         },
@@ -173,7 +175,6 @@ watch:{
                 });
             }else {
                 this.$message.error('请先选中一行或多行数据');
-
             }
         },
 

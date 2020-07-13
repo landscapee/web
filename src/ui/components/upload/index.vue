@@ -49,9 +49,9 @@
                 console.log(file, fileList);
             },
             beforeAvatarUpload(file) {
-                const isLt2M = file.size / 1024 / 1024 < 5;
+                const isLt2M = file.size / 1024 / 1024 < 50;
                 if (!isLt2M) {
-                    this.$message.error('上传图片大小不能超过 5MB!');
+                    this.$message.error('上传文件大小不能超过 50MB!');
                 }
                 return isLt2M;
             },

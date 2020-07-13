@@ -70,7 +70,7 @@
 
                             const content = d
                             const blob = new Blob([content],{type:contentType})
-                            const fileName = ` ${this.row.paperName}（编号：${this.row.paperCode} ）`
+                            const fileName = ` ${this.row.paperName}`
                             if ('download' in document.createElement('a')) { // 非IE下载
                                 const elink = document.createElement('a')
                                 elink.download = fileName

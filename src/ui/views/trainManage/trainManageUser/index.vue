@@ -6,7 +6,7 @@
         <div v-else-if="this.$router.history.current.path == '/trainManageUser'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>培训管理 <span style="color:#888888">（用户）</span></span>
+                    <span>我的培训  </span>
                 </div>
                 <div class="top-toolbar">
 

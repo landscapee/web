@@ -116,7 +116,7 @@
                             <span @click="fileDownload(form.courseFileId)" class="hoverSpanFile" v-if="type=='info'">{{form.courseFileName}}<i class="el-icon-download iClass"></i></span>
                             <div v-else style="display: flex;justify-content: left">
                                 <el-input   :disabled="true" v-model="form.courseFileName" type="text"    placeholder="请选择文件"></el-input>
-                                <UploadFile  ref="UploadFile" @getFile="getCourse"></UploadFile>
+                                <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.txt,.docx,.ppt"  ref="UploadFile" @getFile="getCourse"></UploadFile>
                             </div>
                         </el-form-item>
 
@@ -128,7 +128,7 @@
                             <span @click="fileDownload(form.signFileId,1)" class="hoverSpanFile" v-if="type=='info'">{{form.signFileName}} <i class="el-icon-download iClass"></i></span>
                             <div style="display: flex;justify-content: left" v-else>
                                 <el-input  :disabled="true" v-model="form.signFileName" type="text"    placeholder="pdf/图片"></el-input>
-                                <UploadFile accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf," ref="UploadFile" @getFile="getFile"></UploadFile>
+                                <UploadFile accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf" ref="UploadFile" @getFile="getFile"></UploadFile>
 
                             </div>
                         </el-form-item>

@@ -324,7 +324,7 @@ let authRoutes = [
 			{
 				path: '/trainManageAdmin',
                 component: () => import('@views/trainManage/trainManageAdmin/index'),
-				name: '培训管理(管理员)',
+				name: '培训管理',
 				meta: {title: '培训管理',icon: 'xxgl' },
                 children:[
                     {
@@ -360,14 +360,14 @@ let authRoutes = [
 			{
 				path: '/trainManageUser',
                 component: () => import('@views/trainManage/trainManageUser/index'),
-				name: '培训管理(用户)',
-				meta: {title: '培训管理',icon: 'xxgl' },
+				name: '我的培训',
+				meta: {title: '我的培训',icon: 'xxgl' },
                 children:[
                     {
                         path: '/trainManageUserAdd',
                         component: () => import('@views/trainManage/trainManageUser/add'),
-                        name: '培训管理详情',
-                        meta: {title: '培训管理详情',icon: 'xxgl' },
+                        name: '我的培训详情',
+                        meta: {title: '我的培训详情',icon: 'xxgl' },
                     },
                 ]
 			},
