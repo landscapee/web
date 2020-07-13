@@ -269,7 +269,10 @@ export default {
             if(row.selected){
                 this.selectObjs.push(row)  //row.id 
             }else{
-                this.arrRemEleFn(this.selectObjs.map(i=>i.id), row.id)
+                let arr = this.arrRemEleFn(this.selectObjs.map(i=>i.id), row.id)
+                this.selectObjs = this.selectObjs.filter(item=>{
+                    return arr.includes(item.id)
+                })
                 //this.selectObjs = null
             }
             this.params.current = 1
@@ -286,6 +289,9 @@ export default {
             if (index > -1) {
                 arr.splice(index, 1);
             }
+            console.log(arr)
+            return arr
+            
         },
         // 批量推送
         batchPushFn(){

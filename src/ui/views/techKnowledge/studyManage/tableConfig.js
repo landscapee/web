@@ -1,4 +1,4 @@
-import { formatDate } from '@lib/tools.js';
+import { formatDate, timeMinuteFormat } from '@lib/tools.js';
 export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
@@ -41,7 +41,12 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
                 return row.readingRate?row.readingRate+'%':'0%'
             }
         },
-        { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)",extendType:'search',} },
+        { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",
+            search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)",extendType:'search'},
+            formatter: (row, column, cellValue) => {
+                return timeMinuteFormat(row.averageReadingTime)
+            }
+        },
     ]
 };
 export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
@@ -85,7 +90,12 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
             }, 
            
          },
-        { prop: 'readingTime', label: '阅读时长', align: 'center',sort:true,sortProp:"readingTime",search:{prop:'readingTime',type:'input',placeholder:"请选择阅读时长"} },
+        { prop: 'readingTime', label: '阅读时长', align: 'center',sort:true,sortProp:"readingTime",
+            search:{prop:'readingTime',type:'input',placeholder:"请选择阅读时长"},
+            formatter: (row, column, cellValue) => {
+                return timeMinuteFormat(row.readingTime)
+            }, 
+        },
         { slot: 'option', label: '操作',width:'230', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
