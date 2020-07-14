@@ -1,20 +1,21 @@
 <template>
     <div>
-        <div class="sysParameter">
+        <router-view v-if="this.$router.history.current.path == '/chargeOrderAdd'" :key="$route.path"></router-view>
+        <div v-else class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
                     <span>收费单</span>
                 </div>
                 <div class="top-toolbar">
-                    <div><icon iconClass="add" ></icon>发送财务</div>
+                    <div @click='sendFinanceFn'><icon iconClass="add"></icon>发送财务</div>
                     <div><icon iconClass="add" ></icon>导出收费单</div>
-                    <div><icon iconClass="add" ></icon>新增</div>
-                    <div><icon iconClass="edit" ></icon>编辑</div>
+                    <div @click='addChargeOrderFn("/chargeOrderAdd","add")'><icon iconClass="add" ></icon>新增</div>
+                    <div @click='addChargeOrderFn("/chargeOrderAdd","edit")'><icon iconClass="edit" ></icon>编辑</div>
                     <div><icon iconClass="remove" ></icon>删除</div>
-                    <div><icon iconClass="info" ></icon>详情</div>
+                    <div @click='addChargeOrderFn("/chargeOrderAdd","info")'><icon iconClass="info" ></icon>详情</div>
                     <div><icon iconClass="info" ></icon>导出Excel</div>
-                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
+                    <!-- <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
+                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
                 </div>
             </div>
             <div class="main-content">
@@ -27,8 +28,9 @@
                     </el-table-column>
                      <el-table-column slot="option" align='center' label="操作" :width="230">
                         <template  slot-scope="{ row }">
-                            <el-button size='mini' class="copyButton" >通过</el-button>
-                            <el-button size='mini' class="copyButton" >不通过</el-button>
+                            <el-button @click='revokeFn(row)' v-if='row.sendFinance===1' size='mini' class="copyButton" >撤销</el-button>
+                            <el-button @click='approveFn(row,false)' v-else-if='row.sendFinance===0&&row.approveState==1' size='mini' class="copyButton" >不通过</el-button>
+                            <el-button @click='approveFn(row,true)' v-else-if='row.sendFinance===0&&row.approveState!=1' size='mini' class="copyButton" >通过</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -58,7 +60,7 @@ export default {
             },
             form:{},
             sort:{},
-            selectId:null
+            selectId: null
         };
     },
    created() {
@@ -73,6 +75,88 @@ export default {
         }
     },
     methods: {
+        revokeFn(row){
+            request({
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/revoke`, 
+                method: 'post',
+                data:{
+                    id:row.id,
+                }
+            })
+            .then((data) => {
+                if(data.code==200&&data.data){
+                    console.log(data)
+                    this.$message({type: 'success', message: '撤销成功'});
+                    this.getList();
+                }else{
+                    this.$message({type: 'error', message: '撤销失败，请重试'});
+                }
+            })
+        },
+        approveFn(row={}, type=false){
+            request({
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/approve`, 
+                method: 'post',
+                data:{
+                    id:row.id,
+                    access:type
+                }
+            })
+            .then((data) => {
+                if(data.code==200&&data.data){
+                    this.$message({type: 'success', message: '操作成功'});
+                    this.getList();
+                }else{
+                    this.$message({type: 'error', message: '操作失败，请重试'});
+                }
+            })
+        },
+        sendFinanceFn(){
+            if(!this.selectId){
+                this.$message({type: 'warning', message: '请选择一条发送财务'})
+                return
+            }
+            let selectObj = this.tableData.records.find(item=>item.id === this.selectId)
+            if(selectObj.approveState !=1){
+                this.$message({type: 'warning', message: '审核未通过，不能发送财务'})
+                return
+            }
+            request({
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/send`, 
+                method: 'post',
+                data:{
+                    id:this.selectId,
+                }
+            })
+            .then((data) => {
+                if(data.code==200 && data.data){
+                    this.$message({type: 'success', message: '发送成功'});
+                }else{
+                    this.$message({type: 'error', message: '发送失败，请重试'});
+                }
+                this.getList();
+                this.selectId = null
+            })
+        },
+        addChargeOrderFn(type, query){
+            var pushPath = {
+                    path: type,
+                    query: {type:query}
+                }
+            if(query!='add'){
+                if(!this.selectId){
+                    this.$message({type: 'warning', message: '必须选择一项操作'});
+                    return
+                }
+                Object.assign(pushPath.query,{id: this.selectId})
+            }
+            this.$router.push(pushPath)
+            //{
+                //path: type,query: {type:query, id: this.selectObjs[0].id, folderId: this.$route.query.folderId}
+                //path: type,
+                //query: {type:query, id: this.selectId}
+            //}
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -145,10 +229,10 @@ export default {
             }
         },
         getList(){
-           request({  
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/list`, 
+           request({   
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/list?current=${this.params.current}&size=${this.params.size}`, 
                 method: 'post',
-                data:{...this.params,...this.sort,...this.form}
+                data:{...this.sort,...this.form}
             })
             .then((data) => {
                 if(this.params.current==1){

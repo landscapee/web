@@ -230,6 +230,14 @@ let authRoutes = [
 				component: () => import('@views/chargeManage/chargeOrders/index'),
 				name: '收费单',
                 meta: {title: '收费单',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/chargeOrderAdd',
+                        component: () => import('@views/chargeManage/chargeOrders/chargeOrderAdd'),
+                        name: '新增',
+                        meta: {title: '新增',icon: 'xxgl' }
+                    }
+                ]
             }
                 
         ],
