@@ -10,7 +10,7 @@
                 action=""
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true">
-            <el-button slot="trigger" size="small" type="primary">文件上传</el-button>
+            <el-button slot="trigger" ref="buttonClick" size="small" type="primary">文件上传</el-button>
             <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
         </el-upload>
     </div>

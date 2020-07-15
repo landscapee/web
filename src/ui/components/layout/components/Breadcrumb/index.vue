@@ -68,8 +68,7 @@ export default {
 				return;
 			}
 
-
-			this.$router.push({path,query:meta.paramsId});
+ 			this.$router.push({path,query:meta.paramsId});
 		},
 	},
 };

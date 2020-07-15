@@ -1,8 +1,7 @@
 <template>
     <div>
 
-        <router-view v-if="this.$router.history.current.path == '/12312312'" :key="$route.path"></router-view>
-         <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
+          <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
             <div class="QCenterRight">
                 <div class="QHead_list">
                     <span>考核管理<span style="color:#888888">（管理员）</span></span>
