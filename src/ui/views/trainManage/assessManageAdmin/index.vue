@@ -334,7 +334,7 @@ watch:{
             })
             row.selected  = !select;
             if(tag=="left"){
-
+                this.checkArr=[]
                 if(row.selected){
                     this.leftSelectId = row.id;
                     this.leftRow={...row}

@@ -132,35 +132,35 @@ let authRoutes = [
 				children:[
 					{
 						path: '/addAuthorizeManage',
-						component: () => import('@views/qualityManage/authorizeManage/components/addAuthorizeManage'),
+						component: () => import('@views/qualityManage/authorizeManage/add'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
-					{
-						path: '/authUserQuali',
-						component: () => import('@views/qualityManage/authorizeManage/components/userQuali'),
-						name: '员工资质',
-						meta: {	title: '员工资质',	icon: ''	},
-						hidden:true
-					},
+                    {
+                        path: '/SuserQuali',
+                        component: () => import('@views/qualityManage/personDoc/userQuali'),
+                        name: '员工资质',
+                        meta: {	title: '员工资质',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/SuserDoc',
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc.vue'),
+                        name: '员工档案',
+                        meta: {	title: '员工档案',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/SuserTrain',
+                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
 				]
 			},
-			{
-				path: '/warningManage',
-				component: () => import('@views/qualityManage/warningManage/index'),
-				name: '预警管理',
-				meta: {title: '预警管理',icon: ''},
-				children:[
-					{
-						path: '/addWarningManage',
-						component: () => import('@views/qualityManage/warningManage/components/addWarningManage'),
-						name: '新增',
-						meta: {	title: '新增',	icon: ''	},
-						hidden:true
-					}
-				]
-			},
+
 			{
 				path: '/selfCheckPlan',
 				component: () => import('@views/qualityManage/selfCheckPlan/index'),
