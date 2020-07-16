@@ -9,7 +9,7 @@
         <div v-else-if="this.$router.history.current.path == '/trainManageAdmin'" :key="$route.path" class="trainManageAdmin">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>培训管理 <span style="color:#888888">（管理员）</span></span>
+                    <span>培训管理  </span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>

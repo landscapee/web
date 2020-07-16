@@ -41,15 +41,40 @@
 				</template>
 			</el-table>
 
-			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
+			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="dataTable" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
 				<template v-for="(colConfig, index) in cloneTableConfig">
 
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
 
-					<el-table-column v-else-if="colConfig.prop=='index'" type="index" :index="(index1)=>{return index+1}" v-bind="colConfig" :key="index" :reserve-selection="true">
+					<el-table-column v-else-if="colConfig.prop=='index'" type="index"  :index="(index1)=>{return index1+1}"  v-bind="colConfig"  :key="index" :reserve-selection="true">
+						<template slot-scope="{row,$index}">
 
+							<template  v-if="$index==0"> </template>
+							<template  v-else>{{  $index }}</template>
+						</template>
 					</el-table-column>
-					<el-table-column v-else :show-overflow-tooltip="true"     v-bind="colConfig" :key="index" :reserve-selection="true">
+					<el-table-column v-else :show-overflow-tooltip="true"   :label="colConfig.label"  v-bind="colConfig" :key="index" :reserve-selection="true">
+						<template slot-scope="{row,$index}">
+
+							<template  v-if="$index==0">
+								<template v-if="colConfig.search">
+									<!--<template    v-if="colConfig.search.type=='text'" :key="index"  >-->
+										<!--<span >-->
+											<!--<div>{{colConfig.search.label}}</div>-->
+										<!--</span>-->
+									<!--</template>-->
+									<!--v-if="colConfig.search.type=='input'"-->
+									<template       >
+											<span  :class="colConfig.search.extendType==='search'?'searchClass':''">
+											<el-input @keyup.enter.native="requestTableData" :width="140"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="form[colConfig.search.prop]"></el-input>
+ 											</span>
+									</template>
+
+
+								</template>
+							</template>
+							<template  v-else>{{  row[colConfig.prop] }}</template>
+						</template>
 
 					</el-table-column>
 				</template>
@@ -71,14 +96,31 @@ export default {
 	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod'],
 	data () {
 		return {
+		    form:{},
 			resizeCallback:[],
 			headerData:[{}],
 			cloneTableConfig:this.tableConfig,
 			updateWidth:false
 		};
 	},
+	computed:{
+	  dataTable(){
+		  if(this.data instanceof Array ){
+			  if(Object.keys(this.data[0]).length>1){
+                    this.data.unshift({})
+              }
+		  }else {
+              if(Object.keys(this.data.records[0]).length>1){
+                   this.data.records.unshift({})
+              }
+		  }
+          return this.data
+
+	  }
+	},
 	watch: {
 		tableConfig:function(newVal, oldVal){
+
 			let that = this;
 			if(!this.updateWidth){
 				newVal.map((item,index)=>{
@@ -90,6 +132,7 @@ export default {
 			}
 		},
 		data: function(newVal, oldVal){
+
 			// this.data = newVal;
 			// 重新计算element表格组件布局
 			setTimeout(() => {
@@ -118,7 +161,7 @@ export default {
 			this.$refs.body_table.columns[column.index].realWidth = newWidth;
 		},
 		requestTableData(){
-			this.$emit('requestTable', this.headerData[0]);
+			this.$emit('requestTable', this.form);
 		},
 		renderHeaderRow(h,  { column, $index }){
 			return (

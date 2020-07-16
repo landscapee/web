@@ -8,75 +8,122 @@ let authRoutes = [
   {
     	path: '/qualityManage',
 		component: Layout,
-		redirect: '/intelligenceManage',
+		redirect: '/personDoc',
 		name: '质量管理',
 		meta: {title: '质量管理',icon: 'zlgl' },
 		children: [
+            {
+                path: '/personDoc',
+                component: () => import('@views/qualityManage/personDoc/index'),
+                name: '人员档案',
+                meta: {	title: '人员档案',icon: ''},
+                children:[
+                    {
+                        path: '/addPersonDoc',
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
+                        name: '新增',
+                        meta: {	title: '新增',	icon: '',paramsId:''	},
+                        hidden:true,
+                        children:[
+                            {
+                                path: '/inOfficeInfoAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
+                                name: '任职信息新增',
+                                meta: {	title: '任职信息新增',	icon: ''	},
+                                hidden:true,
+
+                            },  {
+                                path: '/workExperienceAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
+                                name: '工作经验新增',
+                                meta: {	title: '工作经验新增',	icon: ''	},
+                                hidden:true,
+
+                            }, {
+                                path: '/certificateAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
+                                name: '证书新增',
+                                meta: {	title: '证书新增',	icon: ''	},
+                                hidden:true,
+
+                            },{
+                                path: '/unsafeAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
+                                name: '不安全事件及诚信记录新增',
+                                meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
+                                hidden:true,
+
+                            },
+
+                        ]
+                    },
+                    {
+                        path: '/userQuali',
+                        component: () => import('@views/qualityManage/personDoc/userQuali'),
+                        name: '员工资质',
+                        meta: {	title: '员工资质',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/userAuth',
+                        component: () => import('@views/qualityManage/personDoc/userAuth'),
+                        name: '员工授权',
+                        meta: {	title: '员工授权',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/userTrain',
+                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
+                ]
+            },
 			{
 				path: '/intelligenceManage',
 				component: () => import('@views/qualityManage/intelligenceManage/index'),
 				name: '资质管理',
-				meta: {	title: '资质管理',	icon: ''	},
+				meta: {	title: '资质管理',	icon: '',keepAlive:true	},
 				children:[
 					{
 						path: '/addQualifications',
-						component: () => import('@views/qualityManage/intelligenceManage/components/addQualifications'),
+						component: () => import('@views/qualityManage/intelligenceManage/add'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
 					{
-						path: '/assRecord',
-						component: () => import('@views/qualityManage/intelligenceManage/components/assRecord'),
-						name: '资质培训考核记录',
-						meta: {	title: '资质培训考核记录',	icon: ''	},
-						hidden:true
-					},
-					{
-						path: '/exaRecord',
-						component: () => import('@views/qualityManage/intelligenceManage/components/exaRecord'),
-						name: '人员资质考试记录',
-						meta: {	title: '人员资质考试记录',	icon: ''	},
-						hidden:true
-					}
-				]
-			},
-			{
-				path: '/personDoc',
-				component: () => import('@views/qualityManage/personDoc/index'),
-				name: '人员档案',
-				meta: {	title: '人员档案',icon: ''},
-				children:[
-					{
-						path: '/addPersonDoc',
-						component: () => import('@views/qualityManage/personDoc/components/addPersonDoc'),
+						path: '/addQualificationsDetails',
+						component: () => import('@views/qualityManage/intelligenceManage/addDetails'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
-					{
-						path: '/userQuali',
-						component: () => import('@views/qualityManage/personDoc/components/userQuali'),
-						name: '员工资质',
-						meta: {	title: '员工资质',	icon: ''	},
-						hidden:true
-					},
-					{
-						path: '/userAuth',
-						component: () => import('@views/qualityManage/personDoc/components/userAuth'),
-						name: '员工授权',
-						meta: {	title: '员工授权',	icon: ''	},
-						hidden:true
-					},
-					{
-						path: '/userAssRecord',
-						component: () => import('@views/qualityManage/personDoc/components/userAssRecord'),
-						name: '培训考核',
-						meta: {	title: '培训考核',	icon: ''	},
-						hidden:true
-					}
+                    {
+                        path: '/ZuserDoc',
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc.vue'),
+                        name: '员工档案',
+                        meta: {	title: '员工档案',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/ZuserAuth',
+                        component: () => import('@views/qualityManage/personDoc/userAuth'),
+                        name: '员工授权',
+                        meta: {	title: '员工授权',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/ZuserTrain',
+                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
 				]
 			},
+
 			{
 				path: '/authorizeManage',
 				component: () => import('@views/qualityManage/authorizeManage/index'),
@@ -85,35 +132,35 @@ let authRoutes = [
 				children:[
 					{
 						path: '/addAuthorizeManage',
-						component: () => import('@views/qualityManage/authorizeManage/components/addAuthorizeManage'),
+						component: () => import('@views/qualityManage/authorizeManage/add'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
-					{
-						path: '/authUserQuali',
-						component: () => import('@views/qualityManage/authorizeManage/components/userQuali'),
-						name: '员工资质',
-						meta: {	title: '员工资质',	icon: ''	},
-						hidden:true
-					},
+                    {
+                        path: '/SuserQuali',
+                        component: () => import('@views/qualityManage/personDoc/userQuali'),
+                        name: '员工资质',
+                        meta: {	title: '员工资质',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/SuserDoc',
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc.vue'),
+                        name: '员工档案',
+                        meta: {	title: '员工档案',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/SuserTrain',
+                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
 				]
 			},
-			{
-				path: '/warningManage',
-				component: () => import('@views/qualityManage/warningManage/index'),
-				name: '预警管理',
-				meta: {title: '预警管理',icon: ''},
-				children:[
-					{
-						path: '/addWarningManage',
-						component: () => import('@views/qualityManage/warningManage/components/addWarningManage'),
-						name: '新增',
-						meta: {	title: '新增',	icon: ''	},
-						hidden:true
-					}
-				]
-			},
+
 			{
 				path: '/selfCheckPlan',
 				component: () => import('@views/qualityManage/selfCheckPlan/index'),
@@ -360,7 +407,7 @@ let authRoutes = [
 			{
 				path: '/trainManageAdmin',
                 component: () => import('@views/trainManage/trainManageAdmin/index'),
-				name: '培训管理(管理员)',
+				name: '培训管理',
 				meta: {title: '培训管理',icon: 'xxgl' },
                 children:[
                     {
@@ -396,14 +443,14 @@ let authRoutes = [
 			{
 				path: '/trainManageUser',
                 component: () => import('@views/trainManage/trainManageUser/index'),
-				name: '培训管理(用户)',
-				meta: {title: '培训管理',icon: 'xxgl' },
+				name: '我的培训',
+				meta: {title: '我的培训',icon: 'xxgl' },
                 children:[
                     {
                         path: '/trainManageUserAdd',
                         component: () => import('@views/trainManage/trainManageUser/add'),
-                        name: '培训管理详情',
-                        meta: {title: '培训管理详情',icon: 'xxgl' },
+                        name: '我的培训详情',
+                        meta: {title: '我的培训详情',icon: 'xxgl' },
                     },
                 ]
 			},

@@ -10,7 +10,7 @@
                 action=""
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true">
-            <el-button slot="trigger" size="small" type="primary">文件上传</el-button>
+            <el-button slot="trigger" ref="buttonClick" size="small" type="primary">文件上传</el-button>
             <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
         </el-upload>
     </div>
@@ -49,9 +49,9 @@
                 console.log(file, fileList);
             },
             beforeAvatarUpload(file) {
-                const isLt2M = file.size / 1024 / 1024 < 5;
+                const isLt2M = file.size / 1024 / 1024 < 50;
                 if (!isLt2M) {
-                    this.$message.error('上传图片大小不能超过 5MB!');
+                    this.$message.error('上传文件大小不能超过 50MB!');
                 }
                 return isLt2M;
             },

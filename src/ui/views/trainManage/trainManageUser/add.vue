@@ -2,7 +2,7 @@
     <div class="trainManageAdmin">
         <div class="QCenterRight">
             <div class="QHead">
-                 培训管理-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
+                我的培训-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
 
         </div>

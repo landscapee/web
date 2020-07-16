@@ -75,7 +75,7 @@
                             <el-input v-else :disabled="true" v-model="form.courseFileName" type="text"    placeholder="word\pdf\PPT格式：上传文件仅限于office类型文件"></el-input>
                     </el-form-item>
                      <el-form-item v-if="type!='info'" label="">
-                         <UploadFile ref="UploadFile" @getFile="getFile"></UploadFile>
+                         <UploadFile  accept=".pdf,.doc,.ppt,.docx" ref="UploadFile" @getFile="getFile"></UploadFile>
                     </el-form-item>
                 </div>
                 <div class="row_one">

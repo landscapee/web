@@ -1,8 +1,7 @@
 <template>
     <div>
 
-        <router-view v-if="this.$router.history.current.path == '/12312312'" :key="$route.path"></router-view>
-         <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
+          <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
             <div class="QCenterRight">
                 <div class="QHead_list">
                     <span>考核管理<span style="color:#888888">（管理员）</span></span>
@@ -139,7 +138,7 @@ watch:{
         console.log(this.checkArr);
     }
 },
-　　　　mounted() {
+　　mounted() {
 
     },
 
@@ -154,6 +153,8 @@ watch:{
                 if(d.code==200){
                     this.$message.success('编辑成功')
                     this.getList('right');
+                }else if(d.code==416){
+                    this.$message.error(d.message)
                 }
             });
         },
@@ -173,7 +174,6 @@ watch:{
                 });
             }else {
                 this.$message.error('请先选中一行或多行数据');
-
             }
         },
 
@@ -334,7 +334,7 @@ watch:{
             })
             row.selected  = !select;
             if(tag=="left"){
-
+                this.checkArr=[]
                 if(row.selected){
                     this.leftSelectId = row.id;
                     this.leftRow={...row}

@@ -5,13 +5,12 @@
         <div v-else="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path" class="G_listOne">
             <div class="QCenterRight">
                 <div class="QHead_list">
-                    <span>员工培训结果<span style="color:#888888">（管理员）</span></span>
+                    <span>员工培训结果 </span>
                 </div>
                 <div class="QheadRight">
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel">
                         <icon iconClass="export" ></icon>
-                        <a ref="a" :href="`${this.$ip}/mms-training/trainingResult/exportByTrainingId/${this.$route.query.id}`"></a>
                         导出Excel
                     </div>
                 </div>

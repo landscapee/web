@@ -141,7 +141,7 @@ export default {
         });
     },
 
-　　　　mounted() {
+　　mounted() {
         if( this.$refs.mainContent){
             this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
         }

@@ -30,7 +30,6 @@
              text-align: right;
             color:#222222;
             font-family: SourceHanSansCN, SourceHanSansCN-Regular;
-
         }
         .el-form-item__label:before {
             top: 3px;
@@ -65,11 +64,11 @@
             text-align: left;
             .el-form-item__content{
                  &>.el-input{
-                    width:calc(100%  )!important;
-                }
+                          width:calc(100%  )!important;
+                      }
                 &>.el-select{
-                      width:calc(100%   )!important;
-                  }
+                    width:calc(100%   )!important;
+                }
             }
 
             .el-form-item{

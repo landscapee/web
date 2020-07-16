@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog :title="`${row.name}签到与评价`"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog :title="`${row.employeeName}签到与评价`"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
            <div style=" padding: 32px 61px 28px 61px; ">
                <el-form :model="form" ref="form" :rules="rules">
                     <el-form-item label="培训签到" prop="signStatus">
