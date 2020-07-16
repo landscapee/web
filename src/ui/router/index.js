@@ -251,7 +251,43 @@ let authRoutes = [
 		redirect: '/WorkOrderManage4',
 		name: '收费管理',
 		meta: {title: '收费管理',icon: 'sfgl' },
-		children: [],
+		children: [
+            {
+				path: '/templateManage',
+				component: () => import('@views/chargeManage/templateManage/index'),
+				name: '模板管理',
+                meta: {title: '模板管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/templateAdd',
+                        component: () => import('@views/chargeManage/templateManage/templateAdd'),
+                        name: '新增',
+                        meta: {title: '新增',icon: 'xxgl' }
+                    },
+                    {
+                        path: '/templateHistory',
+                        component: () => import('@views/chargeManage/templateManage/templateHistory'),
+                        name: '历史版本',
+                        meta: {title: '历史版本',icon: 'xxgl' }
+                    }
+                ]
+            },
+            {
+				path: '/chargeOrders',
+				component: () => import('@views/chargeManage/chargeOrders/index'),
+				name: '收费单',
+                meta: {title: '收费单',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/chargeOrderAdd',
+                        component: () => import('@views/chargeManage/chargeOrders/chargeOrderAdd'),
+                        name: '新增',
+                        meta: {title: '新增',icon: 'xxgl' }
+                    }
+                ]
+            }
+                
+        ],
 	},
 	{
 		path: '/WorkOrderManage5',

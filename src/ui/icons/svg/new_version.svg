@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="58px" height="20px" viewBox="0 0 58 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>new_version</title>
+    <g id="资质管理" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="历史版本" transform="translate(-1171.000000, -200.000000)">
+            <g id="编组-11" transform="translate(713.000000, 196.000000)">
+                <g id="编组-6" transform="translate(113.500000, 0.000000)">
+                    <g id="new_version" transform="translate(345.000000, 4.000000)">
+                        <path d="M3,-1.42108547e-14 L54,-1.42108547e-14 C55.6568542,-1.45152139e-14 57,1.34314575 57,3 L57,15 C57,16.6568542 55.6568542,18 54,18 L6,18 L6,18 L0,19.688222 L0,3 C-2.02906125e-16,1.34314575 1.34314575,-1.39064955e-14 3,-1.42108547e-14 Z" id="矩形" fill="#E93570"></path>
+                        <text id="最新版本" font-family="AlibabaPuHuiTiR, Alibaba PuHuiTi" font-size="12" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="5.384" y="13">最新版本</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

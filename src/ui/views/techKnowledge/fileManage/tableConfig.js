@@ -32,13 +32,11 @@ export const sysParameterTable = (issueDeptArr, positionArr) => {
         { prop: 'size', label: '大小(kb)', align: 'center',sort:true,sortProp:"size",
             search:{prop:'size',type:'input',placeholder:"请输入大小"},
             formatter:(row, column, cellValue) => {
-                console.log(isNaN(parseInt(row.size)))
                 if(row.size&&!isNaN(parseInt(row.size))){
                     return (row.size/1024).toFixed(1)
                 }else{
                     return 'size is not number!'
                 }
-                
             }
         },
         // { prop: 'sysParamComment', label: '操作', align: 'center',search:{prop:'sysParamComment',extendType:'search',type:'btn',label:"历史版本"}},
