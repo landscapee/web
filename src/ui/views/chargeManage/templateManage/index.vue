@@ -22,7 +22,7 @@
                                     <span @click='toPushFn("/templateHistory",{id:item.id})'><icon iconClass="time" class="tab_radio"></icon>历史版本</span>
                                 </div>
                                 <div class="btn_group">
-                                    <span @click='toDownloadFn'><icon iconClass="download" class="tab_radio"></icon>下载</span>
+                                    <span @click='toDownloadFn(item)'><icon iconClass="download" class="tab_radio"></icon>下载</span>
                                 </div>
                                 <div class="btn_group">
                                     <span @click='toPushFn("/templateAdd",{type:"edit", id:item.id})'><icon iconClass="edit2" class="tab_radio"></icon>修改</span>
@@ -93,8 +93,13 @@ export default {
             this.$router.push({path, query})
             //this.$router.push({path:'/detail',query:{folderId:item.id}});
         },
-        toDownloadFn(){
-            alert("下载")
+        toDownloadFn(row){
+            let Url = `${this.$ip}/mms-file/get-file-stream-by-file-path/?filePath=${row.fileUrl}`
+            let a = document.createElement('a')
+            document.body.appendChild(a)
+            a.href = Url
+            a.click()
+            document.body.removeChild(a)
         }
     },
     watch: {

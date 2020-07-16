@@ -38,7 +38,7 @@
                            </div>
                            <div class='row_right'>
                                <div clss="row_btn_group">
-                                   <el-button type="primary" icon="el-icon-download">下载</el-button>
+                                   <el-button @click='toDownloadFn(item)' type="primary" icon="el-icon-download">下载</el-button>
                                </div>
                            </div>
                         </div>
@@ -156,6 +156,14 @@ export default {
             a.click();
             document.body.removeChild(a);
         },
+        toDownloadFn(row){
+            let Url = `${this.$ip}/mms-file/get-file-stream-by-file-path/?filePath=${row.fileUrl}`
+            let a = document.createElement('a')
+            document.body.appendChild(a)
+            a.href = Url
+            a.click()
+            document.body.removeChild(a)
+        }
     }
 }
 </script>

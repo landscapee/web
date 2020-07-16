@@ -6,14 +6,19 @@
                 <div class="top-content-title">
                     <span>收费单</span>
                 </div>
+                <div class='top-right'>
+                    <div class="header">机务服务非例行工作结算清单 <span>
+                        {{tableData.records.filter(item=>item.approveState==0).length}} 单待审批｜
+                        {{tableData.records.filter(item=>item.sendFinance==0).length}} 单待发送</span></div>
+                </div>
                 <div class="top-toolbar">
                     <div @click='sendFinanceFn'><icon iconClass="add"></icon>发送财务</div>
-                    <div><icon iconClass="add" ></icon>导出收费单</div>
+                    <div @click='exportChargeFn("charge")'><icon iconClass="add" ></icon>导出收费单</div>
                     <div @click='addChargeOrderFn("/chargeOrderAdd","add")'><icon iconClass="add" ></icon>新增</div>
                     <div @click='addChargeOrderFn("/chargeOrderAdd","edit")'><icon iconClass="edit" ></icon>编辑</div>
-                    <div><icon iconClass="remove" ></icon>删除</div>
+                    <div @click='removeOrderFn'><icon iconClass="remove" ></icon>删除</div>
                     <div @click='addChargeOrderFn("/chargeOrderAdd","info")'><icon iconClass="info" ></icon>详情</div>
-                    <div><icon iconClass="info" ></icon>导出Excel</div>
+                    <div @click='exportChargeFn("excel")'><icon iconClass="info" ></icon>导出Excel</div>
                     <!-- <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
                 </div>
@@ -157,6 +162,40 @@ export default {
                 //query: {type:query, id: this.selectId}
             //}
         },
+        exportChargeFn(type){
+            let urlObj = {
+                charge: {
+                    name:'/chargeBillFlxgz/flxgzExport',
+                    ext:'zip'
+                },
+                excel:{
+                    name:'/chargeBillFlxgz/excelExport',
+                    ext:'xlsx'
+                } 
+            }
+            request({
+                // headers: {
+                //     //'Content-Type': 'application/vnd.ms-excel',
+                // },
+                url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.selectId}`,
+                method: 'get',
+                responseType: 'blob',
+            }).then((d)=>{
+                const content = d
+                const blob = new Blob([content]) //,{type:'application/vnd.ms-excel'}
+                const fileName = `机务服务非例行工作结算清单.${urlObj[type]['ext']}` 
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }
+            })
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -164,6 +203,21 @@ export default {
             this.params.current = 1;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.getList();
+        },
+        removeOrderFn(){
+            request({
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectId}`, 
+                method: 'delete',
+            })
+            .then((data) => {
+                if(data.code==200 && data.data){
+                    this.$message({type: 'success', message: '删除成功'});
+                }else{
+                    this.$message({type: 'error', message: '删除失败，请重试'});
+                }
+                this.getList();
+                this.selectId = null
+            })
         },
         headerSort(column){
             this.sort = {};
@@ -240,6 +294,7 @@ export default {
                 }else{
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
+                this.selectId = null
                 console.log(this.tableData)
             }).catch((error) => {
             
@@ -260,6 +315,17 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
+    .top-right{
+        position: absolute;
+        left: 30px;
+        top: 40px;
+        .header{
+            font-size:24px;
+            span{
+                margin-left:40px;
+            }
+        }
+    }
     .main-content{
         /deep/ .mainTable{
             height: 600px;
