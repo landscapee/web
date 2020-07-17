@@ -30,7 +30,7 @@ export const leftConfig = (obj) => {
                 { prop: 'number', label: '证书编号',sortProp:"number", align: 'center',sort:true,search:{type:'input', prop:'number',placeholder:"请输入"} },
                 { prop: 'majorCode', label: '专业代码',sortProp:"majorCode", align: 'center',sort:true,search:{type:'input', prop:'majorCode',placeholder:"请输入"} },
                 { prop: 'certificateName', label: '资质名称',sortProp:"certificateName", align: 'center',sort:true,search:{type:'input', prop:'certificateName',placeholder:"请输入"} },
-                { prop: 'certificateType', label: '资质类型',sortProp:"certificateType", align: 'center',sort:true,search:{type:'select', prop:'certificateType',placeholder:"请输入",data:obj.Z_aptitudeType} },
+                { prop: 'certificateType', label: '资质类型',sortProp:"certificateType", align: 'center',sort:true,search:{type:'select', prop:'certificateType',placeholder:"请输入",data:obj.Z_aptitudeType,selectProp:['valData','valData']} },
                 { prop: 'awardUnit', label: '颁发单位',sortProp:"awardUnit", align: 'center',sort:true,search:{type:'input', prop:'awardUnit',placeholder:"请输入"} },
                 { prop: 'awardTime', label: '颁发日期',formatter:timeInfo, sortProp:"awardTime", align: 'center',sort:true,search:{type:'date', prop:'awardTime',placeholder:"请选择"}},
             { slot: 'option', label: '关联信息查看' ,width:'190',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}

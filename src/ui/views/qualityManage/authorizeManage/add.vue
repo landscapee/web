@@ -74,66 +74,79 @@
                     <el-form-item  label="授权单位：" prop="authorizedUnit">
                         <span v-if="type=='info'">{{  form.authorizedUnit }}</span>
                          <el-select   filterable v-else v-model="form.authorizedUnit" placeholder="请选择授权单位">
-                            <el-option v-for="(opt,index) in options.accreditFlightType" :key="index" :label="opt.valData" :value="opt.valData">
+                             <!--shortName-->
+                            <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.fullname">
                              </el-option>
                         </el-select>
                     </el-form-item>
 
                 </div>
-                <div class="row_tow">
+                <div class="row_one">
                     <el-form-item  label="授权机型范围：" prop="modelRange">
-                        <span v-if="type=='info'">{{  form.modelRange }}</span>
-                         <el-select   filterable v-else v-model="form.modelRange" placeholder="请选择授权机型范围">
-                            <el-option v-for="(opt,index) in options.accreditFlightType" :key="index" :label="opt.valData" :value="opt.valData">
-                             </el-option>
-                        </el-select>
+
+                        <el-button v-if="type!='info'" @click="openAircraftType" type="primary" style="margin-bottom: 10px;padding: 9px 30px;">选择</el-button>
+
+                        <el-card class="box-card" shadow="never" border-radius="2px">
+                            <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" size="mini" @click="handleClear">清空</el-button></div>
+                            <el-scrollbar style="height:120px ">
+                                <el-tag :key="tag.id" v-for="tag in form.modelRange" closable :disable-transitions="false" @close="handleRemove(tag.id)">
+                                    {{ tag.models?`${tag.name}（${tag.models}）`:`${tag.name}`}}
+                                </el-tag>
+                            </el-scrollbar>
+                        </el-card>
                     </el-form-item>
+
+
+                </div>
+
+                <div class="row_tow">
                     <el-form-item  label="授权航班类型：" prop="flightType">
                         <span v-if="type=='info'">{{  form.flightType }}</span>
-                         <el-select multiple  filterable v-else v-model="form.flightType" placeholder="请选择授权航班类型">
+                        <el-select multiple  filterable v-else v-model="form.flightType" placeholder="请选择授权航班类型">
                             <el-option v-for="(opt,index) in options.accreditFlightType" :key="index" :label="opt.valData" :value="opt.valData">
-                             </el-option>
+                            </el-option>
                         </el-select>
+
                     </el-form-item>
-
-                </div>
-
-                <div class="row_tow">
                     <el-form-item  label="授权生效日期：" prop="startTime">
                         <span v-if="type=='info'">{{ form.startTime?moment(form.startTime).format('YYYY-MM-DD'):''}}</span>
                         <el-date-picker  @focus="focus" :picker-options="pickerOptions" type="date" v-else v-model="form.startTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
-                    <el-form-item  label="授权失效日期：" prop="endTime">
-                        <span v-if="type=='info'">{{ form.endTime?moment(form.endTime).format('YYYY-MM-DD'):''}}</span>
-                        <el-date-picker @focus="focus1" :picker-options="pickerOptions1" type="date" v-else v-model="form.endTime" placeholder="请选择时间"></el-date-picker>
-                    </el-form-item>
+
 
                 </div>
                 <div class="row_tow" >
+
                     <el-form-item  label="授权状态："  >
                         <span v-if="type=='info'">{{  form.state }}</span>
+
                         <el-input :disabled="true" v-else v-model="form.state" placeholder=" "></el-input>
+
                     </el-form-item>
-
+                    <el-form-item  label="授权失效日期：" prop="endTime">
+                        <span v-if="type=='info'">{{ form.endTime?moment(form.endTime).format('YYYY-MM-DD'):''}}</span>
+                        <el-date-picker :disabled="type=='edit'&&dateDis" @focus="focus1" :picker-options="pickerOptions1" type="date" v-else v-model="form.endTime" placeholder="请选择时间"></el-date-picker>
+                    </el-form-item>
                 </div>
-                <div style="text-align: center" class="footerB">
+                <div style="text-align: center" class="footerB" v-if="type=='edit'">
                     <el-button class="QoptionButton" @click="fabu">授权发布</el-button>
-
                     <el-button class="QoptionButton" @click="quxiao" style="margin: 0 15px ">授权取消</el-button>
                     <el-button class="QoptionButton" @click="yanqi">授权延期</el-button>
                 </div>
             </el-form>
         </div>
+        <AircraftType ref="AircraftType" @getAircratType="getAircratType"></AircraftType>
     </div>
 </template>
 <script>
     import moment from "moment";
+    import AircraftType from './AircraftType.vue'
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
-    import { extend } from "lodash";
+    import { extend ,map} from "lodash";
     export default {
         components: {
-            Icon
+            Icon,AircraftType
         },
         name: "",
         data() {
@@ -144,9 +157,13 @@
                 pickerOptions1: {},
                 moment:moment,
                 oldForm:{},
-                form: {},
+                dateDis:true,
+                form: {modelRange:[]},
                 userArr:[],
-                userArrObj: {},
+                Airline:[],
+
+                AircratS:[],
+
                 options: {},
                  rules: {
                      userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
@@ -170,6 +187,15 @@
                     this.options=obj
                 });
                 request({
+                    url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                    method: 'get',
+                }).then(d => {
+                    if( d.data&&d.data.length){
+                        this.Airline=d.data
+                    }
+                });
+
+                request({
                     url:`${this.$ip}/mms-qualification/userRecord/list`,
                     method: 'post',
                     params:{size:10000,current:1},
@@ -177,9 +203,6 @@
                 }).then((data) => {
                     if(data.data&&data.data.records){
                         this.userArr =data.data.records
-                        data.data.records.map((k,l)=>{
-                            this.userArrObj[k.userNumber]=k.userName
-                        })
                     }
                     })
                 this.$route.meta.title =
@@ -191,31 +214,131 @@
                             ? "授权管理详情":''
 
                  if(this.type!='add'){
-                     request({
-                         url:`${this.$ip}/mms-qualification/qualify/getById/${this.$route.query.id}`,
-                         method: "get",
-                     }).then(d => {
-
-                         this.form={...d.data }
-                     }).catch(error => {
-                             this.$message.error(error);
-                         });
-
+                   this.getInfo()
                  }
             }
         },
+        computed:{
+
+        },
         methods: {
-            userNumberC(val){
-                // this.$set(this.form,'userName',this.userArrObj[val])
-                this.form={...this.form,
-                    userName:this.userArrObj[val],
+            openAircraftType(){
+                this.$refs.AircraftType.open(this.form.modelRange)
+            },
+            getAircratType(data1){
+                this.$set(this.form,'modelRange',data1)
+                // this.$set(this.form,'modelRange',data.join(';'))
+            },
+
+            fabu(){
+                request({
+                    url:`${this.$ip}/mms-qualification/authorization/authorizationPublish`,
+                    method: "post",
+                    data:{
+                        id:this.form.id,
+                        endTime:this.form.endTime||null
+                    }
+                }).then(d => {
+                    this.$message.success('操作成功');
+                    this.$router.go(-1)
+                }).catch(error => {
+                    this.$message.error(error);
+                });
+            },
+            quxiao(){
+                request({
+                    url:`${this.$ip}/mms-qualification/authorization/authorizationCancel`,
+                    method: "post",
+                    data:{
+                        id:this.form.id,
+                    }
+                }).then(d => {
+                    this.$message.success('操作成功');
+                    this.$router.go(-1)
+                }).catch(error => {
+                    this.$message.error(error);
+                });
+            },
+            yanqi(){
+                this.dateDis=false
+            },
+            getInfo(){
+                request({
+                    url:`${this.$ip}/mms-qualification/authorization/getById/${this.$route.query.id}`,
+                    method: "get",
+                }).then(d => {
+                   if(d.data){
+                       let obj=d.data
+                       if(this.type=='edit'){
+                           obj.flightType=obj.flightType?obj.flightType.split(';'):[]
+                        }
+                       if(obj.modelRange){
+
+                           obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
+                               return {
+                                   name: k.split('__')[0],
+                                   id: k.split('__')[1],
+                               }
+                           })
+                           // this.AircratS
+                       }
+
+                       if( obj.state===0){
+                           obj.state= '未授权'
+                       }else if( obj.state===1){
+                           obj.state= '已授权'
+                       }else if( obj.state===2){
+                           obj.state= '授权取消'
+                       }
+                       this.form={...obj }
+                   }
+                }).catch(error => {
+                    this.$message.error(error);
+                });
+
+            },
+            handleClear() {
+               this.form.modelRange=[]
+            },
+            handleRemove(id) {
+
+                const idx = this.form.modelRange.findIndex((d) => d.id === id);
+                if (idx > -1) {
+                    this.form.modelRange.splice(idx,1)
                 }
+            },
+            userNumberC(val){
+                request({
+                    url:`${this.$ip}/mms-qualification/userRecord/getByUserNumber/${val}`,
+                    method: "get",
+                }).then(d => {
+                    if(d.data){
+
+                        this.form={...this.form,
+                            userName:d.data.userName,
+                        }
+                        if(d.data.positionInfList&&d.data.positionInfList.length){
+                            let obj=d.data.positionInfList[0]
+                            this.form={...this.form,
+                                dept:obj.dept,
+                                post:obj.station,
+                                postLevel:obj.stationLevel,
+                                postSeri:obj.stationSequence,
+                                job:obj.post,
+                            }
+                        }
+                    }
+
+                }).catch(error => {
+                    this.$message.error(error);
+                });
+
             },
             resetForm(){
                 if(this.form.id){
-                    this.form = {id:this.form.id };
+                    this.form = {id:this.form.id,modelRange:[] };
                 }else{
-                    this.form = { };
+                    this.form = { modelRange:[]};
                 }
             },
             saveForm(form) {
@@ -224,14 +347,27 @@
                         if (valid) {
                             let url
                             if(this.type=='add'){
-                                url='/qualify/save'
+                                url='/authorization/save'
                             }else {
-                                url='/qualify/update'
+                                url='/authorization/update'
                             }
+                            let obj={...this.form};
+                            if(obj.flightType){
+                                obj.flightType=obj.flightType.join(';')
+                            }
+                            let modelRange=[]
+                            if(obj.modelRange.length){
+                                modelRange=obj.modelRange.map((k,l)=>{
+                                    let msg=k.models?`${k.name}（${k.models}）__${k.id}`:`${k.name}__${k.id}`
+                                    return  msg
+                                })
+
+                             }
+                            obj.modelRange=modelRange.join(';')
                             request({
                                 url:`${this.$ip}/mms-qualification${url}`,
                                 method: 'post',
-                                data:{...this.form},
+                                data:obj,
                             }).then((data) => {
                                 this.$message.success("保存成功！");
                                 this.$router.go(-1)
@@ -283,5 +419,19 @@
             }
         }
      }
+    /deep/ .el-card{
+        .el-card__body {
+            padding: 10px;
+        }
+        .el-card__body > div:first-child {
+            padding: 0px;
+            margin-top: 5px;
+            line-height: 15px;
+        }
+        .el-tag  {
+            margin-right: 5px;
+
+        }
+    }
 
 </style>
