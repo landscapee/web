@@ -81,19 +81,14 @@
                     data:["Z_accreditType",'accreditState','accreditFlightType']
                 }).then(d => {
                     let obj=d.data
-                    this.tableConfig=authorizeConfig(obj)
-
+                    request({
+                        url:`${this.$ip}/config-client-mms/config/findConfigs?configName=AircraftType`,
+                        method: 'get',
+                    }).then(d1 => {
+                            this.tableConfig=authorizeConfig(obj,d1.data||[])
+                    });
                 });
-                // request({
-                //     url:`/api/config/findConfigs?configName=Airline`,
-                //     method: 'get',
-                // }).then(d => {
-                //
-                //
-                // });
-
-            }
-
+               }
         },
 
         methods: {

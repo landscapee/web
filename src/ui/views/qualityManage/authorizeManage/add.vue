@@ -128,12 +128,13 @@
                         <el-date-picker :disabled="type=='edit'&&dateDis" @focus="focus1" :picker-options="pickerOptions1" type="date" v-else v-model="form.endTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
                 </div>
-                <div style="text-align: center" class="footerB" v-if="type=='edit'">
-                    <el-button class="QoptionButton" @click="fabu">授权发布</el-button>
-                    <el-button class="QoptionButton" @click="quxiao" style="margin: 0 15px ">授权取消</el-button>
-                    <el-button class="QoptionButton" @click="yanqi">授权延期</el-button>
-                </div>
+
             </el-form>
+        </div>
+        <div style="text-align: center" class="footerB" >
+            <el-button class="QoptionButton" @click="fabu" v-if="type=='edit'||type=='add'">授权发布</el-button>
+            <el-button class="QoptionButton" @click="quxiao" style="margin: 0 15px " v-if="type=='edit'">授权取消</el-button>
+            <el-button class="QoptionButton" @click="yanqi" v-if="type=='edit'"> 授权延期</el-button>
         </div>
         <AircraftType ref="AircraftType" @getAircratType="getAircratType"></AircraftType>
     </div>
@@ -231,33 +232,39 @@
             },
 
             fabu(){
-                request({
-                    url:`${this.$ip}/mms-qualification/authorization/authorizationPublish`,
-                    method: "post",
-                    data:{
-                        id:this.form.id,
-                        endTime:this.form.endTime||null
-                    }
-                }).then(d => {
-                    this.$message.success('操作成功');
-                    this.$router.go(-1)
-                }).catch(error => {
-                    this.$message.error(error);
-                });
+                this.saveForm('form', 1).then((d)=>{
+                    request({
+                        url:`${this.$ip}/mms-qualification/authorization/authorizationPublish`,
+                        method: "post",
+                        data:{
+                            id:this.form.id,
+                            endTime:this.form.endTime||null
+                        }
+                    }).then(d => {
+                        this.$message.success('操作成功');
+                        this.$router.go(-1)
+                    }).catch(error => {
+                        this.$message.error(error);
+                    });
+                })
+
             },
             quxiao(){
-                request({
-                    url:`${this.$ip}/mms-qualification/authorization/authorizationCancel`,
-                    method: "post",
-                    data:{
-                        id:this.form.id,
-                    }
-                }).then(d => {
-                    this.$message.success('操作成功');
-                    this.$router.go(-1)
-                }).catch(error => {
-                    this.$message.error(error);
-                });
+                this.saveForm('form', 1).then((d)=>{
+                    request({
+                        url:`${this.$ip}/mms-qualification/authorization/authorizationCancel`,
+                        method: "post",
+                        data:{
+                            id:this.form.id,
+                        }
+                    }).then(d => {
+                        this.$message.success('操作成功');
+                        this.$router.go(-1)
+                    }).catch(error => {
+                        this.$message.error(error);
+                    });
+                })
+
             },
             yanqi(){
                 this.dateDis=false
@@ -276,12 +283,12 @@
 
                            obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
                                return {
-                                   name: k.split('__')[0],
+                                   name: k.split('__')[0].split('***')[0],
+                                   models: k.split('__')[0].split('***')[1]||'',
                                    id: k.split('__')[1],
                                }
                            })
-                           // this.AircratS
-                       }
+                        }
 
                        if( obj.state===0){
                            obj.state= '未授权'
@@ -341,40 +348,47 @@
                     this.form = { modelRange:[]};
                 }
             },
-            saveForm(form) {
-                if (this.type == "add" || this.type == "edit") {
-                    this.$refs[form].validate(valid => {
-                        if (valid) {
-                            let url
-                            if(this.type=='add'){
-                                url='/authorization/save'
-                            }else {
-                                url='/authorization/update'
-                            }
-                            let obj={...this.form};
-                            if(obj.flightType){
-                                obj.flightType=obj.flightType.join(';')
-                            }
-                            let modelRange=[]
-                            if(obj.modelRange.length){
-                                modelRange=obj.modelRange.map((k,l)=>{
-                                    let msg=k.models?`${k.name}（${k.models}）__${k.id}`:`${k.name}__${k.id}`
-                                    return  msg
-                                })
+             saveForm(form,num) {
+                 return new Promise((resolve, reject)=>{
+                     if (this.type == "add" || this.type == "edit") {
+                         this.$refs[form].validate(valid => {
+                             if (valid) {
+                                 let url
+                                 if(this.type=='add'){
+                                     url='/authorization/save'
+                                 }else {
+                                     url='/authorization/update'
+                                 }
+                                 let obj={...this.form};
+                                 if(obj.flightType){
+                                     obj.flightType=obj.flightType.join(';')
+                                 }
+                                 let modelRange=[]
+                                 if(obj.modelRange.length){
+                                     modelRange=obj.modelRange.map((k,l)=>{
+                                         let msg=k.models?`${k.name}***${k.models}__${k.id}`:`${k.name}__${k.id}`
+                                         return  msg
+                                     })
+                                 }
+                                 obj.modelRange=modelRange.join(';')
+                                 request({
+                                     url:`${this.$ip}/mms-qualification${url}`,
+                                     method: 'post',
+                                     data:obj,
+                                 }).then((data) => {
+                                     if(num!=1){
+                                         this.$message.success("保存成功！");
+                                         this.$router.go(-1)
+                                     }else{
+                                         resolve(this)
+                                     }
+                                 })
 
                              }
-                            obj.modelRange=modelRange.join(';')
-                            request({
-                                url:`${this.$ip}/mms-qualification${url}`,
-                                method: 'post',
-                                data:obj,
-                            }).then((data) => {
-                                this.$message.success("保存成功！");
-                                this.$router.go(-1)
-                            })
-                              }
-                    });
-                }
+                         });
+                     }
+                 })
+
             },
             focus(val){
                 let e=new Date(this.form.endTime)
@@ -412,13 +426,19 @@
     .indexAdd{
         padding: 0 30px;
         .footerB{
-            margin : 15px 0 0 15px;
+            /*margin : 15px 0 0 15px;*/
             /deep/ .el-button{
                 padding: 12px 30px;
                 border-radius: 5px;
             }
         }
      }
+    .G_form{
+        /*height:calc(100vh - 300px);*/
+        /deep/.el-form {
+            height: calc(100vh - 290px);
+        }
+    }
     /deep/ .el-card{
         .el-card__body {
             padding: 10px;

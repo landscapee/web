@@ -68,7 +68,8 @@
         },
         methods: {
             open(value){
-                 request({
+                this.selectData=[...value]
+                request({
                     url:`${this.$ip}/config-client-mms/config/findConfigs?configName=AircraftType`,
                     method: 'get',
                 }).then(d => {
@@ -80,6 +81,7 @@
                         if( value.length){
                             this.valueArr=value.map((k,l)=>{
                                 this.$set(this.dataTreeObj[k.id],'models',k.models)
+
                                 return k.id
                             })
                         }
@@ -98,14 +100,13 @@
                 // }
                 // this.oldlength=checkedKeys.checkedKeys.length
                 this.selectData=checkedKeys.checkedNodes
-                console.log(checkedKeys);
-            },
+             },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.name.indexOf(value) !== -1;
             },
             submit() {
-                console.log(this.selectData);
+                console.log(this.selectData,12,3);
                 let data1=[...this.selectData]
                 this.$emit('getAircratType',data1)
                 this.close()

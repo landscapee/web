@@ -141,9 +141,13 @@
                 params:{delete:false},
                 data:["Z_accreditType",'accreditState','accreditFlightType']
             }).then(d => {
-                let obj=d.data
-                this.tableConfig=authorizeConfig(obj)
-
+                let obj=d.data||{}
+                 request({
+                    url:`${this.$ip}/config-client-mms/config/findConfigs?configName=AircraftType`,
+                    method: 'get',
+                }).then(d1 => {
+                    this.tableConfig=authorizeConfig(obj,d1.data||[])
+                });
             });
             request({
                 url: `${this.$ip}/mms-qualification/qualify/getByUserNumber/${this.$route.query.id}`,
