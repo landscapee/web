@@ -72,8 +72,7 @@
 <script>
     import UploadTest from './uploadTest'
     import ScoreEntry from './scoreEntry'
-    import SeeImg from './seeImg'
-import SearchTable from '@/ui/components/SearchTable';
+ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { testRuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -81,7 +80,7 @@ import {  extend ,map} from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable,UploadTest,ScoreEntry,SeeImg
+        SearchTable,UploadTest,ScoreEntry
 	},
     name: '',
     data() {
@@ -94,7 +93,6 @@ export default {
             },
             form:{},
             row:{},
-
             sort:{},
             selectId:null,
         };
@@ -138,7 +136,7 @@ export default {
                     method:'GET',
 
                 }).then((d) => {
-                    this.$refs.SeeImg.open(d.data)
+                    this.$refs.SeeImg.open(d.data,'纸制试卷查看')
                 });
             }else {
                 this.$message.info('暂无附件')

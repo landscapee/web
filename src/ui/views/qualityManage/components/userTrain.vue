@@ -151,10 +151,8 @@
                     method: 'get',
 
                 }).then((d) => {
-                    debugger
-                    if (d.data && d.data.length) {
+                     if (d.data && d.data.length) {
                         this.tableData1 = d.data
-
                     }
                 })
             }

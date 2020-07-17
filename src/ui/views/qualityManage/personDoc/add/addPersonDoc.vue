@@ -220,18 +220,16 @@
                             </td>
                             <td class="fTd" >学历证书附件</td>
                             <td class="tTd" colspan="2">
-                                 <div v-if="form.enclosure&&type=='info'" @click="fileDownload(form.enclosure)" class="hoverSpanFile"  >
-                                     <a >学历证书附件</a>
-                                     <i class="el-icon-download iClass"></i>
-                                 </div>
-
-
-                                <!--<el-input v-else v-model="form.enclosure" placeholder="请输入学历证书附件"></el-input>-->
-                                <div v-else style="display: flex;justify-content: left" class="fileUp">
-                                    <div  class="hoverSpanFile"  style="width: 240px;height:39px;line-height: 39px">
-                                        <a @click="fileDownload(form.enclosure)" v-if="form.enclosure" class="G_cursor">学历证书附件 <i class="el-icon-download iClass"></i></a>
+                                <div v-if=" type=='info'" >
+                                    <div v-if="form.enclosure" @click="fileDownload(form.enclosure,'学历证书附件查看')" class="hoverSpanFile"  @mouseenter="enter(form.enclosure,'学历证书附件查看')" @mouseleave="leave()"  >
+                                        <a >学历证书附件</a>
+                                        <i class="el-icon-download iClass"></i>
+                                    </div>
+                                </div>
+                                <div  v-else style="display: flex;justify-content: left" class="fileUp">
+                                    <div    class="hoverSpanFile"  style="width: 240px;height:39px;line-height: 39px"  @mouseenter="enter(form.enclosure,'学历证书附件查看')" @mouseleave="leave()" >
+                                        <a @click="fileDownload(form.enclosure,'学历证书附件查看')" v-if="form.enclosure" class="G_cursor">学历证书附件 <i class="el-icon-download iClass"></i></a>
                                         <span v-else >请上传学历证书附件</span>
-
                                     </div>
                                     <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf"  ref="UploadFile" @getFile="getFile2"></UploadFile>
                                 </div>
@@ -247,7 +245,7 @@
                             <td class="fTd">上级员工编号</td>
                             <td class="tTd">
                                 <span  v-if="type=='info'" style="">
-  <el-tooltip v-if="form.userSuperiorNumber" class="item" effect="dark" :content="form.userSuperiorNumber" placement="top-start">
+                                    <el-tooltip v-if="form.userSuperiorNumber" class="item" effect="dark" :content="form.userSuperiorNumber" placement="top-start">
 												<div>{{ form.userSuperiorNumber }}</div>
                                     </el-tooltip>
                                     <!--{{form.userSuperiorNumber}}-->
@@ -257,13 +255,14 @@
                             </td>
                             <td class="fTd" >学位证书附件</td>
                             <td class="sTd" colspan="2">
-                                 <div @click="fileDownload(form.diploma)" class="hoverSpanFile" v-if="type=='info'&&form.diploma"><a
-                                        href="#">学位证书附件</a> <i class="el-icon-download iClass"></i>
+                                <div v-if="type=='info'">
+                                    <div ref="diploma" @click="fileDownload(form.diploma,'学位证书附件查看')" class="hoverSpanFile" v-if="form.diploma"  @mouseenter="enter(form.diploma,'学位证书附件查看')" @mouseleave="leave()" >
+                                        <a href="#">学位证书附件</a> <i class="el-icon-download iClass"></i>
+                                    </div>
                                 </div>
-
                                 <div v-else style="display: flex;justify-content: left;" class="fileUp" >
-                                    <div  class="hoverSpanFile  "  style="width: 240px;height:39px;line-height: 39px">
-                                        <a @click="fileDownload(form.diploma)" v-if="form.diploma" class="G_cursor">学位证书附件 <i class="el-icon-download iClass"></i></a>
+                                    <div ref="diploma" class="hoverSpanFile  "  style="width: 240px;height:39px;line-height: 39px" @mouseenter="enter(form.diploma,'学位证书附件查看')" @mouseleave="leave()">
+                                        <a @click="fileDownload(form.diploma,'学位证书附件查看')" v-if="form.diploma" class="G_cursor">学位证书附件 <i class="el-icon-download iClass"></i></a>
                                         <span v-else >请上传学位证书附件</span>
                                     </div>
                                     <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf"  ref="UploadFile" @getFile="getFile3"></UploadFile>
@@ -278,11 +277,11 @@
                         <Unsafe @getInfo="getInfo" :type="type" :tableData="form.sincerityInfList||[]" :id="this.$route.query.id"></Unsafe>
 
                     </div>
-
-
                 </el-form>
             </div>
         </div>
+        <SeeImg ref="SeeImg" :fileObj="fileObj"  ></SeeImg>
+
     </div>
 
 </template>
@@ -308,6 +307,7 @@
                 moment:moment,
                 oldForm:{},
                 form: {courseFileName:'',courseFileId:'',suitableUser:[]},
+                fileObj: {style:'display:none'},
                 options: {},
                 userArrObj: {},
                 userArr:[],
@@ -322,7 +322,19 @@
 
            this.initPage()
         },
+        mounted(){
+            // this.fileDownload(this.form.diploma,'diploma')
+            // this.fileDownload(this.form.enclosure,'enclosure')
+        },
         methods: {
+            enter(id,title){
+                 this.fileDownload(id,title,1)
+            },
+            leave(){
+                this.fileObj={
+                    style:'display:none'
+                }
+            },
             userNameC(val){
                 // console.log(new Date(1532448000000),12,1);
                 let obj={}
@@ -347,9 +359,7 @@
                     }
                 }
             },
-            userNumberC(val){
 
-            },
             upUserPho(){
                  this.$refs.upUserPho.$refs.buttonClick.$el.click()
 
@@ -376,7 +386,7 @@
                 // this.$set(this.form,'diplomaName',file.name)
 
             },
-            fileDownload(id,num){
+            fileDownload(id,title,num){
                 if(id){
                     request({
                         header:{
@@ -386,12 +396,24 @@
                         method:'GET',
 
                     }).then((d) => {
-                        window.open( d.data.filePath)
+                        if(d.data){
+                            this.fileObj={
+                                ...d.data,
+                                title:title||'',
+                                style:'display:block'
+                            }
+                            if(num!=1){
+                                window.open(d.data.filePath,title)
+                            }
+                        }
                     });
                 }else {
-                    this.$message.info('暂无附件')
+                    if(num!=1){
+                        this.$message.info('暂无附件')
+                    }
                 }
             },
+
             resetForm(){
                 if(this.form.id){
                     this.form = {id:this.form.id, };
@@ -499,6 +521,7 @@
     .courseware{
         padding:0 30px;
     }
+
     .hoverSpanFile{
         &>span  {
             padding: 15px;
@@ -530,6 +553,7 @@
                         width: 300px;
                         margin-right: 10px;
                     }
+
                 }
                 .upUser{
                     overflow: hidden;
