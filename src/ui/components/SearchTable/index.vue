@@ -340,7 +340,7 @@ export default {
 		}
 	}
 	.el-table--scrollable-x + .mainTable{
-		height: 620px !important;
+		height: 620px ;
 		
 	}
 	/deep/ .el-table--scrollable-x .el-table__body-wrapper{

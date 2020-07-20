@@ -1,7 +1,7 @@
 
 <template>
     <div>
-         <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
+          <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceYear'" :key="$route.path"></router-view>
         <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="businessData">
@@ -71,6 +71,7 @@
             </div>
         </div>
         <CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
+
     </div>
 </template>
 <script>
@@ -122,20 +123,20 @@
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
                     this.getList('right');
-                }else if(nm.path!='/safetyPerformance'){
-
-                    this.leftParams.size=18
-                    this.leftParams.current=1
-                    this.rightParams.current = 1
-                    this.leftRow={}
-                    this.rightRow={}
-                    this.leftForm={}
-                    this.rightForm={}
-                    this.leftSelectId=null
-                    this.rightSelectId=null
-                    this.tableRightData.records=[]
+                }else if(val.path=='/safetyPerformance'){
+                    this.leftParams.size=18;
+                    this.leftParams.current=1;
+                    this.rightParams.current = 1;
+                    this.leftRow={};
+                    this.rightRow={};
+                    this.leftForm={};
+                    this.rightForm={};
+                    this.leftSelectId=null;
+                    this.rightSelectId=null;
+                    this.tableRightData.records=[];
+                    this.tableLeftData.records=[];
                     this.getList('left');
-                 }
+                   }
             }
         },
         activated(q,b){

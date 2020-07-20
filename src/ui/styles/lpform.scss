@@ -36,6 +36,10 @@
             position: relative;
 
         }
+        .el-card {
+            border:1px solid rgba(151,151,151,1);
+
+        }
         .el-textarea__inner,  .el-input__inner{
             border-radius:2px;
             border:1px solid rgba(151,151,151,1);

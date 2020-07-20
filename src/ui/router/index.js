@@ -59,21 +59,21 @@ let authRoutes = [
                     },
                     {
                         path: '/userQuali',
-                        component: () => import('@views/qualityManage/personDoc/userQuali'),
+                        component: () => import('@views/qualityManage/components/userQuali'),
                         name: '员工资质',
                         meta: {	title: '员工资质',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/userAuth',
-                        component: () => import('@views/qualityManage/personDoc/userAuth'),
+                        component: () => import('@views/qualityManage/components/userAuth'),
                         name: '员工授权',
                         meta: {	title: '员工授权',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/userTrain',
-                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        component: () => import('@views/qualityManage/components/userTrain.vue'),
                         name: '培训考核',
                         meta: {	title: '培训考核',	icon: ''	},
                         hidden:true
@@ -102,21 +102,21 @@ let authRoutes = [
 					},
                     {
                         path: '/ZuserDoc',
-                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc.vue'),
+                        component: () => import('@views/qualityManage/components/userDoc/index'),
                         name: '员工档案',
                         meta: {	title: '员工档案',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/ZuserAuth',
-                        component: () => import('@views/qualityManage/personDoc/userAuth'),
+                        component: () => import('@views/qualityManage/components/userAuth'),
                         name: '员工授权',
                         meta: {	title: '员工授权',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/ZuserTrain',
-                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        component: () => import('@views/qualityManage/components/userTrain.vue'),
                         name: '培训考核',
                         meta: {	title: '培训考核',	icon: ''	},
                         hidden:true
@@ -139,21 +139,21 @@ let authRoutes = [
 					},
                     {
                         path: '/SuserQuali',
-                        component: () => import('@views/qualityManage/personDoc/userQuali'),
+                        component: () => import('@views/qualityManage/components/userQuali'),
                         name: '员工资质',
                         meta: {	title: '员工资质',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/SuserDoc',
-                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc.vue'),
+                        component: () => import('@views/qualityManage/components/userDoc/index'),
                         name: '员工档案',
                         meta: {	title: '员工档案',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/SuserTrain',
-                        component: () => import('@views/qualityManage/personDoc/userTrain.vue'),
+                        component: () => import('@views/qualityManage/components/userTrain.vue'),
                         name: '培训考核',
                         meta: {	title: '培训考核',	icon: ''	},
                         hidden:true

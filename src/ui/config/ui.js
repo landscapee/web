@@ -10,6 +10,8 @@ import Vue from 'vue';
 import ScrollBox from'@components/Scroll/scroll';
 import AdvTable from '@components/AdvTable/advTable';
 import UploadFile from '@components/upload/index';
+import SeeImg from '@components/seeImg/index';
 Vue.component('ScrollBox',ScrollBox);
 Vue.component('UploadFile',UploadFile);
+Vue.component('SeeImg',SeeImg);
 Vue.component('AdvTable',AdvTable);

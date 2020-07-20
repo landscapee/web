@@ -113,7 +113,7 @@
         },
         watch:{
             '$route':function(val,nm){
-                console.log(1,val,nm);
+                 console.log(1,val,nm);
                 if(val.path=='/intelligenceManage'&&nm.path=='/addQualifications'){
                     this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
@@ -123,8 +123,10 @@
                     this.rightParams.current = 1
                     this.getList('right');
                     // this.toFrom=nm.query.type
-                }else if(nm.path!='/intelligenceManage'){
-                    this.leftParams.size=18
+                }else if(val.path=='/intelligenceManage'){
+                      this.getList('left');
+                }else if(val.path!='/intelligenceManage'){
+                      this.leftParams.size=18
                     this.leftParams.current=1
                     this.rightParams.current = 1
                     this.leftRow={}
@@ -134,7 +136,7 @@
                     this.leftSelectId=null
                     this.rightSelectId=null
                     this.tableRightData.records=[]
-                    this.getList('left');
+                    this.tableLeftData.records=[]
                 }
             }
         },
@@ -163,6 +165,10 @@
             }
         },
         methods: {
+            seeOther(row,path){
+                this.$router.push({path:path,query:{ id:row.userNumber}});
+
+            },
             //左侧表格新增编辑
             addOrEditOrInfo(tag){
                 if(tag=='add'){
@@ -354,7 +360,7 @@
 
 
             getList(tag,scroll){
-                if(tag=='left'){
+                 if(tag=='left'){
                     map(this.leftForm,((k,l)=>{
                         if(!k){
                             this.leftForm[l]=null
