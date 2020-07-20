@@ -248,7 +248,7 @@ let authRoutes = [
 	{
 		path: '/WorkOrderManage3',
 		component: Layout,
-		redirect: '/WorkOrderManage4',
+		redirect: '/templateManage',
 		name: '收费管理',
 		meta: {title: '收费管理',icon: 'sfgl' },
 		children: [
@@ -292,7 +292,7 @@ let authRoutes = [
 	{
 		path: '/WorkOrderManage5',
 		component: Layout,
-		redirect: '/WorkOrderManage6',
+		redirect: '/fileManage',
 		name: '技术资料',
 		meta: {title: '技术资料',icon: 'jszl' },
 		children: [
