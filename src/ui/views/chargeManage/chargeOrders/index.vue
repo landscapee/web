@@ -65,7 +65,8 @@ export default {
             },
             form:{},
             sort:{},
-            selectId: null
+            selectId: null,
+            selectIds:[]
         };
     },
    created() {
@@ -117,11 +118,14 @@ export default {
             })
         },
         sendFinanceFn(){
-            if(!this.selectId){
+            if(this.selectIds.length===0){
                 this.$message({type: 'warning', message: '请选择一条发送财务'})
                 return
+            }else if(this.selectIds.length >1 ){
+                this.$message({type: 'warning', message: '同时只能选择一条发送财务'})
+                return
             }
-            let selectObj = this.tableData.records.find(item=>item.id === this.selectId)
+            let selectObj = this.tableData.records.find(item=>item.id === this.selectIds[0])
             if(selectObj.approveState !=1){
                 this.$message({type: 'warning', message: '审核未通过，不能发送财务'})
                 return
@@ -130,7 +134,7 @@ export default {
                 url:`${this.$ip}/mms-charge/chargeBillFlxgz/send`, 
                 method: 'post',
                 data:{
-                    id:this.selectId,
+                    id:this.selectIds[0],
                 }
             })
             .then((data) => {
@@ -140,7 +144,7 @@ export default {
                     this.$message({type: 'error', message: '发送失败，请重试'});
                 }
                 this.getList();
-                this.selectId = null
+                this.selectIds = []
             })
         },
         addChargeOrderFn(type, query){
@@ -149,11 +153,14 @@ export default {
                     query: {type:query}
                 }
             if(query!='add'){
-                if(!this.selectId){
+                if(this.selectIds.length===0){
                     this.$message({type: 'warning', message: '必须选择一项操作'});
                     return
+                }else if(this.selectIds.length >1 ){
+                    this.$message({type: 'warning', message: '同时只能选择一条进行操作'})
+                    return
                 }
-                Object.assign(pushPath.query,{id: this.selectId})
+                Object.assign(pushPath.query,{id: this.selectIds[0]})
             }
             this.$router.push(pushPath)
             //{
@@ -163,6 +170,10 @@ export default {
             //}
         },
         exportChargeFn(type){
+            if(this.selectIds.length===0){
+                this.$message({type: 'warning', message: '必须选择内容才能导出'});
+                return
+            }
             let urlObj = {
                 charge: {
                     name:'/chargeBillFlxgz/flxgzExport',
@@ -177,7 +188,7 @@ export default {
                 // headers: {
                 //     //'Content-Type': 'application/vnd.ms-excel',
                 // },
-                url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.selectId}`,
+                url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.selectIds.join(',')}`,
                 method: 'get',
                 responseType: 'blob',
             }).then((d)=>{
@@ -198,15 +209,22 @@ export default {
         },
         requestTable(searchData){
             this.form = searchData;
-            this.selectId=null,
+            this.selectIds=[],
             this.tableData={records:[]};
             this.params.current = 1;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.getList();
         },
         removeOrderFn(){
+            if(this.selectIds.length===0){
+                this.$message({type: 'warning', message: '请选择内容'});
+                return
+            }else if(this.selectIds.length >1 ){
+                this.$message({type: 'warning', message: '同时只能选择一条进行删除'})
+                return
+            }
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectId}`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectIds[0]}`, 
                 method: 'delete',
             })
             .then((data) => {
@@ -216,7 +234,7 @@ export default {
                     this.$message({type: 'error', message: '删除失败，请重试'});
                 }
                 this.getList();
-                this.selectId = null
+                this.selectIds = []
             })
         },
         headerSort(column){
@@ -228,33 +246,49 @@ export default {
         },
         listenToCheckedChange(row, column, event){
             let select = row.selected;
-            this.tableData.records.map(r =>{
-                if(r.selected){
-                    r.selected = false;
-                }
-            })
+            // this.tableData.records.map(r =>{
+            //     if(r.selected){
+            //         r.selected = false;
+            //     }
+            // })
             row.selected  = !select;
             if(row.selected){
-                this.selectId = row.id;
+                //this.selectId = row.id;
+                this.selectIds.push(row.id)  //row.id 
             }else{
-                this.selectId = null;
+                //this.selectId = null;
+                this.selectIds = this.arrRemEleFn(this.selectIds, row.id)
+                // this.selectIds = this.selectIds.filter(item=>{
+                //     return arr.includes(item.id)
+                // })
             }
             this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
+        },
+        arrRemEleFn(arr, val){
+            var index = arr.indexOf(val);
+            if (index > -1) {
+                arr.splice(index, 1);
+            }
+            return arr
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
                 this.$router.push({path:'/addSysParameter',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
-                if(this.selectId==null){
+                if(this.selectIds.length === 0){
                     this.$message.error('请先选中一行数据');
+                    return
+                }else if(this.selectIds.length >1 ){
+                    this.$message({type: 'warning', message: '该操作只能选择一条数据'})
+                    return
                 }else{
-                     this.$router.push({path:'/addSysParameter',query:{type:tag,id:this.selectId}});
+                     this.$router.push({path:'/addSysParameter',query:{type:tag,id:this.selectIds[0]}});
                 }
             }
         },
         delData(){
-            if(this.selectId!=null){
+            if(this.selectIds.length===1){
                 this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -264,12 +298,12 @@ export default {
                     request({
                         url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
                         method: 'post',
-                        data:{id:this.selectId}
+                        data:{id:this.selectIds[0]}
                     })
                     .then((data) => {
                     this.$message({type: 'success',message: '删除成功'});
                         this.getList();
-                        this.selectId = null;
+                        this.selectIds = [];
                     })
                 })
                 .catch(() => {
@@ -294,7 +328,7 @@ export default {
                 }else{
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
-                this.selectId = null
+                this.selectIds = []
                 console.log(this.tableData)
             }).catch((error) => {
             

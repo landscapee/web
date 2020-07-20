@@ -72,7 +72,7 @@
                            </div>
                            <div class='row_right'>
                                <div clss="row_btn_group">
-                                   <el-button type="primary" icon="el-icon-download">下载</el-button>
+                                   <el-button @click='toDownloadFn(item)' type="primary" icon="el-icon-download">下载</el-button>
                                </div>
                            </div>
                         </div>
