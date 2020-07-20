@@ -22,12 +22,12 @@
                 <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                     <div class='form-item-l'>
                         <el-form-item label="航空公司/Airline" prop="airLine" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.fileName}}</span>
+                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.airLine}}</span>
                             <el-input v-else v-model="ruleForm.airLine"  style='width:320px;'></el-input>
                         </el-form-item>
                         <el-form-item label="日期/Date" prop="workDate" :label-width='labelWidth'>
                             <!-- <el-input v-model="ruleForm.workDate"  style='width:320px;'></el-input> -->
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.workDate}}</span>
+                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.workDate | formatDate}}</span>
                             <el-date-picker
                                 v-else
                                 v-model="ruleForm.workDate"
@@ -116,6 +116,7 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { sysParameterTable } from '../tableConfig.js';
@@ -125,6 +126,16 @@ export default {
     components: {
         Icon,
         SearchTable
+    },
+    filters: {
+        formatDate (val, format='YYYY-MM-DD') {
+            var val = Number(val);
+            if (!isNaN(val)){
+                return moment(val).format(format)
+            }else{
+                return '-' // /file//recovery/{id}
+            }
+        }
     },
     computed:{
         isInfo:{

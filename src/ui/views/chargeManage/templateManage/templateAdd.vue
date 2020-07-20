@@ -254,7 +254,11 @@
                 this.form.size = ''
             },
             async beforeUploadFn(file){
-                await this.fileExistsFn(file.name)
+                if(this.type == "add"){
+                    await this.fileExistsFn(file.name)
+                }else{
+                    return true
+                }
             }
         }
     };
