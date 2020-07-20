@@ -7,26 +7,31 @@
                             placeholder="输入关键字进行过滤"
                             v-model="filterText">
                     </el-input>
+                    <!--:check-on-click-node="true"-->
 
                     <el-tree
-                            @check="checkNode"
-                            show-checkbox
+                            @check="check"
+v                            show-checkbox
                             node-key="id"
                              class="filter-tree"
                             :data="dataTree"
                             :props="defaultProps"
                             default-expand-all
-                            :default-checked-keys="valueArr"
-                            :filter-node-method="filterNode"
+                             :filter-node-method="filterNode"
                             ref="tree">
-                          <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span >{{ node.label }} <span style="margin-left: 10px">【iata：{{data.iata}}，model：{{data.model}}】</span></span>
-                                 <el-input   size="mini" v-model="data.models" placeholder="请输入发动机号"></el-input>
+                          <span class="custom-tree-node" slot-scope="{ node, data ,q,w}">
+                            <span >{{ node.label }}{{node.select}} {{data.select}} <span style="margin-left: 10px">【IATA：{{data.iata}}，MODUL：{{data.model}}】</span></span>
+
+                                  <el-select  v-if="checkArr.indexOf(data.id)>-1"  multiple collapse-tags size="mini" v-model="data.models" placeholder="请选择发动机号">
+                                     <el-option v-for="(opt,index) in EngineNo " :key="index" :value="opt.valData" :label="opt.valData"></el-option>
+                                 </el-select>
                           </span>
+
 
                     </el-tree>
 
                 </div>
+
                 <div class="Qfooter">
                     <el-button @click="close">取消</el-button>
                     <el-button type="primary" @click="submit('form')">确认</el-button>
@@ -49,12 +54,12 @@
         data() {
             return {
                 selectData:[],
+                checkArr:[],
                 filterText:'',
                 dataTreeObj:{},
-                oldlength:0,
-                dataTree:[],
-                valueArr:[],
-                 defaultProps: {
+                EngineNo:[],
+                 dataTree:[],
+                  defaultProps: {
                     children: 'children',
                     label: 'name'
                 },
@@ -65,8 +70,16 @@
             filterText(val) {
                 this.$refs.tree.filter(val);
             }
+
         },
+
         methods: {
+            check(node,node1){
+                console.log(node1);
+                this.checkArr=node1.checkedKeys
+                // console.log(this.$refs.tree.getCurrentNode());
+                console.log(this.$refs.tree.getCheckedNodes());
+            },
             open(value){
                 this.selectData=[...value]
                 request({
@@ -79,43 +92,43 @@
                             this.dataTreeObj[k.id]=k
                         })
                         if( value.length){
-                            this.valueArr=value.map((k,l)=>{
+                            let arr=value.map((k,l)=>{
                                 this.$set(this.dataTreeObj[k.id],'models',k.models)
 
                                 return k.id
                             })
+                            this.$refs.tree.setCheckedKeys(arr);
+
                         }
                     }
                 });
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:["EngineNo"]
+                }).then(d => {
+                    this.EngineNo=d.data.EngineNo||[]
 
+                });
                  this.dialogFormVisible=true
 
 
             },
-            checkNode(checkedNodes,checkedKeys,halfCheckedNodes,halfCheckedKeys ){
-                // if(checkedKeys.checkedKeys.length>this.oldlength){
-                //     checkedNodes.selected=true
-                // }else{
-                //     checkedNodes.selected=false
-                // }
-                // this.oldlength=checkedKeys.checkedKeys.length
-                this.selectData=checkedKeys.checkedNodes
-             },
+
             filterNode(value, data) {
                 if (!value) return true;
                 return data.name.indexOf(value) !== -1;
             },
             submit() {
-                console.log(this.selectData,12,3);
-                let data1=[...this.selectData]
+                console.log(this.$refs.tree.getCheckedNodes(),123,1,1);
+                 let data1=[...this.$refs.tree.getCheckedNodes()]
                 this.$emit('getAircratType',data1)
                 this.close()
             },
             close(){
-
                  this.dataTree=[]
-                this.valueArr=[]
-                this.dialogFormVisible=false
+                 this.dialogFormVisible=false
             }
         },
         created() {

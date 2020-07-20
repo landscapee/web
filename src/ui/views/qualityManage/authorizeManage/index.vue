@@ -26,13 +26,13 @@
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option" label="操作" :width="190" >
+                    <el-table-column align="center" slot="option" label="操作" :width="230" >
                         <template  slot-scope="scope">
                             <div >
                                 <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserDoc')">档案</el-button>
 
                                 <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserQuali')">资质</el-button>
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserTrain')">培训</el-button>
+                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserTrain')">培训考核</el-button>
 
                             </div>
 

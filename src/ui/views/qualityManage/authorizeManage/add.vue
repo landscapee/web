@@ -71,11 +71,11 @@
                              </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item  label="授权单位：" prop="authorizedUnit">
-                        <span v-if="type=='info'">{{  form.authorizedUnit }}</span>
-                         <el-select   filterable v-else v-model="form.authorizedUnit" placeholder="请选择授权单位">
+                    <el-form-item  label="授权单位：" prop="authorizedUnitCode">
+                        <span v-if="type=='info'">{{  form.authorizedUnitCode }}</span>
+                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位">
                              <!--shortName-->
-                            <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.fullname">
+                            <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.id">
                              </el-option>
                         </el-select>
                     </el-form-item>
@@ -90,7 +90,7 @@
                             <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" size="mini" @click="handleClear">清空</el-button></div>
                             <el-scrollbar style="height:120px ">
                                 <el-tag :key="tag.id" v-for="tag in form.modelRange" closable :disable-transitions="false" @close="handleRemove(tag.id)">
-                                    {{ tag.models?`${tag.name}（${tag.models}）`:`${tag.name}`}}
+                                    {{ tag.models?`${tag.name}（${tag.models.join(',')}）`:`${tag.name}`}}
                                 </el-tag>
                             </el-scrollbar>
                         </el-card>
@@ -162,9 +162,7 @@
                 form: {modelRange:[]},
                 userArr:[],
                 Airline:[],
-
                 AircratS:[],
-
                 options: {},
                  rules: {
                      userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
@@ -193,6 +191,7 @@
                 }).then(d => {
                     if( d.data&&d.data.length){
                         this.Airline=d.data
+
                     }
                 });
 
@@ -223,6 +222,17 @@
 
         },
         methods: {
+            authorizedUnitC(val){
+                let len=this.Airline.length
+                for(let i=0;i<len;i++){
+                    if(this.Airline[i].id==val){
+                        this.$set(this.form,'authorizedUnit',this.Airline[i].fullname)
+                        console.log(this.form.authorizedUnit);
+                        break
+                    }
+                    console.log(i);
+                }
+            },
             openAircraftType(){
                 this.$refs.AircraftType.open(this.form.modelRange)
             },
@@ -282,10 +292,11 @@
                        if(obj.modelRange){
 
                            obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
+                               let arr=k.split('__')
                                return {
-                                   name: k.split('__')[0].split('***')[0],
-                                   models: k.split('__')[0].split('***')[1]||'',
-                                   id: k.split('__')[1],
+                                   name: arr[0].split('***')[0],
+                                   models: arr[0].split('***')[1]?arr[0].split('***')[1].split(','):[],
+                                   id: arr[1],
                                }
                            })
                         }
@@ -366,7 +377,7 @@
                                  let modelRange=[]
                                  if(obj.modelRange.length){
                                      modelRange=obj.modelRange.map((k,l)=>{
-                                         let msg=k.models?`${k.name}***${k.models}__${k.id}`:`${k.name}__${k.id}`
+                                         let msg=k.models?`${k.name}***${k.models.join(',')}__${k.id}`:`${k.name}__${k.id}`
                                          return  msg
                                      })
                                  }
