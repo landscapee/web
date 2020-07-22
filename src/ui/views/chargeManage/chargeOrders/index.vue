@@ -149,9 +149,9 @@ export default {
         },
         addChargeOrderFn(type, query){
             var pushPath = {
-                    path: type,
-                    query: {type:query}
-                }
+                path: type,
+                query: {type:query}
+            }
             if(query!='add'){
                 if(this.selectIds.length===0){
                     this.$message({type: 'warning', message: '必须选择一项操作'});
@@ -159,6 +159,13 @@ export default {
                 }else if(this.selectIds.length >1 ){
                     this.$message({type: 'warning', message: '同时只能选择一条进行操作'})
                     return
+                }
+                if(query==='edit'){
+                    let selectObj = this.tableData.records.find(i=>i.id===this.selectIds[0])
+                    if(selectObj.sendFinance===0&&selectObj.approveState==1){
+                        this.$message({type: 'warning', message: '已通过状态不能编辑'})
+                        return
+                    }
                 }
                 Object.assign(pushPath.query,{id: this.selectIds[0]})
             }
@@ -262,7 +269,7 @@ export default {
                 //     return arr.includes(item.id)
                 // })
             }
-            this.params.current = 1;
+            //this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
         },
         arrRemEleFn(arr, val){

@@ -17,6 +17,7 @@
             <el-upload
                 class="upload_demo"
                 ref="upload"
+                accept='.doc'
                 :on-success='fileUploadSuccessFn'
                 :on-remove='fileRemoveFn'
                 :before-upload='beforeUploadFn'
@@ -25,7 +26,7 @@
             >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">点击或将文件拖拽到这里上传</div>
-                <div class="el-upload__tip" slot="tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg...</div>
+                <div class="el-upload__tip" slot="tip">支持扩展名：.doc</div>
             </el-upload>
         </div>
         
@@ -254,6 +255,7 @@
                 this.form.size = ''
             },
             async beforeUploadFn(file){
+                console.log(file)
                 if(this.type == "add"){
                     await this.fileExistsFn(file.name)
                 }else{
