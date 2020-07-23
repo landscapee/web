@@ -21,19 +21,22 @@
                     <i class="el-icon-arrow-right"> </i>
                     <el-radio  v-model="radio" :label="2" @change="radioClick">基本信息配置</el-radio>
                     <i class="el-icon-arrow-right"> </i>
-                    <el-radio  v-model="radio" :label="3" @change="radioClick">工作项与内容配置</el-radio>
+                    <el-radio  v-model="radio" :label="3" @change="radioClick">工作标签与布局</el-radio>
+                 <i class="el-icon-arrow-right"> </i>
+                    <el-radio  v-model="radio" :label="4" @change="radioClick">工作项与内容配置</el-radio>
                  </div>
                 <div class="component">
-                    <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==3" :key="(new Date().toString())"></One>
+                    <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==4" :key="(new Date().toString())"></One>
                     <Two ref="Two" :type="type" :formData="form.contentVOList      " v-else-if="radio==2" :key="(new Date().toString())"></Two>
-                    <Three ref="Three" :type="type" :formData="form.baseItemVOList" v-else :key="(new Date().toString())"></Three>
+                    <Three ref="Three" :type="type" :formData="form.baseItemVOList" v-else-if="radio==3" :key="(new Date().toString())"></Three>
+                    <Four ref="Four" :type="type" :formData="form.baseItemVOList" v-else :key="(new Date().toString())"></Four>
                 </div>
             </div>
             <div class="Qfooter">
                 <el-button class="QoptionButton" v-if="radio>1" @click="last()">上一步</el-button>
                 <el-button class="QoptionButton" @click="save()">保存</el-button>
                 <el-button class="QoptionButton" @click="save('submit')">提交</el-button>
-                <el-button class="QoptionButton"  v-if="radio<3" @click="next()">下一步</el-button>
+                <el-button class="QoptionButton"  v-if="radio<4" @click="next()">下一步</el-button>
 
             </div>
         </div>
@@ -53,10 +56,11 @@
      import One from './one'
      import Two from './two'
      import Three from './three'
+     import Four from './four'
      import CopyHistory from './copyHistory'
     export default {
         name: "index",
-        components: {One,Two,Three,CopyHistory},
+        components: {One,Two,Three,Four,CopyHistory},
         data() {
             return {
                 title:'',
@@ -69,13 +73,7 @@
 
         watch:{
           'radio'(val){
-               if(val==1){
-                  this.form={}
-              }  else if(val==2){
-                  this.form={}
-              }else{
-                  this.form={}
-              }
+
           }  ,
         },
         methods: {
@@ -100,6 +98,8 @@
                     comName='Three'
                 }else if(this.radio==2){
                     comName='Two'
+                }else if(this.radio==4){
+                    comName='Four'
                 }
                 let redesign=null
                 if(this.type=='redesign'){
@@ -119,6 +119,8 @@
                     comName='One'
                 }else if(this.radio==2){
                     comName='Two'
+                }else if(this.radio==3){
+                    comName='Three'
                 }
                 this.$refs[comName].save('form').then((id)=>{
                     this.upState(id)
@@ -133,7 +135,6 @@
                     this.$router.push({path:'/WorkTemplateAdd',query:{type:'edit',id:this.$route.query.id||id}})
                     this.init()
                 }
-
             },
             save(submit){
                 let comName=''
@@ -143,9 +144,12 @@
                     comName='Two'
                 }else if(this.radio==3){
                     comName='Three'
+                }else if(this.radio==4){
+                    comName='Four'
                 }
                 this.$refs[comName].save('form').then((id)=>{
                     this.upState(id)
+                    debugger
                      if(submit=='submit'){
                         this.submit(id)
                     }

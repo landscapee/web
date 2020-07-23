@@ -135,7 +135,7 @@
                     return new Promise((resolve, reject)=>{
 
                         request({
-                                url:`${this.$ip}/mms-workorder/templateBaseItem/save`,
+                                url:`${this.$ip}/mms-workorder/templateBaseItem/saveOrUpdate`,
                                 method: 'post',
                                 data:this.tableData
                             }).then((d) => {
@@ -156,8 +156,6 @@
                     if(d.code==200){
                         this.tableData=d.data.contentVOList
                     }
-
-
                 })
             }
 
