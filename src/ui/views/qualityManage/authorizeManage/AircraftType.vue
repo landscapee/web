@@ -20,7 +20,7 @@ v                            show-checkbox
                              :filter-node-method="filterNode"
                             ref="tree">
                           <span class="custom-tree-node" slot-scope="{ node, data ,q,w}">
-                            <span >{{ node.label }}{{node.select}} {{data.select}} <span style="margin-left: 10px">【IATA：{{data.iata}}，MODUL：{{data.model}}】</span></span>
+                            <span >{{ node.label }}  <span style="margin-left: 10px">【IATA：{{data.iata}}，MODUL：{{data.model}}】</span></span>
 
                                   <el-select  v-if="checkArr.indexOf(data.id)>-1"  multiple collapse-tags size="mini" v-model="data.models" placeholder="请选择发动机号">
                                      <el-option v-for="(opt,index) in EngineNo " :key="index" :value="opt.valData" :label="opt.valData"></el-option>

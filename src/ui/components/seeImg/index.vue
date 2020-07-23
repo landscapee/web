@@ -68,9 +68,10 @@
 
 <style lang="scss" scoped>
 .divBox{
+    border: 1px #E4E7ED solid;
     top:calc(50% - 200px);
     left:calc(50% - 600px);
-    background: rgba(252, 252, 252, 0.95);
+    background:white;
     position: absolute;
     &>div:nth-child(1){
         /*background: #3d568e;*/

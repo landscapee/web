@@ -81,7 +81,7 @@
                                     <img v-else :src=" form.photoPath" alt="">
 
                                 </div>
-                                <UploadFile  style="display:none"  accept=".jpg,.png,.gif,.jpeg,.pcd,"  ref="upUserPho" @getFile="getFile"></UploadFile>
+                                <UploadFile  style="display:none"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg"  ref="upUserPho" @getFile="getFile"></UploadFile>
 
 
                             </td>
