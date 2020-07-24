@@ -240,10 +240,17 @@ let authRoutes = [
 	{
 		path: '/WorkOrderManage',
 		component: Layout,
-		redirect: '/WorkOrderManage2',
+		redirect: '/orderEditorDemo',
 		name: '工单管理',
 		meta: {title: '工单管理',icon: 'gdgl' },
-		children: [],
+		children: [
+            {
+                path: '/orderEditorDemo',
+                component: () => import('@views/orderEditorDemo/index.vue'),
+                name: '编辑',
+                meta: {title: '编辑',icon: '',keepAlive:true},
+            },
+        ],
 	},
 	{
 		path: '/WorkOrderManage3',
