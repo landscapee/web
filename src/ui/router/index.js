@@ -240,7 +240,7 @@ let authRoutes = [
 	{
 		path: '/WorkOrderManage',
 		component: Layout,
-		redirect: '/orderEditorDemo',
+		redirect: '/WorkTemplate',
 		name: '工单管理',
 		meta: {title: '工单管理',icon: 'gdgl' },
 		children: [
@@ -250,6 +250,43 @@ let authRoutes = [
                 name: '编辑',
                 meta: {title: '编辑',icon: '',keepAlive:true},
             },
+            {
+                path: '/WorkTemplate',
+                component: () => import('@views/workOrder/workTemplate/index'),
+                name: '工单模板管理',
+                meta: {title: '工单模板管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/WorkTemplateAdd',
+                        component: () => import('@views/workOrder/workTemplate/add/index'),
+                        name: '新增工单模板配置',
+                        meta: {title: '新增工单模板配置',icon: 'xxgl' },
+                    }
+                ]
+            },
+            {
+                path: '/signControl',
+                component: () => import('@views/workOrder/signControl/index'),
+                name: '签署与管控',
+                meta: {title: '签署与管控',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/WorkTemplateAdd',
+                        component: () => import('@views/workOrder/signControl/add'),
+                        name: '新增签署与管控',
+                        meta: {title: '新增签署与管控',icon: 'xxgl' },
+                    },
+                ]
+            },{
+                path: '/WorkAbnormal',
+                component: () => import('@views/workOrder/abnormal/index'),
+                name: '异常管理',
+                meta: {title: '异常管理',icon: 'xxgl' },
+                children:[
+
+                ]
+            },
+
         ],
 	},
 	{
