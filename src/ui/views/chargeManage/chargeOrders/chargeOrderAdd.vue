@@ -127,7 +127,7 @@
                         </el-form-item>
                         <el-form-item label="其他" prop="others" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.others}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.others" style='width:316px;'></el-input>
+                            <el-input v-else v-model="ruleForm.others" style='width:316px;'></el-input>
                         </el-form-item>
                     </div>
                     <div class='form-item-l' style='justify-content:flex-start' v-if="type==='add'">

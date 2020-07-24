@@ -245,6 +245,12 @@ let authRoutes = [
 		meta: {title: '工单管理',icon: 'gdgl' },
 		children: [
             {
+                path: '/orderEditorDemo',
+                component: () => import('@views/orderEditorDemo/index.vue'),
+                name: '编辑',
+                meta: {title: '编辑',icon: '',keepAlive:true},
+            },
+            {
                 path: '/WorkTemplate',
                 component: () => import('@views/workOrder/workTemplate/index'),
                 name: '工单模板管理',
