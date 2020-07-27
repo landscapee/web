@@ -3936,6 +3936,11 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.npm.taobao.org/kind-of/download/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha1-B8BQNKbDSfoG4k+jWqdttFgM5N0=
 
+kindeditor@^4.1.10:
+  version "4.1.10"
+  resolved "https://registry.npm.taobao.org/kindeditor/download/kindeditor-4.1.10.tgz#bbbbba9de38e13f8568205be765ef7339eb6d515"
+  integrity sha1-u7u6neOOE/hWggW+dl73M5621RU=
+
 lcid@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/lcid/download/lcid-2.0.0.tgz#6ef5d2df60e52f82eb228a4c373e8d1f397253cf"

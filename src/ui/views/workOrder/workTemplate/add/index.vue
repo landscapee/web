@@ -56,7 +56,7 @@
      import One from './one'
      import Two from './two'
      import Three from './three'
-     import Four from './four'
+     import Four from './four2'
      import CopyHistory from './copyHistory'
     export default {
         name: "index",
