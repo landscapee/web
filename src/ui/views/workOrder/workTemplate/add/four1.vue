@@ -229,69 +229,93 @@
                 if (!value) return true;
                 return data.name.indexOf(value) !== -1;
             },
-            addInstrction(key){
-                let obj={templateBaseId:this.$route.query.id}
-                if(key=='beforeWarning'){
-                    obj[key]='事前警告'
-                 }else if(key=='afterExplain'){
-                    obj[key]='事后说明'
-                 }else if(key=='afterSchedule'){
-                    obj[key]='事后附表'
-                 }
-               this.addInstrctionR(obj)
-            },
-            addInstrctionR(obj){
-                let url='save'
-                if(this.Instruction.id){
-                    url='update'
-                }
-                obj.id=this.Instruction.id
-                request({
-                    url:`${this.$ip}/mms-workorder/templateRemark/${url}`,
-                    method: 'post',
-                    data:obj
-                }).then((d)=>{
-                    this.getInstruction()
-                })
-            },
+
             addBigItem(){
                this.addItem()
             },
             addChildItem(){
                 this.addItem()
             },
+            addInstrction(key){
+                let obj={name:'',
+                    templateBaseId:this.$route.query.id,
+                    contentId:this.addItemObj&&this.addItemObj.id,
+                }
+                if(key=='beforeWarning'){
+                    obj.name='事前警告'
+                    this.dataTree.unshift(obj)
+                }else if(key=='afterExplain'){
+                    obj.name='事后说明'
+                    this.dataTree.push(obj)
+                }else if(key=='afterSchedule'){
+                    obj.name='事后附表'
+                    this.dataTree.push(obj)
+                }
+                this.formItemNum++
+
+                //  let obj={templateBaseId:this.$route.query.id}
+                // obj[key]=' '
+                // request({
+                //     url:`${this.$ip}/mms-workorder/templateRemark/save`,
+                //     method: 'post',
+                //     data:obj
+                // }).then((d)=>{
+                //     this.getInstruction()
+                // })
+            },
             addChildContent(){
-                 request({
-                    url:`${this.$ip}/mms-workorder/contentDetail/save`,
-                    method: 'post',
-                    data:{
-                        contentId:this.addItemObj&&this.addItemObj.id,
-                        content:null,
-                        templateBaseId:this.$route.query.id,
-                    },
-                }).then((d) => {
-                    if(d.code==200){
-                        this.getItem()
-                    }
-                })
+                let obj={name:`内容${this.addItemObj.children.length}`,
+                    templateBaseId:this.$route.query.id,
+                    contentId:this.addItemObj&&this.addItemObj.id,
+
+                }
+                this.dataItem.push(obj)
+                this.formItemNum++
+                //  request({
+                //     url:`${this.$ip}/mms-workorder/contentDetail/save`,
+                //     method: 'post',
+                //     data:{
+                //         contentId:this.addItemObj&&this.addItemObj.id,
+                //         content:null,
+                //                             templateBaseId:this.$route.query.id,
+
+                //     },
+                // }).then((d) => {
+                //     if(d.code==200){
+                //         this.getItem()
+                //     }
+                // })
             },
             addItem( ){
-                console.log(this.addItemObj && this.addItemObj.id);
-                request({
-                    url:`${this.$ip}/mms-workorder/templateContent/save`,
-                    method: 'post',
-                    data:{
-                        parentId:this.addItemObj&&this.addItemObj.id,
-                        name:`项次${this.dataItem.length+1}${this.addItemObj?'【工作小项】':'【工作大项】'}`,
-                        templateBaseId:this.$route.query.id,
-                        noSignTime:true,
-                        noSmallItem:true,
-                    },
-                }).then((d) => {
-                    if(d.code==200){
-                        this.getItem(3)
-                    }
-                })
+                // console.log(this.addItemObj && this.addItemObj.id);
+                let name=`项次${this.dataTree.length+1}【工作大项】`
+                if(this.addItemObj.itemType!=1){
+                    name=`项次${this.dataTree.children.length}【工作小项】`
+                }
+                let obj={
+                    parentId:this.addItemObj&&this.addItemObj.id||null,
+                    name:name,
+                    templateBaseId:this.$route.query.id,
+                }
+                this.dataTree.push(obj)
+                this.formItemNum++
+
+                // request({
+                //     url:`${this.$ip}/mms-workorder/templateContent/save`,
+                //     method: 'post',
+                //     data:{
+                //         parentId:this.addItemObj&&this.addItemObj.id,
+                //         name:`项次${this.dataItem.length+1}${this.addItemObj?'【工作小项】':'【工作大项】'}`,
+                //                             templateBaseId:this.$route.query.id,
+
+                //         noSignTime:true,
+                //         noSmallItem:true,
+                //     },
+                // }).then((d) => {
+                //     if(d.code==200){
+                //         this.getItem(3)
+                //     }
+                // })
             },
 
             getInstruction(){
@@ -404,6 +428,7 @@
             },
             trans(data){
                 data.map((k,l)=>{
+
                     k.itemType=1   //大项
                     k.index=l  //大项
                     this.dataItemObj[k.id]={...k}
@@ -424,12 +449,13 @@
                     }else{
                         if(k.children){
                             k.children.map((o,p)=>{
+
                                 o.paId=k.id
                                 o.itemType=3 //小项
-                                o.index=p //小项
+                                o.ibdex=p //小项
                                 this.dataItemObj[k.id][o.id]={...o}
                                 if(o.contentDetails){
-                                     o.children=o.contentDetails.map((o1,p1)=>{
+                                    o.children=k.contentDetails.map((o1,p1)=>{
                                         let obj1={
                                             ...o1,
                                             padId:o.id,

@@ -154,7 +154,7 @@
                     method: 'get',
                 }).then((d) => {
                     if(d.code==200){
-                        this.tableData=d.data.contentVOList
+                        this.tableData=d.data.baseItemVOList
                     }
                 })
             }
