@@ -59,6 +59,7 @@
     "axios": "^0.19.2",
     "bluebird": "^3.7.2",
     "element-ui": "^2.13.0",
+    "kindeditor": "^4.1.10",
     "lodash": "^4.17.15",
     "lokijs": "^1.5.8",
     "moment": "^2.25.3",
