@@ -19,7 +19,8 @@ export default {
         return {
             editor: null,
             outContent: this.content,
-            radioInputList:[]
+            radioInputList:[],
+            inputIndex:0,
         }
     },
   props: {
@@ -302,7 +303,8 @@ export default {
     KindEditor.plugin('inpt', function(K) {
         var editor = this, name = 'inpt';
         editor.clickToolbar(name, function() {
-            editor.insertHtml('<input type="text" style="border:1px solid #222;"/>')
+            _this.inputIndex+=1
+            editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex + '"/>')
         })
     })
     // 单选
@@ -324,7 +326,8 @@ export default {
     KindEditor.plugin('na', function(K) {
         var editor = this, name = 'na'
         editor.clickToolbar(name, function() {
-            editor.insertHtml('<input type="radio" name="0">是<input type="radio"  name="0">否')
+            _this.inputIndex+=1
+            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
         })
     })
     KindEditor.lang({
@@ -403,10 +406,9 @@ export default {
   methods:{
         addConfirmFn(val, type){
             this.radioInputList = val
-            console.log(val)
-            let name = Math.random()
+            let name = this.inputIndex+=1
             let html = this.radioInputList.map(i=>{
-                return ` <input name='${name}' type='${type}'> ${i.value} `
+                return `<input name='${'$$$'+this.inputIndex}' type='${type}'> ${i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
