@@ -10,7 +10,7 @@
                     <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
                  </div>
                 <div style="display: none">
-                <UploadFile    accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
+                <UploadFile  :isPrompt="true"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
             </div>
             </div>
             <div class="banner">

@@ -19,14 +19,12 @@
                     </div>
                 </el-tree>
             </div>
-            <div class="threeBanSecond ">
+            <div class="threeBanSecond  ">
 
                 <el-form v-if="formItem&&(formItem.itemType==1||formItem.itemType==3)" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
-
                     <div class="row_one widthOne1">
                         <el-form-item  label="项次编号：" prop="number">
                             <el-input   v-model="formItem.number" placeholder="请输入中文 "></el-input>
-
                         </el-form-item>
                     </div>
                     <div class="row_one">
@@ -77,8 +75,8 @@
                         </el-form-item>
                     </div>
                     <div class="row_one widthOne" v-if="formItem.noSmallItem">
-                        <el-form-item  label="角色权限控制：" prop="role">
-                            <el-select    multiple=""  v-model="formItem.role" placeholder="请选择角色权限控制">
+                        <el-form-item  label="角色权限控制：" prop="rolePermissions">
+                            <el-select    multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
                                 <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                             </el-select>
                         </el-form-item>
@@ -231,9 +229,9 @@
                 if(val){
                     this.formItem.suitableRange=[{type:'',values:[]}]
                 }else{
-                    if(this.formItem.role){
-                        this.formItem.role=null
-                    }
+                    // if(this.formItem.rolePermissions){
+                        this.formItem.rolePermissions=[]
+                    // }
                     this.formItem.suitableRange=[]
                 }
             },
@@ -301,6 +299,7 @@
                 let obj={
                     parentId:this.addItemObj&&this.addItemObj.id||null,
                     name:name,
+                    rolePermissions:[],
                     paId:num==1?this.addItemObj.id:null,
                      suitableRange: [{type:'',values:[]}],
                     itemType:num==1?3:1,
@@ -435,7 +434,8 @@
             },
             trans(data){
                 data.map((k,l)=>{
-                    k.itemType=1   //大项
+                    k.itemType=1
+                    k.rolePermissions=k.rolePermissions?k.rolePermissions.split(';'):[]
                     k.suitableRange=k.suitableRange&&k.suitableRange.length?k.suitableRange:[{type:'',values:[]}] //小项
                     this.dataItemObj[k.id]={...k}
                     if(k.noSmallItem){
@@ -457,7 +457,8 @@
                             k.children.map((o,p)=>{
                                 o.paId=k.id
                                 o.itemType=3 //小项
-                                 o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
+                                o.rolePermissions=o.rolePermissions?o.rolePermissions.split(';'):[]
+                                o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
                                 this.dataItemObj[k.id][o.id]={...o}
                                 if(o.contentDetails){
                                     o.children=o.contentDetails.map((o1,p1)=>{
@@ -494,7 +495,7 @@
                          obj=this.dataItemObj[this.formItem.id]
                     }
                 }
-                if((obj.itemType==1||obj.itemType==3)&&obj.suitableRange){
+                if((obj.itemType==1||obj.itemType==3)&&obj.suitableRange&&!obj.suitableRange.length){
                     obj.suitableRange=[{type:'适用机型范围',values:[]}]
                 }
                 this.formItem={...obj}
@@ -591,7 +592,9 @@
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                     obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.formItem.serialNumber)
-                                }
+                                }else{
+                                      obj.rolePermissions=obj.rolePermissions.join(';')
+                                  }
                             }
 
 
@@ -687,6 +690,10 @@
                 width: 100%;
                 margin: 0;
                 padding: 0px;
+
+                .el-form-item{
+                    width: 100%!important;
+                }
                 .widthOne{
 
                     .el-select:first-child{

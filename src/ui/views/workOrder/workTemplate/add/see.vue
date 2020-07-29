@@ -45,7 +45,7 @@
             <div class="instruction"  v-if="get(form.templateRemarkVO,'beforeWarning')">
                 <p v-html="get(form.templateRemarkVO,'beforeWarning')"> </p>
             </div>
-            <div class="item" v-if="form.templateRemarkVO">
+            <div class="item" >
 
                 <el-row class="th">
                 <el-col  :span="4">
@@ -65,32 +65,46 @@
                     <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
                 </el-col>
             </el-row>
-
                 <el-row  v-if="form.contentVOList&&form.contentVOList.length" v-for="(opt,index) in form.contentVOList" :key="index" >
+
                     <el-col   :span="4" v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
-                       <div style="margin-right: 10px">
-                           <div v-if="opt.hookImport">✔</div>
-                           <div v-if="opt.notApplicable">N/A</div>
-                           <div v-if="opt.cycle">○</div>
-                       </div>
-                        <div>{{opt.index}}</div>
+                        <div style="margin-right: 10px">
+                            <div v-if="opt.hookImport">✔</div>
+                            <div v-if="opt.notApplicable">N/A</div>
+                            <div v-if="opt.cycle">○</div>
+                        </div>
+                        <div>{{opt.serialNumber}}</div>
                     </el-col>
                     <el-col   :span="4" v-else class="colCenter">
-                        {{opt.index}}
+                        {{opt.serialNumber}}
                     </el-col>
-                    <el-col  :span="get(form.labelVO,'contentLayout')=='C4（四列）'?12:get(form.labelVO,'contentLayout')=='C3（三列）'?16:20">
-                                     <span v-if="opt.itemType==1||opt.itemType==3">
-                                         {{opt.name}}
-                                     </span>
-                        <span v-else v-html="opt.content"></span>
+                    <el-col  :span="get(form.labelVO,'contentLayout')=='C4（四列）'?12:get(form.labelVO,'contentLayout')=='C3（三列）'?16:20" class="colContent">
+                        <div v-if="opt.itemType==1||opt.itemType==3">
+                            <div v-if="opt.contentDetails&&opt.contentDetails.length" >
+                                <div v-for="(k,l) in opt.contentDetails" :key="l" v-html="k.content" :class="l>0?'borderTop':''">
+
+                                </div>
+                            </div>
+                            <div v-else>
+                                {{opt.contentDetails.length}}
+                                {{opt.name}}
+                            </div>
+                        </div>
+
                     </el-col>
                     <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
+                        <div v-if="get(form.labelVO,'contentLayout')=='C3（三列）'&&!opt.c3WorkerTask" class="duijiao">
 
+                        </div>
+                        <div v-else-if="!opt.c4WorkerTask&&get(form.labelVO,'contentLayout')=='C4（四列）'" class="duijiao"></div>
                     </el-col>
                     <el-col :span="4" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
+                        <div v-if="!opt.c4CommanderTask "  class="duijiao">
 
+                        </div>
                     </el-col>
                 </el-row>
+
             </div>
         </div>
     </div>
@@ -185,7 +199,7 @@
                                         itemType:2,  //大项内容
                                        name:`工作内容${p+1}`
                                    }
-                                   arr.push(obj)
+                                   // arr.push(obj)
                                })
                            }
                        }else{
@@ -204,7 +218,7 @@
                                                 itemType:4,  //小项内容
                                                name:`工作内容${p1+1}`
                                            }
-                                           arr.push(obj1)
+                                           // arr.push(obj1)
                                        })
                                    }
 
@@ -213,7 +227,7 @@
                        }
 
                    })
-                   this.form.contentVOList=[...arr]
+                    this.form.contentVOList=[...arr]
                }
             },
         },
@@ -342,13 +356,44 @@
         }
 
         .el-col{
-            padding: 2px 15px;
+
             min-height:45px;
              border-left: 1px #979797 solid;
             display: flex;
             justify-content: center;
             /*flex-direction: column;*/
             align-items: center;
+            .duijiao{
+                width: 100%;
+                height:100%;
+                background: linear-gradient(
+                                to top right,
+                                rgba(0, 0, 0, 0) 0%,
+                                rgba(0, 0, 0, 0) calc(50% - 1.5px),
+                                rgba(0, 0, 0, 0) 50%,
+                                rgba(0, 0, 0, 0) calc(50% + 1.5px),
+                                rgba(0, 0, 0, 0) 100%
+                ), linear-gradient(
+                                to bottom right,
+                                rgba(0, 0, 0, 0) 0%,
+                                rgba(0, 0, 0, 0) calc(50% - 1.5px),
+                                rgba(0, 0, 0, 1) 50%,
+                                rgba(0, 0, 0, 0) calc(50% + 1.5px),
+                                rgba(0, 0, 0, 0) 100%
+                );
+            }
+        }
+        .colContent{
+            justify-content: left;
+            .borderTop{
+                border-top:1px #979797 solid ;
+            }
+            &>div{
+                width:100%;
+            }
+            &>div>div>div{
+                padding: 2px 15px;
+            }
         }
         .logo{
              justify-content: left;
@@ -371,4 +416,5 @@
    }
 
     }
+
 </style>

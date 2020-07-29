@@ -20,7 +20,7 @@
     import request from '@lib/axios.js';
     export default {
         name: "copyDetails",
-        props:['accept','isUpload'],
+        props:['accept','isUpload','isPrompt'],
         components: {},
         data() {
             return {
@@ -72,18 +72,24 @@
                     method:'post',
                     data:data,
                 }).then((d) => {
-                    if(d){
 
-                        this.$emit('getFile',d.data)
-                        this.$message({
-                            message: '上传成功',
-                            type: 'success',
-                        });
+                    if(d.code==200){
+                        this.$emit('getFile',d.data) ;
+                        if(!this.isPrompt){
+                            this.$message({
+                                message: '上传成功',
+                                type: 'success',
+                            });
+                        }
+
                     }else {
-                        this.$message({
-                            message: '上传失败',
-                            type: 'info',
-                        });
+                        this.$emit('getFile',d.data);
+                        if(!this.isPrompt){
+                            this.$message({
+                                message: '上传失败',
+                                type: 'info',
+                            });
+                        }
                     }
                 });
             },
