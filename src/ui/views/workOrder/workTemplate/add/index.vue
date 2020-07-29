@@ -123,8 +123,8 @@
                   request({
                     url:`${this.$ip}/mms-workorder/template/upload`,
                     method: 'post',
-                    params:{id:this.$route.query.id},
-                    data:{
+                     data:{
+                        id:this.$route.query.id,
                         fileName:file.fileName,
                         fileId:file.id,
                     }

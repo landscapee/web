@@ -106,6 +106,12 @@
                 </el-row>
 
             </div>
+            <div class="instruction"  v-if="get(form.templateRemarkVO,'afterExplain')">
+                <p v-html="get(form.templateRemarkVO,'afterExplain')"> </p>
+            </div>
+            <div class="instruction"  v-if="get(form.templateRemarkVO,'afterSchedule')">
+                <p v-html="get(form.templateRemarkVO,'afterSchedule')"> </p>
+            </div>
         </div>
     </div>
 </template>

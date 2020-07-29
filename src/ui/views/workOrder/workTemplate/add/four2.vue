@@ -257,7 +257,7 @@
                     itemType:'',
                     id:this.Instruction.id||null
                 }
-                if(key=='beforeWarning'){
+                 if(key=='beforeWarning'){
                     obj.name='事前警告'
                     obj.itemType=5
                     this.dataTree.unshift(obj)
@@ -277,7 +277,6 @@
                 if(this.addItemObj.paId){
                    num=1
                 }
-                debugger
                 let obj={
                     name:` 工作内容${this.addItemObj.children.length+1}`,
                     serialNumber:this.addItemObj.serialNumber,
@@ -530,7 +529,7 @@
                            obj= this.dataTree[0]
                        }else{
                             this.dataTree.map((k,l)=>{
-                               if(k.id==this.formItem.id){
+                                if(k.itemType==this.formItem.itemType){
                                    obj=this.dataTree[l]
                                }
                            })
@@ -596,9 +595,6 @@
                                       obj.rolePermissions=obj.rolePermissions.join(';')
                                   }
                             }
-
-
-
                             request({
                                 url:`${this.$ip}/mms-workorder/${url}`,
                                 method: 'post',
