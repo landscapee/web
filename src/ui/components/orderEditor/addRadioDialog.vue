@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="index">
         <el-dialog title="弹窗" :visible.sync="dialogFormVisible">
             <el-form>
                 
@@ -88,5 +88,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    
+    .index{
+        /deep/.el-input{
+            width:100%!important;
+        }
+    }
 </style>

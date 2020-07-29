@@ -10,6 +10,9 @@ import '../../../../node_modules/kindeditor/kindeditor-all.js'
 import '../../../../node_modules/kindeditor/lang/zh-CN.js'
 import '../../../../node_modules/kindeditor/themes/default/default.css'
 import addRadioDialog from './addRadioDialog.vue';
+function newSignFn(){
+    alert("333")
+}
 export default {
     components:{
         addRadioDialog
@@ -57,7 +60,7 @@ export default {
           'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
           'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
           'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
-          'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox", 'checkradio', "na"
+          'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox", 'checkradio', "na", "sign"
         ]
       }
     },
@@ -330,11 +333,19 @@ export default {
             editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
         })
     })
+    // 签章
+    KindEditor.plugin('sign', function(K) {
+        var editor = this, name = 'sign'
+        editor.clickToolbar(name, function() {
+            editor.insertHtml('<p><button style="width:80px;" onclick="newSignFn()">签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" /></p>')
+        })
+    })
     KindEditor.lang({
         inpt : '输入',
         checkbox : '多选',
         na:'NA',
-        checkradio:'单选'
+        checkradio:'单选',
+        sign:'签章'
     })
 
     _this.editor = window.KindEditor.create('#' + this.id, {
@@ -434,6 +445,11 @@ export default {
     }
     /deep/ .ke-icon-checkradio{
         background-image: url(./assets/img/kh.svg);
+        width: 22px;
+        height: 22px;
+    }
+    /deep/ .ke-icon-sign{
+        background-image: url(./assets/img/sign.svg);
         width: 22px;
         height: 22px;
     }

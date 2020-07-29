@@ -19,7 +19,7 @@
                     </div>
                 </el-tree>
             </div>
-            <div class="threeBanSecond G_form">
+            <div class="threeBanSecond ">
 
                 <el-form v-if="formItem&&(formItem.itemType==1||formItem.itemType==3)" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
 
