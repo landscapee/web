@@ -113,7 +113,8 @@
                        {{formItem.name}}编辑：
                    </div>
                     <order-editor
-                            id="editor_id" height="100%" width="100%" :content.sync="formItem[key]"
+                            id="editor_id" height="100%" width="100%"
+                            :content.sync="formItem[key]"
                             :loadStyleMode="false"
                             @on-content-change="onContentChange"
                     ></order-editor>
@@ -156,8 +157,7 @@
         components: {orderEditor },
         data() {
             return {
-
-                formThree:{},
+                  formThree:{},
                  formItem:{addLogo:true,noSmallItem:true,noSignTime:true,},
                  dataTree:[],
                 dataTreeY:[],
@@ -279,9 +279,10 @@
                 if(this.addItemObj.paId){
                    num=1
                 }
+                debugger
                 let obj={
                     name:` 工作内容${this.addItemObj.children.length+1}`,
-                    index:num==1?this.addItemObj.children.length:this.dataItem.length ,
+                    serialNumber:this.addItemObj.serialNumber,
                     itemType:num==0?2:4,
                     paId:num==0?this.addItemObj.id:num==1?this.addItemObj.paId:null,
                     papId:num==1?this.addItemObj.id:null,
@@ -301,7 +302,7 @@
                     parentId:this.addItemObj&&this.addItemObj.id||null,
                     name:name,
                     paId:num==1?this.addItemObj.id:null,
-                    index:num==1?this.addItemObj.children.length:this.dataItem.length ,
+                     suitableRange: [{type:'',values:[]}],
                     itemType:num==1?3:1,
                     noSignTime:true,
                     noSmallItem:true,
@@ -356,16 +357,12 @@
             openMainMenuFn(e,obj){
                 console.log(obj);
                 this.switchPrompt( ).then((d)=>{
-                    // let num=this.formItem.itemType
-
                     if(d==1){
                         this.dataTree=[...this.dataTreeY]
-                        // this.formItem={...this.addItemObj}
-                        // this.$nextTick(()=>{
-                        //     this.idEditor=0
-                        // })
                         this.openMainMenuFnOption(e,obj)
-
+                        this.$nextTick(()=>{
+                            this.idEditor=0
+                        })
                     }else if(d==2){
                     }else{
                         this.openMainMenuFnOption(e,obj)
@@ -439,15 +436,15 @@
             trans(data){
                 data.map((k,l)=>{
                     k.itemType=1   //大项
-                    k.index=l  //大项
+                    k.suitableRange=k.suitableRange&&k.suitableRange.length?k.suitableRange:[{type:'',values:[]}] //小项
                     this.dataItemObj[k.id]={...k}
                     if(k.noSmallItem){
                         if(k.contentDetails){
                             k.children=k.contentDetails.map((o,p)=>{
-                                let obj={
+                                 let obj={
                                     ...o,
                                     paId:k.id,
-                                    index:p,
+                                    serialNumber:k.serialNumber,
                                     itemType:2,  //大项内容
                                     name:`工作内容${p+1}`
                                 }
@@ -460,15 +457,14 @@
                             k.children.map((o,p)=>{
                                 o.paId=k.id
                                 o.itemType=3 //小项
-                                o.ibdex=p //小项
-                                o.suitableRange=o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
+                                 o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
                                 this.dataItemObj[k.id][o.id]={...o}
                                 if(o.contentDetails){
                                     o.children=o.contentDetails.map((o1,p1)=>{
                                         let obj1={
                                             ...o1,
                                             padId:o.id,
-                                            index:p1,
+                                            serialNumber:o.serialNumber,
                                             itemType:4,  //小项内容
                                             name:`工作内容${p1+1}`
                                         }
@@ -591,7 +587,15 @@
                                     afterSchedule:this.Instruction.afterSchedule||null,
                                      ...obj,
                                 }
+                                obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.key)
+                            } else{
+                                  if(this.formItem.itemType==2||this.formItem.itemType==4){
+                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.formItem.serialNumber)
+                                }
                             }
+
+
+
                             request({
                                 url:`${this.$ip}/mms-workorder/${url}`,
                                 method: 'post',
@@ -602,6 +606,7 @@
                             }).then((d) => {
                                 if(d.code==200){
                                     resolve(true)
+
                                     if(this.formItem.itemType<=4){
                                         if(!this.formItem.id){
                                             this.$set(this.formItem,'id',d.data.id)
@@ -619,7 +624,7 @@
 
         },
         created() {
-            this.getItem(1)
+              this.getItem(1)
             this.getInstruction(1)
             request({
                 url:`${this.$ip}/mms-workorder/templateLabel/selectByParam`,

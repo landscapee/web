@@ -37,7 +37,8 @@
                    <div v-if="row.type==4">
                        <div  class="upUser  ">
                            <img @click="upLogoPho" v-if="row.value"  :src="row.value" alt="请上传图片">
-                           <el-button v-else @click="upLogoPho" class="QoptionButton">图片上传</el-button>
+                           <el-button @click="upLogoPho"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
+
                        </div>
                        <div style="display: none">
                            <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="(file)=>{getFile(file,row)}"></UploadFile>
@@ -163,8 +164,8 @@
             },
             save(form){
                     return new Promise((resolve, reject)=>{
-
-                        request({
+                        if(this.tableData.length){
+                            request({
                                 url:`${this.$ip}/mms-workorder/templateBaseItem/saveOrUpdate`,
                                 method: 'post',
                                 data:this.tableData
@@ -175,6 +176,10 @@
                                 }
 
                             })
+                        }else{
+                            this.$message.info('请添加数据')
+                        }
+
                     })
 
                 },

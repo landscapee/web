@@ -6,11 +6,11 @@
                     {{title}}
                 </div>
                 <div class="QheadRight" >
-                    <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton">上传模板</el-button>
-                    <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton"  >复制历史模板</el-button>
+                    <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
+                    <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
                  </div>
                 <div style="display: none">
-                <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
+                <UploadFile    accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
             </div>
             </div>
             <div class="banner">
@@ -62,17 +62,17 @@
                 </div>
             </div>
             <div class="Qfooter">
-                <el-button class="QoptionButton" v-if="radio>1" @click="last()">上一步</el-button>
-                <el-button class="QoptionButton" @click="save()">保存</el-button>
-                <el-button class="QoptionButton" @click="save('submit')">提交</el-button>
-                <el-button class="QoptionButton"  v-if="radio<4" @click="next()">下一步</el-button>
+                <el-button   v-if="radio>1" @click="last()">上一步</el-button>
+                <el-button   @click="save()">保存</el-button>
+                <el-button   type="primary" @click="save('submit')">提交</el-button>
+                <el-button    v-if="radio<4" @click="next()">下一步</el-button>
 
             </div>
         </div>
         <div class="right">
-            <See ref="See" :form="form" :key="seeIndex"></See>
+            <See ref="See"   ></See>
         </div>
-        <CopyHistory ref="CopyHistory" ></CopyHistory>
+        <CopyHistory ref="CopyHistory" @getList="update" ></CopyHistory>
     </div>
 </template>
 
@@ -96,6 +96,7 @@
                 form:{ },
                 radio:1,
                 seeIndex:1,
+
             }
         },
 
@@ -105,8 +106,10 @@
           }  ,
         },
         methods: {
+            update(data){
+                  this.$router.push({path:'/WorkTemplateAdd',query:{type:'edit',id:data.typeVO.id}})
+            },
             radioClick(val){
-
                  if(val==this.radio){
                      return false
                  }
@@ -116,13 +119,26 @@
                 this.$refs.UploadFile.$refs.buttonClick.$el.click()
 
             },
+            getFile(file){
+                  request({
+                    url:`${this.$ip}/mms-workorder/template/upload`,
+                    method: 'post',
+                    params:{id:this.$route.query.id},
+                    data:{
+                        fileName:file.fileName,
+                        fileId:file.id,
+                    }
+                }).then(d => {
+                    if( d.code==200){
+                        this.$message.success("提交成功")
+                    }
+                });
+            },
             copyHistory(){
                 let code=this.$refs.One.getForm()
                 this.$refs.CopyHistory.open(code)
             },
-            getFile(file){
-                // this.$refs.One.modulesId(file.id)
-            },
+
             last(){
                 let path= this.$router.history.current.path
                 let comName=''
@@ -138,7 +154,7 @@
                     redesign='redesign'
                 }
                 this.$refs[comName].save('form',redesign).then(()=>{
-                    this.seeIndex++
+                    this.$refs.See.getInfo()
                     if(this.radio>1){
                         this.radio--
                     }
@@ -156,7 +172,7 @@
                     comName='Three'
                 }
                 this.$refs[comName].save('form').then((id)=>{
-                    this.seeIndex++
+                    this.$refs.See.getInfo()
                     this.upState(id)
                      if(this.radio<4){
                         this.radio++
@@ -182,7 +198,7 @@
                     comName='Four'
                 }
                 this.$refs[comName].save('form').then((id)=>{
-                    this.seeIndex++
+                    this.$refs.See.getInfo()
                     this.upState(id)
                      if(type=='submit'){
                         this.submit(id)
@@ -244,28 +260,39 @@
         }
         .banner{
             .bannerHead{
-
+                display: flex;
+                justify-content: left;
+                align-items: center;
+                .el-icon-arrow-right{
+                    margin: 0 14px!important;
+                }
                 /deep/ .el-radio{
                     margin:0; opacity: .6;
 
-                    .el-icon-arrow-right{
-                        margin: 0 20px;
+                    .el-radio__input {
+                        display: flex;
+                        justify-content: left;
+                        align-items: center;
                     }
-
                     .el-radio__label{
-                        color:black
+                        font-size: 16px;
                     }
-
+                    .el-radio__inner{
+                        height:16px;
+                        width:16px;
+                        border: 2px solid #888888;
+                    }
                     .el-radio__input.is-checked{
                         opacity: 1;
                         .el-radio__inner{
                             background: white;
-                            border-color:black ;
+                            border: 2px solid #3280e7;
                         }
                         .el-radio__inner:after{
-                            background-color:black;
+                            background-color:#3280e7;
                         }
                     }
+
                 }
                 /deep/ .is-checked{
                     opacity: 1;
@@ -284,4 +311,16 @@
 
     }
 }
+.Qfooter{
+
+    /deep/ .el-button:last-child{
+        border: 1px solid #b9b9b9;
+
+    }
+}
+    .QoptionButton1{
+        padding:7px 10px;
+        border: 1px solid #d0d0d0;
+
+    }
 </style>

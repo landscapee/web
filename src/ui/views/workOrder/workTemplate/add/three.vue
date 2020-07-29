@@ -10,7 +10,7 @@
                             </el-select>
                         </el-form-item>
                     </div>
-                    <div class="row_five" style="margin-top: 15px">
+                    <div class="row_five" style="margin-top: 30px">
 
 
                         <el-form-item  label="项次标签：" prop="itemLabel">
@@ -120,7 +120,7 @@
          margin: 0;
          /deep/ .el-form{
              height:auto;
-
+            margin-bottom: 30px;
              text-align: left;
             width: 100%;
              padding: 0;
@@ -135,10 +135,10 @@
 
 
                  .el-form-item__content{
-                     width: 170px;
+                     width: 150px;
                  }
                  .el-input{
-                     width:170px;
+                     width:150px;
                  }
                  .el-form-item__label{
                      width: auto;

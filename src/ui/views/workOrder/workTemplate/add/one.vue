@@ -13,7 +13,7 @@
                 </el-form-item>
                 <el-form-item  label="模板版本号：" prop="version">
                     <span v-if="type=='info'">{{form.version}}</span>
-                    <el-input v-else v-model="form.version" placeholder="请输入模板版本号"></el-input>
+                    <el-input :disabled="type=='edit'" v-else v-model="form.version" placeholder="请输入模板版本号"></el-input>
                 </el-form-item>
             </div>
 
@@ -44,7 +44,7 @@
                                     请上传图片
                         </span>
                         <img v-else :src="form.photoPath" alt="请上传图片">
-                        <el-button @click="upLogoPho" class="QoptionButton">图片上传</el-button>
+                        <el-button @click="upLogoPho"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
                     </div>
                     <div style="display: none">
                         <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
@@ -290,7 +290,22 @@
         created() {
               if(this.$route.query.type != "add"  ){
                this.getInfo()
-            }
+            }else{
+                  //  request({
+                  //     url:`${this.$ip}/mms-workorder//template/getNextVersion`,
+                  //     method: 'get',
+                  // }).then(d => {
+                  //     if( d.data&&d.data.length){
+                  //         this.Airline=[]
+                  //         d.data.map((k,l)=>{
+                  //             if(!k.parentCode){
+                  //                 this.AirlineObj[k.iata]=k.fullname
+                  //                 this.Airline.push(k)
+                  //             }
+                  //         })
+                  //     }
+                  // });
+              }
             request({
                 url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
                 method: 'get',
@@ -332,7 +347,7 @@
 <style lang="scss" scoped>
     .G_form{
         margin: 0;
-        border:1px black solid;
+        /*border:1px black solid;*/
         /deep/ .el-form{
             width: 100%;
             height:340px;

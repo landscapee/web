@@ -3,9 +3,9 @@
         <el-dialog title="复制历史版本工单模板"  :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
 
-                <el-form-item label="请选择历史版本号：">
-                    <el-select style="width:400px" v-model="form.sourcesId">
-                        <el-option v-for="(opt,index) in sourcesList" :label="opt.year+'-'+opt.month" :value="opt.id" :key="index">
+                <el-form-item label="请选择历史版本号：" prop="version">
+                    <el-select style="width:400px" v-model="form.version">
+                        <el-option v-for="(opt,index) in sourcesList" :label="opt.version" :value="opt.version" :key="index">
 
                          </el-option>
                     </el-select>
@@ -30,17 +30,22 @@
         data() {
             return {
                 form:{},
-                rules:{},
+
                 sourcesListObj:{},
                 sourcesList:[],
                 row:{},
                 dialogFormVisible:false,
+                rules:{
+
+                    version:[{required:true,message:'请选择模板版本号',trigger:'blur'}],
+
+                }
             }
         },
         methods: {
             open(code){
-
                 this.dialogFormVisible=true
+                this.$set(this.form,'code',code)
                  request({
                     url:`${this.$ip}/mms-workorder/template/getOptionsByCode/${ code}`,
                     method: 'get',
@@ -55,23 +60,17 @@
 
     submit(formName) {
                 this.$refs[formName].validate((valid) => {
-
                     if (valid) {
                          request({
                              url:`${this.$ip}/mms-workorder/template/copyByVersion`,
                              method:'post',
                              data:{
-
                                  ...this.form
                              }
                          }).then((d) => {
-
-                              if(d.data){
+                              if(d.code==200){
                                  this.close();
-                                 // if(this.row.id==this.row.selectedId){
-                                 //     this.$emit('getList');
-                                 // }
-                                  this.$emit('getList')
+                                  this.$emit('getList',d.data)
                                  this.$message({
                                      message: '复制成功',
                                      type: 'success',

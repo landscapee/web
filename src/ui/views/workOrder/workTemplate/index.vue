@@ -35,7 +35,7 @@
                             <div >
                                 <el-button class="QoptionButton" @click="enable(scope.row)"  v-if="scope.row.state===0&&scope.row.history===false">启用</el-button>
 
-                                <el-button class="QoptionButton" @click="addOrEditOrInfo1(scope.row,'redesign')" v-if="scope.row.state!==3">改版</el-button>
+                                <el-button class="QoptionButton" @click="addOrEditOrInfo1(scope.row,'edit')" v-if="scope.row.state!==3">改版</el-button>
                                 <el-button class="QoptionButton" @click="unEnable(scope.row)"  v-if="scope.row.state===1">停用</el-button>
                             </div>
                          </template>
@@ -167,7 +167,20 @@
                 }
             },
             addOrEditOrInfo1(row,tag){
-                this.$router.push({path:'/WorkTemplateAdd',query:{type:tag,id:row.id}});
+                request({
+
+                    url:`${this.$ip}/mms-workorder/template/copyByVersion`,
+                    method: 'post',
+                    params:{id:this.$route.query.id},
+                    data: {
+                        code:row.code,
+                        version:row.version,
+                    }
+                }).then(d => {
+                    if( d.code==200){
+                         this.$router.push({path:'/WorkTemplateAdd',query:{type:tag,id:d.data.typeVO.id}});
+                    }
+                });
 
             },
             delData(){

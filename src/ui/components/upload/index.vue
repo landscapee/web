@@ -20,7 +20,7 @@
     import request from '@lib/axios.js';
     export default {
         name: "copyDetails",
-        props:['accept'],
+        props:['accept','isUpload'],
         components: {},
         data() {
             return {
@@ -58,6 +58,10 @@
             handleSubmit(files,q) {
                 let data=new FormData()
                 data.append("file",files.file);
+                if(this.isUpload){
+                    this.$emit('getFile',files)
+                    return false
+                }
                  console.log(data,files,q,111);
                 request.defaults.headers.post['Content-Type'] = 'multipart/form-data'
                 request({

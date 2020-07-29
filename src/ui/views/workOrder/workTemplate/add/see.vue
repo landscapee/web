@@ -1,5 +1,5 @@
 <template>
-    <div class="seeConfig">
+    <div class="seeConfig"  >
         <div class="seeTitle">实时预览：</div>
         <div class="order">
             <div class="head">
@@ -102,6 +102,7 @@
     export default {
         name: "see",
          components: {},
+        props:['seeIndex'],
         data() {
             return {
                 get:get,
