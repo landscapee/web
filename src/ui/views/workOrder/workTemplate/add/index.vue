@@ -130,7 +130,7 @@
                     }
                 }).then(d => {
                     if( d.code==200){
-                        this.$message.success("提交成功")
+                        this.$message.success("上传成功")
                     }
                 });
             },
