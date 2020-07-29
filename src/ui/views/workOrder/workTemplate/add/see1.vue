@@ -46,48 +46,85 @@
                 <p v-html="get(form.templateRemarkVO,'beforeWarning')"> </p>
             </div>
             <div class="item" v-if="form.templateRemarkVO">
+                <table class="nomTable nomTable2">
 
+                    <tbody v-if="get(form.labelVO,'contentLayout')">
+                    <tr class="th">
+                        <td valign="middle">
+                            <div>{{get(form.labelVO,'itemLabel')}}</div>
+                            <div>{{get(form.labelVO,'itemLabelEnglish')}}</div>
+                        </td>
+                        <td valign="middle">
+                            <div>{{get(form.labelVO,'contentLabel')}}</div>
+                            <div>{{get(form.labelVO,'contentLabelEnglish')}}</div>
+                        </td>
+                        <td valign="middle" v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
+                            <div>{{get(form.labelVO,'workerLabel')}}</div>
+                            <div>{{get(form.labelVO,'workerLabelEnglish')}}</div>
+                        </td>
+                        <td valign="middle" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
+                            <div>{{get(form.labelVO,'commanderLabel')}}</div>
+                            <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
+                        </td>
+                    </tr>
+
+
+                    <tr v-if="form.contentVOList&&form.contentVOList.length" v-for="(opt,index) in form.contentVOList" :key="index">
+                                <div >
+                                    <td valign="middle">
+                                        {{opt.index}}
+                                    </td>
+                                    <td valign="middle">
+                                     <span v-if="opt.itemType==1||opt.itemType==3">
+                                         {{opt.name}}
+                                     </span>
+                                        <span v-else v-html="opt.content"></span>
+                                    </td>
+                                    <td valign="middle" v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
+
+                                    </td>
+                                    <td valign="middle" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
+
+                                    </td>
+                                </div>
+                            </tr>
+
+
+                    </tbody>
+                </table>
                 <el-row class="th">
-                <el-col  :span="4">
+                <el-col  >
                     <div>{{get(form.labelVO,'itemLabel')}}</div>
                     <div>{{get(form.labelVO,'itemLabelEnglish')}}</div>
                 </el-col>
-                <el-col  :span="get(form.labelVO,'contentLayout')=='C4（四列）'?12:get(form.labelVO,'contentLayout')=='C3（三列）'?16:20">
+                <el-col  >
                     <div>{{get(form.labelVO,'contentLabel')}}</div>
                     <div>{{get(form.labelVO,'contentLabelEnglish')}}</div>
                 </el-col>
-                <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
+                <el-col   v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
                     <div>{{get(form.labelVO,'workerLabel')}}</div>
                     <div>{{get(form.labelVO,'workerLabelEnglish')}}</div>
                 </el-col>
-                <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
+                <el-col   v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
                     <div>{{get(form.labelVO,'commanderLabel')}}</div>
                     <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
                 </el-col>
             </el-row>
 
                 <el-row  v-if="form.contentVOList&&form.contentVOList.length" v-for="(opt,index) in form.contentVOList" :key="index" >
-                    <el-col   :span="4" v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
-                       <div style="margin-right: 10px">
-                           <div v-if="opt.hookImport">✔</div>
-                           <div v-if="opt.notApplicable">N/A</div>
-                           <div v-if="opt.cycle">○</div>
-                       </div>
-                        <div>{{opt.index}}</div>
-                    </el-col>
-                    <el-col   :span="4" v-else class="colCenter">
+                    <el-col   :span="4">
                         {{opt.index}}
                     </el-col>
-                    <el-col  :span="get(form.labelVO,'contentLayout')=='C4（四列）'?12:get(form.labelVO,'contentLayout')=='C3（三列）'?16:20">
+                    <el-col  :span="12">
                                      <span v-if="opt.itemType==1||opt.itemType==3">
                                          {{opt.name}}
                                      </span>
                         <span v-else v-html="opt.content"></span>
                     </el-col>
-                    <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
+                    <el-col   v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
 
                     </el-col>
-                    <el-col :span="4" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
+                    <el-col  v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
 
                     </el-col>
                 </el-row>
@@ -226,9 +263,6 @@
 <style lang="scss" scoped>
 .seeConfig{
     width:100%;
-    height:calc(100vh - 89px);
-    overflow-y: auto; padding: 20px 30px;
-
     .seeTitle{
         line-height: 20px;
         margin-bottom: 6px;
@@ -327,47 +361,4 @@
         height:38px;
     }
 }
-    /deep/ .el-row{
-        border: 1px #979797 solid;
-        border-bottom: 0;
-        display: flex;
-        justify-content: left;
-        .colCenter{
-            min-height:45px;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .el-col{
-            padding: 2px 15px;
-            min-height:45px;
-             border-left: 1px #979797 solid;
-            display: flex;
-            justify-content: center;
-            /*flex-direction: column;*/
-            align-items: center;
-        }
-        .logo{
-             justify-content: left;
-         }
-        .el-col:first-child{
-            border-left: 0px #979797 solid;
-        }
-        
-    }
-/deep/ .el-row:last-child{
-    border-bottom: 1px #979797 solid;
-    }
-/deep/ .el-row:first-child{
-   .el-col{
-       height:45px;
-       display: flex;
-       justify-content: center;
-      flex-direction: column;
-       align-items: center;
-   }
-
-    }
 </style>

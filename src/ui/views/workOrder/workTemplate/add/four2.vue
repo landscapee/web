@@ -1,6 +1,6 @@
 <template>
     <div class="three">
-         <div class="threeBan">
+         <div class="threeBan"  >
             <div class="threeBanFirst  " @contextmenu.prevent.stop="openMainMenuFn($event,null)">
 
                 <el-tree
@@ -12,7 +12,7 @@
                         default-expand-all
                          ref="tree">
                     <div class="custom-tree-node" slot-scope="{ node, data,$index,index}">
-                        <div @click.prevent.stop="editItem(data,node)" @contextmenu.prevent.stop="openMainMenuFn($event,data)" style="width:100%">
+                        <div @click.prevent.stop="editItem(data,node)" @contextmenu.prevent.stop="openMainMenuFn($event,data)" style="width:100%" :class="formItem.id==data.id?'backColor':''">
                             {{ node.label }}
                             <i v-if="data.children&&data.children.length" class="el-icon-caret-bottom"></i>
                         </div>
@@ -20,7 +20,8 @@
                 </el-tree>
             </div>
             <div class="threeBanSecond G_form">
-                <el-form ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
+
+                <el-form v-if="formItem&&(formItem.itemType==1||formItem.itemType==3)" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
 
                     <div class="row_one widthOne1">
                         <el-form-item  label="项次编号：" prop="number">
@@ -54,18 +55,27 @@
 
                     </el-form-item>
                 </div>
-                    <div class="row_one">
-                        <el-form-item  label="" prop="hsSchedule">
-                            <!--航司附件项-->
-                            <el-checkbox    v-model="formItem.hsSchedule"  :label="true">非航司附加表 航司附件项</el-checkbox>
-                        </el-form-item>
-                    </div>
+
                     <div class="row_one">
                         <el-form-item  label="" prop="noSmallItem">
                             <el-checkbox @change="noSmallItemC"  v-model="formItem.noSmallItem"  :label="true">无工作小项</el-checkbox>
                         </el-form-item>
                     </div>
-
+                    <div class="row_one" v-if="formItem.noSmallItem">
+                        <el-form-item  label="" prop="hsSchedule">
+                            <el-checkbox    v-model="formItem.hsSchedule"  :label="true">非航司附加表  </el-checkbox>
+                        </el-form-item>
+                    </div>
+                    <div class="row_one" v-if="formItem.noSmallItem&&(formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+                        <el-form-item  label="" prop="c3WorkerTask">
+                            <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">适用工作者标签  </el-checkbox>
+                        </el-form-item>
+                    </div>
+                    <div class="row_one" v-if="formItem.noSmallItem&&formThree.contentLayout=='C4（四列）'">
+                        <el-form-item  label="" prop="hsSchedule">
+                            <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">适用指挥者标签  </el-checkbox>
+                        </el-form-item>
+                    </div>
                     <div class="row_one widthOne" v-if="formItem.noSmallItem">
                         <el-form-item  label="角色权限控制：" prop="role">
                             <el-select    multiple=""  v-model="formItem.role" placeholder="请选择角色权限控制">
@@ -74,7 +84,7 @@
                         </el-form-item>
                     </div>
                     <div class="row_one widthOne" v-if="formItem.noSmallItem">
-                        <div v-for="(item,index) in Limmit" :key="index">
+                        <div v-for="(item,index) in formItem.suitableRange" :key="index">
                             <el-form-item  label="适用范围类型：" prop="type">
                                 <el-select  @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
                                     <el-option v-for="(opt,index) in options.applyRangeType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
@@ -85,7 +95,7 @@
                                 <el-select v-else multiple  v-model="item.values" placeholder="请选择发动机">
                                     <el-option v-for="(opt,index) in options.EngineNo" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                 </el-select>
-                                <el-button v-if="Limmit.length>1" class="QoptionButton" @click="delLimmit(index)"><i class="el-icon-delete"></i> </el-button>
+                                <el-button v-if="formItem.suitableRange.length>1" class="QoptionButton" @click="delLimmit(index)"><i class="el-icon-delete"></i> </el-button>
 
                             </el-form-item>
                         </div>
@@ -93,6 +103,21 @@
                             <el-button class="QoptionButton" @click="addLimmit"><i class="el-icon-circle-plus-outline"></i>添加适用范围</el-button>
                         </div>
                     </div>
+                </el-form>
+                <el-form v-else-if="editTrue" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
+                   <div style="font-size: 14px;margin-bottom: 10px">
+                       {{formItem.paId?dataItemObj[formItem.paId].name:''}}
+                       <i class="el-icon-arrow-right" v-if="formItem.paId"> </i>
+                       {{formItem.papId?dataItemObj[formItem.paId][formItem.papId].name:''}}
+                       <i class="el-icon-arrow-right" v-if="formItem.papId"> </i>
+                       {{formItem.name}}编辑：
+                   </div>
+                    <order-editor
+                            id="editor_id" height="100%" width="100%" :content.sync="formItem[key]"
+                            :loadStyleMode="false"
+                            @on-content-change="onContentChange"
+                    ></order-editor>
+
                 </el-form>
 
 
@@ -120,6 +145,7 @@
 
 <script>
     import {  extend ,map} from 'lodash';
+    import orderEditor from '@components/orderEditor/index.vue';
 
     import request from '@lib/axios.js';
     export default {
@@ -127,19 +153,17 @@
         props:{
             type:String,
         },
-        components: { },
+        components: {orderEditor },
         data() {
             return {
-                Limmit:[{type:'',values:[]}],
-                formItem:{addLogo:true,noSmallItem:true,noSignTime:true,},
-                 dataTreeObj:{},
-                dataTree:[],
+
+                formThree:{},
+                 formItem:{addLogo:true,noSmallItem:true,noSignTime:true,},
+                 dataTree:[],
                 dataTreeY:[],
                 Instruction:{},
-                InstructionY:{},
-                dataItem:[],
-                dataItemY:[],
-                dataItemObj:{},
+                 dataItem:[],
+                 dataItemObj:{},
                 defaultProps: {
                     children: 'children',
                     label: 'name'
@@ -152,16 +176,32 @@
                 visible:false,
                 styleObj:{left:1,top:1},
                 rules:{},
-                formItemNum:0,
+                idEditor:0,
             }
         },
         computed:{
-            dataTreeUp (){
-                 return {
-                     a:this.dataItem ,
-                     a1: this.Instruction,
+             key(){
+                 let key
+
+                 if(this.formItem.itemType==2||this.formItem.itemType==4){
+                     key='content'
+                 }else{
+                     if(this.formItem.itemType==5){
+                         key='beforeWarning'
+                     }else  if(this.formItem.itemType==6){
+                         key='afterExplain'
+                     }else  if(this.formItem.itemType==7){
+                         key='afterSchedule'
+                     }
                  }
-            },
+                 return key
+             },
+            editTrue(){
+                 if( this.formItem.itemType==2||this.formItem.itemType==4||this.formItem.itemType==5||this.formItem.itemType==6||this.formItem.itemType==7){
+                    return true
+                }
+                return false
+            }
 
         },
         watch: {
@@ -175,49 +215,36 @@
             },
             formItem: {
                 handler(n){
-                   this.formItemNum++
-                    console.log(this.formItemNum,'this.formItemNum');
+                   this.idEditor++
+                    console.log(this.idEditor,'this.idEditor');
                 },
                 deep:true,
             },
-            dataTreeUp(){
-                 let arr= [...this.dataItem]
-                 map(this.Instruction,(k,l)=>{
-                    let obj={val:k,name:'',realId:this.Instruction.id,id:l+Math.random()}
-                    if(l=='beforeWarning'){
-                        obj.name='事前警告'
-                        arr.unshift(obj)
-                    }else if(l=='afterExplain'){
-                        obj.name='事后说明'
-                        arr.push(obj)
-                    }else if(l=='afterSchedule'){
-                        obj.name='事后附表'
-                        arr.push(obj)
-                    }
-                })
-                  this.dataTree=[...arr]
-                  this.dataTreeY=[...arr]
-            },
+
         },
         methods: {
+            onContentChange (val) {
+
+
+            },
             noSmallItemC(val){
                 if(val){
-                    this.Limmit=[{type:'',values:[]}]
+                    this.formItem.suitableRange=[{type:'',values:[]}]
                 }else{
                     if(this.formItem.role){
                         this.formItem.role=null
                     }
-                    this.Limmit=[]
+                    this.formItem.suitableRange=[]
                 }
             },
             limmitTypeC(index){
-                this.Limmit[index].values=[]
+                this.formItem.suitableRange[index].values=[]
             },
             delLimmit(index){
-              this.Limmit.splice(index,1)
+              this.formItem.suitableRange.splice(index,1)
             },
             addLimmit(){
-              this.Limmit.push({type:'',values:[]})
+              this.formItem.suitableRange.push({type:'',values:[]})
             },
             addBigItem(){
                this.addItem()
@@ -230,6 +257,7 @@
                     templateBaseId:this.$route.query.id,
                     contentId:this.addItemObj&&this.addItemObj.id,
                     itemType:'',
+                    id:this.Instruction.id||null
                 }
                 if(key=='beforeWarning'){
                     obj.name='事前警告'
@@ -252,19 +280,17 @@
                    num=1
                 }
                 let obj={
-                    name:`内容${this.addItemObj.children.length}`,
+                    name:` 工作内容${this.addItemObj.children.length+1}`,
                     index:num==1?this.addItemObj.children.length:this.dataItem.length ,
                     itemType:num==0?2:4,
-                    paId:num?this.addItemObj.id:null,
+                    paId:num==0?this.addItemObj.id:num==1?this.addItemObj.paId:null,
                     papId:num==1?this.addItemObj.id:null,
                     templateBaseId:this.$route.query.id,
                     contentId:this.addItemObj&&this.addItemObj.id,
                 }
                 this.formItem={...obj}
                 this.addItemObj.children.push(obj)
-
-                // this.formItemNum++
-
+                // this.idEditor++
             },
             addItem( num){
                  let name=`项次${this.dataItem.length+1}【工作大项】`
@@ -282,40 +308,28 @@
                     templateBaseId:this.$route.query.id,
                 }
                 this.formItem={...obj}
-                this.dataItem.push(obj)
                 if(num==1){
                     this.addItemObj.children.push(obj)
                 }else{
                     this.dataTree.push(obj)
                 }
-                // this.formItemNum++
+                // this.idEditor++
             },
 
-            getInstruction(){
-                request({
-                    url:`${this.$ip}/mms-workorder/templateRemark/selectByTemplateId/${this.$route.query.id}`,
-                    method: 'get',
-                }).then((d) => {
-                    if(d.code==200){
-                        this.Instruction={...d.data}
-                        this.InstructionY={...d.data}
-                    }
-                })
-            },
+
             editItem(data,node,index,index1){
-                console.log( this.formItemNum,data, node,index,index1);
+                console.log( this.idEditor,data, node,index,index1);
                 this.switchPrompt().then((d)=>{
                     if(d==1){
-                        // this.save('form').then(()=>{
-                        //     this.formItem={...data}
-                        //      this.$nextTick(()=>{
-                        //         this.formItemNum=0
-                        //     })
-                        // })
+                        this.dataTree=[...this.dataTreeY]
+                        this.formItem={...data}
+                        this.$nextTick(()=>{
+                            this.idEditor=0
+                        })
                     }else if(d==3){
                         this.formItem={...data}
                         this.$nextTick(()=>{
-                            this.formItemNum=0
+                            this.idEditor=0
                         })
                     }
 
@@ -337,29 +351,31 @@
                     instructionB:  !obj,
                     AfterTable: !obj,
                 };
-                this.visible = true
+                  this.visible = true
             },
             openMainMenuFn(e,obj){
                 console.log(obj);
                 this.switchPrompt( ).then((d)=>{
-                    let num=this.formItem.itemType
+                    // let num=this.formItem.itemType
+
                     if(d==1){
-                      if(num<=4){
-                          this.dataItem=[...this.dataItemY]
-                      }else{
-                          this.Instruction={...this.InstructionY}
-                      }
+                        this.dataTree=[...this.dataTreeY]
+                        // this.formItem={...this.addItemObj}
+                        // this.$nextTick(()=>{
+                        //     this.idEditor=0
+                        // })
+                        this.openMainMenuFnOption(e,obj)
+
                     }else if(d==2){
                     }else{
                         this.openMainMenuFnOption(e,obj)
                     }
-                    // this.visible = false
+
                 })
             },
-            switchPrompt( ){
+            switchPrompt(){
                 return new Promise((resolve ,reject)=>{
-
-                    if(this.formItemNum>0){
+                    if(this.idEditor>0){
                         this.$confirm(`有${this.formItem.id?'修改':'新增'}未保存，是否离开？`, '提示', {
                             confirmButtonText: '是',
                             cancelButtonText: '否',
@@ -373,7 +389,6 @@
                         resolve(3)
                     }
                 })
-
             },
             closeMenu(el) {
                  if(el.path[0]!=this.$refs.addLi){
@@ -387,13 +402,30 @@
                     type: 'warning',
                 }).then(() => {
                       let type=this.addItemObj.itemType
-                     let url=type==2||type==4?'/contentDetail/delete/':'/templateContent/delete/'
-                         request({
-                            url:`${this.$ip}/mms-workorder${url}${this.addItemObj.id}`,
-                            method: 'delete',
+                     let url=type==2||type==4?'/contentDetail/delete/'+this.addItemObj.id:'/templateContent/delete/'+this.addItemObj.id
+                   let obj={...this.Instruction}
+                    if(type>4){
+                        url='/templateRemark/update'
+                        if(type==5){
+                            delete obj.beforeWarning
+                        }else if(type==6){
+                            delete obj.afterExplain
+                        }else if(type==7){
+                            delete obj.afterSchedule
+                        }
+                    }
+                          request({
+                            url:`${this.$ip}/mms-workorder${url}`,
+                            method: type>4?'post':'delete',
+                              data:type>4?obj:null
                         }).then((d) => {
                             if(d.code==200){
-                                this.getItem(1)
+                                if(type>4){
+                                    this.getInstruction(1)
+                                }else{
+                                    this.getItem(1)
+                                }
+
                                 this.$message({type: 'success',message: '删除成功'});
                             }
                         })
@@ -406,7 +438,6 @@
             },
             trans(data){
                 data.map((k,l)=>{
-
                     k.itemType=1   //大项
                     k.index=l  //大项
                     this.dataItemObj[k.id]={...k}
@@ -427,13 +458,13 @@
                     }else{
                         if(k.children){
                             k.children.map((o,p)=>{
-
                                 o.paId=k.id
                                 o.itemType=3 //小项
                                 o.ibdex=p //小项
+                                o.suitableRange=o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
                                 this.dataItemObj[k.id][o.id]={...o}
                                 if(o.contentDetails){
-                                    o.children=k.contentDetails.map((o1,p1)=>{
+                                    o.children=o.contentDetails.map((o1,p1)=>{
                                         let obj1={
                                             ...o1,
                                             padId:o.id,
@@ -452,6 +483,29 @@
 
                 })
             },
+            positionItem(num){
+                let obj={}
+                   if(num==1){
+                       obj={...this.dataTree[0]}
+                }else{
+                     if(this.formItem.paId){
+                        if(this.formItem.papId){
+                            obj=this.dataItemObj[this.formItem.paId][this.formItem.papId][this.formItem.id]
+                        }else{
+                            obj=this.dataItemObj[this.formItem.paId][this.formItem.id]
+                        }
+                    }else {
+                         obj=this.dataItemObj[this.formItem.id]
+                    }
+                }
+                if((obj.itemType==1||obj.itemType==3)&&obj.suitableRange){
+                    obj.suitableRange=[{type:'适用机型范围',values:[]}]
+                }
+                this.formItem={...obj}
+                this.$nextTick(()=>{
+                    this.idEditor=0
+                })
+            },
             getItem(num){
                 request({
                     url:`${this.$ip}/mms-workorder/templateContent/list/${this.$route.query.id}`,
@@ -460,36 +514,67 @@
                     if(d.code==200){
                         let arr=d.data;
                         this.trans(arr);
-                        this.dataItemY=[...arr];
-                        this.dataItem=[...arr];
-                        if(num==1){
-                            this.formItem={...arr[0]}
-                        }else if(num==3){
-                            this.formItem={...arr[arr.length-1]}
-                        }else{
-                            if(this.formItem.paId){
-                                if(this.formItem.papId){
-                                    this.formItem= this.dataItemObj[this.formItem.paId][this.formItem.papId][this.formItem.id]
-                                }else{
-                                    this.formItem= this.dataItemObj[this.formItem.paId][this.formItem.id]
-                                }
-                            }else {
-                                this.formItem= this.dataItemObj[this.formItem.id]
-                            }
-                        }
+                         this.dataItem=[...arr];
+                        this.dataTreeUp()
+                        this.positionItem(num)
+                    }
+                })
+            },
+            getInstruction(num){
+                request({
+                    url:`${this.$ip}/mms-workorder/templateRemark/selectByTemplateId/${this.$route.query.id}`,
+                    method: 'get',
+                }).then((d) => {
+                    if(d.code==200){
+                        this.Instruction={...d.data}
+                        this.dataTreeUp()
+                        let obj={}
+                       if(this.formItem.itemType==5||num==1){
+                           obj= this.dataTree[0]
+                       }else{
+                            this.dataTree.map((k,l)=>{
+                               if(k.id==this.formItem.id){
+                                   obj=this.dataTree[l]
+                               }
+                           })
+                       }
+                        this.formItem={...obj}
                         this.$nextTick(()=>{
-                            this.formItemNum=0
+                            this.idEditor=0
                         })
                     }
                 })
+            },
+            dataTreeUp(){
+                let arr= [...this.dataItem]
+                map(this.Instruction,(k,l)=>{
+                    let obj={val:k,name:'',itemType:'',realId:this.Instruction.id,id:l+Math.random()}
+                    if(l=='beforeWarning'){
+                        obj.name='事前警告'
+                        obj.itemType=5
+                        obj.beforeWarning=k
+                        arr.unshift(obj)
+                    }else if(l=='afterExplain'){
+                        obj.name='事后说明'
+                        obj.itemType=6
+                        obj.afterExplain=k
+                        arr.push(obj)
+                    }else if(l=='afterSchedule'){
+                        obj.name='事后附表'
+                        obj.itemType=7
+                        obj.afterSchedule=k
+                        arr.push(obj)
+                    }
+                })
+                this.dataTree=[...arr]
+                this.dataTreeY=[...arr]
             },
             save (form,num){
                 return new Promise((resolve, reject)=>{
                     this.$refs[form].validate(valid => {
                         if (valid) {
-                            debugger
-                            let url ='';
-                            let urlL=this.formItem.id?'save':'update'
+                             let url ='';
+                            let urlL=this.formItem.id?'update':'save'
                             let type=this.formItem.itemType;
                             if(type==1||type==3){
                                 url=`templateContent/${urlL}`
@@ -498,17 +583,33 @@
                             }else if(type==5||type==6||type==7){
                                 url=`templateRemark/${urlL}`
                             }
+                            let obj={...this.formItem}
+                            if(this.formItem.itemType>4){
+                                obj={
+                                    beforeWarning:this.Instruction.beforeWarning||null,
+                                    afterExplain:this.Instruction.afterExplain||null,
+                                    afterSchedule:this.Instruction.afterSchedule||null,
+                                     ...obj,
+                                }
+                            }
                             request({
                                 url:`${this.$ip}/mms-workorder/${url}`,
                                 method: 'post',
                                 data:{
-                                    ...this.formItem,
+                                    ...obj,
                                     templateBaseId:this.$route.query.id,
                                 },
                             }).then((d) => {
                                 if(d.code==200){
                                     resolve(true)
-                                    this.getItem()
+                                    if(this.formItem.itemType<=4){
+                                        if(!this.formItem.id){
+                                            this.$set(this.formItem,'id',d.data.id)
+                                        }
+                                        this.getItem()
+                                    }else{
+                                        this.getInstruction()
+                                    }
                                  }
                             })
                         }
@@ -519,7 +620,16 @@
         },
         created() {
             this.getItem(1)
-            this.getInstruction()
+            this.getInstruction(1)
+            request({
+                url:`${this.$ip}/mms-workorder/templateLabel/selectByParam`,
+                method: 'post',
+                data:{templateBaseId:this.$route.query.id}
+            }).then((d) => {
+                if(d.code==200){
+                    this.formThree={...d.data }
+                }
+            })
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -545,7 +655,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+.backColor{
+    background:#DCDFE6 ;
+}
     .threeBan{
         margin-top: 30px;
 

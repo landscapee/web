@@ -27,14 +27,24 @@
             </el-table-column>
             <el-table-column slot="type" label="信息项值类型"  align="center" >
                 <template slot-scope="{ row }">
-                    <el-select v-model="row.type"  placeholder="请选择信息项值类型" >
-                        <el-option v-for="(opt,index) in infoValueType" :key="index" :label="opt.valData" :value="opt.valData"></el-option>
+                    <el-select @change="typeChange(row)" v-model="row.type"  placeholder="请选择信息项值类型" >
+                        <el-option v-for="(opt,index) in infoValueType" :key="index" :label="opt.valData" :value="opt.valCode"></el-option>
                     </el-select>
                 </template>
             </el-table-column>
             <el-table-column slot="value" label="值"   align="center" >
-                <template slot-scope="{ row }">
-                    <el-input v-model="row.value"  placeholder="请输入值" >  </el-input>
+                <template slot-scope="{ row ,$index}">
+                   <div v-if="row.type==4">
+                       <div  class="upUser  ">
+                           <img @click="upLogoPho" v-if="row.value"  :src="row.value" alt="请上传图片">
+                           <el-button v-else @click="upLogoPho" class="QoptionButton">图片上传</el-button>
+                       </div>
+                       <div style="display: none">
+                           <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="(file)=>{getFile(file,row)}"></UploadFile>
+
+                       </div>
+                   </div>
+                    <el-input v-else  v-model="row.value"  placeholder="请输入值" >  </el-input>
 
                 </template>
             </el-table-column>
@@ -87,6 +97,26 @@
         },
 
         methods: {
+            typeChange(row){
+                row.value=''
+            },
+            upLogoPho(){
+                this.$refs.UploadFile.$refs.buttonClick.$el.click()
+            },
+
+            getFile(file,row){
+                  request({
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-file/get-file-by-id/${file.id }`,
+                    method:'GET',
+
+                }).then((d) => {
+                    this.$set(row,'value',d.data.filePath)
+                });
+
+            },
             addList(){
                 this.tableData.unshift({templateId:this.$route.query.id})
             },
@@ -131,7 +161,7 @@
                 }
 
             },
-                save(form){
+            save(form){
                     return new Promise((resolve, reject)=>{
 
                         request({
@@ -181,5 +211,15 @@
             border: 0;
         }
     }
+    .upUser{
 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img{
+            /*border: 1px #303133 solid;*/
+            width: 120px;
+            height:30px;
+        }
+    }
 </style>

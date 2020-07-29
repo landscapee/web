@@ -111,13 +111,19 @@
                         method: 'get',
                         params:{
                             title:this.form.title,
+                            id:this.$route.query.id,
                         }
-                    }).then(response => {
-                        if (response.data) {
-                            callback();
-                        } else {
-                            callback("该工单标题已存");
+                    }).then(d => {
+                        if(d.code==200){
+                            if (d.data) {
+                                callback();
+                            } else {
+                                callback("该工单标题已存");
+                            }
+                        }else{
+                            callback("校验失败，请重试");
                         }
+
                     });
                 }
             };
@@ -131,7 +137,7 @@
                 AircraftType:[],
                 rules:{
                     code:[{required:true,message:'请输入工单模板编码',trigger:'blur'}],
-                    title:[{ validator:title, trigger: "blur" }, ],
+                    title:[{required:true, validator:title, trigger: "blur" }, ],
                     version:[{required:true,message:'请输入模板版本号',trigger:'blur'}],
                     type:[{required:true,message:'请选择工单类型',trigger:'blur'}],
                     airlineCompanyCode:[{required:true,message:'请选择所属航司代码',trigger:'blur'}],
@@ -274,7 +280,6 @@
                             },
                             url:`${this.$ip}/mms-file/get-file-by-id/${this.form.airlineCompanyLogo }`,
                             method:'GET',
-
                         }).then((d) => {
                             this.$set(this.form,'photoPath',d.data.filePath)
                         });
@@ -332,9 +337,13 @@
             width: 100%;
             height:340px;
             padding: 20px 20px 5px 20px;
+
             .row_three{
                 .el-form-item:nth-child(2) {
-                    margin: 0 65px;
+                    margin: 0 25px;
+                }
+                .el-form-item:nth-child(1) ,.el-form-item:nth-child(3) {
+                    margin-right: 0;
                 }
             }
             .el-input{
@@ -348,8 +357,9 @@
         };
          .upUser{
              width:200px;
-             display: flex;
+            display: flex;
              justify-content: space-between;
+             align-items: center;
             img{
                 /*border: 1px #303133 solid;*/
                 width: 120px;

@@ -46,7 +46,7 @@
 
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
 
-					<el-table-column v-else-if="colConfig.prop=='index'" type="index" :index="(index1)=>{return index+1}" v-bind="colConfig" :key="index" :reserve-selection="true">
+					<el-table-column v-else-if="colConfig.prop=='index'" type="index"  v-bind="colConfig" :key="index" :reserve-selection="true">
 
 					</el-table-column>
 					<el-table-column v-else :show-overflow-tooltip="true"     v-bind="colConfig" :key="index" :reserve-selection="true">

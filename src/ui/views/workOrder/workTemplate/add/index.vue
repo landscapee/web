@@ -6,24 +6,53 @@
                     {{title}}
                 </div>
                 <div class="QheadRight" >
-                    <el-button @click="upTemplate" v-if="radio==3" class="QoptionButton">上传模板</el-button>
+                    <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton">上传模板</el-button>
                     <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton"  >复制历史模板</el-button>
                  </div>
                 <div style="display: none">
                 <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
-
             </div>
-
             </div>
             <div class="banner">
                 <div class="bannerHead">
-                    <el-radio  v-model="radio" :label="1" @change="radioClick">工单类型配置</el-radio>
+                    <label @click="radioClick(1)"   :class="radio==1?'el-radio is-checked':'el-radio'">
+                        <span  :class="radio==1?'el-radio__input is-checked':'el-radio__input'">
+                          <span class="el-radio__inner"></span>
+                         <span   class="el-radio__original"  ></span>
+                         <span class="el-radio__label">工单类型配置</span>
+                        </span>
+                    </label>
                     <i class="el-icon-arrow-right"> </i>
-                    <el-radio  v-model="radio" :label="2" @change="radioClick">基本信息配置</el-radio>
+                    <label @click="radioClick(2)"     :class="radio==2?'el-radio is-checked':'el-radio'">
+                        <span  :class="radio==2?'el-radio__input is-checked':'el-radio__input'">
+                          <span class="el-radio__inner"></span>
+                         <span   class="el-radio__original"  ></span>
+                         <span class="el-radio__label">基本信息配置</span>
+                        </span>
+                    </label>
                     <i class="el-icon-arrow-right"> </i>
-                    <el-radio  v-model="radio" :label="3" @change="radioClick">工作标签与布局</el-radio>
-                 <i class="el-icon-arrow-right"> </i>
-                    <el-radio  v-model="radio" :label="4" @change="radioClick">工作项与内容配置</el-radio>
+                    <label @click="radioClick(3)"     :class="radio==3?'el-radio is-checked':'el-radio'">
+                        <span  :class="radio==3?'el-radio__input is-checked':'el-radio__input'">
+                          <span class="el-radio__inner"></span>
+                         <span   class="el-radio__original"  ></span>
+                         <span class="el-radio__label">工作标签与布局</span>
+                        </span>
+                    </label>
+                    <i class="el-icon-arrow-right"> </i>
+                    <label @click="radioClick(4)"     :class="radio==4?'el-radio is-checked':'el-radio'">
+                        <span  :class="radio==4?'el-radio__input is-checked':'el-radio__input'">
+                          <span class="el-radio__inner"></span>
+                         <span   class="el-radio__original"  ></span>
+                         <span class="el-radio__label">工作项与内容配置</span>
+                        </span>
+                    </label>
+                    <!--<el-radio  v-model="radio" :label="1" @change="radioClick">工单类型配置</el-radio>-->
+                    <!--<i class="el-icon-arrow-right"> </i>-->
+                    <!--<el-radio  v-model="radio" :label="2" @change="radioClick">基本信息配置</el-radio>-->
+                    <!--<i class="el-icon-arrow-right"> </i>-->
+                    <!--<el-radio  v-model="radio" :label="3" @change="radioClick">工作标签与布局</el-radio>-->
+                 <!--<i class="el-icon-arrow-right"> </i>-->
+                    <!--<el-radio  v-model="radio" :label="4" @change="radioClick">工作项与内容配置</el-radio>-->
                  </div>
                 <div class="component">
                     <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==1" :key="(new Date().toString())"></One>
@@ -41,9 +70,7 @@
             </div>
         </div>
         <div class="right">
-
-
-
+            <See ref="See" :form="form" :key="seeIndex"></See>
         </div>
         <CopyHistory ref="CopyHistory" ></CopyHistory>
     </div>
@@ -57,17 +84,18 @@
      import Two from './two'
      import Three from './three'
      import Four from './four2'
+     import See from './see'
      import CopyHistory from './copyHistory'
     export default {
         name: "index",
-        components: {One,Two,Three,Four,CopyHistory},
+        components: {One,Two,Three,Four,See,CopyHistory},
         data() {
             return {
                 title:'',
                 type:'add',
                 form:{ },
                 radio:1,
-
+                seeIndex:1,
             }
         },
 
@@ -78,7 +106,11 @@
         },
         methods: {
             radioClick(val){
-                console.log(val,1,2);
+
+                 if(val==this.radio){
+                     return false
+                 }
+                 this.save('radio',val)
             },
             upTemplate(){
                 this.$refs.UploadFile.$refs.buttonClick.$el.click()
@@ -106,6 +138,7 @@
                     redesign='redesign'
                 }
                 this.$refs[comName].save('form',redesign).then(()=>{
+                    this.seeIndex++
                     if(this.radio>1){
                         this.radio--
                     }
@@ -123,6 +156,7 @@
                     comName='Three'
                 }
                 this.$refs[comName].save('form').then((id)=>{
+                    this.seeIndex++
                     this.upState(id)
                      if(this.radio<4){
                         this.radio++
@@ -136,7 +170,7 @@
                     this.init()
                 }
             },
-            save(submit){
+            save(type,num){
                 let comName=''
                 if(this.radio==1){
                     comName='One'
@@ -148,12 +182,15 @@
                     comName='Four'
                 }
                 this.$refs[comName].save('form').then((id)=>{
+                    this.seeIndex++
                     this.upState(id)
-                     if(submit=='submit'){
+                     if(type=='submit'){
                         this.submit(id)
-                    }else{
+                    }else if(type=='radio'){
+                         this.radio=num
                          this.$message.success("保存成功")
-
+                     }else{
+                         this.$message.success("保存成功")
                      }
                 })
 
@@ -183,19 +220,10 @@
                                 ?'工单模板改版':''
                 this.$route.meta.title=this.title
             },
-            getInfo( id){
-                request({
-                    url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
-                    method: 'get',
-                    // params:{id:id||this.$route.query.id}
-                }).then((data) => {
-                    this.form = extend({}, {...data.data});
 
-                })
-            }
         },
         created() {
-            // this.getInfo()
+
             this.init()
         },
 
@@ -205,9 +233,10 @@
 <style lang="scss" scoped>
 .addindex{
     display: flex;justify-content: left;
-    height:calc(100vh - 110px);
+    height:calc(100vh - 89px);
+    border-bottom: 1px #e4e8eb solid;
     .left{
-        width:calc(100% - 500px);
+        width:calc(100% - 600px);
         padding: 0 30px;
         .QoptionButton{
             border-radius: 5px;
@@ -250,8 +279,9 @@
 
     }
     .right{
-        width:500px;
-        border-left: 1px #E4E8EB solid;
+        width:600px;
+        border-left: 1px #e4e8eb solid;
+
     }
 }
 </style>
