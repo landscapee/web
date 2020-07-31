@@ -218,13 +218,12 @@
                        k.itemType=1
                        k.index=l+1//大项
                        arr.push(k)
-
                        if(k.noSmallItem){
                            if(k.contentDetails){
-
                               k.contentDetails.map((o,p)=>{
+                                  console.log(o.content,12,1);
 
-                                   let obj={
+                                  let obj={
                                        ...o,
                                        p:k,
                                        paId:k.id,
@@ -312,7 +311,6 @@
                 border-collapse:collapse; border-spacing:0;
                 tr{
                     height:45px;
-
                 }
                 .duijiao{
 
@@ -333,15 +331,11 @@
                     )!important;
                 }
                 td{
+                    height:45px;
                     text-align: center;
-                     /*height:45px;*/
                     border:1px #979797 solid;
-                    height:100%;
-
                 }
             }
-
-
         }
     }
 

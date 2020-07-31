@@ -483,7 +483,6 @@
                                 // o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
                                 this.dataItemObj[k.id][o.id]={...o}
                                  if(o.contentDetails){
-                                     debugger
                                     o.children=o.contentDetails.map((o1,p1)=>{
                                         let obj1={
                                             ...o1,
@@ -508,7 +507,6 @@
             },
             positionItem(num){
                 let obj={}
-                debugger
                    if(num==1){
                        obj={...this.dataTree[0]}
                 }else{
@@ -624,7 +622,7 @@
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                       obj.rolePermissions=obj.rolePermissions.join(';')
-                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.formItem.serialNumber+'_'+new Date().getTime()+'_')
+                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,'@@@'+this.formItem.serialNumber+'_'+new Date().getTime()+'_')
                                 }else{
 
                                   }
