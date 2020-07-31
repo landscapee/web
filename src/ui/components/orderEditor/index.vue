@@ -307,7 +307,7 @@ export default {
         var editor = this, name = 'inpt';
         editor.clickToolbar(name, function() {
             _this.inputIndex+=1
-            editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex + '"/>')
+            editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex + '@@@"/>')
         })
     })
     // 单选
@@ -330,7 +330,7 @@ export default {
         var editor = this, name = 'na'
         editor.clickToolbar(name, function() {
             _this.inputIndex+=1
-            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
+            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'@@@">是<input type="radio"  name="$$$'+_this.inputIndex+'@@@">否')
         })
     })
     // 签章
@@ -419,7 +419,7 @@ export default {
             this.radioInputList = val
             let name = this.inputIndex+=1
             let html = this.radioInputList.map(i=>{
-                return `<input name='${'$$$'+this.inputIndex}' type='${type}'> ${i.value} `
+                return `<input type='${type}' name='${'$$$'+this.inputIndex}@@@'> ${i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
