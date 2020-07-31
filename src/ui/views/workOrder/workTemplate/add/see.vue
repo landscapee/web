@@ -15,96 +15,121 @@
             </table>
             </div>
             <div class="info" v-if="form.baseItemVOList&&form.baseItemVOList.length>0">
-                 <table class="nomTable nomTable1">
-                     <tbody>
-                         <div  v-for="(opt) in Math.ceil(form.baseItemVOList.length/3)" :key="opt"  >
-                             <tr   >
-                                 <td  v-for="(opt1,index) in getArr(opt)" :key="index" valign="middle">
-                                     <div>{{opt1.nameCn}}</div>
-                                     <div>{{opt1.nameEn}}</div>
-                                 </td>
-                             </tr>
-                             <tr  >
-                                 <td  v-for="(opt1,index) in getArr(opt)" :key="index" valign="middle" class="trimg">
+               <div class="lastRow" v-for="(opt) in Math.ceil(form.baseItemVOList.length/3)" :key="opt" >
+                   <el-row    >
+                       <el-col class="colCenter" :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
+                           <div>{{opt1.nameCn}}</div>
+                           <div>{{opt1.nameEn}}</div>
+                       </el-col>
+                   </el-row>
+                   <el-row  >
+                       <el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
 
-                                     <div v-if="opt1.type==4"  >
-                                         <img   :src="opt1.value" alt="请上传图片">
-                                     </div>
-                                     <template v-else-if="opt1.type==2">
-                                         {{opt1.value}}
-                                     </template>
-                                     <div v-else >
-                                     </div>
-                                 </td>
-                             </tr>
-                         </div>
+                               <img v-if="opt1.type==4"   :src="opt1.value" alt="加载失败">
+                               <div v-if="opt1.type==4" > {{ '${'+opt1.placeholder+'}'}}</div>
 
-                     </tbody>
-                </table>
+                           <template v-else-if="opt1.type==2">
+                               {{opt1.value}}
+                           </template>
+                           <div v-else-if="opt1.type==1" >
+
+
+                           </div>
+                           <div v-else-if="opt1.type==3" >
+                               <input type="text" :name="opt1.placeholder" ></input>
+                               <div> {{ '${'+opt1.placeholder+'}'}}</div>
+                           </div>
+                           <div v-else-if="opt1.type==5" >
+                               <div>
+                                   <div v-for="(k,l) in opt1.value.split(';')" :key="l">
+                                       <input type="radio" :name="opt1.placeholder" ></input>{{k}}
+                                   </div>
+                                   {{ '${'+opt1.placeholder+'}'}}
+                               </div>
+                               <div> </div>
+                           </div>
+                           <div v-else-if="opt1.type==6" >
+                               <div> {{ '${'+opt1.placeholder+'}'}}</div>
+
+                           </div>
+                       </el-col>
+                   </el-row>
+
+               </div>
+
             </div>
             <div class="instruction"  v-if="get(form.templateRemarkVO,'beforeWarning')">
                 <p v-html="get(form.templateRemarkVO,'beforeWarning')"> </p>
             </div>
             <div class="item" >
+                <table class="one" border="0" width="100%">
+                    <tr height="45px">
 
-                <el-row class="th">
-                <el-col  :span="4">
-                    <div>{{get(form.labelVO,'itemLabel')}}</div>
-                    <div>{{get(form.labelVO,'itemLabelEnglish')}}</div>
-                </el-col>
-                <el-col  :span="get(form.labelVO,'contentLayout')=='C4（四列）'?12:get(form.labelVO,'contentLayout')=='C3（三列）'?16:20">
-                    <div>{{get(form.labelVO,'contentLabel')}}</div>
-                    <div>{{get(form.labelVO,'contentLabelEnglish')}}</div>
-                </el-col>
-                <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
-                    <div>{{get(form.labelVO,'workerLabel')}}</div>
-                    <div>{{get(form.labelVO,'workerLabelEnglish')}}</div>
-                </el-col>
-                <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
-                    <div>{{get(form.labelVO,'commanderLabel')}}</div>
-                    <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
-                </el-col>
-            </el-row>
-                <el-row  v-if="form.contentVOList&&form.contentVOList.length" v-for="(opt,index) in form.contentVOList" :key="index" >
+                        <td  width="17%">
+                            <div>{{get(form.labelVO,'itemLabel')}}</div>
+                            <div>{{get(form.labelVO,'itemLabelEnglish')}}</div>
+                        </td>
+                        <td  :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
+                            <div>{{get(form.labelVO,'contentLabel')}}</div>
+                            <div>{{get(form.labelVO,'contentLabelEnglish')}}</div>
+                        </td>
+                        <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
+                            <div>{{get(form.labelVO,'workerLabel')}}</div>
+                            <div>{{get(form.labelVO,'workerLabelEnglish')}}</div>
+                        </td>
+                        <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
+                            <div>{{get(form.labelVO,'commanderLabel')}}</div>
+                            <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
+                        </td>
+                    </tr>
+                        <tr  v-if="form.contentVOList&&form.contentVOList.length" v-for="(opt,index) in form.contentVOList" :key="index" :class="(opt.itemType==1||opt.itemType==3)&&opt.contentDetails&&opt.contentDetails.length?'none':''">
+                            <template v-if="(opt.itemType==1||opt.itemType==3)">
+                                <template v-if="opt.contentDetails&&opt.contentDetails.length"></template>
+                                <template v-else>
+                                    <td   width="17%"  >
+                                        <div style="margin-right: 10px"  v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
+                                            <div v-if="opt.hookImport">✔</div>
+                                            <div v-if="opt.notApplicable">N/A</div>
+                                            <div v-if="opt.cycle">○</div>
+                                        </div>
+                                        <div>{{opt.number}}</div>
+                                    </td>
+                                    <td :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
+                                        {{opt.name}}
+                                    </td>
+                                    <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'"></td>
+                                    <td  width="17%" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'"  >
 
-                    <el-col   :span="4" v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
-                        <div style="margin-right: 10px">
-                            <div v-if="opt.hookImport">✔</div>
-                            <div v-if="opt.notApplicable">N/A</div>
-                            <div v-if="opt.cycle">○</div>
-                        </div>
-                        <div>{{opt.serialNumber}}</div>
-                    </el-col>
-                    <el-col   :span="4" v-else class="colCenter">
-                        {{opt.serialNumber}}
-                    </el-col>
-                    <el-col  :span="get(form.labelVO,'contentLayout')=='C4（四列）'?12:get(form.labelVO,'contentLayout')=='C3（三列）'?16:20" class="colContent">
-                        <div v-if="opt.itemType==1||opt.itemType==3">
-                            <div v-if="opt.contentDetails&&opt.contentDetails.length" >
-                                <div v-for="(k,l) in opt.contentDetails" :key="l" v-html="k.content" :class="l>0?'borderTop':''">
+                                    </td>
 
-                                </div>
-                            </div>
-                            <div v-else>
-                                {{opt.contentDetails.length}}
-                                {{opt.name}}
-                            </div>
-                        </div>
+                                </template>
+                            </template>
+                            <template v-else>
+                                <td   width="17%" :rowspan="opt.p.contentDetails.length" v-if="opt.index==0">
+                                    <div style="margin-right: 10px"  v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
+                                        <div v-if="opt.hookImport">✔</div>
+                                        <div v-if="opt.notApplicable">N/A</div>
+                                        <div v-if="opt.cycle">○</div>
+                                    </div>
+                                    <div>{{opt.p.number}}</div>
+                                </td>
 
-                    </el-col>
-                    <el-col :span="4"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'">
-                        <div v-if="get(form.labelVO,'contentLayout')=='C3（三列）'&&!opt.c3WorkerTask" class="duijiao">
+                                <td v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
 
-                        </div>
-                        <div v-else-if="!opt.c4WorkerTask&&get(form.labelVO,'contentLayout')=='C4（四列）'" class="duijiao"></div>
-                    </el-col>
-                    <el-col :span="4" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'">
-                        <div v-if="!opt.c4CommanderTask "  class="duijiao">
+                                </td>
+                                <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'" :class="opt.workerLabel?'':'duijiao'">
+                                    <div  >
 
-                        </div>
-                    </el-col>
-                </el-row>
+                                    </div>
+                                </td>
+                                <td  width="17%" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'"  :class="opt.commanderLabel?'':'duijiao'">
+                                    <div >
 
+                                    </div>
+                                </td>
+                            </template>
+                        </tr>
+                </table>
             </div>
             <div class="instruction"  v-if="get(form.templateRemarkVO,'afterExplain')">
                 <p v-html="get(form.templateRemarkVO,'afterExplain')"> </p>
@@ -189,7 +214,6 @@
                 let arr=[]
 
                if(this.form.contentVOList&&this.form.contentVOList.length){
-
                    this.form.contentVOList.map((k,l)=>{
                        k.itemType=1
                        k.index=l+1//大项
@@ -197,15 +221,18 @@
 
                        if(k.noSmallItem){
                            if(k.contentDetails){
-                               k.children=k.contentDetails.map((o,p)=>{
+
+                              k.contentDetails.map((o,p)=>{
+
                                    let obj={
                                        ...o,
+                                       p:k,
                                        paId:k.id,
-                                       index:k.index + '.'+(p+1) ,
+                                       index:p   ,
                                         itemType:2,  //大项内容
                                        name:`工作内容${p+1}`
                                    }
-                                   // arr.push(obj)
+                                   arr.push(obj)
                                })
                            }
                        }else{
@@ -216,15 +243,16 @@
                                    o.itemType=3 //小项
                                    arr.push(o)
                                     if(o.contentDetails){
-                                       o.children=o.contentDetails.map((o1,p1)=>{
+                                       o.contentDetails.map((o1,p1)=>{
                                            let obj1={
                                                ...o1,
+                                               p:o,
                                                padId:o.id,
-                                               index:o.index+'.'+(p1+1),
+                                               index:p1 ,
                                                 itemType:4,  //小项内容
                                                name:`工作内容${p1+1}`
                                            }
-                                           // arr.push(obj1)
+                                           arr.push(obj1)
                                        })
                                    }
 
@@ -261,32 +289,110 @@
         }
         .info{
             margin-top: 20px;
+            img{
+                max-width: 270px;
+                border: 1px #979797 dashed;
+                height:39px;
+                margin:  auto
+            }
+            /deep/ .el-col{
+                flex-direction: column;
+
+            }
+            .lastRow:last-child{
+                /deep/  .el-row:last-child{
+                    border-bottom: 1px #979797 solid;
+                }
+            }
+        }
+        .item{
+            margin-top: 20px;
+            table.one {
+                table-layout: automatic;
+                border-collapse:collapse; border-spacing:0;
+                tr{
+                    height:45px;
+
+                }
+                .duijiao{
+
+                    background: linear-gradient(
+                                    to top right,
+                                    rgba(0, 0, 0, 0) 0%,
+                                    rgba(0, 0, 0, 0) calc(50% - 1.5px),
+                                    rgba(0, 0, 0, 0) 50%,
+                                    rgba(0, 0, 0, 0) calc(50% + 1.5px),
+                                    rgba(0, 0, 0, 0) 100%
+                    ), linear-gradient(
+                                    to bottom right,
+                                    rgba(0, 0, 0, 0) 0%,
+                                    rgba(0, 0, 0, 0) calc(50% - 1.5px),
+                                    rgba(0, 0, 0, 1) 50%,
+                                    rgba(0, 0, 0, 0) calc(50% + 1.5px),
+                                    rgba(0, 0, 0, 0) 100%
+                    )!important;
+                }
+                td{
+                    text-align: center;
+                     /*height:45px;*/
+                    border:1px #979797 solid;
+                    height:100%;
+
+                }
+            }
+
+
         }
     }
 
 }
-.nomTable1{
-    td{
-        width:180px!important;
+
+/deep/ .el-row{
+    border: 1px #979797 solid;
+    border-bottom: 0;
+
+
+    justify-content: left;
+    .colCenter{
+        min-height:45px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
+
+    .el-col{
+        min-height:45px;
+        border-left: 1px #979797 solid;
+        display: flex;
+        justify-content: center;
+         align-items: center;
+
+    }
+    .colContent{
+        justify-content: left;
+        .borderTop{
+            border-top:1px #979797 solid ;
+        }
+        &>div{
+            width:100%;
+        }
+        &>div>div>div{
+            padding: 2px 15px;
+        }
+    }
+    .logo{
+        justify-content: left;
+    }
+    .el-col:first-child{
+        border-left: 0px #979797 solid;
+    }
+
 
 }
+
 .nomTable0{
-    td{
-        width:270px!important;
-    }
-
-}.nomTable2{
-    td{
-       width:100px!important;
-    }
-     tr td:nth-child(1){
-         width: 120px!important;
-    }
-     tr td:nth-child(2){
-         width: 300px!important;
-    }
-
+    td{width:270px!important;}
 }
 .nomTable{
        width: 100%;
@@ -301,9 +407,8 @@
     }
        tr{
            width: 100%;
-           height: 45px !important;
+           /*height: 45px !important;*/
        }
-
        .trimg{
            div{
                 display: flex;
@@ -325,13 +430,6 @@
            color:#222222;
 
 
-       } th{
-           text-align: center;
-           height: 43px !important;
-           border:1px solid #979797;
-           font-size:14px;
-           color:#222222;
-
        }
        .titleColoe{
            font-size:16px!important;
@@ -340,88 +438,17 @@
    }
 .upUser{
     height:43px;
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
+
     img{
          max-width: 120px;
         height:38px;
     }
 }
-    /deep/ .el-row{
-        border: 1px #979797 solid;
-        border-bottom: 0;
-        display: flex;
-        justify-content: left;
-        .colCenter{
-            min-height:45px;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
 
-        .el-col{
 
-            min-height:45px;
-             border-left: 1px #979797 solid;
-            display: flex;
-            justify-content: center;
-            /*flex-direction: column;*/
-            align-items: center;
-            .duijiao{
-                width: 100%;
-                height:100%;
-                background: linear-gradient(
-                                to top right,
-                                rgba(0, 0, 0, 0) 0%,
-                                rgba(0, 0, 0, 0) calc(50% - 1.5px),
-                                rgba(0, 0, 0, 0) 50%,
-                                rgba(0, 0, 0, 0) calc(50% + 1.5px),
-                                rgba(0, 0, 0, 0) 100%
-                ), linear-gradient(
-                                to bottom right,
-                                rgba(0, 0, 0, 0) 0%,
-                                rgba(0, 0, 0, 0) calc(50% - 1.5px),
-                                rgba(0, 0, 0, 1) 50%,
-                                rgba(0, 0, 0, 0) calc(50% + 1.5px),
-                                rgba(0, 0, 0, 0) 100%
-                );
-            }
-        }
-        .colContent{
-            justify-content: left;
-            .borderTop{
-                border-top:1px #979797 solid ;
-            }
-            &>div{
-                width:100%;
-            }
-            &>div>div>div{
-                padding: 2px 15px;
-            }
-        }
-        .logo{
-             justify-content: left;
-         }
-        .el-col:first-child{
-            border-left: 0px #979797 solid;
-        }
-        
-    }
-/deep/ .el-row:last-child{
-    border-bottom: 1px #979797 solid;
-    }
-/deep/ .el-row:first-child{
-   .el-col{
-       height:45px;
-       display: flex;
-       justify-content: center;
-      flex-direction: column;
-       align-items: center;
-   }
-
-    }
+.none{
+    display: none;
+}
 p{
     /*text-indent:2em;*/
 }

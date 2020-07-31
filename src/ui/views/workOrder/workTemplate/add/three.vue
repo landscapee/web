@@ -11,8 +11,6 @@
                         </el-form-item>
                     </div>
                     <div class="row_five" style="margin-top: 30px">
-
-
                         <el-form-item  label="项次标签：" prop="itemLabel">
                              <el-input   v-model="form.itemLabel" placeholder="请输入中文 "></el-input>
                              <el-input   v-model="form.itemLabelEnglish" placeholder="请输入英文 "></el-input>

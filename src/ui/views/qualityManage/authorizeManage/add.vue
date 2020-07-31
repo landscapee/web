@@ -67,7 +67,7 @@
                     <el-form-item  label="授权类型：" prop="authorizationType">
                         <span v-if="type=='info'">{{  form.authorizationType }}</span>
                          <el-select     v-else v-model="form.authorizationType" placeholder="请选择授权类型">
-                            <el-option v-for="(opt,index) in options.Z_accreditType" :key="index" :label="opt.valData" :value="opt.valData">
+                            <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData">
                              </el-option>
                         </el-select>
                     </el-form-item>
@@ -180,7 +180,7 @@
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params:{delete:false},
-                    data:["Z_accreditType",'accreditFlightType' ]
+                    data:["roleControl",'accreditFlightType' ]
                 }).then(d => {
                     let obj=d.data
                     this.options=obj

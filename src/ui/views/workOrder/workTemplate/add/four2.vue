@@ -30,31 +30,25 @@
                     <div class="row_one">
                         <el-form-item  label="工作大项名称：" prop="name">
                             <el-input   v-model="formItem.name" placeholder="请输入中文 "></el-input>
-
                         </el-form-item>
                     </div>
                     <div class="row_one">
                         <el-form-item  label="" prop="courseCode1">
-                            <el-checkbox v-model="formItem.addLogo" :label="true">添加标识：</el-checkbox>
-                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.notApplicable" :label="true">N/A</el-checkbox>
+                            <el-checkbox v-model="formItem.addLogo" :label="true" >添加标识：</el-checkbox>
+                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.notApplicable" :label="true" style="margin-right: 10px">N/A</el-checkbox>
                             <el-checkbox :disabled="!formItem.notApplicable" v-model="formItem.notApplicableImport" :label="true">导出显示</el-checkbox>
                             <i></i>
-                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.cycle" :label="true">○</el-checkbox>
+                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.cycle" :label="true" style="margin-right: 10px">○</el-checkbox>
                             <el-checkbox :disabled="!formItem.cycle" v-model="formItem.cycleImport" :label="true">导出显示○</el-checkbox>
                             <i></i>
-                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.hook" :label="true"> ✔</el-checkbox>
+                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.hook" :label="true" style="margin-right: 10px"> ✔</el-checkbox>
                             <el-checkbox :disabled="!formItem.hook" v-model="formItem.hookImport" :label="true">导出显示✔</el-checkbox>
                             <i></i>
                         </el-form-item>
                     </div>
-                    <div class="row_one">
-                    <el-form-item  label="" prop="noSignTime">
-                        <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
 
-                    </el-form-item>
-                </div>
 
-                    <div class="row_one">
+                    <div class="row_one" v-if="formItem.itemType==1">
                         <el-form-item  label="" prop="noSmallItem">
                             <el-checkbox @change="noSmallItemC"  v-model="formItem.noSmallItem"  :label="true">无工作小项</el-checkbox>
                         </el-form-item>
@@ -64,24 +58,58 @@
                             <el-checkbox    v-model="formItem.hsSchedule"  :label="true">非航司附加表  </el-checkbox>
                         </el-form-item>
                     </div>
-                    <div class="row_one" v-if="formItem.noSmallItem&&(formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+
+
+                    </el-form>
+                <el-form v-else-if="editTrue" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
+                   <!--<div style="font-size: 14px;margin-bottom: 10px">-->
+                       <!--{{formItem.paId?dataItemObj[formItem.paId].name:''}}-->
+                       <!--<i class="el-icon-arrow-right" v-if="formItem.paId"> </i>-->
+                       <!--{{formItem.papId?dataItemObj[formItem.paId][formItem.papId].name:''}}-->
+                       <!--<i class="el-icon-arrow-right" v-if="formItem.papId"> </i>-->
+                       <!--{{formItem.name}}编辑：-->
+                   <!--</div>-->
+                    <div class="row_five">
+                        <el-form-item  label="" prop="noSignTime" style="width:30%!important; margin: 0">
+                            <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
+                        </el-form-item>
+                        <el-form-item  label="" prop="c3WorkerTask" style="width:30%!important; margin: 0"  v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+                            <el-checkbox    v-model="formItem.workerLabel"  :label="true">
+                                适用工作者标签
+                            </el-checkbox>
+                        </el-form-item>
+                        <el-form-item  label="" prop="hsSchedule" style="width:30%!important; margin: 0" v-if=" formThree.contentLayout=='C4（四列）'">
+                            <el-checkbox    v-model="formItem.commanderLabel"  :label="true">适用指挥者标签  </el-checkbox>
+                        </el-form-item>
+                    </div>
+                    <div class="row_one rowTTTT" v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
                         <el-form-item  label="" prop="c3WorkerTask">
-                            <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">适用工作者标签  </el-checkbox>
+                            <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">
+                                工作者必做任务
+                            </el-checkbox>
+                        </el-form-item>
+                        <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
+                            <el-input size="mini"  v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  ></el-input>
                         </el-form-item>
                     </div>
-                    <div class="row_one" v-if="formItem.noSmallItem&&formThree.contentLayout=='C4（四列）'">
+                    <div class="row_one rowTTTT" v-if="formThree.contentLayout=='C4（四列）'">
                         <el-form-item  label="" prop="hsSchedule">
-                            <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">适用指挥者标签  </el-checkbox>
+                            <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">指挥者必做任务  </el-checkbox>
+                         </el-form-item>
+                        <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
+                             <el-input size="mini" v-model="formItem.c4CommanderRemark" ></el-input>
                         </el-form-item>
                     </div>
-                    <div class="row_one widthOne" v-if="formItem.noSmallItem">
+                    <div class="row_one widthOne" >
+                        <!--v-if="formItem.noSmallItem"-->
                         <el-form-item  label="角色权限控制：" prop="rolePermissions">
                             <el-select    multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
                                 <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                             </el-select>
                         </el-form-item>
                     </div>
-                    <div class="row_one widthOne" v-if="formItem.noSmallItem">
+                    <div class="row_one widthOne" >
+                        <!--v-if="formItem.noSmallItem"-->
                         <div v-for="(item,index) in formItem.suitableRange" :key="index">
                             <el-form-item  label="适用范围类型：" prop="type">
                                 <el-select  @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
@@ -101,15 +129,7 @@
                             <el-button class="QoptionButton" @click="addLimmit"><i class="el-icon-circle-plus-outline"></i>添加适用范围</el-button>
                         </div>
                     </div>
-                </el-form>
-                <el-form v-else-if="editTrue" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
-                   <div style="font-size: 14px;margin-bottom: 10px">
-                       {{formItem.paId?dataItemObj[formItem.paId].name:''}}
-                       <i class="el-icon-arrow-right" v-if="formItem.paId"> </i>
-                       {{formItem.papId?dataItemObj[formItem.paId][formItem.papId].name:''}}
-                       <i class="el-icon-arrow-right" v-if="formItem.papId"> </i>
-                       {{formItem.name}}编辑：
-                   </div>
+
                     <order-editor
                             id="editor_id" height="100%" width="100%"
                             :content.sync="formItem[key]"
@@ -227,12 +247,11 @@
             },
             noSmallItemC(val){
                 if(val){
-                    this.formItem.suitableRange=[{type:'',values:[]}]
+                    // this.formItem.suitableRange=[{type:'',values:[]}]
                 }else{
-                    // if(this.formItem.rolePermissions){
-                        this.formItem.rolePermissions=[]
-                    // }
-                    this.formItem.suitableRange=[]
+                    //     this.formItem.rolePermissions=[]
+
+                    // this.formItem.suitableRange=[]
                 }
             },
             limmitTypeC(index){
@@ -285,6 +304,9 @@
                     papId:num==1?this.addItemObj.id:null,
                     templateBaseId:this.$route.query.id,
                     contentId:this.addItemObj&&this.addItemObj.id,
+                    rolePermissions:[],
+                    suitableRange: [{type:'',values:[]}],
+                    noSignTime:true,
                 }
                 this.formItem={...obj}
                 this.addItemObj.children.push(obj)
@@ -298,11 +320,8 @@
                 let obj={
                     parentId:this.addItemObj&&this.addItemObj.id||null,
                     name:name,
-                    rolePermissions:[],
                     paId:num==1?this.addItemObj.id:null,
-                     suitableRange: [{type:'',values:[]}],
                     itemType:num==1?3:1,
-                    noSignTime:true,
                     noSmallItem:true,
                     templateBaseId:this.$route.query.id,
                 }
@@ -362,6 +381,7 @@
                             this.idEditor=0
                         })
                     }else if(d==2){
+                        this.visible = false
                     }else{
                         this.openMainMenuFnOption(e,obj)
                     }
@@ -434,16 +454,19 @@
             trans(data){
                 data.map((k,l)=>{
                     k.itemType=1
-                    k.rolePermissions=k.rolePermissions?k.rolePermissions.split(';'):[]
-                    k.suitableRange=k.suitableRange&&k.suitableRange.length?k.suitableRange:[{type:'',values:[]}] //小项
                     this.dataItemObj[k.id]={...k}
+                    // k.rolePermissions=k.rolePermissions?k.rolePermissions.split(';'):[]
+                    // k.suitableRange=k.suitableRange&&k.suitableRange.length?k.suitableRange:[{type:'',values:[]}] //小项
+
                     if(k.noSmallItem){
                         if(k.contentDetails){
                             k.children=k.contentDetails.map((o,p)=>{
                                  let obj={
                                     ...o,
                                     paId:k.id,
-                                    serialNumber:k.serialNumber,
+                                     rolePermissions:o.rolePermissions?o.rolePermissions.split(';'):[],
+                                suitableRange:o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] ,
+                                serialNumber:k.serialNumber,
                                     itemType:2,  //大项内容
                                     name:`工作内容${p+1}`
                                 }
@@ -456,14 +479,17 @@
                             k.children.map((o,p)=>{
                                 o.paId=k.id
                                 o.itemType=3 //小项
-                                o.rolePermissions=o.rolePermissions?o.rolePermissions.split(';'):[]
-                                o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
+                                // o.rolePermissions=o.rolePermissions?o.rolePermissions.split(';'):[]
+                                // o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
                                 this.dataItemObj[k.id][o.id]={...o}
                                 if(o.contentDetails){
                                     o.children=o.contentDetails.map((o1,p1)=>{
                                         let obj1={
                                             ...o1,
                                             padId:o.id,
+                                            rolePermissions:o1.rolePermissions?o1.rolePermissions.split(';'):[],
+                                            suitableRange:o1.suitableRange&&o1.suitableRange.length?o1.suitableRange:[{type:'',values:[]}] ,
+
                                             serialNumber:o.serialNumber,
                                             itemType:4,  //小项内容
                                             name:`工作内容${p1+1}`
@@ -481,6 +507,7 @@
             },
             positionItem(num){
                 let obj={}
+                debugger
                    if(num==1){
                        obj={...this.dataTree[0]}
                 }else{
@@ -494,7 +521,8 @@
                          obj=this.dataItemObj[this.formItem.id]
                     }
                 }
-                if((obj.itemType==1||obj.itemType==3)&&obj.suitableRange&&!obj.suitableRange.length){
+
+                if((obj.itemType==2||obj.itemType==4)&&obj.suitableRange&&!obj.suitableRange.length){
                     obj.suitableRange=[{type:'适用机型范围',values:[]}]
                 }
                 this.formItem={...obj}
@@ -544,7 +572,11 @@
             dataTreeUp(){
                 let arr= [...this.dataItem]
                 map(this.Instruction,(k,l)=>{
-                    let obj={val:k,name:'',itemType:'',realId:this.Instruction.id,id:l+Math.random()}
+                    let obj={val:k,name:'',
+                        itemType:'',
+                        realId:this.Instruction.id,
+                        id:l+Math.random()
+                    }
                     if(l=='beforeWarning'){
                         obj.name='事前警告'
                         obj.itemType=5
@@ -590,9 +622,10 @@
                                 obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.key)
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
-                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.formItem.serialNumber)
-                                }else{
                                       obj.rolePermissions=obj.rolePermissions.join(';')
+                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.formItem.serialNumber+'_'+new Date().getTime()+'_')
+                                }else{
+
                                   }
                             }
                             request({
@@ -688,7 +721,7 @@
                 padding: 0px;
 
                 .el-form-item{
-                    width: 100%!important;
+                    width: 100%;
                 }
                 .widthOne{
 
@@ -780,5 +813,20 @@
             }
         }
     }
-
+.rowTTTT{
+    /deep/ .el-form-item:first-child{
+        width: 30%!important;
+        margin: 0!important;
+    }
+    /deep/ .el-form-item{
+        margin: 0!important;
+    }
+    /deep/ .el-form-item__label{
+        width:auto!important;
+        padding: 0 20px 0 0!important;
+     }
+    /deep/ .el-input{
+        width: 200px;
+    }
+}
 </style>

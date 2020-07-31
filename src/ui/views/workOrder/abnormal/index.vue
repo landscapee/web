@@ -76,7 +76,7 @@
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params:{delete:false},
-                    data:["Z_accreditType",'accreditState','accreditFlightType']
+                    data:["roleControl",'accreditState','accreditFlightType']
                 }).then(d => {
                     let obj=d.data
                     request({
