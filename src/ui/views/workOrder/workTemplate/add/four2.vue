@@ -482,14 +482,15 @@
                                 // o.rolePermissions=o.rolePermissions?o.rolePermissions.split(';'):[]
                                 // o.suitableRange=o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] //小项
                                 this.dataItemObj[k.id][o.id]={...o}
-                                if(o.contentDetails){
+                                 if(o.contentDetails){
+                                     debugger
                                     o.children=o.contentDetails.map((o1,p1)=>{
                                         let obj1={
                                             ...o1,
-                                            padId:o.id,
+                                            paId:k.id,
+                                            papId:o.id,
                                             rolePermissions:o1.rolePermissions?o1.rolePermissions.split(';'):[],
                                             suitableRange:o1.suitableRange&&o1.suitableRange.length?o1.suitableRange:[{type:'',values:[]}] ,
-
                                             serialNumber:o.serialNumber,
                                             itemType:4,  //小项内容
                                             name:`工作内容${p1+1}`
