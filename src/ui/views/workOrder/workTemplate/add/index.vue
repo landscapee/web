@@ -19,7 +19,7 @@
                         <span  :class="radio==1?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label">工单类型配置</span>
+                         <span class="el-radio__label" :style="{color:radio==1?'#3280E7':''}">工单类型配置</span>
                         </span>
                     </label>
                     <i class="el-icon-arrow-right"> </i>
@@ -27,7 +27,7 @@
                         <span  :class="radio==2?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label">基本信息配置</span>
+                         <span class="el-radio__label" :style="{color:radio==2?'#3280E7':''}">基本信息配置</span>
                         </span>
                     </label>
                     <i class="el-icon-arrow-right"> </i>
@@ -35,7 +35,7 @@
                         <span  :class="radio==3?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label">工作标签与布局</span>
+                         <span class="el-radio__label" :style="{color:radio==3?'#3280E7':''}">工作标签与布局</span>
                         </span>
                     </label>
                     <i class="el-icon-arrow-right"> </i>
@@ -43,17 +43,10 @@
                         <span  :class="radio==4?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label">工作项与内容配置</span>
+                         <span class="el-radio__label" :style="{color:radio==4?'#3280E7':''}">工作项与内容配置</span>
                         </span>
                     </label>
-                    <!--<el-radio  v-model="radio" :label="1" @change="radioClick">工单类型配置</el-radio>-->
-                    <!--<i class="el-icon-arrow-right"> </i>-->
-                    <!--<el-radio  v-model="radio" :label="2" @change="radioClick">基本信息配置</el-radio>-->
-                    <!--<i class="el-icon-arrow-right"> </i>-->
-                    <!--<el-radio  v-model="radio" :label="3" @change="radioClick">工作标签与布局</el-radio>-->
-                 <!--<i class="el-icon-arrow-right"> </i>-->
-                    <!--<el-radio  v-model="radio" :label="4" @change="radioClick">工作项与内容配置</el-radio>-->
-                 </div>
+                         </div>
                 <div class="component">
                     <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==1" :key="(new Date().toString())"></One>
                     <Two ref="Two" :type="type" :formData="form.contentVOList      " v-else-if="radio==2" :key="(new Date().toString())"></Two>

@@ -4,10 +4,8 @@
             <div class="QheadRight">
                 <div @click="addList('add')"><icon iconClass="add" ></icon>新增</div>
                 <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-
             </div>
         </div>
-
         <SearchTable :noSearch="true" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable"  @listenToCheckedChange="listenToCheckedChange"    :showHeader="false" :showPage="true" >
             <el-table-column slot="radio" label="选择" :width="49"  >
                 <template slot-scope="{ row }">
@@ -36,16 +34,21 @@
                 <template slot-scope="{ row ,$index}">
                    <div v-if="row.type==4">
                        <div  class="upUser  ">
-                           <img @click="upLogoPho" v-if="row.value"  :src="row.value" alt="请上传图片">
-                           <el-button @click="upLogoPho"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
-
+                           <img @click="upLogoPho(row)" v-if="row.value"  :src="row.value" alt="请上传图片">
+                           <el-button v-else @click="upLogoPho(row)"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
                        </div>
-                       <div style="display: none">
-                           <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="(file)=>{getFile(file,row)}"></UploadFile>
+                       <div  style="display: none">
+                           <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile($event,row)"></UploadFile>
 
                        </div>
                    </div>
-                    <el-input v-else  v-model="row.value"  placeholder="请输入值" >  </el-input>
+                    <div v-else-if="row.type==6" style="text-align: center">
+                        <!--签章-->
+                    </div>
+                    <div v-else-if="row.type==1" style="text-align: center">
+                        <!--任务排班信息获取-->
+                    </div>
+                    <el-input v-else-if="row.type==2||row.type==3||row.type==5"  v-model="row.value"  placeholder="请输入值" >  </el-input>
 
                 </template>
             </el-table-column>
@@ -81,9 +84,14 @@
                 infoValueType:[],
                 selectId:null,
                 rowT:{},
-            };
+
+             };
+        },
+        watch:{
+
         },
         created() {
+             // console.log(,1,2,3);
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -98,28 +106,42 @@
         },
 
         methods: {
-            typeChange(row){
+            typeChange(row,index){
                 row.value=''
+                let str=''
+                if(row.type==3){
+                    str='input'+(new Date().getTime())
+                 }else if(row.type==4){
+                    str='img'+(new Date().getTime())
+                }else if(row.type==5){
+                    str='radio'+(new Date().getTime())
+                }else if(row.type==6){
+                    str='sign'+(new Date().getTime())
+                }
+                this.$set(row,'placeholder',str)
+                console.log(this.tableData);
             },
-            upLogoPho(){
+
+            upLogoPho(row){
+
                 this.$refs.UploadFile.$refs.buttonClick.$el.click()
             },
 
             getFile(file,row){
-                  request({
+
+                 request({
                     header:{
                         'Content-Type':'multipart/form-data'
                     },
                     url:`${this.$ip}/mms-file/get-file-by-id/${file.id }`,
                     method:'GET',
-
                 }).then((d) => {
-                    this.$set(row,'value',d.data.filePath)
+                     this.$set(row,'value',d.data.filePath)
+                     console.log(this.tableData);
                 });
-
             },
             addList(){
-                this.tableData.unshift({templateId:this.$route.query.id})
+                this.tableData.unshift({templateId:this.$route.query.id,enable:true})
             },
             listenToCheckedChange(row, column, event){
                 let select = row.selected;
@@ -171,6 +193,7 @@
                                 data:this.tableData
                             }).then((d) => {
                                 if(d.code==200){
+                                    this.getInfo()
                                     resolve(true)
                                     this.$message.success('操作成功')
                                 }
@@ -183,6 +206,7 @@
                     })
 
                 },
+
             getInfo( ){
                 request({
                     url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
@@ -190,6 +214,7 @@
                 }).then((d) => {
                     if(d.code==200){
                         this.tableData=d.data.baseItemVOList
+                        // this.getTypeNum(this.tableData)
                     }
                 })
             }

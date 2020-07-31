@@ -1,3 +1,4 @@
+
 {
   "name": "jwxt",
   "version": "0.0.1",
@@ -8,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
     "build": "webpack --config webpack.prod.js --Program jwxt.build",
-    "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/"
+    "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/3"
   },
   "repository": {
     "type": "git",

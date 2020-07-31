@@ -4,7 +4,7 @@
             <div class="row_three">
                 <el-form-item  label="工单模板编码：" prop="code">
                     <span v-if="type=='info'">{{form.code}}</span>
-                    <el-input   v-else v-model="form.code" placeholder="请输入工单模板编码"></el-input>
+                    <el-input   :disabled="type=='edit'" v-else v-model="form.code" placeholder="请输入工单模板编码"></el-input>
                 </el-form-item>
                 <el-form-item  label="工单标题：" prop="title">
                     <span v-if="type=='info'">{{form.title}}</span>
@@ -12,7 +12,7 @@
                 </el-form-item>
                 <el-form-item  label="模板版本号：" prop="version">
                     <span v-if="type=='info'">{{form.version}}</span>
-                    <el-input :disabled="type=='edit'" v-else v-model="form.version" placeholder="请输入模板版本号"></el-input>
+                    <el-input :disabled="true" v-else v-model="form.version" placeholder="请输入模板版本号"></el-input>
                 </el-form-item>
             </div>
 
@@ -39,7 +39,7 @@
             <div class="row_three rowT">
                 <el-form-item label="航司LOGO：" prop="airlineCompanyLogo">
                     <div  class="upUser  ">
-                        <span v-if="!form.airlineCompanyLogo">
+                        <span v-if="!form.airlineCompanyLogo" style="color:#888888">
                                     请上传图片
                         </span>
                         <img v-else :src="form.photoPath" alt="请上传图片">
@@ -101,6 +101,40 @@
         components: {},
         props:['type'],
         data() {
+            const code = (rule, value, callback) => {
+                if (!this.form.code) {
+                    return callback(new Error('工单模板编码'));
+                } else {
+                     request({
+                        url:`${this.$ip}/mms-workorder/template/checkCode`,
+                        method: 'get',
+                        params:{
+                            code:this.form.code,
+                            id:this.$route.query.id,
+                        }
+                    }).then(d => {
+                        if(d.code==200){
+                            if (d.data) {
+                                callback();
+                                request({
+                                    url:`${this.$ip}/mms-workorder//template/getNextVersion`,
+                                    method: 'get',
+                                    params:{code:this.form.code||null}
+                                }).then(d => {
+                                    if( d.code==200){
+                                        this.$set(this.form,'version',d.data)
+                                    }
+                                });
+                            } else {
+                                callback("该工单模板编码已存在");
+                            }
+                        }else{
+                            callback("校验失败，请重试");
+                        }
+
+                    });
+                }
+            };
             const title = (rule, value, callback) => {
                 if (!this.form.title) {
                     return callback(new Error('请输入工单标题'));
@@ -117,7 +151,7 @@
                             if (d.data) {
                                 callback();
                             } else {
-                                callback("该工单标题已存");
+                                callback("该工单标题已存在");
                             }
                         }else{
                             callback("校验失败，请重试");
@@ -135,7 +169,7 @@
                 Airline:[],
                 AircraftType:[],
                 rules:{
-                    code:[{required:true,message:'请输入工单模板编码',trigger:'blur'}],
+                    code:[{required:true, validator:code,trigger:'blur'}],
                     title:[{required:true, validator:title, trigger: "blur" }, ],
                     version:[{required:true,message:'请输入模板版本号',trigger:'blur'}],
                     type:[{required:true,message:'请选择工单类型',trigger:'blur'}],
@@ -175,6 +209,9 @@
           }
         },
         methods: {
+            codeBlur(val){
+
+            },
             getForm(){
                 return this.form.code
             },
@@ -290,20 +327,7 @@
               if(this.$route.query.type != "add"  ){
                this.getInfo()
             }else{
-                  //  request({
-                  //     url:`${this.$ip}/mms-workorder//template/getNextVersion`,
-                  //     method: 'get',
-                  // }).then(d => {
-                  //     if( d.data&&d.data.length){
-                  //         this.Airline=[]
-                  //         d.data.map((k,l)=>{
-                  //             if(!k.parentCode){
-                  //                 this.AirlineObj[k.iata]=k.fullname
-                  //                 this.Airline.push(k)
-                  //             }
-                  //         })
-                  //     }
-                  // });
+
               }
             request({
                 url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
