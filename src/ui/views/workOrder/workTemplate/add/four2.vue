@@ -622,7 +622,7 @@
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                       obj.rolePermissions=obj.rolePermissions.join(';')
-                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,'@@@'+this.formItem.serialNumber+'_'+new Date().getTime()+'_')
+                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_'+new Date().getTime()+'_')
                                 }else{
 
                                   }
