@@ -26,8 +26,12 @@ module.exports = merge(common, {
         progress: true, // 打包过程中的进度条
         noInfo: false, // 隐藏bundle信息
         proxy: { // 代理
-            '/api/': {
-                target: `http://173.100.1.87`, //飞行区登录开发
+           '/api/':{
+               target: `http://173.100.1.87`, //飞行区登录开发
+               changeOrigin: true,
+           },
+            '/': {
+                target: `http://173.100.1.5:8011`, //开发本地访问
                 changeOrigin: true,
             },
             // '/apidev/': {

@@ -419,7 +419,7 @@ export default {
             this.radioInputList = val
             let name = this.inputIndex+=1
             let html = this.radioInputList.map(i=>{
-                return `<input type='${type}' name='${'$$$'+this.inputIndex}@@@'> ${i.value} `
+                return `<input type='${type}' name='${'$$$'+this.inputIndex}'> ${i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
