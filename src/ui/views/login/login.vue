@@ -111,7 +111,7 @@ export default {
 					this.loading = true;
 					removeToken();
 					request({
-						url:'/api/sso/login/login',
+						url:'/sso/login/login',
 						method: 'post',
 						data:this.loginForm,
 						headers: {
