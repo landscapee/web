@@ -48,7 +48,7 @@
                     </label>
                          </div>
                 <div class="component">
-                    <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==1" :key="(new Date().toString())"></One>
+                    <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==4" :key="(new Date().toString())"></One>
                     <Two ref="Two" :type="type" :formData="form.contentVOList      " v-else-if="radio==2" :key="(new Date().toString())"></Two>
                     <Three ref="Three" :type="type" :formData="form.baseItemVOList" v-else-if="radio==3" :key="(new Date().toString())"></Three>
                     <Four ref="Four" :type="type" :formData="form.baseItemVOList" v-else :key="(new Date().toString())"></Four>

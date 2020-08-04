@@ -60,8 +60,9 @@ export default {
           'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
           'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
           'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
-          'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox", 'checkradio', "na", "sign"
+          'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox",   "sign"
         ]
+          // "na",'checkradio',
       }
     },
     noDisableItems: {
@@ -310,13 +311,13 @@ export default {
             editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex +'"/>')
         })
     })
-    // 单选
-    KindEditor.plugin('checkradio', function(K) {
-        var editor = this, name = 'checkradio'
-        editor.clickToolbar(name, function() {
-            _this.$refs.addRadioDialog.open('radio')
-        })
-    })
+    // // 单选
+    // KindEditor.plugin('checkradio', function(K) {
+    //     var editor = this, name = 'checkradio'
+    //     editor.clickToolbar(name, function() {
+    //         _this.$refs.addRadioDialog.open('radio')
+    //     })
+    // })
     // 多选
     KindEditor.plugin('checkbox', function(K) {
         var editor = this, name = 'checkbox'
@@ -326,13 +327,13 @@ export default {
         })
     })
     // NA
-    KindEditor.plugin('na', function(K) {
-        var editor = this, name = 'na'
-        editor.clickToolbar(name, function() {
-            _this.inputIndex+=1
-            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
-        })
-    })
+    // KindEditor.plugin('na', function(K) {
+    //     var editor = this, name = 'na'
+    //     editor.clickToolbar(name, function() {
+    //         _this.inputIndex+=1
+    //         editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
+    //     })
+    // })
     // 签章
     KindEditor.plugin('sign', function(K) {
         var editor = this, name = 'sign'
@@ -343,8 +344,8 @@ export default {
     KindEditor.lang({
         inpt : '输入',
         checkbox : '多选',
-        na:'NA',
-        checkradio:'单选',
+        // na:'NA',
+        // checkradio:'单选',
         sign:'签章'
     })
 

@@ -117,12 +117,12 @@ export default {
 			this.userId = row.id;
 			Promise.all([
                 request({
-                    url: `/api/sys/role/getRolesTreeAll`,
+                    url: `/sys/role/getRolesTreeAll`,
                     method: 'get',
                     data:{},
                 }),
                 request({
-                    url: `/api/sys/role/getAllAuthByUserId`,
+                    url: `/sys/role/getAllAuthByUserId`,
                     method: 'get',
                     params:{ userId: row.id },
                 })

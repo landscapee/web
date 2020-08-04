@@ -436,7 +436,7 @@
 
                       request({
                         headers: { 'Content-Type': 'text/plain' },
-                        url: `/api/sys/user/getAllUserByOrgIdByPage`,
+                        url: `/sys/user/getAllUserByOrgIdByPage`,
                         method: 'get',
                         params:{
                             pageNum:1, pageSize:99999,

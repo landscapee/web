@@ -129,7 +129,7 @@ export default {
 		},
 		getAllorganization() {
 			request({
-                url: '/api/sys/org/getAllTree',
+                url: '/sys/org/getAllTree',
                 method: 'get',
                 params:{},
             }).then((response) => {

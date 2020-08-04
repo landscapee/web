@@ -42,7 +42,8 @@ const actions = {
 					if (response.responseCode !== 1000) {
 						return reject(response.responseMessage);
 					}
-					const { data } = response;
+                    console.log(response);
+                    const { data } = response;
 					commit('SET_ROLES', null);
 					commit('SET_TOKEN', data.token);
 					commit('SET_USER_INFO', data);

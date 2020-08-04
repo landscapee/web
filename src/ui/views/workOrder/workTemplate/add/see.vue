@@ -221,9 +221,9 @@
                        if(k.noSmallItem){
                            if(k.contentDetails){
                               k.contentDetails.map((o,p)=>{
-                                        debugger
-                                  let arr1=o.content.split(/name\s+=\s+"(.+?)"\/>/g)
-                                  console.log(o.content,arr1,12,1);
+                                  let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                                  o.content=o.content.replace(reg,"$1$2$3${$2}" )
+                                  console.log( o.content,reg,12,1,1);
                                   let obj={
                                        ...o,
                                        p:k,
@@ -244,7 +244,7 @@
                                    arr.push(o)
                                     if(o.contentDetails){
                                        o.contentDetails.map((o1,p1)=>{
-                                            let arr1=o1.content.split(/name(\s{0,})=(\s{0,})\"(.+?)\" (\s{0,})\/>/g)
+                                            let arr1=o1.content.match(/name(\s{0,})=(\s{0,})\"(.+?)\" (\s{0,})\/>/g)
                                            console.log(o1.content,arr1,12,1);
 
                                            let obj1={
