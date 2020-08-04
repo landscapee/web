@@ -244,9 +244,8 @@
                                    arr.push(o)
                                     if(o.contentDetails){
                                        o.contentDetails.map((o1,p1)=>{
-                                            let arr1=o1.content.match(/name(\s{0,})=(\s{0,})\"(.+?)\" (\s{0,})\/>/g)
-                                           console.log(o1.content,arr1,12,1);
-
+                                           let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                                           o1.content=o1.content.replace(reg,"$1$2$3${$2}" )
                                            let obj1={
                                                ...o1,
                                                p:o,

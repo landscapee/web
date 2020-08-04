@@ -26,7 +26,7 @@ export default {
     data() {
         return {
             type: "",
-            form:{type:''},
+            form:{type:'1'},
             dialogFormVisible: false,
             radioInputList:[
                 {
@@ -35,7 +35,7 @@ export default {
                 }
             ],
             rules:{
-                type:[{required:true,message: '请选择标识'}]
+                type:[{required:true,message: '请选择标识',trigger:'blue'}]
             }
          };
     },
@@ -50,20 +50,21 @@ export default {
         },
         open(type){
             this.init()
-            if(type){
-                this.dialogFormVisible = true;
-                this.type = type
-            }else{
-                this.$message({
-                    type: 'warning',
-                    message: 'Function open arguments[0] is required！'
-                });
-            }
+            this.dialogFormVisible = true;
+            // if(type){
+            //
+            //     this.type = type
+            // }else{
+            //     this.$message({
+            //         type: 'warning',
+            //         message: 'Function open arguments[0] is required！'
+            //     });
+            // }
         },
         addConfirmFn(){
             this.radioInputList = this.radioInputList.filter(i=>i.value)
             this.radioInputList =  this.unique(this.radioInputList)
-            this.$emit('addConfirmFn', this.radioInputList, this.type)
+            this.$emit('addConfirmFn', this.radioInputList, this.form.type)
             this.dialogFormVisible = false
         },
         addRadioFn(){
@@ -100,6 +101,9 @@ export default {
     .index{
         /deep/ .el-dialog{
             width:600px;
+            .el-dialog__header{
+                text-align: center;
+            }
             .el-dialog__body{
                 padding: 20px ;
             }

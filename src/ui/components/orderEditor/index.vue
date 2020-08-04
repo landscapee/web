@@ -338,7 +338,7 @@ export default {
     KindEditor.plugin('sign', function(K) {
         var editor = this, name = 'sign'
         editor.clickToolbar(name, function() {
-            editor.insertHtml('<p><button style="width:80px;" onclick="newSignFn()">签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" /></p>')
+            editor.insertHtml('<p><button style="width:80px;" onclick="newSignFn()">签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;"   /></p>')
         })
     })
     KindEditor.lang({
@@ -417,10 +417,16 @@ export default {
   },
   methods:{
         addConfirmFn(val, type){
+            let obj={
+                '1':'radio',
+                '2':'checkBox',
+                '3':'NA',
+            }
             this.radioInputList = val
-            let name = this.inputIndex+=1
+
             let html = this.radioInputList.map(i=>{
-                return `<input type='${type}' name='${'$$$'+this.inputIndex}'> ${i.value} `
+                this.inputIndex++
+                return `<input type='checkbox' name='${'$$$'+obj[type]+this.inputIndex}'> ${i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
