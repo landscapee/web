@@ -60,8 +60,9 @@ export default {
           'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
           'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
           'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
-          'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox", 'checkradio', "na", "sign"
+          'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox",   "sign"
         ]
+          // "na",'checkradio',
       }
     },
     noDisableItems: {
@@ -310,13 +311,13 @@ export default {
             editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex +'"/>')
         })
     })
-    // 单选
-    KindEditor.plugin('checkradio', function(K) {
-        var editor = this, name = 'checkradio'
-        editor.clickToolbar(name, function() {
-            _this.$refs.addRadioDialog.open('radio')
-        })
-    })
+    // // 单选
+    // KindEditor.plugin('checkradio', function(K) {
+    //     var editor = this, name = 'checkradio'
+    //     editor.clickToolbar(name, function() {
+    //         _this.$refs.addRadioDialog.open('radio')
+    //     })
+    // })
     // 多选
     KindEditor.plugin('checkbox', function(K) {
         var editor = this, name = 'checkbox'
@@ -326,25 +327,25 @@ export default {
         })
     })
     // NA
-    KindEditor.plugin('na', function(K) {
-        var editor = this, name = 'na'
-        editor.clickToolbar(name, function() {
-            _this.inputIndex+=1
-            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
-        })
-    })
+    // KindEditor.plugin('na', function(K) {
+    //     var editor = this, name = 'na'
+    //     editor.clickToolbar(name, function() {
+    //         _this.inputIndex+=1
+    //         editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
+    //     })
+    // })
     // 签章
     KindEditor.plugin('sign', function(K) {
         var editor = this, name = 'sign'
         editor.clickToolbar(name, function() {
-            editor.insertHtml('<p><button style="width:80px;" onclick="newSignFn()">签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" /></p>')
+            editor.insertHtml('<p><button style="width:80px;" onclick="newSignFn()">签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;"   /></p>')
         })
     })
     KindEditor.lang({
         inpt : '输入',
         checkbox : '多选',
-        na:'NA',
-        checkradio:'单选',
+        // na:'NA',
+        // checkradio:'单选',
         sign:'签章'
     })
 
@@ -416,10 +417,17 @@ export default {
   },
   methods:{
         addConfirmFn(val, type){
+            let obj={
+                '1':'radio',
+                '2':'checkBox',
+                '3':'NA',
+            }
             this.radioInputList = val
-            let name = this.inputIndex+=1
+            let str=``
             let html = this.radioInputList.map(i=>{
-                return `<input type='${type}' name='${'$$$'+this.inputIndex}'> ${i.value} `
+                this.inputIndex++
+
+                return `<input type='checkbox' style=" " name='${'$$$'+obj[type]+this.inputIndex}'> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
@@ -428,6 +436,7 @@ export default {
 </script>
  
 <style scoped lang="scss">
+
     /deep/ .ke-icon-inpt {
         background-image: url(./assets/img/add.svg);
         width: 22px;
@@ -453,4 +462,5 @@ export default {
         width: 22px;
         height: 22px;
     }
+
 </style>

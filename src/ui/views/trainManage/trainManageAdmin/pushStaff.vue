@@ -202,7 +202,7 @@
                     fetch = (params)=>{
                         return request({
                             headers: { 'Content-Type': 'text/plain' },
-                            url: `/api/sys/user/getAllUserByOrgId`,
+                            url: `/sys/user/getAllUserByOrgId`,
                             method: 'get',
                             params,
                         }).then((d) => {
@@ -213,7 +213,7 @@
                 } else {
                     fetch = (params)=>{
                         return request({
-                            url: '/api/sys/user/getUsersByDeptId',
+                            url: '/sys/user/getUsersByDeptId',
                             method: 'get',
                             params,
                         }).then((d) => {
@@ -266,7 +266,7 @@
                 let administrativeId = this.$store.getters.userInfo.administrativeId;
                 request({
                     // url: 'http://173.100.1.5:8011/sys/org/getAllChildOrgById?id=en1c54531c057647cc8228f301384c08c3&pageNum=1&pageSize=9999',
-                    url: '/api/sys/org/getAllTree',
+                    url: '/sys/org/getAllTree',
                     method: 'get',
                     // params:{},
                 }).then((response) => {

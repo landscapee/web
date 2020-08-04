@@ -1,6 +1,10 @@
 <template>
     <div class="seeConfig"  >
-        <div class="seeTitle">实时预览：</div>
+        <div class="seeTitle">
+            实时预览：
+            <div v-if="!show" @click="showZ">显示占位符</div>
+            <div v-else  @click="showZ">隐藏占位符</div>
+        </div>
         <div class="order">
             <div class="head">
 
@@ -26,7 +30,7 @@
                        <el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
 
                                <img v-if="opt1.type==4"   :src="opt1.value" alt="加载失败">
-                               <div v-if="opt1.type==4" > {{ '${'+opt1.placeholder+'}'}}</div>
+                               <div v-if="opt1.type==4&&show" > {{ '${'+opt1.placeholder+'}'}}</div>
 
                            <template v-else-if="opt1.type==2">
                                {{opt1.value}}
@@ -37,19 +41,22 @@
                            </div>
                            <div v-else-if="opt1.type==3" >
                                <input type="text" :name="opt1.placeholder" ></input>
-                               <div> {{ '${'+opt1.placeholder+'}'}}</div>
+                               <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
                            </div>
                            <div v-else-if="opt1.type==5" >
                                <div>
                                    <div v-for="(k,l) in opt1.value.split(';')" :key="l">
                                        <input type="radio" :name="opt1.placeholder" ></input>{{k}}
                                    </div>
-                                   {{ '${'+opt1.placeholder+'}'}}
+                                   <div v-if="show">
+                                       {{ '${'+opt1.placeholder+'}'}}
+                                   </div>
+
                                </div>
                                <div> </div>
                            </div>
                            <div v-else-if="opt1.type==6" >
-                               <div> {{ '${'+opt1.placeholder+'}'}}</div>
+                               <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
 
                            </div>
                        </el-col>
@@ -82,7 +89,7 @@
                             <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
                         </td>
                     </tr>
-                        <tr  v-if="form.contentVOList&&form.contentVOList.length" v-for="(opt,index) in form.contentVOList" :key="index" :class="(opt.itemType==1||opt.itemType==3)&&opt.contentDetails&&opt.contentDetails.length?'none':''">
+                        <tr  v-if="contentVOList&&contentVOList.length" v-for="(opt,index) in contentVOList" :key="index" :class="(opt.itemType==1||opt.itemType==3)&&opt.contentDetails&&opt.contentDetails.length?'none':''">
                             <template v-if="(opt.itemType==1||opt.itemType==3)">
                                 <template v-if="opt.contentDetails&&opt.contentDetails.length"></template>
                                 <template v-else>
@@ -114,7 +121,7 @@
                                     <div>{{opt.p.number}}</div>
                                 </td>
 
-                                <td v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
+                                <td v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'" style="text-align: left;">
 
                                 </td>
                                 <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'" :class="opt.workerLabel?'':'duijiao'">
@@ -152,6 +159,8 @@
             return {
                 get:get,
                 form:{},
+                contentVOList:[],
+                show:true,
             }
         },
         computed:{
@@ -170,6 +179,10 @@
           }
         },
         methods:{
+            showZ(){
+                this.show=!this.show
+                this.trans()
+            },
             upLogoPho(){
                 this.$refs.UploadFile.$refs.buttonClick.$el.click()
             },
@@ -221,9 +234,6 @@
                        if(k.noSmallItem){
                            if(k.contentDetails){
                               k.contentDetails.map((o,p)=>{
-                                        debugger
-                                  let arr1=o.content.split(/name\s+=\s+"(.+?)"\/>/g)
-                                  console.log(o.content,arr1,12,1);
                                   let obj={
                                        ...o,
                                        p:k,
@@ -232,6 +242,10 @@
                                         itemType:2,  //大项内容
                                        name:`工作内容${p+1}`
                                    }
+                                  if(this.show){
+                                      let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                                      obj.content=o.content.replace(reg,"$1$2$3${$2}" )
+                                  }
                                    arr.push(obj)
                                })
                            }
@@ -244,8 +258,6 @@
                                    arr.push(o)
                                     if(o.contentDetails){
                                        o.contentDetails.map((o1,p1)=>{
-                                            let arr1=o1.content.split(/name(\s{0,})=(\s{0,})\"(.+?)\" (\s{0,})\/>/g)
-                                           console.log(o1.content,arr1,12,1);
 
                                            let obj1={
                                                ...o1,
@@ -254,6 +266,10 @@
                                                index:p1 ,
                                                 itemType:4,  //小项内容
                                                name:`工作内容${p1+1}`
+                                           }
+                                           if(this.show){
+                                               let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                                               obj1.content=o1.content.replace(reg,"$1$2$3${$2}" )
                                            }
                                            arr.push(obj1)
                                        })
@@ -264,7 +280,7 @@
                        }
 
                    })
-                    this.form.contentVOList=[...arr]
+                    this.contentVOList=[...arr]
                }
             },
         },
@@ -335,6 +351,7 @@
                     )!important;
                 }
                 td{
+                    padding: 5px;
                     height:45px;
                     text-align: center;
                     border:1px #979797 solid;

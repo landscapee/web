@@ -1,14 +1,20 @@
 <template>
     <div class="index">
         <el-dialog title="弹窗" :visible.sync="dialogFormVisible">
-            <el-form>
+            <el-form :model="form" :rules="rules">
                 
-                <el-form-item v-for='(i, index) in radioInputList' :key='index' label="添加名称" :label-width="formLabelWidth">
+                <el-form-item v-for='(i, index) in radioInputList' :key='index' label="添加名称"  >
                     <el-input v-model="i.value" autocomplete="off"></el-input>
                 </el-form-item>
+                  <el-form-item    label="标识"  prop="type" >
+                    <el-radio v-model="form.type" label="1">radio单选</el-radio>
+                    <el-radio v-model="form.type" label="2">checkbox多选</el-radio>
+                    <el-radio v-model="form.type" label="3">N/A</el-radio>
+                </el-form-item>
+
                 <el-button type="primary" @click="addRadioFn">增加选项</el-button>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div slot="footer" class="Qfooter">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addConfirmFn">确 定</el-button>
             </div>
@@ -20,6 +26,7 @@ export default {
     data() {
         return {
             type: "",
+            form:{type:'1'},
             dialogFormVisible: false,
             radioInputList:[
                 {
@@ -27,8 +34,10 @@ export default {
                     value:""
                 }
             ],
-            formLabelWidth: '120px'
-        };
+            rules:{
+                type:[{required:true,message: '请选择标识',trigger:'blue'}]
+            }
+         };
     },
     methods:{
         init(){
@@ -41,20 +50,21 @@ export default {
         },
         open(type){
             this.init()
-            if(type){
-                this.dialogFormVisible = true;
-                this.type = type
-            }else{
-                this.$message({
-                    type: 'warning',
-                    message: 'Function open arguments[0] is required！'
-                });
-            }
+            this.dialogFormVisible = true;
+            // if(type){
+            //
+            //     this.type = type
+            // }else{
+            //     this.$message({
+            //         type: 'warning',
+            //         message: 'Function open arguments[0] is required！'
+            //     });
+            // }
         },
         addConfirmFn(){
             this.radioInputList = this.radioInputList.filter(i=>i.value)
             this.radioInputList =  this.unique(this.radioInputList)
-            this.$emit('addConfirmFn', this.radioInputList, this.type)
+            this.$emit('addConfirmFn', this.radioInputList, this.form.type)
             this.dialogFormVisible = false
         },
         addRadioFn(){
@@ -89,8 +99,27 @@ export default {
 </script>
 <style lang="scss" scoped>
     .index{
-        /deep/.el-input{
-            width:100%!important;
+        /deep/ .el-dialog{
+            width:600px;
+            .el-dialog__header{
+                text-align: center;
+            }
+            .el-dialog__body{
+                padding: 20px ;
+            }
+
+            .el-form-item__label{
+                width:100px!important;
+            }
+            .el-form-item__content{
+                width:calc(100% - 100px)!important;
+                margin: 0!important;
+                .el-input{
+                    width:100%!important;
+                }
+            }
+
         }
+
     }
 </style>

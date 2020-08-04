@@ -142,7 +142,7 @@ export default {
 				fetch = (params)=>{
 					return request({
 						headers: { 'Content-Type': 'text/plain' },
-						url: `/api/sys/user/getAllUserByOrgId`,
+						url: `/sys/user/getAllUserByOrgId`,
 						method: 'get',
 						params,
 					}).then((d) => {
@@ -153,7 +153,7 @@ export default {
 			} else {
 				fetch = (params)=>{
 					return request({
-						url: '/api/sys/user/getUsersByDeptId',
+						url: '/sys/user/getUsersByDeptId',
 						method: 'get',
 						params,
 					}).then((d) => {
@@ -216,7 +216,7 @@ export default {
             let deptId = this.$store.getters.userInfo.deptId;
             let administrativeId = this.$store.getters.userInfo.administrativeId;
 			request({
-				url: '/api/sys/org/getAllTree',
+				url: '/sys/org/getAllTree',
 				method: 'get',
 				params:{},
 			}).then((response) => {
