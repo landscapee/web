@@ -427,7 +427,7 @@ export default {
             let html = this.radioInputList.map(i=>{
                 this.inputIndex++
 
-                return `<input type='checkbox' style="-webkit-appearance: radio; " name='${'$$$'+obj[type]+this.inputIndex}'> ${type==3?'N/A':i.value} `
+                return `<input type='checkbox' style=" " name='${'$$$'+obj[type]+this.inputIndex}'> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
@@ -436,6 +436,7 @@ export default {
 </script>
  
 <style scoped lang="scss">
+
     /deep/ .ke-icon-inpt {
         background-image: url(./assets/img/add.svg);
         width: 22px;
