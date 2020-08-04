@@ -286,7 +286,15 @@ let authRoutes = [
 
                 ]
             },
+            {
+                path: '/workOrderChange',
+                component: () => import('@views/workOrder/workOrderChange/index'),
+                name: '工单变更审核',
+                meta: {title: '工单变更审核',icon: 'xxgl' },
+                children:[
 
+                ]
+            },
         ],
 	},
 	{
