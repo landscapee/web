@@ -423,10 +423,11 @@ export default {
                 '3':'NA',
             }
             this.radioInputList = val
-
+            let str=``
             let html = this.radioInputList.map(i=>{
                 this.inputIndex++
-                return `<input type='checkbox' name='${'$$$'+obj[type]+this.inputIndex}'> ${i.value} `
+
+                return `<input type='checkbox' style="-webkit-appearance: radio; " name='${'$$$'+obj[type]+this.inputIndex}'> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
@@ -460,4 +461,5 @@ export default {
         width: 22px;
         height: 22px;
     }
+
 </style>
