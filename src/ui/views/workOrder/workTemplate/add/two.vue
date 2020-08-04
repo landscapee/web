@@ -66,7 +66,7 @@
     import Icon from '@components/Icon-svg/index';
     import { twoConfig } from '../tableConfig.js';
     import request from '@lib/axios.js';
-    import {  extend ,map} from 'lodash';
+    import {  extend ,map,filter} from 'lodash';
     export default {
         components: {
             Icon,
@@ -183,11 +183,12 @@
             },
             save(form){
                     return new Promise((resolve, reject)=>{
-                        if(this.tableData.length){
+                        let arr=this.tableData.filter((k)=>k.nameEn||k.nameCn||k.type)
+                        if(arr.length){
                             request({
                                 url:`${this.$ip}/mms-workorder/templateBaseItem/saveOrUpdate`,
                                 method: 'post',
-                                data:this.tableData
+                                data:arr
                             }).then((d) => {
                                 if(d.code==200){
                                     this.getInfo()
