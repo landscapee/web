@@ -307,7 +307,16 @@
         line-height: 20px;
         margin-bottom: 6px;
         color:#222222;
+        display: flex;
+        justify-content: space-between;
+        div{
+            color:#3280E7
+        }
+        div:hover{
+            cursor: pointer;
+        }
     }
+
     .order{
         .head{
 

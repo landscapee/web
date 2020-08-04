@@ -23,17 +23,22 @@
                     rgba(0, 0, 0, 0) 100%
             );
         }
-        .tui-checkbox:checked {
+        .Wtui-checkbox:checked {
             background:#1673ff
         }
-        .tui-checkbox {
-            width:25px;
-            height:25px;
+        .Wtui-checkbox:focus{
+            -webkit-appearance:none;
+            -webkit-user-select:none;
+            outline: none;
+        }
+        .Wtui-checkbox {
+            width:16px;
+            height:16px;
             background-color:#ffffff;
-            border:solid 1px #dddddd;
+            border:solid 1px #888888;
             -webkit-border-radius:50%;
             border-radius:50%;
-            font-size:0.8rem;
+
             margin:0;
             padding:0;
             position:relative;
@@ -46,17 +51,17 @@
             -webkit-transition:background-color ease 0.1s;
             transition:background-color ease 0.1s;
         }
-        .tui-checkbox:checked::after {
+        .Wtui-checkbox:checked::after {
             content:'';
-            top:5px;
-            left:5px;
+            top:3px;
+            left:2px;
             position:absolute;
             background:transparent;
             border:#fff solid 2px;
             border-top:none;
             border-right:none;
-            height:6px;
-            width:10px;
+            height:4px;
+            width:8px;
             -moz-transform:rotate(-45deg);
             -ms-transform:rotate(-45deg);
             -webkit-transform:rotate(-45deg);
@@ -68,9 +73,9 @@
 <body>
 <div></div>
 <span>
-       <input name="checkbox" value="Item 1" type="checkbox" class="tui-checkbox ">
-<input name="checkbox" value="Item 1" type="checkbox" class="tui-checkbox ">
-<input name="checkbox" value="Item 1" type="checkbox" class="tui-checkbox ">
+       <input name="radio"   type="radio"  >
+<input name="checkbox" value="Item 1" type="checkbox" class="Wtui-checkbox ">
+<input name="checkbox" value="Item 1" type="checkbox" class="Wtui-checkbox ">
 </span>
  <table border>
     <tr>
