@@ -221,8 +221,9 @@
                        if(k.noSmallItem){
                            if(k.contentDetails){
                               k.contentDetails.map((o,p)=>{
-                                  console.log(o.content,12,1);
-
+                                        debugger
+                                  let arr1=o.content.split(/name\s+=\s+"(.+?)"\/>/g)
+                                  console.log(o.content,arr1,12,1);
                                   let obj={
                                        ...o,
                                        p:k,
@@ -243,6 +244,9 @@
                                    arr.push(o)
                                     if(o.contentDetails){
                                        o.contentDetails.map((o1,p1)=>{
+                                            let arr1=o1.content.split(/name(\s{0,})=(\s{0,})\"(.+?)\" (\s{0,})\/>/g)
+                                           console.log(o1.content,arr1,12,1);
+
                                            let obj1={
                                                ...o1,
                                                p:o,
@@ -344,9 +348,7 @@
 /deep/ .el-row{
     border: 1px #979797 solid;
     border-bottom: 0;
-
-
-    justify-content: left;
+    justify-content: left;display: flex;
     .colCenter{
         min-height:45px;
         display: flex;

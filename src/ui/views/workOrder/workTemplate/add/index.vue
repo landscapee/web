@@ -232,6 +232,7 @@
 
         },
         created() {
+            // console.log(this.$moment(new Date(), 'YYYY-MM-DD HH:mm:ss').split(' ')[1].split(':').join(''));
 
             this.init()
         },

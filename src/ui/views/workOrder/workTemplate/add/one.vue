@@ -2,7 +2,7 @@
     <div   :class=" type=='info'?'G_form G_formInfo ':'G_form'" >
         <el-form ref="form" label-position="right" :model="form" :rules="rules"  :inline="true"  >
             <div class="row_three">
-                <el-form-item  label="工单模板编码：" prop="code">
+                <el-form-item  label="工单模板编码：" :prop="type=='edit'?'':'code'">
                     <span v-if="type=='info'">{{form.code}}</span>
                     <el-input   :disabled="type=='edit'" v-else v-model="form.code" placeholder="请输入工单模板编码"></el-input>
                 </el-form-item>

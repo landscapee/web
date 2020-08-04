@@ -31,13 +31,13 @@
                 </template>
             </el-table-column>
             <el-table-column slot="value" label="值"   align="center" >
-                <template slot-scope="{ row ,$index}">
+                <span slot-scope="{ row ,$index}">
                    <div v-if="row.type==4">
                        <div  class="upUser  ">
                            <img @click="upLogoPho(row)" v-if="row.value"  :src="row.value" alt="请上传图片">
                            <el-button v-else @click="upLogoPho(row)"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
                        </div>
-                       <div  style="display: none">
+                       <div style="display: none">
                            <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile($event,row)"></UploadFile>
 
                        </div>
@@ -50,7 +50,7 @@
                     </div>
                     <el-input v-else-if="row.type==2||row.type==3||row.type==5"  v-model="row.value"  placeholder="请输入值" >  </el-input>
 
-                </template>
+                </span>
             </el-table-column>
             <el-table-column slot="enable" label="是否启用" :width="90" align="center" >
                 <template slot-scope="{ row }">
@@ -123,13 +123,11 @@
             },
 
             upLogoPho(row){
-
-                this.$refs.UploadFile.$refs.buttonClick.$el.click()
+                 this.$refs.UploadFile.$refs.buttonClick.$el.click()
             },
 
             getFile(file,row){
-
-                 request({
+                  request({
                     header:{
                         'Content-Type':'multipart/form-data'
                     },
@@ -137,8 +135,7 @@
                     method:'GET',
                 }).then((d) => {
                      this.$set(row,'value',d.data.filePath)
-                     console.log(this.tableData);
-                });
+                 });
             },
             addList(){
                 this.tableData.unshift({templateId:this.$route.query.id,enable:true})

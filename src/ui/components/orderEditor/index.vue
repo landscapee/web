@@ -307,7 +307,7 @@ export default {
         var editor = this, name = 'inpt';
         editor.clickToolbar(name, function() {
             _this.inputIndex+=1
-            editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex + '@@@"/>')
+            editor.insertHtml('<input type="text" name="$$$' + _this.inputIndex +'"/>')
         })
     })
     // 单选
@@ -330,7 +330,7 @@ export default {
         var editor = this, name = 'na'
         editor.clickToolbar(name, function() {
             _this.inputIndex+=1
-            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'@@@">是<input type="radio"  name="$$$'+_this.inputIndex+'@@@">否')
+            editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
         })
     })
     // 签章

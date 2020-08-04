@@ -49,10 +49,10 @@
 
 </table>
 <script language="javascript">
-    var str="我bai获#取我一#特殊符号#获取我二#之间#获取我三#的内容";
+    var str="我bai获#取我一#特殊/>符号#获取我二#之间#获取我三#的内容";
     var pattern =/#(.+#.+?)#/g;
     var text=str.match(pattern);
-    let arr=str.split(/#(.+#?)#/g)
+    let arr=str.split(/#(.+?)\/>/g)
     let num=str.indexOf('#',4)
     console.log(arr,num);
     console.log((text ));;

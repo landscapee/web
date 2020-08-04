@@ -24,26 +24,41 @@
                 <el-form v-if="formItem&&(formItem.itemType==1||formItem.itemType==3)" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
                     <div class="row_one widthOne1">
                         <el-form-item  label="项次编号：" prop="number">
-                            <el-input   v-model="formItem.number" placeholder="请输入中文 "></el-input>
+                            <el-input   v-model="formItem.number" placeholder="请输入项次编号 "></el-input>
                         </el-form-item>
                     </div>
-                    <div class="row_one">
+                    <div class="row_one" v-if="formItem.itemType==1">
                         <el-form-item  label="工作大项名称：" prop="name">
-                            <el-input   v-model="formItem.name" placeholder="请输入中文 "></el-input>
+                            <el-input   v-model="formItem.name" placeholder="请输入工作大项名称 "></el-input>
+                        </el-form-item>
+                    </div>
+                    <div class="row_one" v-if="formItem.itemType==3">
+                        <el-form-item  label="工作小项名称：" prop="name">
+                            <el-input   v-model="formItem.name" placeholder="请输入工作小项名称 "></el-input>
                         </el-form-item>
                     </div>
                     <div class="row_one">
-                        <el-form-item  label="" prop="courseCode1">
-                            <el-checkbox v-model="formItem.addLogo" :label="true" >添加标识：</el-checkbox>
-                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.notApplicable" :label="true" style="margin-right: 10px">N/A</el-checkbox>
-                            <el-checkbox :disabled="!formItem.notApplicable" v-model="formItem.notApplicableImport" :label="true">导出显示</el-checkbox>
-                            <i></i>
-                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.cycle" :label="true" style="margin-right: 10px">○</el-checkbox>
-                            <el-checkbox :disabled="!formItem.cycle" v-model="formItem.cycleImport" :label="true">导出显示○</el-checkbox>
-                            <i></i>
-                            <el-checkbox :disabled="!formItem.addLogo" v-model="formItem.hook" :label="true" style="margin-right: 10px"> ✔</el-checkbox>
-                            <el-checkbox :disabled="!formItem.hook" v-model="formItem.hookImport" :label="true">导出显示✔</el-checkbox>
-                            <i></i>
+                        <el-form-item  label="添加标识：" prop="courseCode1">
+                            <!--<icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>-->
+
+                            <el-checkbox @change="logoChange($event,'notApplicableImport')"  v-model="formItem.notApplicable" :label="true" style="margin-right: 10px">N/A </el-checkbox>
+                            <el-checkbox :disabled="!formItem.notApplicable" v-model="formItem.notApplicableImport" :label="true"  >导出显示</el-checkbox>
+                            <i style="border-left:1px #979797 solid;margin-right: 30px"></i>
+
+                            <el-checkbox  @change="logoChange($event,'cycleImport')"   v-model="formItem.cycle" :label="true" style="margin-right: 10px">
+                                <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
+                            </el-checkbox>
+                            <el-checkbox :disabled="!formItem.cycle" v-model="formItem.cycleImport" :label="true"  >导出显示
+                             </el-checkbox>
+                            <i style="border-left:1px #979797 solid;margin-right: 30px"></i>
+
+                            <el-checkbox  @change="logoChange($event,'hookImport')"   v-model="formItem.hook" :label="true" style="margin-right: 10px">
+                                <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
+
+                            </el-checkbox>
+                            <el-checkbox :disabled="!formItem.hook" v-model="formItem.hookImport" :label="true"  >导出显示
+                             </el-checkbox>
+
                         </el-form-item>
                     </div>
 
@@ -62,76 +77,69 @@
 
                     </el-form>
                 <el-form v-else-if="editTrue" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
-                   <!--<div style="font-size: 14px;margin-bottom: 10px">-->
-                       <!--{{formItem.paId?dataItemObj[formItem.paId].name:''}}-->
-                       <!--<i class="el-icon-arrow-right" v-if="formItem.paId"> </i>-->
-                       <!--{{formItem.papId?dataItemObj[formItem.paId][formItem.papId].name:''}}-->
-                       <!--<i class="el-icon-arrow-right" v-if="formItem.papId"> </i>-->
-                       <!--{{formItem.name}}编辑：-->
-                   <!--</div>-->
-                    <div class="row_five">
-                        <el-form-item  label="" prop="noSignTime" style="width:30%!important; margin: 0">
-                            <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
-                        </el-form-item>
-                        <el-form-item  label="" prop="c3WorkerTask" style="width:30%!important; margin: 0"  v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
-                            <el-checkbox    v-model="formItem.workerLabel"  :label="true">
-                                适用工作者标签
-                            </el-checkbox>
-                        </el-form-item>
-                        <el-form-item  label="" prop="hsSchedule" style="width:30%!important; margin: 0" v-if=" formThree.contentLayout=='C4（四列）'">
-                            <el-checkbox    v-model="formItem.commanderLabel"  :label="true">适用指挥者标签  </el-checkbox>
-                        </el-form-item>
-                    </div>
-                    <div class="row_one rowTTTT" v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+                    <div class="row_two " v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
                         <el-form-item  label="" prop="c3WorkerTask">
                             <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">
                                 工作者必做任务
                             </el-checkbox>
                         </el-form-item>
                         <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
-                            <el-input size="mini"  v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  ></el-input>
+                            <el-input    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  ></el-input>
                         </el-form-item>
                     </div>
-                    <div class="row_one rowTTTT" v-if="formThree.contentLayout=='C4（四列）'">
+                    <div class="row_two " v-if="formThree.contentLayout=='C4（四列）'">
                         <el-form-item  label="" prop="hsSchedule">
                             <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">指挥者必做任务  </el-checkbox>
-                         </el-form-item>
+                        </el-form-item>
                         <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
-                             <el-input size="mini" v-model="formItem.c4CommanderRemark" ></el-input>
+                            <el-input   v-model="formItem.c4CommanderRemark" ></el-input>
                         </el-form-item>
                     </div>
-                    <div class="row_one widthOne" >
-                        <!--v-if="formItem.noSmallItem"-->
+                    <div class="row_one " >
                         <el-form-item  label="角色权限控制：" prop="rolePermissions">
-                            <el-select    multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
+                            <el-select      multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
                                 <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                             </el-select>
                         </el-form-item>
                     </div>
-                    <div class="row_one widthOne" >
-                        <!--v-if="formItem.noSmallItem"-->
+                    <div class="row_one " >
                         <div v-for="(item,index) in formItem.suitableRange" :key="index">
                             <el-form-item  label="适用范围类型：" prop="type">
-                                <el-select  @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
+                                <el-select    @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
                                     <el-option v-for="(opt,index) in options.applyRangeType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                 </el-select>
-                                <el-select multiple filterable v-if="item.type=='适用机型范围'"  v-model="item.values" placeholder="请选择机型">
+                                <el-select    multiple filterable v-if="item.type=='适用机型范围'"  v-model="item.values" placeholder="请选择机型">
                                     <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
                                 </el-select>
-                                <el-select v-else multiple  v-model="item.values" placeholder="请选择发动机">
+                                <el-select    v-else multiple  v-model="item.values" placeholder="请选择发动机">
                                     <el-option v-for="(opt,index) in options.EngineNo" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                 </el-select>
-                                <el-button v-if="formItem.suitableRange.length>1" class="QoptionButton" @click="delLimmit(index)"><i class="el-icon-delete"></i> </el-button>
+                                <el-button  type="primary" @click="addLimmit"><i class="el-icon-circle-plus-outline"></i>添加</el-button>
+                                <el-button v-if="formItem.suitableRange.length>1"  @click="delLimmit(index)"><i class="el-icon-delete"></i>删除 </el-button>
 
                             </el-form-item>
                         </div>
-                        <div style="text-align: right ;margin-right: 40px" >
-                            <el-button class="QoptionButton" @click="addLimmit"><i class="el-icon-circle-plus-outline"></i>添加适用范围</el-button>
-                        </div>
-                    </div>
 
+                    </div>
+                    <div class="row_one">
+                        <el-form-item  label="" prop="noSignTime"  >
+                            <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
+                        </el-form-item>
+                    </div>
+                    <div class="row_one">
+                        <el-form-item  label="" prop="c3WorkerTask"   v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+                            <el-checkbox    v-model="formItem.workerLabel"  :label="true">
+                                适用工作者标签
+                            </el-checkbox>
+                        </el-form-item>
+                    </div>
+                    <div class="row_one">
+                        <el-form-item  label="" prop="hsSchedule"   v-if=" formThree.contentLayout=='C4（四列）'">
+                            <el-checkbox    v-model="formItem.commanderLabel"  :label="true">适用指挥者标签  </el-checkbox>
+                        </el-form-item>
+                    </div>
                     <order-editor
-                            id="editor_id" height="100%" width="100%"
+                            id="editor_id" height="300px" width="100%"
                             :content.sync="formItem[key]"
                             :loadStyleMode="false"
                             @on-content-change="onContentChange"
@@ -219,7 +227,10 @@
                     return true
                 }
                 return false
-            }
+            },
+            // logoChange(){
+            //      return this.formItem.notApplicable+this.formItem.cycle+this.formItem.notApplicable
+            // }
 
         },
         watch: {
@@ -241,6 +252,23 @@
 
         },
         methods: {
+            logoChange(val,key){
+                console.log(val, key);
+                if(!val){
+                    this.$set(this.formItem,key,false)
+                }else{
+
+                    if(key=='notApplicableImport'){
+                        this.$set(this.formItem,'cycle',false)
+                        this.$set(this.formItem,'cycleImport',false)
+
+                    }else{
+                        this.$set(this.formItem,'notApplicable',false)
+                        this.$set(this.formItem,'notApplicableImport',false)
+
+                    }
+                }
+            },
             onContentChange (val) {
 
 
@@ -336,23 +364,25 @@
 
 
             editItem(data,node,index,index1){
-                console.log( this.idEditor,data, node,index,index1);
-                this.switchPrompt().then((d)=>{
-                    if(d==1){
-                        this.dataTree=[...this.dataTreeY]
-                        this.formItem={...data}
-                        this.$nextTick(()=>{
-                            this.idEditor=0
-                        })
-                    }else if(d==3){
-                        this.formItem={...data}
-                        this.$nextTick(()=>{
-                            this.idEditor=0
-                        })
-                    }
+                console.log( data, node,index,index1,12,3);
+                if(data.id){
+                    this.switchPrompt().then((d)=>{
+                        if(d==1){
+                            this.dataTree=[...this.dataTreeY]
+                            this.formItem={...data}
+                            this.$nextTick(()=>{
+                                this.idEditor=0
+                            })
+                        }else if(d==3){
+                            this.formItem={...data}
+                            this.$nextTick(()=>{
+                                this.idEditor=0
+                            })
+                        }
 
-                })
-                 this.visible = false
+                    })
+                }
+                this.visible = false
             },
             openMainMenuFnOption(e,obj){
                 this.addItemObj=obj
@@ -622,7 +652,9 @@
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                       obj.rolePermissions=obj.rolePermissions.join(';')
-                                    obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_'+new Date().getTime()+'_')
+                                      let d =new Date()
+                                      let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
+                                      obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_'+num+'_')
                                 }else{
 
                                   }
@@ -699,11 +731,11 @@
 
         display: flex;
         justify-content: left;
-        height:calc(100vh - 400px);
-        border: 1px black solid;
+        height:calc(100vh - 300px);
+        border: 1px #979797 solid;
         .threeBanFirst{
-            border-right: 1px black solid;
-            height:calc(100vh - 402px);
+            border-right: 1px #979797 solid;
+            height:calc(100vh - 302px);
             width: 320px;
             padding: 15px;
         }
@@ -738,7 +770,7 @@
                 }
                 .row_one{
                     .el-form-item__label{
-                        width: 120px;
+                        width: 110px;
                         text-align: left;
                         padding: 0;
                     }
@@ -826,6 +858,15 @@
      }
     /deep/ .el-input{
         width: 200px;
+    }
+}
+.row_two{
+
+    /deep/ .el-form-item:first-child{
+       width: 200px!important;
+    } /deep/ .el-form-item{
+    margin-right: 0;
+       width: calc(100% - 220px)!important;
     }
 }
 </style>
