@@ -6,7 +6,7 @@
 </template>
  
 <script>
-import '../../../../node_modules/kindeditor/kindeditor-all.js'
+ import '../../../../node_modules/kindeditor/kindeditor-all.js'
 import '../../../../node_modules/kindeditor/lang/zh-CN.js'
 import '../../../../node_modules/kindeditor/themes/default/default.css'
 import addRadioDialog from './addRadioDialog.vue';
@@ -379,8 +379,54 @@ export default {
         useContextmenu: _this.useContextmenu,
         syncType: _this.syncType,
         indentChar: _this.indentChar,
-        cssPath: _this.cssPath,
-        cssData: _this.cssData,
+        cssPath: './kindeditor.css',
+        cssData: `
+        input[eType='radio']:checked {
+    background:#1673ff;
+    border:solid 0px #888888;
+ }
+
+ input[eType='radio']:focus{
+    -webkit-appearance:none;
+    -webkit-user-select:none;
+    outline: none;
+}
+ input[eType='radio'] {
+    width:14px;
+    height:14;
+    background-color:#ffffff;
+    border:solid 1px #888888;
+    -webkit-border-radius:50%;
+    border-radius:50%;
+      margin:3px 4px;
+    padding:0;
+    position:relative;
+    display:inline-block;
+    vertical-align:top;
+    cursor:default;
+    -webkit-appearance:none;
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-transition:background-color ease 0.1s;
+    transition:background-color ease 0.1s;
+}
+ input[eType='radio']:checked::after {
+    content:'';
+    top:3px;
+    left:2px;
+    position:absolute;
+    background:transparent;
+    border:#fff solid 2px;
+    border-top:none;
+    border-right:none;
+    height:3px;
+    width:8px;
+    -moz-transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+    -webkit-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+}
+        `,
         bodyClass: _this.bodyClass,
         colorTable: _this.colorTable,
         afterCreate: _this.afterCreate,
@@ -412,7 +458,8 @@ export default {
         allowImageRemote: _this.allowImageRemote,
         autoHeightMode: _this.autoHeightMode,
         fixToolBar: _this.fixToolBar,
-        tabIndex: _this.tabIndex
+        tabIndex: _this.tabIndex,
+
     })
   },
   methods:{
@@ -427,7 +474,7 @@ export default {
             let html = this.radioInputList.map(i=>{
                 this.inputIndex++
 
-                return `<input type='checkbox' style=" " name='${'$$$'+obj[type]+this.inputIndex}'> ${type==3?'N/A':i.value} `
+                return `<input type='checkbox' eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}' name='${'$$$'+obj[type]+this.inputIndex}'> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
@@ -435,32 +482,37 @@ export default {
 }
 </script>
  
-<style scoped lang="scss">
+<style   lang="scss">
+.kindeditor{
+  /deep/ .ke-icon-inpt {
+    background-image: url(./assets/img/add.svg);
+    width: 22px;
+    height: 22px;
+  }
+  /deep/ .ke-icon-checkbox{
+    background-image: url(./assets/img/edit.svg);
+    width: 22px;
+    height: 22px;
+  }
+  /deep/ .ke-icon-na{
+    background-image: url(./assets/img/info.svg);
+    width: 22px;
+    height: 22px;
+  }
+  /deep/ .ke-icon-checkradio{
+    background-image: url(./assets/img/kh.svg);
+    width: 22px;
+    height: 22px;
+  }
+  /deep/ .ke-icon-sign{
+    background-image: url(./assets/img/sign.svg);
+    width: 22px;
+    height: 22px;
+  }
 
-    /deep/ .ke-icon-inpt {
-        background-image: url(./assets/img/add.svg);
-        width: 22px;
-        height: 22px;
-    }
-    /deep/ .ke-icon-checkbox{
-        background-image: url(./assets/img/edit.svg);
-        width: 22px;
-        height: 22px;
-    }
-    /deep/ .ke-icon-na{
-        background-image: url(./assets/img/info.svg);
-        width: 22px;
-        height: 22px;
-    }
-    /deep/ .ke-icon-checkradio{
-        background-image: url(./assets/img/kh.svg);
-        width: 22px;
-        height: 22px;
-    }
-    /deep/ .ke-icon-sign{
-        background-image: url(./assets/img/sign.svg);
-        width: 22px;
-        height: 22px;
-    }
+
+}
+
+
 
 </style>

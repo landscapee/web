@@ -18,8 +18,8 @@
                 </tr>
             </table>
             </div>
-            <div class="info" v-if="form.baseItemVOList&&form.baseItemVOList.length>0">
-               <div class="lastRow" v-for="(opt) in Math.ceil(form.baseItemVOList.length/3)" :key="opt" >
+            <div class="info" v-if="getbaseItemVOList&&getbaseItemVOList.length>0">
+               <div class="lastRow" v-for="(opt) in Math.ceil(getbaseItemVOList.length/3)" :key="opt" >
                    <el-row    >
                        <el-col class="colCenter" :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
                            <div>{{opt1.nameCn}}</div>
@@ -150,7 +150,7 @@
 
 <script>
     import request from '@lib/axios.js';
-    import { extend ,map,get} from "lodash";
+    import { extend ,map,get,filter} from "lodash";
     export default {
         name: "see",
          components: {},
@@ -164,13 +164,19 @@
             }
         },
         computed:{
+            getbaseItemVOList(){
+                let arr=this.form.baseItemVOList&&this.form.baseItemVOList.filter((k)=>k.enable)
+                return arr
+            },
           getArr(){
               return (opt)=>{
                     let num=opt*3
-                  let arr= this.form.baseItemVOList.slice((opt-1)*3,num)
-                  if(opt*3>this.form.baseItemVOList.length){
-                       num=this.form.baseItemVOList.length+1
-                      arr= this.form.baseItemVOList.slice((opt-1)*3,num)
+                  let fArr=this.form.baseItemVOList.filter((k)=>k.enable)
+
+                  let arr= fArr.slice((opt-1)*3,num)
+                  if(opt*3>fArr.length){
+                       num=fArr.length+1
+                      arr= fArr.slice((opt-1)*3,num)
                       num==1?
                       arr.push({}): arr.push({},{})
                   }
@@ -301,7 +307,16 @@
         line-height: 20px;
         margin-bottom: 6px;
         color:#222222;
+        display: flex;
+        justify-content: space-between;
+        div{
+            color:#3280E7
+        }
+        div:hover{
+            cursor: pointer;
+        }
     }
+
     .order{
         .head{
 

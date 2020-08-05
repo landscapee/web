@@ -110,8 +110,7 @@
                         method: 'get',
                         params:{
                             code:this.form.code,
-                            id:this.$route.query.id,
-                        }
+                         }
                     }).then(d => {
                         if(d.code==200){
                             if (d.data) {
@@ -139,15 +138,16 @@
                 if (!this.form.title) {
                     return callback(new Error('请输入工单标题'));
                 } else {
-                     request({
-                        url:`${this.$ip}/mms-workorder/template/checkTitle`,
-                        method: 'get',
-                        params:{
-                            title:this.form.title,
-                            id:this.$route.query.id,
-                        }
-                    }).then(d => {
-                        if(d.code==200){
+                    if(this.form.code){
+                        request({
+                            url:`${this.$ip}/mms-workorder/template/checkTitle`,
+                            method: 'get',
+                            params:{
+                                title:this.form.title,
+                                code:this.form.code,
+                            }
+                        }).then(d => {
+                            if(d.code==200){
                             if (d.data) {
                                 callback();
                             } else {
@@ -158,6 +158,10 @@
                         }
 
                     });
+                    }else{
+                        callback("输入工单模板编码后重新校验");
+                    }
+
                 }
             };
             return {
@@ -181,6 +185,16 @@
             }
         },
         watch:{
+          'form.code':{
+              handler(n){
+                  if(n){
+                      this.$refs.form.validateField('title')
+
+                  }
+                },
+              immediate:true
+
+          } ,
           'form.photo':{
               handler(n){
                   if(n){
@@ -288,8 +302,6 @@
                                     resolve(true)
 
                                 }
-
-
                             })
                         }
                     });

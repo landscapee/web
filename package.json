@@ -8,8 +8,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
     "build": "webpack --config webpack.prod.js --Program jwxt.build",
-    "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/"
-  },
+    "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/",
+    "tes.test": "npm run build && scp -r build/* root@173.101.1.130:/home/front-end/",
+    "test:unit": "jest --clearCache && vue-cli-service test:unit",
+    "test:ci": "npm run lint && npm run test:unit",
+    "build.test": "npm run test:unit",
+    "lint": "eslint --ext .js,.vue src"
+   },
   "repository": {
     "type": "git",
     "url": "http://173.100.1.40/scm/qx/front-framework.git"

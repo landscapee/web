@@ -171,7 +171,7 @@
 </template>
 
 <script>
-    import {  extend ,map} from 'lodash';
+     import {  extend ,map} from 'lodash';
     import orderEditor from '@components/orderEditor/index.vue';
 
     import request from '@lib/axios.js';
