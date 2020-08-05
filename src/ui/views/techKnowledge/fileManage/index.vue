@@ -243,6 +243,15 @@ export default {
             })
         },
         async onBlurFn(item){
+            if(!item.label){
+                this.$message({
+                    showClose: true,
+                    message: '文件夹名字不能为空',
+                    type: 'error'
+                })
+                this.getFileList()
+                return
+            }
             let isExist = await this.judgeNameExistsFn(item)
             if(isExist){
                 this.$message({

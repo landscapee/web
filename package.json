@@ -1,4 +1,3 @@
-
 {
   "name": "jwxt",
   "version": "0.0.1",
@@ -6,8 +5,10 @@
   "node-version": "10.9.0",
   "main": "index.js",
   "scripts": {
-     "dev": "webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
-    "build": "webpack --config webpack.prod.js --Program jwxt.build",
+
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
+     "build": "webpack --config webpack.prod.js --Program jwxt.build",
     "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/",
     "tes.test": "npm run build && scp -r build/* root@173.101.1.130:/home/front-end/",
      "build.test": "npm run build"
