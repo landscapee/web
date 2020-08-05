@@ -13,7 +13,7 @@
     "tes.test": "npm run build && scp -r build/* root@173.101.1.130:/home/front-end/",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit",
-    "build.test": "cross-env NODE_CONGIF=test node build/build.js",
+    "build.test": "npm run test:unit",
     "lint": "eslint --ext .js,.vue src"
    },
   "repository": {
