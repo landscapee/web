@@ -102,7 +102,7 @@ export default {
 
                     let content = d;
                     let blob = new Blob([content],{type:'application/vnd.ms-excel'})
-                     const fileName = `${row.co urseFileName}`
+                     const fileName = `${row.courseFileName}`
                     if ('download' in document.createElement('a')) { // 非IE下载
                         const elink = document.createElement('a')
                         elink.download = fileName
