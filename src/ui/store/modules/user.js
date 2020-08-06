@@ -34,7 +34,7 @@ const actions = {
 		const { username, password } = userInfo;
 		return new Promise((resolve, reject) => {
             request({
-                url: '/sso/login/login',
+                url: `${this.$loginIp}/sso/login/login`,
                 method: 'post',
                 data:{ username: username.trim(), password: password },
             })
