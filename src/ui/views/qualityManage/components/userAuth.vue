@@ -3,7 +3,7 @@
         <div class="courseware"  >
             <div class="QCenterRight">
                 <div class="QHead">
-                    {{form.userName}}资质
+                    <!--{{form.userName}}-->员工授权
                 </div>
 
             </div>
@@ -286,14 +286,23 @@
         overflow-x: hidden ;
         width: 100%;
          height:calc(100vh - 230px);
-        /deep/ .el-form{
+        .QlistBody{
+            margin-left: calc(50% - 550px);
+        }
+        /deep/ .el-form:last-child{
             /*width: 90%;*/
+
+        }
+        .searchTableWrapper{
+            width:1100px;
+            margin-left: calc(50% - 550px);
 
         }
         .nomTable{
             margin-left: calc(50% - 550px);
             width:1100px;
-            border-collapse:collapse;border:none;
+            border-collapse:collapse;
+            border:none;
 
             .fTd{
                  width: 140px;

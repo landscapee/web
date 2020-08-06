@@ -35,9 +35,9 @@ export const trainAdminResultsConfig = (obj) => {
 
                  { prop: 'employeeName', label: '员工姓名',sortProp:"employeeName", align: 'center',sort:true,search:{type:'input', prop:'employeeName',placeholder:"请输入", } },
                  { prop: 'employeeId', label: '员工编号',sortProp:"employeeId", align: 'center',sort:true,search:{type:'input', prop:'employeeId',placeholder:"请输入", } },
-            { prop: 'trainingName', label: '培训项目',sortProp:"trainingName", align: 'center',sort:true,search:{type:'input', prop:'trainingName',placeholder:"请输入"} },
-                 { prop: 'trainingType', label: '培训类别',sortProp:"trainingType", align: 'center',sort:true,search:{type:'select', prop:'trainingType',placeholder:"请选择",selectProp:['valData','valData'],data:obj.trainType} },
-               { prop: 'classHour', label: '学时',sortProp:"classHour", align: 'center' ,sort:true,search:{type:'input', prop:'classHour', placeholder:"请输入"}},
+            { prop: 'trainingName', label: '培训项目',sortProp:"trainingName", align: 'center', },
+                 { prop: 'trainingType', label: '培训类别',sortProp:"trainingType", align: 'center', },
+               { prop: 'classHour', label: '学时',sortProp:"classHour", align: 'center' , },
                 { prop: 'qualifiedStatus', label: '考核成绩',sortProp:"qualifiedStatus", align: 'center' ,sort:true,search:{type:'input', prop:'qualifiedStatus', placeholder:"请输入"}},
                 { prop: 'certificateNo', label: '证书编号',sortProp:"certificateNo", align: 'center',sort:true,search:{type:'input', prop:'certificateNo', placeholder:"请输入", } },
                 { prop: 'remark', label: '备注', sortProp:"remark", align: 'center',sort:true,search:{type:'input', prop:'remark', placeholder:"请输入", } },

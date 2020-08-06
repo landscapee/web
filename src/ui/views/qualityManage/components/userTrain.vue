@@ -111,8 +111,8 @@
         },
 
         created() {
-             this.getList( );
-             this.getList1( );
+             this.getList();
+             this.getList1();
             request({
                 url:`${this.$ip}/mms-qualification/userRecord/getByUserNumber/${this.$route.query.id}`,
                 method: "get",
@@ -135,12 +135,12 @@
 
             getList() {
                 request({
-                    url: `${this.$ip}/mms-training/trainingResult/user/list`,
-                    method: 'post',
-                    data:{"employeeId":this.$route.query.id}
+                    url: `${this.$ip}/mms-training/trainingResult/get/${this.$route.query.id}`,
+                    method: 'get',
+                    // data:{"employeeId":this.$route.query.id}
                 }).then((d) => {
-                    if (d.data && d.data.records) {
-                        this.tableData = d.data.records
+                    if (d.code==200 && d.data) {
+                        this.tableData = d.data
 
                     }
                 })

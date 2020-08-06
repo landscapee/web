@@ -7,7 +7,7 @@
         <div class="courseware" v-else>
             <div class="QCenterRight">
                 <div class="QHead">
-                    {{form.userName}}人员档案详情
+                    {{form.userName}}档案详情
                 </div>
                 <div v-if="type!='info'"  class="QheadRight">
 

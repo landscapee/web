@@ -132,9 +132,9 @@
                 }
             },
             focus(val){
-                let e=new Date(this.form.endTime)
-                let s=new Date(this.form.startTime)
-                let t=new Date()
+                let e=this.form.endTime?new Date(this.form.endTime):''
+                let s=this.form.startTime?new Date(this.form.startTime):''
+                 let t=new Date()
 
                 this.pickerOptions = {
                     disabledDate(time) {
@@ -146,8 +146,8 @@
                 };
             } ,
             focus1(val){
-                let e=new Date(this.form.endTime)
-                let s=new Date(this.form.startTime)
+                let e=this.form.endTime?new Date(this.form.endTime):''
+                let s=this.form.startTime?new Date(this.form.startTime):''
                 let t=new Date()
                 this.pickerOptions1 = {
                     disabledDate(time) {

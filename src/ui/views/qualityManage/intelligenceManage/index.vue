@@ -124,9 +124,7 @@
                     this.getList('right');
                     // this.toFrom=nm.query.type
                 }else if(val.path=='/intelligenceManage'){
-                      this.getList('left');
-                }else if(val.path!='/intelligenceManage'){
-                      this.leftParams.size=18
+                    this.leftParams.size=18
                     this.leftParams.current=1
                     this.rightParams.current = 1
                     this.leftRow={}
@@ -137,6 +135,7 @@
                     this.rightSelectId=null
                     this.tableRightData.records=[]
                     this.tableLeftData.records=[]
+                      this.getList('left');
                 }
             }
         },

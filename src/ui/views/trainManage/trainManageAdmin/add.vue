@@ -202,6 +202,7 @@
             if(this.$router.history.current.path == '/trainManageAdminAdd'){
                 if (this.$route.query) {
                     this.type = this.$route.query.type;
+
                     request({
                         url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
@@ -231,21 +232,31 @@
             }
         },
         methods: {
-            fileDownload(id,num){
+            fileDownload(id,num,key){
                 if(id){
                     request({
                          header:{
                             'Content-Type':'multipart/form-data'
                         },
-                        url:`${this.$ip}/mms-file/get-file-by-id/${id }`,
+                        url:`${this.$ip}/mms-file/get-file-stream-by-id/${id }`,
                         method:'GET',
+                        responseType: 'blob'
 
                     }).then((d) => {
-                        if( d.data&&num==1){
-                           window.open( d.data.filePath)
-                        }else{
-                            this.$refs.formLoad.action =  d.data.filePath;
-                            this.$refs.formLoad.submit();
+                        let content = d;
+                         let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                        const fileName =this.form[key]
+                        if ('download' in document.createElement('a')) { // 非IE下载
+                            const elink = document.createElement('a')
+                            elink.download = fileName
+                            elink.style.display = 'none'
+                            elink.href = URL.createObjectURL(blob)
+                            document.body.appendChild(elink)
+                            elink.click()
+                            URL.revokeObjectURL(elink.href) // 释放URL 对象
+                            document.body.removeChild(elink)
+                        }else { // IE10+下载
+                            navigator.msSaveBlob(blob, fileName)
                         }
                     });
                 }else {
@@ -290,7 +301,7 @@
                 }
             },
             focus(val){
-                let e=new Date(this.form.endTime)
+                let e=this.form.endTime?new Date(this.form.endTime):''
                 let s=new Date(this.form.startTime)
                 this.pickerOptions = {
                     disabledDate(time) {
@@ -301,8 +312,8 @@
                 };
             } ,
             focus1(val){
-                 let e=new Date(this.form.endTime)
-                let s=new Date(this.form.startTime)
+                let e=this.form.endTime?new Date(this.form.endTime):''
+                let s=this.form.startTime?new Date(this.form.startTime):''
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         // console.log(1, 8);
@@ -313,8 +324,8 @@
                 };
             },
             blur(b) {
-                let e=new Date(this.form.endTime)
-                let s=new Date(this.form.startTime)
+                let e=this.form.endTime?new Date(this.form.endTime):''
+                let s=this.form.startTime?new Date(this.form.startTime):''
                 let msg;
                 if (e && s && e.getTime() <= s.getTime()) {
                     if (b) {

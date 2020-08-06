@@ -111,8 +111,8 @@ let modelRange=(row)=>{
 export const authorizeConfig = (obj,arr) => {
     return [
         { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
-         { prop: 'dept', label: '部门',sortProp:"dept", align: 'center',sort:true,search:{type:'input', prop:'dept',placeholder:"请输入"} },
-        { prop: 'post', label: '岗位',sortProp:"post", align: 'center',sort:true,search:{type:'input', prop:'post',placeholder:"请输入"} },
+         // { prop: 'dept', label: '部门',sortProp:"dept", align: 'center',sort:true,search:{type:'input', prop:'dept',placeholder:"请输入"} },
+        // { prop: 'post', label: '岗位',sortProp:"post", align: 'center',sort:true,search:{type:'input', prop:'post',placeholder:"请输入"} },
         { prop: 'authorizationType', label: '授权类型',sortProp:"authorizationType", align: 'center',sort:true,search:{type:'select', prop:'authorizationType',placeholder:"请选择",data:obj.roleControl,selectProp:['valData','valData']} },
         { prop: 'authorizedUnit', label: '授权单位',sortProp:"authorizedUnit", align: 'center',sort:true,search:{type:'input', prop:'authorizedUnit',placeholder:"请输入"} },
         { prop: 'flightType', label: '授权航班类型',sortProp:"flightType", align: 'center',sort:true,search:{type:'select', prop:'flightType',placeholder:"请选择",data:obj.accreditFlightType,selectProp:['valData','valData']} },
