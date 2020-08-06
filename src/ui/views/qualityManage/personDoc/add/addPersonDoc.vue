@@ -33,7 +33,7 @@
                                         <!--{{form.userNumber}}-->
                                     </span>
 
-                                    <el-select @change="userNameC" filterable   v-else v-model="form.userNumber" placeholder="请选择员工编号">
+                                    <el-select @change="userNameC" filterable :disabled="type=='edit'"  v-else v-model="form.userNumber" placeholder="请选择员工编号">
                                         <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.id" :value="opt.id">
                                             <span>{{opt.id}}({{opt.name}})</span>
                                             <span></span>
@@ -51,7 +51,7 @@
 												<div>{{ form.userName }}</div>
                                     </el-tooltip>
                                     </span>
-                                    <el-select @change="userNameC" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
+                                    <el-select @change="userNameC" :disabled="type=='edit'" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
                                         <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.name" :value="opt.id"></el-option>
                                     </el-select>
                                 </el-form-item>
@@ -320,7 +320,7 @@
         },
         created() {
 
-           this.initPage()
+            this.initPage()
         },
         mounted(){
             // this.fileDownload(this.form.diploma,'diploma')
@@ -328,7 +328,7 @@
         },
         methods: {
             enter(id,title){
-                 this.fileDownload(id,title,1)
+                this.fileDownload(id,title,1)
             },
             leave(){
                 this.fileObj={
@@ -338,12 +338,12 @@
             userNameC(val){
                 // console.log(new Date(1532448000000),12,1);
                 let obj={}
-               let data= this.userArrObj[val].userExt
-                  this.form={
+                let data= this.userArrObj[val].userExt
+                this.form={
                     ...this.form,
                     userNumber:val,
-                     userName:this.userArrObj[val].name,
-                     contactInformation:this.userArrObj[val].phone||null,
+                    userName:this.userArrObj[val].name,
+                    contactInformation:this.userArrObj[val].phone||null,
                 }
                 if(data){
                     this.form={
@@ -361,9 +361,9 @@
             },
 
             upUserPho(){
-                 this.$refs.upUserPho.$refs.buttonClick.$el.click()
+                this.$refs.upUserPho.$refs.buttonClick.$el.click()
 
-             },
+            },
             getFile(file){
                 console.log(file.id);
                 this.$set(this.form,'photo',file.id)
@@ -375,12 +375,12 @@
                     method:'GET',
 
                 }).then((d) => {
-                     this.$set(this.form,'photoPath',d.data.filePath)
+                    this.$set(this.form,'photoPath',d.data.filePath)
                 });
 
             },  getFile2(file){
-                    this.$set(this.form,'enclosure',file.id)
-                    // this.$set(this.form,'enclosureName',file.name)
+                this.$set(this.form,'enclosure',file.id)
+                // this.$set(this.form,'enclosureName',file.name)
             },  getFile3(file){
                 this.$set(this.form,'diploma',file.id)
                 // this.$set(this.form,'diplomaName',file.name)
@@ -442,7 +442,7 @@
                 })
             },
             initPage(){
-                   if (this.$route.query&&this.$router.history.current.path == '/addPersonDoc') {
+                if (this.$route.query&&this.$router.history.current.path == '/addPersonDoc') {
                     this.type = this.$route.query.type;
                     if(this.$route.query.id){
                         this.$route.meta.paramsId ={id:this.$route.query.id,type:this.$route.query.type}
@@ -456,7 +456,7 @@
                                 ? "人员档案详情"
                                 : "";
 
-                      request({
+                    request({
                         headers: { 'Content-Type': 'text/plain' },
                         url: `/sys/user/getAllUserByOrgIdByPage`,
                         method: 'get',
@@ -472,7 +472,7 @@
                             })
                         }
                     });
-                     if(this.type!='add'){
+                    if(this.type!='add'){
                         this.getInfo()
 
                     }
@@ -480,32 +480,32 @@
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
-                      this.$refs[form].validate(valid => {
-                         if (valid) {
+                    this.$refs[form].validate(valid => {
+                        if (valid) {
 
-                                let url
-                                if(this.type=='add'){
-                                    url='/userRecord/save'
-                                }else {
-                                    url='/userRecord/update'
-                                }
-                                let obj={...this.form}
+                            let url
+                            if(this.type=='add'){
+                                url='/userRecord/save'
+                            }else {
+                                url='/userRecord/update'
+                            }
+                            let obj={...this.form}
 
-                                request({
-                                    url:`${this.$ip}/mms-qualification${url}`,
-                                    method: 'post',
-                                    data:{...obj},
-                                }).then((d) => {
-                                    if(d.code==200){
-                                        this.$message.success("保存成功！");
-                                        if(this.type == "add"){
-                                            this.$router.push({path:'/addPersonDoc',query:{type:"edit",id:d.data.id}})
-                                            this.$set(this.form,'id',d.data.id)
-                                            this.initPage()
-                                        }
+                            request({
+                                url:`${this.$ip}/mms-qualification${url}`,
+                                method: 'post',
+                                data:{...obj},
+                            }).then((d) => {
+                                if(d.code==200){
+                                    this.$message.success("保存成功！");
+                                    if(this.type == "add"){
+                                        this.$router.push({path:'/addPersonDoc',query:{type:"edit",id:d.data.id}})
+                                        this.$set(this.form,'id',d.data.id)
+                                        this.initPage()
                                     }
+                                }
 
-                                })
+                            })
 
                         }else{
                             // this.$message.warning('等待文件上传成功后在提交')
@@ -528,10 +528,10 @@
             font-size:16px;
             color:#888888
         }  &>a  {
-            padding: 15px;
-            font-size:16px;
-            color:#222222
-        }
+               padding: 15px;
+               font-size:16px;
+               color:#222222
+           }
     }
     .G_form1{
         margin-top:80px ;
@@ -576,7 +576,7 @@
 
                             width: 170px;
                         }
-                         padding :0 10px 0 15px;
+                        padding :0 10px 0 15px;
                         width: 200px;
                         display: inline-block;
                         /*white-space: nowrap;overflow: hidden;text-overflow: ellipsis;*/
@@ -584,31 +584,31 @@
                 }
             }
         }
-       /deep/  .el-form{
-           width: 1233px;
-           .el-form-item {
-               margin: 0;
-           }
-           .el-input{
-               width:200px;
-           }
-           .el-select{
-               width:200px;
-           }
-           .el-form-item__error{
-               top:25px
-           }
+        /deep/  .el-form{
+            width: 1233px;
+            .el-form-item {
+                margin: 0;
+            }
+            .el-input{
+                width:200px;
+            }
+            .el-select{
+                width:200px;
+            }
+            .el-form-item__error{
+                top:25px
+            }
             .el-textarea__inner,  .el-input__inner{
                 border:0px solid rgba(151,151,151,1);
                 font-size:16px;
                 color:#222222
             }
-           input::-webkit-input-placeholder {
-               font-size:16px;
-               font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-               font-weight:400;
-               color:#888888
-           }
+            input::-webkit-input-placeholder {
+                font-size:16px;
+                font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+                font-weight:400;
+                color:#888888
+            }
         }
     }
 
