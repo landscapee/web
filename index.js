@@ -28,16 +28,15 @@ import './static/plugin/lang/zh-CN.js'
 import directives from '@lib/directive.js'
 import moment from 'moment'
 //公共ip地址和端口
-console.log(PROGRAM)
 if(PROGRAM == 'jwxt.dev'){
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    Vue.prototype.$loginIp = "http://173.100.1.87"
+    //Vue.prototype.$loginIp = "http://173.100.1.5:8011"
 }else if(PROGRAM == 'jwxt.test'){
     Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$loginIp = "http://173.101.1.30:6070"
+    //Vue.prototype.$loginIp = "http://173.101.1.30:6070"
 }else if(PROGRAM == 'jwxt.build'){
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    Vue.prototype.$loginIp = "http://173.100.1.87"
+    //Vue.prototype.$loginIp = "http://173.100.1.5:8011"
 }
 
 Vue.prototype.$moment = moment;
