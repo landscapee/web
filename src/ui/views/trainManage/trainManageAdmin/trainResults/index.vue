@@ -8,7 +8,8 @@
                     <span>员工培训结果 </span>
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="addOrEditOrInfo('info')">
+                        <icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel">
                         <icon iconClass="export" ></icon>
                         导出Excel

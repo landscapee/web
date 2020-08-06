@@ -1,72 +1,81 @@
 <template>
-    <div class="addindex" :key="this.$route.query.type" >
+    <div>
+        <div  class="addindex" :key="this.$route.query.type" >
+
         <div class="left">
-            <div class="QCenterRight">
-                <div class="QHead">
-                    {{title}}
+            <Details ref="Details" v-if="type=='info'"></Details>
+            <div v-else>
+                <div class="QCenterRight">
+                    <div class="QHead">
+                        {{title}}
+                    </div>
+                    <div class="QheadRight" >
+                        <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
+                        <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
+                    </div>
+                    <div style="display: none">
+                        <UploadFile  :isPrompt="true"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
+                    </div>
                 </div>
-                <div class="QheadRight" >
-                    <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
-                    <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
-                 </div>
-                <div style="display: none">
-                <UploadFile  :isPrompt="true"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
-            </div>
-            </div>
-            <div class="banner">
-                <div class="bannerHead">
-                    <label @click="radioClick(1)"   :class="radio==1?'el-radio is-checked':'el-radio'">
+                <div class="banner">
+                    <div class="bannerHead">
+                        <label @click="radioClick(1)"   :class="radio==1?'el-radio is-checked':'el-radio'">
                         <span  :class="radio==1?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
                          <span class="el-radio__label" :style="{color:radio==1?'#3280E7':''}">工单类型配置</span>
                         </span>
-                    </label>
-                    <i class="el-icon-arrow-right"> </i>
-                    <label @click="radioClick(2)"     :class="radio==2?'el-radio is-checked':'el-radio'">
+                        </label>
+                        <i class="el-icon-arrow-right"> </i>
+                        <label @click="radioClick(2)"     :class="radio==2?'el-radio is-checked':'el-radio'">
                         <span  :class="radio==2?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
                          <span class="el-radio__label" :style="{color:radio==2?'#3280E7':''}">基本信息配置</span>
                         </span>
-                    </label>
-                    <i class="el-icon-arrow-right"> </i>
-                    <label @click="radioClick(3)"     :class="radio==3?'el-radio is-checked':'el-radio'">
+                        </label>
+                        <i class="el-icon-arrow-right"> </i>
+                        <label @click="radioClick(3)"     :class="radio==3?'el-radio is-checked':'el-radio'">
                         <span  :class="radio==3?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
                          <span class="el-radio__label" :style="{color:radio==3?'#3280E7':''}">工作标签与布局</span>
                         </span>
-                    </label>
-                    <i class="el-icon-arrow-right"> </i>
-                    <label @click="radioClick(4)"     :class="radio==4?'el-radio is-checked':'el-radio'">
+                        </label>
+                        <i class="el-icon-arrow-right"> </i>
+                        <label @click="radioClick(4)"     :class="radio==4?'el-radio is-checked':'el-radio'">
                         <span  :class="radio==4?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
                          <span class="el-radio__label" :style="{color:radio==4?'#3280E7':''}">工作项与内容配置</span>
                         </span>
-                    </label>
-                         </div>
-                <div class="component">
-                    <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==1" :key="(new Date().toString())"></One>
-                    <Two ref="Two" :type="type" :formData="form.contentVOList      " v-else-if="radio==2" :key="(new Date().toString())"></Two>
-                    <Three ref="Three" :type="type" :formData="form.baseItemVOList" v-else-if="radio==3" :key="(new Date().toString())"></Three>
-                    <Four ref="Four" :type="type" :formData="form.baseItemVOList" v-else :key="(new Date().toString())"></Four>
+                        </label>
+                    </div>
+                    <div class="component">
+                        <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==1" :key="(new Date().toString())"></One>
+                        <Two ref="Two" :type="type" :formData="form.contentVOList      " v-else-if="radio==2" :key="(new Date().toString())"></Two>
+                        <Three ref="Three" :type="type" :formData="form.baseItemVOList" v-else-if="radio==3" :key="(new Date().toString())"></Three>
+                        <Four ref="Four" :type="type" :formData="form.baseItemVOList" v-else :key="(new Date().toString())"></Four>
+                    </div>
+                </div>
+                <div class="Qfooter">
+                    <el-button   v-if="radio>1" @click="last()">上一步</el-button>
+                    <el-button   @click="save()">保存</el-button>
+                    <el-button   type="primary" @click="save('submit')">提交</el-button>
+                    <el-button    v-if="radio<4" @click="next()">下一步</el-button>
+
                 </div>
             </div>
-            <div class="Qfooter">
-                <el-button   v-if="radio>1" @click="last()">上一步</el-button>
-                <el-button   @click="save()">保存</el-button>
-                <el-button   type="primary" @click="save('submit')">提交</el-button>
-                <el-button    v-if="radio<4" @click="next()">下一步</el-button>
 
-            </div>
         </div>
         <div class="right">
             <See ref="See"   ></See>
         </div>
         <CopyHistory ref="CopyHistory" @getList="update" ></CopyHistory>
     </div>
+
+    </div>
+
 </template>
 
 <script>
@@ -78,10 +87,11 @@
      import Three from './three'
      import Four from './four2'
      import See from './see'
+     import Details from './details'
      import CopyHistory from './copyHistory'
     export default {
         name: "index",
-        components: {One,Two,Three,Four,See,CopyHistory},
+        components: {One,Two,Three,Four,See,Details,CopyHistory},
         data() {
             return {
                 title:'',
