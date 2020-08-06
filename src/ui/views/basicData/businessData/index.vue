@@ -75,7 +75,6 @@ export default {
 				current: 1,
 				size: 18,
             },
-            
             leftForm:{},
             rightForm:{},
             leftSelectId:null,
