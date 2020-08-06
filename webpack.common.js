@@ -29,7 +29,7 @@ const HtmlWebpackPluginConfig = {
     hash: true
 }
 
-if (argv.Program === 'jwxt.dev' || argv.Program === 'jwxt.build') {
+if (argv.Program === 'jwxt.dev' || argv.Program === 'jwxt.build' || argv.Program === 'jwxt.test') {
     html_webpack_plugin = new HtmlWebpackPlugin(_.extend(HtmlWebpackPluginConfig, {title: '机务系统'}));
     indexJs = './index.js';
 }
