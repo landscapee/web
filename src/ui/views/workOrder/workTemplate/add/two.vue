@@ -168,10 +168,26 @@
                         cancelButtonText: '取消',
                         type: 'warning',
                     }).then(() => {
-                            this.tableData.splice(this.selectId,1)
-                            this.selectId   = null;
-                            this.rowT   = {};
-                            this.$message({type: 'success',message: '删除成功,保存后生效'});
+                        if(this.rowT.id){
+                        request({
+                            url:`${this.$ip}/mms-workorder/templateBaseItem/delete/${this.rowT.id}`,
+                            method: 'delete',
+
+                        }).then((d) => {
+                            if(d.code==200){
+                            this.getInfo()
+
+                         }
+
+                    })
+
+                         }else{
+                        this.tableData.splice(this.selectId,1)
+                        this.selectId   = null;
+                        this.rowT   = {};
+                        this.$message({type: 'success',message: '删除成功,保存后生效'});
+                    }
+
                         }).catch(() => {
                             this.$message({
                                 type: 'info',

@@ -77,69 +77,71 @@
 
                     </el-form>
                 <el-form v-else-if="editTrue" ref="form" label-position="left" :model="formItem" :rules="rules"  :inline="true"  >
-                    <div class="row_two " v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
-                        <el-form-item  label="" prop="c3WorkerTask">
-                            <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">
-                                工作者必做任务
-                            </el-checkbox>
-                        </el-form-item>
-                        <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
-                            <el-input    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  ></el-input>
-                        </el-form-item>
-                    </div>
-                    <div class="row_two " v-if="formThree.contentLayout=='C4（四列）'">
-                        <el-form-item  label="" prop="hsSchedule">
-                            <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">指挥者必做任务  </el-checkbox>
-                        </el-form-item>
-                        <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
-                            <el-input   v-model="formItem.c4CommanderRemark" ></el-input>
-                        </el-form-item>
-                    </div>
-                    <div class="row_one " >
-                        <el-form-item  label="角色权限控制：" prop="rolePermissions">
-                            <el-select      multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
-                                <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </div>
-                    <div class="row_one " >
-                        <div v-for="(item,index) in formItem.suitableRange" :key="index">
-                            <el-form-item  label="适用范围类型：" prop="type">
-                                <el-select    @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
-                                    <el-option v-for="(opt,index) in options.applyRangeType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
-                                </el-select>
-                                <el-select    multiple filterable v-if="item.type=='适用机型范围'"  v-model="item.values" placeholder="请选择机型">
-                                    <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
-                                </el-select>
-                                <el-select    v-else multiple  v-model="item.values" placeholder="请选择发动机">
-                                    <el-option v-for="(opt,index) in options.EngineNo" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
-                                </el-select>
-                                <el-button  type="primary" @click="addLimmit"><i class="el-icon-circle-plus-outline"></i>添加</el-button>
-                                <el-button v-if="formItem.suitableRange.length>1"  @click="delLimmit(index)"><i class="el-icon-delete"></i>删除 </el-button>
+                   <div v-if="formItem.itemType==2||formItem.itemType==4">
+                       <div class="row_two " v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+                           <el-form-item  label="" prop="c3WorkerTask">
+                               <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">
+                                   工作者必做任务
+                               </el-checkbox>
+                           </el-form-item>
+                           <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
+                               <el-input    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  ></el-input>
+                           </el-form-item>
+                       </div>
+                       <div class="row_two " v-if="formThree.contentLayout=='C4（四列）'">
+                           <el-form-item  label="" prop="hsSchedule">
+                               <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">指挥者必做任务  </el-checkbox>
+                           </el-form-item>
+                           <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
+                               <el-input   v-model="formItem.c4CommanderRemark" ></el-input>
+                           </el-form-item>
+                       </div>
+                       <div class="row_one " >
+                           <el-form-item  label="角色权限控制：" prop="rolePermissions">
+                               <el-select      multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
+                                   <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                               </el-select>
+                           </el-form-item>
+                       </div>
+                       <div class="row_one " >
+                           <div v-for="(item,index) in formItem.suitableRange" :key="index">
+                               <el-form-item  label="适用范围类型：" prop="type">
+                                   <el-select    @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
+                                       <el-option v-for="(opt,index) in options.applyRangeType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                                   </el-select>
+                                   <el-select    multiple filterable v-if="item.type=='适用机型范围'"  v-model="item.values" placeholder="请选择机型">
+                                       <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
+                                   </el-select>
+                                   <el-select    v-else multiple  v-model="item.values" placeholder="请选择发动机">
+                                       <el-option v-for="(opt,index) in options.EngineNo" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                                   </el-select>
+                                   <el-button  type="primary" @click="addLimmit"><i class="el-icon-circle-plus-outline"></i>添加</el-button>
+                                   <el-button v-if="formItem.suitableRange.length>1"  @click="delLimmit(index)"><i class="el-icon-delete"></i>删除 </el-button>
 
-                            </el-form-item>
-                        </div>
+                               </el-form-item>
+                           </div>
 
-                    </div>
-                    <div class="row_one">
-                        <el-form-item  label="" prop="noSignTime"  >
-                            <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
-                        </el-form-item>
-                    </div>
-                    <div class="row_one">
-                        <el-form-item  label="" prop="c3WorkerTask"   v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
-                            <el-checkbox    v-model="formItem.workerLabel"  :label="true">
-                                适用工作者标签
-                            </el-checkbox>
-                        </el-form-item>
-                    </div>
-                    <div class="row_one">
-                        <el-form-item  label="" prop="hsSchedule"   v-if=" formThree.contentLayout=='C4（四列）'">
-                            <el-checkbox    v-model="formItem.commanderLabel"  :label="true">适用指挥者标签  </el-checkbox>
-                        </el-form-item>
-                    </div>
+                       </div>
+                       <div class="row_one">
+                           <el-form-item  label="" prop="noSignTime"  >
+                               <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
+                           </el-form-item>
+                       </div>
+                       <div class="row_one">
+                           <el-form-item  label="" prop="c3WorkerTask"   v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
+                               <el-checkbox    v-model="formItem.workerLabel"  :label="true">
+                                   适用工作者标签
+                               </el-checkbox>
+                           </el-form-item>
+                       </div>
+                       <div class="row_one">
+                           <el-form-item  label="" prop="hsSchedule"   v-if=" formThree.contentLayout=='C4（四列）'">
+                               <el-checkbox    v-model="formItem.commanderLabel"  :label="true">适用指挥者标签  </el-checkbox>
+                           </el-form-item>
+                       </div>
+                   </div>
                     <order-editor
-                            id="editor_id" height="300px" width="100%"
+                            id="editor_id" height="450px" width="100%"
                             :content.sync="formItem[key]"
                             :loadStyleMode="false"
                             @on-content-change="onContentChange"
@@ -340,9 +342,9 @@
                 // this.idEditor++
             },
             addItem( num){
-                 let name=`项次${this.dataItem.length+1}【工作大项】`
+                 let name=`${this.dataItem.length+1}【工作大项】`
                 if(num==1){
-                    name=`项次${this.addItemObj.children.length+1}【工作小项】`
+                    name=`${this.addItemObj.number}.${this.addItemObj.children.length+1}【工作小项】`
                 }
                 let obj={
                     parentId:this.addItemObj&&this.addItemObj.id||null,
@@ -810,6 +812,7 @@
             line-height: 40px;
              padding:3px;
             text-align: center;
+
             border-bottom:1px solid #d9d9d9;
             &:hover{
                 background:#ccc;
@@ -837,7 +840,7 @@
                 padding:0;
                 border: 1px solid #d9d9d9;
                 z-index: 110;
-                left:99px;
+                left:98px;
                 top:0;
 
             }

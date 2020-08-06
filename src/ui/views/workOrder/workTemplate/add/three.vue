@@ -76,6 +76,7 @@
                             }).then((d) => {
                                 if(d.code==200){
                                     this.$message.success('操作成功')
+                                this.getInfo()
                                     resolve(true)
                                 }
 

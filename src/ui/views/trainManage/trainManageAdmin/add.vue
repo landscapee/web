@@ -113,7 +113,7 @@
 
                     <div class="row_one oneFile">
                         <el-form-item label="课件：" prop="courseFileId">
-                            <span @click="fileDownload(form.courseFileId)" class="hoverSpanFile" v-if="type=='info'">{{form.courseFileName}}<i class="el-icon-download iClass"></i></span>
+                            <span @click="fileDownload(form.courseFileId,2,'courseFileName')" class="hoverSpanFile" v-if="type=='info'">{{form.courseFileName}}<i class="el-icon-download iClass"></i></span>
                             <div v-else style="display: flex;justify-content: left">
                                 <el-input   :disabled="true" v-model="form.courseFileName" type="text"    placeholder="请选择文件"></el-input>
                                 <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.txt,.docx,.ppt"  ref="UploadFile" @getFile="getCourse"></UploadFile>
@@ -125,7 +125,7 @@
 
                         <el-form-item    label="签到表：" prop="signFileId">
                             <!--<a href="javascript"></a>-->
-                            <span @click="fileDownload(form.signFileId,1)" class="hoverSpanFile" v-if="type=='info'">{{form.signFileName}} <i class="el-icon-download iClass"></i></span>
+                            <span @click="fileDownload(form.signFileId,1,'signFileName')" class="hoverSpanFile" v-if="type=='info'">{{form.signFileName}} <i class="el-icon-download iClass"></i></span>
                             <div style="display: flex;justify-content: left" v-else>
                                 <el-input  :disabled="true" v-model="form.signFileName" type="text"    placeholder="pdf/图片"></el-input>
                                 <UploadFile accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf" ref="UploadFile" @getFile="getFile"></UploadFile>
@@ -241,7 +241,7 @@
                         method:'GET',
 
                     }).then((d) => {
-                        if( d.data&&num){
+                        if( d.data&&num==1){
                            window.open( d.data.filePath)
                         }else{
                             this.$refs.formLoad.action =  d.data.filePath;

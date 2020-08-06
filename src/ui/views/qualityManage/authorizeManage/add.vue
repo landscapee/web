@@ -21,7 +21,7 @@
 
                     <el-form-item label="员工姓名：" prop="userName">
                         <span v-if="type=='info'">{{  form.userName }}</span>
-                        <el-select @change="userNumberC" filterable   v-else v-model="form.userNumber" placeholder="请选择员工姓名">
+                         <el-select @change="userNumberC" filterable   v-else v-model="form.userNumber" placeholder="请选择员工姓名">
                             <el-option v-for="(opt,index) in userArr"  :key="index" :label="opt.userName" :value="opt.userNumber">
                                 <span>{{opt.userName}}-{{opt.userNumber}}</span>
                             </el-option>
@@ -66,17 +66,17 @@
                 <div class="row_tow">
                     <el-form-item  label="授权类型：" prop="authorizationType">
                         <span v-if="type=='info'">{{  form.authorizationType }}</span>
-                        <el-select     v-else v-model="form.authorizationType" placeholder="请选择授权类型">
+                         <el-select     v-else v-model="form.authorizationType" placeholder="请选择授权类型">
                             <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData">
-                            </el-option>
+                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item  label="授权单位：" prop="authorizedUnitCode">
                         <span v-if="type=='info'">{{  form.authorizedUnitCode }}</span>
-                        <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位">
-                            <!--shortName-->
+                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位">
+                             <!--shortName-->
                             <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.id">
-                            </el-option>
+                             </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -164,10 +164,10 @@
                 Airline:[],
                 AircratS:[],
                 options: {},
-                rules: {
-                    userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
-                    name: [{ required:true,message:'请输入证书名称', trigger: "blur" }],
-                    number: [{ required:true,message:'请输入证书编号', trigger: "blur" }],
+                 rules: {
+                     userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
+                     name: [{ required:true,message:'请输入证书名称', trigger: "blur" }],
+                     number: [{ required:true,message:'请输入证书编号', trigger: "blur" }],
                 },
                 type: "add"
             };
@@ -204,7 +204,7 @@
                     if(data.data&&data.data.records){
                         this.userArr =data.data.records
                     }
-                })
+                    })
                 this.$route.meta.title =
                     this.type == "add"
                         ? "授权管理新增"
@@ -213,9 +213,9 @@
                         : this.type == "info"
                             ? "授权管理详情":''
 
-                if(this.type!='add'){
-                    this.getInfo()
-                }
+                 if(this.type!='add'){
+                   this.getInfo()
+                 }
             }
         },
         computed:{
@@ -284,39 +284,39 @@
                     url:`${this.$ip}/mms-qualification/authorization/getById/${this.$route.query.id}`,
                     method: "get",
                 }).then(d => {
-                    if(d.data){
-                        let obj=d.data
-                        if(this.type=='edit'){
-                            obj.flightType=obj.flightType?obj.flightType.split(';'):[]
+                   if(d.data){
+                       let obj=d.data
+                       if(this.type=='edit'){
+                           obj.flightType=obj.flightType?obj.flightType.split(';'):[]
                         }
-                        if(obj.modelRange){
+                       if(obj.modelRange){
 
-                            obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
-                                let arr=k.split('__')
-                                return {
-                                    name: arr[0].split('***')[0],
-                                    models: arr[0].split('***')[1]?arr[0].split('***')[1].split(','):[],
-                                    id: arr[1],
-                                }
-                            })
+                           obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
+                               let arr=k.split('__')
+                               return {
+                                   name: arr[0].split('***')[0],
+                                   models: arr[0].split('***')[1]?arr[0].split('***')[1].split(','):[],
+                                   id: arr[1],
+                               }
+                           })
                         }
 
-                        if( obj.state===0){
-                            obj.state= '未授权'
-                        }else if( obj.state===1){
-                            obj.state= '已授权'
-                        }else if( obj.state===2){
-                            obj.state= '授权取消'
-                        }
-                        this.form={...obj }
-                    }
+                       if( obj.state===0){
+                           obj.state= '未授权'
+                       }else if( obj.state===1){
+                           obj.state= '已授权'
+                       }else if( obj.state===2){
+                           obj.state= '授权取消'
+                       }
+                       this.form={...obj }
+                   }
                 }).catch(error => {
                     this.$message.error(error);
                 });
 
             },
             handleClear() {
-                this.form.modelRange=[]
+               this.form.modelRange=[]
             },
             handleRemove(id) {
 
@@ -359,46 +359,46 @@
                     this.form = { modelRange:[]};
                 }
             },
-            saveForm(form,num) {
-                return new Promise((resolve, reject)=>{
-                    if (this.type == "add" || this.type == "edit") {
-                        this.$refs[form].validate(valid => {
-                            if (valid) {
-                                let url
-                                if(this.type=='add'){
-                                    url='/authorization/save'
-                                }else {
-                                    url='/authorization/update'
-                                }
-                                let obj={...this.form};
-                                if(obj.flightType){
-                                    obj.flightType=obj.flightType.join(';')
-                                }
-                                let modelRange=[]
-                                if(obj.modelRange.length){
-                                    modelRange=obj.modelRange.map((k,l)=>{
-                                        let msg=k.models?`${k.name}***${k.models.join(',')}__${k.id}`:`${k.name}__${k.id}`
-                                        return  msg
-                                    })
-                                }
-                                obj.modelRange=modelRange.join(';')
-                                request({
-                                    url:`${this.$ip}/mms-qualification${url}`,
-                                    method: 'post',
-                                    data:obj,
-                                }).then((data) => {
-                                    if(num!=1){
-                                        this.$message.success("保存成功！");
-                                        this.$router.go(-1)
-                                    }else{
-                                        resolve(this)
-                                    }
-                                })
+             saveForm(form,num) {
+                 return new Promise((resolve, reject)=>{
+                     if (this.type == "add" || this.type == "edit") {
+                         this.$refs[form].validate(valid => {
+                             if (valid) {
+                                 let url
+                                 if(this.type=='add'){
+                                     url='/authorization/save'
+                                 }else {
+                                     url='/authorization/update'
+                                 }
+                                 let obj={...this.form};
+                                 if(obj.flightType){
+                                     obj.flightType=obj.flightType.join(';')
+                                 }
+                                 let modelRange=[]
+                                 if(obj.modelRange.length){
+                                     modelRange=obj.modelRange.map((k,l)=>{
+                                         let msg=k.models?`${k.name}***${k.models.join(',')}__${k.id}`:`${k.name}__${k.id}`
+                                         return  msg
+                                     })
+                                 }
+                                 obj.modelRange=modelRange.join(';')
+                                 request({
+                                     url:`${this.$ip}/mms-qualification${url}`,
+                                     method: 'post',
+                                     data:obj,
+                                 }).then((data) => {
+                                     if(num!=1){
+                                         this.$message.success("保存成功！");
+                                         this.$router.go(-1)
+                                     }else{
+                                         resolve(this)
+                                     }
+                                 })
 
-                            }
-                        });
-                    }
-                })
+                             }
+                         });
+                     }
+                 })
             },
             focus(val){
                 let e=new Date(this.form.endTime)
@@ -442,7 +442,7 @@
                 border-radius: 5px;
             }
         }
-    }
+     }
     .G_form{
         /*height:calc(100vh - 300px);*/
         /deep/.el-form {

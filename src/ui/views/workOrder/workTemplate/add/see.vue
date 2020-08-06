@@ -8,8 +8,8 @@
         <div class="order">
             <div class="head">
 
-            <table class="nomTable nomTable0" v-if="form.typeVO">
-                <tr class="trimg">
+            <table class="nomTable nomTable0"  >
+                <tr class="trimg" v-if="get(form.typeVO,'airlineCompany')||form.photoPath">
                     <td> <div  ><img :src="form.photoPath" alt=""></div></td>
                     <td>{{get(form.typeVO,'airlineCompany')}}</td>
                 </tr>
@@ -28,7 +28,6 @@
                    </el-row>
                    <el-row  >
                        <el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
-
                                <img v-if="opt1.type==4"   :src="opt1.value" alt="加载失败">
                                <div v-if="opt1.type==4&&show" > {{ '${'+opt1.placeholder+'}'}}</div>
 
@@ -72,11 +71,11 @@
                 <table class="one" border="0" width="100%">
                     <tr height="45px">
 
-                        <td  width="17%">
+                        <td  width="17%"  v-if="form.labelVO">
                             <div>{{get(form.labelVO,'itemLabel')}}</div>
                             <div>{{get(form.labelVO,'itemLabelEnglish')}}</div>
                         </td>
-                        <td  :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
+                        <td v-if="form.labelVO"  :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
                             <div>{{get(form.labelVO,'contentLabel')}}</div>
                             <div>{{get(form.labelVO,'contentLabelEnglish')}}</div>
                         </td>
@@ -94,12 +93,22 @@
                                 <template v-if="opt.contentDetails&&opt.contentDetails.length"></template>
                                 <template v-else>
                                     <td   width="17%"  >
-                                        <div style="margin-right: 10px"  v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
-                                            <div v-if="opt.hookImport">✔</div>
-                                            <div v-if="opt.notApplicable">N/A</div>
-                                            <div v-if="opt.cycle">○</div>
-                                        </div>
-                                        <div>{{opt.number}}</div>
+                                       <div style="display: flex;justify-content: space-between;padding: auto 30px"  >
+                                           <div style="margin-right: 10px"    class="logo" >
+                                               <div v-if="opt.hook">
+
+                                                   <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
+                                               </div>
+                                               <div v-if="opt.notApplicable">
+                                                   <icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>
+                                               </div>
+                                               <div v-if="opt.cycle">
+
+                                                   <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
+                                               </div>
+                                           </div>
+                                           <div>{{opt.number}}</div>
+                                       </div>
                                     </td>
                                     <td :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'">
                                         {{opt.name}}
@@ -113,12 +122,23 @@
                             </template>
                             <template v-else>
                                 <td   width="17%" :rowspan="opt.p.contentDetails.length" v-if="opt.index==0">
-                                    <div style="margin-right: 10px"  v-if="opt.hookImport||opt.notApplicable||opt.cycle"  class="logo" >
-                                        <div v-if="opt.hookImport">✔</div>
-                                        <div v-if="opt.notApplicable">N/A</div>
-                                        <div v-if="opt.cycle">○</div>
+
+                                    <div style="display: flex;justify-content: space-between;padding: auto 30px"  >
+                                        <div style="margin-right: 10px"    class="logo" >
+                                            <div v-if="opt.hook">
+
+                                                <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
+                                            </div>
+                                            <div v-if="opt.notApplicable">
+                                                <icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>
+                                            </div>
+                                            <div v-if="opt.cycle">
+
+                                                <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
+                                            </div>
+                                        </div>
+                                        <div>{{opt.p.number}}</div>
                                     </div>
-                                    <div>{{opt.p.number}}</div>
                                 </td>
 
                                 <td v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'" style="text-align: left;">
@@ -170,15 +190,14 @@
             },
           getArr(){
               return (opt)=>{
-                    let num=opt*3
+                     let num=opt*3
                   let fArr=this.form.baseItemVOList.filter((k)=>k.enable)
 
                   let arr= fArr.slice((opt-1)*3,num)
                   if(opt*3>fArr.length){
-                       num=fArr.length+1
-                      arr= fArr.slice((opt-1)*3,num)
-                      num==1?
-                      arr.push({}): arr.push({},{})
+                       num=arr.length
+                       num==1?
+                      arr.push({},{}): arr.push({})
                   }
                   return arr
               }
@@ -370,6 +389,11 @@
                     height:45px;
                     text-align: center;
                     border:1px #979797 solid;
+                }
+                tr{
+                    td:first-child{
+                        /*padding: 5px 15px;*/
+                    }
                 }
             }
         }

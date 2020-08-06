@@ -4,7 +4,7 @@
             <div class="row_three">
                 <el-form-item  label="工单模板编码：" :prop="type=='edit'?'':'code'">
                     <span v-if="type=='info'">{{form.code}}</span>
-                    <el-input   :disabled="type=='edit'" v-else v-model="form.code" placeholder="请输入工单模板编码"></el-input>
+                    <el-input  @blur="codeChange"  :disabled="type=='edit'" v-else v-model="form.code" placeholder="请输入工单模板编码"></el-input>
                 </el-form-item>
                 <el-form-item  label="工单标题：" prop="title">
                     <span v-if="type=='info'">{{form.title}}</span>
@@ -135,7 +135,7 @@
                 }
             };
             const title = (rule, value, callback) => {
-                if (!this.form.title) {
+                 if (!this.form.title) {
                     return callback(new Error('请输入工单标题'));
                 } else {
                     if(this.form.code){
@@ -166,7 +166,6 @@
             };
             return {
                 form:{},
-
                 options:{},
                 AirlineObj:{},
                 airplaneObj:{},
@@ -185,16 +184,7 @@
             }
         },
         watch:{
-          'form.code':{
-              handler(n){
-                  if(n){
-                      this.$refs.form.validateField('title')
 
-                  }
-                },
-              immediate:true
-
-          } ,
           'form.photo':{
               handler(n){
                   if(n){
@@ -210,20 +200,15 @@
                   }
                 },
               immediate:true
-
           } ,
-            '':{
-              handler(n){
-                  if(n){
-                     debugger
-                  }
-                },
-              immediate:true
 
-          }
         },
         methods: {
-            codeBlur(val){
+
+            codeChange(val){
+               if(val&&this.form.title){
+                   this.$refs.form.validateField('title')
+               }
 
             },
             getForm(){

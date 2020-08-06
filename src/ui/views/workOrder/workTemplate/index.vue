@@ -23,9 +23,9 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="check" label="最新版本标识" :width="120"  >
+                    <el-table-column slot="check" label="最新版本标识" :width="120" align="center" >
                         <template slot-scope="{ row }">
-
+                                  <el-checkbox v-model="!row.history" :label="false" v-if="!row.history" ></el-checkbox>
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
@@ -89,6 +89,9 @@
         },
 
         methods: {
+            aaa(){
+
+            },
             enable(row,path){
                 request({
                     url:`${this.$ip}/mms-workorder/template/enable/${row.id}`,
