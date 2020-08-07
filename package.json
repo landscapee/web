@@ -10,7 +10,7 @@
     "build": "webpack --config webpack.prod.js --Program jwxt.build",
     "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/",
     "tes.test": "npm run build && scp -r build/* root@173.101.1.130:/home/front-end/",
-    "build.test": "npm run build"
+    "build.test": "webpack --config webpack.prod.js --Program jwxt.test"
   },
   "repository": {
     "type": "git",
