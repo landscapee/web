@@ -47,8 +47,14 @@
                     </div>
                     <div v-else-if="row.type==1" style="text-align: center">
                         <!--任务排班信息获取-->
+                        <el-select >
+                            <el-option ></el-option>
+                        </el-select>
                     </div>
-                    <el-input v-else-if="row.type==2||row.type==3||row.type==5"  v-model="row.value"  placeholder="请输入值" >  </el-input>
+                    <div v-else-if="row.type==3" style="text-align: center">
+                        <!--任务排班信息获取-->
+                    </div>
+                    <el-input v-else-if="row.type==2||row.type==5"  v-model="row.value"  placeholder="请输入值" >  </el-input>
 
                 </span>
             </el-table-column>
@@ -96,7 +102,7 @@
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
                 params:{delete:false},
-                data:[ 'infoValueType' ]
+                data:[ 'infoValueType','W_taskGet' ]
             }).then(d => {
                 let obj=d.data
                 this.infoValueType=obj.infoValueType
