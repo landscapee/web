@@ -98,6 +98,10 @@
      </tr>
 </table> dddd
 <script language="javascript">
+    let a={a:1}
+    let b=a
+    a=null
+    console.log(a, b);
     var str="我bai获#取我一#特殊/>符号#获取我二#之间#获取我三#的内容";
     var pattern =/#(.+#.+?)#/g;
     var text=str.match(pattern);

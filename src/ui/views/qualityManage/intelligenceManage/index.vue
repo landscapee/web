@@ -412,9 +412,9 @@
                                             this.rightRow=k
                                         }
                                     })
-                                    this.tableRightData.records = d.data
-                                }
 
+                                }
+                                this.tableRightData.records = d.data
                             })
                     }
                 }

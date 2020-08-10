@@ -171,7 +171,7 @@ export default {
 		},
     userOpen(tag){
       if(tag=='user'){
-         this.$refs.userBox.open(this.users, '选择人员', true);
+          this.$refs.userBox.open(this.userList, '选择人员', true);
       }else if(tag=='dept'){
          this.$refs.deptBox.open({id:this.$store.getters.userInfo.id});
       }else if(tag=='role'){

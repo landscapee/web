@@ -45,7 +45,7 @@
                 </div>
                 <div class="row_tow">
                     <el-form-item  label="适合对象：" prop="suitableUser">
-                        <div v-if="type=='info'"> </div>
+                        <div v-if="type=='info'">{{form.suitableUser?form.suitableUser.join(';'):'--'}} </div>
                         <el-select   multiple   v-else clearable v-model="form.suitableUser" placeholder="请选择适合对象">
                             <el-option v-for="(opt,index) in options.applyObject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>

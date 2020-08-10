@@ -3,10 +3,10 @@
 		<div class="contentWrapper">
 			<vue-draggable-resizable :w="mw" :z="1002" :min-width="100" :max-width="1170 - 100" :y="0" :x="mx" axis="x" :active="true" :handles="['mr']" :parent="true" :draggable="false" @resizing="mResiz" :preventDeactivation="true">
 				<div class="persons">
-					<div class="header">
-						未选中
-						<el-button size="mini" native-type="button" @click="selectAll">全选</el-button>
-					</div>
+					<!--<div class="header">-->
+						<!--未选中1-->
+						<!--<el-button size="mini" native-type="button" @click="selectAll">全选</el-button>-->
+					<!--</div>-->
 					<div class="selectPersonPanel">
 						<Tree :data="resource" :checkedArray="checkedArray" key="1234" :showCheckbox="true" class="resourceTree" ref="resourceTree" @handleCheck="handleCheck" :expand-on-click-node="false" :isShow="isShowResource" :defaultUnCheck="true"> </Tree>
 					</div>

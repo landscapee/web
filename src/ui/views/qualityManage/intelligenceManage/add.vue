@@ -21,7 +21,7 @@
 
                     <el-form-item label="员工姓名：" prop="userName">
                         <span v-if="type=='info'">{{  form.userName }}</span>
-                         <el-select @change="userNumberC" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
+                         <el-select  :disabled="type=='edit'" @change="userNumberC" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
                             <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.userName" :value="opt.userNumber">
                                 <span>{{opt.userName}}-{{opt.userNumber}}</span>
                             </el-option>

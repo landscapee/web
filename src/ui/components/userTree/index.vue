@@ -4,22 +4,28 @@
 			<el-col :span="12">
 				<div>
 					<el-card class="box-card" shadow="never" border-radius="2px">
-						<el-scrollbar style="height:300px">
-							<Tree :data="data" ref="tree" @handleSelect="getListById" :expand-on-click-node="false" :isShow="isShow" :isShow.input="false" :defaultUnCheck="true"> </Tree>
-						</el-scrollbar>
+
+						<div style="height:300px" v-loading="!data.length" >
+
+							<Tree  :data="data" ref="tree" @handleSelect="getListById" :expand-on-click-node="false" :isShow="isShow"   :defaultUnCheck="true"  > </Tree>
+						</div>
+
 					</el-card>
 				</div>
 			</el-col>
-			<el-col :span="12"
-				><div>
+			<el-col :span="12">
+				<div>
 					<el-card class="box-card" shadow="never" border-radius="2px">
 						<el-scrollbar style="height:300px">
-							<div v-show="personList.length == 0">该部门暂无人员</div>
-							<el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选</el-checkbox>
-							<div class="item" v-for="(item, index) in personList" :key="item.id">
-								<div class="item-time">
-									<el-checkbox v-model="item.selected" @change="handleSelect(item)">{{ item.name }}</el-checkbox>
-								</div>
+								<div v-show="personList.length == 0">该部门暂无人员</div>
+							<div class="elinput" v-show="personList.length > 0">
+								<el-input class="input"  ref="input" placeholder="输入关键字进行搜索" @input="filterTextC" v-model="filterText"> </el-input>
+							</div>
+								<el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选</el-checkbox>
+								<div class="item" v-for="(item, index) in personList" :key="item.id">
+									<div class="item-time">
+										<el-checkbox v-model="userSelect" @change="userSelectC"   :label="item">{{item.name}}</el-checkbox>
+									</div>
 							</div>
 						</el-scrollbar>
 					</el-card>
@@ -30,9 +36,9 @@
 			<el-col :span="24">
 				<div>
 					<el-card class="box-card" shadow="never" border-radius="2px">
-						<div>已选择({{ selectedPersonList.length }})：<el-button style="float:right" size="mini" @click="handleClear">清空</el-button></div>
+						<div>已选择({{ userSelect.length }})：<el-button style="float:right" size="mini" @click="handleClear">清空</el-button></div>
 						<el-scrollbar style="height:120px ">
-							<el-tag :key="tag.id" v-for="tag in selectedPersonList" closable :disable-transitions="false" @close="handleRemove(tag.id)">
+							<el-tag :key="tag.id" v-for="(tag,index) in userSelect" closable :disable-transitions="false" @close="handleRemove(tag.id,index)">
 								{{ tag.name }}
 							</el-tag>
 						</el-scrollbar>
@@ -43,7 +49,7 @@
 		<el-row>
 			<el-col :span="24"></el-col>
 		</el-row>
-		<div class="footer">
+		<div class="Qfooter" style="margin-top: 15px">
 			<el-button @click="handleClose">取消</el-button>
 			<el-button type="primary" @click="handleSave">确定</el-button>
 		</div>
@@ -59,178 +65,197 @@ export default {
 	name: 'Users',
 	data() {
 		return {
-			title: '',
-			isShow: false,
+            filterText:'',
+            personListObj:{},
+			userSelect:[],
+ 			title: '选择人员',
+			isShow: {input:true},
 			selectAll: false,
 			dialogVisible: false,
 			personList: [],
-			selectedPersonList: [],
-			data: {},
+			personListOld: [],
+ 			data: [],
 			selectId: null,
 			selectNode: {},
 			type:"",
-			deptList:[]
+			deptList:[],
+            OrgUser:[],
+			orgObj:{
+                ORG:'orgId',
+                DEPT:'deptId',
+                GROUP:'groupId',
+			}
 		};
 	},
-	methods: {
-		getAllUserByDeptId() {
-			getAllUserByDeptId({ deptId: '' }).then((d) => {});
-		},
-		handleSelect(item) {
-			console.log(item);
-			console.log(this.selectedPersonList);
-			if (item.selected) {
-				const idx = this.selectedPersonList.findIndex((d) => d.id === item.id);
-				if (idx == -1) {
-					
-					this.selectedPersonList.push({
-						id: item.id,
-						name: item.name,
-					});
-				}
-			} else {
-				this.doHandleRemove(item.id);
-			}
-		},
-		handleSelectAll() {
-			if (this.selectAll) {
-				this.personList.forEach(function(item) {
-					item.selected = true;
-				});
-			} else {
-				this.personList.forEach(function(item) {
-					item.selected = false;
-				});
-			}
+	props:['treeType'],
+	watch: {
 
-			let _this = this;
+    },
 
-			this.personList.forEach(function(item) {
-				_this.handleSelect(item);
-			});
+
+    methods: {
+        filterTextC(val){
+            this.personList=[]
+            if (!val){
+                this.personList=[...this.personListOld];
+                return false
+			}
+             this.personListOld.map((k,l)=>{
+                k.name.indexOf(val) !== -1? this.personList.push(k):''
+            })
 		},
+		isAllSelect(){
+            let flag=true
+            this.personList.map((k,l)=>{
+                const idx = this.userSelect.findIndex((d) => d.id === k.id);
+                if( idx>-1){
+                }else{
+                    flag=false
+                }
+            })
+			return flag
+		},
+        userSelectC(){
+                this.selectAll = this.isAllSelect();
+			},
 		handleClear() {
-			this.selectedPersonList = [];
+			this.userSelect = [];
 			this.selectAll = false;
-			this.personList.forEach(function(item) {
-				item.selected = false;
-			});
+
 		},
-		handleRemove(id) {
-			this.doHandleRemove(id);
-			const idx = this.personList.findIndex((d) => d.id === id);
-			if (idx > -1) {
-				this.personList[idx].selected = false;
+		handleRemove(id,index) {
+			 this.userSelect.splice(index,1)
+            this.selectAll = this.isAllSelect();
+		},
+
+        getAllUserByOrgId(param,arr){
+            let url=''
+            if (this.type == 'ORG') {
+                url='/sys/user/getAllUserByOrgId'
+                param.orgId = this.selectId;
+            } else {
+                url='/sys/user/getUsersByDeptId'
+                param.deptId = this.selectId;
+            }
+            return request({
+                headers: { 'Content-Type': 'text/plain' },
+                url: url,
+                method: 'get',
+                params:param,
+            }).then((d) => {
+
+                this.OrgUser=d.data
+                return Promise.resolve(d,arr);
+
+            });
+
+        },
+        dealData(d,arr,node){
+            if(node.user&&node.user.length){
+                arr=node.user
+			}else{
+                d.map((k,l)=>{
+                    if( node['id']==k[this.orgObj[this.type]]){
+                        arr.push(k)
+                    }
+                })
 			}
+
+
 		},
-		doHandleRemove(id) {
-			const idx = this.selectedPersonList.findIndex((d) => d.id === id);
-			if (idx > -1) {
-				this.selectedPersonList.splice(idx, 1);
-			}
-		},
-		getListById(node) {
-            console.log(node,12312);
-            if (node && node.id) {
+		getListById1(node) {
+              if (node && node.id) {
 				this.selectId = node.id;
 				this.selectNode = node;
 				this.type = node.type;
 			}
-			let fetch;
-			let param = { pageNum: 1, pageSize: 99999 };
-			if (this.type == 'ORG') {
-				fetch = (params)=>{
-					return request({
-						headers: { 'Content-Type': 'text/plain' },
-						url: `/sys/user/getAllUserByOrgId`,
-						method: 'get',
-						params,
-					}).then((d) => {
-						return Promise.resolve(d);
-					});
-				} 
-				param.orgId = this.selectId;
-			} else {
-				fetch = (params)=>{
-					return request({
-						url: '/sys/user/getUsersByDeptId',
-						method: 'get',
-						params,
-					}).then((d) => {
-						return Promise.resolve(d);
-					});
-				} 
-				param.deptId = this.selectId;
+ 			let param = { pageNum: 1, pageSize: 99999 };
+			let arr11 = [];
+
+            if(!this.OrgUser.length){
+                this.getAllUserByOrgId(param).then((d)=>{
+                    this.dealData(d||[],arr11,node)
+                     node.user=arr11
+                    this.personList = arr11;
+                 })
+			}else{
+                this.dealData(this.OrgUser,arr11,node)
+                node.children=arr11
+                this.personList = arr11;
+ 			}
+		},
+        handleSelectAll() {
+                this.personList.map((k,l)=>{
+                    const idx = this.userSelect.findIndex((d) => d.id === k.id);
+                           if(this.selectAll){
+                               if( idx==-1){
+                                   this.userSelect.push(k)
+                               }
+						   }  else{
+                               if( idx>-1){
+                                   this.userSelect.splice(idx,1)
+                               }
+						   }
+                })
+        },
+		getListById(node) {
+            this.filterText=''
+              if (node && node.id) {
+				this.selectId = node.id;
+				this.selectNode = node;
+				this.type = node.type;
 			}
+			let param = { pageNum: 1, pageSize: 99999 };
+            this.getAllUserByOrgId(param).then((d) => {
+                 let flag = true;
+                this.personList =d.data.list ? d.data.list : d.data;
+                this.personListOld = [...this.personList]
+                this.personList.map((k,l)=>{
+                    const idx = this.userSelect.findIndex((d) => d.id === k.id);
+                    if( idx>-1){
+                        this.userSelect.splice(idx,1,k)
+                    }else{
+                        flag=false
+                    }
+                })
+                this.selectAll = flag;
 
-			fetch(param).then((d) => {
-				let list = d.data.list ? d.data.list : d.data;
-
-				let idArry = [];
-				this.selectedPersonList.forEach((item) => {
-					idArry.push(item.id);
-				});
-				let flag = false;
-				list.forEach((item) => {
-					if (!idArry.includes(item.id)) {
-						flag = true;
-					}
-				});
-				if (flag) {
-					this.selectAll = false;
-				} else {
-					this.selectAll = true;
-				}
- 				this.deptList = d.data.map(k => {
-                    console.log(k);
-                    return {
-						id: k.administrativeId,
-						name: k.administrativeName,
-					};
-				});
-					
-				flow([
-					(d) => {
-						return map(d, (f) => {
-							return {
-								id: f.id,
-								name: f.name,
-								idCard: f.userExt==null?"":f.userExt.idCard,
-								selected: this.isSelected(f.id),
-							};
-						});
-					},
-					
-					(d) => {
-						this.personList = d;
-					},
-				])(list);
 			});
 		},
-		isSelected(id) {
-			const idx = this.selectedPersonList.findIndex((d) => d.id === id);
-			return idx > -1;
-		},
-		getTree(currentDept) {
-            let orgId = this.$store.getters.userInfo.orgId;
-            let deptId = this.$store.getters.userInfo.deptId;
-            let administrativeId = this.$store.getters.userInfo.administrativeId;
+
+
+		getTree( ) {
+		    let userInfo= this.$store.getters.userInfo
+            console.log(userInfo,5,6);
+            let orgId = userInfo.orgId;
+            // let deptId = userInfo.deptId;
+            // let administrativeId = userInfo.administrativeId;
 			request({
-				url: '/sys/org/getAllTree',
+				url: 'sys/org/getOrgById',
 				method: 'get',
-				params:{},
-			}).then((response) => {
-				if (currentDept) {
-					this.findCurrentDept(response.data[4], orgId);
-				} else {
-					this.data = formatTreeData(response.data);
-				}
+				params:{id:orgId},
+			}).then((d1) => {
+               if(d1.responseCode==1000){
+                   request({
+                       url: 'sys/department/getAllDepartmentByOrgId',
+                       method: 'get',
+                       params:{orgId:orgId},
+                   }).then((d) => {
+                       this.data=[
+                           {
+                               name:d1.data.name,
+                               type:'ORG',
+                               id:d1.data.id,
+                               children:d.data||[]
+                           }
+                       ]
+                   });
+			   }
 			});
 		},
 		findCurrentDept(dept, deptId) {
  			if (dept.data.id == deptId) {
-				// console.log('--------' + dept.data.id + '--' + dept.data.name + '---' + deptId);
-				this.data = formatTreeData([dept]);
+ 				this.data = formatTreeData([dept]);
 				return;
 			}
 			if (dept.children && dept.children.length > 0) {
@@ -241,19 +266,23 @@ export default {
 			}
 		},
 		handleClose() {
+		    this.personList=[]
 			this.dialogVisible = false;
 		},
 		handleSave() {
 			this.handleClose();
-			this.$emit('onSelected', this.selectedPersonList,this.deptList);
+ 			this.$emit('onSelected', this.userSelect,this.deptList);
 		},
 		open(inputList, title, currentDept) {
-			this.getTree(currentDept || false);
+  			this.getTree(currentDept || false);
 			this.selectAll = false;
 			this.title = title;
-			this.selectedPersonList = cloneDeep(inputList) || [];
+			this.userSelect = cloneDeep(inputList) || [];
 			this.dialogVisible = true;
 		},
+	},
+	created(){
+	  this.getTree()
 	},
 	components: {
 		Tree,
@@ -272,10 +301,33 @@ export default {
 }
 .el-card__body {
 	padding: 10px;
+	.item{
+		margin: 20px 0;
+	}
+	.el-checkbox__label{
+		padding-left: 15px;
+	}
+	.el-scrollbar__wrap{
+		overflow-x: hidden;
+	}
+
+}
+/deep/ .el-scrollbar{
+	margin-top: 0px!important;
+
 }
 .el-card__body > div:first-child {
 	padding: 0px;
 	margin-top: 5px;
 	line-height: 15px;
+}
+/deep/ .elinput {
+	margin: 10px 0;
+	height: 30px;
+	// width: 100%;
+}
+/deep/ .el-input__inner {
+	height: 30px;
+	width: 100%;
 }
 </style>

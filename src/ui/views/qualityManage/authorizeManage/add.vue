@@ -21,7 +21,7 @@
 
                     <el-form-item label="员工姓名：" prop="userName">
                         <span v-if="type=='info'">{{  form.userName }}</span>
-                         <el-select @change="userNumberC" filterable   v-else v-model="form.userNumber" placeholder="请选择员工姓名">
+                         <el-select :disabled="type=='edit'" @change="userNumberC" filterable   v-else v-model="form.userNumber" placeholder="请选择员工姓名">
                             <el-option v-for="(opt,index) in userArr"  :key="index" :label="opt.userName" :value="opt.userNumber">
                                 <span>{{opt.userName}}-{{opt.userNumber}}</span>
                             </el-option>
@@ -132,9 +132,9 @@
             </el-form>
         </div>
         <div style="text-align: center" class="footerB" >
-            <el-button class="QoptionButton" @click="fabu" v-if="type=='edit'||type=='add'">授权发布</el-button>
-            <el-button class="QoptionButton" @click="quxiao" style="margin: 0 15px " v-if="type=='edit'">授权取消</el-button>
-            <el-button class="QoptionButton" @click="yanqi" v-if="type=='edit'"> 授权延期</el-button>
+            <el-button type="primary" @click="fabu" v-if="type=='edit'||type=='add'">授权发布</el-button>
+            <el-button type="primary" :disabled=" form.state!='已授权'"  @click="quxiao" style="margin: 0 15px " v-if="type=='edit'">授权取消</el-button>
+            <el-button type="primary"   @click="yanqi" v-if="type=='edit'"> 授权延期</el-button>
         </div>
         <AircraftType ref="AircraftType" @getAircratType="getAircratType"></AircraftType>
     </div>

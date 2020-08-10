@@ -4,7 +4,9 @@
 		<div class="elinput" v-if="isShow.input">
 			<el-input class="input" ref="input" placeholder="输入关键字进行搜索" v-model="filterText"> </el-input>
 		</div>
-		<el-tree :accordion="accordion ? true : false" :default-expand-all="defaultExpandAll ? false : true" :show-checkbox="showCheckbox" :default-checked-keys="checkedArr" :expand-on-click-node="expandOnClickNode || false" :highlight-current="highlightCurrent" node-key="id" :class="['filter-tree', isShow.heightClass]" :data="data" @node-click="getCurrentNode" @current-change="handleSelectChange" :props="defaultProps" :filter-node-method="filterNode" @check="handleCheck" ref="tree">
+		<div style="height:calc(100% - 50px)">
+			<el-scrollbar style="height:100%">
+ 				<el-tree :accordion="accordion ? true : false" :default-expand-all="defaultExpandAll ? false : true" :show-checkbox="showCheckbox" :default-checked-keys="checkedArr" :expand-on-click-node="expandOnClickNode || false" :highlight-current="highlightCurrent" node-key="id" :class="['filter-tree', isShow.heightClass]" :data="data" @node-click="getCurrentNode" @current-change="handleSelectChange" :props="defaultProps" :filter-node-method="filterNode" @check="handleCheck" ref="tree">
 			<span class="custom-tree-node" slot-scope="{ node, data }">
 				<span><i :class="icon(data)"></i>{{ `${node.label}${extendInfo(data)}` }}</span>
 				<span v-if="isShow.tip">
@@ -19,7 +21,10 @@
 					</el-button>
 				</span>
 			</span>
-		</el-tree>
+				</el-tree>
+			</el-scrollbar>
+		</div>
+
 		<!--弹窗 -->
 	</div>
 </template>
@@ -43,7 +48,7 @@ export default {
 			},
 		};
 	},
-	props: ['data', 'isShow', 'defaultUnCheck', 'showCheckbox', 'defaultExpandAll', 'expandOnClickNode', 'accordion'],
+	props: ['data', 'isShow', 'defaultUnCheck', 'showCheckbox', 'defaultExpandAll', 'expandOnClickNode', 'accordion','loading'],
 	watch: {
 		filterText(val) {
 			this.$refs.tree.filter(val);
@@ -210,6 +215,7 @@ export default {
 
 <style lang="scss" scoped>
 #tree {
+	height:100%;
 	font-weight: normal;
 	font-size: 16px;
 	#title {
@@ -244,28 +250,28 @@ export default {
 }
 
 /deep/ .el-tree {
-	height: calc(100vh - 220px);
+	height: 100%;
 	width: 100%;
 	overflow-y: auto;
 	overflow-x: auto;
 }
-/deep/ .adduser {
-	height: calc(100vh - 220px);
-	width: 100%;
-	overflow-y: initial;
-	overflow-x: initial;
-}
+/*/deep/ .adduser {*/
+	/*height: calc(100vh - 220px);*/
+	/*width: 100%;*/
+	/*overflow-y: initial;*/
+	/*overflow-x: initial;*/
+/*}*/
 /deep/ .el-tree-node > .el-tree-node__children {
 	overflow: visible !important;
 }
 
 /deep/ .elinput {
-	margin: 10px;
+	margin: 10px 0;
 	height: 30px;
 	// width: 100%;
 }
 /deep/ .el-input__inner {
 	height: 30px;
-	width: 90%;
+	width: 100%;
 }
 </style>
