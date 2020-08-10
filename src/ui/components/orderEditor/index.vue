@@ -339,7 +339,10 @@ export default {
         var editor = this, name = 'sign'
         editor.clickToolbar(name, function() {
             _this.inputIndex+=1
-            editor.insertHtml(`<p><button style="width:80px;" onclick="newSignFn()">签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;"  name='${'$$$'+'sign'+this.inputIndex}' /></p>`)
+            let d=new Date()
+            let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
+
+            editor.insertHtml(`<p><button style="width:80px;"  >签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" id='sign${num+_this.inputIndex}'  name='${'$$$'+'sign'+_this.inputIndex}' /></p>`)
         })
     })
     KindEditor.lang({
