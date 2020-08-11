@@ -352,6 +352,15 @@
     .G_form{
         /*margin-left: calc(50% - 470px);*/
     }
+    /deep/ .el-form{
+        .el-form-item__label{
+            width: 110px!important;
+
+        }
+        .el-form-item__content{
+            width: calc(100% - 180px);
+        }
+    }
     .oneFile{
        /deep/  .el-form-item__content{
             .el-input {

@@ -371,7 +371,7 @@
         /deep/ .el-form{
             width: 100%;
             height:340px;
-            padding: 20px 20px 5px 20px;
+            padding: 20px 0px 5px 20px;
 
             .row_three{
                 .el-form-item:nth-child(2) {
@@ -385,7 +385,7 @@
                 width:200px;
             }
             .el-form-item__label{
-                width: 130px;
+                width: 140px;
                 text-align: left;
                 padding: 0;
             }

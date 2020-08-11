@@ -97,7 +97,7 @@
                         <span v-if="type=='info'">{{form.keyWord}}</span>
                         <el-input v-else v-model="form.keyWord" placeholder="请输入关键词"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否安全/服务事件：" prop="serviceEvents">
+                    <el-form-item label="是否安全/服务事件：" class="itemLineHeight" prop="serviceEvents">
                         <span v-if="type=='info'">{{form.serviceEvents}}</span>
                         <el-select clearable v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
                             <el-option v-for="(opt,index) in options.Q_securityServices" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
@@ -263,6 +263,7 @@
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 50px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;
@@ -292,6 +293,11 @@
                     width: calc(100% - 165px);
                 }
             }
+        }
+    }
+    .itemLineHeight{
+        /deep/ .el-form-item__label{
+            line-height: 20px;
         }
     }
 </style>

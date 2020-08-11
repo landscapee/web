@@ -300,10 +300,11 @@
         .el-form {
             width: 1060px;
             /deep/ .el-form-item__label {
-                width: 150px;
+                width: 170px;padding-left: 30px;
+
             }
             /deep/ .el-form-item__content {
-                margin-left: 150px;
+                margin-left: 170px;
             }
             .row_item_row,.row_item{
                /deep/ .el-input{
@@ -313,7 +314,7 @@
             .row_custom{
                 /deep/ .el-form-item__content{
                     /*height: 40px;*/
-                    width: 377px;
+                    width: 357px;
                     text-align: left;
                 }
                 @include common-input;
@@ -327,7 +328,7 @@
             }
             .row_item_row{
                 .el-form-item {
-                    width: calc(100% - 150px);
+                    width: calc(100% - 170px);
                 }
             }
         }

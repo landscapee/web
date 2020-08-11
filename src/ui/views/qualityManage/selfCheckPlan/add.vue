@@ -188,10 +188,11 @@
         .el-form {
             width: 1000px;
             /deep/ .el-form-item__label {
-                width: 120px;
+                width: 165px;
+                padding-left: 70px;
             }
             /deep/ .el-form-item__content {
-                margin-left: 120px;
+                margin-left: 165px;
             }
             .row_item_row,.row_item{
                /deep/ .el-input{

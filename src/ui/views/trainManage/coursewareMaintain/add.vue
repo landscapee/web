@@ -230,8 +230,12 @@
         /*margin-left: calc(50% - 470px);*/
     }
     .rowT{
+        justify-content: left;
        /deep/  .el-form-item:nth-child(1){
-            width:calc(100% - 95px)!important;
+            width:calc(100% - 165px)!important;
+           .el-form-item__content{
+               width: calc(100% - 120px);
+           }
         }
         /deep/  .el-form-item:nth-child(2){
             width:88px!important;
@@ -243,5 +247,13 @@
 
 
     }
+    /deep/ .el-form{
+        .el-form-item__label{
+            width: 110px!important;
 
+        }
+        .el-form-item__content{
+            width: calc(100% - 180px);
+        }
+    }
 </style>

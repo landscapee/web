@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.checkContents" placeholder="请输入检查内容"></el-input>
                     </el-form-item>
                     <el-form-item label="检查方式：" prop="checkMethod">
-                        <span v-if="type=='info'">{{form.checkMethod }}</span>
+                        <span v-if="type=='info'">{{form.checkMethod?form.checkMethod.join(','):'' }}</span>
                          <el-select   v-else multiple v-model="form.checkMethod" placeholder="请选择检查方式">
                             <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
@@ -260,6 +260,7 @@
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 70px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;

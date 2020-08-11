@@ -202,13 +202,13 @@
     .indexAdd{
         padding: 0 30px;
      }
-/deep/ .el-form{
-    .el-form-item__label{
-        width: 110px!important;
+    /deep/ .el-form{
+        .el-form-item__label{
+            width: 110px!important;
 
+        }
+        .el-form-item__content{
+            width: calc(100% - 180px);
+        }
     }
-    .el-form-item__content{
-        width: calc(100% - 180px);
-    }
-}
 </style>

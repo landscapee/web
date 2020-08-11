@@ -238,6 +238,7 @@ if(val){
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 70px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;
