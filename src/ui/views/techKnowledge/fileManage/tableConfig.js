@@ -30,7 +30,7 @@ export const sysParameterTable = (issueDeptArr, positionArr) => {
         { prop: 'formats', label: '格式', align: 'center',search:{prop:'formats',type:'input',placeholder:"请输入格式"}},
         { prop: 'version', label: '最新版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入最新版本"} },
         { prop: 'size', label: '大小(kb)', align: 'center',sort:true,sortProp:"size",
-            search:{prop:'size',type:'input',placeholder:"请输入大小"},
+            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小"},
             formatter:(row, column, cellValue) => {
                 if(row.size&&!isNaN(parseInt(row.size))){
                     return (row.size/1024).toFixed(1)
