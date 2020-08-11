@@ -308,7 +308,10 @@ export default {
         var editor = this, name = 'inpt';
         editor.clickToolbar(name, function() {
             _this.inputIndex+=1
-            editor.insertHtml('<input type="text" name="$$$input' + _this.inputIndex +'"/>')
+            let d=new Date()
+            let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
+
+            editor.insertHtml('<input type="text" name="$$$'+num+'input' + _this.inputIndex +'"/>')
         })
     })
     // // 单选
@@ -342,7 +345,7 @@ export default {
             let d=new Date()
             let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-            editor.insertHtml(`<p><button style="width:80px;"  >签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" pos='sign${num+_this.inputIndex}' id='sign${num+_this.inputIndex}'  name='${'$$$'+'sign'+_this.inputIndex}' /></p>`)
+            editor.insertHtml(`<p><button style="width:80px;"  >签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" pos='sign${num+_this.inputIndex}' id='sign${num+_this.inputIndex}'  name='${'$$$'+num+'_'+'sign'+_this.inputIndex}' /></p>`)
         })
     })
     KindEditor.lang({
@@ -477,8 +480,10 @@ export default {
             let str=``
             let html = this.radioInputList.map(i=>{
                 this.inputIndex++
+                let d=new Date()
+                let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-                return `<input type='checkbox' eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}' name='${'$$$'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
+                return `<input type='checkbox' eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}' name='${'$$$'+num+'_'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }

@@ -63,13 +63,15 @@ export default {
         },
         addConfirmFn(){
             // this.radioInputList = this.radioInputList.filter(i=>i.value)
-            this.radioInputList =  this.unique(this.radioInputList)
+            this.radioInputList = [...this.radioInputList]
             this.$emit('addConfirmFn', this.radioInputList, this.form.type)
             this.dialogFormVisible = false
         },
         addRadioFn(){
+            let d=new Date()
+            let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
             this.radioInputList.push({
-                name:"input"+(this.radioInputList.length),
+                name:"input"+num+(this.radioInputList.length),
                 value:""
             })
         },
