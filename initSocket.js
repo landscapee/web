@@ -7,12 +7,11 @@ if(location.port==8080 ||location.port==8089){
 }else if(location.port==6073){
     src=`173.101.1.131:9090`
 }
+export let socket
 export const initWebsocket = () => {
     // 建立连接
-
-    var socket = io.connect(`${src}?userId=${store.getters.userInfo.id}&device=device2`);
     // 监听 message 会话
-
+     socket = io.connect(`${src}?userId=${store.getters.userInfo.id}&device=device2`);
     socket.on('message', function (data) {
         console.log(9999,data);
         postal.publish({
@@ -21,4 +20,5 @@ export const initWebsocket = () => {
             data: data
         });
     });
+return socket
 };

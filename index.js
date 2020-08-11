@@ -13,7 +13,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import { v4 as uuidv4 } from 'uuid';
 import App from './src/ui/App.vue';
 import { initWebsocket } from './initSocket.js';
-// import WorkerRegist from './workerRegist.js';  // 引入webworker注册文件
+ // import WorkerRegist from './workerRegist.js';  // 引入webworker注册文件
 import router from './src/ui/router';
 import store from './src/ui/store';
 import './src/ui/icons';
@@ -69,6 +69,6 @@ router.afterEach((to, from) => {
         // 注册并启动webworker
         // const workerProces = new WorkerRegist();
         // workerProces.start()
-		initWebsocket();
+
     }
 })

@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';
 import { MessageBox, Message } from 'element-ui';
 import request from '@lib/axios.js';
@@ -123,11 +124,15 @@ export default {
                          if (data.responseCode != 1000) {
                             this.$message.error( data.responseMessage);
                          }else{
-							setToken(data.data.token);
+
+
+                             setToken(data.data.token);
 							setUserInfo(data.data);
 							this.$store.commit('user/SET_TOKEN',data.data.token);
 							this.$store.commit('user/SET_USER_INFO',data.data);
+							this.$store.commit('user/SET_SOCKET', initWebsocket());
 							this.findUnread();
+
                             this.$router.push({ path: '/qualityManage' });
                          }
                          this.loading = false;

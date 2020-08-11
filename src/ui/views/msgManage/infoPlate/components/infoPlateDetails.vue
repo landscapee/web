@@ -100,8 +100,9 @@ export default {
         }
       this.type = this.$route.query.type;
       this.$route.meta.title ="详情";
+      let url= this.parentType == 'send'?'notificationPublish/getById':'notificationRecipient/getById'
         request({
-            url:`${this.$ip}/mms-notice/notificationPublish/getById/${this.$route.query.id}`,
+            url:`${this.$ip}/mms-notice/${url}/${this.$route.query.id}`,
             method: "get",
         })
         .then(data => {

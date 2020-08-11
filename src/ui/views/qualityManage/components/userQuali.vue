@@ -96,12 +96,12 @@
 
                                 </div>
                                 <SearchTable  :noSearch="true" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')"   >
-                                    <!--<el-table-column slot="radio" label="选择" :width="49"  >-->
-                                        <!--<template slot-scope="scope">-->
-                                            <!--<icon iconClass="sy" class="tab_radio" v-if="scope.row.selected"></icon>-->
-                                            <!--<icon  iconClass="ky" class="tab_radio" v-else></icon>-->
-                                        <!--</template>-->
-                                    <!--</el-table-column>-->
+                                    <el-table-column slot="radio" label="选择" :width="49"  >
+                                        <template slot-scope="scope">
+                                            <icon iconClass="sy" class="tab_radio" v-if="scope.row.selected"></icon>
+                                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                                        </template>
+                                    </el-table-column>
 
 
                                 </SearchTable>

@@ -134,7 +134,7 @@
         <div style="text-align: center" class="footerB" >
             <el-button type="primary" @click="fabu" v-if="type=='edit'||type=='add'">授权发布</el-button>
             <el-button type="primary" :disabled=" form.state!='已授权'"  @click="quxiao" style="margin: 0 15px " v-if="type=='edit'">授权取消</el-button>
-            <el-button type="primary"   @click="yanqi" v-if="type=='edit'"> 授权延期</el-button>
+            <el-button type="primary"   @click="yanqi" :disabled="form.state!='已授权'"> 授权延期</el-button>
         </div>
         <AircraftType ref="AircraftType" @getAircratType="getAircratType"></AircraftType>
     </div>

@@ -1,6 +1,7 @@
 import { getToken, setToken, setRoleCode, removeToken, removeRoleCode, getUserInfo, setUserInfo, removeUserInfo } from '@lib/auth';
 import { resetRouter } from '@router';
 import { extend, get } from 'lodash';
+import {socket} from "../../../../initSocket";
 
 const state = {
 	token: getToken(),
@@ -8,6 +9,7 @@ const state = {
 	avatar: '/static/img/default_user.df927a67.png',
 	userInfo: getUserInfo(),
 	roles: null,
+    socket:null
 };
 
 const mutations = {
@@ -25,6 +27,10 @@ const mutations = {
 	},
 	SET_ROLES: (state, roles) => {
 		state.roles = roles;
+	},
+    SET_SOCKET: (state, roles) => {
+        console.log(state, roles);
+         state.socket = roles;
 	},
 };
 
@@ -72,6 +78,7 @@ const actions = {
 			resolve(state.userInfo);
 		});
 	},
+
 
 	// user logout
 	logout({ commit, state }) {

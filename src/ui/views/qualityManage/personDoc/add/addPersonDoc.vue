@@ -4,7 +4,7 @@
         <router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
-        <div class="courseware" v-else>
+        <div class="addPersonDoc" v-else>
             <div class="QCenterRight">
                 <div class="QHead">
                     {{type!=='add'?form.userName:''}}人员档案-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
@@ -518,101 +518,111 @@
     };
 </script>
 <style scoped lang="scss">
-    .courseware{
+    .addPersonDoc {
         padding:0 30px;
-
-     }
-
-    .hoverSpanFile{
-        &>span  {
-            padding: 15px;
-            font-size:16px;
-            color:#888888
-        }  &>a  {
-            padding: 15px;
-            font-size:16px;
-            color:#222222
-        }
-    }
-    .G_form1{
-        margin-top:80px ;
-        display: flex;
-        justify-content: center;
-         height:calc(100vh - 270px);
-        .nomTable{
-            border-collapse:collapse;border:none;
-            .fTd{
-                width: 140px;
-                text-align: center;
-            }
-            td{
-                height:40px;
-                border:1px solid rgba(151,151,151,1);
+        .hoverSpanFile{
+            &>span  {
+                padding: 15px;
                 font-size:16px;
-                color:#222222;
-                .fileUp{
-                    .el-input{
-                        width: 300px;
-                        margin-right: 10px;
-                    }
+                color:#888888
+            }  &>a  {
+                   padding: 15px;
+                   font-size:16px;
+                   color:#222222
+               }
+        }
+        .G_form1{
+            margin-top:80px ;
+            display: flex;
+            justify-content: center;
+            /deep/ .el-upload {
+                .el-button{
 
+                    height:30px;
+                    padding: 5px 15px!important;
                 }
-                .upUser{
-                    overflow: hidden;
+            }
+            height:calc(100vh - 270px);
+            .nomTable{
+                border-collapse:collapse;border:none;
+                .fTd{
+                    width: 140px;
                     text-align: center;
-                    img{
-                        width: 128px;
-                    }
                 }
-                &>span  {
-                    padding :0 10px 0 15px;
-                    width: 200px;
-                    display: inline-block;
-                    white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
-                }
-                /deep/ .el-form-item__content{
-                    height:39px;
-                    &>span  {
-                        div{
-                            white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
-
-                            width: 170px;
+                td{
+                    height:40px;
+                    border:1px solid rgba(151,151,151,1);
+                    font-size:16px;
+                    color:#222222;
+                    .fileUp{
+                        .el-input{
+                            width: 300px;
+                            margin-right: 10px;
                         }
-                         padding :0 10px 0 15px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                    }
+                    .upUser{
+                        overflow: hidden;
+                        text-align: center;
+                        img{
+                            width: 128px;
+                        }
+                    }
+                    &>span  {
+                        padding :0 10px 0 15px;
                         width: 200px;
                         display: inline-block;
-                        /*white-space: nowrap;overflow: hidden;text-overflow: ellipsis;*/
+                        white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
+                    }
+                    /deep/ .el-form-item__content{
+                        height:39px;
+                        &>span  {
+                            div{
+                                white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
+
+                                width: 170px;
+                            }
+                            padding :0 10px 0 15px;
+                            width: 200px;
+                            display: inline-block;
+                            /*white-space: nowrap;overflow: hidden;text-overflow: ellipsis;*/
+                        }
                     }
                 }
             }
-        }
-       /deep/  .el-form{
+            /deep/  .el-form{
 
-           .el-form-item {
-               margin: 0;
-           }
-           .el-input{
-               width:200px;
-           }
-           .el-select{
-               width:200px;
-           }
-           .el-form-item__error{
-               top:25px
-           }
-            .el-textarea__inner,  .el-input__inner{
-                border:0px solid rgba(151,151,151,1);
-                font-size:16px;
-                color:#222222
+                .el-form-item {
+                    margin: 0;
+                }
+                .el-input{
+                    width:200px;
+                }
+                .el-select{
+                    width:200px;
+                }
+                .el-form-item__error{
+                    top:25px
+                }
+                .el-textarea__inner,  .el-input__inner{
+                    border:0px solid rgba(151,151,151,1);
+                    font-size:16px;
+                    color:#222222
+                }
+                input::-webkit-input-placeholder {
+                    font-size:16px;
+                    font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+                    font-weight:400;
+                    color:#888888
+                }
             }
-           input::-webkit-input-placeholder {
-               font-size:16px;
-               font-family:SourceHanSansCN-Regular,SourceHanSansCN;
-               font-weight:400;
-               color:#888888
-           }
         }
-    }
+     }
+
+
 
 
 </style>

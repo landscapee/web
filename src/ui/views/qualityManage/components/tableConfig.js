@@ -41,8 +41,8 @@ export const rightConfig = (obj) => {
                 { slot: 'radio' , label: '选择', width:49,search:{ type:'text',label:'过滤'}},
                  { prop: 'applicableBusiness', label: '适用业务', sortProp:"applicableBusiness", align: 'center',sort:false,search:{type:'select', prop:'applicableBusiness',placeholder:"请选择",selectProp:['valData','valData'],data:obj.checkProject} },
                 { prop: 'award', label: '颁发人', sortProp:"award", align: 'center',sort:false,search:{type:'input', prop:'award',placeholder:"请输入"} },
-                   {  prop: 'startTime', label: '颁发日期' ,formatter:timeInfo1, sortProp:"startTime", search:{type:'date', prop:'startTime', placeholder:"请选择"}},
-                   {  prop: 'endTime', label: '失效日期' ,formatter:timeInfo2, sortProp:"endTime", search:{type:'date', prop:'endTime',extendType:'search', placeholder:"请选择"}},
+                   {  prop: 'startTime', label: '颁发日期' ,align: 'center',formatter:timeInfo1, sortProp:"startTime", search:{type:'date', prop:'startTime', placeholder:"请选择"}},
+                   {  prop: 'endTime', label: '失效日期' ,align: 'center',formatter:timeInfo2, sortProp:"endTime", search:{type:'date', prop:'endTime',extendType:'search', placeholder:"请选择"}},
                ]
 };
 

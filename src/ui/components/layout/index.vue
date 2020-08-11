@@ -38,7 +38,7 @@
 	</el-container>
 </template>
 <script>
-import postal from 'postal';
+ import postal from 'postal';
 import { asyncRoutes } from '@/ui/router';
 import logo from './assets/img/logo.png';
 import bell from './assets/img/ic_bell.png';
@@ -118,6 +118,9 @@ import request from '@lib/axios.js';
 			this.$store.commit('user/SET_USER_INFO','');
 			removeToken();
 			removeUserInfo();
+            console.log(this.$store.state.user.socket);
+            this.$store.state.user.socket.close()
+
 			this.$router.push({ path: '/' });
 		},
 		onSpread(){
