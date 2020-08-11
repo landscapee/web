@@ -25,6 +25,15 @@
                         </template>
                     </el-table-column>
 
+                    <el-table-column   slot="remark" label="备注" align="center" :width="200"  >
+                        <template  slot-scope="scope">
+                            <!--style="height:40px;line-height: 26px;text-align: center"-->
+                            <div class="divInput">
+                                <el-input   @keyup.enter.native="requestTableData(scope.row)" v-model="scope.row.remark" placeholder="请输入"></el-input>
+                            </div>
+
+                        </template>
+                    </el-table-column>
                     <el-table-column   slot="option" label="操作" align="center" :width="260"  >
                         <template  slot-scope="scope">
                             <!--style="height:40px;line-height: 26px;text-align: center"-->
@@ -106,7 +115,21 @@ export default {
     },
     methods: {
 
-        testResults( row){
+        requestTableData( row){
+            request({
+                url:`${this.$ip}/mms-training/trainingResult/remark` ,
+                method: 'get',
+                params:{
+                    id:row.id,
+                    remark:row.remark,
+                }
+             }).then((d) => {
+                if(d.code==200){
+                    this.getList();
+                    this.$message({type: 'success',message: '修改成功'});
+                }
+            })
+        },  testResults( row){
             request({
                 url:`${this.$ip}/mms-training/trainingResult/sendAppraise/${row.id}` ,
                 method: 'get',
@@ -249,6 +272,15 @@ export default {
 <style scoped lang="scss">
  .G_listOne{
     margin-top:14px;
+     .divInput{
+         padding: 3px;
+         /deep/ .el-input{
+             .el-input__inner{
+                 border: 0!important;
+             }
+
+         }
+     }
 
 }
 

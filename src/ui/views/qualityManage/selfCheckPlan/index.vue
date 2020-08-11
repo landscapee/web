@@ -362,22 +362,24 @@ export default {
                                 url:url,
                                 method: 'delete',
                             }).then((data) => {
-                                    this.$message({type: 'success',message: '删除成功'});
-                                    if(tag=='left'){
-                                        this.leftRow={}
-                                        this.rightRow={}
-                                        this.leftSelectId=null
-                                        this.rightSelectId=null
-                                        this.leftParams.current = 1;
-                                        this.rightParams.current= 1;
-                                        this.tableRightData.records=[]
-                                    }else{
-                                        this.rightSelectId=null
-                                         this.rightRow={}
-                                        this.rightParams.current= 1;
-                                    }
+                                  if(data.code==200){
+                                      this.$message({type: 'success',message: '删除成功'});
+                                      if(tag=='left'){
+                                          this.leftRow={}
+                                          this.rightRow={}
+                                          this.leftSelectId=null
+                                          this.rightSelectId=null
+                                          this.leftParams.current = 1;
+                                          this.rightParams.current= 1;
+                                          this.tableRightData.records=[]
+                                      }else{
+                                          this.rightSelectId=null
+                                          this.rightRow={}
+                                          this.rightParams.current= 1;
+                                      }
 
-                                    this.getList(tag);
+                                      this.getList(tag);
+                                  }
                                 })
                     })
                     .catch(() => {

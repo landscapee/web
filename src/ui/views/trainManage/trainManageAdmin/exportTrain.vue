@@ -88,7 +88,7 @@
                                 if(this.form.startTime==this.form.endTime){
                                     time=this.form.startTime+'年'
                                 }else{
-                                    time=this.form.startTime+'年-'+this.form.startTime+'年'
+                                    time=this.form.startTime+'年-'+this.form.endTime+'年'
                                 }
 
                             }

@@ -220,6 +220,7 @@
                                 url:url,
                                 method: 'delete',
                             }).then((data) => {
+                                if(data.code!=200) return false
                                 this.$message({type: 'success',message: '删除成功'});
                                 if(tag=='left'){
                                     this.leftRow={}

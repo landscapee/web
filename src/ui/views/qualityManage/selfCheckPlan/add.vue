@@ -15,7 +15,7 @@
         </div>
 
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
+            <el-form    :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
                     <el-form-item label="计划年度：" prop="year1">
@@ -175,6 +175,7 @@
         }
         /deep/ .el-form-item__label{
             /*padding: 0!important;*/
+            text-align: left;
         }
         .aRow_custom{
             span{
@@ -187,10 +188,10 @@
         .el-form {
             width: 1000px;
             /deep/ .el-form-item__label {
-                width: 165px;
+                width: 120px;
             }
             /deep/ .el-form-item__content {
-                margin-left: 165px;
+                margin-left: 120px;
             }
             .row_item_row,.row_item{
                /deep/ .el-input{

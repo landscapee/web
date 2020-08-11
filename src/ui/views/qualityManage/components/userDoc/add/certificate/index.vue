@@ -8,7 +8,9 @@
                 <div class="top-content-title">
                     <span>证书</span>
                 </div>
-
+                <div class="top-toolbar ">
+                        <!--<div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon iconClass="info" ></icon></div>-->
+                 </div>
             </div>
             <div class="main-content">
                 <SearchTable :noSearch="true" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
@@ -128,9 +130,11 @@ export default {
                             method: 'delete',
                          })
                             .then((data) => {
-                               this.$emit('getInfo')
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                              if(data.code==200){
+                                  this.$emit('getInfo')
+                                  this.selectId   = null;
+                                  this.$message({type: 'success',message: '删除成功'});
+                              }
                             })
                     })
                     .catch(() => {

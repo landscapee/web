@@ -375,21 +375,23 @@
                                 url:url,
                                 method: 'delete',
                             }).then((data) => {
-                                this.$message({type: 'success',message: '删除成功'});
-                                if(tag=='left'){
-                                    this.leftParams.current = 1;
-                                    this.rightParams.current= 1;
-                                    this.rightSelectId=null
-                                    this.rightRow={}
-                                    this.leftSelectId=null
-                                    this.leftRow={}
-                                    this.tableRightData.records=[]
-                                 }else{
-                                    this.rightSelectId=null
-                                    this.rightRow={}
-                                    this.rightParams.current= 1;
-                                }
-                                this.getList(tag);
+                               if(data.code==200){
+                                   this.$message({type: 'success',message: '删除成功'});
+                                   if(tag=='left'){
+                                       this.leftParams.current = 1;
+                                       this.rightParams.current= 1;
+                                       this.rightSelectId=null
+                                       this.rightRow={}
+                                       this.leftSelectId=null
+                                       this.leftRow={}
+                                       this.tableRightData.records=[]
+                                   }else{
+                                       this.rightSelectId=null
+                                       this.rightRow={}
+                                       this.rightParams.current= 1;
+                                   }
+                                   this.getList(tag);
+                               }
                             })
                         })
                         .catch(() => {

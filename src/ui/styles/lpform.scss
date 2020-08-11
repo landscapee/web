@@ -8,12 +8,17 @@
             content: '';
             display:none;
         }
+        .el-form-item__label{
+            padding-left: 0px!important;
+        }
     }
 }
 
 .G_form{
     margin-top:80px ;
-    margin-left: calc(50% - 480px);
+    //margin-left: calc(50% - 480px);
+    display: flex;
+    justify-content: center;
     /deep/.el-form {
         height:calc(100vh - 270px);
         overflow-y:auto;
@@ -25,12 +30,17 @@
         .el-input{
             width:240px;
         }
+        .el-form-item:not(.is-required){
+            .el-form-item__label{
+               padding-left: 11px;
+            }
+        }
         .el-form-item__label{
             width: 180px;
             font-size: 16px;
             font-weight: 400;
             padding: 0 15px 0 0;
-             text-align: right;
+             text-align: left;
             color:#222222;
             font-family: SourceHanSansCN, SourceHanSansCN-Regular;
         }

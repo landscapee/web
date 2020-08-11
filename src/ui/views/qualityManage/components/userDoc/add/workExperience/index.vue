@@ -128,9 +128,11 @@ export default {
                             method: 'delete',
                          })
                             .then((data) => {
-                               this.$emit('getInfo')
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                               if(data.code==200){
+                                   this.$emit('getInfo')
+                                   this.selectId   = null;
+                                   this.$message({type: 'success',message: '删除成功'});
+                               }
                             })
                     })
                     .catch(() => {

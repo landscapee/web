@@ -12,7 +12,7 @@
                     <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add" ></icon></div>
                     <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit" ></icon></div>
                     <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove" ></icon></div>
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon iconClass="info" ></icon></div>
+                    <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon iconClass="info" ></icon></div>
                     <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
                 </div>
             </div>
@@ -134,9 +134,11 @@ export default {
                             method: 'delete',
                          })
                             .then((data) => {
-                               this.$emit('getInfo')
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                               if(data.code==200){
+                                   this.$emit('getInfo')
+                                   this.selectId   = null;
+                                   this.$message({type: 'success',message: '删除成功'});
+                               }
                             })
                     })
                     .catch(() => {

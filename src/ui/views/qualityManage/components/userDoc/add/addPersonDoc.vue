@@ -468,7 +468,6 @@
                                     url='/userRecord/update'
                                 }
                                 let obj={...this.form}
-
                                 request({
                                     url:`${this.$ip}/mms-qualification${url}`,
                                     method: 'post',

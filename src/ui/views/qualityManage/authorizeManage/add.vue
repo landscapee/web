@@ -15,7 +15,7 @@
         </div>
 
         <div :class=" type=='info'?'G_form G_formInfo':'G_form'"  >
-            <el-form  label-position="right" :model="form" :rules="rules" :inline="true" ref="form" >
+            <el-form  label-position="left" :model="form" :rules="rules" :inline="true" ref="form" >
                 <div></div>
                 <div class="row_tow">
 
@@ -87,9 +87,9 @@
                         <el-button v-if="type!='info'" @click="openAircraftType" type="primary" style="margin-bottom: 10px;padding: 9px 30px;">选择</el-button>
 
                         <el-card class="box-card" shadow="never" border-radius="2px">
-                            <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" size="mini" @click="handleClear">清空</el-button></div>
+                            <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" :disabled="type=='info'" size="mini" @click="handleClear">清空</el-button></div>
                             <el-scrollbar style="height:120px ">
-                                <el-tag :key="tag.id" v-for="tag in form.modelRange" closable :disable-transitions="false" @close="handleRemove(tag.id)">
+                                <el-tag :key="tag.id" v-for="tag in form.modelRange" :closable="type!='info'" :disable-transitions="false" @close="  handleRemove(tag.id)">
                                     {{ tag.models?`${tag.name}（${tag.models.join(',')}）`:`${tag.name}`}}
                                 </el-tag>
                             </el-scrollbar>
@@ -242,14 +242,21 @@
             },
 
             fabu(){
-                this.saveForm('form', 1).then((d)=>{
-                    request({
+                 this.saveForm('form', 1).then((d)=>{
+                    let obj={
+                        id:this.form.id,
+                        endTime:this.form.endTime||null
+                    }
+                    if(this.type=='add'){
+                        obj={
+                            id:d.id,
+                            endTime:d.endTime?this.moment(d.endTime).format('YYYY-MM-DD'):null
+                        }
+                    }
+                     request({
                         url:`${this.$ip}/mms-qualification/authorization/authorizationPublish`,
                         method: "post",
-                        data:{
-                            id:this.form.id,
-                            endTime:this.form.endTime||null
-                        }
+                        data:obj
                     }).then(d => {
                         this.$message.success('操作成功');
                         this.$router.go(-1)
@@ -387,12 +394,18 @@
                                      method: 'post',
                                      data:obj,
                                  }).then((data) => {
-                                     if(num!=1){
-                                         this.$message.success("保存成功！");
-                                         this.$router.go(-1)
-                                     }else{
-                                         resolve(this)
+                                     if(data.code==200){
+
+                                         if(num!=1){
+                                             this.$message.success("保存成功！");
+                                             this.$router.go(-1)
+                                         }else{
+                                             resolve(data.data)
+                                         }
+                                      }else{
+                                         reject(false)
                                      }
+
                                  })
 
                              }
@@ -447,6 +460,13 @@
         /*height:calc(100vh - 300px);*/
         /deep/.el-form {
             height: calc(100vh - 290px);
+            .el-form-item__label{
+                width: 130px;
+
+            }
+            .el-form-item__content{
+                width: calc(100% - 180px);
+            }
         }
     }
     /deep/ .el-card{

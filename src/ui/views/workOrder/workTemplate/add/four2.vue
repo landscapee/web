@@ -80,20 +80,20 @@
                    <div v-if="formItem.itemType==2||formItem.itemType==4">
                        <div class="row_two " v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
                            <el-form-item  label="" prop="c3WorkerTask">
-                               <el-checkbox    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">
+                               <el-checkbox  @change="c3WorkerTaskC"  v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']"  :label="true">
                                    工作者必做任务
                                </el-checkbox>
                            </el-form-item>
                            <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
-                               <el-input    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  ></el-input>
+                               <el-input    v-model="formItem[formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark']"  :disabled="!formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']" ></el-input>
                            </el-form-item>
                        </div>
                        <div class="row_two " v-if="formThree.contentLayout=='C4（四列）'">
                            <el-form-item  label="" prop="hsSchedule">
-                               <el-checkbox    v-model="formItem.c4CommanderTask"  :label="true">指挥者必做任务  </el-checkbox>
+                               <el-checkbox  @change="c4CommanderTask"   v-model="formItem.c4CommanderTask"  :label="true">指挥者必做任务  </el-checkbox>
                            </el-form-item>
                            <el-form-item  label="备注" prop="hsSchedule" style="width:300px">
-                               <el-input   v-model="formItem.c4CommanderRemark" ></el-input>
+                               <el-input   v-model="formItem.c4CommanderRemark" :disabled="!formItem.c4CommanderTask"></el-input>
                            </el-form-item>
                        </div>
                        <div class="row_one " >
@@ -129,14 +129,14 @@
                        </div>
                        <div class="row_one">
                            <el-form-item  label="" prop="c3WorkerTask"   v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
-                               <el-checkbox    v-model="formItem.workerLabel"  :label="true">
+                               <el-checkbox    v-model="formItem.workerLabel"  :label="true" :disabled="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']">
                                    适用工作者标签
                                </el-checkbox>
                            </el-form-item>
                        </div>
                        <div class="row_one">
                            <el-form-item  label="" prop="hsSchedule"   v-if=" formThree.contentLayout=='C4（四列）'">
-                               <el-checkbox    v-model="formItem.commanderLabel"  :label="true">适用指挥者标签  </el-checkbox>
+                               <el-checkbox    v-model="formItem.commanderLabel"  :label="true" :disabled="formItem.c4CommanderTask">适用指挥者标签  </el-checkbox>
                            </el-form-item>
                        </div>
                    </div>
@@ -253,6 +253,19 @@
 
         },
         methods: {
+            c4CommanderTask(val){
+                this.$set(this.formItem,'commanderLabel',val)
+                if(!val){
+                    this.$set(this.formItem,'c4CommanderRemark','')
+                }
+
+            },
+            c3WorkerTaskC(val){
+                this.$set(this.formItem,'workerLabel',val)
+                if(!val){
+                    this.$set(this.formItem,formThree.contentLayout=='C3（三列）'?'c3Remark':'c4WorkerRemark','')
+                }
+            },
             logoChange(val,key){
                 console.log(val, key);
                 if(!val){
@@ -325,7 +338,7 @@
                 if(this.addItemObj.paId){
                    num=1
                 }
-                let obj={
+                  let obj={
                     name:` 工作内容${this.addItemObj.children.length+1}`,
                     serialNumber:this.addItemObj.serialNumber,
                     itemType:num==0?2:4,
@@ -339,8 +352,8 @@
                 }
                 this.formItem={...obj}
                 this.addItemObj.children.push(obj)
-                // this.idEditor++
-            },
+
+             },
             addItem( num){
                  let name=`${this.dataItem.length+1}【工作大项】`
                 if(num==1){
@@ -365,11 +378,10 @@
 
 
             editItem(data,node,index,index1){
-                console.log( data, node,index,index1,12,3);
-                if(data.id){
+                 if(data.id){
                     this.switchPrompt().then((d)=>{
                         if(d==1){
-                            this.dataTree=[...this.dataTreeY]
+                            this.dataTree=  this.tranDataY(this.dataTreeY)
                             this.formItem={...data}
                             this.$nextTick(()=>{
                                 this.idEditor=0
@@ -387,6 +399,7 @@
             },
             openMainMenuFnOption(e,obj){
                 this.addItemObj=obj
+
                 const left = e.clientX// - offsetLeft // 15: margin right
                 this.styleObj.left = left
                 this.styleObj.top = e.clientY// - 60 // fix 位置bug
@@ -403,10 +416,10 @@
                   this.visible = true
             },
             openMainMenuFn(e,obj){
-                console.log(obj);
-                this.switchPrompt( ).then((d)=>{
+                 this.switchPrompt( ).then((d)=>{
                     if(d==1){
-                        this.dataTree=[...this.dataTreeY]
+                        this.dataTree=  this.tranDataY(this.dataTreeY)
+
                         this.openMainMenuFnOption(e,obj)
                         this.$nextTick(()=>{
                             this.idEditor=0
@@ -625,7 +638,26 @@
                     }
                 })
                 this.dataTree=[...arr]
-                this.dataTreeY=[...arr]
+
+                 this.dataTreeY=this.tranDataY(arr)
+             },
+            tranDataY(arr){
+               return arr.map((k,l)=>{
+                    let obj={...k}
+                    if(k.children){
+                        obj.children=  k.children.map((o,p)=>{
+                            let obj1={...o}
+                            if(o.children){
+                                o.children.map((q,w)=>{
+                                    let obj2={...q}
+                                    return obj2
+                                })
+                            }
+                            return obj1
+                        })
+                    }
+                    return obj
+                })
             },
             save (form,num){
                 return new Promise((resolve, reject)=>{

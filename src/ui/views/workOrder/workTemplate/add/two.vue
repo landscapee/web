@@ -212,20 +212,17 @@
                         })
 
                         arr.map((k,l)=>{
-                            if(!k.id){
-                                k.position=l
-                            }
-                            let str=''
+                            k.position=l
                             if(k.type==5&&k.value){
+                                let str=''
                                 let pStr=k.placeholder.split('_')[0]
                                 let arr=k.value.split(';')
                                  arr.map((q,w)=>{
                                     str=k.id?str+pStr+'_'+w:str+k.placeholder+'_'+w
                                     str= w<arr.length-1?str+';':str
                                 })
+                                k.placeholder=str
                              }
-                            k.placeholder=str
-
                         })
                         if(arr.length){
                             request({
@@ -236,7 +233,7 @@
                                 if(d.code==200){
                                     this.getInfo()
                                     resolve(true)
-                                    this.$message.success('操作成功')
+                                    // this.$message.success('操作成功')
                                 }
 
                             })

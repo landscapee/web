@@ -55,14 +55,32 @@
         methods: {
             contentLayout(val){
                  if(val=='R2（二列）'){
-                     delete this.form.commanderLabel
-                     delete this.form.commanderLabelEnglish
-                     delete this.form.workerLabel
-                     delete this.form.workerLabelEnglish
+                     this.form={
+                         ...this.form,
+                         contentLabel:data.contentLabel||'内容',
+                         contentLabelEnglish:data.contentLabelEnglish||'CONTENT',
+                         workerLabel:null,
+                         workerLabelEnglish:null,
+                         commanderLabel:null,
+                         commanderLabelEnglish:null,
+                     }
                 }else if(val=='C3（三列）'){
-                     delete this.form.commanderLabel
-                     delete this.form.commanderLabelEnglish
-                }
+                     this.form={
+                         ...this.from,
+                         workerLabel:data.workerLabel||'工作者',
+                         workerLabelEnglish:data.workerLabelEnglish||'PERF BY ',
+                         commanderLabel:null,
+                         commanderLabelEnglish:null,
+
+                     }
+                }else {
+                     this.form={
+                         ...this.from,
+                         commanderLabel:data.commanderLabel||'指挥者',
+                         commanderLabelEnglish:data.commanderLabelEnglish||'DE BY',
+
+                     }
+                 }
             },
             save (form){
                  return new Promise((resolve, reject)=>{
@@ -75,7 +93,7 @@
                                 data:this.form,
                             }).then((d) => {
                                 if(d.code==200){
-                                    this.$message.success('操作成功')
+                                    // this.$message.success('操作成功')
                                 this.getInfo()
                                     resolve(true)
                                 }
@@ -85,6 +103,21 @@
                     });
                 })
             },
+            getInitForm(data){
+                this.form={
+                    templateBaseId:this.$route.query.id,
+                    contentLayout:data.contentLayout||'C4（四列）',
+                    itemLabel:data.itemLabel||'项次',
+                    itemLabelEnglish:data.itemLabelEnglish||'ITEM NO.',
+                    contentLabel:data.contentLabel||'内容',
+                    contentLabelEnglish:data.contentLabelEnglish||'CONTENT',
+                    workerLabel:data.workerLabel||'工作者',
+                    workerLabelEnglish:data.workerLabelEnglish||'PERF BY',
+                    commanderLabel:data.commanderLabel||'指挥者',
+                    commanderLabelEnglish:data.commanderLabelEnglish||'DE BY',
+
+                }
+            },
             getInfo( ){
                 request({
                     url:`${this.$ip}/mms-workorder/templateLabel/selectByParam`,
@@ -92,7 +125,13 @@
                     data:{templateBaseId:this.$route.query.id}
                 }).then((d) => {
                     if(d.code==200){
-                        this.form={...d.data,templateBaseId:this.$route.query.id}
+                        this.form={
+                            ...d.data,
+                            templateBaseId:this.$route.query.id,
+                        }
+                        if(!this.form.id){
+                           this.getInitForm(d.data)
+                        }
                      }
                 })
             }

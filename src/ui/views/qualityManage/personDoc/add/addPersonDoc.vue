@@ -23,7 +23,7 @@
                 <el-form ref="form" label-position="right" :model="form"  :rules="rules"   :inline="true"  >
                     <table class="nomTable">
                         <tr>
-                            <td class="fTd">员工编号</td>
+                            <td class="fTd is-required1">员工编号</td>
                             <td class="tTd">
                                 <el-form-item prop="userNumber"  >
                                     <span v-if="type=='info'"    >
@@ -42,7 +42,7 @@
                                 </el-form-item>
 
                             </td>
-                            <td class="fTd">员工姓名</td>
+                            <td class="fTd is-required1">员工姓名</td>
                             <td class="tTd">
                                 <el-form-item prop="userName"  >
                                     <span v-if="type=='info'">
@@ -520,7 +520,8 @@
 <style scoped lang="scss">
     .courseware{
         padding:0 30px;
-    }
+
+     }
 
     .hoverSpanFile{
         &>span  {
@@ -535,8 +536,9 @@
     }
     .G_form1{
         margin-top:80px ;
-        margin-left: calc(50% - 616px);
-        height:calc(100vh - 270px);
+        display: flex;
+        justify-content: center;
+         height:calc(100vh - 270px);
         .nomTable{
             border-collapse:collapse;border:none;
             .fTd{
@@ -585,7 +587,7 @@
             }
         }
        /deep/  .el-form{
-           width: 1233px;
+
            .el-form-item {
                margin: 0;
            }

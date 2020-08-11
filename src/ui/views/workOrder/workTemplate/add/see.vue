@@ -45,17 +45,18 @@
                            <div v-else-if="opt1.type==5" >
                                <div>
                                    <div v-for="(k,l) in opt1.value.split(';')" :key="l">
-                                       <input type="radio" :name="opt1.placeholder" ></input>{{k}}
+                                       <input type="checkbox" :name="opt1.placeholder.split(';')[l]" class="Wtui-checkbox" ></input>{{k}}
+                                       <div v-if="show" style="width: 100%" >
+                                            {{ '${'+opt1.placeholder.split(';')[l]+'}'}}
+                                       </div>
                                    </div>
-                                   <div v-if="show">
-                                       {{ '${'+opt1.placeholder+'}'}}
-                                   </div>
+
 
                                </div>
                                <div> </div>
                            </div>
                            <div v-else-if="opt1.type==6" >
-                               <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
+                               <div v-if="show" >  {{ '${'+opt1.placeholder+'}'}}</div>
 
                            </div>
                        </el-col>
@@ -126,14 +127,12 @@
                                     <div style="display: flex;justify-content: space-between;padding: auto 30px"  >
                                         <div style="margin-right: 10px"    class="logo" >
                                             <div v-if="opt.hook">
-
                                                 <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
                                             </div>
                                             <div v-if="opt.notApplicable">
                                                 <icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>
                                             </div>
                                             <div v-if="opt.cycle">
-
                                                 <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
                                             </div>
                                         </div>
@@ -144,13 +143,16 @@
                                 <td v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'" style="text-align: left;">
 
                                 </td>
-                                <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'" :class="opt.workerLabel?'':'duijiao'">
-                                    <div  >
-
+                                <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'" :class="opt.workerLabel?'':'duijiao'" >
+                                    <div v-if="opt.workerLabel" >
+                                        <div > {{opt[get(form.labelVO,'contentLayout')=='C3（三列）'?'c3Remark':'c4WorkerRemark']}}</div>
+                                        <el-button type="primary" style="padding:5px 15px">签署</el-button>
                                     </div>
                                 </td>
                                 <td  width="17%" v-if="get(form.labelVO,'contentLayout')=='C4（四列）'"  :class="opt.commanderLabel?'':'duijiao'">
-                                    <div >
+                                    <div v-if="opt.commanderLabel">
+                                        <div>{{opt.c4CommanderRemark}}</div>
+                                        <el-button type="primary" style="padding:5px 15px">签署</el-button>
 
                                     </div>
                                 </td>

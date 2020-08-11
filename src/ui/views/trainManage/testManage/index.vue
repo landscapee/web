@@ -179,9 +179,11 @@ export default {
                             method: 'delete',
                          })
                             .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                                if(data.code==200){
+                                    this.getList();
+                                    this.selectId   = null;
+                                    this.$message({type: 'success',message: '删除成功'});
+                                }
                             })
                     })
                     .catch(() => {
