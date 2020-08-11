@@ -3,7 +3,16 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
-        { prop: 'size', label: '大小', align: 'center', sort:true,sortProp:"size",search:{prop:'size',type:'input',placeholder:"请输入大小"} },
+        { prop: 'size', label: '大小(kb)', align: 'center', sort:true,sortProp:"size",
+            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小"},
+            formatter:(row, column, cellValue) => {
+                if(row.size&&!isNaN(parseInt(row.size))){
+                    return (row.size/1024).toFixed(1)
+                }else{
+                    return 'size is not number!'
+                }
+            }
+        },
         { prop: 'folder.name', label: '所属主题', align: 'center', sort:true,sortProp:"folderId",search:{prop:'folderId',type:'select',selectProp:["label","id"], data: folderArr,placeholder:"请选择所属主题"} },
         { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
         { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
@@ -52,7 +61,16 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
 export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
-        { prop: 'size', label: '大小', align: 'center', sort:true,sortProp:"size",search:{prop:'size',type:'input',placeholder:"请输入大小"} },
+        { prop: 'size', label: '大小(kb)', align: 'center', sort:true,sortProp:"size",
+            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小"},
+            formatter:(row, column, cellValue) => {
+                if(row.size&&!isNaN(parseInt(row.size))){
+                    return (row.size/1024).toFixed(1)
+                }else{
+                    return 'size is not number!'
+                }
+            }
+        },
         { prop: 'folderName', label: '所属主题', align: 'center', sort:true,sortProp:"folderName",search:{prop:'folderId',type:'select',selectProp:["label","id"], data: folderArr,placeholder:"请选择所属主题"} },
         { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
         { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
@@ -79,7 +97,8 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
             search:{prop:'endTime',type:'date',placeholder:"请输入推送时间"} 
         },
         { prop: 'read', label: '是否阅读', align: 'center',sort:true,sortProp:"read",
-            search:{prop:'read',type:'input',placeholder:"请选择"},
+            search:{prop:'read',type:'select',placeholder:"请选择", selectProp:["label","id"], 
+            data: [{label:"未阅读",id:"0"},{label:"阅读中",id:"1"},{label:"已阅读",id:"2"}]  },
             formatter: (row, column, cellValue) => {
                 let readStatus = {
                     '0': '未阅读',
