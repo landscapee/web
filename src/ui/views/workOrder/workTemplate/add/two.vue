@@ -47,8 +47,8 @@
                     </div>
                     <div v-else-if="row.type==1" style="text-align: center">
                         <!--任务排班信息获取-->
-                        <el-select >
-                            <el-option ></el-option>
+                        <el-select v-model="row.value">
+                            <el-option v-for="(opt,index) in W_taskGet" :key="index" :label="opt.valData" :value="opt.valCode"></el-option>
                         </el-select>
                     </div>
                     <div v-else-if="row.type==3" style="text-align: center">
@@ -88,6 +88,7 @@
                 tableData:[],
                 tableConfig:twoConfig({}),
                 infoValueType:[],
+                W_taskGet:[],
                 selectId:null,
                 rowT:{},
 
@@ -106,6 +107,7 @@
             }).then(d => {
                 let obj=d.data
                 this.infoValueType=obj.infoValueType
+                this.W_taskGet=obj.W_taskGet
 
             });
             this.getInfo()
@@ -144,7 +146,7 @@
                  });
             },
             addList(){
-                this.tableData.unshift({templateId:this.$route.query.id,enable:true})
+                this.tableData.push({templateId:this.$route.query.id,enable:true})
             },
             listenToCheckedChange(row, column, event){
                 let select = row.selected;
@@ -205,7 +207,26 @@
             },
             save(form){
                     return new Promise((resolve, reject)=>{
-                        let arr=this.tableData.filter((k)=>k.nameEn||k.nameCn||k.type)
+                         let arr=this.tableData.filter((k,l)=>{
+                          return   k.nameEn||k.nameCn||k.type
+                        })
+
+                        arr.map((k,l)=>{
+                            if(!k.id){
+                                k.position=l
+                            }
+                            let str=''
+                            if(k.type==5&&k.value){
+                                let pStr=k.placeholder.split('_')[0]
+                                let arr=k.value.split(';')
+                                 arr.map((q,w)=>{
+                                    str=k.id?str+pStr+'_'+w:str+k.placeholder+'_'+w
+                                    str= w<arr.length-1?str+';':str
+                                })
+                             }
+                            k.placeholder=str
+
+                        })
                         if(arr.length){
                             request({
                                 url:`${this.$ip}/mms-workorder/templateBaseItem/saveOrUpdate`,

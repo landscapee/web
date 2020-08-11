@@ -65,7 +65,7 @@
 
             </div>
             <div class="instruction"  v-if="get(form.templateRemarkVO,'beforeWarning')">
-                <p v-html="get(form.templateRemarkVO,'beforeWarning')"> </p>
+                <p v-html="getInstruction('beforeWarning')"> </p>
             </div>
             <div class="item" >
                 <table class="one" border="0" width="100%">
@@ -159,10 +159,10 @@
                 </table>
             </div>
             <div class="instruction"  v-if="get(form.templateRemarkVO,'afterExplain')">
-                <p v-html="get(form.templateRemarkVO,'afterExplain')"> </p>
+                <p v-html="getInstruction('afterExplain')"> </p>
             </div>
             <div class="instruction"  v-if="get(form.templateRemarkVO,'afterSchedule')">
-                <p v-html="get(form.templateRemarkVO,'afterSchedule')"> </p>
+                <p v-html="getInstruction('afterSchedule')"> </p>
             </div>
         </div>
     </div>
@@ -188,6 +188,7 @@
                 let arr=this.form.baseItemVOList&&this.form.baseItemVOList.filter((k)=>k.enable)
                 return arr
             },
+
           getArr(){
               return (opt)=>{
                      let num=opt*3
@@ -201,7 +202,19 @@
                   }
                   return arr
               }
-          }
+          },
+            getInstruction(){
+                return (key)=>{
+                    let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                    if(this.show){
+                        return this.get(this.form.templateRemarkVO,key).replace(reg,"$1$2$3${$2}" )
+
+                    }else{
+                        return this.get(this.form.templateRemarkVO,key)
+                    }
+                }
+
+            },
         },
         methods:{
             showZ(){

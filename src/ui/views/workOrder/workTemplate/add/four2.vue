@@ -648,14 +648,14 @@
                                     afterExplain:this.Instruction.afterExplain||null,
                                     afterSchedule:this.Instruction.afterSchedule||null,
                                      ...obj,
+                                    id:this.Instruction.id
                                 }
                                 obj[this.key]=obj[this.key].replace(/\$\$\$/g,'$'+this.key)
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                       obj.rolePermissions=obj.rolePermissions.join(';')
                                       let d =new Date()
-                                      let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
-                                      obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_'+num+'_')
+                                       obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_')
                                 }else{
 
                                   }
