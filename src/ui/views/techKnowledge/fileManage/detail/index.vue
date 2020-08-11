@@ -236,7 +236,11 @@ export default {
             })
        },
        requestTable(searchData){
+           console.log(searchData)
             this.form = searchData
+            if(this.form.sizeQuery){
+                this.form.sizeQuery = parseFloat(this.form.sizeQuery)
+            }
             this.selectObjs=[]
             this.tableData={records:[]}
             this.params.current = 1
