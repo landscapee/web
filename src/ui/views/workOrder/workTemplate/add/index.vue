@@ -11,11 +11,10 @@
                     </div>
                     <div class="QheadRight" >
                         <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
+                        <el-button @click="upTemplate"   class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
                         <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
                     </div>
-                    <div style="display: none">
-                        <UploadFile  :isPrompt="true"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
-                    </div>
+
                 </div>
                 <div class="banner">
                     <div class="bannerHead">
@@ -69,9 +68,10 @@
 
         </div>
         <div class="right">
-            <See ref="See"   ></See>
+            <See ref="See" ></See>
         </div>
         <CopyHistory ref="CopyHistory" @getList="update" ></CopyHistory>
+        <UploadModule ref="UploadModule"  ></UploadModule>
     </div>
 
     </div>
@@ -89,9 +89,10 @@
      import See from './see'
      import Details from './details'
      import CopyHistory from './copyHistory'
+     import UploadModule from './uploadModule'
     export default {
         name: "index",
-        components: {One,Two,Three,Four,See,Details,CopyHistory},
+        components: {One,Two,Three,Four,See,Details,CopyHistory,UploadModule},
         data() {
             return {
                 title:'',
@@ -119,24 +120,9 @@
                  this.save('radio',val)
             },
             upTemplate(){
-                this.$refs.UploadFile.$refs.buttonClick.$el.click()
+               this.$refs.UploadModule.open(this.$route.query.id)
+            },
 
-            },
-            getFile(file){
-                  request({
-                    url:`${this.$ip}/mms-workorder/template/upload`,
-                    method: 'post',
-                     data:{
-                        id:this.$route.query.id,
-                        fileName:file.fileName,
-                        fileId:file.id,
-                    }
-                }).then(d => {
-                    if( d.code==200){
-                        this.$message.success("上传成功")
-                    }
-                });
-            },
             copyHistory(){
                 let code=this.$refs.One.getForm()
                 this.$refs.CopyHistory.open(code)

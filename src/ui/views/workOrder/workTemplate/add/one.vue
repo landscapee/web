@@ -385,7 +385,7 @@
                 width:200px;
             }
             .el-form-item__label{
-                width: 140px;
+                width: 135px;
                 text-align: left;
                 padding: 0;
             }
