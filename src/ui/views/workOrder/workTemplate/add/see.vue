@@ -89,7 +89,7 @@
                             <div>{{get(form.labelVO,'commanderLabelEnglish')}}</div>
                         </td>
                     </tr>
-                        <tr  v-if="contentVOList&&contentVOList.length" v-for="(opt,index) in contentVOList" :key="index" :class="(opt.itemType==1||opt.itemType==3)&&opt.contentDetails&&opt.contentDetails.length?'none':''">
+                    <tr  v-if="contentVOList&&contentVOList.length" v-for="(opt,index) in contentVOList" :key="index" :class="(opt.itemType==1||opt.itemType==3)&&opt.contentDetails&&opt.contentDetails.length?'none':''">
                             <template v-if="(opt.itemType==1||opt.itemType==3)">
                                 <template v-if="opt.contentDetails&&opt.contentDetails.length"></template>
                                 <template v-else>
@@ -97,7 +97,6 @@
                                        <div style="display: flex;justify-content: space-between;padding: auto 30px"  >
                                            <div style="margin-right: 10px"    class="logo" >
                                                <div v-if="opt.hook">
-
                                                    <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
                                                </div>
                                                <div v-if="opt.notApplicable">
@@ -126,13 +125,13 @@
 
                                     <div style="display: flex;justify-content: space-between;padding: auto 30px"  >
                                         <div style="margin-right: 10px"    class="logo" >
-                                            <div v-if="opt.hook">
+                                            <div v-if="opt.p.hook">
                                                 <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
                                             </div>
-                                            <div v-if="opt.notApplicable">
+                                            <div v-if="opt.p.notApplicable">
                                                 <icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>
                                             </div>
-                                            <div v-if="opt.cycle">
+                                            <div v-if="opt.p.cycle">
                                                 <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
                                             </div>
                                         </div>

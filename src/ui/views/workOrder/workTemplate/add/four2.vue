@@ -276,7 +276,7 @@
                         this.$set(this.formItem,'cycle',false)
                         this.$set(this.formItem,'cycleImport',false)
 
-                    }else{
+                    }else if(key=='cycleImport'){
                         this.$set(this.formItem,'notApplicable',false)
                         this.$set(this.formItem,'notApplicableImport',false)
 
