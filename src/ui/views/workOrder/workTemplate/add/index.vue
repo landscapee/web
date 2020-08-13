@@ -51,10 +51,10 @@
                         </label>
                     </div>
                     <div class="component">
-                        <One ref="One" :type="type" :formData="form.typeVO " v-if="radio==1" :key="(new Date().toString())"></One>
-                        <Two ref="Two" :type="type" :formData="form.contentVOList      " v-else-if="radio==2" :key="(new Date().toString())"></Two>
-                        <Three ref="Three" :type="type" :formData="form.baseItemVOList" v-else-if="radio==3" :key="(new Date().toString())"></Three>
-                        <Four ref="Four" :type="type" :formData="form.baseItemVOList" v-else :key="(new Date().toString())"></Four>
+                        <One ref="One" :type="type" @getinfo="getOneInfo"   v-if="radio==1" :key="(new Date().toString())"></One>
+                        <Two ref="Two" :type="type"         v-else-if="radio==2" :key="(new Date().toString())"></Two>
+                        <Three ref="Three" :type="type" @getinfo="getThreeInfo"  :formOne="form.one" v-else-if="radio==3" :key="(new Date().toString())"></Three>
+                        <Four ref="Four" :type="type" :formOne="form.one" :formThree="form.three" v-else :key="(new Date().toString())"></Four>
                     </div>
                 </div>
                 <div class="Qfooter">
@@ -97,7 +97,7 @@
             return {
                 title:'',
                 type:'add',
-                form:{ },
+                form:{one:{} },
                 radio:1,
                 seeIndex:1,
 
@@ -110,6 +110,12 @@
           }  ,
         },
         methods: {
+            getOneInfo(info){
+                    this.form.one=info
+            }, getThreeInfo(info){
+                    this.form.three=info
+                console.log(this.form,1,3);
+            },
             update(data){
                   this.$router.push({path:'/WorkTemplateAdd',query:{type:'edit',id:data.typeVO.id}})
             },

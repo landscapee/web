@@ -278,12 +278,12 @@
                                         method: 'get',
                                      }).then((d) => {
                                         if(d.code==200){
-                                            // console.log(d.data.code,31123);
-                                            resolve(d.data.id)
+                                            this.$emit('getinfo',{...obj})
+                                             resolve(d.data.id)
                                         }
                                     })
-                                    this.$message.success("操作成功！");
-                                }else{
+                                 }else if(data.code==200){
+                                    this.$emit('getinfo',{...obj})
                                     resolve(true)
 
                                 }
@@ -321,7 +321,7 @@
             }
         },
         created() {
-              if(this.$route.query.type != "add"  ){
+              if(this.$route.query.id  ){
                this.getInfo()
             }else{
 

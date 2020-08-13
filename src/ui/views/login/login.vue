@@ -124,13 +124,12 @@ export default {
                          if (data.responseCode != 1000) {
                             this.$message.error( data.responseMessage);
                          }else{
-
-
                              setToken(data.data.token);
 							setUserInfo(data.data);
 							this.$store.commit('user/SET_TOKEN',data.data.token);
 							this.$store.commit('user/SET_USER_INFO',data.data);
-							this.$store.commit('user/SET_SOCKET', initWebsocket());
+                           // window.socket= initWebsocket()
+
 							this.findUnread();
 
                             this.$router.push({ path: '/qualityManage' });

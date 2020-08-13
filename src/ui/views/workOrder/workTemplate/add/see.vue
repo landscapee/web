@@ -241,7 +241,8 @@
                 });
 
             },
-            getInfo(  ){
+            getInfo(){
+                 if(!this.$route.query.id) return false
                 request({
                     url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
                     method: 'get',
@@ -324,8 +325,11 @@
             },
         },
         created() {
+            if(this.$route.query.id){
+                this.getInfo()
+            }
             console.log(this.form);
-       this.getInfo()
+
         },
     }
 </script>

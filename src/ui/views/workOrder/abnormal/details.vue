@@ -7,7 +7,7 @@
             <div>{{template.airlineCompany}} {{template.title}}</div>
         </div>
         <div>
-            <InfoTop ref="InfoTop" :form="orderModule"></InfoTop>
+            <InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
         </div>
         <div class="order_content">
             <div class="order_c_main">

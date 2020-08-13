@@ -135,7 +135,7 @@
                     if(data.data&&data.data.records){
                         this.userArr =data.data.records
                         data.data.records.map((k,l)=>{
-                            this.userArrObj[k.userNumber]=k.userName
+                            this.userArrObj[k.userNumber]=k
                         })
                     }
                     })
@@ -163,7 +163,8 @@
         },
         methods: {
             userNumberC(val){
-                this.$set(this.form,'userName',this.userArrObj[val])
+                this.$set(this.form,'userName',this.userArrObj[val].userName)
+                this.$set(this.form,'userId',this.userArrObj[val].userId)
             },
             resetForm(){
                 if(this.form.id){

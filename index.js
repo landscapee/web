@@ -40,7 +40,7 @@ if(PROGRAM == 'jwxt.dev'){
 }
 
 Vue.prototype.$moment = moment;
-//事件总线指向全局vue对象
+ //事件总线指向全局vue对象
 Vue.prototype.$eventBus= new Vue();
 Vue.use(directives)
 Vue.use(VueKindEditor)
@@ -67,6 +67,7 @@ router.afterEach((to, from) => {
     template: '<App />',
     created () {
         // 注册并启动webworker
+        initWebsocket()
         // const workerProces = new WorkerRegist();
         // workerProces.start()
 

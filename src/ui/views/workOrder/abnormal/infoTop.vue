@@ -1,6 +1,5 @@
 <template>
     <div class="infoTOp"  >
-
         <div class="order" style="width: 80%">
             <div class="head">
                 <table class="nomTable nomTable0"  >
@@ -16,49 +15,45 @@
             <div class="nomTable1">
                 <div   class="rowdiv" >
                     <div >  工单编号 </div>
-                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>{{get(workorder,'serialNo')}}</div>
                     <div>  工单模板编码 </div>
-                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>{{get(form.typeVO,'code')}}</div>
                     <div>  工单模板 </div>
-                    <div  >{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div  >{{get(form.typeVO,'title')}}</div>
                 </div>
                 <div  class="rowdiv" >
                     <div>  工单模板版本号 </div>
-                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>{{get(form.typeVO,'version')}}</div>
                     <div>  任务日期 </div>
-                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>{{get(workorder,'workTime')}}</div>
                     <div>  任务号 </div>
-                    <div  >{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div  >{{get(form,'')}}</div>
                     <div>  执行单位 </div>
-                    <div    >{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div    >{{get(workorder,'department')}}</div>
                 </div>
-            </div>
-            <div  class="head1" style="margin-top: 20px">
-                <table class="nomTable nomTable1"  >
+                <div  class="rowdiv">
+                    <div>  作业类型 </div>
+                    <div>{{get(form.typeVO,'jobType')}}</div>
+                    <div>  作业员类型 </div>
+                    <div>{{get(form.typeVO,'personType')}}</div>
+                    <div>  航班号 </div>
+                    <div  >{{get(form,'flightNo')}}</div>
+                    <div>  航班类型 </div>
+                    <div  >{{get(form.typeVO,'airlineType')}}</div>
+                </div>
+                <div  class="rowdiv">
+                    <div>  机型 </div>
+                    <div style="overflow: hidden;" :title="airplane">{{airplane}}</div>
+                    <div>  飞机注册号</div>
+                    <div>{{get(form,'flightRegisterNo')}}</div>
+                    <div>  所属航空公司代码</div>
+                    <div >{{get(form.typeVO,'airlineCompanyCode')}}</div>
+                    <div>  所属航空公司 </div>
+                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                </div>
 
-                    <tr >
-                        <td>  作业类型 </td>
-                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
-                        <td>  作业员类型 </td>
-                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
-                        <td>  航班号 </td>
-                        <td  >{{get(form.typeVO,'airlineCompany')}}</td>
-                        <td>  航班类型 </td>
-                        <td  >{{get(form.typeVO,'airlineCompany')}}</td>
-                    </tr>
-                    <tr >
-                        <td>  机型 </td>
-                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
-                        <td>  飞机注册号</td>
-                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
-                        <td>  所属航空公司代码</td>
-                        <td   >{{get(form.typeVO,'airlineCompany')}}</td>
-                        <td>  所属航空公司 </td>
-                        <td  >{{get(form.typeVO,'airlineCompany')}}</td>
-                    </tr>
-
-                </table>
             </div>
+
             <div class="info" v-if="getbaseItemVOList&&getbaseItemVOList.length>0">
                 <div class="lastRow" v-for="(opt) in Math.ceil(getbaseItemVOList.length/3)" :key="opt" >
                     <el-row    >
@@ -115,7 +110,7 @@
     export default {
         name: "see",
         components: {},
-        props:['seeIndex','form'],
+        props:['seeIndex','form','workorder'],
         data() {
             return {
                 get:get,
@@ -125,6 +120,14 @@
             }
         },
         computed:{
+            airplane(){
+                let arr=this.get(this.form.typeVO,'airplane')||[]
+                debugger
+                let s= arr.map((k,l)=>{
+                    return k.name
+                })
+                return s.join(',')
+            },
             getbaseItemVOList(){
                 let arr=this.form.baseItemVOList&&this.form.baseItemVOList.filter((k)=>k.enable)
                 return arr
@@ -263,29 +266,40 @@
         td{width:270px!important;}
     }
     .nomTable1{
-        border: 1px red solid;
-        .rowdiv{
-            width: 100%;
-            display: flex;
-            justify-content: left;
-        }
+        margin-top: 20px;
         .rowdiv:first-child{
+            border-top: 1px #979797 solid;
+
             div:last-child{
                 width:40%;
             }
         }
         .rowdiv{
-                   div:nth-child(even){
-                      text-align: left;
-                      padding-left: 15px;
-                      width:15%;
-                  }
-                  div:nth-child(odd){
-                      padding: 5px;
-                      width:10%;
-                   }
+            width: 100%;
+            display: flex;
+            justify-content: left;
+            border-bottom: 1px #979797 solid;
+            height:45px;
+            div{
+               display: flex;
+                align-items: center;
+                border-left: 1px #979797 solid;
+            }
+            div:last-child{
+                border-right: 1px #979797 solid;
+            }
+            div:nth-child(even){
+             justify-content: left;
+                padding-left: 15px;
+                width:15%;
+            }
+            div:nth-child(odd){
+               justify-content: center;
+                 width:10%;
+            }
+        }
 
-              }
+
      }
     .nomTable{
         width: 100%;

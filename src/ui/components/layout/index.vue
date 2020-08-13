@@ -116,11 +116,13 @@ import request from '@lib/axios.js';
 		logout(){
 			this.$store.commit('user/SET_TOKEN','');
 			this.$store.commit('user/SET_USER_INFO','');
-			removeToken();
-			removeUserInfo();
-            console.log(this.$store.state.user.socket);
-            this.$store.state.user.socket.close()
+			if(window.$socket){
+                window.$socket.close()
+			}
 
+
+             removeToken();
+			removeUserInfo();
 			this.$router.push({ path: '/' });
 		},
 		onSpread(){
