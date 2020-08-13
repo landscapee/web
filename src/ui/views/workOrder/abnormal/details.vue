@@ -6,6 +6,9 @@
             <div>工单流水编号-{{workorder.serialNo}}</div>
             <div>{{template.airlineCompany}} {{template.title}}</div>
         </div>
+        <div>
+            <InfoTop ref="InfoTop" :form="orderModule"></InfoTop>
+        </div>
         <div class="order_content">
             <div class="order_c_main">
                 <div class="item1 flex">
@@ -28,12 +31,11 @@
                                 <div v-if="item.reduceIndex.includes('.')" class="textContent" :class="item.id" v-html='item.content'></div>
                                 <div v-else class="textContent" v-html='item.name'></div>
                                 <div v-if="item.reduceIndex.includes('.')" class='checkbox_group flex'>
-                                    <div><input type="checkbox" @change='fixCompleteFn(item,$event)' :id='"1"+item.id' ><label :for='"1"+item.id'>维修已完成</label></div>
-                                    <div><input type="checkbox" @change='commanderCompleteFn(item,$event)' :id='"2"+item.id'><label :for='"2"+item.id'>放行已完成</label></div>
-                                    <div><input type="checkbox" @change='invalidFn(item,$event)' :id='"3"+item.id'><label :for='"3"+item.id'>作废</label></div>
+                                    <el-button @click="editContent($event,this,item)">更正</el-button>
                                 </div>
                             </div>
                             <div  class="item" style="width:20%;position:relative">
+
                                 <button v-if="item.reduceIndex.includes('.')" class='sign' @click="fixedSignFn(item,'fix_sign_'+item.reduceIndex)">签字</button>
                                 <div v-if="item.reduceIndex.includes('.')" style="width:20%;position:absolute;left:0;top:40px;">
                                     <div :id='"fix_sign_"+item.reduceIndex' :pos='"fix_sign_"+item.reduceIndex' style="width:100%;height:30px;width:100%"></div>
@@ -56,13 +58,13 @@
 <script>
     import $ from 'jquery'
     import request from '@lib/axios.js';
-
+import InfoTop from './infoTop'
     export default {
-        components:{
-        },
+        components:{InfoTop,},
         data(){
             return{
                 contentVOList:[],
+                orderModule:{},
                 workorder:{},
                 workerCompleteData:[],
                 template:{},
@@ -152,6 +154,9 @@
             this.init()
         },
         methods:{
+            editContent(e,that,item){
+                console.log(e,that, item);
+            },
             async init(){
                 await this.getTemplateById()
                 this.getBySerialNoFn()
@@ -165,6 +170,7 @@
                     })
                         .then((data) => {
                             if(data.code==200){
+                                this.orderModule= data.data.template
                                 this.contentVOList = data.data.template.contentVOList
                                 this.workorder = data.data.workorder
                                 this.template = data.data.template.typeVO
@@ -547,7 +553,7 @@
         }
         .order_content{
             height:500px;
-            width: 1400px;
+            width: 80%;
             overflow-y: auto;
             .order_c_main{
                 .order_c_b{

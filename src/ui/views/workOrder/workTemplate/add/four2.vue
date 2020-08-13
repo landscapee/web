@@ -735,7 +735,7 @@
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
                 params:{delete:false},
-                data:['roleControl','applyRangeType','EngineNo']
+                data:['roleControl','applyRangeType','EngineNo','W_PickUpType']
             }).then(d => {
                 let obj=d.data
                 this.options=obj

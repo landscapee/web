@@ -311,7 +311,7 @@ export default {
             let d=new Date()
             let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-            editor.insertHtml('<input type="text" name="$$$'+num+'input' + _this.inputIndex +'"/>')
+            editor.insertHtml('<input type="text"  id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
         })
     })
     // // 单选
@@ -483,7 +483,7 @@ export default {
                 let d=new Date()
                 let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-                return `<input type='checkbox' eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}' name='${'$$$'+num+'_'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
+                return `<input type='checkbox' eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}'  id='${'$$$'+num+'_'+obj[type]+this.inputIndex}' name='${'$$$'+num+'_'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }

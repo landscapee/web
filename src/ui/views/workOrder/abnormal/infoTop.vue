@@ -1,11 +1,8 @@
 <template>
-    <div class="seeConfig"  >
-        <div class="seeTitle">
+    <div class="infoTOp"  >
 
-         </div>
-        <div class="order">
+        <div class="order" style="width: 80%">
             <div class="head">
-
                 <table class="nomTable nomTable0"  >
                     <tr class="trimg" v-if="get(form.typeVO,'airlineCompany')||form.photoPath">
                         <td> <div  ><img :src="form.photoPath" alt=""></div></td>
@@ -14,6 +11,52 @@
                     <tr v-if="get(form.typeVO,'title')">
                         <td   colspan="2" ><span class="titleColoe">{{get(form.typeVO,'title')}}</span> </td>
                     </tr>
+                </table>
+            </div>
+            <div class="nomTable1">
+                <div   class="rowdiv" >
+                    <div >  工单编号 </div>
+                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>  工单模板编码 </div>
+                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>  工单模板 </div>
+                    <div  >{{get(form.typeVO,'airlineCompany')}}</div>
+                </div>
+                <div  class="rowdiv" >
+                    <div>  工单模板版本号 </div>
+                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>  任务日期 </div>
+                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>  任务号 </div>
+                    <div  >{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>  执行单位 </div>
+                    <div    >{{get(form.typeVO,'airlineCompany')}}</div>
+                </div>
+            </div>
+            <div  class="head1" style="margin-top: 20px">
+                <table class="nomTable nomTable1"  >
+
+                    <tr >
+                        <td>  作业类型 </td>
+                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
+                        <td>  作业员类型 </td>
+                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
+                        <td>  航班号 </td>
+                        <td  >{{get(form.typeVO,'airlineCompany')}}</td>
+                        <td>  航班类型 </td>
+                        <td  >{{get(form.typeVO,'airlineCompany')}}</td>
+                    </tr>
+                    <tr >
+                        <td>  机型 </td>
+                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
+                        <td>  飞机注册号</td>
+                        <td>{{get(form.typeVO,'airlineCompany')}}</td>
+                        <td>  所属航空公司代码</td>
+                        <td   >{{get(form.typeVO,'airlineCompany')}}</td>
+                        <td>  所属航空公司 </td>
+                        <td  >{{get(form.typeVO,'airlineCompany')}}</td>
+                    </tr>
+
                 </table>
             </div>
             <div class="info" v-if="getbaseItemVOList&&getbaseItemVOList.length>0">
@@ -59,9 +102,7 @@
                 </div>
 
             </div>
-            <div class="instruction"  v-if="get(form.templateRemarkVO,'beforeWarning')">
-                <p v-html="getInstruction('beforeWarning')"> </p>
-            </div>
+
 
 
         </div>
@@ -74,11 +115,11 @@
     export default {
         name: "see",
         components: {},
-        props:['seeIndex'],
+        props:['seeIndex','form'],
         data() {
             return {
                 get:get,
-                form:{},
+
                 contentVOList:[],
                 show:true,
             }
@@ -107,56 +148,31 @@
         methods:{
 
 
-            getInfo(  ){
-                request({
-                    url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
-                    method: 'get',
-                }).then((data) => {
-                    this.form = extend({}, {...data.data});
-                     if(this.form.typeVO.airlineCompanyLogo){
-                        request({
-                            header:{
-                                'Content-Type':'multipart/form-data'
-                            },
-                            url:`${this.$ip}/mms-file/get-file-by-id/${this.form.typeVO.airlineCompanyLogo }`,
-                            method:'GET',
-                        }).then((d) => {
-                            this.$set(this.form,'photoPath',d.data.filePath)
-                        });
-                    }
-
-                })
-            },
+           getimg(id){
+               // this.form.typeVO.airlineCompanyLogo
+               request({
+                   header:{
+                       'Content-Type':'multipart/form-data'
+                   },
+                   url:`${this.$ip}/mms-file/get-file-by-id/${id }`,
+                   method:'GET',
+               }).then((d) => {
+                   this.$set(this.form,'photoPath',d.data.filePath)
+               });
+           }
 
         },
         created() {
-            this.getInfo()
+
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    .seeConfig{
+    .infoTOp{
         width:100%;
-
-        .seeTitle{
-            line-height: 20px;
-            margin-bottom: 6px;
-            color:#222222;
-            display: flex;
-            justify-content: space-between;
-            div{
-                color:#3280E7
-            }
-            div:hover{
-                cursor: pointer;
-            }
-        }
-
         .order{
-            .head{
 
-            }
             .info{
                 margin-top: 20px;
                 img{
@@ -246,6 +262,31 @@
     .nomTable0{
         td{width:270px!important;}
     }
+    .nomTable1{
+        border: 1px red solid;
+        .rowdiv{
+            width: 100%;
+            display: flex;
+            justify-content: left;
+        }
+        .rowdiv:first-child{
+            div:last-child{
+                width:40%;
+            }
+        }
+        .rowdiv{
+                   div:nth-child(even){
+                      text-align: left;
+                      padding-left: 15px;
+                      width:15%;
+                  }
+                  div:nth-child(odd){
+                      padding: 5px;
+                      width:10%;
+                   }
+
+              }
+     }
     .nomTable{
         width: 100%;
         table-layout:fixed;
@@ -257,9 +298,11 @@
             vertical-align: middle;
             border-color: inherit;
         }
+
         tr{
             width: 100%;
             /*height: 45px !important;*/
+
         }
         .trimg{
             div{
