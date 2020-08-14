@@ -20,7 +20,7 @@
 						</span>
 						<el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="请输入您的密码" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
 					</el-form-item>
-					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin">登录 →</el-button>
+					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin">div →</el-button>
 				</el-form>
 			</el-row>
 		</div>
@@ -28,9 +28,11 @@
 </template>
 
 <script>
+    import store from '@store';
+
     import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';
-import { MessageBox, Message } from 'element-ui';
+ import { MessageBox, Message } from 'element-ui';
 import request from '@lib/axios.js';
 import logo from './assets/img/login-logo.png';
 import userimg from './assets/img/login-username.png';
@@ -128,9 +130,9 @@ export default {
 							setUserInfo(data.data);
 							this.$store.commit('user/SET_TOKEN',data.data.token);
 							this.$store.commit('user/SET_USER_INFO',data.data);
-                           // window.socket= initWebsocket()
 
-							this.findUnread();
+                               window.socket= initWebsocket()
+ 							this.findUnread();
 
                             this.$router.push({ path: '/qualityManage' });
                          }

@@ -67,7 +67,7 @@ router.afterEach((to, from) => {
     template: '<App />',
     created () {
         // 注册并启动webworker
-        initWebsocket()
+        // initWebsocket()
         // const workerProces = new WorkerRegist();
         // workerProces.start()
 
