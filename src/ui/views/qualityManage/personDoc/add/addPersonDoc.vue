@@ -342,6 +342,7 @@
                   this.form={
                     ...this.form,
                     userNumber:val,
+                      userId:val,
                      userName:this.userArrObj[val].name,
                      contactInformation:this.userArrObj[val].phone||null,
                 }

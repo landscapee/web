@@ -26,6 +26,13 @@
                             <el-input   v-model="form.commanderLabelEnglish" placeholder="请输入英文 "></el-input>
                         </el-form-item>
                     </div>
+                    <div>
+                        <div class="row_one">
+                            <el-form-item  label="" prop="noSignTime"  >
+                                <el-checkbox   v-model="form.noSignTime"  :label="true">不显示签署时间</el-checkbox>
+                            </el-form-item>
+                        </div>
+                    </div>
                 </el-form>
         </div>
 
@@ -39,11 +46,12 @@
         name: "three",
         props:{
             type:String,
+            formOne:Object,
         },
         components: { },
         data() {
             return {
-                form:{templateBaseId:this.$route.query.id,contentLayout:'R2（二列）'},
+                form:{templateBaseId:this.$route.query.id,contentLayout:'R2（二列）',noSignTime:true},
                 options:{},
                  rules:{},
             }
@@ -93,6 +101,8 @@
                                 data:this.form,
                             }).then((d) => {
                                 if(d.code==200){
+                                    this.$emit('getinfo',{...this.form})
+
                                     // this.$message.success('操作成功')
                                 this.getInfo()
                                     resolve(true)

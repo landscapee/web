@@ -281,9 +281,14 @@ let authRoutes = [
                 path: '/WorkAbnormal',
                 component: () => import('@views/workOrder/abnormal/index'),
                 name: '异常管理',
-                meta: {title: '异常管理',icon: 'xxgl' },
+                meta: {title: '工单异常管理',icon: 'xxgl' },
                 children:[
-
+                    {
+                        path: '/WorkAbnormalAdd',
+                        component: () => import('@views/workOrder/abnormal/details'),
+                        name: '工单详情',
+                        meta: {title: '工单详情',icon: 'xxgl' },
+                    },
                 ]
             },
             {

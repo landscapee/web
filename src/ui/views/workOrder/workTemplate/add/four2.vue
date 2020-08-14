@@ -61,11 +61,17 @@
 
                         </el-form-item>
                     </div>
-
-
                     <div class="row_one" v-if="formItem.itemType==1">
                         <el-form-item  label="" prop="noSmallItem">
                             <el-checkbox @change="noSmallItemC"  v-model="formItem.noSmallItem"  :label="true">无工作小项</el-checkbox>
+                        </el-form-item>
+                    </div>
+
+                    <div class="row_one" v-if="formItem.itemType==3&&formOne.type=='勤务记录工单'">
+                        <el-form-item  label="接送机类型：" prop="">
+                            <el-select      v-model="formItem.pickAirType" placeholder="请选择接送机类型">
+                                <el-option v-for="(opt,index) in options.W_PickUpType" :key="index" :label="opt.valData" :value="Number(opt.valSummary)"> </el-option>
+                            </el-select>
                         </el-form-item>
                     </div>
                     <div class="row_one" v-if="formItem.noSmallItem">
@@ -122,11 +128,7 @@
                            </div>
 
                        </div>
-                       <div class="row_one">
-                           <el-form-item  label="" prop="noSignTime"  >
-                               <el-checkbox   v-model="formItem.noSignTime"  :label="true">不显示签署时间</el-checkbox>
-                           </el-form-item>
-                       </div>
+
                        <div class="row_one">
                            <el-form-item  label="" prop="c3WorkerTask"   v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
                                <el-checkbox    v-model="formItem.workerLabel"  :label="true" :disabled="formItem[formThree.contentLayout=='C3（三列）'?'c3WorkerTask':'c4WorkerTask']">
@@ -180,6 +182,7 @@
         name: "three",
         props:{
             type:String,
+            formOne:Object,
         },
         components: {orderEditor },
         data() {
@@ -276,7 +279,7 @@
                         this.$set(this.formItem,'cycle',false)
                         this.$set(this.formItem,'cycleImport',false)
 
-                    }else{
+                    }else if(key=='cycleImport'){
                         this.$set(this.formItem,'notApplicable',false)
                         this.$set(this.formItem,'notApplicableImport',false)
 
@@ -686,8 +689,10 @@
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                       obj.rolePermissions=obj.rolePermissions.join(';')
-                                      let d =new Date()
-                                       obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_')
+                                      if( obj[this.key]){
+                                          obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_')
+
+                                      }
                                 }else{
 
                                   }
@@ -735,7 +740,7 @@
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
                 params:{delete:false},
-                data:['roleControl','applyRangeType','EngineNo']
+                data:['roleControl','applyRangeType','EngineNo','W_PickUpType']
             }).then(d => {
                 let obj=d.data
                 this.options=obj

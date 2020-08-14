@@ -133,7 +133,7 @@
         </div>
         <div style="text-align: center" class="footerB" >
             <el-button type="primary" @click="fabu" v-if="type=='edit'||type=='add'">授权发布</el-button>
-            <el-button type="primary" :disabled=" form.state!='已授权'"  @click="quxiao" style="margin: 0 15px " v-if="type=='edit'">授权取消</el-button>
+            <el-button type="primary" :disabled=" form.state!='已授权'"  @click="quxiao" style="margin: 0 15px " >授权取消</el-button>
             <el-button type="primary"   @click="yanqi" :disabled="form.state!='已授权'"> 授权延期</el-button>
         </div>
         <AircraftType ref="AircraftType" @getAircratType="getAircratType"></AircraftType>
@@ -158,10 +158,11 @@
                 pickerOptions1: {},
                 moment:moment,
                 oldForm:{},
+                userObj:{},
                 dateDis:true,
                 form: {modelRange:[]},
                 userArr:[],
-                Airline:[],
+                 Airline:[],
                 AircratS:[],
                 options: {},
                  rules: {
@@ -203,6 +204,9 @@
                 }).then((data) => {
                     if(data.data&&data.data.records){
                         this.userArr =data.data.records
+                        data.data.records.map((k,l)=>{
+                             this.userObj[k.userNumber]=k.userId
+                        })
                     }
                     })
                 this.$route.meta.title =
@@ -230,8 +234,7 @@
                         console.log(this.form.authorizedUnit);
                         break
                     }
-                    console.log(i);
-                }
+                 }
             },
             openAircraftType(){
                 this.$refs.AircraftType.open(this.form.modelRange)
@@ -338,9 +341,9 @@
                     method: "get",
                 }).then(d => {
                     if(d.data){
-
                         this.form={...this.form,
                             userName:d.data.userName,
+                            userId:this.userObj[val]
                         }
                         if(d.data.positionInfList&&d.data.positionInfList.length){
                             let obj=d.data.positionInfList[0]

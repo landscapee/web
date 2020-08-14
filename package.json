@@ -64,6 +64,7 @@
     "kindeditor": "^4.1.10",
     "lodash": "^4.17.15",
     "lokijs": "^1.5.8",
+    "jquery": "^3.5.1",
     "moment": "^2.25.3",
     "path-to-regexp": "^6.1.0",
     "postal": "^2.0.5",
