@@ -181,11 +181,11 @@ export default {
                     });
                     this.init()
                 }else{
-                    this.$message({
-                        showClose: true,
-                        message: '保存文件夹错误'+data.code,
-                        type: 'error'
-                    });
+                    // this.$message({
+                    //     showClose: true,
+                    //     message: '保存文件夹错误'+data.code,
+                    //     type: 'error'
+                    // });
                 }
             })
         },
