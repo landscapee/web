@@ -2,17 +2,17 @@
     <div>
         <el-upload
                 :multiple="false"
-                class="upload-demo"
+                :class="listNone?' upload-demo ':'upload-demo listNone'"
                 ref="file"
                 :http-request="handleSubmit"
                 :on-change="handleChange"
                 :accept="accept||''"
                 action=""
+                :before-remove="beforeRemove"
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true">
             <el-button slot="trigger" ref="buttonClick" size="small" type="primary">文件上传</el-button>
-            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-        </el-upload>
+         </el-upload>
     </div>
 </template>
 <script>
@@ -20,7 +20,7 @@
     import request from '@lib/axios.js';
     export default {
         name: "copyDetails",
-        props:['accept','isUpload','isPrompt'],
+        props:['accept','isUpload','isPrompt','listNone'],
         components: {},
         data() {
             return {
@@ -32,6 +32,10 @@
              }
         },
         methods: {
+            beforeRemove(file, fileList) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+
             importFile(file){
                 this.filename=file.target.value
             },
@@ -111,7 +115,10 @@
             height:40px;
         }
     }
-    /deep/ .el-upload-list   {
-        display: none;
+
+    .listNone{
+        /deep/ .el-upload-list   {
+            display: none;
+        }
     }
 </style>

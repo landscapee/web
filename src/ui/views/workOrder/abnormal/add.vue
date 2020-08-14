@@ -33,14 +33,14 @@
                     <el-form-item  label="工单类型：" prop="type">
                         <span v-if="type=='info'">{{  form.type }}</span>
                         <el-select   filterable v-else v-model="form.type" placeholder="请选择工单类型">
-                            <el-option v-for="(opt,index) in options.Z_aptitudeType" :key="index" :label="opt.valData" :value="opt.valData">
+                            <el-option v-for="(opt,index) in options.worldorderType" :key="index" :label="opt.valData" :value="opt.valCode">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="执行单位：" prop="departmentId">
                         <span v-if="type=='info'">{{form.department}}</span>
-                        <el-select   filterable v-else v-model="form.departmentId" placeholder="请选择执行单位">
-                            <el-option v-for="(opt,index) in options.Z_aptitudeType" :key="index" :label="opt.valData" :value="opt.valData">
+                        <el-select @change="departmentIdCh"  filterable v-else v-model="form.departmentId" placeholder="请选择执行单位">
+                            <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -71,7 +71,7 @@
                     <el-form-item label="航班类型：" prop="flightState">
                         <span v-if="type=='info'">{{form.flightState}}</span>
                         <el-select   filterable v-else v-model="form.flightState" placeholder="请选择航班类型">
-                            <el-option v-for="(opt,index) in options.Z_aptitudeType" :key="index" :label="opt.valData" :value="opt.valData">
+                            <el-option v-for="(opt,index) in options.W_flightType" :key="index" :label="opt.valData" :value="opt.valCode">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -85,7 +85,7 @@
                     <el-form-item  label="机型：" prop="airplaneIcao">
                         <span v-if="type=='info'">{{  form.airplaneIcao }}</span>
                         <el-select   filterable v-else v-model="form.airplaneIcao" placeholder="请选择机型">
-                            <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.id">
+                            <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -113,7 +113,7 @@
                 <div class="row_tow">
                     <el-form-item  label="纸制工单文件：" prop="offlineFile">
                         <span v-if="type=='info'">{{ form.offlineFile }}</span>
-                        <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.ppt,.docx"  ref="UploadFile" @getFile="getFile"></UploadFile>
+                        <UploadFile  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.ppt,.docx"  ref="UploadFile" @getFile="getFile"></UploadFile>
 
                     </el-form-item>
 
@@ -122,7 +122,7 @@
 
             </el-form>
         </div>
-        <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+        <userTree ref="userBox"  @onSelected="handleUserSelected"></userTree>
 
     </div>
 </template>
@@ -149,6 +149,7 @@
                 AircraftType:[],
                 AircraftTypeObj: {},
                 options: {},
+                deptObj: {},
                  rules: {
                      workTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
                      type: [{ required:true,message:'请选择工单类型', trigger: "blur" }],
@@ -172,6 +173,9 @@
             }).then(d => {
                 let obj=d.data
                 this.options=obj
+                obj.dept.map((k,l)=>{
+                    this.deptObj[k.valCode]=k.valData
+                })
             });
             request({
                 url:`${this.$ip}/config-client-mms/config/findConfigs?configName=AircraftType`,
@@ -187,6 +191,9 @@
 
         },
         methods: {
+            departmentIdCh(val){
+              this.$set(this.form,'department',this.deptObj[val])
+            },
             handleUserSelected(users) {
                 this.form.operatorList = users.map((item) => ({ userId: item.id, userName: item.name ,role:item.role}));
             },
@@ -198,6 +205,7 @@
                 this.userList.splice(index,1)
             },
             getFile(file){
+                console.log(file);
                 this.$set(this.form,'offlineFile',file.id)
             },
 
@@ -209,28 +217,24 @@
                 }
             },
             saveForm(form) {
-                if (this.type == "add" || this.type == "edit") {
-                    this.$refs[form].validate(valid => {
-                        if (valid) {
-                            let url
-                            if(this.type=='add'){
-                                url='/qualify/save'
-                            }else {
-                                url='/qualify/update'
+                this.$set(this.form,'operatorId',this.form.operatorList.length?1:'')
+                this.$refs[form].validate(valid => {
+                    if (valid) {
+                        let url
+
+                        request({
+                            url:`${this.$ip}/mms-workorder/workorder/uploadPage`,
+                            method: 'post',
+                            data:{...this.form},
+                        }).then((data) => {
+                            if(data.code==200){
+                                this.$message.success("保存成功！");
+                                this.$router.go(-1)
                             }
-                            request({
-                                url:`${this.$ip}/mms-qualification${url}`,
-                                method: 'post',
-                                data:{...this.form},
-                            }).then((data) => {
-                               if(data.code==200){
-                                   this.$message.success("保存成功！");
-                                   this.$router.go(-1)
-                               }
-                            })
-                        }
-                    });
-                }
+                        })
+                    }
+                });
+
             },
 
         }

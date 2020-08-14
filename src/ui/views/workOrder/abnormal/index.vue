@@ -5,17 +5,13 @@
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
           <div v-else-if="this.$router.history.current.path == '/WorkAbnormal'" :key="$route.path" class="abnormal">
             <div class="top-content"  >
-
                 <div class="top-content-title">
                     <span>工单异常管理</span>
                 </div>
                 <div class="top-toolbar">
-
                     <div @click="seeOther(null,'WorkAbnormalAdd')"><icon iconClass="info" ></icon>纸制填报工单导入</div>
                 </div>
-
             </div>
-
               <div class="main-content" style="display: flex;justify-content: center;flex-direction: column;align-items: center">
 
                   <div   >
