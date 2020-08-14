@@ -1,47 +1,44 @@
 <template>
-    <div class="index1">
+    <div class="index1" style="display: flex;flex-direction: column;align-items: center">
 
-        <div style="height: 68px"></div>
-        <div class="page_t">
-            <div>工单流水编号-{{workorder.serialNo}}</div>
-            <div>{{template.airlineCompany}} {{template.title}}</div>
-        </div>
-        <div>
+        <!--<div style="height: 68px"></div>-->
+        <!--<div class="page_t">-->
+            <!--<div>工单流水编号-{{workorder.serialNo}}</div>-->
+            <!--<div>{{template.airlineCompany}} {{template.title}}</div>-->
+        <!--</div>-->
+        <div style="width: 80%;">
+            <div style="text-align: center;font-size: 20px;padding: 20px " >工单分派信息</div>
+
             <InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
         </div>
         <div class="order_content">
             <div class="order_c_main">
+                <div style="text-align: center;font-size: 20px;padding: 20px " >工单签署信息</div>
                 <div class="item1 flex">
                     <div style="width:10%;">项次</div>
-                    <div style="width:50%;">内容</div>
-                    <div style="width:20%;">维修人员</div>
-                    <div style="width:20%;">放行人员</div>
+                    <div style="width:60%;">内容</div>
+                    <div style="width:15%;">维修人员</div>
+                    <div style="width:15%;">放行人员</div>
                 </div>
                 <div class="order_c_b">
                     <div v-for='(item, index) in contentVOListMap' :key='item.id'>
-                        <!-- <div class="flex">
-                            <div class="item" style="width:10%;">{{index+1}}</div>
-                            <div class="item" style="width:50%;">{{item.name}}</div>
-                            <div class="item" style="width:20%;"><button class='sign' @click="fixedSignFn">签字</button></div>
-                            <div class="item" style="width:20%;"><button class='sign' @click="travelSignFn">签字</button></div>
-                        </div> -->
                         <div class="flex">
                             <div class="item" style="width:10%;">{{item.reduceIndex}}</div>
-                            <div class="item" style="width:50%;">
+                            <div class="item" style="width:60%;">
                                 <div v-if="item.reduceIndex.includes('.')" class="textContent" :class="item.id" v-html='item.content'></div>
                                 <div v-else class="textContent" v-html='item.name'></div>
                                 <div v-if="item.reduceIndex.includes('.')" class='checkbox_group flex'>
                                     <el-button @click="editContent($event,this,item)">更正</el-button>
                                 </div>
                             </div>
-                            <div  class="item" style="width:20%;position:relative">
+                            <div  class="item" style="width:15%;position:relative">
 
                                 <button v-if="item.reduceIndex.includes('.')" class='sign' @click="fixedSignFn(item,'fix_sign_'+item.reduceIndex)">签字</button>
                                 <div v-if="item.reduceIndex.includes('.')" style="width:20%;position:absolute;left:0;top:40px;">
                                     <div :id='"fix_sign_"+item.reduceIndex' :pos='"fix_sign_"+item.reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                 </div>
                             </div>
-                            <div  class="item" style="width:20%;position:relative">
+                            <div  class="item" style="width:15%;position:relative">
                                 <button v-if="item.reduceIndex.includes('.')" class='sign' @click="travelSignFn(item,'travel_sign_'+item.reduceIndex)">签字</button>
                                 <div v-if="item.reduceIndex.includes('.')" style="width:20%;position:absolute;left:0;top:40px;">
                                     <div :id="'travel_sign_'+item.reduceIndex" :pos='"travel_sign_"+item.reduceIndex' style="width:100%;height:30px;width:100%"></div>
@@ -52,8 +49,7 @@
                 </div>
             </div>
         </div>
-        <div style="height:60px;"></div>
-     </div>
+      </div>
 </template>
 <script>
     import $ from 'jquery'
@@ -537,7 +533,9 @@ import InfoTop from './infoTop'
         display: flex;
     }
     .index1{
-        padding:30px;
+        height:calc(100vh - 120px);
+        overflow-y: auto;
+        padding:0px 30px 30px 30px ;
         .top_header{
             line-height: 68px;
             height:68px;
@@ -554,7 +552,7 @@ import InfoTop from './infoTop'
         .order_content{
             height:500px;
             width: 80%;
-            overflow-y: auto;
+
             .order_c_main{
                 .order_c_b{
                     border-right: 1px solid #333;

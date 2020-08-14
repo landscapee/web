@@ -188,10 +188,12 @@
                                 method: 'post',
                                 data:{...this.form},
                             }).then((data) => {
-                                this.$message.success("保存成功！");
-                                this.$router.go(-1)
+                               if(data.code==200){
+                                   this.$message.success("保存成功！");
+                                   this.$router.go(-1)
+                               }
                             })
-                              }
+                        }
                     });
                 }
             },

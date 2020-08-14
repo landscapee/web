@@ -1,18 +1,24 @@
 <template>
     <div>
 
-        <router-view v-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
+        <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
           <div v-else-if="this.$router.history.current.path == '/WorkAbnormal'" :key="$route.path" class="abnormal">
-            <div class="top-content">
+            <div class="top-content"  >
+
                 <div class="top-content-title">
                     <span>工单异常管理</span>
+                </div>
+                <div class="top-toolbar">
+
+                    <div @click="seeOther(null,'WorkAbnormalAdd')"><icon iconClass="info" ></icon>纸制填报工单导入</div>
                 </div>
 
             </div>
 
               <div class="main-content" style="display: flex;justify-content: center;flex-direction: column;align-items: center">
 
-                  <div style="width:80% ;"   >
+                  <div   >
                       <div class=" formdiv">
                           <el-form :model="form" :inline="true">
                               <div style="display: flex;justify-content: space-between">
@@ -42,10 +48,8 @@
 
                           <el-table-column align="center" slot="option" label="操作" :width="140" >
                               <template  slot-scope="scope">
-
                                   <div >
-                                      <el-button class="QoptionButton" @click="seeOther(scope.row,'WorkAbnormalAdd')"  >详情</el-button>
-
+                                      <el-button class="QoptionButton" @click="seeOther(scope.row,'WorkAbnormalDetails')"  >详情</el-button>
                                    </div>
                               </template>
                           </el-table-column>
@@ -86,7 +90,7 @@
                 this.getList()
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row.userNumber}});
+                this.$router.push({path:path,query:{ id:row&&row.id}});
 
             },
 
@@ -117,6 +121,8 @@
 
     .abnormal{
         margin-top:14px;
+
+
         /deep/ .mainTable{
 
             height:calc(100vh - 370px);

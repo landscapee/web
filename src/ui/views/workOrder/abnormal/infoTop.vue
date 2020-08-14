@@ -1,6 +1,6 @@
 <template>
     <div class="infoTOp"  >
-        <div class="order" style="width: 80%">
+        <div class="order" >
             <div class="head">
                 <table class="nomTable nomTable0"  >
                     <tr class="trimg" v-if="get(form.typeVO,'airlineCompany')||form.photoPath">
@@ -29,7 +29,7 @@
                     <div>  任务号 </div>
                     <div  >{{get(form,'')}}</div>
                     <div>  执行单位 </div>
-                    <div    >{{get(workorder,'department')}}</div>
+                    <div >{{get(workorder,'department')}}</div>
                 </div>
                 <div  class="rowdiv">
                     <div>  作业类型 </div>
@@ -82,24 +82,16 @@
                                         <input type="checkbox" :name="opt1.placeholder.split(';')[l]" class="Wtui-checkbox" ></input>{{k}}
 
                                     </div>
-
-
                                 </div>
                                 <div> </div>
                             </div>
                             <div v-else-if="opt1.type==6" >
 
-
                             </div>
                         </el-col>
                     </el-row>
-
                 </div>
-
             </div>
-
-
-
         </div>
     </div>
 </template>
@@ -114,7 +106,6 @@
         data() {
             return {
                 get:get,
-
                 contentVOList:[],
                 show:true,
             }
@@ -122,8 +113,7 @@
         computed:{
             airplane(){
                 let arr=this.get(this.form.typeVO,'airplane')||[]
-                debugger
-                let s= arr.map((k,l)=>{
+                 let s= arr.map((k,l)=>{
                     return k.name
                 })
                 return s.join(',')
@@ -290,7 +280,7 @@
             }
             div:nth-child(even){
              justify-content: left;
-                padding-left: 15px;
+                padding:0 15px;
                 width:15%;
             }
             div:nth-child(odd){
