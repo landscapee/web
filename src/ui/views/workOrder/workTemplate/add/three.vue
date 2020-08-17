@@ -27,8 +27,8 @@
                         </el-form-item>
                     </div>
                     <div>
-                        <div class="row_one">
-                            <el-form-item  label="" prop="noSignTime"  >
+                        <div class="row_five">
+                            <el-form-item  label=" " prop="noSignTime"  >
                                 <el-checkbox   v-model="form.noSignTime"  :label="true">不显示签署时间</el-checkbox>
                             </el-form-item>
                         </div>
@@ -65,8 +65,8 @@
                  if(val=='R2（二列）'){
                      this.form={
                          ...this.form,
-                         contentLabel:data.contentLabel||'内容',
-                         contentLabelEnglish:data.contentLabelEnglish||'CONTENT',
+                         contentLabel:this.form.contentLabel||'内容',
+                         contentLabelEnglish:this.form.contentLabelEnglish||'CONTENT',
                          workerLabel:null,
                          workerLabelEnglish:null,
                          commanderLabel:null,
@@ -74,21 +74,22 @@
                      }
                 }else if(val=='C3（三列）'){
                      this.form={
-                         ...this.from,
-                         workerLabel:data.workerLabel||'工作者',
-                         workerLabelEnglish:data.workerLabelEnglish||'PERF BY ',
+                         ...this.form,
+                         workerLabel:this.form.workerLabel||'工作者',
+                         workerLabelEnglish:this.form.workerLabelEnglish||'PERF BY ',
                          commanderLabel:null,
                          commanderLabelEnglish:null,
 
                      }
                 }else {
                      this.form={
-                         ...this.from,
-                         commanderLabel:data.commanderLabel||'指挥者',
-                         commanderLabelEnglish:data.commanderLabelEnglish||'DE BY',
+                         ...this.form,
+                         commanderLabel:this.form.commanderLabel||'指挥者',
+                         commanderLabelEnglish:this.form.commanderLabelEnglish||'DE BY',
 
                      }
                  }
+                console.log(this.form);
             },
             save (form){
                  return new Promise((resolve, reject)=>{

@@ -4,6 +4,7 @@
             <div class="QHead">
                 纸制填报工单导入
             </div>
+
             <div v-if="type!='info'"  class="QheadRight">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save"></icon>保存
@@ -48,10 +49,8 @@
                 <div class="row_one">
                     <el-form-item  label="保障人员：" prop="operatorId">
                          <el-button  v-if="type!='info'"  @click="userOpen" type="primary" style="margin-bottom: 10px;padding: 9px 30px;">选择</el-button>
-
-
                         <el-card class="box-card" shadow="never" border-radius="2px">
-                            <el-scrollbar style="height:120px ">
+                            <el-scrollbar style="height:100px ">
                                 <el-tag style="margin-right: 10px" :key="tag.id" v-for="(tag,index) in form.operatorList" closable @close="handleClose(tag,index)" :disable-transitions="false"  >
                                     {{ tag.userName }}
                                 </el-tag>
@@ -78,7 +77,7 @@
                 </div>
                 <div class="row_tow">
 
-                    <el-form-item label=" 航班号：" prop="flightNo">
+                    <el-form-item label="航班号：" prop="flightNo">
                         <span v-if="type=='info'">{{form.flightNo}}</span>
                         <el-input v-else v-model="form.flightNo" placeholder="请输入航班号"></el-input>
                     </el-form-item>
@@ -105,34 +104,31 @@
                 </div>
                 <div class="row_tow">
 
-                    <el-form-item label="工作时长(分钟)："  >
-                        <span v-if="type=='info'">{{form.costTime}}</span>
-                        <el-input v-else v-model="form.costTime" placeholder="请输入工作时长"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="row_tow">
+
                     <el-form-item  label="纸制工单文件：" prop="offlineFile">
                         <span v-if="type=='info'">{{ form.offlineFile }}</span>
-                        <UploadFile  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.ppt,.docx"  ref="UploadFile" @getFile="getFile"></UploadFile>
+                        <UploadFile :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.ppt,.docx"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
 
                     </el-form-item>
-
+                    <el-form-item label="工作时长(分钟)："  >
+                    <span v-if="type=='info'">{{form.costTime}}</span>
+                    <el-input v-else v-model="form.costTime" placeholder="请输入工作时长"></el-input>
+                </el-form-item>
 
                 </div>
 
             </el-form>
         </div>
         <userTree ref="userBox"  @onSelected="handleUserSelected"></userTree>
-
     </div>
 </template>
 <script>
     import moment from "moment";
-    import userTree from '@components/userTree/index';
+     import userTree from '@components/userTree/index';
 
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
-    import { extend } from "lodash";
+    import { extend ,findIndex,map} from "lodash";
     export default {
         components: {
             Icon,userTree
@@ -145,7 +141,7 @@
 
                 moment:moment,
                 oldForm:{},
-                form: {operatorList:[]},
+                form: {operatorList:[], },
                 AircraftType:[],
                 AircraftTypeObj: {},
                 options: {},
@@ -204,16 +200,17 @@
             handleClose(tag,index){
                 this.userList.splice(index,1)
             },
-            getFile(file){
-                console.log(file);
-                this.$set(this.form,'offlineFile',file.id)
-            },
+            getFile(fileIds){
+                console.log(fileIds);
+
+                this.$set(this.form,'offlineFile',fileIds)
+             },
 
             resetForm(){
                 if(this.form.id){
-                    this.form = {id:this.form.id ,operatorList:[]};
+                    this.form = {id:this.form.id , operatorList:[]};
                 }else{
-                    this.form = {operatorList:[]};
+                    this.form = { operatorList:[]};
                 }
             },
             saveForm(form) {

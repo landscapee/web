@@ -103,8 +103,13 @@
                            </el-form-item>
                        </div>
                        <div class="row_one " >
-                           <el-form-item  label="角色权限控制：" prop="rolePermissions">
+                           <el-form-item  label="C3权限控制：" prop="rolePermissions"  v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
                                <el-select      multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
+                                   <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                               </el-select>
+                           </el-form-item>
+                           <el-form-item  label="C4权限控制：" prop="commanderRolePermissions"  v-if="  formThree.contentLayout=='C4（四列）'">
+                               <el-select      multiple=""  v-model="formItem.commanderRolePermissions" placeholder="请选择角色权限控制">
                                    <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                </el-select>
                            </el-form-item>
@@ -183,7 +188,7 @@
         props:{
             type:String,
             formOne:Object,
-        },
+         },
         components: {orderEditor },
         data() {
             return {
@@ -350,6 +355,7 @@
                     templateBaseId:this.$route.query.id,
                     contentId:this.addItemObj&&this.addItemObj.id,
                     rolePermissions:[],
+                      commanderRolePermissions:[],
                     suitableRange: [{type:'',values:[]}],
                     noSignTime:true,
                 }
@@ -512,6 +518,7 @@
                                     ...o,
                                     paId:k.id,
                                      rolePermissions:o.rolePermissions?o.rolePermissions.split(';'):[],
+                                     commanderRolePermissions:o.commanderRolePermissions?o.commanderRolePermissions.split(';'):[],
                                 suitableRange:o.suitableRange&&o.suitableRange.length?o.suitableRange:[{type:'',values:[]}] ,
                                 serialNumber:k.serialNumber,
                                     itemType:2,  //大项内容
@@ -536,6 +543,7 @@
                                             paId:k.id,
                                             papId:o.id,
                                             rolePermissions:o1.rolePermissions?o1.rolePermissions.split(';'):[],
+                                            commanderRolePermissions:o1.commanderRolePermissions?o1.commanderRolePermissions.split(';'):[],
                                             suitableRange:o1.suitableRange&&o1.suitableRange.length?o1.suitableRange:[{type:'',values:[]}] ,
                                             serialNumber:o.serialNumber,
                                             itemType:4,  //小项内容
@@ -689,6 +697,7 @@
                             } else{
                                   if(this.formItem.itemType==2||this.formItem.itemType==4){
                                       obj.rolePermissions=obj.rolePermissions.join(';')
+                                      obj.commanderRolePermissions=obj.commanderRolePermissions.join(';')
                                       if( obj[this.key]){
                                           obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_')
 

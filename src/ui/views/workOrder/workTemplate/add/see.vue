@@ -282,7 +282,7 @@
                                         itemType:2,  //大项内容
                                        name:`工作内容${p+1}`
                                    }
-                                  if(this.show){
+                                  if(this.show&&obj.content){
                                       let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
                                       obj.content=o.content.replace(reg,"$1$2$3${$2}" )
                                   }
@@ -307,7 +307,7 @@
                                                 itemType:4,  //小项内容
                                                name:`工作内容${p1+1}`
                                            }
-                                           if(this.show){
+                                           if(this.show&&obj1.content){
                                                let reg=/(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
                                                obj1.content=o1.content.replace(reg,"$1$2$3${$2}" )
                                            }
@@ -337,8 +337,9 @@
 <style lang="scss" scoped>
 .seeConfig{
     width:100%;
-    height:calc(100vh - 89px);
-    overflow-y: auto; padding: 20px 30px;
+    /*height:calc(100vh - 89px);*/
+    /*overflow-y: auto; */
+    padding: 20px 30px;
 
     .seeTitle{
         line-height: 20px;
@@ -355,6 +356,9 @@
     }
 
     .order{
+        height:calc(100vh - 150px);
+        overflow-y: auto;
+        overflow-x: hidden;
         .head{
 
         }

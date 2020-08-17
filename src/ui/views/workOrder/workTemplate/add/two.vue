@@ -47,8 +47,8 @@
                     </div>
                     <div v-else-if="row.type==1" style="text-align: center">
                         <!--任务排班信息获取-->
-                        <el-select v-model="row.value">
-                            <el-option v-for="(opt,index) in W_taskGet" :key="index" :label="opt.valData" :value="opt.valCode"></el-option>
+                        <el-select v-model="row.value" >
+                            <el-option v-for="(opt,index1) in W_taskGet" :key="index1" :label="opt.valData" :value="opt.valCode"></el-option>
                         </el-select>
                     </div>
                     <div v-else-if="row.type==3" style="text-align: center">
@@ -180,22 +180,18 @@
                         request({
                             url:`${this.$ip}/mms-workorder/templateBaseItem/delete/${this.rowT.id}`,
                             method: 'delete',
-
                         }).then((d) => {
                             if(d.code==200){
                             this.getInfo()
-
+                                this.$message({type: 'success',message: '删除成功, '});
                          }
-
-                    })
-
-                         }else{
+                         })
+                        }else{
                         this.tableData.splice(this.selectId,1)
                         this.selectId   = null;
                         this.rowT   = {};
-                        this.$message({type: 'success',message: '删除成功,保存后生效'});
+                        this.$message({type: 'success',message: '删除成功, '});
                     }
-
                         }).catch(() => {
                             this.$message({
                                 type: 'info',
@@ -264,7 +260,7 @@
     /*@import "@/ui/styles/common_list.scss";*/
 
     /deep/ .mainTable{
-        height: 300px;
+        height: calc(100vh - 380px);
         overflow: auto;
          .current-row > td {
             background-color: inherit!important;
