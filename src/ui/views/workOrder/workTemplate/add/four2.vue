@@ -355,7 +355,7 @@
                     templateBaseId:this.$route.query.id,
                     contentId:this.addItemObj&&this.addItemObj.id,
                     rolePermissions:[],
-                      commanderRolePermissions:[],
+                    commanderRolePermissions:[],
                     suitableRange: [{type:'',values:[]}],
                     noSignTime:true,
                 }
@@ -428,7 +428,6 @@
                  this.switchPrompt( ).then((d)=>{
                     if(d==1){
                         this.dataTree=  this.tranDataY(this.dataTreeY)
-
                         this.openMainMenuFnOption(e,obj)
                         this.$nextTick(()=>{
                             this.idEditor=0
@@ -493,7 +492,6 @@
                                 }else{
                                     this.getItem(1)
                                 }
-
                                 this.$message({type: 'success',message: '删除成功'});
                             }
                         })
@@ -593,6 +591,8 @@
                         let arr=d.data;
                         this.trans(arr);
                          this.dataItem=[...arr];
+                        this.dataTreeY=this.tranDataY(arr)
+
                         this.dataTreeUp()
                         this.positionItem(num)
                     }
@@ -659,8 +659,8 @@
                         obj.children=  k.children.map((o,p)=>{
                             let obj1={...o}
                             if(o.children){
-                                o.children.map((q,w)=>{
-                                    let obj2={...q}
+                                obj1.children=  o.children.map((q,w)=>{
+                                     let obj2={...q}
                                     return obj2
                                 })
                             }
@@ -700,11 +700,8 @@
                                       obj.commanderRolePermissions=obj.commanderRolePermissions.join(';')
                                       if( obj[this.key]){
                                           obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_')
-
                                       }
-                                }else{
-
-                                  }
+                                }
                             }
                             request({
                                 url:`${this.$ip}/mms-workorder/${url}`,
@@ -716,7 +713,6 @@
                             }).then((d) => {
                                 if(d.code==200){
                                     resolve(true)
-
                                     if(this.formItem.itemType<=4){
                                         if(!this.formItem.id){
                                             this.$set(this.formItem,'id',d.data.id)
