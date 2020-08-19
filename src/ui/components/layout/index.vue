@@ -92,7 +92,7 @@ import request from '@lib/axios.js';
                 .then((data) => {
                     this.tipsNumber = data.data
                 })
-				this.$notify({
+ 				this.$notify({
 					title: '收到一条消息',
 					message: data.content.content,
 					position: 'bottom-right'
@@ -114,16 +114,21 @@ import request from '@lib/axios.js';
 			this.$eventBus.$emit('infoPlate', 'receive');
 		},
 		logout(){
-			this.$store.commit('user/SET_TOKEN','');
-			this.$store.commit('user/SET_USER_INFO','');
-			if(window.$socket){
-                window.$socket.close()
-			}
-
-
-             removeToken();
-			removeUserInfo();
-			this.$router.push({ path: '/' });
+		    let sessionId= localStorage.getItem('socketId');
+                 request({
+                    url:`${this.$ip}/mms-notice/notification/disconnect`,
+                    method: 'get',
+					params:{
+                        sessionId,
+						userId:this.$store.state.user.userInfo.id
+					}
+                }).then((d) => {
+                    this.$store.commit('user/SET_TOKEN','');
+                    this.$store.commit('user/SET_USER_INFO','');
+                    removeToken();
+                    removeUserInfo();
+                    this.$router.push({ path: '/' });
+                })
 		},
 		onSpread(){
 			this.isOpen = !this.isOpen;

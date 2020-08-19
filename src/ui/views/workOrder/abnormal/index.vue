@@ -39,7 +39,7 @@
                       </div>
 
                         <div style="font-size: 20px;text-align: center;margin-bottom: 20px" >查询结果</div>
-                      <SearchTable :noSearch="true"  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"      :showHeader="false" :showPage="true" >
+                      <SearchTable :noSearch="true"  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"       :showHeader="false" :showPage="true" >
 
 
                           <el-table-column align="center" slot="option" label="操作" :width="140" >
@@ -74,6 +74,10 @@
                 tableData:[],
                 tableConfig:authorizeConfig({}),
                 form:{},
+                params:{
+                    size:15,
+                    current:1,
+                }
             };
         },
         created() {
@@ -89,25 +93,29 @@
                 this.$router.push({path:path,query:{ id:row&&row.id}});
 
             },
-
              getList(){
                 let data={...this.form}
                 request({
                     url:`${this.$ip}/mms-workorder/workorder/list`,
                     method: 'post',
                     data:{ ...data},
-                    params:{
-                        size:9999999999999,
-                        current:1,
-                    }
+                    params:{...this.params}
                  })
                     .then((d) => {
                         if(d.code==200){
-                            this.tableData = [...d.data.records];
+                            this.tableData ={...d.data};
                         }
                     })
             },
-
+            handleSizeChange(size) {
+                this.params.current = 1;
+                this.params.size = size;
+                this.getList();
+            },
+            handleCurrentChange(current) {
+                this.params.current = current;
+                this.getList();
+            },
 
         },
     };
@@ -117,11 +125,9 @@
 
     .abnormal{
         margin-top:14px;
-
-
         /deep/ .mainTable{
-
-            height:calc(100vh - 370px);
+            height:calc(100vh - 470px);
+            overflow-y: auto;
         }
         .button{
             /deep/ .el-button{

@@ -84,6 +84,8 @@
                 }else {
                      this.form={
                          ...this.form,
+                         workerLabel:this.form.workerLabel||'工作者',
+                         workerLabelEnglish:this.form.workerLabelEnglish||'PERF BY ',
                          commanderLabel:this.form.commanderLabel||'指挥者',
                          commanderLabelEnglish:this.form.commanderLabelEnglish||'DE BY',
 

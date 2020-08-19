@@ -34,7 +34,8 @@
                 <span slot-scope="{ row ,$index}">
                    <div v-if="row.type==4">
                        <div  class="upUser  ">
-                           <img @click="upLogoPho(row)" v-if="row.value"  :src="row.value" alt="请上传图片">
+
+                           <img @click="upLogoPho(row)" v-if="row.value"  :src="row.value.split('$')[1] " alt="请上传图片">
                            <el-button v-else @click="upLogoPho(row)"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
                        </div>
                        <div style="display: none">
@@ -97,6 +98,9 @@
         watch:{
 
         },
+        computed:{
+
+        },
         created() {
              // console.log(,1,2,3);
             request({
@@ -114,6 +118,8 @@
         },
 
         methods: {
+
+
             typeChange(row,index){
                 row.value=''
                 let str=''
@@ -135,15 +141,14 @@
             },
 
             getFile(file,row){
-                  request({
-                    header:{
-                        'Content-Type':'multipart/form-data'
-                    },
+                request({
+                    header:{'Content-Type':'multipart/form-data'},
                     url:`${this.$ip}/mms-file/get-file-by-id/${file.id }`,
                     method:'GET',
-                }).then((d) => {
-                     this.$set(row,'value',d.data.filePath)
-                 });
+                }).then((d)=>{
+                     this.$set(row,'value',file.id+'$'+d.data.filePath)
+                 })
+
             },
             addList(){
                 this.tableData.push({templateId:this.$route.query.id,enable:true})

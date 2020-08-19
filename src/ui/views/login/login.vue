@@ -129,7 +129,7 @@ export default {
 							this.$store.commit('user/SET_TOKEN',data.data.token);
 							this.$store.commit('user/SET_USER_INFO',data.data);
 
-                               window.socket= initWebsocket()
+                           initWebsocket()
  							this.findUnread();
 
                             this.$router.push({ path: '/qualityManage' });

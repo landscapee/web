@@ -11,8 +11,7 @@
                     </div>
                     <div class="QheadRight" >
                         <el-button @click="upTemplate" v-if="radio==4" class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
-                        <el-button @click="upTemplate"   class="QoptionButton1"><icon-svg iconClass="upload"></icon-svg>上传模板</el-button>
-                        <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
+                          <el-button @click="copyHistory" v-if="radio==1&&type!='add'" class="QoptionButton1"  ><icon-svg iconClass="copy"></icon-svg>复制历史模板</el-button>
                     </div>
 
                 </div>

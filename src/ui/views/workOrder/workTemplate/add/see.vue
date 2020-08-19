@@ -14,7 +14,13 @@
                     <td>{{get(form.typeVO,'airlineCompany')}}</td>
                 </tr>
                 <tr v-if="get(form.typeVO,'title')">
-                    <td   colspan="2" ><span class="titleColoe">{{get(form.typeVO,'title')}}</span> </td>
+                    <td   colspan="2" >
+                        <div v-if="get(form.typeVO,'title')">
+                            <div class="titleColoe">{{get(form.typeVO,'title').split('$')[0]}}</div>
+                            <div class="titleColoe">{{get(form.typeVO,'title').split('$')[1]||''}}</div>
+                        </div>
+
+                    </td>
                 </tr>
             </table>
             </div>
@@ -28,7 +34,8 @@
                    </el-row>
                    <el-row  >
                        <el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
-                               <img v-if="opt1.type==4"   :src="opt1.value" alt="加载失败">
+                               <img v-if="opt1.type==4"   :src="opt1.value.split('$')[1]" alt="加载失败">
+                           <!--{{getimg(opt1)}}-->
                                <div v-if="opt1.type==4&&show" > {{ '${'+opt1.placeholder+'}'}}</div>
 
                            <template v-else-if="opt1.type==2">
@@ -218,6 +225,18 @@
             },
         },
         methods:{
+            getimg(row){
+                if(row.value&&!row.value1){
+                    request({
+                        header:{'Content-Type':'multipart/form-data'},
+                        url:`${this.$ip}/mms-file/get-file-by-id/${row.value }`,
+                        method:'GET',
+                    }).then((d)=>{
+                        this.$set(row,'value1', d.data.filePath)
+                    })
+                }
+
+            },
             showZ(){
                 this.show=!this.show
                 this.trans()
@@ -337,9 +356,8 @@
 <style lang="scss" scoped>
 .seeConfig{
     width:100%;
-    /*height:calc(100vh - 89px);*/
-    /*overflow-y: auto; */
-    padding: 20px 30px;
+    height:calc(100vh - 100px);
+    overflow-y: auto; padding: 20px 30px;
 
     .seeTitle{
         line-height: 20px;
@@ -356,9 +374,7 @@
     }
 
     .order{
-        height:calc(100vh - 150px);
-        overflow-y: auto;
-        overflow-x: hidden;
+
         .head{
 
         }
@@ -522,6 +538,7 @@
 
 .none{
     display: none;
+    overflow: hidden;
 }
 p{
     /*text-indent:2em;*/

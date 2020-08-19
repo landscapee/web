@@ -1,7 +1,7 @@
 <template>
     <div>
          <el-upload
-                :multiple="false"
+                :multiple="listNone"
                 :class="listNone?' upload-demo ':'upload-demo listNone'"
                 ref="file"
                 :http-request="handleSubmit"

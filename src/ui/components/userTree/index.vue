@@ -4,12 +4,9 @@
 			<el-col :span="12">
 				<div>
 					<el-card class="box-card" shadow="never" border-radius="2px">
-
 						<div style="height:300px" v-loading="!data.length" >
-
 							<Tree  :data="data" ref="tree" @handleSelect="getListById" :expand-on-click-node="false" :isShow="isShow"   :defaultUnCheck="true"  > </Tree>
 						</div>
-
 					</el-card>
 				</div>
 			</el-col>
@@ -66,7 +63,7 @@ export default {
 	data() {
 		return {
             filterText:'',
-            personListObj:{},
+            personNodeIdObj:{},
 			userSelect:[],
  			title: '选择人员',
 			isShow: {input:true},
@@ -77,6 +74,7 @@ export default {
  			data: [],
 			selectId: null,
 			selectNode: {},
+            lengthOldObj:{},
 			type:"",
 			deptList:[],
             OrgUser:[],
@@ -95,24 +93,20 @@ export default {
 
     methods: {
         filterTextC(val){
-            this.personList=[]
             if (!val){
-                this.personList=[...this.personListOld];
-                return false
+                 return false
 			}
-             this.personListOld.map((k,l)=>{
+            this.personList=[]
+             this.personNodeIdObj[this.selectNode.id].map((k,l)=>{
                 k.name.indexOf(val) !== -1? this.personList.push(k):''
             })
 		},
 		isAllSelect(){
             let flag=true
-            this.personList.map((k,l)=>{
-                const idx = this.userSelect.findIndex((d) => d.id === k.id);
-                if( idx>-1){
-                }else{
-                    flag=false
-                }
-            })
+			let length=this.lengthOldObj[this.selectNode.id]
+			if(length!=this.userSelect.length){
+                flag=false
+			}
 			return flag
 		},
         userSelectC(){
@@ -205,23 +199,22 @@ export default {
 				this.selectNode = node;
 				this.type = node.type;
 			}
+			if(this.personNodeIdObj[node.id]){
+                this.lengthOldObj[node.id]=this.personNodeIdObj[node.id].length
+                this.personList=this.personNodeIdObj[node.id]
+                console.log(this.lengthOldObj,this.personList,1);
+			    return false
+			}
 			let param = { pageNum: 1, pageSize: 99999 };
             this.getAllUserByOrgId(param).then((d) => {
-                 let flag = true;
-                this.personList =d.data.list ? d.data.list : d.data;
-                this.personListOld = [...this.personList]
-                this.personList.map((k,l)=>{
-                    const idx = this.userSelect.findIndex((d) => d.id === k.id);
-                    if( idx>-1){
-                        this.userSelect.splice(idx,1,k)
-                    }else{
-                        flag=false
-                    }
-                })
-                this.selectAll = flag;
+                this.personNodeIdObj[node.id]=d.data.list ? d.data.list : d.data
+                this.personList =this.personNodeIdObj[node.id]
+                this.lengthOldObj[node.id]=this.personNodeIdObj[node.id].length
+               this.selectAll = this.isAllSelect();;
 
 			});
-		},
+            console.log(this.lengthOldObj,this.personList,2);
+        },
 
 
 		getTree( ) {
@@ -267,6 +260,8 @@ export default {
 		},
 		handleClose() {
 		    this.personList=[]
+			this.lengthOldObj={}
+			this.personNodeIdObj={}
 			this.dialogVisible = false;
 		},
 		handleSave() {
@@ -274,7 +269,7 @@ export default {
  			this.$emit('onSelected', this.userSelect,this.deptList);
 		},
 		open(inputList, title, currentDept) {
-  			this.getTree(currentDept || false);
+  			this.getTree();
 			this.selectAll = false;
 			this.title = title;
 			this.userSelect = cloneDeep(inputList) || [];

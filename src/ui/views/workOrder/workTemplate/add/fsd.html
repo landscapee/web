@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        div{
+        .div1{
             width: 200px;
             height: 100px;
             background: linear-gradient(
@@ -67,10 +67,31 @@
             -webkit-transform:rotate(-45deg);
             transform:rotate(-45deg);
         }
-
+.div    {
+    width: 500px;
+    height:500px;
+    border: red 1px solid;
+    position: relative;
+}
+        .div div{
+            width: 400px;
+            height: 50px;
+            border: #0a76a4 1px solid;
+            position: absolute;
+        }
     </style>
 </head>
-<body>
+<body  >
+<div class="div">
+    <div>sfsdfsdfsd</div>
+    <div>sfsdfsdfsd</div>
+    <div>sfsdfsdfsd</div>
+    <div>sfsdfsdfsd</div>
+    <div>sfsdfsdfsd</div>
+    <div>sfsdfsdfsd</div>
+    <div>sfsdfsdfsd</div>
+</div>
+
 <div></div>
 <span>
        <input name="radio"   type="radio"  >
@@ -98,18 +119,28 @@
         <td>dfgdfgdfgdf</td>
      </tr>
 </table> dddd
+<button onclick="aaaaaaa()">ddd</button>
 <script language="javascript">
     let a={a:1}
     let b=a
-    a=null
-    console.log(a, b);
+    a=1
+
+    function aaaaaaa() {
+        a++
+        console.log(a, b,1,2);
+     }
+
     var str="我bai获#取我一#特殊/>符号#获取我二#之间#获取我三#的内容";
     var pattern =/#(.+#.+?)#/g;
     var text=str.match(pattern);
     let arr=str.split(/#(.+?)\/>/g)
     let num=str.indexOf('#',4)
     console.log(arr,num);
-    console.log((text ));;
+    console.log((text ));
+    window.onbeforeunload=function () {
+
+    }
+
 </script>
 </body>
 </html>

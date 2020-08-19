@@ -201,8 +201,7 @@
                 this.userList.splice(index,1)
             },
             getFile(fileIds){
-                console.log(fileIds);
-
+                console.log(fileIds,1,2);
                 this.$set(this.form,'offlineFile',fileIds)
              },
 

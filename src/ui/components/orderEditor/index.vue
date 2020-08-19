@@ -433,6 +433,33 @@ export default {
     -webkit-transform:rotate(-45deg);
     transform:rotate(-45deg);
 }
+body{
+  overflow-y:auto!important;
+  height:calc(100vh - 10px);
+}
+ ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgba(0,0,0,0.3);
+    float: right;
+}
+
+ ::-webkit-scrollbar-track {
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: rgba(255,255,255,0.4);
+     float: right;
+
+}
+
+ ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: rgba(0,0,0,0.3);
+    float: right;
+}
+
         `,
         bodyClass: _this.bodyClass,
         colorTable: _this.colorTable,

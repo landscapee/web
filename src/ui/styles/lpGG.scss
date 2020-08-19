@@ -1,13 +1,7 @@
 /deep/ .el-scrollbar__wrap {
     overflow-x: hidden;
 }
-.is-required1:before{
-    content: '*';
-    color: #F56C6C;
-    margin-right: 0.28571rem;
-    position: relative;
-    top:3px;
-}
+
 //// 滚动条 /////
 ::-webkit-scrollbar {
     width: 8px; /* 纵向滚动条*/
@@ -39,6 +33,13 @@
 }
 .el-scrollbar__wrap{
     overflow-x: hidden!important;
+}
+.is-required1:before{
+    content: '*';
+    color: #F56C6C;
+    margin-right: 0.28571rem;
+    position: relative;
+    top:3px;
 }
 .QoptionButton{
     margin: 0;

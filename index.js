@@ -54,9 +54,7 @@ Vue.component('vue-draggable-resizable', VueDraggableResizable);
 Vue.prototype.$uuid = uuidv4;
 Vue.prototype.$logger = Logger;
 Vue.prototype.$subscribeMap = {};
-router.afterEach((to, from) => {
-    
-})
+
 
 
  new Vue({
@@ -71,5 +69,5 @@ router.afterEach((to, from) => {
         // const workerProces = new WorkerRegist();
         // workerProces.start()
 
-    }
-})
+      },
+ })
