@@ -131,8 +131,9 @@ export default {
         }
         .main-content{
             padding: 0px 30px 0px 30px;
+            height: 700px;
+            overflow: auto;
             .inner{
-               
                 .lists{
                     display:flex;
                     flex-wrap: wrap;
