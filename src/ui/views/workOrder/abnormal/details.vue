@@ -1,90 +1,130 @@
+
 <template>
-    <div class="index1" style="display: flex;flex-direction: column;align-items: center">
-
-        <!--<div style="height: 68px"></div>-->
-        <!--<div class="page_t">-->
-            <!--<div>工单流水编号-{{workorder.serialNo}}</div>-->
-            <!--<div>{{template.airlineCompany}} {{template.title}}</div>-->
-        <!--</div>-->
-        <div style="width: 80%;">
+    <div class="index"  style="display: flex;flex-direction: column;align-items: center">
+        <div style="width: 80%;margin-bottom: 20px">
             <div style="text-align: center;font-size: 20px;padding: 20px " >工单分派信息</div>
-
             <InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
         </div>
-        <div class="order_content">
-            <div class="order_c_main">
-                <div style="text-align: center;font-size: 20px;padding: 20px " >工单签署信息</div>
-                <div class="item1 flex">
-                    <div style="width:10%;">项次</div>
-                    <div style="width:60%;">内容</div>
-                    <div style="width:15%;">维修人员</div>
-                    <div style="width:15%;">放行人员</div>
-                </div>
-                <div class="order_c_b">
-                    <div v-for='(item, index) in contentVOListMap' :key='item.id'>
-                        <div class="flex">
-                            <div class="item" style="width:10%;">{{item.reduceIndex}}</div>
-                            <div class="item" style="width:60%;">
-                                <div v-if="item.reduceIndex.includes('.')" class="textContent" :class="item.id" v-html='item.content'></div>
-                                <div v-else class="textContent" v-html='item.name'></div>
-                                <div v-if="item.reduceIndex.includes('.')" class='checkbox_group flex'>
-                                    <el-button @click="editContent($event,this,item)">更正</el-button>
+        <div style="width: 80%;">
+            <div style="text-align: center;font-size: 20px;padding: 20px " >工单签署信息</div>
+            <div class="order_content">
+                <div class="order_c_main">
+                    <div class="item1 flex">
+                        <div style="width:18%;">{{labelVO.itemLabel}}</div>
+                        <div :style="{width: col==3 ? '67%' : '52%'}">{{labelVO.contentLabel}}</div>
+                        <div :style="{width: col==3 ? '15%' : '15%'}">{{labelVO.workerLabel}}</div>
+                        <div :style="{width: col==3 ? '15%' : '15%'}" v-if='col==4'>{{labelVO.commanderLabel}}</div>
+                    </div>
+                    <div class="order_c_b">
+                        <div v-for='(item, index) in contentVOListMap' :key='item.id'>
+                            <div class="flex">
+                                <div class="item flex align_start" style="width:18%;padding:4px;box-sizing:border-box">
+                                    <na-temp v-if='item.notApplicable' :active='item.active' @changeActiveFn='changeActiveFn(item)'></na-temp>
+                                    {{item.reduceIndex}}
                                 </div>
-                            </div>
-                            <div  class="item" style="width:15%;position:relative">
-
-                                <button v-if="item.reduceIndex.includes('.')" class='sign' @click="fixedSignFn(item,'fix_sign_'+item.reduceIndex)">签字</button>
-                                <div v-if="item.reduceIndex.includes('.')" style="width:20%;position:absolute;left:0;top:40px;">
-                                    <div :id='"fix_sign_"+item.reduceIndex' :pos='"fix_sign_"+item.reduceIndex' style="width:100%;height:30px;width:100%"></div>
+                                <div style="width:82%;" v-if='item.contentDetails&&item.contentDetails.length'>
+                                    <div v-for='itemChild in item.contentDetails' :key='itemChild.key' class="flex">
+                                        <div  class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}"> <!--style="width:63.4%;"-->
+                                            <div v-if="item.reduceIndex.includes('.')" class="textContent textContentLeft"
+                                                 :class="itemChild.id" v-html='itemChild.content'>
+                                            </div>
+                                            <div v-else class="textContent" v-html='item.name'></div>
+                                            <div class='checkbox_group  '>
+                                                <el-button @click="editContent($event,itemChild)" type="primary"  style="padding: 7px 20px">更正</el-button>
+                                            </div>
+                                        </div>
+                                        <div  class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}">
+                                            <button class='sign' @click="fixedSignFn(itemChild,'fix_sign_'+itemChild.reduceIndex, $event)">签字</button>
+                                            <div style="width:100%;position:absolute;left:0;top:40px;">
+                                                <div :id='"fix_sign_"+itemChild.reduceIndex' :pos='"fix_sign_"+itemChild.reduceIndex' style="width:100%;height:30px;width:100%"></div>
+                                            </div>
+                                        </div>
+                                        <div  class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
+                                            <button class='sign' @click="travelSignFn(itemChild,'travel_sign_'+itemChild.reduceIndex, $event)">签字</button>
+                                            <div style="width:100%;position:absolute;left:0;top:40px;">
+                                                <div :id="'travel_sign_'+itemChild.reduceIndex" :pos='"travel_sign_"+itemChild.reduceIndex' style="width:100%;height:30px;width:100%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div  class="item" style="width:15%;position:relative">
-                                <button v-if="item.reduceIndex.includes('.')" class='sign' @click="travelSignFn(item,'travel_sign_'+item.reduceIndex)">签字</button>
-                                <div v-if="item.reduceIndex.includes('.')" style="width:20%;position:absolute;left:0;top:40px;">
-                                    <div :id="'travel_sign_'+item.reduceIndex" :pos='"travel_sign_"+item.reduceIndex' style="width:100%;height:30px;width:100%"></div>
+                                <div v-else class='flex' style="width:82%;">
+                                    <div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}">
+                                        <div class="textContent" v-html='item.name'></div>
+                                    </div>
+                                    <div class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+                                    <div v-if='col==4' class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-      </div>
+          </div>
+
+     </div>
 </template>
 <script>
     import $ from 'jquery'
-    import request from '@lib/axios.js';
-import InfoTop from './infoTop'
+    import InfoTop from './infoTop'
+    import request from '../../../../../lib/axios.js';
+    let  Signature={
+            verify:function () {
+                return []
+        },  bind:function () {
+
+        },  create :function () {
+
+        }, loadSignatures  :function () {
+
+        },
+        init:function () {
+
+        }, alert :function () {
+
+        },
+    }
     export default {
-        components:{InfoTop,},
+        components:{
+              InfoTop
+        },
         data(){
             return{
+                contentVOListMap:[],
                 contentVOList:[],
-                orderModule:{},
                 workorder:{},
                 workerCompleteData:[],
                 template:{},
-                templateSignObj:{}
+                templateSignObj:{},
+                baseItemVOList:{},
+                orderModule:{},
+                labelVO:{},
+                id:'',
+                airInfo:{
+                    'filePath':''
+                },
+                value5Type:{
+                    '$flightno':'flightNo',
+                    '$REGno':'tailNo'
+                },
+                isActiveSave:true,
+                isActiveReset:true,
+            }
+        },
+        created(){
+            if(this.$route.query){
+                this.id = this.$route.query.id
             }
         },
         mounted(){
             let _this = this
+            this.init()
             window.onload = function(){
-                // var signs = [{
-                // 	// extra : {
-                // 	//     icon_move : function() {
-                // 	//         //alert('禁止移动');
-                // 	//         return false;
-                // 	//     }
-                // 	// },
-                // 	signatureid : '147683973060447728',
-                // 	//signatureid : '14768397306',
-                // 	signatureData : 'eyJ0aW1lc3RhbXAiOnsidGltZSI6MTU1NzEyMTg4ODAwMCwic2lnbnRpbWUiOiIyMDE5LzUvNiDkuIvljYgxOjUxOjI4KOacjeWKoeWZqOaXtumXtCkifSwiYXBwbmFtZSI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDYuMTsgV09XNjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS82NS4wLjMzMjUuMTgxIFNhZmFyaS81MzcuMzYiLCJkb2N1bWVudGlkIjoiS0cyMDE2MDkzMDAxIiwiZG9jdW1lbnRuYW1lIjoi5rWL6K+V5paH5qGjS0cyMDE2MDkzMDAxIiwibW92ZWFibGUiOnRydWUsImtleXNuIjoiMEU0RTQ1MTIwMjI3MTIxNCIsIm9yZ25hbWUiOiLph5HmoLznp5HmioDnlLXlrZDnrb7nq6DmtYvor5Xnu4QiLCJ1c2VyY29kZSI6IjBFNEU0NTEyMDIyNzEyMSIsInVzZXJuYW1lIjoiMEU0RTQ1MTIwMjI3MTIxNCIsInNlYWwiOnsic2lnbm5hbWUiOiJkZCIsImltZ2V4dCI6Ii5wbmciLCJpbWdkYXRhIjoiaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUpjQUFBQ1hDQVlBQUFBWW44bDVBQUFRU1VsRVFWUjQydTFkeVpXc09nelZqNGNsc1pBQ2NaQkdwVUFzYkluSHY2dGZxVm9ZZVpZSHdBdk9HN3FMQXZ0YXVwcEJLZlZmdi9xVjQ0TEhMOEsrcWQ5cmVTazF6VC9YcUJUOFhNUFAwa0RBTll6L1B2dSt4L3I2ZDg4T3JvY0JhZjJBNkEwR2dETFg4RXpRd2UzQjlON1VVaUFLdlpiNTFtQzdIN2pXN2FQYTRGclhXN3JkREdqUUFlWGdUejdYKy9jbDFleDBENGwyWVhBbHFydzNHTjVxYWQzeWJPU3UvbkdzSlpIZnZkK3hnNnR4SHZXV1JMK0VXcW5xQmtVTTJDNElNcmlVNmd2ZGxOYlZTOHhCdVJBM2cwdElxaUFMN0hWZHJoSUN0RGZJT3JnS0xQWjBNMHNyUkVvM3JDN2JCTmN5MzE5S1NSK3d0YjIxZ0V1cXdMVnhLWlVEOUcvd2VQRXhwVHE0WWs1bzd0T0pGbVdxaXlUbnMvcEk5YVVOVmRrR3VHcUQ2aTBKNmFhbFNCN2tTdm9HNC8xTGdhd0J3Zy9WMVVmcEJkcTNzMk1USGFySllON080TVMvNXpnb2J4VTR0RXNob0ZrMUtMMG95Rm0rR1FyYS9TY0J5WUtINWExZUYrSXNSWEJSaTFiU3VuWHhzVXBrSDVvajdiVXNRQW11Z3M4L2pDUzFSM3UzMy9mLzVJdVZQckMzQnRlNk5mWHlvbExyNjNQYXp2ZkNuMDFhZ0R0TFRMT2ROUzRITHB2b3JraytNWnNpeFlUSGQ5UC92aFBMRVROZGRjNVV3MGdxcENhaE9yK3E3ZnhEU1pJaVJlam44VjNwbnptc3hWU0RxY0M2UTFWZ3RlTHc1SjRGOCtwOXdFazN5cVQ2cHJuT085dlVaR2FBUVJHVnd3S3JFUzg3THY1dXNCNWpOb0RHL2RBcXhlVERGTGNEOSt5cFhEZWpBUVhaMVUwc3Y4TFBUOXJ2b3hVbVNZWVJDTCtxNi9POUEvd1ZWY1FBQzU5VnlpcWN4clBrQ3dXc0xmQi9HWENaVkdFb2NlZlVKejJGU1k1VUpta3Z0VG9IQVVCOWFGSldJVjFUL1FCS0VQME1LbEllWE1zc1p4R2k1WVduVStjUHNkd0RIYW43WjBGak5za2thWDMvMzdlZTBnUU9hbjFMV1pMQ2ptc29JckZTdUliSitvb0ZtTzFBcFBqdWFKRUc1cGNoaUdONDVzUllzUWlvWFVCNm0yaUxvQVNUQTVlSk5DYjdzRGJlNllqZko4RVg4RjZoSnhjM2lHNEl4aTRuTFZZWlNxQnBycjBlbnp4OS8vYkg4U1FrV0Z2ZzJtVGREZnVtVHZGQVRnS21XSFNwNFI4c3R0RC9qbG1rK3J0UXl6bjBlMHlxaTVNK1VpcXlHWEJKU3l4Nkg5d2M5RWZSRFpWY2pKUm5YcldRank1ZEVFeExoR1RCOTUyb2xOek9sbDdLT3JEN2w3Nm1rTTNsSUFWWUc1bWxDNXVxZnFkRVVxK0RDdzlGN0hvYzFLb215VTNxTlVXQ1o4alBUd09YS2J3ZzRTRFZMVVY5Y2FsNlFFS2U0aEEwZWVwajFDbyszOWNydjhWWnRyK1pzZHQ1SFlaUjNyb3pjZVlFTndxSXEwTkpmd2x1RG5JYXlyOTAzcEpxVHBzODlhR08ySFU3U3RjbHdjTlB2ZkltbW9CckpCSDhOMW43eGNGVnl0UExrVm5PZDdSdnh6NFBNYmxac1llREFoTjdSNnlSa2hEVk0yZUpVbmZNb0xra3BFck1PSm9UQ1Z4b2ltZTUvRWdtVHZaZGRDM3owMGVLWWFCNUdPUERVNWhTWStKZ3dabXM4OWxhdGtVb01IU1ZNMTBuQXJ3UXpZVktaamh3TGdlZEkreWFyMmZkL0ovclFKUTlGL0ZYVlRPOUh4Q3NkRE80dEdyNk0yNVRXVFc1bVdsQmlkeTc3T0NDc1U0cGsvNkNKbkxQVnVKNHFMcDlremtrSzhZdFBUZm5rUFAxYVpReVdWUmlxZldlMHRWakdMall1R0hCTEZJOXpPSUtnMGlFU1NRcmpseFNRbTEyS1ZZNmF6Y3gvZ2pKWDFZeUwydGhNZ1Ayelh5cU1xZVVaRkg5bUE3OWRXZU1ZcTZCRTZoZDkwcFVqNUJFNGwwa1QwZjVRWlc5bEpKeXJpNGFKenNzeWdXQXhhM1BnWXRsNEZtK0lFa2c5NUNGNEwxNWcwbFBjejZjNkVvYjVyN0QyRnhaZTd6ckJRL2dsdWEvTTYxVmlzYnlrS0FRTGJWV3oveHkvV0VrSEsybXorZFFIMFdMUllCM0dxT1ZHUE5PZXJacXpNR2J4aWpwQmQ1V1ZLeFpxcnNNcUNURFdqN0pIbE5YYmF1MHZKUlZJc2NjR0FTb0hpcDcvNytldlJIRnQxUEJKUlZ2bXBoZURQUkUzTDNQbHMvNm1LUkpURExqd2poZ2JlQnc3U3NYUjNhQUU4S2xsZ1B0cHFJRzZrSC9jaU10ZS9QcEFKTjJmL3hLcU5kZm9RbDE3dEsvKzVhOUJVb3ZFSlZhcHQvVEMwOFhMZjk3ZlYyK0xYWjFJMEFuOElmeXRoZlBkK21COTFsN3pzOXBFUW9RbklJUndyRm83d1FkY1BxL3AvazVyU2h6T1plNURhZEJmajBrUnYxcEdiZ1hCRmtJSVZhZW5yNnhhRlhKbkJSMHVqajZKRERqWnV1VjMxUTdUS1BaeTUrNnJ4YkxFeVN0QXk5LzEwNGFwSEg5NGswaU9pVS82bzU4NnB2SHBVbWVkVHQzdVVZQVVlbjJ6VzRsNlVLK0VzeVRoNE8zMHpUV0lZbWZwUkpNNXdpRElSZyt6ZWNoQUU4SDFnRWdMMlhkZE4zRGp3ZGNqNVNFcHRWdys4Vm9GZkQrc0VTbzV1QTlOK1NBdXdaRXJRK1dYTi9jTm0wekZ5WmpRcmZPZFFGQnBWdm9Ibk5lQkFhWTRDWDJvdDBFVE5Xd3owbFp0K3Q2MlhQN3duVGZFbllxMUxrVVY0NUhQZjY2R3BTb2VYU0Npek0zcFhrTzE2T0JEWVUwNlB1cUN2aU5IOTIza056OWc5VkkvRmVEc01PYUkvWWFad092Wk1BY3ZHSFE2dTMwRTdsdTdYR3M5ZFdHTDQ1THhUa1lQWWJzVnNudVFLeHFIRjNnS3BEQ2JNc3ExY1Y0U3h4TG9tRkpqcGdrTFJUK05sblo4a2MvSEZnQnAwb3N1Yms2dVh3L1QwdXVoOVlhMTVuQ2JxWDYwSE9xa1VoR2NEcE9hMWxFMUV4dXlWSnIxV0pGdDgweWw0dlZjcXFScUdRb3JoSkRIN2laelJ2YkhrTlhLem5Ta2lsaEIxZnBoNlhlNUZvTmFuMFhzU25lTmRlVHFCYWZLRmdEMWQzUFpCYi9lMk1OZzJzQm5vdm1uTURGa2JNT0xQUGF0RElHK051QVdLbG1wUHBIZ29KUnZMa1dMNVF3VHVOMUFkdHlILzBXSE1PR1VCQzRmaUdvQ1FrT1R0SWZ0cFhpVkNtVmVDZmFNSTFtUVVKOWFDRzg2M00vTTdoYy9oRk1vOFhzQmR2QWIvVEJ3QVVIbmRzbWdBeU5oYWRpTW5wdGhScUQ1d0V5VUNvUUlmTllKVXh6aEpiWGVVb1hKKzBRZUsyQ3pqWEZ0dVZLSWpxb2ROM01hMng2aitYbDU4UTJrSG93ZXVaanU5SFp4Q2ltMU5na1hVdUZHajREM1Z1V3hPdkxmcmhwbDJoalV4VVBLV2dRVGhCdEtickdwSnlTQU1lLzZMenBBVkYxWGtFbHR1eFF0WUdBRzQ1ZzIyOHZRY01MR1FoT0R1U2FnUnowTjIySU8vK1ZONjJPVTNKRmxTalU5VGhyTlpBdnFaZnVLZkdERTNDNThMMmJnUnhLeU5ReDR3RXJmRXVCQ3kzVzc2VXMvN2I4ekFkYzMvZWxuMVdPN3pMOFhGTGF1dW9ZVHpsMWdYek13eDBCVVptbk81TzB0c3pxMUVCdFlIS09wRnNzaHJiV2JQR1NzanIxUGJTcWMySk0yVndPc2VENmVTY0k5bkdaR3JGWjNSQmFPbTBwRTk0MXRiNkZTekllZUNMV0JFQ2NaTUwvMnkzdUNOOTZVZ1lIRUIyd1JzdVA5Yk9NN3BNNnpYOG5SbEl0eEhLbnEwb3JLZFZwNG83Zkh2K3pPMkxqQjY2WGlpS09xOVlMaXJhOXhvS0F4VkxoazNQQmw0YWtXSzIrWWJaSWljbXRzbTUrMHBXeHJNRVdlQXp1azRVRkF5YVJhZUp5Nk9uUDdZWll0L3JBcXVJWEl6bjNwZ09jZXNDOXdSV2JXbXdOR1pFcTRkcVpuRDcrSyttcmhqK001c1c1RExWVXpiRklTNjVvRGpUV0IxaEpzdDlDRXQrYVdXS3lrb3ZOZzM1UVZYTnVZTlVPWDVWU3c5blY0bFd2WmI0UGFXK0lhdFJSaTFmTDI3b0VhVy92Z0hiSkpVMzBuOW9ka2VkY3FpK1FOUC9xNExKSUxrbHd1VlFzYldSV0U5U1MxdU1UYVFXVDZod1h1STdwMS9sdDJZTlR2Y1p6NmtwTmNFa0d1bXVHZHBhWHU3ZC9EcmZFNEJ1NEhvVEJwYmYyUVRBaHQ1UHN2dEtLUzZJRjlXU1NvRG5hSkRBQ0tqeFpNRWJWWUtEYTlNTDdWamU5T1VmY3NaWnFwT3RzTTg2a0s5b1pvekErelprK3BNbW5BMXJYWnB1RW91MnNXMVdKT05xa1phdFJCNDJONWd5ampPdGt0NlU1VzBxeW8wZ3d6Zk9pSjVpVFVGZ0VVTE5Jd3p2Yk5QQXp0YmpqYVZMY2FKYW1FdjMvV1hCaGdRWmJ2ZUZSSGs0NzNDM3pYeHRGbTRyZzJsYnJreDVhc2hKdC9OUGxGNnNWVStRT3A4MGl4OE1keTdVWFcybVoydElXaHAzSzhEcFBPcVdiOFUyTlZxb3BFenJVbVd3RFp3MnIwUlo2c3ZVWVN4bTB1dGlLWW1OOFhmcHNIMWUxTHkwMU05NVRxYWdKWFMzMGdXaEZOWEpheHpTcGhBUFNOSVpuVWpqTCtVTWJrWmhPS3BiM0w2U0tHdHRaRDJTaXcwNnFzNmU1VG1ZR0ozVlNpUGhVcWUzblFxWnA0RHNNanRuWU5nRFJkZkVwNlhjMklnbXhHRkc4VHVOZkF4THNYNG8zUjVEUkZ0YVlBcklZNXNlVXRoUnpBRUVIYkNuVmVPS3duMzFSQ2VPTGZkZkUyVUpKb3NFWkFuVFhxbjI0b28yV0hLYzVBREE4WkZBcFIrWS8reXJidHZMYnFucFVSa3VxbGNZalM0RVpqOVBjWm00WEZzZ09vOTJWTkhsMDA1NTgybGJHTk56RmVDRmFoUnh2bzNPc0Q4T2lSbVh0RFZXRStCWUFPUExOVm5QV1VIMWlsYzlLS3JOOURwOTN3OTNRTU5EQURDN2FOeG5BN051emgwamxxZ0tTNUpkQnJjSTUvV2w3aU1GUWFJRldvd1JucWUwSHUyUE9tblJmQ2tNaENEaGI0Y1JJb2VTSDMzcnkzVldUSzhuUDY4eitjWUpUSFZzdURXTUgyQlZxRGdiWFlLbmE4MzlDUXhwZHhkWE52ckRnSlBNd3o0UzIxWnlwM0ljdUdOb2tORENXeFd1WVp3M1Z1TDZPL1RsMVFDMnZ6cjljbTF4YUFFU1BJZWFzeHB5eFBnb2tHaW82ZE1vQjFlUzh3eFphRWt4ejJjUG5NU1hXREs2YzBvdkdHTG52T2dTN05XQXZMOVVKUHBicHF5UFAyUXVPN1BQRUJnVGxPVWs4dE8yQnZ0bXIyL0ZFMEdCd1NFRDFMaFlaNVo4VVJCelh5cTFwcHRtN2RRR0VKY0VKU0F4WGpTSW54ZlIvTC9NektzTjF5MTBSaVdXem9GMjl1S1NsbHNIUkRjRTNTazJMb1NtMXVnWElTVW5USVBXbldJK21kWGRsWFhDSE5EV3RpWE5UV1F3SkNFK21TendOcHJuSTlEUXVwSzdPVmVENUtJdHdObWVOc2hWQTI1OVVrU2pFQ0d5NkF0STM5TDRmWnFyQ3lITzZZWHh1YVh4STdwbWUrNDcvcG51RWh6ZkZFYzBKR29mYWRZT0w3U002cG9GTGwzNDJjdHBEUDd4YUNzbUxsM0MwUmdnWmlMNXhqRVQ1NXMvckJIRGp4WDdMMDh4YWFKaXlHZ0JHMTVGVG02YSs5Q0hacGg3MENLSkZZb3pmeTFSVFp5cm03SmRibTFCVmg3VU1xK2FBdGptdFF6TlVBajRMU1dJeFJJZnJvMXRNTTJoYUhZL1hldHNpazdUUlFiRE1ZYndaeHVnS0tVald1OTZTenpMS2hZNFFvYTJXZXFKZ21QWE54ZjVpSzNwc3JUdzludzJTM1FnK1g4YWxRM2NyTUkrYVJJdVJzN1pEaVgxc0ZYb1V1R0xKL1RRZWc5SDl5cHNmYndzTHBRaVNRRTRNSXY2T25xblF0ajhzTkp0azMwUzZWSU9ZejZOYmVtMzZ3MElKdkdsL0kveGtvQ1NkYWxOUFJXN1NIeGF5THlhaksrSVo0c0VsSkRyN1ZjaVM5Tm1YUlpieWdKajQ3ZnlyNGNSQ0QyQ1poRVZDRmdXSUVjZ09zUHZWSUNZNnNTSGJnM1dDZjIxZ0NRZ0lFQk85SFdBZFdGbkFaZk4vZFlCZEl6YVp3U2lEYk5iSjAyZmhORzlKanRublJFSlc4N2RuT0Z4TFlna0xBU2g2S3JxS2JCZFlHUnpnVUp3b2RnbldIckF5SFhxNDA4djBLK2F3NXd2WlFUWGkyQjJ0dHdaV0dYRFpKRmlQUlpZTFhsZElNb0J5cHUvYzVtVFYyMHFyc2ZyQUsyam1KSFdBNVZlREV1MFltZ1dYQzJCUGFDNVNzbkZKWlFvQzFSWmlHdHVjRVgzMUFvMkdramloNnFLNGhtSDJ6TmIwUTFveDlBYlZGMmZmMmgxR2ZtVVYrTXRoNjFyaWNBa1NXb0dNWHRLOTBGZ1VCQzY1Y0UvMGpiMFAxdUF6NkwyZHRZRTJlY1NzdkNUWkV5ekxDNjhGWE5aZmMyZml2Mi9LRzFRTkp3TEFMVGdHSmJGWEp2KzJBWnNYNUtCd0cxL09GZFdtYWQ3M2hYalZQY0NWQXJKYUE5cE56ejlGQUFxdVo4akFwWG5KQUhGQUt6VnJHNmZkUm9IcCt0WXgzTWYzTThadjRJRzMwZG5jbjdibGkrVlAvTDFCNlB2eEdXN2cwNE43bWU3YWhMT3JYVGVMUk1DdGZVVExTMWFpU0Y5WHQyNGZEUzVPZmRZQ0hFNENlVkIwNFZuZ01uV0FXVDZrZXhybCtGcG9yL2NiWHY4REVoUE82ZFpQb3ZVQUFBQUFTVVZPUks1Q1lJST0iLCJ3aWR0aCI6IjQuMDAiLCJpbWd0YWciOiIyIiwic2lnbnNuIjoiSTh5YkVWaWgySnJ3bENLRlRYYVJNQjFRNStVdG5TTno3YzkvR3ZtTFlmRDZPdWczQWQwSHhwV2VqUD1zcVo0b2siLCJoZWlnaHQiOiI0LjAwIn0sInByb3RlY3RlZERhdGEiOlt7ImZpZWxkIjoiaXRlbTEiLCJkZXNjIjoi5L+d5oqk6aG5MSIsInZhbHVlIjoi5ZCM5Yib6L2v5Lu25YWs5Y+4In0seyJmaWVsZCI6Iml0ZW0yIiwiZGVzYyI6IuS/neaKpOmhuTIiLCJ2YWx1ZSI6IumHkeagvOenkeaKgOaciemZkOWFrOWPuCJ9LHsiZmllbGQiOiJpdGVtMyIsImRlc2MiOiLkv53miqTpobkzIiwidmFsdWUiOiLmoLnmja7jgIrlkIjlkIzms5XjgIvlj4rmnInlhbPop4TlrprvvIznu4/lj4zmlrnljY/llYbvvIzovr7miJDkuIDoh7TvvIznrb7orqLmnKzlkIjlkIzjgIJcclxu5LiA44CB55Sy5pa55aeU5omY5LmZ5pa55Yi25L2c5peg57q45YyW5Yqe5YWs57O75YiX5Lqn5ZOB44CCXHJcbuS6jOOAgeWFt+S9k+inhOagvOWei+WPt+OAgeaVsOmHj+OAgeWNleS7t+WPiuS7t+agvOivpuingemZhOWQjua4heWNleOAglxyXG7kuInjgIHkuqTotKfml7bpl7TvvJo2MOW3peS9nOaXpVxyXG7lm5vjgIHpqozmlLbmnJ/pmZDvvJoyMOW3peS9nOaXpeOAglxyXG7kupTjgIHlj4zmlrnlnKjlkIjlkIzkuIrnlLXlrZDnrb7lrZfnm5bnq6DlkI7nq4vljbPnlJ/mlYjjgIIifV0sInNlYWxUeXBlIjoic2VydmVyIiwidmVyIjp7Im5hbWUiOiIxLjAuMjAiLCJjb2RlIjoxMDB9LCJkYXRlVGltZSI6eyJmb250RGF0ZSI6eyJmb250Rm9ybWF0IjoieXl5eS9NTS9kZCIsImZvbnRGYW1pbHkiOiLmpbfkvZMiLCJmb250U2l6ZSI6MjAsImZvbnRDb2xvciI6IiMwMDAiLCJmb250UG9zaXRpb24iOlsicmlnaHQiLCJ0b3AiLCJvdXRzaWRlIiwiIiwiYmVsb3ciXX19LCJwb3NpdGlvbiI6eyJwb3MwIjp7fX0sInRpbWVpZCI6MTU1NzEyMTg5NDQyNX0='
-                // }];
-                //Signature.loadSignatures(signs);
                 Signature.bind({
                     remove : function(fn) {//签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,
                         console.log('获取删除的签章ID：' + this.getSignatureid());
+                        _this.deleteSignFn(this.getSignatureid(),this.getSignatureData())
+                        //key,
+                        //contentDetailId
                         fn(true);//保存成功后必须回调fn(true/false)传入true/false分别表示保存成功和失败
 
                     },
@@ -107,77 +147,133 @@ import InfoTop from './infoTop'
             }
         },
         computed:{
-            contentVOListMap:{
+            col:{ // 列数
                 get:function(){
-                    const result = [];
-                    this.contentVOList.forEach((item,index) => {
-                        const map = (item)=>{
-                            result.push(item)
-                            if(item.children && item.children.length){
-                                item.children.forEach(item1=>{
-                                    item1.contentDetails.forEach(item2=>{
-                                        result.push(item2)
-                                    })
-                                })
-                            }
-                            if(item.contentDetails && item.contentDetails.length){
-                                item.contentDetails.forEach(item1=>{
-                                    result.push(item1)
-                                })
-                            }
-                        }
-                        map(item)
-                    })
-                    let reduceIndex= 0
-                    let itemNumber = 0
-                    result.forEach((item, index)=>{
-                        if(item.number){
-                            reduceIndex = 0
-                            itemNumber = item.number
-                            item.reduceIndex = itemNumber
-                        }else{
-                            reduceIndex++
-                            item.reduceIndex = itemNumber+ '.' +(reduceIndex)
-                        }
-                    })
-                    console.log(result)
-                    return result
-                },
-                set:function(){}
+                    return this.labelVO.contentLayout == "C3（三列）" ? '3' : '4'
+                }
             }
         },
-        mounted(){
-            this.init()
-        },
         methods:{
-            editContent(e,that,item){
-                console.log(e,that, item);
-            },
+            editContent($event,item){
+                if(!item.editState){
+                    $($event.target).text('保存')
+                    let reg=/(<input\s{0,}|<button\s{0,})disabled(.+?)(\/>|\/button>)/g
+                    item.editState=true
+                    item.content=item.content.replace(reg,"$1$2$3" )
+                    return false
+                }
+                 let map = {}
+                if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
+                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
+                    console.log(inputArr,12,3)
+                    for(let i=0;i<inputArr.length;i++){
+                        map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
+                    }
+                    let inputNa = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='NA']")
+                    for(let i=0;i<inputNa.length;i++){
+                        map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
+                    }
+
+
+                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
+                    console.log(inputSign)
+                    for(let i=0;i<inputSign.length;i++){
+                        console.log(inputSign.eq(i))
+                        if($("div[elemid="+inputSign.eq(i).attr("id")+"]")){
+                            let signatureid = $("div[elemid="+inputSign.eq(i).attr("id")+"]").attr("signatureid")
+                            if(signatureid){
+                                map[inputSign.eq(i).attr("name")] = signatureid+'------'+this.templateSignObj[signatureid]
+                            }
+                        }
+                    }
+                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
+                    for(let i=0;i<inputText.length;i++){
+                        map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
+                    }
+                }
+                console.log(map,1,2);
+                request({
+                    url:`${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
+                    method: 'post',
+                    data:{
+                        contentDetailId: item.id, //内容id
+                        serialNo: this.workorder.serialNo, // 工单流水号
+                         map
+                    }
+                })
+                    .then((data) => {
+                        if(data.code == 200){
+                            this.$message({type: 'success', message: '保存成功'})
+                         }else{
+                            this.$message({type: 'error', message: '保存失败，请重试'})
+                        }
+                        this.init()
+                    })
+
+             },
             async init(){
                 await this.getTemplateById()
                 this.getBySerialNoFn()
+            },
+            getVOListMap(){
+                const result = [];
+                this.contentVOList.forEach((item,index) => {
+                    const map = (item)=>{
+                        result.push(item)
+                        if(item.children && item.children.length){
+                            item.children.forEach(item1=>{
+                                result.push(item1)
+
+                            })
+                        }
+                    }
+                    map(item)
+                })
+                let reduceIndex= 0
+                let itemNumber = 0
+                result.forEach((item, index)=>{
+                    if(item.number){
+                        reduceIndex = 0
+                        itemNumber = item.number
+                        item.reduceIndex = itemNumber
+                    }else{
+                        reduceIndex++
+                        item.reduceIndex = itemNumber+ '.' +(reduceIndex)
+                    }
+                     if(item.contentDetails && item.contentDetails.length){
+                        item.contentDetails.forEach((itemChild,indexChild)=>{
+                            let reg=/(<input\s{0,}|<button\s{0,})(.+?)(\/>|\/button>)/g
+                            itemChild.content=itemChild.content.replace(reg,"$1 disabled $2$3" )
+                            itemChild.reduceIndex = item.reduceIndex+ '.' +(indexChild+1)
+                        })
+                    }
+                    //this.$set(item,'active',true)
+                })
+                console.log(result)
+                return result
             },
             getTemplateById(){
                 let _this = this
                 return new Promise((resolve,reject)=>{
                     request({
-                        url:`${this.$ip}/mms-workorder/workorder/execute/10001`,
+                        url:`${this.$ip}/mms-workorder/workorder/execute/${this.id}`,
                         method: 'get',
                     })
                         .then((data) => {
                             if(data.code==200){
-                                this.orderModule= data.data.template
                                 this.contentVOList = data.data.template.contentVOList
+                                this.contentVOListMap=this.getVOListMap()
                                 this.workorder = data.data.workorder
+                                this.orderModule= data.data.template
+                                this.baseItemVOList = data.data.template.baseItemVOList
                                 this.template = data.data.template.typeVO
+                                this.labelVO = data.data.template.labelVO
+                                this.getFileByIdFn(this.template.airlineCompanyLogo)
                                 this.$nextTick(()=>{
                                     //if($(".textContent button").innerText ==='签章'){
                                     $(".textContent button").on('click', function(){
                                         $(this).siblings("input").attr("pos", $(this).siblings("input").attr("id"))
                                         _this.signFn($(this).siblings("input").attr("id"))
-                                        // $(this).parent("p").css({
-                                        //     'position':'absolute'
-                                        // })
                                     })
                                     //}
                                 })
@@ -187,7 +283,6 @@ import InfoTop from './infoTop'
                             }
                         })
                 })
-
             },
             signFn(type){
                 var signatureCreator = Signature.create()
@@ -203,6 +298,7 @@ import InfoTop from './infoTop'
                     }
                 }, function(param){
                     signatureCreator.runHW(param, {
+                        //protectedItems: protectedItems,
                         // protectedItems:[ 'item1', 'item2', 'item3','item4',
                         //                 'item5', 'item6','item7', 'item8',
                         //                 'item9','item10', 'item11', 'item12',
@@ -239,11 +335,15 @@ import InfoTop from './infoTop'
                             let infList = data.data.infList
                             this.workerCompleteData = data.data.infList
                             let map = data.data.map
+
                             $(".checkbox_group").find('input[type="checkbox"]').each((it,ele)=>{
                                 $(ele).prop("checked",false).prop("disabled",false)
                             })
                             $(".textContent").find('input[type="checkbox"]').each((ite,ele)=>{
                                 $(ele).prop("checked",false)
+                            })
+                            $(".textContent").find('input[type="text"]').each((ite,ele)=>{
+                                $(ele).val("")
                             })
                             if(infList && infList.length){
                                 infList.forEach(item=>{
@@ -255,7 +355,11 @@ import InfoTop from './infoTop'
                             if(Object.keys(map).length){
                                 let signs = []
                                 for(let i in map){
-                                    if(i.includes("sign") && map[i].includes("------")){
+                                    if(i.includes("sign") &&
+                                        map[i].includes("------") &&
+                                        map[i].split("------")[0] &&
+                                        map[i].split("------")[1]
+                                    ){
                                         signs.push(
                                             {
                                                 // extra : {
@@ -269,11 +373,18 @@ import InfoTop from './infoTop'
                                                 signatureData : map[i].split('------')[1]
                                             }
                                         )
+                                    }else if(i.includes("input")){
+                                        $("input[name='"+i+"']").val(map[i])
                                     }else{
                                         $("input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
                                     }
                                 }
-                                console.log(signs)
+                                /**
+                                 * 此处需要修改
+                                 * **/
+                                this.removeSignatureFn()
+                                console.log('清空签字')
+                                //Signature.hide()
                                 Signature.loadSignatures(signs)
                             }
                         }else{
@@ -281,14 +392,82 @@ import InfoTop from './infoTop'
                         }
                     })
             },
-            fixedSignFn(item,type){
-                console.log($('#1'+item.id).is(':checked'))
+            fixedSignFn(item,type, $event){
                 if(!$('#1'+item.id).is(':checked')){
                     this.$message({type: 'warning', message: '请先点击维修已完成'})
                     return
                 }
+                var signatureCreator = Signature.create()
+                var that = this
+                /* 保护项 */
+                let inputArr = $($event.target).parent('.item').siblings(".item").find(".textContent").find('input')
+                let protectedItems = []
+                inputArr.each((index, item)=>{
+                    if( !($(item).attr("id")&&$(item).attr("id").includes("sign")) ){
+                        protectedItems.push($(item).attr("id"))
+                    }
+                })
+                protectedItems = protectedItems.filter(i=>i)
+                console.log(protectedItems)
+                /* 保护项 */
+                signatureCreator.handWriteDlg({
+                    image_height: "6.7",
+                    image_width: "5",
+                    onBegin: function() {
+                        console.log('onbegin')
+                    },
+                    onEnd: function() {
+                        console.log('onEnd')
+                    }
+                }, function(param){
+                    //alert(param.imageData)
+                    signatureCreator.runHW(param, {
+                        protectedItems: protectedItems,
+                        // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                        //                 'item5', 'item6','item7', 'item8',
+                        //                 'item9','item10', 'item11', 'item12',
+                        //                 'item13','item14', 'item15', 'item16',
+                        //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID："+this.getSignatureid());
+                            console.log("盖章数据："+this.getSignatureData());
+                            that.postSignFn(item, type,this.getSignatureid()+'------'+this.getSignatureData())
+                            // if(type==='pos3'){
+                            //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }else if(type==='pos4'){
+                            //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }
+                            // console.log(that.workerSignatureData)
+                            // console.log(that.customerSignatureData)
+                            fn(true);
+                        },
+                        cancelCall : function() {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    });
+                });
+            },
+            travelSignFn(item,type, $event){
+                if(!$('#2'+item.id).is(':checked')){
+                    this.$message({type: 'warning', message: '请先点击放行已完成'})
+                    return
+                }
                 var signatureCreator = Signature.create();
                 var that = this;
+
+                /* 保护项 */
+                let inputArr = $($event.target).parent('.item').siblings(".item").find(".textContent").find('input')
+                let protectedItems = []
+                inputArr.each((index, item)=>{
+                    if($(item).attr("name").includes("sign")){
+
+                    }else{
+                        protectedItems.push($(item).attr("name"))
+                    }
+                })
+                /* 保护项 */
+
                 signatureCreator.handWriteDlg({
                     image_height: "6.7",
                     image_width: "5",
@@ -326,25 +505,26 @@ import InfoTop from './infoTop'
                     });
                 });
             },
-            travelSignFn(item,type){
-                if(!$('#2'+item.id).is(':checked')){
-                    this.$message({type: 'warning', message: '请先点击放行已完成'})
+            signOthFn(type){
+                if(!this.signBasicActiveFn()){
+                    this.$message({type: 'warning', message: '请先完成所有的放行已完成'})
                     return
                 }
-                var signatureCreator = Signature.create();
-                var that = this;
+
+                var signatureCreator = Signature.create()
+                var that = this
                 signatureCreator.handWriteDlg({
-                    image_height: "6.7",
+                    image_height: "5",
                     image_width: "5",
                     onBegin: function() {
-                        console.log('onbegin');
+                        console.log('onbegin')
                     },
                     onEnd: function() {
-                        console.log('onEnd');
+                        console.log('onEnd')
                     }
                 }, function(param){
-                    //alert(param.imageData);
                     signatureCreator.runHW(param, {
+                        //protectedItems: protectedItems,
                         // protectedItems:[ 'item1', 'item2', 'item3','item4',
                         //                 'item5', 'item6','item7', 'item8',
                         //                 'item9','item10', 'item11', 'item12',
@@ -354,7 +534,6 @@ import InfoTop from './infoTop'
                         okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
                             console.log("盖章ID："+this.getSignatureid());
                             console.log("盖章数据："+this.getSignatureData());
-                            that.postSignFn(item, type,this.getSignatureid()+'------'+this.getSignatureData())
                             // if(type==='pos3'){
                             //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
                             // }else if(type==='pos4'){
@@ -362,13 +541,19 @@ import InfoTop from './infoTop'
                             // }
                             // console.log(that.workerSignatureData)
                             // console.log(that.customerSignatureData)
-                            fn(true);
+
+                            //that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
+                            that.signBasicFn({
+                                key:type,
+                                value: this.getSignatureid().toString()+'------'+this.getSignatureData()
+                            })
+                            fn(true)
                         },
                         cancelCall : function() {//点击取消后的回调方法
                             console.log("取消！")
                         }
-                    });
-                });
+                    })
+                })
             },
             postSignFn(item,type,getSignatureid){
                 request({
@@ -392,20 +577,31 @@ import InfoTop from './infoTop'
             fixCompleteFn(item,$event){
                 let map = {}
                 if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
-                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[disabled!='disabled']")
+                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
+                    console.log(inputArr)
                     for(let i=0;i<inputArr.length;i++){
                         map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
                     }
-                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[disabled='disabled']")
+                    let inputNa = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='NA']")
+                    for(let i=0;i<inputNa.length;i++){
+                        map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
+                    }
+
+
+                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
+                    console.log(inputSign)
                     for(let i=0;i<inputSign.length;i++){
+                        console.log(inputSign.eq(i))
                         if($("div[elemid="+inputSign.eq(i).attr("id")+"]")){
-                            let  signatureid = $("div[elemid="+inputSign.eq(i).attr("id")+"]").attr("signatureid")
-                            map[inputSign.eq(i).attr("name")] = signatureid+'------'+this.templateSignObj[signatureid]
+                            let signatureid = $("div[elemid="+inputSign.eq(i).attr("id")+"]").attr("signatureid")
+                            if(signatureid){
+                                map[inputSign.eq(i).attr("name")] = signatureid+'------'+this.templateSignObj[signatureid]
+                            }
                         }
                     }
-                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[type='text']")
+                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
                     for(let i=0;i<inputText.length;i++){
-                        map[inputArr.eq(i).attr("name")] = inputArr.eq(i).val()
+                        map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
                     }
                 }
                 request({
@@ -448,10 +644,12 @@ import InfoTop from './infoTop'
                         }else{
                             this.$message({type: 'error', message: '接口调用失败，请重试'})
                         }
+                        this.init()
                     })
+
             },
             invalidFn(item, $event){
-                let inObj = this.workerCompleteData.find(i=>i.contentDetailId===item.id)
+                let inObj = this.workerCompleteData.find(i=>i.contentDetailId === item.id)
                 if(!inObj){
                     this.$message({type: 'error', message: '操作有误，请检查'})
                     this.init()
@@ -520,9 +718,147 @@ import InfoTop from './infoTop'
                         }
                     })
             },
+            questionUploadFn(){
+                this.$refs.questionUpload.open(  this.workorder)
+            },
+            routerPushFn(path,query={}){
+                this.$router.push({ path,query})
+            },
+            changeActiveFn(item){
+                console.log(item)
+                item.active = !item.active
+                this.templateContentUpdateFn(item)
+            },
+            templateContentUpdateFn(item){
+                request({
+                    url:`${this.$ip}/mms-workorder/templateContent/update`,
+                    method: 'post',
+                    data:{
+                        id:item.id,
+                        active:item.active
+                    }
+                })
+                    .then((data) => {
+                        if(data.code == 200){
+                            this.$message({type: 'success', message: '修改成功'})
+                        }else{
+                            this.$message({type: 'error', message: data.message})
+                        }
+                    })
 
-            routerPushFn(path){
-                this.$router.push({ path})
+            },
+            saveBasicFn(type){
+                if(!this[type]){
+                    return false
+                }
+                this[type] = false
+                let map = {}
+                if(type === 'isActiveSave'){
+                    let textArr = $(".base_i_inner").find("input[type='text']");
+                    textArr.each((index, ele)=>{
+                        map[$(ele).attr("name")] = $(ele).val()
+                    })
+                    let checkBoxArr = $(".base_i_inner").find("input[type='checkbox']")
+                    checkBoxArr.each((index,ele)=>{
+                        map[$(ele).attr("name")] = $(ele).is(':checked')
+                    })
+                }else{
+                    let textArr = $(".base_i_inner").find("input[type='text']");
+                    textArr.each((index, ele)=>{
+                        map[$(ele).attr("name")] = ''
+                    })
+                    let checkBoxArr = $(".base_i_inner").find("input[type='checkbox']")
+                    checkBoxArr.each((index,ele)=>{
+                        map[$(ele).attr("name")] = false
+                    })
+                }
+                request({
+                    url:`${this.$ip}/mms-workorder/operationInf/saveBasic`,
+                    method: 'post',
+                    data:{
+                        serialNo:this.workorder.serialNo,  // 工单流水号
+                        map
+                    }
+                })
+                    .then((data) => {
+                        setTimeout(()=>{
+                            if(data.code == 200){
+                                this.$message({type: 'success', message: '保存成功'})
+                            }else{
+                                this.$message({type: 'error', message: data.message})
+                            }
+                            this[type] = true
+                            this.init()
+                        },500)
+                    })
+            },
+            signBasicFn(obj){
+                request({
+                    url:`${this.$ip}/mms-workorder/operationInf/signBasic`,
+                    method: 'post',
+                    data:{
+                        serialNo:this.workorder.serialNo,  // 工单流水号
+                        ...obj
+                    }
+                })
+                    .then((data) => {
+                        if(data.code == 200){
+                            //this.airInfo = data.
+                            this.$message({type: 'success', message: '保存成功'})
+                        }else{
+                            this.$message({type: 'error', message: data.message})
+                        }
+                    })  // http://173.100.1.5:8011/mms-file/get-file-by-id/ee899e8629ab71c00c8609b43382336d
+            },
+            getFileByIdFn(id){
+                request({
+                    url:`${this.$ip}/mms-file/get-file-by-id/${id}`,
+                    method: 'get',
+                })
+                    .then((data) => {
+                        console.log(data)
+                        if(data.code == 200){
+                            this.airInfo['filePath'] = data.data.filePath
+                            //this.$message({type: 'success', message: '保存成功'})
+                        }else{
+                            //this.$message({type: 'error', message: data.message})
+                        }
+                    })
+            },
+            signBasicActiveFn(){
+                return Array.from($(".commanderComplete")).every(i=>$(i).is(":checked"))
+            },
+            deleteSignFn(getSignatureid, getSignatureData){
+                let key = $(`div[signatureid='${getSignatureid}']`).attr("elemid")
+                //let contentDetailId = getSignatureid + '------' + getSignatureData
+                //key,
+                //contentDetailId
+                request({
+                    url:`${this.$ip}/mms-workorder/operationInf/deleteSign`,
+                    method: 'post',
+                    data:{
+                        serialNo: this.workorder.serialNo,
+                        key
+                    }
+                })
+                    .then((data) => {
+                        console.log(data)
+                        if(data.code == 200){
+                            //this.$message({type: 'success', message: '保存成功'})
+                        }else{
+                            //this.$message({type: 'error', message: data.message})
+                        }
+                    })
+            },
+            removeSignatureFn(signatureid){
+                var signatureCreator = Signature.create();
+                if(signatureid){
+                    signatureCreator.removeSignature('KG2016093001333', signatureid);
+                }else{
+                    $(".kg-img-div").each((index,ele)=>{
+                        signatureCreator.removeSignature('KG2016093001333', $(ele).attr("signatureid"));
+                    })
+                }
             }
         }
     }
@@ -532,10 +868,19 @@ import InfoTop from './infoTop'
     .flex{
         display: flex;
     }
-    .index1{
-        height:calc(100vh - 120px);
-        overflow-y: auto;
-        padding:0px 30px 30px 30px ;
+    .index{
+        padding:30px;
+        height:calc(100vh - 110px);
+overflow-y: auto;
+        .sign{
+            width:70px;
+            height:25px;
+            line-height: 25px;
+            border:1px solid #979797;
+            background: #3280e7;
+            color:#fff;
+            font-size:14px;
+        }
         .top_header{
             line-height: 68px;
             height:68px;
@@ -549,64 +894,185 @@ import InfoTop from './infoTop'
             padding:0 10px;
             z-index: 99;
         }
-        .order_content{
-            height:500px;
-            width: 80%;
+        .base_air{
+            width:100%;
+            overflow: hidden;
+            .base_air_inner{
+                .lists{
+                    font-size:20px;
+                    height:60px;
+                    line-height: 60px;
+                    border-left:1px solid #979797;
+                    border-top:1px solid #979797;
+                    box-sizing: border-box;
+                    text-align: center;
+                    >div{
+                        border-right:1px solid #979797;
+                    }
+                    img{
+                        width: 128px;
+                    }
+                }
+            }
+        }
+        .base_item{
+            width:100%;
+            overflow: hidden;
+            .base_i_inner{
+                border-right:1px solid #979797;
+                font-size: 20px;
+                .lists{
 
+                    width: 33.333%;
+                    box-sizing: border-box;
+                    line-height: 36px;
+                    border-left:1px solid #979797;
+                    border-top:1px solid #979797;
+                    border-bottom:1px solid #979797;
+                    .label{
+                        text-align: center;
+                        border-bottom:1px solid #979797;
+                    }
+                    .value1{
+                        line-height: 72px;
+                        text-align: center;
+                    }
+                    .value2{
+                        line-height: 72px;
+                        text-align: center;
+                    }
+                    .value3{
+                        line-height: 72px;
+                        text-align: center;
+                        input{
+                            width:96%;
+                        }
+                    }
+                    .value4{
+                        img{
+                            height:96%;
+                            display: block;
+                            margin:0 auto;
+                        }
+                    }
+                    .value5{
+                        line-height: 72px;
+                        .Wtui-checkbox:checked {
+                            background:#1673ff;
+                            border:solid 0px #888888;
+                            top:2px;
+                        }
+                        .Wtui-checkbox:focus{
+                            -webkit-appearance:none;
+                            -webkit-user-select:none;
+                            outline: none;
+                        }
+                        .Wtui-checkbox {
+                            width:14px;
+                            height:14px;
+                            background-color:#ffffff;
+                            border:solid 1px #888888;
+                            -webkit-border-radius:50%;
+                            border-radius:50%;
+
+                            margin:0;
+                            padding:0;
+                            position:relative;
+                            display:inline-block;
+                            vertical-align:top;
+                            cursor:default;
+                            -webkit-appearance:none;
+                            -webkit-user-select:none;
+                            user-select:none;
+                            -webkit-transition:background-color ease 0.1s;
+                            transition:background-color ease 0.1s;
+                        }
+                        .Wtui-checkbox:checked::after {
+                            content:'';
+                            top:3px;
+                            left:2px;
+                            position:absolute;
+                            background:transparent;
+                            border:#fff solid 2px;
+                            border-top:none;
+                            border-right:none;
+                            height:3px;
+                            width:8px;
+                            -moz-transform:rotate(-45deg);
+                            -ms-transform:rotate(-45deg);
+                            -webkit-transform:rotate(-45deg);
+                            transform:rotate(-45deg);
+                        }
+                    }
+                    .value6{
+                        padding:10px;
+                    }
+                }
+                .base_i_inner_btn{
+                    width:100%;
+                    height:68px;
+                    border-left:1px solid #979797;
+                    border-bottom:1px solid #979797;
+                    >button{
+                        width:100px;
+                        height:40px;
+                        background:#409eff;
+                        border-radius:4px;
+                        line-height:40px;
+                        text-align:center;
+                        color:#fff;
+                        outline: none;
+                        border:none;
+                    }
+                }
+            }
+        }
+        .order_content{
+            font-size:20px;
             .order_c_main{
                 .order_c_b{
-                    border-right: 1px solid #333;
+                    border-right: 1px solid #979797;
                 }
                 .textContentParent{
                     position: relative;
                 }
                 .item1 > div{
-                    border-left:1px solid #333;
-                    border-top:1px solid #333;
-                    border-bottom:1px solid #333;
+                    border-left:1px solid #979797;
+                    border-top:1px solid #979797;
+                    border-bottom:1px solid #979797;
                     text-align: center;
                     padding:10px 0;
                     vertical-align: top;
                     &:last-child{
-                        border-right:1px solid #333;
+                        border-right:1px solid #979797;
                     }
                 }
                 .item{
-                    border-left:1px solid #333;
-                    border-bottom:1px solid #333;
+                    border-left:1px solid #979797;
+                    border-bottom:1px solid #979797;
                     text-align: center;
-                    padding:10px 0;
+
                     vertical-align: top;
-                    .sign{
-                        width:70px;
-                        height:25px;
-                        line-height: 25px;
-                        border:1px solid #333;
-                        background: #3280e7;
-                        color:#fff;
-                        font-size:14px;
-                    }
+                    position: relative;
                     .checkbox_group{
                         font-size:16px;
                         height: 40px;
                         line-height: 40px;
                         border-top:1px solid #979797;
-                        border-bottom:1px solid #979797;
-                        &:nth-last-child(1){
-                            border-bottom:none;
-                        }
-                        input[type='checkbox']{
-                            width: 24px;
-                            height: 24px;
-                            margin: 0 6px;
-                        }
+                        /*border-bottom:1px solid #979797;*/
+
                     }
                     .textContent{
                         position: relative;
+                        padding:10px 0;
                         // position: absolute;
                         // left:0;
                         // top:0;
                         // height: 50px;
+                    }
+                    .textContentLeft{
+                        padding: 5px 10px;
+                        text-align: left;
                     }
                 }
             }
@@ -630,7 +1096,7 @@ import InfoTop from './infoTop'
                                 width:70px;
                                 height:25px;
                                 line-height: 25px;
-                                border:1px solid #333;
+                                border:1px solid #979797;
                                 background: #3280e7;
                                 color:#fff;
                                 font-size:14px;
@@ -644,6 +1110,7 @@ import InfoTop from './infoTop'
                     line-height: 40px;
                     border-top:1px solid #979797;
                     border-bottom:1px solid #979797;
+
                     &:nth-last-child(1){
                         border-bottom:none;
                     }
@@ -663,6 +1130,7 @@ import InfoTop from './infoTop'
             position: fixed;
             left: 0;
             bottom:68px;
+            z-index: 100;
             background: #fff;
             height: 60px;
             line-height: 60px;
@@ -686,3 +1154,4 @@ import InfoTop from './infoTop'
         }
     }
 </style>
+

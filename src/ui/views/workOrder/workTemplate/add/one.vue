@@ -23,7 +23,7 @@
                         <el-option v-for="(opt,index) in options.worldorderType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="所属航司代码：" :prop=" form.type==1?'airlineCompanyCode':''">
+                <el-form-item  label="所属航司代码：" :prop=" form.type=='WXGD'?'airlineCompanyCode':''">
                     <span v-if="type=='info'">{{  form.airlineCompanyCode }}</span>
                     <el-select  @change="iataChange"   v-else filterable v-model="form.airlineCompanyCode" placeholder="请选择所属航司代码">
                         <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.iata" :value="opt.iata">
@@ -37,7 +37,7 @@
                 </el-form-item>
             </div>
             <div class="row_three rowT">
-                <el-form-item label="航司LOGO：" :prop=" form.type==1?'airlineCompanyLogo':''"  >
+                <el-form-item label="航司LOGO：" :prop=" form.type=='WXGD'?'airlineCompanyLogo':''"  >
                     <div  class="upUser  ">
                         <span v-if="!form.airlineCompanyLogo" style="color:#888888">
                                     请上传图片
@@ -50,13 +50,13 @@
 
                     </div>
                 </el-form-item>
-                <el-form-item  label="机型：" :prop=" form.type==1?'airplane':''"  >
+                <el-form-item  label="机型：" :prop=" form.type=='WXGD'?'airplane':''"  >
                     <span v-if="type=='info'">{{  form.airplane }}</span>
                     <el-select   multiple  v-else filterable v-model="form.airplane" collapse-tags placeholder="请选择机型">
                         <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.id"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="航班类型：" :prop=" form.type==1?'airlineType':''"  >
+                <el-form-item  label="航班类型：" :prop=" form.type=='WXGD'?'airlineType':''"  >
                     <span v-if="type=='info'">{{  form.airlineType }}</span>
                     <el-select       v-else clearable v-model="form.airlineType" placeholder="请选择航班类型">
                         <el-option v-for="(opt,index) in options.W_flightType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
@@ -65,19 +65,19 @@
             </div>
             <div class="row_three">
 
-                <el-form-item  label="作业类型：" :prop=" form.type==1?'jobType':''"  >
+                <el-form-item  label="作业类型：" :prop=" form.type=='WXGD'?'jobType':''"  >
                     <span v-if="type=='info'">{{  form.jobType }}</span>
                     <el-select    v-else clearable v-model="form.jobType" placeholder="请选择作业类型">
                         <el-option v-for="(opt,index) in options.W_workType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="作业员类型：" :prop=" form.type==1?'personType':''"  >
+                <el-form-item  label="作业员类型：" :prop=" form.type=='WXGD'?'personType':''"  >
                     <span v-if="type=='info'">{{  form.personType }}</span>
                     <el-select    v-else clearable v-model="form.personType" placeholder="请选择作业员类型">
                         <el-option v-for="(opt,index) in options.workUserType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="适用ETOP运行：" :prop=" form.type==1?'etopEnable':''"  >
+                <el-form-item  label="适用ETOP运行：" :prop=" form.type=='WXGD'?'etopEnable':''"  >
                     <span v-if="type=='info'">{{  form.etopEnable?'适用':'不适用' }}</span>
                     <el-select    v-else clearable v-model="form.etopEnable" placeholder="请选择适用ETOP运行">
                         <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode==='false'?false:true"> </el-option>

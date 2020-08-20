@@ -179,6 +179,9 @@
     -webkit-user-select:none;
     outline: none;
 }
+.Wtui-checkbox:disabled{
+    background: rgba(239, 239, 239, 0.3);
+}
 .Wtui-checkbox {
     width:14px;
     height:14px;

@@ -90,7 +90,7 @@
                 this.getList()
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row&&row.id}});
+                this.$router.push({path:path,query:{ id:row.id}});
 
             },
              getList(){
