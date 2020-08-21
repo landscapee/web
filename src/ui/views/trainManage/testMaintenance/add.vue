@@ -263,7 +263,7 @@
                 request({
                     url:`${this.$ip}/mms-training/questionInfo/list`,
                     method: 'post',
-                    data:{paperId:this.form.id}
+                    data:{paperId:this.form.id,...this.formT ,...this.sort}
                 }).then(data => {
                      if(data.code==200){
                         this.arrTable=data.data
@@ -313,8 +313,7 @@
                 if(num!=2){
                     this.sort['order'] = column.property+','+num;
                 }
-
-                this.$refs.searchTable.$refs.body_table.setCurrentRow();
+                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
                  this.getList();
             },
