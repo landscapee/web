@@ -32,7 +32,7 @@
                         </div>
                         <div v-if='item.type==6' class="value6  value" style="position:relative">
                             <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
-                            <button class='sign' @click="signOthFn('sign_'+index)">签字</button>
+                            <button class='sign' @click="signOthFn('sign_'+index,$event)">签字</button>
                             <div  style="width:50px;height:50px;position:absolute;left:200px;top:10px">
                                 <div :pos="'sign_'+index" :id="'sign_'+index"></div>
                             </div>
@@ -104,10 +104,11 @@
     import $ from 'jquery'
     import InfoTop from './infoTop'
     import request from '../../../../../lib/axios.js';
+    import naTemp from '@/ui/components/naTemp'
 
     export default {
         components:{
-              InfoTop
+              InfoTop,naTemp
         },
         data(){
             return{
@@ -181,8 +182,6 @@
                 console.log(arr,3,45,6, );
                 return arr
             },
-
-
             col:{ // 列数
                 get:function(){
                     return this.labelVO.contentLayout == "C3（三列）" ? '3' : '4'
@@ -262,13 +261,9 @@
                     })
 
              },
-            async init(){
-                await this.getTemplateById()
-                this.getBySerialNoFn()
-            },
             getVOListMap(arr){
                 const result = [];
-               arr.forEach((item,index) => {
+                arr.forEach((item,index) => {
                     const map = (item)=>{
                         result.push(item)
                         if(item.children && item.children.length){
@@ -282,7 +277,7 @@
                 })
                 let reduceIndex= 0
                 let itemNumber = 0
-                 result.forEach((item, index)=>{
+                result.forEach((item, index)=>{
                     if(item.number){
                         reduceIndex = 0
                         itemNumber = item.number
@@ -291,7 +286,7 @@
                         reduceIndex++
                         item.reduceIndex = itemNumber+ '.' +(reduceIndex)
                     }
-                     if(item.contentDetails && item.contentDetails.length){
+                    if(item.contentDetails && item.contentDetails.length){
 
                         item.contentDetails.forEach((itemChild,indexChild)=>{
                             let reg=/(<input\s{0,}|<button\s{0,})(.+?)(\/>|\/button>)/g
@@ -305,6 +300,11 @@
                 console.log(result)
                 return result
             },
+            async init(isClearAll=false){
+                await this.getTemplateById()
+                this.getBySerialNoFn(isClearAll)
+            },
+
             getTemplateById(){
                 let _this = this
                 return new Promise((resolve,reject)=>{
@@ -314,8 +314,7 @@
                     })
                         .then((data) => {
                             if(data.code==200){
-                                this.contentVOList = data.data.template.contentVOList
-                                this.contentVOListMap=this.getVOListMap( data.data.template.contentVOList)
+                                 this.contentVOListMap=this.getVOListMap( data.data.template.contentVOList)
                                 this.workorder = data.data.workorder
                                 this.orderModule= data.data.template
                                  this.baseItemVOList = data.data.template.baseItemVOList?data.data.template.baseItemVOList.filter((k)=>k.enable):[]
@@ -331,8 +330,6 @@
                                     //}
                                 })
                                 resolve()
-                            }else{
-                                this.$message({type: 'error', message: '新增失败，请重试'});
                             }
                         })
                 })
@@ -341,7 +338,7 @@
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.handWriteDlg({
-                    image_height: "2",
+                    image_height: "4",
                     image_width: "5",
                     onBegin: function() {
                         console.log('onbegin')
@@ -378,8 +375,8 @@
                     })
                 })
             },
-            getBySerialNoFn(){
-                 request({
+            getBySerialNoFn(isClearAll){
+                request({
                     url:`${this.$ip}/mms-workorder/operationInf/getBySerialNo/${this.workorder.serialNo}`,
                     method: 'get',
                 })
@@ -388,6 +385,34 @@
                             let infList = data.data.infList
                             this.workerCompleteData = data.data.infList
                             let map = data.data.map
+
+                            // 删除签章
+                            this.$nextTick(()=>{
+                                if(isClearAll){
+                                    var aDom =  $(".kg-img-div")
+                                }else{
+                                    var aDom =  $(".itemSign .kg-img-div")
+                                }
+                                aDom.each((ind, ele)=>{
+                                    if(!Reflect.has(map, $(ele).attr("elemid"))){
+                                        $(ele)[0].remove()
+                                    }
+                                    //signatureCreator.removeSignature('KG2016093001333', $(ele).attr('signatureid'))
+                                })
+                            })
+
+                            // for(let i in this.deepMap){
+                            //     if((!Reflect.has(map, i))&& Reflect.get(this.deepMap, i)&& Reflect.get(this.deepMap, i).includes('------')){
+                            //         this.removeSignatureFn(Reflect.get(this.deepMap, i).split('------')[0])
+                            //     }
+                            // }
+
+                            // this.deepMap = JSON.parse(JSON.stringify(map))
+                            //var signatureCreator = Signature.create()
+                            //let signData = $(".kg-img-div")  // signatureid
+
+                            //var that = this
+
 
                             $(".checkbox_group").find('input[type="checkbox"]').each((it,ele)=>{
                                 $(ele).prop("checked",false).prop("disabled",false)
@@ -415,14 +440,7 @@
                                     ){
                                         signs.push(
                                             {
-                                                // extra : {
-                                                //     icon_move : function() {
-                                                //         //alert('禁止移动');
-                                                //         return false;
-                                                //     }
-                                                // },
-                                                signatureid : map[i].split('------')[0],//'147683973060447728',
-                                                //signatureid : '14768397306',
+                                                signatureid : map[i].split('------')[0],
                                                 signatureData : map[i].split('------')[1]
                                             }
                                         )
@@ -432,14 +450,10 @@
                                         $("input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
                                     }
                                 }
-                                /**
-                                 * 此处需要修改
-                                 * **/
-                                this.removeSignatureFn()
-                                console.log('清空签字')
-                                //Signature.hide()
                                 Signature.loadSignatures(signs)
                             }
+                        }else{
+                            this.$message({type: 'error', message: '新增失败，请重试'});
                         }
                     })
             },
@@ -459,7 +473,6 @@
                     }
                 })
                 protectedItems = protectedItems.filter(i=>i)
-                console.log(protectedItems)
                 /* 保护项 */
                 signatureCreator.handWriteDlg({
                     image_height: "6.7",
@@ -471,7 +484,6 @@
                         console.log('onEnd')
                     }
                 }, function(param){
-                    //alert(param.imageData)
                     signatureCreator.runHW(param, {
                         protectedItems: protectedItems,
                         // protectedItems:[ 'item1', 'item2', 'item3','item4',
@@ -483,15 +495,27 @@
                         okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
                             console.log("盖章ID："+this.getSignatureid());
                             console.log("盖章数据："+this.getSignatureData());
-                            that.postSignFn(item, type,this.getSignatureid()+'------'+this.getSignatureData())
+                            fn(true);
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parent('.item').find(".sign_box").attr("pos"),
+                                function(fn, imgdata,signid, sdata){
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
+                                        imgdata[1]
+                                    )
+                                }
+                            )
                             // if(type==='pos3'){
                             //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
                             // }else if(type==='pos4'){
                             //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
                             // }
-                            // console.log(that.workerSignatureData)
-                            // console.log(that.customerSignatureData)
-                            fn(true);
+
                         },
                         cancelCall : function() {//点击取消后的回调方法
                             console.log("取消！")
@@ -514,11 +538,12 @@
                     if($(item).attr("name").includes("sign")){
 
                     }else{
-                        protectedItems.push($(item).attr("name"))
+                        protectedItems.push($(item).attr("id"))
                     }
                 })
                 /* 保护项 */
-
+                protectedItems = protectedItems.filter(i=>i)
+                console.log(protectedItems)
                 signatureCreator.handWriteDlg({
                     image_height: "6.7",
                     image_width: "5",
@@ -531,6 +556,7 @@
                 }, function(param){
                     //alert(param.imageData);
                     signatureCreator.runHW(param, {
+                        protectedItems: protectedItems,
                         // protectedItems:[ 'item1', 'item2', 'item3','item4',
                         //                 'item5', 'item6','item7', 'item8',
                         //                 'item9','item10', 'item11', 'item12',
@@ -540,7 +566,21 @@
                         okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
                             console.log("盖章ID："+this.getSignatureid());
                             console.log("盖章数据："+this.getSignatureData());
-                            that.postSignFn(item, type,this.getSignatureid()+'------'+this.getSignatureData())
+                            fn(true);
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parent('.item').find(".sign_box").attr("pos"),
+                                function(fn, imgdata,signid, sdata){
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
+                                        imgdata[1]
+                                    )
+                                }
+                            )
                             // if(type==='pos3'){
                             //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
                             // }else if(type==='pos4'){
@@ -548,7 +588,7 @@
                             // }
                             // console.log(that.workerSignatureData)
                             // console.log(that.customerSignatureData)
-                            fn(true);
+
                         },
                         cancelCall : function() {//点击取消后的回调方法
                             console.log("取消！")
@@ -556,16 +596,15 @@
                     });
                 });
             },
-            signOthFn(type){
+            signOthFn(type, $event){
                 if(!this.signBasicActiveFn()){
                     this.$message({type: 'warning', message: '请先完成所有的放行已完成'})
                     return
                 }
-
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.handWriteDlg({
-                    image_height: "5",
+                    image_height: "6.7",
                     image_width: "5",
                     onBegin: function() {
                         console.log('onbegin')
@@ -585,20 +624,20 @@
                         okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
                             console.log("盖章ID："+this.getSignatureid());
                             console.log("盖章数据："+this.getSignatureData());
-                            // if(type==='pos3'){
-                            //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                            // }else if(type==='pos4'){
-                            //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                            // }
-                            // console.log(that.workerSignatureData)
-                            // console.log(that.customerSignatureData)
-
-                            //that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
-                            that.signBasicFn({
-                                key:type,
-                                value: this.getSignatureid().toString()+'------'+this.getSignatureData()
-                            })
                             fn(true)
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parent('.value6').find(".value6_box").attr("pos"),
+                                function(fn, imgdata,signid, sdata){
+                                    that.signBasicFn({
+                                        key:type,
+                                        value: _this.getSignatureid().toString()+'------'+_this.getSignatureData()+'------'+
+                                            imgdata[1]
+                                    })
+                                }
+                            )
                         },
                         cancelCall : function() {//点击取消后的回调方法
                             console.log("取消！")
@@ -625,8 +664,6 @@
                         }
                     })
             },
-
-
             changeActiveFn(item){
                 console.log(item)
                 item.active = !item.active
@@ -676,16 +713,19 @@
                     })
                 }
                 request({
-                    url:`${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
+                    url:`${this.$ip}/mms-workorder/operationInf/saveBasic`,
                     method: 'post',
                     data:{
                         serialNo:this.workorder.serialNo,  // 工单流水号
                         map
                     }
-                }).then((data) => {
+                })
+                    .then((data) => {
                         setTimeout(()=>{
                             if(data.code == 200){
                                 this.$message({type: 'success', message: '保存成功'})
+                            }else{
+                                this.$message({type: 'error', message: data.message})
                             }
                             this[type] = true
                             this.init()
@@ -730,9 +770,6 @@
             },
             deleteSignFn(getSignatureid, getSignatureData){
                 let key = $(`div[signatureid='${getSignatureid}']`).attr("elemid")
-                //let contentDetailId = getSignatureid + '------' + getSignatureData
-                //key,
-                //contentDetailId
                 request({
                     url:`${this.$ip}/mms-workorder/operationInf/deleteSign`,
                     method: 'post',
@@ -751,12 +788,14 @@
                     })
             },
             removeSignatureFn(signatureid){
-                var signatureCreator = Signature.create();
                 if(signatureid){
-                    signatureCreator.removeSignature('KG2016093001333', signatureid);
+                    $(`[signatureid=${signatureid}]`)[0].remove();
                 }else{
                     $(".kg-img-div").each((index,ele)=>{
-                        signatureCreator.removeSignature('KG2016093001333', $(ele).attr("signatureid"));
+                        console.log(ele)
+                        //$(`[signatureid=${signatureid}]`)[0].remove();
+                        $(ele)[0].remove()
+                        //signatureCreator.removeSignature('KG2016093001333', $(ele).attr("signatureid"));
                     })
                 }
             }

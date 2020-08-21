@@ -362,6 +362,7 @@ export default {
 	}
 	.mainTable{
 		// height: 600px;
+		overflow-y: auto;
 		border-top: 0px;
 		/deep/ .current-row > td {
 			background-color: #A0CBF6;

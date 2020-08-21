@@ -19,9 +19,11 @@
     //margin-left: calc(50% - 480px);
     display: flex;
     justify-content: center;
+    height:calc(100vh - 270px); overflow-y:auto;
+
     /deep/.el-form {
-        height:calc(100vh - 270px);
-        overflow-y:auto;
+
+
         padding: 0 20px;
         width:890px;
          .el-form-item__error{

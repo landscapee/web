@@ -9,7 +9,7 @@
                 <div @click="resetForm()" :class="type=='info'?'isDisabled':''">
                     <icon  iconClass="reset "></icon>重置
                 </div>
-                <div @click="endTest('form')" :class="type=='info'?'isDisabled':''">
+                <div @click="tishi(this.endTest)" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save" style="width: 0"></icon>结束考试
                 </div>
             </div>
@@ -112,8 +112,8 @@
         beforeRouteLeave(to, from, next){
             console.log(to, from,112222);
                 if(from.path=='/onlineTestDo'&&this.pathBlo){
-                   this.endTest(1)
-                   next();
+                    this.tishi(()=>{this.endTest(1)},next)
+
                }else{
                    next();
                }
@@ -223,21 +223,37 @@
                     });
                 }
             },
-            endTest(num){
+            tishi(fn,f1){
+                this.$confirm('此操作结束考试, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                })
+                    .then(() => {
+                       fn()
+                        f1()
+                    }).catch(()=>{
+
+                })
+            },
+            endTest(num) {
                 clearTimeout(this.timer)
                 request({
                     url: `${this.$ip}/mms-training/examLine/finish`,
                     method:'post',
                     data:this.params
                 }).then((d)=>{
+                    if(d.code==200){
                         this.$message.success('考试已结束')
-                    this.pathBlo=false
-                    if(num!=1){
-                        this.$router.go(-1)
+                        this.pathBlo=false
+                        if(num!=1){
+                            this.$router.go(-1)
+                        }
                     }
-
                 })
+
             },
+
             getList(num){
                  request({
                      url: `${this.$ip}/mms-training/examLine/join`,

@@ -121,20 +121,23 @@ export default {
 						}
 					})
 					.then((data) => {
-                         if (data.responseCode != 1000) {
-                            this.$message.error( data.responseMessage);
-                         }else{
+                         if (data.responseCode == 1000||data.responseCode == 10020||data.responseCode == 10019) {
                              setToken(data.data.token);
-							setUserInfo(data.data);
-							this.$store.commit('user/SET_TOKEN',data.data.token);
-							this.$store.commit('user/SET_USER_INFO',data.data);
+                             setUserInfo(data.data);
+                             this.$store.commit('user/SET_TOKEN',data.data.token);
+                             this.$store.commit('user/SET_USER_INFO',data.data);
+                             if(data.responseCode == 10020||data.responseCode == 10019){
+                                 this.$message.warning( data.responseMessage);
 
-                           initWebsocket()
- 							this.findUnread();
+                             }
+                             initWebsocket()
+                             this.findUnread();
+                             this.$router.push({ path: '/qualityManage' });
+                         }else{
+                             this.$message.error( data.responseMessage);
 
-                            this.$router.push({ path: '/qualityManage' });
                          }
-                         this.loading = false;
+                    this.loading = false;
 					}).catch((error) => {
 						 this.loading = false;
 					});

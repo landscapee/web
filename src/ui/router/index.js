@@ -290,6 +290,12 @@ let authRoutes = [
                         meta: {title: '工单详情',icon: 'xxgl' },
                     },
                     {
+                        path: '/WorkPaperDetails',
+                        component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
+                        name: '工单详情',
+                        meta: {title: '工单详情',icon: 'xxgl' },
+                    },
+                    {
                         path: '/WorkAbnormalAdd',
                         component: () => import('@views/workOrder/abnormal/add'),
                         name: '纸制填报工单导入',

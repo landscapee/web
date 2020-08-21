@@ -356,8 +356,7 @@
                         entryTime:data.entryDate?this.$moment(data.entryDate).format('YYYY-MM-DD'):null,
                         politicalOrientation:data.facePoliticsId||null,
                         education:data.education||null,
-                        education:data.education||null,
-                    }
+                     }
                 }
             },
 

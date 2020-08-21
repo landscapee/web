@@ -94,7 +94,7 @@
                 <div class="row_tow">
                     <el-form-item  label="飞机注册号：" >
                         <span v-if="type=='info'">{{ form.flightRegisterNo }}</span>
-                        <el-input v-else v-model="form.awardUnit" placeholder="请输入飞机注册号"></el-input>
+                        <el-input v-else v-model="form. flightRegisterNo" placeholder="请输入飞机注册号"></el-input>
                     </el-form-item>
                     <el-form-item  label="进出港计划时间：" >
                         <span v-if="type=='info'">{{ form.planDepartureTime?moment(form.planDepartureTime).format('YYYY-MM-DD'):''}}</span>
@@ -103,14 +103,13 @@
 
                 </div>
                 <div class="row_tow">
-
-
                     <el-form-item  label="纸制工单文件：" prop="offlineFile">
                         <span v-if="type=='info'">{{ form.offlineFile }}</span>
-                        <UploadFile :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,.doc,.ppt,.docx"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
+                        <!--.ppt,.docx,.doc,-->
+                        <UploadFile :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
 
                     </el-form-item>
-                    <el-form-item label="工作时长(分钟)："  >
+                    <el-form-item label="工作时长(分钟)："  prop="costTime">
                     <span v-if="type=='info'">{{form.costTime}}</span>
                     <el-input v-else v-model="form.costTime" placeholder="请输入工作时长"></el-input>
                 </el-form-item>
@@ -136,7 +135,21 @@
         name: "",
         data() {
 
-
+            let costTime=(rule, value, callback)=>{
+                if(value){
+                    if (!Number.isInteger(Number(value))) {
+                        callback(new Error('请输入数字值'));
+                    } else {
+                        if (value >0) {
+                            callback();
+                        } else {
+                            callback(new Error('工作时长大于零'));
+                        }
+                    }
+                }else{
+                    callback();
+                }
+            }
             return {
 
                 moment:moment,
@@ -156,6 +169,7 @@
                      flightNo: [{ required:true,message:'请输入航班号', trigger: "blur" }],
                      airplaneIcao: [{ required:true,message:'请选择机型', trigger: "blur" }],
                      offlineFile: [{ required:true,message:'请选择文件', trigger: "blur" }],
+                     costTime: [{  validator:costTime, trigger: "blur" }],
                 },
                 type: "add"
             };
@@ -216,8 +230,7 @@
                 this.$set(this.form,'operatorId',this.form.operatorList.length?1:'')
                 this.$refs[form].validate(valid => {
                     if (valid) {
-                        let url
-
+                        delete this.form.operatorId
                         request({
                             url:`${this.$ip}/mms-workorder/workorder/uploadPage`,
                             method: 'post',
@@ -238,7 +251,9 @@
 </script>
 <style scoped lang="scss">
     .indexAdd{
+        width: 100%;
         padding: 0 30px;
+
      }
     /deep/ .el-form{
         .el-form-item__label{

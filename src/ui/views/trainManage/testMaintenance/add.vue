@@ -112,7 +112,7 @@
 
         </div>
         <ExportTest ref="ExportTest" ></ExportTest>
-        <ImportExcel ref="ImportExcel" @getTableData="getDetails"></ImportExcel>
+        <ImportExcel ref="ImportExcel" @getTableData="getList"></ImportExcel>
     </div>
 </template>
 <script>
@@ -259,34 +259,46 @@
             exportExcel() {
 
             },
+            getList(){
+                request({
+                    url:`${this.$ip}/mms-training/questionInfo/list`,
+                    method: 'post',
+                    data:{paperId:this.form.id}
+                }).then(data => {
+                     if(data.code==200){
+                        this.arrTable=data.data
+                        this.row=null
+                    }
 
+                });
+            },
             getDetails() {
                 request({
                     url:`${this.$ip}/mms-training/paperInfo/info/${this.$route.query.id}`,
                     method: 'get',
                 }).then(data => {
-                    console.log(data,10);
-                     this.form={...data.data,questionInfoList:data.data.questionInfoList||[],}
-                     this.arrTable=this.form.questionInfoList||[]
-                    this.row=null
+                     if(data.code==200){
+                        this.form={...data.data,questionInfoList:data.data.questionInfoList||[],}
+                        this.getList()
+                     }
+
                 });
             },
             resetForm(){
                 if(this.form.id){
                     this.form = {id:this.form.id };
                 }else{
-                    this.form = { };
+                    this.form = {};
                 }
-
                 this.row=null
              },
             requestTable(searchData){
                 this.formT = searchData;
                 this.selectId=null;
-                    this.tableData={records:[]};
+                this.tableData={records:[]};
                 this.params.current = 1;
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
-                this.getDetails();
+                this.getList();
             },
             headerSort(column){
                 this.sort={}
@@ -304,8 +316,7 @@
 
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
-                console.log(column.property,column.order, this.sort,11);
-                this.getDetails();
+                 this.getList();
             },
             listenToCheckedChange(row, column, event){
 
@@ -398,7 +409,7 @@
                                 url:`${this.$ip}/mms-training/questionInfo/delete/${this.row.id}`,
                                 method: 'delete',
                             }).then(data => {
-                                  this.getDetails()
+                                  this.getList()
                             });
                         })
                 }
@@ -406,11 +417,11 @@
             handleSizeChange(size) {
                 this.params.current = 1;
                 this.params.size = size;
-                this.getDetails();
+                this.getList();
             },
             handleCurrentChange(current) {
                 this.params.current = current;
-                this.getDetails();
+                this.getList();
             },
             handleCheckedChange() {},
             handleSelectionChange() {},

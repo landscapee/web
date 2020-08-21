@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import gou from '@/assets/img/gou.svg'
-import gou_active from '@/assets/img/gou_active.svg'
-import na from '@/assets/img/na.svg'
-import na_active from '@/assets/img/na_active.svg'
-export default {
+import gou from '../../icons/svg/gou.svg'
+import gou_active from '../../icons/svg/gou_active.svg'
+import na from '../../icons/svg/na.svg'
+import na_active from '../../icons/svg/na_active.svg'
+ export default {
     props:{
         width:{
             type: String,

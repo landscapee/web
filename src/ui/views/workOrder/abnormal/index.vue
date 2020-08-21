@@ -1,59 +1,63 @@
 <template>
-    <div>
+    <div style="display: flex;justify-content: center">
 
         <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
-          <div v-else-if="this.$router.history.current.path == '/WorkAbnormal'" :key="$route.path" class="abnormal">
+          <div v-else-if="this.$router.history.current.path == '/WorkAbnormal'" :key="$route.path" class="abnormal" >
             <div class="top-content"  >
                 <div class="top-content-title">
                     <span>工单异常管理</span>
                 </div>
                 <div class="top-toolbar">
-                    <div @click="seeOther(null,'WorkAbnormalAdd')"><icon iconClass="info" ></icon>纸制填报工单导入</div>
+                    <div style="margin-right:0" @click="seeOther(null,'WorkAbnormalAdd')"><icon iconClass="info" ></icon>纸制填报工单导入</div>
                 </div>
             </div>
-              <div class="main-content" style="display: flex;justify-content: center;flex-direction: column;align-items: center">
+              <div  style="display: flex;justify-content: center;flex-direction: column;align-items: center; ">
+                  <div class="main-content" style=" width:80%">
 
-                  <div>
-                      <div class=" formdiv">
-                          <el-form :model="form" :inline="true">
-                              <div style="display: flex;justify-content: space-between">
-                                  <el-form-item label="工单编号：">
-                                      <el-input @keyup.enter.native="getList" v-model="form.serialNo" clearable placeholder="请输入"></el-input>
-                                  </el-form-item>
-                                  <el-form-item label="工单日期：">
-                                      <el-date-picker @change="getList" v-model="form.submitTime" clearable placeholder="请选择"></el-date-picker>
-                                  </el-form-item>
-                                  <el-form-item label="航班号：">
-                                      <el-input @keyup.enter.native="getList" v-model="form.flightNo" clearable placeholder="请输入"></el-input>
-                                  </el-form-item>
-                                  <el-form-item  >
-                                    <div class="button ">
-                                        <el-button @click="getList" type="primary">查询</el-button>
-                                        <el-button @click="resetForm"  >重置</el-button>
-                                    </div>
-                                  </el-form-item>
-                              </div>
+                      <div style="width:100%">
+                          <div class=" formdiv" style="position: relative">
+                              <el-form :model="form" :inline="true">
+                                  <div style="display: flex;justify-content: space-between">
+                                      <el-form-item label="工单编号：">
+                                          <el-input @keyup.enter.native="getList" v-model="form.serialNo" clearable placeholder="请输入"></el-input>
+                                      </el-form-item>
+                                      <el-form-item label="工单日期：">
+                                          <el-date-picker @change="getList" v-model="form.submitTime" clearable placeholder="请选择"></el-date-picker>
+                                      </el-form-item>
+                                      <el-form-item label="航班号：">
+                                          <el-input @keyup.enter.native="getList" v-model="form.flightNo" clearable placeholder="请输入"></el-input>
+                                      </el-form-item>
+                                      <el-form-item  >
+                                          <div class="button ">
+                                              <el-button @click="getList" type="primary">查询</el-button>
+                                              <el-button @click="resetForm"  >重置</el-button>
+                                          </div>
+                                      </el-form-item>
+                                  </div>
 
-                          </el-form>
+                              </el-form>
+                          </div>
+
+                          <div style="font-size: 20px;text-align: center;margin-bottom: 20px" >查询结果</div>
+                          <SearchTable :noSearch="true"  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"       :showHeader="false" :showPage="true" >
+
+
+                              <el-table-column align="center" slot="option" label="操作" :width="140" >
+                                  <template  slot-scope="scope">
+                                      <div >
+                                          <el-button class="QoptionButton" @click="seeOther(scope.row,'WorkAbnormalDetails')"  >详情</el-button>
+                                      </div>
+                                  </template>
+                              </el-table-column>
+
+                          </SearchTable>
+
                       </div>
-
-                        <div style="font-size: 20px;text-align: center;margin-bottom: 20px" >查询结果</div>
-                      <SearchTable :noSearch="true"  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"       :showHeader="false" :showPage="true" >
-
-
-                          <el-table-column align="center" slot="option" label="操作" :width="140" >
-                              <template  slot-scope="scope">
-                                  <div >
-                                      <el-button class="QoptionButton" @click="seeOther(scope.row,'WorkAbnormalDetails')"  >详情</el-button>
-                                   </div>
-                              </template>
-                          </el-table-column>
-
-                      </SearchTable>
-
                   </div>
-             </div>
+
+              </div>
         </div>
     </div>
 </template>
@@ -87,14 +91,28 @@
         methods: {
             resetForm(){
                 this.form={};
-                this.getList()
+                this.tableData={}
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row&&row.id}});
+                let src=path
+                let data=row&&row.id
+                if(row&&row.offlineFile){
+                    src='/WorkPaperDetails'
+                    data=row.offlineFile
+                }
+                this.$router.push({path:src,query:{ id:data}});
 
             },
              getList(){
                 let data={...this.form}
+                let blo=false
+                map(data,(k,l)=>{
+                    if(k){blo=true}
+                })
+                 if(!blo){
+                     this.$message.info('请输入相关信息后查询')
+                     // return false
+                 }
                 request({
                     url:`${this.$ip}/mms-workorder/workorder/list`,
                     method: 'post',

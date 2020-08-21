@@ -237,14 +237,14 @@
                                 data: data
                             })
                                 .then(d => {
-                                    this.$message.success("保存成功！");
-                                    // this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
-                                    this.$router.go(-1)
+                                   if(d.code==200){
+                                       this.$message.success("保存成功！");
+                                       // this.$router.push({path:'/testMaintenanceAdd',query:{id:this.$route.query.id}})
+                                       this.$router.go(-1)
+                                   }
 
                                 })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
+
                          }
                     });
                 }
