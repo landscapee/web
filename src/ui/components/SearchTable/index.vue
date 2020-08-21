@@ -1,7 +1,7 @@
 <template>
 	<div class="searchTableWrapper" >
 
-			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
+			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 				<template  v-for="(colConfig, index) in cloneTableConfig">
 					<template v-if="colConfig.search">
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
@@ -41,7 +41,7 @@
 				</template>
 			</el-table>
 
-			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
+			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
 				<template v-for="(colConfig, index) in cloneTableConfig">
 
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
@@ -68,7 +68,7 @@ export default {
         Icon,
 	},
 	name: 'SearchTable',
-	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod'],
+	props: ['tableConfig', 'tableRowClassName', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod'],
 	data () {
 		return {
 			resizeCallback:[],
@@ -76,6 +76,14 @@ export default {
 			cloneTableConfig:this.tableConfig,
 			updateWidth:false
 		};
+	},
+	computed:{
+        tableRowClassName2(){
+            return ({rowIndex,row})=>{
+                let ss= this.tableRowClassName&&this.tableRowClassName(rowIndex,row)||'tab-row'
+                return ss
+			}
+		}
 	},
 	watch: {
 		tableConfig:function(newVal, oldVal){
@@ -104,6 +112,7 @@ export default {
 		window.addEventListener('scroll', this.scroll, true);
 	},
 	methods: {
+
 		//计算滚动位置
 		scroll($event) {
 			if(this.$refs.body_table){
@@ -148,9 +157,11 @@ export default {
 		tableheaderRowClassName({ row, rowIndex }) {
 			return 'tab-header-row';
 		},
-		tableRowClassName({ row, rowIndex }) {
-			row.index = rowIndex;
-			return 'tab-row';
+		tableRowClassName1({ row, rowIndex }) {
+		    row.index=rowIndex
+            return this.tableRowClassName2({ row, rowIndex })
+
+		//
 		},
 		currentRowChange(row, oldRow) {
 			this.$emit('currentRowChange', row, oldRow);

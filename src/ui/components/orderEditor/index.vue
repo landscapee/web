@@ -345,7 +345,7 @@ export default {
             let d=new Date()
             let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-            editor.insertHtml(`<p><button style="width:80px;"  >签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" pos='sign${num+_this.inputIndex}' id='sign${num+_this.inputIndex}'  name='${'$$$'+num+'_'+'sign'+_this.inputIndex}' /></p>`)
+            editor.insertHtml(`<p><button style="width:80px;"  >签章</button><input type="text" disabled style="background:#fff;outline:none;width:200px;height:30px;border:none;border-bottom:1px solid #d9d9d9;" pos='${'$$$'+num+'_'+'sign'+_this.inputIndex}' id='${'$$$'+num+'_'+'sign'+_this.inputIndex}'  name='${'$$$'+num+'_'+'sign'+_this.inputIndex}' /></p>`)
         })
     })
     KindEditor.lang({

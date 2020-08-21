@@ -1,12 +1,49 @@
 
 <template>
     <div class="index"  style="display: flex;flex-direction: column;align-items: center">
-        <div style="width: 80%;margin-bottom: 20px">
+        <div style="width: 80%;">
             <div style="text-align: center;font-size: 20px;padding: 20px " >工单分派信息</div>
             <InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
         </div>
         <div style="width: 80%;">
-            <div style="text-align: center;font-size: 20px;padding: 20px " >工单签署信息</div>
+            <div style="text-align: center;font-size: 20px;padding: 20px 20px 0px 20px " >工单签署信息</div>
+            <div class="base_item" style="margin: 20px 0">
+                <div class="base_i_inner flex flex_wrap">
+                    <div class="lists" v-for='(item, index) in getbaseItemVOList' :key='index'>
+                        <div class="label">
+                            <div>{{item.nameCn}}</div>
+                            <div>{{item.nameEn}}</div>
+                        </div>
+                        <div v-if='item.type==1' class="value1 value">{{workorder[value5Type[item.value]]}}</div>
+                        <div v-if='item.type==2' class="value2 value">{{item.value}}</div>
+                        <div v-if='item.type==3' class="value3 value">
+                            <input type="text" :name="item.placeholder" :id="item.placeholder">
+                        </div>
+                        <div v-if='item.type==4' class="value4 value">
+                            <img :src="item.value" >
+                        </div>
+                        <div v-if='item.type==5' class="value5  value flex flex_wrap align_center">
+                            <div v-for="(k,l) in item.value.split(';')" :key="l" class="flex align_center">
+                                <input type="checkbox" :name="item.placeholder.split(';')[l]" class="Wtui-checkbox" >{{k}}&nbsp;
+                                <!-- <div style="width: 100%" >
+                                    {{'${'+item.placeholder.split(';')[l]+'}'}}
+                                </div> -->
+                            </div>
+                        </div>
+                        <div v-if='item.type==6' class="value6  value" style="position:relative">
+                            <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
+                            <button class='sign' @click="signOthFn('sign_'+index)">签字</button>
+                            <div  style="width:50px;height:50px;position:absolute;left:200px;top:10px">
+                                <div :pos="'sign_'+index" :id="'sign_'+index"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" base_i_inner_btn flex justify_center align_center">
+                         <el-button type="primary" @click="saveBasicFn('isActiveSave')" ><i v-show='!isActiveSave' class="el-icon-loading"></i>保存</el-button>
+                        <el-button  type="primary" @click="saveBasicFn('isActiveReset')" ><i v-show='!isActiveReset' class="el-icon-loading"></i>重置</el-button>
+                    </div>
+                </div>
+            </div>
             <div class="order_content">
                 <div class="order_c_main">
                     <div class="item1 flex">
@@ -67,22 +104,7 @@
     import $ from 'jquery'
     import InfoTop from './infoTop'
     import request from '../../../../../lib/axios.js';
-    let  Signature={
-            verify:function () {
-                return []
-        },  bind:function () {
 
-        },  create :function () {
-
-        }, loadSignatures  :function () {
-
-        },
-        init:function () {
-
-        }, alert :function () {
-
-        },
-    }
     export default {
         components:{
               InfoTop
@@ -95,7 +117,7 @@
                 workerCompleteData:[],
                 template:{},
                 templateSignObj:{},
-                baseItemVOList:{},
+                baseItemVOList:[],
                 orderModule:{},
                 labelVO:{},
                 id:'',
@@ -147,6 +169,20 @@
             }
         },
         computed:{
+            getbaseItemVOList(){
+                 let l=this.baseItemVOList.length%3
+                 let obj={
+                    0:[],
+                    1:[{type:2},{type:2}],
+                    2:[{type:2}],
+                }
+                let arr=[...this.baseItemVOList]
+                arr.push(...obj[l])
+                console.log(arr,3,45,6, );
+                return arr
+            },
+
+
             col:{ // 列数
                 get:function(){
                     return this.labelVO.contentLayout == "C3（三列）" ? '3' : '4'
@@ -157,13 +193,33 @@
             editContent($event,item){
                 if(!item.editState){
                     $($event.target).text('保存')
-                    let reg=/(<input\s{0,}|<button\s{0,})disabled(.+?)(\/>|\/button>)/g
+                    // item.buttonName='保存'
                     item.editState=true
-                    item.content=item.content.replace(reg,"$1$2$3" )
+                    // let reg=/(<input\s{0,}|<button\s{0,})disabled(.+?)(\/>|\/button>)/g
+                    // item.content=item.content.replace(reg,"$1$2$3" )
+                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
+                    let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
+                    for(let i=0;i<inputText.length;i++){
+                        inputText.eq(i).removeAttr("disabled")
+                     }
+                    for(let i=0;i<button.length;i++){
+                         button.eq(i).removeAttr("disabled")
+                    }
                     return false
-                }
-                 let map = {}
+
+
+                 }
+                $($event.target).text('更正')
+                let map = {}
                 if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
+                    let inputButton = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
+                    let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
+                    for(let i=0;i<inputButton.length;i++){
+                        inputButton.eq(i).attr("disabled",'')
+                     }
+                       for(let i=0;i<button.length;i++){
+                         button.eq(i).attr("disabled",'')
+                    }
                     let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
                     console.log(inputArr,12,3)
                     for(let i=0;i<inputArr.length;i++){
@@ -173,8 +229,6 @@
                     for(let i=0;i<inputNa.length;i++){
                         map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
                     }
-
-
                     let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
                     console.log(inputSign)
                     for(let i=0;i<inputSign.length;i++){
@@ -191,8 +245,7 @@
                         map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
                     }
                 }
-                console.log(map,1,2);
-                request({
+                  request({
                     url:`${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
                     method: 'post',
                     data:{
@@ -204,9 +257,7 @@
                     .then((data) => {
                         if(data.code == 200){
                             this.$message({type: 'success', message: '保存成功'})
-                         }else{
-                            this.$message({type: 'error', message: '保存失败，请重试'})
-                        }
+                         }
                         this.init()
                     })
 
@@ -215,9 +266,9 @@
                 await this.getTemplateById()
                 this.getBySerialNoFn()
             },
-            getVOListMap(){
+            getVOListMap(arr){
                 const result = [];
-                this.contentVOList.forEach((item,index) => {
+               arr.forEach((item,index) => {
                     const map = (item)=>{
                         result.push(item)
                         if(item.children && item.children.length){
@@ -231,7 +282,7 @@
                 })
                 let reduceIndex= 0
                 let itemNumber = 0
-                result.forEach((item, index)=>{
+                 result.forEach((item, index)=>{
                     if(item.number){
                         reduceIndex = 0
                         itemNumber = item.number
@@ -241,10 +292,12 @@
                         item.reduceIndex = itemNumber+ '.' +(reduceIndex)
                     }
                      if(item.contentDetails && item.contentDetails.length){
+
                         item.contentDetails.forEach((itemChild,indexChild)=>{
                             let reg=/(<input\s{0,}|<button\s{0,})(.+?)(\/>|\/button>)/g
                             itemChild.content=itemChild.content.replace(reg,"$1 disabled $2$3" )
                             itemChild.reduceIndex = item.reduceIndex+ '.' +(indexChild+1)
+                            // itemChild['buttonName'] = '更正'
                         })
                     }
                     //this.$set(item,'active',true)
@@ -262,10 +315,10 @@
                         .then((data) => {
                             if(data.code==200){
                                 this.contentVOList = data.data.template.contentVOList
-                                this.contentVOListMap=this.getVOListMap()
+                                this.contentVOListMap=this.getVOListMap( data.data.template.contentVOList)
                                 this.workorder = data.data.workorder
                                 this.orderModule= data.data.template
-                                this.baseItemVOList = data.data.template.baseItemVOList
+                                 this.baseItemVOList = data.data.template.baseItemVOList?data.data.template.baseItemVOList.filter((k)=>k.enable):[]
                                 this.template = data.data.template.typeVO
                                 this.labelVO = data.data.template.labelVO
                                 this.getFileByIdFn(this.template.airlineCompanyLogo)
@@ -326,7 +379,7 @@
                 })
             },
             getBySerialNoFn(){
-                request({
+                 request({
                     url:`${this.$ip}/mms-workorder/operationInf/getBySerialNo/${this.workorder.serialNo}`,
                     method: 'get',
                 })
@@ -387,8 +440,6 @@
                                 //Signature.hide()
                                 Signature.loadSignatures(signs)
                             }
-                        }else{
-                            this.$message({type: 'error', message: '新增失败，请重试'});
                         }
                     })
             },
@@ -574,156 +625,8 @@
                         }
                     })
             },
-            fixCompleteFn(item,$event){
-                let map = {}
-                if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
-                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
-                    console.log(inputArr)
-                    for(let i=0;i<inputArr.length;i++){
-                        map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
-                    }
-                    let inputNa = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='NA']")
-                    for(let i=0;i<inputNa.length;i++){
-                        map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
-                    }
 
 
-                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
-                    console.log(inputSign)
-                    for(let i=0;i<inputSign.length;i++){
-                        console.log(inputSign.eq(i))
-                        if($("div[elemid="+inputSign.eq(i).attr("id")+"]")){
-                            let signatureid = $("div[elemid="+inputSign.eq(i).attr("id")+"]").attr("signatureid")
-                            if(signatureid){
-                                map[inputSign.eq(i).attr("name")] = signatureid+'------'+this.templateSignObj[signatureid]
-                            }
-                        }
-                    }
-                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
-                    for(let i=0;i<inputText.length;i++){
-                        map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
-                    }
-                }
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/workerComplete`,
-                    method: 'post',
-                    data:{
-                        contentDetailId: item.id, //内容id
-                        serialNo: this.workorder.serialNo, // 工单流水号
-                        signingTime: '', //签章时间
-                        map
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                            //this.workerCompleteData = data.data
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init()
-                    })
-            },
-            commanderCompleteFn(item, $event){
-                let inObj = this.workerCompleteData.find(i=>i.contentDetailId===item.id)
-                if(!inObj){
-                    this.$message({type: 'error', message: '操作有误，请检查'})
-                    this.init()
-                    return
-                }
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/commanderComplete`,
-                    method: 'post',
-                    data:{
-                        id: inObj.id
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init()
-                    })
-
-            },
-            invalidFn(item, $event){
-                let inObj = this.workerCompleteData.find(i=>i.contentDetailId === item.id)
-                if(!inObj){
-                    this.$message({type: 'error', message: '操作有误，请检查'})
-                    this.init()
-                    return
-                }
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/invalid`,
-                    method: 'post',
-                    data:{
-                        id: inObj.id
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init()
-                    })
-            },
-            backFn(){
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/back`,
-                    method: 'post',
-                    data:{
-                        serialNo: this.workorder.serialNo
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init()
-                    })
-            },
-            cleanFn(){
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/clean`,
-                    method: 'post',
-                    data:{
-                        serialNo: this.workorder.serialNo
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init()
-                    })
-            },
-            submitFn(){
-                request({
-                    url:`${this.$ip}/mms-workorder/workorder/submit/${this.workorder.id}`,
-                    method: 'get',
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: data.message})
-                        }
-                    })
-            },
-            questionUploadFn(){
-                this.$refs.questionUpload.open(  this.workorder)
-            },
-            routerPushFn(path,query={}){
-                this.$router.push({ path,query})
-            },
             changeActiveFn(item){
                 console.log(item)
                 item.active = !item.active
@@ -773,19 +676,16 @@
                     })
                 }
                 request({
-                    url:`${this.$ip}/mms-workorder/operationInf/saveBasic`,
+                    url:`${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
                     method: 'post',
                     data:{
                         serialNo:this.workorder.serialNo,  // 工单流水号
                         map
                     }
-                })
-                    .then((data) => {
+                }).then((data) => {
                         setTimeout(()=>{
                             if(data.code == 200){
                                 this.$message({type: 'success', message: '保存成功'})
-                            }else{
-                                this.$message({type: 'error', message: data.message})
                             }
                             this[type] = true
                             this.init()
@@ -868,6 +768,18 @@
     .flex{
         display: flex;
     }
+    .flex_wrap{
+        flex-wrap: wrap;
+    }
+    .justify_around{
+        justify-content: space-around;
+    }
+    .justify_end{
+        justify-content: flex-end;
+    }
+    .align_center{
+        align-items: center;
+    }
     .index{
         padding:30px;
         height:calc(100vh - 110px);
@@ -894,59 +806,44 @@ overflow-y: auto;
             padding:0 10px;
             z-index: 99;
         }
-        .base_air{
-            width:100%;
-            overflow: hidden;
-            .base_air_inner{
-                .lists{
-                    font-size:20px;
-                    height:60px;
-                    line-height: 60px;
-                    border-left:1px solid #979797;
-                    border-top:1px solid #979797;
-                    box-sizing: border-box;
-                    text-align: center;
-                    >div{
-                        border-right:1px solid #979797;
-                    }
-                    img{
-                        width: 128px;
-                    }
-                }
-            }
-        }
+
         .base_item{
             width:100%;
             overflow: hidden;
             .base_i_inner{
                 border-right:1px solid #979797;
                 font-size: 20px;
-                .lists{
 
+
+                .lists{
                     width: 33.333%;
                     box-sizing: border-box;
-                    line-height: 36px;
-                    border-left:1px solid #979797;
+                     border-left:1px solid #979797;
                     border-top:1px solid #979797;
-                    border-bottom:1px solid #979797;
                     .label{
-                        text-align: center;
-                        border-bottom:1px solid #979797;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        height:45px;
+                         border-bottom:1px solid #979797;
                     }
-                    .value1{
-                        line-height: 72px;
-                        text-align: center;
-                    }
-                    .value2{
-                        line-height: 72px;
-                        text-align: center;
+                    .value{
+                        padding: 5px;
+                        height:45px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
                     }
                     .value3{
-                        line-height: 72px;
-                        text-align: center;
                         input{
                             width:96%;
                         }
+                    }
+                    .value6{
+                        height: 80px;
+                        justify-content: right;
                     }
                     .value4{
                         img{
@@ -955,75 +852,22 @@ overflow-y: auto;
                             margin:0 auto;
                         }
                     }
-                    .value5{
-                        line-height: 72px;
-                        .Wtui-checkbox:checked {
-                            background:#1673ff;
-                            border:solid 0px #888888;
-                            top:2px;
-                        }
-                        .Wtui-checkbox:focus{
-                            -webkit-appearance:none;
-                            -webkit-user-select:none;
-                            outline: none;
-                        }
-                        .Wtui-checkbox {
-                            width:14px;
-                            height:14px;
-                            background-color:#ffffff;
-                            border:solid 1px #888888;
-                            -webkit-border-radius:50%;
-                            border-radius:50%;
-
-                            margin:0;
-                            padding:0;
-                            position:relative;
-                            display:inline-block;
-                            vertical-align:top;
-                            cursor:default;
-                            -webkit-appearance:none;
-                            -webkit-user-select:none;
-                            user-select:none;
-                            -webkit-transition:background-color ease 0.1s;
-                            transition:background-color ease 0.1s;
-                        }
-                        .Wtui-checkbox:checked::after {
-                            content:'';
-                            top:3px;
-                            left:2px;
-                            position:absolute;
-                            background:transparent;
-                            border:#fff solid 2px;
-                            border-top:none;
-                            border-right:none;
-                            height:3px;
-                            width:8px;
-                            -moz-transform:rotate(-45deg);
-                            -ms-transform:rotate(-45deg);
-                            -webkit-transform:rotate(-45deg);
-                            transform:rotate(-45deg);
-                        }
-                    }
-                    .value6{
-                        padding:10px;
-                    }
                 }
                 .base_i_inner_btn{
                     width:100%;
-                    height:68px;
+                    height:45px;
+
+                    justify-content: center;
                     border-left:1px solid #979797;
+                    border-top:1px solid #979797;
                     border-bottom:1px solid #979797;
-                    >button{
-                        width:100px;
-                        height:40px;
-                        background:#409eff;
-                        border-radius:4px;
-                        line-height:40px;
-                        text-align:center;
-                        color:#fff;
-                        outline: none;
-                        border:none;
+                    /deep/ .el-button{
+                        padding:7px 20px
                     }
+                    /deep/ .el-button:first-child{
+                        margin-right:40px;
+                    }
+
                 }
             }
         }

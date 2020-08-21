@@ -55,7 +55,7 @@
                                 <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             </div>
                         </div>
-                        <SearchTable scrollHeight="400" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')"   >
+                        <SearchTable  :tableRowClassName="tableRowClassName"  scrollHeight="400" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')"   >
                             <el-table-column slot="radio" label="选择" :width="49"  >
                                 <template slot-scope="scope">
                                      <icon iconClass="sy" class="tab_radio" v-if="scope.row.selected"></icon>
@@ -100,7 +100,14 @@
                     current: 1,
                     size: 18,
                 },
-
+                tableRowClassName:(rowIndex,row)=>{
+                    let num=60*60*24*1000*10
+                    if (row.endTime ) {
+                        console.log(row.endTime ,new Date().getTime()-num,111112,2222);
+                        return 'warning-row';
+                    }
+                    return 'tab-row';
+                },
                 leftRow:{},
                 rightRow:{},
                 leftForm:{},

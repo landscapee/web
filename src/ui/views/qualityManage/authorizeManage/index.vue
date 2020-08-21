@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable  :tableRowClassName="tableRowClassName" scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -26,7 +26,7 @@
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option" label="操作" :width="230" >
+                    <el-table-column align="center" slot="option" label="操作" :width="230"   >
                         <template  slot-scope="scope">
                             <div >
                                 <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserDoc')">档案</el-button>
@@ -64,7 +64,14 @@
                     current: 1,
                     size: 15,
                 },
-
+                tableRowClassName:(rowIndex,row)=>{
+                    let num=60*60*24*1000*10
+                    if (row.endTime ) {
+                        console.log(row.endTime ,new Date().getTime()-num,111112,2222);
+                        return 'warning-row';
+                    }
+                    return 'tab-row';
+                },
                 form:{},
                 row:{},
                 sort:{},
@@ -92,6 +99,7 @@
         },
 
         methods: {
+
             seeOther(row,path){
                 this.$router.push({path:path,query:{ id:row.userNumber}});
 

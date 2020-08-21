@@ -14,7 +14,7 @@
             </div>
               <div class="main-content" style="display: flex;justify-content: center;flex-direction: column;align-items: center">
 
-                  <div   >
+                  <div>
                       <div class=" formdiv">
                           <el-form :model="form" :inline="true">
                               <div style="display: flex;justify-content: space-between">
@@ -90,7 +90,7 @@
                 this.getList()
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row.id}});
+                this.$router.push({path:path,query:{ id:row&&row.id}});
 
             },
              getList(){

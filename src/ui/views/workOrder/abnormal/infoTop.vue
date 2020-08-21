@@ -54,42 +54,42 @@
 
             </div>
 
-            <div class="info" v-if="getbaseItemVOList&&getbaseItemVOList.length>0">
-                <div class="lastRow" v-for="(opt) in Math.ceil(getbaseItemVOList.length/3)" :key="opt" >
-                    <el-row>
-                        <el-col class="colCenter" :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
-                            <div>{{opt1.nameCn}}</div>
-                            <div>{{opt1.nameEn}}</div>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
+            <!--<div class="info" v-if="getbaseItemVOList&&getbaseItemVOList.length>0">-->
+                <!--<div class="lastRow" v-for="(opt) in Math.ceil(getbaseItemVOList.length/3)" :key="opt" >-->
+                    <!--<el-row>-->
+                        <!--<el-col class="colCenter" :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">-->
+                            <!--<div>{{opt1.nameCn}}</div>-->
+                            <!--<div>{{opt1.nameEn}}</div>-->
+                        <!--</el-col>-->
+                    <!--</el-row>-->
+                    <!--<el-row>-->
+                        <!--<el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">-->
 
-                            <img v-if="opt1.type==4"   :src="opt1.value.split('$')[1]" alt="加载失败">
-                            <template v-else-if="opt1.type==2">
-                                {{opt1.value}}
-                            </template>
-                            <div v-else-if="opt1.type==1" >
-                            </div>
-                            <div v-else-if="opt1.type==3" >
-                                <input type="text" :name="opt1.placeholder" ></input>
-                             </div>
-                            <div v-else-if="opt1.type==5" >
-                                <div>
-                                    <div v-for="(k,l) in opt1.value.split(';')" :key="l">
-                                        <input type="checkbox" :name="opt1.placeholder.split(';')[l]" class="Wtui-checkbox" ></input>{{k}}
+                            <!--<img v-if="opt1.type==4"   :src="opt1.value.split('$')[1]" alt="加载失败">-->
+                            <!--<template v-else-if="opt1.type==2">-->
+                                <!--{{opt1.value}}-->
+                            <!--</template>-->
+                            <!--<div v-else-if="opt1.type==1" >-->
+                            <!--</div>-->
+                            <!--<div v-else-if="opt1.type==3" >-->
+                                <!--<input type="text" :name="opt1.placeholder" ></input>-->
+                             <!--</div>-->
+                            <!--<div v-else-if="opt1.type==5" >-->
+                                <!--<div>-->
+                                    <!--<div v-for="(k,l) in opt1.value.split(';')" :key="l">-->
+                                        <!--<input type="checkbox" :name="opt1.placeholder.split(';')[l]" class="Wtui-checkbox" ></input>{{k}}-->
 
-                                    </div>
-                                </div>
-                                <div> </div>
-                            </div>
-                            <div v-else-if="opt1.type==6" >
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div> </div>-->
+                            <!--</div>-->
+                            <!--<div v-else-if="opt1.type==6" >-->
 
-                            </div>
-                        </el-col>
-                    </el-row>
-                </div>
-            </div>
+                            <!--</div>-->
+                        <!--</el-col>-->
+                    <!--</el-row>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
