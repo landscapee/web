@@ -15,10 +15,11 @@
 
     </div>
 </template>
+ <script>
 
-<script>
-    import request from '@lib/axios.js';
-    import {  extend ,map} from 'lodash';
+
+import request from '@lib/axios.js';
+     import {  extend ,map} from 'lodash';
     export default {
         name: "detailsPaper",
         components: {},
