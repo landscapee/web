@@ -121,12 +121,12 @@ export default {
 						}
 					})
 					.then((data) => {
-                         if (data.responseCode == 1000||data.responseCode == 10020||data.responseCode == 10019) {
+                         if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
                              setToken(data.data.token);
                              setUserInfo(data.data);
                              this.$store.commit('user/SET_TOKEN',data.data.token);
                              this.$store.commit('user/SET_USER_INFO',data.data);
-                             if(data.responseCode == 10020||data.responseCode == 10019){
+                             if(data.responseCode == 30003||data.responseCode == 30002){
                                  this.$message.warning( data.responseMessage);
 
                              }
