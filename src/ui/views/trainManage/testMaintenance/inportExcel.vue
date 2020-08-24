@@ -4,9 +4,9 @@
             <el-form :inline="true" :model="form" ref="form" :rules="rules">
                 <el-form-item>
                     <el-input style="width:300px" type="text" v-model="form.filename"  placeholder="仅支持Excel导入"></el-input>
-
+                    <div v-show="tit" style="color:red;text-align: left;position: absolute">请选择文件</div>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item prop="">
                     <el-upload
                             :multiple="false"
                             class="upload-demo"
@@ -18,8 +18,10 @@
                             :before-upload="beforeAvatarUpload"
                             :auto-upload="false">
                         <el-button slot="trigger" size="small" type="primary">浏览</el-button>
+
                         <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                     </el-upload>
+
                 </el-form-item>
 
 
@@ -46,6 +48,7 @@
                 form:{ filename:'',},
                 rules:{},
                 id:'',
+                tit:false,
                 dialogFormVisible:false,
             }
         },
@@ -63,13 +66,20 @@
 
             },
             submit() {
-                this.$refs.file.submit();
+                if(this.form.fileName){
+                    this.tit=false
+                    this.$refs.file.submit();
+                }else{
+                    this.tit=true
+                }
+
             },
             handleChange(file, fileList) {
                 if (fileList.length > 0) {
                     this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
                 }
                 this.form.filename=file.name
+                this.tit=false
                 console.log(file, fileList);
             },
             beforeAvatarUpload(file) {
@@ -81,6 +91,7 @@
             },
 
             handleSubmit(files,q) {
+
                  let data=new FormData()
                 data.append("file",files.file);
                 data.append("paperId",this.id);
@@ -95,17 +106,12 @@
                     // data:data,
                     data:data,
                 }).then((d) => {
-                    if(d){
+                    if(d.code==200){
                         this.close();
                         this.$emit('getTableData')
                         this.$message({
                             message: '导入成功',
                             type: 'success',
-                        });
-                    }else {
-                        this.$message({
-                            message: '复制失败',
-                            type: 'error',
                         });
                     }
 
@@ -113,6 +119,7 @@
             },
 
             close(){
+                this.tit=false
                 this.row={}
                 this.form={filename:''}
                 this.dialogFormVisible=false

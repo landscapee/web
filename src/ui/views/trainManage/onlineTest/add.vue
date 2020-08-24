@@ -38,20 +38,10 @@
                          </div>
                          <el-form-item label="" prop="infTime1">
                              <el-checkbox-group v-if="adata.optionType=='多选'" v-model="form.employeeAnswer"  >
-                                 <el-checkbox     label="A">A、{{adata.optionA}}</el-checkbox>
-                                 <el-checkbox     label="B">B、{{adata.optionB}}</el-checkbox>
-                                 <el-checkbox     label="C">C、{{adata.optionC}}</el-checkbox>
-                                 <el-checkbox     label="D">D、{{adata.optionD}}</el-checkbox>
-                                 <el-checkbox     label="E">E、{{adata.optionE}}</el-checkbox>
-                                 <el-checkbox     label="F">F、{{adata.optionF}}</el-checkbox>
+                                 <el-checkbox v-if="adata[k]"  v-for="(k,l) in optionObj"  :key="l"   :label="l">{{k}}、{{adata[k]}}</el-checkbox>
                              </el-checkbox-group>
                              <el-radio-group v-else v-model="form.employeeAnswer"  >
-                                 <el-radio     label="A">A、{{adata.optionA}}</el-radio>
-                                 <el-radio     label="B">B、{{adata.optionB}}</el-radio>
-                                 <el-radio     label="C">C、{{adata.optionC}}</el-radio>
-                                 <el-radio     label="D">D、{{adata.optionD}}</el-radio>
-                                 <el-radio     label="E">E、{{adata.optionE}}</el-radio>
-                                 <el-radio     label="F">F、{{adata.optionF}}</el-radio>
+                                 <el-radio    v-if="adata[k]"  v-for="(k,l) in optionObj"   :key="l"  :label="l">{{l}}、{{adata[k]}}</el-radio>
                              </el-radio-group>
 
                          </el-form-item>
@@ -86,10 +76,17 @@
         data() {
 
             return {
+                optionObj:{
+                  A:'optionA'  ,
+                  B:'optionB'  ,
+                  C:'optionC'  ,
+                  D:'optionD'  ,
+                  E:'optionE'  ,
+                  F:'optionF'  ,
+                },
                 endTest1:this.endTest,
                 numIndex:0,
-                options:['上sfsdfsdfsdfsdfsdsd海', '北sdfssdfsdfsdfsdf京', '广sdf州', '深圳'],
-                form: {employeeAnswer:'' },
+                 form: {employeeAnswer:'' },
                 rules: {
                     aa:[{required:true,message:'请输入',trigger:'blue'}]
                 },
@@ -199,7 +196,6 @@
                     this.numIndex++
                     this.getAnser()
                 }
-
             },
             last(){
                 this.numIndex--

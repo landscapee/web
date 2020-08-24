@@ -9,7 +9,7 @@
                 <div @click="editorForm()"  >
                     <icon  iconClass="reset "></icon>修改
                 </div>
-                <div @click="exportTest"  v-if="type!='add1'">
+                <div @click="exportTest"  v-if="type!='add'">
                     <icon iconClass="export"></icon>导出
                 </div>
             </div>
@@ -94,12 +94,13 @@
     import { extend } from "lodash";
     export default {
         components: {
-            Icon
+            Icon,ExportTest
         },
         name: "",
         data() {
 
             return {
+                type:'',
                   form: {questionInfoList:[] },
                   form1: {d:'',s:[] },
                 rules: {
@@ -114,6 +115,7 @@
 
         created() {
               if (this.$route.query) {
+                  this.type=this.$route.query.type
                  this.getList(this.$route.query.id)
             }
 

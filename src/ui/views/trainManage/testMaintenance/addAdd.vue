@@ -137,7 +137,7 @@
                 options:{},
                  form: {optionType:'单选',paperId:''},
                 rules: {
-                    questionNo: [{ validator:infSources, trigger: "blur" },],
+                    questionNo: [{  required: true,validator:infSources, trigger: "blur" },],
                     optionType: [{ required: true, message: '请选择选择类型', trigger: "blur" }],
                     answer: [{required: true, message: '正确答案不能为空', trigger: "blur" }],
                     score: [

@@ -23,7 +23,7 @@
         <div style="  font-size: 18px;font-weight: bold" >试卷基本信息</div>
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
 
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
+            <el-form  label-position="right"  :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
                     <el-form-item label="试卷名称：" prop="paperName">
@@ -78,7 +78,7 @@
                 </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="试题简介：" prop="description">
+                    <el-form-item label="试卷简介：" prop="description">
                         <span v-if="type=='info'">{{form.description}}</span>
                         <el-input v-else v-model="form.description" placeholder="请输入试题简介"></el-input>
                     </el-form-item>
@@ -87,13 +87,13 @@
             </el-form>
         </div>
         <div class="headDiv1">
-            <div  > <span style="font-size: 18px;font-weight: bold">所含试题</span>  <span style="color:#7F7F7F;font-size: 18px">（数量{{arrTable.length}}）</span></div>
+            <div  > <span style="font-size: 18px;font-weight: bold">所含试题</span>  <span style="color:#7F7F7F;font-size: 18px">（数量{{arrTable.records&&arrTable.records.length}}）</span></div>
             <div class="topToolbar">
-                <div @click="importExcel"><icon iconClass="add" ></icon>导入</div>
-                <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                <div @click="addOrEditOrInfo('info')"><icon iconClass="remove" ></icon>详情</div>
+                <div @click="type=='info'?'':importExcel() " :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  ></icon>导入</div>
+                <div @click="type=='info'?'':addOrEditOrInfo('add') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add" ></icon>新增</div>
+                <div @click="type=='info'?'':addOrEditOrInfo('edit') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit" ></icon>编辑</div>
+                <div @click="type=='info'?'':delData('left','leftSelectId') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove" ></icon>删除</div>
+                <div @click="addOrEditOrInfo('info')"  ><icon iconClass="info" ></icon>详情</div>
                 <!--<div @click="exportExcel()">-->
                     <!--<icon iconClass="export" ></icon>导出-->
                     <!--<a ref="a" :href="`${this.$ip}/mms-training/download/securityMerits`"></a>-->
@@ -176,10 +176,10 @@
                 form: {},
                 formT:{},
                 rules: {
-                    paperName: [{ validator:paperName, trigger: "blur" }],
+                    paperName: [{required: true, validator:paperName, trigger: "blur" }],
                     totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" }],
                     testType: [{ required: true, message: "请选择考试类型", trigger: "blur" }],
-                     paperCode: [{ validator:paperCode, trigger: "blur" }],
+                     paperCode: [{ required: true, validator:paperCode, trigger: "blur" }],
                   },
                  tableConfig:testMainAddConfig({}),
                 params:{
@@ -236,7 +236,7 @@
             preview(){
 
                 if(this.form.id){
-                    this.$router.push({path:'/testMaintenanceSee',query:{ id:this.form.id, }});
+                    this.$router.push({path:'/testMaintenanceSee',query:{ type:this.type,id:this.form.id, }});
 
                 }else {
                     this.$message.error('请先保存试卷基本信息');
@@ -459,7 +459,7 @@
                 /deep/ .el-form-item{
                     width:100%!important;
                     .el-form-item__content{
-                        width: calc( 100% - 95px)!important;
+                        width: calc( 100% - 110px)!important;
                     }
                     .el-input{
                         width: 100% !important;
@@ -498,11 +498,11 @@
             width: 100%;
 
             /deep/ .el-form-item__label {
-                width: 95px;
+                width: 110px;
                 text-align: right;
             }
             /deep/ .el-form-item__content {
-                margin-left: 95px;
+                margin-left: 110px;
             }
             /deep/ .el-input{
                 width: 220px!important;
@@ -528,7 +528,7 @@
             }
             .row_item_row{
                 .el-form-item {
-                    width: calc(100% - 95px);
+                    width: calc(100% - 110px);
                 }
             }
         }
@@ -536,5 +536,19 @@
 
     }
 
-
+    /deep/ .el-form-item:not(.is-required){
+        .el-form-item__label{
+            padding-left: 11px;
+        }
+    }
+    /deep/ .el-form-item{
+        margin :0  0 10px 0!important;
+        .el-form-item__label:before{
+            content: '';
+            display:none;
+        }
+        .el-form-item__label{
+            padding-left: 0px!important;
+        }
+    }
 </style>

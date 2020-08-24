@@ -154,7 +154,7 @@
                                         <div > {{opt[get(form.labelVO,'contentLayout')=='C3（三列）'?'c3Remark':'c4WorkerRemark']}}</div>
                                         <el-button type="primary" style="padding:5px 15px">签署</el-button>
                                         <div v-if="show" style="width: 100%" >
-                                            {{ '${fix_sign_'+opt.p.number+'.'+(opt.index+1)+'}'}}
+                                            {{ '${fix_sign_'+(opt.p.number+'').replace(/\./,'_')+'_'+(opt.index+1)+'}'}}
                                         </div>
                                     </div>
                                 </td>
@@ -163,7 +163,7 @@
                                         <div>{{opt.c4CommanderRemark}}</div>
                                         <el-button type="primary" style="padding:5px 15px">签署</el-button>
                                         <div v-if="show" style="width: 100%" >
-                                            {{ '${travel_sign_'+opt.p.number+'.'+ (opt.index+1) +'}'}}
+                                            {{ '${travel_sign_'+(opt.p.number+'').replace(/\./,'_')+'_'+ (opt.index+1) +'}'}}
                                         </div>
                                     </div>
                                 </td>
