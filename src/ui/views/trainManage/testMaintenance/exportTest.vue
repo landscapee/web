@@ -67,10 +67,9 @@
                             responseType: 'blob',
                             params:{startTime:this.form.startTime,endTime:this.form.endTime }
                         }).then((d)=>{
-
                             const content = d
                             const blob = new Blob([content],{type:contentType})
-                            const fileName = ` ${this.row.paperName}`
+                            const fileName = `${this.row.paperName}`
                             if ('download' in document.createElement('a')) { // 非IE下载
                                 const elink = document.createElement('a')
                                 elink.download = fileName

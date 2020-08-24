@@ -45,7 +45,7 @@
                 <div class="row_tow">
                     <el-form-item  label="考试试卷：" prop="paperId">
                         <span v-if="type=='info'">{{  form.paperName }}</span>
-                        <el-select filterable :disabled="type=='edit'"  v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
+                        <el-select filterable :disabled="form.examStatus!='未推送'"  v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
                             <el-option v-for="(opt,index) in testList" :key="index" :label="opt.paperName" :value="opt.id"> </el-option>
                         </el-select>
                     </el-form-item>

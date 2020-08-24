@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog title="试卷导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog title="试卷导入"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :inline="true" :model="form" ref="form" :rules="rules">
                 <el-form-item>
                     <el-input style="width:300px" type="text" v-model="form.filename"  placeholder="仅支持Excel导入"></el-input>
