@@ -80,10 +80,7 @@ export default {
     methods: {
         lineTest(path,row){
             // console.log(row.examTime,new Date().getTime()- 8.64e7);
-            this.$router.push({
-                path:path,
-                query:{id:row.examId}
-            })
+
             if(row.examTime>new Date().getTime()- 8.64e7){
 
                 this.$router.push({

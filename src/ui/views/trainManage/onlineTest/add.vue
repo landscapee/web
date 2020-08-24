@@ -9,7 +9,7 @@
                 <div @click="resetForm()" :class="type=='info'?'isDisabled':''">
                     <icon  iconClass="reset "></icon>重置
                 </div>
-                <div @click="tishi(this.endTest)" :class="type=='info'?'isDisabled':''">
+                <div @click="tishi(endTest)" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save" style="width: 0"></icon>结束考试
                 </div>
             </div>
@@ -86,6 +86,7 @@
         data() {
 
             return {
+                endTest1:this.endTest,
                 numIndex:0,
                 options:['上sfsdfsdfsdfsdfsdsd海', '北sdfssdfsdfsdfsdf京', '广sdf州', '深圳'],
                 form: {employeeAnswer:'' },
@@ -168,6 +169,8 @@
             // paperId: "94c50b2d4d05c890f955ef5afdc389a8"
             // questionId: "1275328574826823681
             getAnser(){
+                if(!this.testData.length) return false
+
                 request({
                     url: `${this.$ip}/mms-training/examLine/getAnswer`,
                     method:'post',
@@ -212,6 +215,7 @@
                             }else {
                                 employeeAnswer= this.form.employeeAnswer
                             }
+                            if(!this.testData.length) return false
                             request({
                                 url: `${this.$ip}/mms-training/examLine/save`,
                                 method:'post',
@@ -231,7 +235,7 @@
                 })
                     .then(() => {
                        fn()
-                        f1()
+                        f1&&f1()
                     }).catch(()=>{
 
                 })

@@ -15,6 +15,7 @@
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                 </div>
             </div>
+
             <div class="main-content">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
@@ -89,9 +90,7 @@
         },
 
         methods: {
-            aaa(){
 
-            },
             enable(row,path){
                 request({
                     url:`${this.$ip}/mms-workorder/template/enable/${row.id}`,
