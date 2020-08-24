@@ -59,13 +59,16 @@ export default {
 					if (!val || !val.length || !val[0].id) {
 						return;
 					}
-					if (this.selectedId) {
-						this.$refs.tree.setCurrentKey(this.selectedId);
-					}
-					if (!this.selectedId || !this.$refs.tree.getCurrentNode()) {
-						this.$refs.tree.setCurrentKey(val[0].id);
-						this.selectedId = val[0].id;
-					}
+					// if (this.selectedId) {
+					// 	this.$refs.tree.setCurrentKey(this.selectedId);
+					// }
+					// if (!this.selectedId || !this.$refs.tree.getCurrentNode()) {
+					// 	this.$refs.tree.setCurrentKey(val[0].id);
+					// 	this.selectedId = val[0].id;
+					// }
+                    this.$refs.tree.setCurrentKey(val[0].id);
+                    this.selectedId = val[0].id;
+					// debugger
 					this.$emit('handleSelect', this.$refs.tree.getCurrentNode());
 				});
 			}
@@ -169,6 +172,7 @@ export default {
 
 		/** 筛选 */
 		filterNode(value, data) {
+
 			if (!value) return true;
 			// if(this.selectedId==data.id){
 			//   console.log(1)
@@ -204,7 +208,7 @@ export default {
 		},
 	},
 	mounted() {
-		// console.log('moun', this.data);
+ 		// console.log('moun', this.data);
 		// /* 初始化选中的ID ‘this.selectedId ’ */
 		// console.log('aaaa', this.initSelectedId());
 		// // /*向上传递ID*/

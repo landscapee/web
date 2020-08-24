@@ -67,17 +67,16 @@ export default {
 			userSelect:[],
  			title: '选择人员',
 			isShow: {input:true},
+            first: true,
 			selectAll: false,
 			dialogVisible: false,
 			personList: [],
-			personListOld: [],
- 			data: [],
+            deptList: [],
+  			data: [],
 			selectId: null,
 			selectNode: {},
-            lengthOldObj:{},
-			type:"",
-			deptList:[],
-            OrgUser:[],
+ 			type:"",
+			OrgUser:[],
 			orgObj:{
                 ORG:'orgId',
                 DEPT:'deptId',
@@ -94,6 +93,7 @@ export default {
     methods: {
         filterTextC(val){
             if (!val){
+                this.personList= this.personNodeIdObj[this.selectNode.id]
                  return false
 			}
             this.personList=[]
@@ -103,10 +103,13 @@ export default {
 		},
 		isAllSelect(){
             let flag=true
-			let length=this.lengthOldObj[this.selectNode.id]
-			if(length!=this.userSelect.length){
-                flag=false
-			}
+            this.personList.map((k,l)=>{
+                const idx = this.userSelect.findIndex((d) => d.id === k.id);
+                if( idx==-1){
+                    flag=false
+                }
+
+            })
 			return flag
 		},
         userSelectC(){
@@ -137,9 +140,23 @@ export default {
                 method: 'get',
                 params:param,
             }).then((d) => {
+				if(this.first===true){
+                    this.OrgUser=d.data
+                    this.first=1
+					let arr=[...this.userSelect]
+					this.userSelect=[]
+					d.data.map((k,l)=>{
+                        const idx = arr.findIndex((op) => op.id === k.id);
+                        if( idx>-1){
+                            arr.splice(idx,1)
+							this.userSelect.push(k)
+                        }
+					})
+ 				}else{
+                    this.first=2
+				}
 
-                this.OrgUser=d.data
-                return Promise.resolve(d,arr);
+                return Promise.resolve(d,null);
 
             });
 
@@ -157,28 +174,7 @@ export default {
 
 
 		},
-		getListById1(node) {
-              if (node && node.id) {
-				this.selectId = node.id;
-				this.selectNode = node;
-				this.type = node.type;
-			}
- 			let param = { pageNum: 1, pageSize: 99999 };
-			let arr11 = [];
-
-            if(!this.OrgUser.length){
-                this.getAllUserByOrgId(param).then((d)=>{
-                    this.dealData(d||[],arr11,node)
-                     node.user=arr11
-                    this.personList = arr11;
-                 })
-			}else{
-                this.dealData(this.OrgUser,arr11,node)
-                node.children=arr11
-                this.personList = arr11;
- 			}
-		},
-        handleSelectAll() {
+         handleSelectAll(val) {
                 this.personList.map((k,l)=>{
                     const idx = this.userSelect.findIndex((d) => d.id === k.id);
                            if(this.selectAll){
@@ -193,31 +189,34 @@ export default {
                 })
         },
 		getListById(node) {
-            this.filterText=''
+             this.filterText=''
               if (node && node.id) {
 				this.selectId = node.id;
 				this.selectNode = node;
 				this.type = node.type;
 			}
 			if(this.personNodeIdObj[node.id]){
-                this.lengthOldObj[node.id]=this.personNodeIdObj[node.id].length
-                this.personList=this.personNodeIdObj[node.id]
-                console.log(this.lengthOldObj,this.personList,1);
-			    return false
+                 this.personList=this.personNodeIdObj[node.id]
+ 			    return false
 			}
 			let param = { pageNum: 1, pageSize: 99999 };
             this.getAllUserByOrgId(param).then((d) => {
-                this.personNodeIdObj[node.id]=d.data.list ? d.data.list : d.data
+                 let arr=d.data
+
+                if(this.first===2){  //非第一次
+                      arr=d.data.map((k,l)=>{
+                        let index=this.OrgUser.findIndex((k1)=>k1.id==k.id)
+                         return this.OrgUser[index]
+                    })
+				}
+                this.personNodeIdObj[node.id]=arr
                 this.personList =this.personNodeIdObj[node.id]
-                this.lengthOldObj[node.id]=this.personNodeIdObj[node.id].length
-               this.selectAll = this.isAllSelect();;
-
+                this.selectAll = this.isAllSelect();
 			});
-            console.log(this.lengthOldObj,this.personList,2);
-        },
+         },
 
 
-		getTree( ) {
+		getTree() {
 		    let userInfo= this.$store.getters.userInfo
             console.log(userInfo,5,6);
             let orgId = userInfo.orgId;
@@ -259,25 +258,31 @@ export default {
 			}
 		},
 		handleClose() {
-		    this.personList=[]
-			this.lengthOldObj={}
-			this.personNodeIdObj={}
-			this.dialogVisible = false;
+            this.type='ORG'
+            this.personList=[]
+            this.data =[]
+            this.OrgUser =[]
+            this.first=true
+            this.selectId=null
+ 			this.selectNode={}
+ 			this.personNodeIdObj={}
+ 			this.dialogVisible = false;
 		},
 		handleSave() {
-			this.handleClose();
+
  			this.$emit('onSelected', this.userSelect,this.deptList);
+            this.handleClose();
 		},
 		open(inputList, title, currentDept) {
-  			this.getTree();
+  			this.getTree(inputList);
 			this.selectAll = false;
 			this.title = title;
-			this.userSelect = cloneDeep(inputList) || [];
-			this.dialogVisible = true;
+            this.userSelect = inputList;
+            this.dialogVisible = true;
 		},
 	},
 	created(){
-	  this.getTree()
+	  // this.getTree()
 	},
 	components: {
 		Tree,
