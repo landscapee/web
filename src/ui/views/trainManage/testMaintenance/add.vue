@@ -336,9 +336,8 @@
                 }
 
                 this.params.current = 1;
-                console.log(row, column, event,199);
-                this.$set(this.arrTable,row.index,row);
-            },
+                 this.$set(this.arrTable.records,row.index,row);
+             },
 
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {

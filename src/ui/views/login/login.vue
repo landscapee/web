@@ -20,7 +20,7 @@
 						</span>
 						<el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="请输入您的密码" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
 					</el-form-item>
-					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin">登录 →</el-button>
+					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin('loginForm')">登录 →</el-button>
 				</el-form>
 			</el-row>
 		</div>
@@ -63,8 +63,8 @@ export default {
 				password: '',
 			},
 			loginRules: {
-				username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-				password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+				// username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+				// password: [{ required: true, trigger: 'blur', validator: validatePassword }],
 			},
 			loading: false,
 			passwordType: 'password',
@@ -107,8 +107,8 @@ export default {
 			});
 		},
 		handleLogin() {
-			this.$refs.loginForm.validate((valid) => {
-				if (valid) {
+ 			this.$refs.loginForm.validate((valid) => {
+ 				if (valid) {
 					this.loading = true;
 					removeToken();
 					request({
@@ -121,16 +121,15 @@ export default {
 						}
 					})
 					.then((data) => {
-                         if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
-                             setToken(data.data.token);
+                          if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
+                              setToken(data.data.token);
                              setUserInfo(data.data);
                              this.$store.commit('user/SET_TOKEN',data.data.token);
                              this.$store.commit('user/SET_USER_INFO',data.data);
                              if(data.responseCode == 30003||data.responseCode == 30002){
                                  this.$message.warning( data.responseMessage);
-
                              }
-                             initWebsocket()
+                              initWebsocket()
                              this.findUnread();
                              this.$router.push({ path: '/qualityManage' });
                          }else{
