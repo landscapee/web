@@ -186,12 +186,13 @@
                   size:15,
                   current:1,
                 },
-                arrTable:[],
+                arrTable:{},
                 options:{},
                  row:null,
                 sort:{},
                 selectId:null,
-                type: "add"
+                type: "add",
+
             };
         },
 
@@ -263,6 +264,7 @@
                 request({
                     url:`${this.$ip}/mms-training/questionInfo/list`,
                     method: 'post',
+                    params:this.params,
                     data:{paperId:this.form.id,...this.formT ,...this.sort}
                 }).then(data => {
                      if(data.code==200){
@@ -320,7 +322,7 @@
             listenToCheckedChange(row, column, event){
 
                 let select = row.selected;
-                this.arrTable.map((r,l) =>{
+                this.arrTable.records.map((r,l) =>{
                     if(r.selected){
                         r.selected = false;
                     }
@@ -443,10 +445,10 @@
     .addTest {
         padding: 0 40px ;
         /deep/ .mainTable{
-            height: 360px!important;
+            height: 320px!important;
             overflow: auto;
             /deep/ .el-table__fixed{
-                height: 359px !important;
+                height: 319px !important;
             }
         }
          .main-content{

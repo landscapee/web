@@ -3,8 +3,8 @@
         <div class="block">
              <el-carousel  height="calc(100vh - 90px)" :autoplay="false">
                 <el-carousel-item  v-for="(item,index) in fileList" :key="index">
-                    <!--<embed  v-if="item.contentType=='application/pdf'" :src="item.filePath" type="application/pdf" width="100%" height="100%">-->
-                    <iframe v-if="item.contentType=='application/pdf'" :src="item.filePath"  type="application/pdf" width="100%" height="100%"></iframe>
+                    <embed  v-if="item.contentType=='application/pdf'" :src="item.filePath" type="application/pdf" width="100%" height="100%">
+                    <!--<iframe v-if="item.contentType=='application/pdf'" :src="item.filePath"  type="application/pdf" width="100%" height="100%"></iframe>-->
                     <div v-else style="height:100%;display: flex;justify-content: center;align-items: center">
                         <img style="max-width: 90%"  :src="item.filePath" alt="加载失败 ">
                     </div>

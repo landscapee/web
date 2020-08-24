@@ -8,22 +8,35 @@
 <svg class="svg-icon" aria-hidden="true">
     <use :xlink:href="#icon-sy"></use>
 </svg>
+<input type="text" name="qqq" >
+<button onclick="aaa( )">sdfsdf</button>
 1111111111
 <img src="../../../../ui/icons/svg/sy.svg" alt="">
 <script>
-    console.log(1,'0'==false);
+    // console.log(1,'0'==false);
     if({}==0){
-        console.log(2);
+        // console.log(2);
     }
-    window.isCloseHint = true;
-    //初始化关闭
-    window.addEventListener("beforeunload", function(e) {
-         if (window.isCloseHint) {
-            var confirmationMessage = "要记得保存！你确定要离开我吗？";
-            (e || window.event).returnValue = confirmationMessage; // 兼容 Gecko + IE
-             return confirmationMessage; // 兼容 Gecko + Webkit, Safari, Chrome
-        }
-     });
+    function aaa(){
+        let s=document.getElementsByTagName('input')[0].value
+        console.log(s)
+        let reg= /^(\d{1,}\.?\d?)(,?)(\d?\.?\d{1,})$/g
+        // let reg= /^(\d{1,})(\.?)(\d{1,})$/g
+        console.log(s.match(reg));
+    }
+
+    // console.log(reg.test(s));
+
+
+    // window.isCloseHint = true;
+    // //初始化关闭
+    // window.addEventListener("beforeunload", function(e) {
+    //      if (window.isCloseHint) {
+    //         var confirmationMessage = "要记得保存！你确定要离开我吗？";
+    //         (e || window.event).returnValue = confirmationMessage; // 兼容 Gecko + IE
+    //          return confirmationMessage; // 兼容 Gecko + Webkit, Safari, Chrome
+    //     }
+    //  });
 </script>
 </body>
 </html>
