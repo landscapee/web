@@ -13,7 +13,7 @@
 			<el-col :span="12">
 				<div>
 					<el-card class="box-card" shadow="never" border-radius="2px">
-						<el-scrollbar style="height:300px">
+						<el-scrollbar style="height:310px">
 								<div v-show="personList.length == 0">该部门暂无人员</div>
 							<div class="elinput" v-show="personList.length > 0">
 								<el-input class="input"  ref="input" placeholder="输入关键字进行搜索" @input="filterTextC" v-model="filterText"> </el-input>
@@ -77,6 +77,7 @@ export default {
 			selectNode: {},
  			type:"",
 			OrgUser:[],
+			OrgUserObj:{},
 			orgObj:{
                 ORG:'orgId',
                 DEPT:'deptId',
@@ -108,7 +109,6 @@ export default {
                 if( idx==-1){
                     flag=false
                 }
-
             })
 			return flag
 		},

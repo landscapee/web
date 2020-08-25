@@ -110,6 +110,7 @@ export default {
 			this.dialogVisible = false;
 		},
 		save() {
+		    debugger
             this.$emit('onSelected', this.persons);
             this.close();
 		},
