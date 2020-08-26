@@ -156,7 +156,7 @@
         components: {
             Icon
         },
-        name: "",
+        name: "add",
         data() {
             const checkNumber = (rule, value, callback) => {
                 if(value){
@@ -196,7 +196,7 @@
             };
         },
         created() {
-            if (this.$route.query) {
+             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
@@ -218,8 +218,6 @@
                         .catch(error => {
                             this.$message.error(error);
                         });
-
-
                 }
             }
             request({

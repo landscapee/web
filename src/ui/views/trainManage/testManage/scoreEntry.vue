@@ -57,21 +57,14 @@
                                   ...this.form,
                              }
                          }).then((d) => {
-                             this.close();
-                             this.$message({
-                                 message: '操作成功',
-                                 type: 'success',
-                             });
-                             this.$emit('getList')
-                             //  if(d.code==200){
-                             //
-                             // }else {
-                             //     this.$message({
-                             //         message: '操作失败',
-                             //         type: 'error',
-                             //     });
-                             // }
-
+                              if(d.code==200){
+                                  this.close();
+                                  this.$message({
+                                      message: '操作成功',
+                                      type: 'success',
+                                  });
+                                  this.$emit('getList')
+                             }
                         });
                     }
                 });

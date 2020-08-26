@@ -1,7 +1,8 @@
 <template>
     <div>
-         <router-view v-if="this.$router.history.current.path == '/dangerousDataAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/dangerousDataIndex'" :key="$route.path" class="  G_listOne">
+
+         <router-view v-if="this.$route.path== '/dangerousDataAdd'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path== '/dangerousDataIndex'" :key="$route.path" class="  G_listOne">
             <div class="  QCenterRight">
                 <div class="  QHead_list">
                     <span>危险数据</span>
@@ -147,6 +148,7 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
+            console.log(this.$route.path);
             let data=JSON.stringify(this.row)
             if(tag=='add'){
                 this.$router.push({path:'/dangerousDataAdd',query:{type:'add'}});

@@ -45,14 +45,14 @@
                 <div class="row_tow">
                     <el-form-item  label="考试试卷：" prop="paperId">
                         <span v-if="type=='info'">{{  form.paperName }}</span>
-                        <el-select filterable :disabled="form.examStatus!='未推送'"  v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
+                        <el-select filterable :disabled="form.examStatus!='未推送'&&type=='edit'"  v-else clearable v-model="form.paperId" placeholder="请选择考试试卷">
                             <el-option v-for="(opt,index) in testList" :key="index" :label="opt.paperName" :value="opt.id"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="考试时长：" prop="totalTime">
                         <span v-if="type=='info'">{{form.totalTime}}分钟</span>
                         <el-input v-else v-model="form.totalTime" placeholder="请输入考试时长"></el-input>
-                        <span v-if="type!='info'" style="position: absolute;right:2px">&nbsp;&nbsp;分</span>
+                        <span v-if="type!='info'" style="position: absolute;right:-15px">&nbsp;&nbsp;分</span>
                     </el-form-item>
                 </div>
 
@@ -129,6 +129,7 @@
                 rules: {
                     infSources: [{ required:true,message:'sfsdfs', trigger: "blur" }],
                     paperId: [{ required:true,message:'请选择', trigger: "blur" }],
+                    examTime: [{ required:true,message:'请选择', trigger: "blur" }],
                     examMode: [{ required:true,message:'请选择', trigger: "blur" }],
                     examName: [{ required:true,message:'请输入考试名称', trigger: "blur" }],
                     totalTime: [
