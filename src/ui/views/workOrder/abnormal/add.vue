@@ -94,7 +94,7 @@
                 <div class="row_tow">
                     <el-form-item  label="飞机注册号：" >
                         <span v-if="type=='info'">{{ form.flightRegisterNo }}</span>
-                        <el-input v-else v-model="form. flightRegisterNo" placeholder="请输入飞机注册号"></el-input>
+                        <el-input v-else v-model="form.flightRegisterNo" placeholder="请输入飞机注册号"></el-input>
                     </el-form-item>
                     <el-form-item  label="进出港计划时间：" >
                         <span v-if="type=='info'">{{ form.planDepartureTime?moment(form.planDepartureTime).format('YYYY-MM-DD'):''}}</span>

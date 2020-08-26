@@ -244,17 +244,17 @@ let authRoutes = [
 		name: '工单管理',
 		meta: {title: '工单管理',icon: 'gdgl' },
 		children: [
-            {
-                path: '/orderEditorDemo',
-                component: () => import('@views/orderEditorDemo/index.vue'),
-                name: '编辑',
-                meta: {title: '编辑',icon: '',keepAlive:true},
-            },
+            // {
+            //     path: '/orderEditorDemo',
+            //     component: () => import('@views/orderEditorDemo/index.vue'),
+            //     name: '编辑',
+            //     meta: {title: '编辑',icon: '',keepAlive:true},
+            // },
             {
                 path: '/WorkTemplate',
                 component: () => import('@views/workOrder/workTemplate/index'),
-                name: '工单模板管理',
-                meta: {title: '工单模板管理',icon: 'xxgl' },
+                name: '模板管理',
+                meta: {title: '模板管理',icon: 'xxgl' },
                 children:[
                     {
                         path: '/WorkTemplateAdd',
@@ -267,33 +267,26 @@ let authRoutes = [
             {
                 path: '/signControl',
                 component: () => import('@views/workOrder/signControl/index'),
-                name: '签署与管控',
-                meta: {title: '签署与管控',icon: 'xxgl' },
+                name: '完工管控',
+                meta: {title: '完工管控',icon: 'xxgl' },
                 children:[
                     {
-                        path: '/WorkTemplateAdd',
+                        path: '/signControlAdd',
                         component: () => import('@views/workOrder/signControl/add'),
-                        name: '新增签署与管控',
-                        meta: {title: '新增签署与管控',icon: 'xxgl' },
+                        name: '完工管控详情',
+                        meta: {title: '完工管控详情',icon: 'xxgl' },
                     },
-                ]
-            },{
-                path: '/WorkAbnormal',
-                component: () => import('@views/workOrder/abnormal/index'),
-                name: '异常管理',
-                meta: {title: '工单异常管理',icon: 'xxgl' },
-                children:[
                     {
                         path: '/WorkAbnormalDetails',
                         component: () => import('@views/workOrder/abnormal/details'),
-                        name: '工单详情',
-                        meta: {title: '工单详情',icon: 'xxgl' },
+                        name: '异常更改',
+                        meta: {title: '异常更改',icon: 'xxgl' },
                     },
                     {
                         path: '/WorkPaperDetails',
                         component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
-                        name: '工单详情',
-                        meta: {title: '工单详情',icon: 'xxgl' },
+                        name: '异常更改',
+                        meta: {title: '异常更改',icon: 'xxgl' },
                     },
                     {
                         path: '/WorkAbnormalAdd',
@@ -303,11 +296,38 @@ let authRoutes = [
                     },
                 ]
             },
+            // {
+            //     path: '/WorkAbnormal',
+            //     component: () => import('@views/workOrder/abnormal/index'),
+            //     name: '异常管理',
+            //     meta: {title: '工单异常管理',icon: 'xxgl' },
+            //     children:[
+            //         {
+            //             path: '/WorkAbnormalDetails',
+            //             component: () => import('@views/workOrder/abnormal/details'),
+            //             name: '工单详情',
+            //             meta: {title: '工单详情',icon: 'xxgl' },
+            //         },
+            //         {
+            //             path: '/WorkPaperDetails',
+            //             component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
+            //             name: '工单详情',
+            //             meta: {title: '工单详情',icon: 'xxgl' },
+            //         },
+            //         {
+            //             path: '/WorkAbnormalAdd',
+            //             component: () => import('@views/workOrder/abnormal/add'),
+            //             name: '纸制填报工单导入',
+            //             meta: {title: '纸制填报工单导入',icon: 'xxgl' },
+            //         },
+            //     ],
+            //     hidden:true
+            // },
             {
                 path: '/workOrderChange',
                 component: () => import('@views/workOrder/workOrderChange/index'),
-                name: '工单变更审核',
-                meta: {title: '工单变更审核',icon: 'xxgl' },
+                name: '变更审核',
+                meta: {title: '变更审核',icon: 'xxgl' },
                 children:[
 
                 ]

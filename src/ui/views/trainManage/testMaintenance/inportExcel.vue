@@ -66,7 +66,7 @@
 
             },
             submit() {
-                if(this.form.fileName){
+                if(this.form.filename){
                     this.tit=false
                     this.$refs.file.submit();
                 }else{

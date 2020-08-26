@@ -19,7 +19,7 @@
             </div>
             <div class="main-content">
                 <div class="header">机务服务非例行工作结算清单{{ruleForm.number?`(NO ${ruleForm.number})`:''}}</div>
-                <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" style=" width:1400px;">
                     <div class='form-item-l'>
                         <el-form-item label="航空公司/Airline" prop="airLine" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.airLine}}</span>
@@ -122,16 +122,16 @@
                             <el-input v-else type='number' v-model="ruleForm.people" style='width:106px;'></el-input>
                             人/Man
                             <span v-if="isInfo" class='form_inlne_val' style='width:54px;'>{{ruleForm.hours}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.hours" style='width:106px;'></el-input>
+                            <el-input v-else type='number' v-model="ruleForm.hours" style='width:108px;'></el-input>
                             小时/Hour
                         </el-form-item>
                         <el-form-item label="其他" prop="others" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.others}}</span>
-                            <el-input v-else v-model="ruleForm.others" style='width:316px;'></el-input>
+                            <el-input v-else v-model="ruleForm.others" style='width:320px;'></el-input>
                         </el-form-item>
                     </div>
                     <div class='form-item-l' style='justify-content:flex-start' v-if="type==='add'">
-                        <el-form-item label="上传模板" :label-width='labelWidth'>
+                        <el-form-item label="上传纸质收费单" :label-width='"374px"'>
                             <el-upload
                                 style='display:flex'
                                 class="upload_demo"
@@ -343,7 +343,7 @@ export default {
             color:#222;
         }
         .demo-ruleForm{
-           margin-top:30px;
+            margin: 30px auto 0
         }
         .form-item-l{
             display:flex;
