@@ -46,25 +46,15 @@
             </div>
             <div class="formRight">
                 <el-form    :model="form1"   ref="form" >
-                    <div style="font-size: 20px;font-weight: bold">题目描述{{row.questionName}}  （）</div>
+                    <div style="font-size: 20px;font-weight: bold">{{row.questionName}}  （）</div>
                     <el-form-item label="" prop="infTime1">
-                        <el-checkbox-group v-if="row.optionType=='多选'"  v-model="form1.s"  >
-                            <el-checkbox     label="A">A、{{row.optionA}}</el-checkbox>
-                            <el-checkbox     label="B">B、{{row.optionB}}</el-checkbox>
-                            <el-checkbox     label="C">C、{{row.optionC}}</el-checkbox>
-                            <el-checkbox     label="D">D、{{row.optionD}}</el-checkbox>
-                            <el-checkbox     label="E">E、{{row.optionE}}</el-checkbox>
-                            <el-checkbox     label="F">F、{{row.optionF}}</el-checkbox>
-                        </el-checkbox-group>
-                        <el-radio-group v-else  v-model="form1.d" >
-                            <el-radio     label="A">A、{{row.optionA}}</el-radio>
-                            <el-radio     label="B">B、{{row.optionB}}</el-radio>
-                            <el-radio     label="C">C、{{row.optionC}}</el-radio>
-                            <el-radio     label="D">D、{{row.optionD}}</el-radio>
-                            <el-radio     label="E">E、{{row.optionE}}</el-radio>
-                            <el-radio     label="F">F、{{row.optionF}}</el-radio>
-                        </el-radio-group>
 
+                        <el-checkbox-group v-if="row.optionType=='多选'" v-model="form1.s"  >
+                            <el-checkbox v-if="row[k]"  v-for="(k,l) in optionObj"  :key="l"   :label="l">{{l}}、{{row[k]}}</el-checkbox>
+                        </el-checkbox-group>
+                        <el-radio-group v-else v-model="form1.d"  >
+                            <el-radio    v-if="row[k]"  v-for="(k,l) in optionObj"   :key="l"  :label="l">{{l}}、{{row[k]}}</el-radio>
+                        </el-radio-group>
                     </el-form-item>
                 </el-form>
 
@@ -100,6 +90,14 @@
         data() {
 
             return {
+                optionObj:{
+                    A:'optionA'  ,
+                    B:'optionB'  ,
+                    C:'optionC'  ,
+                    D:'optionD'  ,
+                    E:'optionE'  ,
+                    F:'optionF'  ,
+                },
                 type:'',
                   form: {questionInfoList:[] },
                   form1: {d:'',s:[] },
@@ -110,7 +108,9 @@
             };
         },
         computed:{
-
+            adata(){
+                return this.form.questionInfoList[this.numIndex]||{}
+            },
         },
 
         created() {

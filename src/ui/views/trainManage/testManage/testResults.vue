@@ -39,7 +39,7 @@
                     <el-table-column   slot="option" label="操作" :width="210"  >
                         <template  slot-scope="scope">
                             <div style="height:40px;line-height: 26px;text-align: center">
-                                <el-button  :disabled="scope.row.examMode=='线上'"  @click="scoreEntry(scope.row)"
+                                <el-button  :disabled="!scope.row.employeeFileId"  @click="scoreEntry(scope.row)"
                                               style=" padding:3px 7px; background: black; color:white;margin: 0">
                                     <div>分数</div>
                                     <div>录入</div>
@@ -155,6 +155,7 @@ export default {
                 })
         },
         scoreEntry(row){
+            
             this.$refs.ScoreEntry.open(row)
         },
         uploadTest(row){

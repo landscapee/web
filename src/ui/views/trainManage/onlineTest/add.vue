@@ -38,7 +38,7 @@
                          </div>
                          <el-form-item label="" prop="infTime1">
                              <el-checkbox-group v-if="adata.optionType=='多选'" v-model="form.employeeAnswer"  >
-                                 <el-checkbox v-if="adata[k]"  v-for="(k,l) in optionObj"  :key="l"   :label="l">{{k}}、{{adata[k]}}</el-checkbox>
+                                 <el-checkbox v-if="adata[k]"  v-for="(k,l) in optionObj"  :key="l"   :label="l">{{l}}、{{adata[k]}}</el-checkbox>
                              </el-checkbox-group>
                              <el-radio-group v-else v-model="form.employeeAnswer"  >
                                  <el-radio    v-if="adata[k]"  v-for="(k,l) in optionObj"   :key="l"  :label="l">{{l}}、{{adata[k]}}</el-radio>
