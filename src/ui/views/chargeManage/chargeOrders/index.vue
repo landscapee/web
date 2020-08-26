@@ -8,12 +8,12 @@
                 </div>
                 <div class='top-right'>
                     <div class="header">机务服务非例行工作结算清单 <span>
-                        {{tableData.records.filter(item=>item.approveState==0).length}} 单待审批｜
-                        {{tableData.records.filter(item=>item.sendFinance==0).length}} 单待发送</span></div>
+                        {{approveNumber}} 单待审批｜
+                        {{sendNumber}} 单待发送</span></div>
                 </div>
                 <div class="top-toolbar">
                     <div @click='sendFinanceFn'><icon iconClass="add"></icon>发送财务</div>
-                    <div @click='exportChargeFn("charge")'><icon iconClass="add" ></icon>导出收费单</div>
+                    <div @click='effectiveListFn'><icon iconClass="add" ></icon>导出收费单</div>
                     <div @click='addChargeOrderFn("/chargeOrderAdd","add")'><icon iconClass="add" ></icon>新增</div>
                     <div @click='addChargeOrderFn("/chargeOrderAdd","edit")'><icon iconClass="edit" ></icon>编辑</div>
                     <div @click='removeOrderFn'><icon iconClass="remove" ></icon>删除</div>
@@ -41,6 +41,19 @@
                 </SearchTable>
             </div>
         </div>
+        <el-dialog title="模板选择" :visible.sync="dialogTemplateVisible" width='300px'>
+            <el-form :model="form">
+                <el-form-item label="模板" :label-width="'60px'">
+                    <el-select v-model="form.fileUrl" placeholder="请选择模板"  style='width:86%;'>
+                        <el-option v-for='item in templateData' :label="item.name" :value="item.fileUrl" :key='item.id'></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogTemplateVisible = false" style="margin-right:30px">取 消</el-button>
+                <el-button type="primary" @click="exportChargeOthFn('charge')">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -63,10 +76,16 @@ export default {
 				current: 1,
 				size: 15,
             },
-            form:{},
+            form:{
+                fileUrl:''
+            },
             sort:{},
             selectId: null,
-            selectIds:[]
+            selectIds:[],
+            approveNumber:0,
+            sendNumber:0,
+            dialogTemplateVisible:false,
+            templateData:[],
         };
     },
    created() {
@@ -81,6 +100,19 @@ export default {
         }
     },
     methods: {
+        getNumberFn(){
+            this.approveNumber = 0
+            this.sendNumber = 0
+            request({
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/getNumber`, 
+                method: 'post',
+            })
+            .then((data) => {
+                console.log(data)
+                this.approveNumber = data.data.approve
+                this.sendNumber = data.data.send
+            })
+        },
         revokeFn(row){
             request({
                 url:`${this.$ip}/mms-charge/chargeBillFlxgz/revoke`, 
@@ -175,6 +207,49 @@ export default {
                 //path: type,
                 //query: {type:query, id: this.selectId}
             //}
+        },
+        exportChargeOthFn(type){
+            if(this.selectIds.length===0){
+                this.$message({type: 'warning', message: '必须选择内容才能导出'});
+                return
+            }
+            let urlObj = {
+                charge: {
+                    name:'/chargeBillFlxgz/flxgzExport',
+                    ext:'zip'
+                },
+                excel:{
+                    name:'/chargeBillFlxgz/excelExport',
+                    ext:'xlsx'
+                } 
+            }
+            if(!this.form.fileUrl){
+                this.dialogTemplateVisible = false
+                reutrn 
+            }
+            request({
+                // headers: {
+                //     //'Content-Type': 'application/vnd.ms-excel',
+                // },
+                url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.selectIds.join(',')}&fileUrl=${this.form.fileUrl}`,
+                method: 'get',
+                responseType: 'blob',
+            }).then((d)=>{
+                const content = d
+                const blob = new Blob([content]) //,{type:'application/vnd.ms-excel'}
+                const fileName = `机务服务非例行工作结算清单.${urlObj[type]['ext']}` 
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }
+                this.dialogTemplateVisible = false
+            })
         },
         exportChargeFn(type){
             if(this.selectIds.length===0){
@@ -336,6 +411,7 @@ export default {
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
                 this.selectIds = []
+                this.getNumberFn()
                 console.log(this.tableData)
             }).catch((error) => {
             
@@ -349,7 +425,23 @@ export default {
 			this.params.current = current;
 		},
 		handleCheckedChange() {},
-		handleSelectionChange() {},
+        handleSelectionChange() {},
+        effectiveListFn(){
+            this.dialogTemplateVisible = true;
+            request({   
+                url:`${this.$ip}/mms-charge/chargeTemplate/effectiveList`, 
+                method: 'post',
+            })
+            .then((data) => {
+                if(data.code==200){
+                    this.templateData = data.data
+                }else{
+                    this.templateData = []
+                }
+            }).catch((error) => {
+                this.templateData = []
+            });
+        }
     },
 };
 </script>
@@ -373,5 +465,9 @@ export default {
             overflow: auto;
         }    
     }
+}
+.dialog-footer{
+    display: flex;
+    justify-content: center;
 }
 </style>

@@ -38,13 +38,9 @@
                     @handleCurrentChange="handleCurrentChange"
                 >
                     <el-table-column slot="option" align='center' label="操作" :width="150"  >
-                        <!-- <template  slot-scope="{ row }">
+                        <template  slot-scope="{ row }">
                             <el-button size='mini' v-show='row.state==0||row.state==2' @click="toPassFn(row)" class="copyButton copyButton1" >通过</el-button>
                             <el-button size='mini' v-show='row.state==0||row.state==1' @click="torefuseFn(row)" class="copyButton" >拒绝</el-button>
-                        </template> -->
-                        <template  slot-scope="{ row }">  <!--state: 0 未审核  1 通过 2 拒绝  -->
-                            <el-button size='mini' v-show='row.state==0' @click="toPassFn(row)" class="copyButton copyButton1" >通过</el-button>
-                            <el-button size='mini' v-show='row.state==0' @click="torefuseFn(row)" class="copyButton" >拒绝</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
