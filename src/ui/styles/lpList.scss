@@ -10,10 +10,13 @@
     }
 
 }
+.warning-row{
+    td{
+        color: #E93570!important;
+    }
+}
 
 .G_listTwo{
-
-
      padding: 0 30px;
     /deep/ .mainTable{
         height:calc(100vh - 400px);
