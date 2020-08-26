@@ -8,7 +8,7 @@
         <div style="width: 80%;">
             <div style="text-align: center;font-size: 20px;padding: 20px 20px 0px 20px " >工单签署信息</div>
             <div class="base_item" style="margin: 20px 0">
-                <div class="base_i_inner flex flex_wrap">
+                <div :class=" type=='info' ?'base_i_inner flex flex_wrap lists1':'base_i_inner flex flex_wrap'">
                     <div class="lists" v-for='(item, index) in getbaseItemVOList' :key='index'>
                         <div class="label">
                             <div>{{item.nameCn}}</div>
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class=" base_i_inner_btn flex justify_center align_center">
+                    <div class=" base_i_inner_btn flex justify_center align_center" v-if="type!='info'">
                          <el-button type="primary" @click="saveBasicFn('isActiveSave')" ><i v-show='!isActiveSave' class="el-icon-loading"></i>保存</el-button>
                         <el-button  type="primary" @click="saveBasicFn('isActiveReset')" ><i v-show='!isActiveReset' class="el-icon-loading"></i>重置</el-button>
                     </div>
@@ -46,50 +46,53 @@
             </div>
             <div class="order_content">
                 <div class="order_c_main">
-                    <div class="item1 flex">
-                        <div style="width:18%;">{{labelVO.itemLabel}}</div>
-                        <div :style="{width: col==3 ? '67%' : '52%'}">{{labelVO.contentLabel}}</div>
-                        <div :style="{width: col==3 ? '15%' : '15%'}">{{labelVO.workerLabel}}</div>
-                        <div :style="{width: col==3 ? '15%' : '15%'}" v-if='col==4'>{{labelVO.commanderLabel}}</div>
+                    <div class="item1  clear">
+                        <div style="width:10%;">{{labelVO.itemLabel}}</div>
+                        <div style="width:90%" class="flex">
+                            <div :style="`width: ${col==3?'88.9%':'77.8%'};border-right: 1px solid #979797;display: block;`">{{labelVO.contentLabel}}</div>
+                            <div style="width:10%">{{labelVO.workerLabel}}</div>
+                            <div style="width:10%;display: block;border-left: 1px solid #979797 " v-if='col==4'>{{labelVO.commanderLabel}}</div>
+                        </div>
+
                     </div>
                     <div class="order_c_b">
                         <div v-for='(item, index) in contentVOListMap' :key='item.id'>
                             <div class="flex">
-                                <div class="item flex align_start" style="width:18%;padding:4px;box-sizing:border-box">
+                                <div class="item flex align_start" style="width:10%;padding:4px;box-sizing:border-box">
                                     <na-temp v-if='item.notApplicable' :active='item.active' @changeActiveFn='changeActiveFn(item)'></na-temp>
                                     {{item.reduceIndex}}
                                 </div>
-                                <div style="width:82%;" v-if='item.contentDetails&&item.contentDetails.length'>
+                                <div style="width:90%;" v-if='item.contentDetails&&item.contentDetails.length'>
                                     <div v-for='itemChild in item.contentDetails' :key='itemChild.key' class="flex">
-                                        <div  class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}"> <!--style="width:63.4%;"-->
+                                        <div  class="item" :style="{width: col==3 ? '88.9%' : '77.8%'}"> <!--style="width:63.4%;"-->
                                             <div v-if="item.reduceIndex.includes('.')" class="textContent textContentLeft"
                                                  :class="itemChild.id" v-html='itemChild.content'>
                                             </div>
                                             <div v-else class="textContent" v-html='item.name'></div>
-                                            <div class='checkbox_group  '>
-                                                <el-button @click="editContent($event,itemChild)" type="primary"  style="padding: 7px 20px">更正</el-button>
+                                            <div v-if="type!='info'" class='checkbox_group  '>
+                                                <el-button  @click="editContent($event,itemChild)" type="primary"  style="padding: 7px 20px">更正</el-button>
                                             </div>
                                         </div>
-                                        <div  class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}">
-                                            <button class='sign' @click="fixedSignFn(itemChild,'fix_sign_'+itemChild.reduceIndex, $event)">签字</button>
+                                        <div  class="item" :style="{width: '11.1%'}">
+                                            <button v-if="type!='info'" class='sign' @click="fixedSignFn(itemChild,'fix_sign_'+itemChild.reduceIndex, $event)">签字</button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
                                                 <div :id='"fix_sign_"+itemChild.reduceIndex' :pos='"fix_sign_"+itemChild.reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
-                                        <div  class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
-                                            <button class='sign' @click="travelSignFn(itemChild,'travel_sign_'+itemChild.reduceIndex, $event)">签字</button>
+                                        <div  class="item" :style="{width: '11.1%'}"  v-if='col==4'>
+                                            <button class='sign' v-if="type!='info'" @click="travelSignFn(itemChild,'travel_sign_'+itemChild.reduceIndex, $event)">签字</button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
                                                 <div :id="'travel_sign_'+itemChild.reduceIndex" :pos='"travel_sign_"+itemChild.reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else class='flex' style="width:82%;">
-                                    <div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}">
+                                <div v-else class='flex' style="width:90%;">
+                                    <div class="item" :style="{width: col==3 ? '88.9%' : '77.8%'}">
                                         <div class="textContent" v-html='item.name'></div>
                                     </div>
-                                    <div class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
-                                    <div v-if='col==4' class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+                                    <div class="item" :style="{width: '11.1%'}"></div>
+                                    <div v-if='col==4' class="item" :style="{width: '11.1%'}"></div>
                                 </div>
                             </div>
                         </div>
@@ -122,6 +125,7 @@
                 orderModule:{},
                 labelVO:{},
                 id:'',
+                type:'add',
                 airInfo:{
                     'filePath':''
                 },
@@ -136,6 +140,7 @@
         created(){
             if(this.$route.query){
                 this.id = this.$route.query.id
+                this.type = this.$route.query.type
             }
         },
         mounted(){
@@ -804,6 +809,16 @@
 
 </script>
 <style scoped lang='scss'>
+    .clear:after{
+        content: '';
+        visibility: hidden;
+        height: 0;
+        display: block;
+        clear: both;
+    }
+    .lists1:last-child{
+        border-bottom: 1px solid #979797;
+    }
     .flex{
         display: flex;
     }
@@ -920,12 +935,13 @@ overflow-y: auto;
                     position: relative;
                 }
                 .item1 > div{
+                    height: 40px;
+                    line-height: 40px;
+                    float:left;
                     border-left:1px solid #979797;
                     border-top:1px solid #979797;
                     border-bottom:1px solid #979797;
                     text-align: center;
-                    padding:10px 0;
-                    vertical-align: top;
                     &:last-child{
                         border-right:1px solid #979797;
                     }

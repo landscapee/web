@@ -267,14 +267,14 @@ let authRoutes = [
             {
                 path: '/signControl',
                 component: () => import('@views/workOrder/signControl/index'),
-                name: '完工管控',
-                meta: {title: '完工管控',icon: 'xxgl' },
+                name: '完工签署',
+                meta: {title: '完工签署',icon: 'xxgl' },
                 children:[
                     {
                         path: '/signControlAdd',
                         component: () => import('@views/workOrder/signControl/add'),
-                        name: '完工管控详情',
-                        meta: {title: '完工管控详情',icon: 'xxgl' },
+                        name: '完工签署详情',
+                        meta: {title: '完工签署详情',icon: 'xxgl' },
                     },
                     {
                         path: '/WorkAbnormalDetails',

@@ -38,6 +38,9 @@ let etopEnable=(row)=>{
     }
 
 }
+let xiansxx=(row)=>{
+    return row.offlineFile?'线下':'线上'
+}
 let worldorderTypeObj={}
 
 export const  Config = (obj,arr,arr1,arr2,arr3) => {
@@ -54,7 +57,7 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
     return [
         { slot: 'checkbox' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
         { prop: 'workTime', label: '任务日期',formatter:timeInfo1, sortProp:"workTime", align: 'center',sort:true ,search:{type:'date', prop:'workTime',placeholder:"请选择"} },
-        { prop: 'ommsJobNo', label: '任务号',sortProp:"ommsJobNo", align: 'center',sort:true,search:{type:'input', prop:'ommsJobNo',placeholder:"请输入"} },
+        { prop: 'ommsJobNo', label: '线上/线下',formatter:xiansxx,sortProp:"ommsJobNo", align: 'center',sort:true,},
         { prop: 'serialNo', label: '工单流水号',sortProp:"serialNo", align: 'center',sort:true,search:{type:'input', prop:'serialNo',placeholder:"请输入"} },
 
         { prop: 'template.code', label: '工单模板编码',sortProp:"code", align: 'center',sort:true,search:{type:'input', prop:'code',placeholder:"请输入"} },

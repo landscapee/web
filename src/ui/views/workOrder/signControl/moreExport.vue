@@ -1,183 +1,127 @@
 <template>
     <div>
-        <el-dialog title="模板上传"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog title="工单批量导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <div style=" padding: 32px 40px 28px 50px; ">
-                <el-form :inline="true" :model="form" ref="form" :rules="rules">
-
-                    <el-form-item style="margin-right: 20px" label="局方模板上传:">
-
-                        <el-button @click="upTemplate('JF')"   size="small" type="primary">文件上传</el-button>
-                        <span class="spand" v-if="form.name2">
-                            <span>
-                                {{form.name2}}
-                                 <span>
-                                    <i @click="down('JF')" class="el-icon-download i1"></i>
-                                    <i @click="del('JF')" class="el-icon-close i2"></i>
-                                </span>
-                            </span>
-                        </span>
-
-                    </el-form-item>
-
-                   <div  >
-                       <el-form-item style="margin-right: 20px" label="航司模板上传:">
-
-                           <el-button @click="upTemplate('HS')"   size="small" type="primary">文件上传</el-button>
-                           <span class="spand"  v-if="form.name1">
-                            <span>
-                                {{form.name1}}
-                                 <span>
-                                    <i @click="down('HS')" class="el-icon-download i1"></i>
-                                    <i @click="del('HS')" class="el-icon-close i2"></i>
-                                </span>
-                            </span>
-                        </span>
-                       </el-form-item>
-                   </div>
-                    <el-form-item style="margin-right: 20px" label="内部模板上传:">
-
-                        <el-button @click="upTemplate('NB')"   size="small" type="primary">文件上传</el-button>
-                        <span class="spand" v-if="form.name3">
-                            <span>
-                                {{form.name3}}
-                                 <span>
-                                    <i @click="down('NB')" class="el-icon-download i1"></i>
-                                    <i @click="del('NB')" class="el-icon-close i2"></i>
-                                </span>
-                            </span>
-                        </span>
-                    </el-form-item>
-
-
-
-                    <div style="display: none">
-                        <UploadFile   :isPrompt="true"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
-                    </div>
-
-                </el-form>
-                <div class="Qfooter" style="margin-top: 30px">
-                    <el-button @click="close(1)">取消</el-button>
-                    <el-button type="primary" @click="submit('form')">确认</el-button>
+                <div v-show="showItem" :style=" ` position: absolute;left:600px;background:white;width:100%;padding:15px` "  >
+                    <Info :form="hoveropt"></Info>
                 </div>
+                <div class="divBoxF">
+                    <div @ class="item" @mouseenter="showInfo(opt)" @mouseleave="leave()"  v-for="(opt,index) in checkArr" :key="index">
+                        <div>{{index+1}}</div>
+                        <div>工单编号：<span>{{opt.serialNo}}</span></div>
+
+                    </div>
+                </div>
+                <el-form :inline="true" :model="form" ref="form" :rules="rules">
+                    <el-form-item  prop="type" label="模板类型:">
+                        <el-select v-model="form.type" size="middle">
+                            <el-option v-for="(opt,index) in W_moduleType" :key="index" :value="opt.valCode" :label="opt.valData"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div style="color:#7F7F7F;">【说明】：鼠标悬停至工单编号上显示对应工单详情</div>
+                <div class="Qfooter" style="margin-top: 30px">
+                    <el-button @click="close()">取消</el-button>
+                    <el-button type="primary" @click="submit('form')">导出PDF（{{checkArr.length}}）</el-button>
+                </div>
+                <form action="#" ref="formA"></form>
             </div>
-            <form ref="formA" action="#"></form>
         </el-dialog>
 
 
     </div>
 </template>
 <script>
-     import request from '@lib/axios.js';
-     import {map} from 'lodash'
+    import Info from './component/info'
+    import request from '@lib/axios.js';
+
+    import {map,get} from 'lodash'
     export default {
         name: "copyDetails",
-        components: {},
+        components: {
+            Info
+        },
         data() {
             return {
-                 form:{ fileName:'',type:'HS',fileId:''},
-
-                typeObj1:{
-                    HS:'airlineTemplateFile',
-                    JF:'bureauTemplateFile',
-                    NB:'internalTemplateFile',
-                },
-                typeObj:{
-                    airlineTemplateFile:'HS',
-                    bureauTemplateFile:'JF',
-                    internalTemplateFile:'NB',
-                },
-                typeObjName:{
-                    HS:'name1',
-                    JF:'name2',
-                    NB:'name3',
-                },
+                checkArr:[],
+                hoveropt:{},
+                form:{},
+                showItem:false,
                 rules:{
                     type:[{required:true,message:'请选择模板类型',trigger:'blur'}]
                 },
-                id:'',
+                W_moduleType:[],
                 dialogFormVisible:false,
             }
         },
         methods: {
-
-            down(type){
-                this.$refs.formA.action=`${this.$ip}/mms-file/get-file-stream-by-id/${this.form[this.typeObj1[type]] }`
-                this.$refs.formA.submit()
+            leave(){
+                this.showItem=false
             },
-            del(type){
-                this.$set(this.form,this.typeObjName[type],null)
-
-                this.$set(this.form,this.typeObj1[type],null)
-                this.$message.success('已删除，确认后生效')
-            },
-
-            upTemplate(type){
-                this.form.type=type
-                this.$refs.UploadFile.$refs.buttonClick.$el.click()
-            },
-            getFile(file){
-                this.$set(this.form,this.typeObjName[this.form.type],file.fileName)
-                this.$set(this.form,this.typeObj1[this.form.type],file.id)
-                console.log(this.form,file);
+            showInfo(opt){
+                this.hoveropt=opt
+                this.showItem=true
             },
             close( ){
-                this.form={type:'HS'}
+                this.checkArr=[]
                 this.dialogFormVisible=false
             },
-            submit(){
-                let obj={
-                    ...this.form,
-                    id:this.$route.query.id,
-                }
-                  request({
-                    url:`${this.$ip}/mms-workorder/template/upload`,
-                    method: 'post',
-                    data:obj
-                }).then(d => {
-                    if( d.code==200){
-                        this.close()
-                        this.$message.success("上传成功")
+            submit(form){
+                this.$refs[form].validate(valid => {
+                    if (valid) {
+                        let serialNo=this.checkArr.map((k,l)=>{
+                                return k.serialNo
+                        })
+                        request({
+                            header:{
+                                'Content-Type':'multipart/form-data'
+                            },
+                            url:`${this.$ip}/mms-workorder/operationInf/exportBatch?serialNo=${serialNo.join(',') }&type=${this.form.type}`,
+                            method: 'get',
+                            responseType: 'blob'
+                        }).then(d => {
+                            console.log();
+                            let arr=d.headers['content-disposition'].split('=')[1].split('.')
+
+                            let content = d;
+                            // let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                            let blob = new Blob([content],{type:'application/zip'})
+                            const fileName = `${decodeURI(arr[0])}.${arr[1]}`
+                            if ('download' in document.createElement('a')) { // 非IE下载
+                                const elink = document.createElement('a')
+                                elink.download = fileName
+                                elink.style.display = 'none'
+                                elink.href = URL.createObjectURL(blob)
+                                document.body.appendChild(elink)
+                                elink.click()
+                                URL.revokeObjectURL(elink.href) // 释放URL 对象
+                                document.body.removeChild(elink)
+                            }else { // IE10+下载
+                                navigator.msSaveBlob(blob, fileName)
+                            }
+                        });
+
                     }
                 });
             },
-            open(id){
+            open(arr){
                 this.dialogFormVisible=true
-                 request({
-                    url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
-                    method: 'get',
-                }).then((data) => {
-                    if(data.code==200){
-                        let obj={...data.data.typeVO}
-                        request({
-                            url:`${this.$ip}/mms-workorder/template/templatePath`,
-                            method: 'get',
-                            params:{code:obj.code,version:obj.version}
-                        }).then(d1 => {
-                            if( d1.code==200){
-                                this.form={...d1.data}
-                                map(d1.data,(k,l)=>{
-                                    if(l=='airlineTemplateFile'||l=='bureauTemplateFile'||l=='internalTemplateFile'&&k){
-                                       let type=this.typeObj[l]
-                                        request({
-                                            header:{
-                                                'Content-Type':'multipart/form-data'
-                                            },
-                                            url:`${this.$ip}/mms-file/get-file-by-id/${k}`,
-                                            method:'GET',
-                                        }).then((d) => {
-                                            this.$set(this.form,this.typeObjName[type],d.data.fileName)
-                                        });
-                                    }
-                                })
-
-                            }
-                        });
-                    }
+                this.checkArr=arr.filter((k,l)=>{
+                    return !k.offlineFile
                 })
             },
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["W_moduleType" ]
+            }).then(d => {
+                let obj=d.data
+                this.W_moduleType=obj.W_moduleType
 
+            });
         },
     }
 </script>
@@ -188,52 +132,37 @@
         .el-dialog__body{
             padding: 0;
             .el-form-item{
-                width:100%;
-            }  .el-form-item__content{
-                width:calc( 100% - 115px);
+                margin-top: 15px;
             }
             .el-form-item__label{
-                width:115px !important;
-                color:#000000;
-                font-size: 16px;
+                width:110px;
+                text-align: left;
             }
-            .el-input{
-                width: 100%;
-            }
-            .el-form{
-                margin-bottom: 10px;
+            .el-select{
+                height:40px;
             }
         }
-
     }
-
-
-    /*/deep/ .el-upload-list   {*/
-        /*display: none;*/
-    /*}*/
-    .spand{
-        margin-left: 15px;
-        display: inline-block;
-        width:calc(100% - 110px);
-
-       &>span{
-           display: flex;
-           justify-content: space-between;
-       }
-        i{
-            display: none;
+.divBoxF{
+    &>.item{
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        height:30px;
+        div:first-child{
+            color:#7F7F7F;
+            margin-right: 15px;
         }
-        i:first-child{
-            margin-right: 10px;
-        }
-        i:hover{
-            opacity: .6;
+        div:nth-child(2){
+
+            margin: 0 0px 0 20px;
+            span{
+                margin-left: 30px;
+            }
         }
     }
-    .spand:hover{
-        cursor: pointer;
-        i{
-            display: inline-block;
-        }
-    }
+}
+
+
+
 </style>

@@ -175,6 +175,29 @@
             };
         },
         created() {
+            if (this.$route.query) {
+                this.type = this.$route.query.type;
+                this.$route.meta.title =
+                    this.type == "add"
+                        ? "纸质工单新增"
+                        : this.type == "edit"
+                        ? "纸质工单编辑"
+                        : this.type == "info"
+                            ? "纸质工单详情"
+                            : "";
+                 if(this.type!='add'){
+                    request({
+                        url:`${this.$ip}/mms-training/questionInfo/info/${this.$route.query.sId}`,
+                        method: "get",
+                    }).then(d => {
+                        if(d.data.optionType=='多选'){
+                            d.data.answer= d.data.answer.split(';')
+                        }
+                        this.form={...d.data,paperId:this.$route.query.id}
+                    })
+
+                }
+            }
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',

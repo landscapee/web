@@ -8,7 +8,7 @@
          <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="signControl">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>工单完工管控</span>
+                    <span>工单完工签署</span>
                 </div>
                 <div class="top-toolbar">
                     <div  @click="seeOther(null,'WorkAbnormalAdd')"> <icon iconClass="#" style="width: 0;" ></icon>纸制填报工单导入</div>
@@ -25,16 +25,18 @@
                             <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
                         </template>
                     </el-table-column>
-                     <el-table-column align="center" slot="option" label="操作" :width="80" >
+                     <el-table-column align="center" slot="option" label="操作" :width="80    " >
                         <template  slot-scope="scope">
                             <div >
                                 <!--签署工单-->
-                                <el-button class="QoptionButton" @click="exportRow(scope.row)">导出</el-button>
+                                <el-button v-if="scope.row.offlineFile" class="QoptionButton" @click="Download(scope.row)">下载</el-button>
+                                <el-button v-else class="QoptionButton" @click="exportRow(scope.row)">导出</el-button>
                             </div>
                          </template>
                     </el-table-column>
 
                 </SearchTable>
+                <Download ref="Download"></Download>
                 <MoreExport ref="MoreExport"></MoreExport>
                 <Export ref="Export"></Export>
             </div>
@@ -83,20 +85,26 @@
                 }).then(d => {
                     let obj=d.data
                     this.tableConfig=Config(obj,[],[],[],[])
-                    // request({
-                    //     url:`${this.$ip}/config-client-mms/config/findConfigs?configName=AircraftType`,
-                    //     method: 'get',
-                    // }).then(d1 => {
-                    //
-                    // });
                 });
                }
         },
 
         methods: {
+            Download(row){
+                request({
+                    'Content-Type':'application/x-www-form-urlencoded',
+                    url:`${this.$ip}/mms-file/get-files-by-ids/`,
+                    method: 'post',
+                     params:{fileIds:row.offlineFile}
+                }).then(d => {
+                    if(d.code==200){
+                        this.$refs.Download.open(d.data)
+                    }
+                });
+            },
             moreExport(){
                 if(this.checkArr.length){
-
+                    this.$refs.MoreExport.open(this.checkArr)
                 }else {
                     this.$message.error('请先选中一行或多行数据');
                 }
@@ -105,6 +113,7 @@
 
             },
             exportRow(row){
+
                 this.$refs.Export.open(row)
             },
             seeOther(row,path){
@@ -151,11 +160,11 @@
                     }
                 })
                 row.selected  = !select;
-                let numIndex =this.checkArr.indexOf(row.id)
+                let numIndex =this.checkArr.findIndex((k,l)=>k.id==row.id)
                 if(numIndex>-1){
                     this.checkArr.splice(numIndex,1)
                 }else{
-                    this.checkArr.push(row.id)
+                    this.checkArr.push(row)
                 }
                 if(row.selected ){
                     this.row = row;
@@ -165,26 +174,34 @@
                     this.row = null;
 
                 }
-
                 this.params.current = 1;
                  this.$set(this.tableData.records,row.index,row);
             },
             addOrEditOrInfo(tag){
-                if(tag=='add'){
-                    this.$router.push({path:'/addAuthorizeManage',query:{type:'add'}});
-                }else if(tag == 'edit' || tag == 'info'){
-                    if(this.selectId==null){
-                        this.$message.error('请先选中一行数据');
-                    }else{
-                        this.$router.push({path:'/addAuthorizeManage',query:{type:tag,id:this.row.id}});
+                if(this.checkArr.length!=1){
+                    let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
+                    this.$message.error(s);
+                }else{
+                    let src='/WorkAbnormalDetails'
+                    let data=this.selectId
+                    if(this.row&&this.row.offlineFile){
+                        src='/WorkAbnormalAdd'
                     }
-                }
+                    this.$router.push({path:src,query:{ id:data,type:'info'}});
+                 }
             },
             abnormalChange( ){
-                if(this.selectId==null){
-                    this.$message.error('请先选中一行数据');
+                if(this.checkArr.length!=1){
+                   let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
+                    this.$message.error(s);
                 }else{
-                    this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
+                    let src='/WorkAbnormalDetails'
+                    let data=this.selectId
+                    if(this.row&&this.row.offlineFile){
+                        src='/WorkAbnormalAdd'
+                    }
+                    this.$router.push({path:src,query:{ id:data,type:'edit'}});
+                    // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
                 }
             },
 

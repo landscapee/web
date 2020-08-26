@@ -147,6 +147,7 @@ export default {
                 if(!k){
                     data[l]=null
                 }
+
             }))
             request({
                 url:`${this.$ip}/mms-training/examLine/list`,

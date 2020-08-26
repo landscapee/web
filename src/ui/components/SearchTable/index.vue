@@ -16,7 +16,7 @@
 						</el-table-column>
 						<el-table-column :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-input @keyup.enter.native="requestTableData" :width="140"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
+							<el-input @keyup.enter.native="requestTableData" :width="140" :type="colConfig.search.type1||'text'"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
 						</span>
 						</el-table-column>

@@ -11,6 +11,8 @@ import ScrollBox from'@components/Scroll/scroll';
 import AdvTable from '@components/AdvTable/advTable';
 import UploadFile from '@components/upload/index';
 import SeeImg from '@components/seeImg/index';
+import Download from '@components/download/index';
+Vue.component('Download',Download);
 Vue.component('ScrollBox',ScrollBox);
 Vue.component('UploadFile',UploadFile);
 Vue.component('SeeImg',SeeImg);
