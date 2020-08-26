@@ -541,14 +541,5 @@
             padding-left: 11px;
         }
     }
-    /deep/ .el-form-item{
-        margin :0  0 10px 0!important;
-        .el-form-item__label:before{
-            content: '';
-            display:none;
-        }
-        .el-form-item__label{
-            padding-left: 0px!important;
-        }
-    }
+
 </style>
