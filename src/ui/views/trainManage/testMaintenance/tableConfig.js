@@ -17,7 +17,7 @@ export const testMainConfig = (obj) => {
                 { prop: 'qualificationType', label: '考试资质类型',sortProp:"qualificationType", align: 'center' ,sort:true,search:{type:'select', prop:'qualificationType',selectProp:['valData','valData'],data:obj.qualificationType||[],placeholder:"请选择"}},
                 { prop: 'businessType', label: '业务类型',sortProp:"businessType", align: 'center' ,sort:true,search:{type:'select', prop:'businessType',selectProp:['valData','valData'],data:obj.businessType||[],placeholder:"请选择"}},
                 { prop: 'suitableUser', label: '适用对象',sortProp:"suitableUser", align: 'center',sort:true,search:{type:'select', prop:'suitableUser',selectProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请选择", } },
-                { prop: 'description', label: '试题简介',width:'200',sortProp:"description", align: 'center',sort:true,search:{type:'input', prop:'description',placeholder:"请输入",extendType:'search',} },
+                { prop: 'description', label: '试卷简介',width:'200',sortProp:"description", align: 'center',sort:true,search:{type:'input', prop:'description',placeholder:"请输入",extendType:'search',} },
          ]
 };
 export const testMainAddConfig = (obj) => {
