@@ -17,7 +17,8 @@
         <div class="bannerCenter "  >
             <span>考试时长{{infoData.totalTime}}分钟</span>
             <span>共{{testData.length}}题</span>
-            <span>离考试结束还有：<span style="color: #3280e7">{{testime}}分钟</span></span>
+
+            <span>离考试结束还有：<span style="color: #3280e7">{{Math.floor(testime/60)}}分钟{{testime%60}}秒</span></span>
         </div>
      <div style="display: flex;justify-content: center" >
          <div class="form"  v-if="testData.length">
@@ -103,22 +104,16 @@
           adata(){
               return this.testData[this.numIndex]||{}
           },
-
         },
-
-
         beforeRouteLeave(to, from, next){
             console.log(to, from,112222);
                 if(from.path=='/onlineTestDo'&&this.pathBlo){
-                    this.tishi(()=>{this.endTest(1)},next)
+                    this.tishi(()=>{this.endTest(1,next)})
                }else{
                    next();
                }
         },
         created() {
-
-
-            console.log(this.adata,'asdas');
             if (this.$route.query) {
                 request({
                     url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
@@ -131,7 +126,7 @@
                         paperId:row.paperId,
                     }
                     this.infoData={...row}
-                    this.testime=row.totalTime-1
+                    this.testime=(row.totalTime*60)-1
                     this.getList(1)
                 }).catch(error => {
                     this.$message.error(error);
@@ -230,12 +225,11 @@
                 })
                     .then(() => {
                        fn()
-                        f1&&f1()
                     }).catch(()=>{
 
                 })
             },
-            endTest(num) {
+            endTest(num,fn) {
                 clearTimeout(this.timer)
                 request({
                     url: `${this.$ip}/mms-training/examLine/finish`,
@@ -248,6 +242,7 @@
                         if(num!=1){
                             this.$router.go(-1)
                         }
+                        fn&&fn()
                     }
                 })
 
@@ -268,7 +263,7 @@
                              if(this.testime==0){
                                  this.endTest()
                              }
-                         },60000)
+                         },1000)
                      }
 
                  })
