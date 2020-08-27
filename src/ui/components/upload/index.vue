@@ -21,6 +21,11 @@
      import request from '@lib/axios.js';
     export default {
         name: "copyDetails",
+        //             默认
+        // listNone == false    多文件  else 单文件
+        // isUpload == false    是否上传文件；true 不上传，返回文件；false 上传，返回文件Id ；条件listNone=false
+        // isPrompt == false    是否提示上传成功，false提示，true不提示
+
         props:['accept','isUpload','isPrompt','listNone'],
         components: {},
         data() {
@@ -76,7 +81,7 @@
             handleChange(file, fileList) {
 
                 if(this.listNone){
-                    this.fileList=fileList
+                    this.fileList=fileList   //多文件
                 }else{
                     if (fileList.length > 0) {
                         this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
@@ -95,7 +100,7 @@
             handleSubmit(files,q) {
                 let data=new FormData()
                 data.append("file",files.file);
-                if(this.isUpload){
+                if(this.isUpload&&!this.listNone){
                     this.$emit('getFile',files)
                     return false
                 }
