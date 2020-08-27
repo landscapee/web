@@ -47,11 +47,8 @@
                             </span>
                         </span>
                     </el-form-item>
-
-
-
                     <div style="display: none">
-                        <UploadFile   :isPrompt="true"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
+                        <UploadFile   :isPrompt="true"  accept=".doc,.docx" ref="UploadFile" @getFile="getFile"></UploadFile>
                     </div>
 
                 </el-form>
@@ -184,7 +181,7 @@
 
 <style lang="scss" scoped>
     /deep/ .el-dialog{
-        width: 650px;
+        width: 800px;
         .el-dialog__body{
             padding: 0;
             .el-form-item{
@@ -214,7 +211,7 @@
     .spand{
         margin-left: 15px;
         display: inline-block;
-        width:calc(100% - 110px);
+        width:calc(100% - 120px);
 
        &>span{
            display: flex;

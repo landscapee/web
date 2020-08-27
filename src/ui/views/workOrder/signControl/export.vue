@@ -60,8 +60,10 @@
                             responseType: 'blob'
                         }).then(d => {
                             console.log();
-                            let arr=d.headers['content-disposition'].split('=')[1].split('.')
-
+                            let arr=['工单','word']
+                            if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                                arr=d.headers['content-disposition'].split('=')[1].split('.')
+                            }
                             let content = d;
                             // let blob = new Blob([content],{type:'application/vnd.ms-excel'})
                             let blob = new Blob([content],{type:'application/msword'})

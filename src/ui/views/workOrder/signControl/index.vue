@@ -3,7 +3,6 @@
         <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
-
         <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'" :key="$route.path"></router-view>
          <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="signControl">
             <div class="top-content">
@@ -41,7 +40,6 @@
                 <Export ref="Export"></Export>
             </div>
         </div>
-
     </div>
 </template>
 <script>
@@ -110,7 +108,37 @@
                 }
             },
             Export(){
-
+                request({
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-workorder/workorder/exportExcel`,
+                    method: 'post',
+                    responseType: 'blob'
+                }).then(d => {
+                    console.log();
+                    let arr=['工单','word']
+                    if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                        arr=d.headers['content-disposition'].split('=')[1]
+                    }
+                    let content = d;
+                    debugger
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    // let blob = new Blob([content],{type:'application/msword'})
+                    const fileName = `${decodeURI(arr[0])}.${arr[1]}`
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                });
             },
             exportRow(row){
 
@@ -174,8 +202,7 @@
                     this.row = null;
 
                 }
-                this.params.current = 1;
-                 this.$set(this.tableData.records,row.index,row);
+                  this.$set(this.tableData.records,row.index,row);
             },
             addOrEditOrInfo(tag){
                 if(this.checkArr.length!=1){
@@ -183,30 +210,32 @@
                     this.$message.error(s);
                 }else{
                     let src='/WorkAbnormalDetails'
-                    let data=this.selectId
-                    if(this.row&&this.row.offlineFile){
+                    let data=this.checkArr[0].id
+                    if(this.checkArr[0]&&this.checkArr[0].offlineFile){
                         src='/WorkAbnormalAdd'
                     }
                     this.$router.push({path:src,query:{ id:data,type:'info'}});
                  }
             },
             abnormalChange( ){
-                if(this.checkArr[0].state==3){
-                    if(this.checkArr.length!=1){
-                        let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
-                        this.$message.error(s);
-                    }else{
+                if(this.checkArr.length!=1){
+                    let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
+                    this.$message.error(s);
+                }else{
+                    if(this.checkArr[0].state==3){
                         let src='/WorkAbnormalDetails'
-                        let data=this.selectId
-                        if(this.row&&this.row.offlineFile){
+                        let data=this.checkArr[0].id
+                        if(this.checkArr[0]&&this.checkArr[0].offlineFile){
                             src='/WorkAbnormalAdd'
                         }
-                        this.$router.push({path:src,query:{ id:data,type:'edit'}});
+                         this.$router.push({path:src,query:{ id:data,type:'edit'}});
                         // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
+
+                    }else{
+                        this.$message.error('请先完成工单');
                     }
-                }else{
-                    this.$message.error('请先完成工单');
-                }
+                    }
+
 
             },
 

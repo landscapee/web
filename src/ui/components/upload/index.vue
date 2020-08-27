@@ -8,6 +8,7 @@
                 :on-change="handleChange"
                 :accept="accept||''"
                 action=""
+                :file-list="fileList"
                  :before-remove="beforeRemove"
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true">
@@ -24,10 +25,12 @@
         components: {},
         data() {
             return {
+                fileList:[],
                 fileMap:{},
                 form:{
                     fileName:'',
                     fileId:'',
+
                 },
 
              }
@@ -71,8 +74,13 @@
                 this.$refs.imFile.click()
             },
             handleChange(file, fileList) {
-                if (fileList.length > 0) {
-                    this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
+
+                if(this.listNone){
+                    this.fileList=fileList
+                }else{
+                    if (fileList.length > 0) {
+                        this.fileList = [fileList[fileList.length - 1]]  // 这一步，是 展示最后一次选择的csv文件
+                    }
                 }
                 this.form.filename=file.name
                 console.log(file, fileList);
@@ -117,9 +125,23 @@
                     }
                 });
             },
+            getFileList(list) {
+                if (!list.length) {
+                    this.fileList = [];
+                    this.fileMap = {};
+                } else {
+                    this.fileList = list.map((item, index) => {
+                        return { name: item.fileName, uid: 1000000 + index, url: item.filePath, id: item.id };
+                    });
+                    this.fileList.map((i) => {
+                        this.fileMap[i.uid] = i.id;
+                    });
+                }
+            },
         },
-        created() {
 
+        mounted() {
+            this.$emit('start');
         },
     }
 </script>

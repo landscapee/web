@@ -51,7 +51,7 @@
                          <el-button  v-if="type!='info'"  @click="userOpen" type="primary" style="margin-bottom: 10px;padding: 9px 30px;">选择</el-button>
                         <el-card class="box-card" shadow="never" border-radius="2px">
                             <el-scrollbar style="height:100px ">
-                                <el-tag style="margin-right: 10px" :key="tag.id" v-for="(tag,index) in form.operatorList" closable @close="handleClose(tag,index)" :disable-transitions="false"  >
+                                <el-tag style="margin-right: 10px" :key="tag.id" v-for="(tag,index) in form.operatorList" :closable="type=='info'?false:true" @close="handleClose(tag,index)" :disable-transitions="false"  >
                                     {{ tag.userName }}
                                 </el-tag>
                             </el-scrollbar>
@@ -105,11 +105,11 @@
                 <div class="row_tow">
                     <el-form-item  label="纸制工单文件：" prop="offlineFile">
                         <span v-if="type=='info'">
-                                 <el-button v-if="form.offlineFile" @click="Download(form)">下载</el-button>
+                                 <el-button v-if="form.offlineFile" @click="Download(form)" type="primary" style="padding:7px 25px">下载</el-button>
 
                         </span>
+                        <UploadFile @start="showFile" v-else :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pdf"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
 
-                        <UploadFile :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pdf"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
                     </el-form-item>
                     <el-form-item label="工作时长(分钟)："  prop="costTime">
                     <span v-if="type=='info'">{{form.costTime}}</span>
@@ -155,7 +155,7 @@
                 }
             }
             return {
-
+                fileList:[],
                 moment:moment,
                 oldForm:{},
                 form: {operatorList:[], },
@@ -216,14 +216,24 @@
                             : "";
                 if(this.type!='add'){
                     request({
-                        url:`${this.$ip}/mms-workorder/workorder/refresh `,
+                        url:`${this.$ip}/mms-workorder/workorder/refresh`,
                         method: "get",
                         params:{
-                            workorderId:this.$router.query.id
+                            workorderId:this.$route.query.id
                         }
                     }).then(d => {
-
-                        this.form={...d.data }
+                        this.form={...d.data,...d.data.workorder }
+                        request({
+                            'Content-Type':'application/x-www-form-urlencoded',
+                            url:`${this.$ip}/mms-file/get-files-by-ids/`,
+                            method: 'post',
+                            params:{fileIds:this.form.offlineFile}
+                        }).then(d1 => {
+                             if(d.code==200&&this.$refs.UploadFile&&this.$refs.UploadFile.getFileList){
+                                this.fileList=d1.data
+                                this.$refs.UploadFile.getFileList(d1.data)
+                            }
+                        });
                     })
 
                 }
@@ -231,17 +241,14 @@
 
         },
         methods: {
-            Download(row){
-                request({
-                    'Content-Type':'application/x-www-form-urlencoded',
-                    url:`${this.$ip}/mms-file/get-files-by-ids/`,
-                    method: 'post',
-                    params:{fileIds:row.offlineFile}
-                }).then(d => {
-                    if(d.code==200){
-                        this.$refs.Download.open(d.data)
-                    }
-                });
+            showFile() {
+                 if (this.fileList.length) {
+                    this.$refs.file.getFileList(this.fileList);
+                }
+            },
+            Download( ){
+                this.$refs.Download.open(this.fileList)
+
             },
             departmentIdCh(val){
               this.$set(this.form,'department',this.deptObj[val])

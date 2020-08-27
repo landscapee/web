@@ -72,7 +72,7 @@
                         let serialNo=this.checkArr.map((k,l)=>{
                                 return k.serialNo
                         })
-                        request({
+                         request({
                             header:{
                                 'Content-Type':'multipart/form-data'
                             },
@@ -80,14 +80,14 @@
                             method: 'get',
                             responseType: 'blob'
                         }).then(d => {
-                            console.log();
-                            let arr=d.headers['content-disposition'].split('=')[1].split('.')
-
+                             let arr=['压缩文件','zip']
+                            if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                                  arr=d.headers['content-disposition'].split('=')[1].split('.')
+                            }
                             let content = d;
-                            // let blob = new Blob([content],{type:'application/vnd.ms-excel'})
-                            let blob = new Blob([content],{type:'application/zip'})
-                            const fileName = `${decodeURI(arr[0])}.${arr[1]}`
-                            if ('download' in document.createElement('a')) { // 非IE下载
+                              let blob = new Blob([content],{type:'application/zip'})
+                             const fileName = `${decodeURI(arr[0])}.${arr[1]}`
+                             if ('download' in document.createElement('a')) { // 非IE下载
                                 const elink = document.createElement('a')
                                 elink.download = fileName
                                 elink.style.display = 'none'
