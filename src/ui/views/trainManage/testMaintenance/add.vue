@@ -101,15 +101,17 @@
             </div>
         </div>
         <div class="TableContent main-content ">
-            <SearchTable  ref="searchTable" :data=" arrTable" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                <el-table-column slot="radio" label="选择" :width="49" fixed="left">
-                    <template slot-scope="{ row }">
-                        <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                        <icon  iconClass="ky" class="tab_radio" v-else></icon>
+
+            <SearchTable   ref="searchTable" :data="arrTable" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <el-table-column slot="radio" label="选择" :width="49"  >
+                    <template slot-scope="{ row ,$index}">
+                        <div >
+                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                        </div>
                     </template>
                 </el-table-column>
             </SearchTable>
-
         </div>
         <ExportTest ref="ExportTest" ></ExportTest>
         <ImportExcel ref="ImportExcel" @getTableData="getList"></ImportExcel>

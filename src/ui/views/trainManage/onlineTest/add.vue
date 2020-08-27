@@ -32,7 +32,7 @@
                  </div>
                  <div class="formRight">
                      <el-form    :model="form" :rules="rules" ref="form" >
-                         <div style="font-size: 20px;font-weight: bold">题目描述{{adata.questionName}}
+                         <div style="font-size: 20px;font-weight: bold">{{adata.questionName}}
 
                              （<i v-if="form.employeeAnswer">{{this.testData[this.numIndex].optionType=='多选'?form.employeeAnswer.join(";"):form.employeeAnswer}}</i>）
                          </div>
