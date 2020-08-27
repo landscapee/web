@@ -104,10 +104,12 @@
                 </div>
                 <div class="row_tow">
                     <el-form-item  label="纸制工单文件：" prop="offlineFile">
-                        <span v-if="type=='info'">{{ form.offlineFile }}</span>
-                        <!--.ppt,.docx,.doc,-->
-                        <UploadFile :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
+                        <span v-if="type=='info'">
+                                 <el-button v-if="form.offlineFile" @click="Download(form)">下载</el-button>
 
+                        </span>
+
+                        <UploadFile :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pdf"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
                     </el-form-item>
                     <el-form-item label="工作时长(分钟)："  prop="costTime">
                     <span v-if="type=='info'">{{form.costTime}}</span>
@@ -118,6 +120,8 @@
 
             </el-form>
         </div>
+        <Download ref="Download"></Download>
+
         <userTree ref="userBox"  @onSelected="handleUserSelected"></userTree>
     </div>
 </template>
@@ -175,29 +179,8 @@
             };
         },
         created() {
-            if (this.$route.query) {
-                this.type = this.$route.query.type;
-                this.$route.meta.title =
-                    this.type == "add"
-                        ? "纸质工单新增"
-                        : this.type == "edit"
-                        ? "纸质工单编辑"
-                        : this.type == "info"
-                            ? "纸质工单详情"
-                            : "";
-                 if(this.type!='add'){
-                    request({
-                        url:`${this.$ip}/mms-training/questionInfo/info/${this.$route.query.sId}`,
-                        method: "get",
-                    }).then(d => {
-                        if(d.data.optionType=='多选'){
-                            d.data.answer= d.data.answer.split(';')
-                        }
-                        this.form={...d.data,paperId:this.$route.query.id}
-                    })
 
-                }
-            }
+
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -221,9 +204,45 @@
                     })
                 }
             });
+            if (this.$route.query) {
+                this.type = this.$route.query.type;
+                this.$route.meta.title =
+                    this.type == "add"
+                        ? "纸质工单新增"
+                        : this.type == "edit"
+                        ? "纸质工单编辑"
+                        : this.type == "info"
+                            ? "纸质工单详情"
+                            : "";
+                if(this.type!='add'){
+                    request({
+                        url:`${this.$ip}/mms-workorder/workorder/refresh `,
+                        method: "get",
+                        params:{
+                            workorderId:this.$router.query.id
+                        }
+                    }).then(d => {
+
+                        this.form={...d.data }
+                    })
+
+                }
+            }
 
         },
         methods: {
+            Download(row){
+                request({
+                    'Content-Type':'application/x-www-form-urlencoded',
+                    url:`${this.$ip}/mms-file/get-files-by-ids/`,
+                    method: 'post',
+                    params:{fileIds:row.offlineFile}
+                }).then(d => {
+                    if(d.code==200){
+                        this.$refs.Download.open(d.data)
+                    }
+                });
+            },
             departmentIdCh(val){
               this.$set(this.form,'department',this.deptObj[val])
             },

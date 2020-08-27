@@ -296,6 +296,7 @@
             }
         }
         .component{
+            height:calc(100vh - 300px);
             margin: 30px 0;
         }
 
@@ -307,7 +308,6 @@
     }
 }
 .Qfooter{
-
     /deep/ .el-button:last-child{
         border: 1px solid #b9b9b9;
 

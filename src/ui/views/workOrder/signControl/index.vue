@@ -123,7 +123,7 @@
                     src='/WorkPaperDetails'
                     data=row.offlineFile
                 }
-                this.$router.push({path:src,query:{ id:data}});
+                this.$router.push({path:src,query:{type:'add', id:data}});
 
             },
             requestTable(searchData){
@@ -135,17 +135,17 @@
                 this.getList();
             },
             headerSort(column){
-                this.sort={}
-                let num =null
-                if(column.order=='desc'){
-                    num=0
-                }else if(column.order=='asc'){
-                    num=1
-                }else{
-                    num=2
+                this.sort = {}
+                let num = null
+                if (column.order == 'desc') {
+                    num = 0
+                } else if (column.order == 'asc') {
+                    num = 1
+                } else {
+                    num = 2
                 }
-                if(num!=2){
-                    this.sort['order'] = column.property+','+num;
+                if (num != 2) {
+                    this.sort['order'] = column.property + ',' + num;
                 }
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
@@ -191,18 +191,23 @@
                  }
             },
             abnormalChange( ){
-                if(this.checkArr.length!=1){
-                   let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
-                    this.$message.error(s);
-                }else{
-                    let src='/WorkAbnormalDetails'
-                    let data=this.selectId
-                    if(this.row&&this.row.offlineFile){
-                        src='/WorkAbnormalAdd'
+                if(this.checkArr[0].state==3){
+                    if(this.checkArr.length!=1){
+                        let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
+                        this.$message.error(s);
+                    }else{
+                        let src='/WorkAbnormalDetails'
+                        let data=this.selectId
+                        if(this.row&&this.row.offlineFile){
+                            src='/WorkAbnormalAdd'
+                        }
+                        this.$router.push({path:src,query:{ id:data,type:'edit'}});
+                        // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
                     }
-                    this.$router.push({path:src,query:{ id:data,type:'edit'}});
-                    // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
+                }else{
+                    this.$message.error('请先完成工单');
                 }
+
             },
 
             getList(){

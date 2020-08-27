@@ -111,7 +111,6 @@
             console.log(to, from,112222);
                 if(from.path=='/onlineTestDo'&&this.pathBlo){
                     this.tishi(()=>{this.endTest(1)},next)
-
                }else{
                    next();
                }

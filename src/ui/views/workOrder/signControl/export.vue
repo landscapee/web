@@ -12,7 +12,7 @@
                 </el-form>
                  <div class="Qfooter" style="margin-top: 30px">
                     <el-button @click="close()">取消</el-button>
-                    <el-button type="primary" @click="submit('form')">导出PDF</el-button>
+                    <el-button type="primary" @click="submit('form')">导出</el-button>
                 </div>
                 <form action="#" ref="formA"></form>
             </div>
@@ -86,19 +86,20 @@
             open(row){
                 this.dialogFormVisible=true
                  this.form={...row}
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:["W_moduleType" ]
+                }).then(d => {
+                    let obj=d.data
+                    this.W_moduleType=obj.W_moduleType
+
+                });
             },
         },
         created() {
-            request({
-                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-                method: 'post',
-                params:{delete:false},
-                data:["W_moduleType" ]
-            }).then(d => {
-                let obj=d.data
-               this.W_moduleType=obj.W_moduleType
 
-            });
         },
     }
 </script>
@@ -120,7 +121,9 @@
 
     }
 
-
+    /deep/ .el-form{
+        margin-top: 5px;
+    }
 
 
 </style>

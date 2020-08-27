@@ -14,7 +14,7 @@
                     <div class="custom-tree-node" slot-scope="{ node, data,$index,index}">
                         <div @click.prevent.stop="editItem(data,node)" @contextmenu.prevent.stop="openMainMenuFn($event,data)" style="width:100%" :class="formItem.id==data.id?'backColor':''">
                             {{ node.label }}
-                            <i v-if="data.children&&data.children.length" class="el-icon-caret-bottom"></i>
+                            <!--<i v-if="data.children&&data.children.length" class="el-icon-caret-bottom"></i>-->
                         </div>
                     </div>
                 </el-tree>
@@ -829,8 +829,9 @@
 /deep/ .el-tree{
     height:calc(100vh - 430px)!important;
         overflow-y: auto;
-    .el-tree-node__expand-icon{
-        display: none;
+    .el-tree-node__expand-icon:not(.is-leaf):before{
+       color:#606266;
+        font-size: 13px;
     }
 
     .custom-tree-node{

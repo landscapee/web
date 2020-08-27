@@ -50,8 +50,8 @@
                         <div style="width:10%;">{{labelVO.itemLabel}}</div>
                         <div style="width:90%" class="flex">
                             <div :style="`width: ${col==3?'88.9%':'77.8%'};border-right: 1px solid #979797;display: block;`">{{labelVO.contentLabel}}</div>
-                            <div style="width:10%">{{labelVO.workerLabel}}</div>
-                            <div style="width:10%;display: block;border-left: 1px solid #979797 " v-if='col==4'>{{labelVO.commanderLabel}}</div>
+                            <div style="width:11.1%">{{labelVO.workerLabel}}</div>
+                            <div style="width:11.1%;display: block;border-left: 1px solid #979797 " v-if='col==4'>{{labelVO.commanderLabel}}</div>
                         </div>
 
                     </div>
@@ -314,7 +314,7 @@
                 let _this = this
                 return new Promise((resolve,reject)=>{
                     request({
-                        url:`${this.$ip}/mms-workorder/workorder/execute/${this.id}`,
+                        url:`${this.$ip}/mms-workorder/workorder/refresh?workorderId=${this.id}`,
                         method: 'get',
                     })
                         .then((data) => {

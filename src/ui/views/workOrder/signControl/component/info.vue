@@ -20,10 +20,11 @@
             <div class="item">
                 <div class="left">模板名称：</div>
                 <div class="right">{{get(form.template,'title')}}</div>
-            </div><div class="item">
-            <div class="left">模板版本号：</div>
-            <div class="right">{{get(form.template,'version')}}werwerwerwerwerwerew</div>
-        </div>
+            </div>
+            <div class="item">
+                <div class="left">模板版本号：</div>
+                <div class="right">{{get(form.template,'version')}}werwerwerwerwerwerew</div>
+            </div>
         </div>
     </div>
 </template>
