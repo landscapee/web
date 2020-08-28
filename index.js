@@ -30,15 +30,15 @@ import moment from 'moment'
 //公共ip地址和端口
 if(PROGRAM == 'jwxt.dev'){
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    //Vue.prototype.$loginIp = "http://173.100.1.5:8011"
-}else if(PROGRAM == 'jwxt.test'){
+ }else if(PROGRAM == 'jwxt.test'){
     Vue.prototype.$ip = "http://173.101.1.30:6070"
-    //Vue.prototype.$loginIp = "http://173.101.1.30:6070"
-}else if(PROGRAM == 'jwxt.build'){
+ }else if(PROGRAM == 'jwxt.build'){
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    //Vue.prototype.$loginIp = "http://173.100.1.5:8011"
-}
-
+ }
+import MessageBox from '@/ui/components/userName/index.js';
+Vue.use(MessageBox);
+import singleDialog from '@/ui/components/singleDialog/index.js';
+Vue.use(singleDialog);
 Vue.prototype.$moment = moment;
  //事件总线指向全局vue对象
 Vue.prototype.$eventBus= new Vue();

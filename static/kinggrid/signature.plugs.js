@@ -97,7 +97,7 @@
 			return that.showDialog('modifyPwdBtl',config);
 		}
 	});
-	
+
 	
 		
 })(this , kinggrid ,Signature, jQuery);

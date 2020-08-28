@@ -98,7 +98,7 @@
                 moment:moment,
                 options:{},
                 rules: {
-                    yearMonth: [{ validator:yearMonth, trigger: "blur" }],
+                    yearMonth: [{ required: true,validator:yearMonth, trigger: "blur" }],
                     deptId: [{ required: true, message: "请选择", trigger: "blur" },
 
                         ],

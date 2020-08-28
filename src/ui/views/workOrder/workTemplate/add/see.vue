@@ -6,9 +6,9 @@
             <div v-else  @click="showZ">隐藏占位符</div>
         </div>
         <div class="order">
-            <div class="head">
+            <div class="head" style="width: 100%">
 
-            <table class="nomTable nomTable0"  >
+            <table class="nomTable nomTable0" style="width: 100%" >
                 <tr class="trimg" v-if="get(form.typeVO,'airlineCompany')||form.photoPath">
                     <td> <div  ><img :src="form.photoPath" alt=""></div></td>
                     <td>{{get(form.typeVO,'airlineCompany')}}</td>
@@ -36,22 +36,23 @@
                        <el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">
                                <img v-if="opt1.type==4"   :src="opt1.value.split('$')[1]" alt="加载失败">
                            <!--{{getimg(opt1)}}-->
-                               <div v-if="opt1.type==4&&show" > {{ '${'+opt1.placeholder+'}'}}</div>
+                               <div v-if="opt1.type==4&&show" style="word-wrap: break-word" > {{ '${'+opt1.placeholder+'}'}}</div>
 
                            <template v-else-if="opt1.type==2">
+
                                {{opt1.value}}
                            </template>
                            <div v-else-if="opt1.type==1" >
 
 
                            </div>
-                           <div v-else-if="opt1.type==3" >
-                               <input type="text" :name="opt1.placeholder" ></input>
+                           <div v-else-if="opt1.type==3" style="width: 99%">
+                               <input type="text" :name="opt1.placeholder" style="width: 99%" ></input>
                                <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
                            </div>
-                           <div v-else-if="opt1.type==5" >
+                           <div v-else-if="opt1.type==5"  style="width:100%">
                                <div>
-                                   <div v-for="(k,l) in opt1.value.split(';')" :key="l">
+                                   <div v-for="(k,l) in opt1.value.split(';')" :key="l" style="width:100%;word-wrap: break-word;margin-top: 5px">
                                        <input type="checkbox" :name="opt1.placeholder.split(';')[l]" class="Wtui-checkbox" ></input>{{k}}
                                        <div v-if="show" style="width: 100%" >
                                             {{ '${'+opt1.placeholder.split(';')[l]+'}'}}
@@ -62,8 +63,8 @@
                                </div>
                                <div> </div>
                            </div>
-                           <div v-else-if="opt1.type==6" >
-                               <div v-if="show" >  {{ '${'+opt1.placeholder+'}'}}</div>
+                           <div v-else-if="opt1.type==6"  style="width: 99%">
+                               <div v-if="show" style="width: 99%">  {{ '${'+opt1.placeholder+'}'}}</div>
 
                            </div>
                        </el-col>
@@ -153,7 +154,7 @@
                                     <div v-if="opt.workerLabel" >
                                         <div > {{opt[get(form.labelVO,'contentLayout')=='C3（三列）'?'c3Remark':'c4WorkerRemark']}}</div>
                                         <el-button type="primary" style="padding:5px 15px">签署</el-button>
-                                        <div v-if="show" style="width: 100%" >
+                                        <div v-if="show" style="width:60px;word-wrap: break-word" >
                                             {{ '${fix_sign_'+(opt.p.number+'').replace(/\./,'_')+'_'+(opt.index+1)+'}'}}
                                         </div>
                                     </div>
@@ -162,7 +163,7 @@
                                     <div v-if="opt.commanderLabel">
                                         <div>{{opt.c4CommanderRemark}}</div>
                                         <el-button type="primary" style="padding:5px 15px">签署</el-button>
-                                        <div v-if="show" style="width: 100%" >
+                                        <div v-if="show" style="width:60px;word-wrap: break-word" >
                                             {{ '${travel_sign_'+(opt.p.number+'').replace(/\./,'_')+'_'+ (opt.index+1) +'}'}}
                                         </div>
                                     </div>
@@ -362,7 +363,8 @@
 .seeConfig{
     width:100%;
     height:calc(100vh - 100px);
-    overflow-y: auto; padding: 20px 30px;
+    overflow-y: auto;
+    padding: 20px 20px;
 
     .seeTitle{
         line-height: 20px;
@@ -487,7 +489,7 @@
 }
 
 .nomTable0{
-    td{width:270px!important;}
+    /*td{width:270px!important;}*/
 }
 .nomTable{
        width: 100%;

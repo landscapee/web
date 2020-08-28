@@ -1,3 +1,4 @@
+
 <template>
     <div class="index"  style="display: flex;flex-direction: column;align-items: center">
         <div style="width: 80%;">
@@ -6,7 +7,6 @@
         </div>
         <div style="width: 80%;">
             <div style="text-align: center;font-size: 20px;padding: 20px 20px 0px 20px " >工单签署信息</div>
-
             <div class="base_item" style="margin: 20px 0">
                 <div :class=" type=='info' ?'base_i_inner flex flex_wrap lists1':'base_i_inner flex flex_wrap'">
                     <div class="lists" v-for='(item, index) in getbaseItemVOList' :key='index'>
@@ -17,14 +17,14 @@
                         <div v-if='item.type==1' class="value1 value">{{workorder[value5Type[item.value]]}}</div>
                         <div v-if='item.type==2' class="value2 value">{{item.value}}</div>
                         <div v-if='item.type==3' class="value3 value">
-                            <input type="text" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
+                            <input type="text" :name="item.placeholder" :id="item.placeholder">
                         </div>
                         <div v-if='item.type==4' class="value4 value">
                             <img :src="item.value" >
                         </div>
                         <div v-if='item.type==5' class="value5  value flex flex_wrap align_center">
                             <div v-for="(k,l) in item.value.split(';')" :key="l" class="flex align_center">
-                                <input type="checkbox" :disabled="type=='info'" :name="item.placeholder.split(';')[l]" class="Wtui-checkbox" >{{k}}&nbsp;
+                                <input type="checkbox" :name="item.placeholder.split(';')[l]" class="Wtui-checkbox" >{{k}}&nbsp;
                                 <!-- <div style="width: 100%" >
                                     {{'${'+item.placeholder.split(';')[l]+'}'}}
                                 </div> -->
@@ -32,86 +32,89 @@
                         </div>
                         <div v-if='item.type==6' class="value6  value" style="position:relative">
                             <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
-                            <el-button   :disabled="type=='info'" @click="signOthFn('sign_'+index,$event)" type="primary" style="padding: 7px 15px">签字</el-button>
+                            <button class='sign' @click="signOthFn('sign_'+index,$event)">签字</button>
                             <div  style="width:50px;height:50px;position:absolute;left:200px;top:10px">
                                 <div :pos="'sign_'+index" :id="'sign_'+index"></div>
                             </div>
                         </div>
                     </div>
                     <div class=" base_i_inner_btn flex justify_center align_center" v-if="type!='info'">
-                        <el-button type="primary" @click="saveBasicFn('isActiveSave')" ><i v-show='!isActiveSave' class="el-icon-loading"></i>保存</el-button>
+                         <el-button type="primary" @click="saveBasicFn('isActiveSave')" ><i v-show='!isActiveSave' class="el-icon-loading"></i>保存</el-button>
                         <el-button  type="primary" @click="saveBasicFn('isActiveReset')" ><i v-show='!isActiveReset' class="el-icon-loading"></i>重置</el-button>
                     </div>
                 </div>
             </div>
-
             <div class="order_content">
                 <div class="order_c_main">
-                    <div class="item1 flex">
-                        <div style="width:18%;">{{labelVO.itemLabel}}</div>
-                        <div :style="{width: col==3 ? '67%' : '52%'}">{{labelVO.contentLabel}}</div>
-                        <div :style="{width: col==3 ? '15%' : '15%'}">{{labelVO.workerLabel}}</div>
-                        <div :style="{width: col==3 ? '15%' : '15%'}" v-if='col==4'>{{labelVO.commanderLabel}}</div>
+                    <div class="item1  clear">
+                        <div style="width:10%;">{{labelVO.itemLabel}}</div>
+                        <div style="width:90%" class="flex">
+                            <div :style="`width: ${col==3?'88.9%':'77.8%'};border-right: 1px solid #979797;display: block;`">{{labelVO.contentLabel}}</div>
+                            <div style="width:11.1%">{{labelVO.workerLabel}}</div>
+                            <div style="width:11.1%;display: block;border-left: 1px solid #979797 " v-if='col==4'>{{labelVO.commanderLabel}}</div>
+                        </div>
+
                     </div>
                     <div class="order_c_b">
                         <div v-for='(item, index) in contentVOListMap' :key='item.id'>
-
                             <div class="flex">
-                                <div class="item flex align_start" style="width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block"><na-temp v-if='item.notApplicable' :active='item.active' @changeActiveFn='changeActiveFn(item)'></na-temp>{{item.reduceIndex}}</div>
-
-                                <div style="width:82%;" v-if='item.contentDetails&&item.contentDetails.length'>
+                                <div class="item flex align_start" style="width:10%;padding:4px;box-sizing:border-box">
+                                    <na-temp v-if='item.notApplicable' :active='item.active' @changeActiveFn='changeActiveFn(item)'></na-temp>
+                                    {{item.reduceIndex}}
+                                </div>
+                                <div style="width:90%;" v-if='item.contentDetails&&item.contentDetails.length'>
                                     <div v-for='itemChild in item.contentDetails' :key='itemChild.key' class="flex">
-                                        <div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}" > <!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
-                                            <div class="textContent" :class="itemChild.id" v-html='itemChild.content' style="text-align: left;padding: 10px 10px;"></div>
-                                             <div v-if="type!='info'" class='checkbox_group  '>
+                                        <div  class="item" :style="{width: col==3 ? '88.9%' : '77.8%'}"> <!--style="width:63.4%;"-->
+                                            <div v-if="item.reduceIndex.includes('.')" class="textContent textContentLeft"
+                                                 :class="itemChild.id" v-html='itemChild.content'>
+                                            </div>
+                                            <div v-else class="textContent" v-html='item.name'></div>
+                                            <div v-if="type!='info'" class='checkbox_group  '>
                                                 <el-button  @click="editContent($event,itemChild)" type="primary"  style="padding: 7px 20px">更正</el-button>
                                             </div>
                                         </div>
-                                        <div  class="item itemSign" :style="{width: col==3 ? '18.3%' : '18.3%'}">
-                                            <el-button   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
+                                        <div  class="item" :style="{width: '11.1%'}">
+                                            <button v-if="type!='info'" class='sign' @click="fixedSignFn(itemChild,'fix_sign_'+itemChild.reduceIndex, $event)">签字</button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
-                                                <div class="sign_box" :id='"fix_sign_"+itemChild._reduceIndex' :pos='"fix_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
+                                                <div :id='"fix_sign_"+itemChild.reduceIndex' :pos='"fix_sign_"+itemChild.reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
-                                        <div  class="item itemSign" :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
-                                            <el-button   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
+                                        <div  class="item" :style="{width: '11.1%'}"  v-if='col==4'>
+                                            <button class='sign' v-if="type!='info'" @click="travelSignFn(itemChild,'travel_sign_'+itemChild.reduceIndex, $event)">签字</button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
-                                                <div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex" :pos='"travel_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
+                                                <div :id="'travel_sign_'+itemChild.reduceIndex" :pos='"travel_sign_"+itemChild.reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else class='flex' style="width:82%;">
-                                    <div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}">
+                                <div v-else class='flex' style="width:90%;">
+                                    <div class="item" :style="{width: col==3 ? '88.9%' : '77.8%'}">
                                         <div class="textContent" v-html='item.name'></div>
                                     </div>
-                                    <div class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
-                                    <div v-if='col==4' class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+                                    <div class="item" :style="{width: '11.1%'}"></div>
+                                    <div v-if='col==4' class="item" :style="{width: '11.1%'}"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+          </div>
 
-       </div>
+     </div>
 </template>
 <script>
     import $ from 'jquery'
-    import request from '@lib/axios.js';
     import InfoTop from './infoTop'
-
+    import request from '../../../../../lib/axios.js';
     import naTemp from '@/ui/components/naTemp'
-    import { SignatureInit } from '@/ui/lib/Signature.js'
+
     export default {
         components:{
-             naTemp,InfoTop
+              InfoTop,naTemp
         },
-
         data(){
             return{
-                type:'',
                 contentVOListMap:[],
                 contentVOList:[],
                 workorder:{},
@@ -120,8 +123,10 @@
                 template:{},
                 templateSignObj:{},
                 baseItemVOList:[],
+
                 labelVO:{},
                 id:'',
+                type:'add',
                 airInfo:{
                     'filePath':''
                 },
@@ -141,7 +146,6 @@
         },
         mounted(){
             let _this = this
-            //SignatureInit()
             this.init()
             window.onload = function(){
                 Signature.bind({
@@ -159,13 +163,22 @@
                         fn(true);
                     }
                 });
-
+                var invalidSignatureArray = Signature.verify();//返回无效签章
+                console.log(invalidSignatureArray)
+                if (invalidSignatureArray.length > 0) {
+                    for (var i = 0; i < invalidSignatureArray.length; i++) {
+                        var signature = invalidSignatureArray[i];
+                        //console.log(signature.modifiedItems);//获取修改的保护项
+                    }
+                }else{
+                    Signature.alert("当前文档所有签章有效");
+                }
             }
         },
         computed:{
             getbaseItemVOList(){
-                let l=this.baseItemVOList.length%3
-                let obj={
+                 let l=this.baseItemVOList.length%3
+                 let obj={
                     0:[],
                     1:[{type:2},{type:2}],
                     2:[{type:2}],
@@ -193,18 +206,25 @@
                     let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
                     for(let i=0;i<inputText.length;i++){
                         inputText.eq(i).removeAttr("disabled")
-                    }
+                     }
                     for(let i=0;i<button.length;i++){
-                        button.eq(i).removeAttr("disabled")
+                         button.eq(i).removeAttr("disabled")
                     }
                     return false
 
 
-                }
-
+                 }
+                $($event.target).text('更正')
                 let map = {}
                 if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
-
+                    let inputButton = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
+                    let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
+                    for(let i=0;i<inputButton.length;i++){
+                        inputButton.eq(i).attr("disabled",'')
+                     }
+                       for(let i=0;i<button.length;i++){
+                         button.eq(i).attr("disabled",'')
+                    }
                     let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
                     console.log(inputArr,12,3)
                     for(let i=0;i<inputArr.length;i++){
@@ -230,37 +250,23 @@
                         map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
                     }
                 }
-                request({
+                  request({
                     url:`${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
                     method: 'post',
                     data:{
                         contentDetailId: item.id, //内容id
                         serialNo: this.workorder.serialNo, // 工单流水号
-                        map
+                         map
                     }
                 })
                     .then((data) => {
                         if(data.code == 200){
-                            $($event.target).text('更正')
-debugger
-                            if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
-                                let inputButton = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
-                                let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
-                                for(let i=0;i<inputButton.length;i++){
-                                    inputButton.eq(i).attr("disabled",'')
-                                }
-                                for(let i=0;i<button.length;i++){
-                                    button.eq(i).attr("disabled",'')
-                                }
-                            }
-
-                            this.init()
                             this.$message({type: 'success', message: '保存成功'})
-                        }
-
+                         }
+                        this.init()
                     })
 
-            },
+             },
             getVOListMap(arr){
                 const result = [];
                 arr.forEach((item,index) => {
@@ -275,31 +281,23 @@ debugger
                     }
                     map(item)
                 })
-
                 let reduceIndex= 0
-                let _reduceIndex = 0
                 let itemNumber = 0
-                let _itemNumber = 0
                 result.forEach((item, index)=>{
                     if(item.number){
                         reduceIndex = 0
-                        _reduceIndex = 0
                         itemNumber = item.number
-                        _itemNumber = item.serialNumber
                         item.reduceIndex = itemNumber
-                        item._reduceIndex = _itemNumber
                     }else{
                         reduceIndex++
                         item.reduceIndex = itemNumber+ '.' +(reduceIndex)
-                        item._reduceIndex = _itemNumber+ '_' +(reduceIndex)
                     }
                     if(item.contentDetails && item.contentDetails.length){
 
                         item.contentDetails.forEach((itemChild,indexChild)=>{
                             let reg=/(<input\s{0,}|<button\s{0,})(.+?)(\/>|\/button>)/g
                             itemChild.content=itemChild.content.replace(reg,"$1 disabled $2$3" )
-                             itemChild.reduceIndex = item.reduceIndex+ '.' +(indexChild+1)
-                            itemChild._reduceIndex = item._reduceIndex+ '_' +(indexChild+1)
+                            itemChild.reduceIndex = item.reduceIndex+ '.' +(indexChild+1)
                             // itemChild['buttonName'] = '更正'
                         })
                     }
@@ -312,6 +310,7 @@ debugger
                 await this.getTemplateById()
                 this.getBySerialNoFn(isClearAll)
             },
+
             getTemplateById(){
                 let _this = this
                 return new Promise((resolve,reject)=>{
@@ -321,19 +320,10 @@ debugger
                     })
                         .then((data) => {
                             if(data.code==200){
-                                this.contentVOListMap=this.getVOListMap( data.data.template.contentVOList)
-
-                                this.contentVOList = data.data.template.contentVOList
+                                 this.contentVOListMap=this.getVOListMap( data.data.template.contentVOList)
                                 this.workorder = data.data.workorder
                                 this.orderModule= data.data.template
-
-                                this.baseItemVOList = data.data.template.baseItemVOList.filter(i=>i.enable)
-                                if(this.baseItemVOList.length % 3 != 0){
-                                    this.baseItemVOList.push({})
-                                    if(this.baseItemVOList % 3 != 0){
-                                        this.baseItemVOList.push({})
-                                    }
-                                }
+                                 this.baseItemVOList = data.data.template.baseItemVOList?data.data.template.baseItemVOList.filter((k)=>k.enable):[]
                                 this.template = data.data.template.typeVO
                                 this.labelVO = data.data.template.labelVO
                                 this.getFileByIdFn(this.template.airlineCompanyLogo)
@@ -341,56 +331,54 @@ debugger
                                     //if($(".textContent button").innerText ==='签章'){
                                     $(".textContent button").on('click', function(){
                                         $(this).siblings("input").attr("pos", $(this).siblings("input").attr("id"))
-                                        _this.signMsgBoxFn($(this).siblings("input").attr("id"))
+                                        _this.signFn($(this).siblings("input").attr("id"))
                                     })
                                     //}
                                 })
                                 resolve()
-                            }else{
-                                this.$message({type: 'error', message: '新增失败，请重试'});
                             }
                         })
                 })
             },
-            showMsgBoxFn(item,type, $event, fnName){
-                let _this = this
-                this.$msgBox.showMsgBox({
-                    isShowInput: true
-                }).then(async (data) => {
-                    if(data.val && data.psd){
-                        _this[fnName](item,type, $event, data.val, data.psd)
-                    }
-                }).catch(() => {
-                    // ...
-                });
-            },
-            signMsgBoxFn(type){
-                let _this = this
-                this.$msgBox.showMsgBox({
-                    isShowInput: true
-                }).then(async (data) => {
-                    if(data.val && data.psd){
-                        _this.signFn(type, data.val, data.psd)
-                    }
-                }).catch(() => {
-                    // ...
-                });
-            },
-            signFn(type,val,psd){
-                SignatureInit(val, psd)
+            signFn(type){
                 var signatureCreator = Signature.create()
                 var that = this
-                signatureCreator.run({
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID："+this.getSignatureid());
-                        console.log("盖章数据："+this.getSignatureData());
-                        that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
-                        fn(true)
+                signatureCreator.handWriteDlg({
+                    image_height: "4",
+                    image_width: "5",
+                    onBegin: function() {
+                        console.log('onbegin')
                     },
-                    cancelCall : function() {//点击取消后的回调方法
-                        console.log("取消！")
+                    onEnd: function() {
+                        console.log('onEnd')
                     }
+                }, function(param){
+                    signatureCreator.runHW(param, {
+                        //protectedItems: protectedItems,
+                        // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                        //                 'item5', 'item6','item7', 'item8',
+                        //                 'item9','item10', 'item11', 'item12',
+                        //                 'item13','item14', 'item15', 'item16',
+                        //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID："+this.getSignatureid());
+                            console.log("盖章数据："+this.getSignatureData());
+                            // if(type==='pos3'){
+                            //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }else if(type==='pos4'){
+                            //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }
+                            // console.log(that.workerSignatureData)
+                            // console.log(that.customerSignatureData)
+
+                            that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
+                            fn(true)
+                        },
+                        cancelCall : function() {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    })
                 })
             },
             getBySerialNoFn(isClearAll){
@@ -426,8 +414,7 @@ debugger
                             // }
 
                             // this.deepMap = JSON.parse(JSON.stringify(map))
-                            SignatureInit()
-                            var signatureCreator = Signature.create()
+                            //var signatureCreator = Signature.create()
                             //let signData = $(".kg-img-div")  // signatureid
 
                             //var that = this
@@ -476,12 +463,11 @@ debugger
                         }
                     })
             },
-            fixedSignFn(item,type, $event,val, psd){
-                // if(!$('#1'+item.id).is(':checked')){
-                //     this.$message({type: 'warning', message: '请先点击维修已完成'})
-                //     return
-                // }
-                SignatureInit(val,psd)
+            fixedSignFn(item,type, $event){
+                if(!$('#1'+item.id).is(':checked')){
+                    this.$message({type: 'warning', message: '请先点击维修已完成'})
+                    return
+                }
                 var signatureCreator = Signature.create()
                 var that = this
                 /* 保护项 */
@@ -493,70 +479,64 @@ debugger
                     }
                 })
                 protectedItems = protectedItems.filter(i=>i)
-
-                signatureCreator.run({
-                    // offsetX:100,
-                    // offsetY:100,
-                    protectedItems: protectedItems,
-                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
-                    //                 'item5', 'item6','item7', 'item8',
-                    //                 'item9','item10', 'item11', 'item12',
-                    //                 'item13','item14', 'item15', 'item16',
-                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID："+this.getSignatureid());
-                        console.log("盖章数据："+this.getSignatureData());
-                        fn(true);
-                        let _this = this
-                        signatureCreator.getBase64Image(
-                            this.getSignatureid(),
-                            this.getSignatureData(),
-                            $($event.target).parent('.item').find(".sign_box").attr("pos"),
-                            function(fn, imgdata,signid, sdata){
-                                that.postSignFn(
-                                    item,
-                                    type,
-                                    _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
-                                    imgdata[1]
-                                )
-                            }
-                        )
-                        // if(type==='pos3'){
-                        //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }else if(type==='pos4'){
-                        //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }
-
-                    },
-                    cancelCall : function() {//点击取消后的回调方法
-                        console.log("取消！")
-                    }
-                });
-
-
                 /* 保护项 */
-                // signatureCreator.handWriteDlg({
-                //     image_height: "6.7",
-                //     image_width: "5",
-                //     onBegin: function() {
-                //         console.log('onbegin')
-                //     },
-                //     onEnd: function() {
-                //         console.log('onEnd')
-                //     }
-                // }, function(param){
+                signatureCreator.handWriteDlg({
+                    image_height: "6.7",
+                    image_width: "5",
+                    onBegin: function() {
+                        console.log('onbegin')
+                    },
+                    onEnd: function() {
+                        console.log('onEnd')
+                    }
+                }, function(param){
+                    signatureCreator.runHW(param, {
+                        protectedItems: protectedItems,
+                        // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                        //                 'item5', 'item6','item7', 'item8',
+                        //                 'item9','item10', 'item11', 'item12',
+                        //                 'item13','item14', 'item15', 'item16',
+                        //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID："+this.getSignatureid());
+                            console.log("盖章数据："+this.getSignatureData());
+                            fn(true);
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parent('.item').find(".sign_box").attr("pos"),
+                                function(fn, imgdata,signid, sdata){
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
+                                        imgdata[1]
+                                    )
+                                }
+                            )
+                            // if(type==='pos3'){
+                            //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }else if(type==='pos4'){
+                            //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }
 
-                // });
+                        },
+                        cancelCall : function() {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    });
+                });
             },
-            travelSignFn(item,type, $event,val, psd){
-                // if(!$('#2'+item.id).is(':checked')){
-                //     this.$message({type: 'warning', message: '请先点击放行已完成'})
-                //     return
-                // }
-                SignatureInit(val, psd)
+            travelSignFn(item,type, $event){
+                if(!$('#2'+item.id).is(':checked')){
+                    this.$message({type: 'warning', message: '请先点击放行已完成'})
+                    return
+                }
                 var signatureCreator = Signature.create();
                 var that = this;
+
                 /* 保护项 */
                 let inputArr = $($event.target).parent('.item').siblings(".item").find(".textContent").find('input')
                 let protectedItems = []
@@ -569,97 +549,106 @@ debugger
                 })
                 /* 保护项 */
                 protectedItems = protectedItems.filter(i=>i)
-                signatureCreator.run({
-                    protectedItems: protectedItems,
-                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
-                    //                 'item5', 'item6','item7', 'item8',
-                    //                 'item9','item10', 'item11', 'item12',
-                    //                 'item13','item14', 'item15', 'item16',
-                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID："+this.getSignatureid());
-                        console.log("盖章数据："+this.getSignatureData());
-                        fn(true);
-                        let _this = this
-                        signatureCreator.getBase64Image(
-                            this.getSignatureid(),
-                            this.getSignatureData(),
-                            $($event.target).parent('.item').find(".sign_box").attr("pos"),
-                            function(fn, imgdata,signid, sdata){
-                                that.postSignFn(
-                                    item,
-                                    type,
-                                    _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
-                                    imgdata[1]
-                                )
-                            }
-                        )
-                        // if(type==='pos3'){
-                        //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }else if(type==='pos4'){
-                        //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }
-                        // console.log(that.workerSignatureData)
-                        // console.log(that.customerSignatureData)
-
+                console.log(protectedItems)
+                signatureCreator.handWriteDlg({
+                    image_height: "6.7",
+                    image_width: "5",
+                    onBegin: function() {
+                        console.log('onbegin');
                     },
-                    cancelCall : function() {//点击取消后的回调方法
-                        console.log("取消！")
+                    onEnd: function() {
+                        console.log('onEnd');
                     }
+                }, function(param){
+                    //alert(param.imageData);
+                    signatureCreator.runHW(param, {
+                        protectedItems: protectedItems,
+                        // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                        //                 'item5', 'item6','item7', 'item8',
+                        //                 'item9','item10', 'item11', 'item12',
+                        //                 'item13','item14', 'item15', 'item16',
+                        //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID："+this.getSignatureid());
+                            console.log("盖章数据："+this.getSignatureData());
+                            fn(true);
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parent('.item').find(".sign_box").attr("pos"),
+                                function(fn, imgdata,signid, sdata){
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
+                                        imgdata[1]
+                                    )
+                                }
+                            )
+                            // if(type==='pos3'){
+                            //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }else if(type==='pos4'){
+                            //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                            // }
+                            // console.log(that.workerSignatureData)
+                            // console.log(that.customerSignatureData)
+
+                        },
+                        cancelCall : function() {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    });
                 });
             },
-            signOthMsgBoxFn(type, $event){
-                let _this = this
-                this.$msgBox.showMsgBox({
-                    title: '用户名',
-                    content: '请输入用户名',
-                    isShowInput: true
-                }).then(async (val) => {
-                    if(val){
-                        _this.signOthFn(type,$event, val)
-                    }
-                }).catch(() => {
-                    // ...
-                });
-            },
-            signOthFn(type, $event,val){
+            signOthFn(type, $event){
                 if(!this.signBasicActiveFn()){
                     this.$message({type: 'warning', message: '请先完成所有的放行已完成'})
                     return
                 }
-                SignatureInit(val)
                 var signatureCreator = Signature.create()
                 var that = this
-                signatureCreator.run({
-                    //protectedItems: protectedItems,
-                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
-                    //                 'item5', 'item6','item7', 'item8',
-                    //                 'item9','item10', 'item11', 'item12',
-                    //                 'item13','item14', 'item15', 'item16',
-                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID："+this.getSignatureid());
-                        console.log("盖章数据："+this.getSignatureData());
-                        fn(true)
-                        let _this = this
-                        signatureCreator.getBase64Image(
-                            this.getSignatureid(),
-                            this.getSignatureData(),
-                            $($event.target).parent('.value6').find(".value6_box").attr("pos"),
-                            function(fn, imgdata,signid, sdata){
-                                that.signBasicFn({
-                                    key:type,
-                                    value: _this.getSignatureid().toString()+'------'+_this.getSignatureData()+'------'+
-                                        imgdata[1]
-                                })
-                            }
-                        )
+                signatureCreator.handWriteDlg({
+                    image_height: "6.7",
+                    image_width: "5",
+                    onBegin: function() {
+                        console.log('onbegin')
                     },
-                    cancelCall : function() {//点击取消后的回调方法
-                        console.log("取消！")
+                    onEnd: function() {
+                        console.log('onEnd')
                     }
+                }, function(param){
+                    signatureCreator.runHW(param, {
+                        //protectedItems: protectedItems,
+                        // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                        //                 'item5', 'item6','item7', 'item8',
+                        //                 'item9','item10', 'item11', 'item12',
+                        //                 'item13','item14', 'item15', 'item16',
+                        //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID："+this.getSignatureid());
+                            console.log("盖章数据："+this.getSignatureData());
+                            fn(true)
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parent('.value6').find(".value6_box").attr("pos"),
+                                function(fn, imgdata,signid, sdata){
+                                    that.signBasicFn({
+                                        key:type,
+                                        value: _this.getSignatureid().toString()+'------'+_this.getSignatureData()+'------'+
+                                            imgdata[1]
+                                    })
+                                }
+                            )
+                        },
+                        cancelCall : function() {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    })
                 })
             },
             postSignFn(item,type,getSignatureid){
@@ -680,158 +669,6 @@ debugger
                             this.$message({type: 'error', message: data.message})
                         }
                     })
-            },
-            fixCompleteFn(item,$event){
-                let map = {}
-                if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
-                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
-                    console.log(inputArr)
-                    for(let i=0;i<inputArr.length;i++){
-                        map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
-                    }
-                    let inputNa = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='NA']")
-                    for(let i=0;i<inputNa.length;i++){
-                        map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
-                    }
-
-
-                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
-                    console.log(inputSign)
-                    for(let i=0;i<inputSign.length;i++){
-                        console.log(inputSign.eq(i))
-                        if($("div[elemid="+inputSign.eq(i).attr("id")+"]")){
-                            let signatureid = $("div[elemid="+inputSign.eq(i).attr("id")+"]").attr("signatureid")
-                            if(signatureid){
-                                map[inputSign.eq(i).attr("name")] = signatureid+'------'+this.templateSignObj[signatureid]+'------'+
-                                    document.querySelector('#kg-img-'+signatureid).src.split("base64,")[1]
-                            }
-                        }
-                    }
-                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
-                    for(let i=0;i<inputText.length;i++){
-                        map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
-                    }
-                }
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/workerComplete`,
-                    method: 'post',
-                    data:{
-                        contentDetailId: item.id, //内容id
-                        serialNo: this.workorder.serialNo, // 工单流水号
-                        signingTime: '', //签章时间
-                        map
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                            //this.workerCompleteData = data.data
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
-            commanderCompleteFn(item, $event){
-                let inObj = this.workerCompleteData.find(i=>i.contentDetailId===item.id)
-                if(!inObj){
-                    this.$message({type: 'error', message: '操作有误，请检查'})
-                    this.init()
-                    return
-                }
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/commanderComplete`,
-                    method: 'post',
-                    data:{
-                        id: inObj.id
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-
-            },
-            invalidFn(item, $event){
-                let inObj = this.workerCompleteData.find(i=>i.contentDetailId === item.id)
-                if(!inObj){
-                    this.$message({type: 'error', message: '操作有误，请检查'})
-                    this.init()
-                    return
-                }
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/invalid`,
-                    method: 'post',
-                    data:{
-                        id: inObj.id
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
-            backFn(){
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/back`,
-                    method: 'post',
-                    data:{
-                        serialNo: this.workorder.serialNo
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
-            cleanFn(){
-                request({
-                    url:`${this.$ip}/mms-workorder/operationInf/clean`,
-                    method: 'post',
-                    data:{
-                        serialNo: this.workorder.serialNo
-                    }
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
-            submitFn(){
-                request({
-                    url:`${this.$ip}/mms-workorder/workorder/submit/${this.workorder.id}`,
-                    method: 'get',
-                })
-                    .then((data) => {
-                        if(data.code == 200){
-                            this.$message({type: 'success', message: '提交成功'})
-                        }else{
-                            this.$message({type: 'error', message: data.message})
-                        }
-                    })
-            },
-            questionUploadFn(){
-                this.$refs.questionUpload.open(  this.workorder)
-            },
-
-            routerPushFn(path,query={}){
-                this.$router.push({ path,query})
             },
             changeActiveFn(item){
                 console.log(item)
@@ -854,12 +691,13 @@ debugger
                             this.$message({type: 'error', message: data.message})
                         }
                     })
+
             },
             saveBasicFn(type){
                 if(!this[type]){
                     return false
                 }
-                 this[type] = false
+                this[type] = false
                 let map = {}
                 if(type === 'isActiveSave'){
                     let textArr = $(".base_i_inner").find("input[type='text']");
@@ -873,15 +711,12 @@ debugger
                 }else{
                     let textArr = $(".base_i_inner").find("input[type='text']");
                     textArr.each((index, ele)=>{
-                         $(ele).val('')
+                        map[$(ele).attr("name")] = ''
                     })
                     let checkBoxArr = $(".base_i_inner").find("input[type='checkbox']")
                     checkBoxArr.each((index,ele)=>{
-                         $(ele).prop('checked',false)
-                     })
-                     this[type] = true
-                    return false
-
+                        map[$(ele).attr("name")] = false
+                    })
                 }
                 request({
                     url:`${this.$ip}/mms-workorder/operationInf/saveBasic`,
@@ -890,8 +725,7 @@ debugger
                         serialNo:this.workorder.serialNo,  // 工单流水号
                         map
                     }
-                })
-                    .then((data) => {
+                }).then((data) => {
                         setTimeout(()=>{
                             if(data.code == 200){
                                 this.$message({type: 'success', message: '保存成功'})
@@ -899,7 +733,7 @@ debugger
                                 this.$message({type: 'error', message: data.message})
                             }
                             this[type] = true
-                            this.init(true)
+                            this.init()
                         },500)
                     })
             },
@@ -1002,14 +836,13 @@ debugger
     }
     .index{
         padding:30px;
-        padding:30px;
         height:calc(100vh - 110px);
-        overflow-y: auto;
+overflow-y: auto;
         .sign{
             width:70px;
             height:25px;
             line-height: 25px;
-            border:1px solid #333;
+            border:1px solid #979797;
             background: #3280e7;
             color:#fff;
             font-size:14px;
@@ -1027,28 +860,7 @@ debugger
             padding:0 10px;
             z-index: 99;
         }
-        .base_air{
-            width:100%;
-            overflow: hidden;
-            .base_air_inner{
 
-                .lists{
-                    font-size:20px;
-                    height:60px;
-                    line-height: 60px;
-                    border-left:1px solid #333;
-                    border-top:1px solid #333;
-                    box-sizing: border-box;
-                    text-align: center;
-                    >div{
-                        border-right:1px solid #333;
-                    }
-                    img{
-                        width: 128px;
-                    }
-                }
-            }
-        }
         .base_item{
             width:100%;
             overflow: hidden;
@@ -1060,7 +872,7 @@ debugger
                 .lists{
                     width: 33.333%;
                     box-sizing: border-box;
-                    border-left:1px solid #979797;
+                     border-left:1px solid #979797;
                     border-top:1px solid #979797;
                     .label{
                         display: flex;
@@ -1068,7 +880,7 @@ debugger
                         justify-content: center;
                         flex-direction: column;
                         height:45px;
-                        border-bottom:1px solid #979797;
+                         border-bottom:1px solid #979797;
                     }
                     .value{
                         padding: 5px;
@@ -1117,25 +929,26 @@ debugger
             font-size:20px;
             .order_c_main{
                 .order_c_b{
-                    border-right: 1px solid #333;
+                    border-right: 1px solid #979797;
                 }
                 .textContentParent{
                     position: relative;
                 }
                 .item1 > div{
-                    border-left:1px solid #333;
-                    border-top:1px solid #333;
-                    border-bottom:1px solid #333;
+                    height: 40px;
+                    line-height: 40px;
+                    float:left;
+                    border-left:1px solid #979797;
+                    border-top:1px solid #979797;
+                    border-bottom:1px solid #979797;
                     text-align: center;
-                    padding:10px 0;
-                    vertical-align: top;
                     &:last-child{
-                        border-right:1px solid #333;
+                        border-right:1px solid #979797;
                     }
                 }
                 .item{
-                    border-left:1px solid #333;
-                    border-bottom:1px solid #333;
+                    border-left:1px solid #979797;
+                    border-bottom:1px solid #979797;
                     text-align: center;
 
                     vertical-align: top;
@@ -1145,15 +958,8 @@ debugger
                         height: 40px;
                         line-height: 40px;
                         border-top:1px solid #979797;
-                        border-bottom:1px solid #979797;
-                        &:nth-last-child(1){
-                            border-bottom:none;
-                        }
-                        input[type='checkbox']{
-                            width: 24px;
-                            height: 24px;
-                            margin: 0 6px;
-                        }
+                        /*border-bottom:1px solid #979797;*/
+
                     }
                     .textContent{
                         position: relative;
@@ -1162,6 +968,10 @@ debugger
                         // left:0;
                         // top:0;
                         // height: 50px;
+                    }
+                    .textContentLeft{
+                        padding: 5px 10px;
+                        text-align: left;
                     }
                 }
             }
@@ -1185,7 +995,7 @@ debugger
                                 width:70px;
                                 height:25px;
                                 line-height: 25px;
-                                border:1px solid #333;
+                                border:1px solid #979797;
                                 background: #3280e7;
                                 color:#fff;
                                 font-size:14px;
@@ -1199,6 +1009,7 @@ debugger
                     line-height: 40px;
                     border-top:1px solid #979797;
                     border-bottom:1px solid #979797;
+
                     &:nth-last-child(1){
                         border-bottom:none;
                     }
@@ -1242,3 +1053,4 @@ debugger
         }
     }
 </style>
+
