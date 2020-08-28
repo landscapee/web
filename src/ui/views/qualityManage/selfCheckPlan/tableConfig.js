@@ -14,11 +14,11 @@ let timeInfo1=(row)=>{
         return ''
     }
 }
-export const selfCheckConfig = () => {
+export const selfCheckConfig = (obj) => {
         return [
                 { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
                 { prop: 'year', label: '计划年度',sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入计划年度"} },
-                { prop: 'deptName', label: '部门',sortProp:"deptName", align: 'center',sort:true,search:{type:'input', prop:'deptName',placeholder:"请输入部门"} },
+                { prop: 'deptName', label: '部门',sortProp:"deptName", align: 'center',sort:true,search:{type:'select', prop:'deptName',selectProp:['valData','valData'],data:obj.dept||[],placeholder:"请输入部门"} },
                 { prop: 'reviewerName', label: '审批人',sortProp:"reviewerName", align: 'center',sort:true,search:{type:'input', prop:'reviewerName',placeholder:"请输入审批人"} },
                 { prop: 'reviewerTime', label: '审批日期',formatter:timeInfo, sortProp:"reviewerTime", align: 'center',sort:true,search:{type:'date', prop:'reviewerTime',placeholder:"请选择审批日期"}},
                 { prop: 'version', width:130,label: '计划版本',sortProp:"version", align: 'center' ,sort:true,search:{type:'input', prop:'version',placeholder:"请输入计划版本",extendType:'search'}}
@@ -38,7 +38,7 @@ export const selfCheckDetailsConfig = (obj) => {
                 // { prop: 'checkBasisCompany', label: '检查依据-公司', sortProp:"checkBasisCompany", align: 'center',sort:true,search:{type:'input', prop:'checkBasisCompany',placeholder:"请输入检查依据-公司"} },
                 { prop: 'checkObject', label: '检查对象', sortProp:"checkObject", align: 'center',sort:true,search:{type:'select', prop:'checkObject',placeholder:"请选择检查对象",selectProp:['valData','valData'],data:obj.checkObject} },
                 // { prop: 'checkFrequency', label: '检查频次', sortProp:"checkFrequency", align: 'center' ,sort:true,search:{type:'input', prop:'checkFrequency',placeholder:"请输入检查频次"}},
-                {  prop: 'checkTime', label: '检查时间' ,formatter:timeInfo1, sortProp:"checkTime", search:{type:'date', prop:'checkTime', placeholder:"请选择检查时间"}},
+                {  prop: 'checkTime', label: '检查时间' , sortProp:"checkTime", search:{type:'input', prop:'checkTime', placeholder:"请选择检查时间"}},
                 {  prop: 'checkUser', label: '检查人员' , sortProp:"checkUser", search:{type:'input', prop:'checkUser', placeholder:"请输入检查人员",extendType:'search', }},
                 // {  prop: 'checkType', label: '检查类别' , sortProp:"checkType", search:{type:'select',extendType:'search', prop:'checkType', placeholder:"请选择检查类别",selectProp:['valData','valData'],data:obj.checkCategory]}},
               ]

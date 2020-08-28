@@ -76,7 +76,7 @@ export default {
         return {
             tableLeftData:{records:[]},
             tableRightData:{records:[]},
-            businessTableConfig:selfCheckConfig(),
+            businessTableConfig:selfCheckConfig({}),
             businessSubsetConfig:selfCheckDetailsConfig({}),
             leftParams:{
 				current: 1,
@@ -134,10 +134,11 @@ export default {
             url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
             method: 'post',
             params:{delete:false},
-            data:["checkProject", "checkType",'checkObject','checkCategory']
+            data:["checkProject", "checkType",'checkObject','checkCategory','dept']
         }).then(d => {
             let obj=d.data
             this.businessSubsetConfig=selfCheckDetailsConfig(obj)
+            this.businessTableConfig=selfCheckConfig(obj)
 
         });
     },

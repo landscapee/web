@@ -238,10 +238,16 @@ if(val){
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
-                padding-left: 70px;
+                padding-left: 61px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;
+            }
+            .el-form-item.is-required{
+                /deep/ .el-form-item__label {
+
+                    padding-left: 50px;
+                }
             }
             .row_item_row,.row_item{
                /deep/ .el-input{

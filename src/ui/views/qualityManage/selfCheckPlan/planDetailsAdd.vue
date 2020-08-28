@@ -214,12 +214,12 @@
                                 data: data
                             })
                                 .then(data => {
-                                    this.$message.success("保存成功！");
-                                    this.$router.go(-1);
+                                  if(data.code==200){
+                                      this.$message.success("保存成功！");
+                                      this.$router.go(-1);
+                                  }
                                 })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
+
                         } else {
                             console.log("error submit!!");
                             return false;
