@@ -22,12 +22,12 @@
                 <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" style=" width:1400px;">
                     <div class='form-item-l'>
                         <el-form-item label="航空公司/Airline" prop="airLine" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.airLine}}</span>
-                            <el-input v-else v-model="ruleForm.airLine"  style='width:320px;'></el-input>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.airLine}}</span>
+                            <el-input v-else v-model="ruleForm.airLine" style='width:320px;'></el-input>
                         </el-form-item>
                         <el-form-item label="日期/Date" prop="workDate" :label-width='labelWidth'>
                             <!-- <el-input v-model="ruleForm.workDate"  style='width:320px;'></el-input> -->
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.workDate | formatDate}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.workDate | formatDate}}</span>
                             <el-date-picker
                                 v-else
                                 v-model="ruleForm.workDate"
@@ -39,31 +39,31 @@
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="分(子)公司/Subsidiary" prop="subsidiary" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.subsidiary}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.subsidiary}}</span>
                             <el-input v-else v-model="ruleForm.subsidiary"  style='width:320px;'></el-input>
                         </el-form-item>
                         <el-form-item label="飞机型号/Aircraft Type" prop="aircraftType" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.aircraftType}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.aircraftType}}</span>
                             <el-input v-else v-model="ruleForm.aircraftType" style='width:320px;'></el-input>
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="机号/Aircraft Reg" prop="aircraftReg" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.aircraftReg}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.aircraftReg}}</span>
                             <el-input v-else v-model="ruleForm.aircraftReg" style='width:320px;'></el-input>
                         </el-form-item>
                         <el-form-item label="航班号/Flight No" prop="flightNo" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.flightNo}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.flightNo}}</span>
                             <el-input v-else v-model="ruleForm.flightNo" style='width:320px;'></el-input>
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="起降机场/Departure/Arrival Airport" prop="arrivalAirport" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.arrivalAirport}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.arrivalAirport}}</span>
                             <el-input v-else v-model="ruleForm.arrivalAirport" style='width:320px;'></el-input>
                         </el-form-item>
                         <el-form-item label="非例行工作内容/Nonroutine Work" prop="nonroutineWork" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.nonroutineWork}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.nonroutineWork}}</span>
                             <el-input v-else v-model="ruleForm.nonroutineWork" style='width:320px;'></el-input>
                         </el-form-item>
                     </div>
@@ -81,69 +81,75 @@
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
-                        <el-form-item label="除冰车/Aircraft Deicing System" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.aircraftDeicingSystem}}</span>
+                        <el-form-item label="除冰车/Aircraft Deicing System" prop="aircraftDeicingSystem" :label-width='labelWidth'>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:262px;'>{{ruleForm.aircraftDeicingSystem}}</span>
                             <el-input v-else type='number' v-model="ruleForm.aircraftDeicingSystem" style='width:262px;'></el-input>
                             小时/Hour
                         </el-form-item>
                         <el-form-item label="高/低压氮气/High/Low pressure Nitrogen" prop="pressureNitrogen" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.pressureNitrogen}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:246px;'>{{ruleForm.pressureNitrogen}}</span>
                             <el-input v-else type='number' v-model="ruleForm.pressureNitrogen" style='width:246px;'></el-input>
                             次/Operation
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="加液压油/Hydraulic" prop="hydraulic" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.hydraulic}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:254px;'>{{ruleForm.hydraulic}}</span>
                             <el-input v-else type='number' v-model="ruleForm.hydraulic" style='width:254px;'></el-input>
                             加仑/Gallon
                         </el-form-item>
                         <el-form-item label="充氧气/瓶/Oxygcn Cart/Bottle" prop="oxygenBottle" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.oxygenBottle}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:266px;'>{{ruleForm.oxygenBottle}}</span>
                             <el-input v-else type='number' v-model="ruleForm.oxygenBottle" style='width:266px;'></el-input>
                             次/Bottle
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="加滑油/Oil" prop="oil" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.oil}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:256px;'>{{ruleForm.oil}}</span>
                             <el-input v-else type='number' v-model="ruleForm.oil" style='width:256px;'></el-input>
                             夸脱/Quart
                         </el-form-item>
                         <el-form-item label="飞机除冰液 (原液)/DF Plus" prop="dfPlus" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.dfPlus}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:178px;'>{{ruleForm.dfPlus}}</span>
                             <el-input v-else type='number' v-model="ruleForm.dfPlus" style='width:178px;'></el-input>
                             公斤(公升)/Kilogram(Litre)
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
-                        <el-form-item label="人工时/Man hour" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val' style='width:54px;'>{{ruleForm.people}}</span>
+                        <el-form-item label="人工时/Man hour" prop="hours" :label-width='labelWidth'>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:106px;'>{{ruleForm.people}}</span>
                             <el-input v-else type='number' v-model="ruleForm.people" style='width:106px;'></el-input>
                             人/Man
-                            <span v-if="isInfo" class='form_inlne_val' style='width:54px;'>{{ruleForm.hours}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:108px;'>{{ruleForm.hours}}</span>
                             <el-input v-else type='number' v-model="ruleForm.hours" style='width:108px;'></el-input>
                             小时/Hour
                         </el-form-item>
                         <el-form-item label="其他" prop="others" :label-width='labelWidth'>
-                            <span v-if="isInfo" class='form_inlne_val'>{{ruleForm.others}}</span>
+                            <span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.others}}</span>
                             <el-input v-else v-model="ruleForm.others" style='width:320px;'></el-input>
                         </el-form-item>
                     </div>
-                    <div class='form-item-l' style='justify-content:flex-start' v-if="type==='add'">
+                    <div class='form-item-l' style='justify-content:flex-start'>
                         <el-form-item label="上传纸质收费单" :label-width='"374px"'>
                             <el-upload
+                                v-if="type!='info'"
                                 style='display:flex'
                                 class="upload_demo"
                                 ref="upload"
+                                :limit='1'
                                 accept='.doc,.jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF'
                                 :on-success='fileUploadSuccessFn'
+                                :on-exceed="handleExceedFn"
                                 :on-remove='fileRemoveFn'
                                 :action='$ip+"/mms-file/upload2"'
+                                :file-list="fileList"
                             >
-                                <el-button size="small" type="primary">上传</el-button>
+                                <el-button size="small" type="primary">{{type=='edit'?'重新上传':'上传'}}</el-button>
                             </el-upload>
+                            <span  v-if="type=='info'" class='form_inlne_val' style='width:160px;'>{{fileList.map(i=>i.name).toString()}}</span>
                         </el-form-item>
+                        
                     </div>
                 </el-form>
             </div>
@@ -213,6 +219,7 @@ export default {
                 ]
             },
             type:'add',
+            fileList:[]
         }
     },
     created() {
@@ -245,6 +252,9 @@ export default {
                     type: 'error'
                 });
             }
+        },
+        handleExceedFn(files, fileList){
+            this.$message({type: 'warning', message: '只能上传一个文件，请将源文件删除后再上传'});
         },
         fileRemoveFn(file,fileList){
             this.ruleForm.picture = ''
@@ -317,7 +327,26 @@ export default {
             })
         },
         resetForm(formName) {
-            this.$refs[formName].resetFields();
+            this.ruleForm = {
+                airLine: '',  // 航空公司
+                workDate: '', // 日期
+                subsidiary: '', // 分(子)公司
+                aircraftType: '', // 飞机型号
+                aircraftReg: '', // 机号
+                flightNo: '', // 航班号
+                arrivalAirport: '',  // 起降机场
+                nonroutineWork: '', //非例行工作内容
+                people:'', // 人
+                hours:'',  // 小时
+                aircraftDeicingSystem: '', //除冰车
+                pressureNitrogen: '', // 高/低压氮气
+                hydraulic:'', // 加液压油
+                oxygenBottle: '', //充氧气/瓶
+                oil:'', // 加滑油
+                dfPlus: '', // 飞机除冰液 (原液)
+                others:'',
+                picture:'' // 模板路径
+            }
         },
         getChargeInfo(){
             request({
@@ -327,6 +356,28 @@ export default {
                 console.log(data)
                 if(data.code==200 && Object.prototype.toString.call(data.data) === "[object Object]"){
                     this.ruleForm = data.data
+                    this.getFileByFilePathFn(this.ruleForm.picture)
+                }
+            })
+        },
+        getFileByFilePathFn(path){
+            if(!path){
+                return false
+            }
+            request({
+                url:`${this.$ip}/mms-file/get-file-by-file-path`,
+                method: 'get',
+                params:{
+                    path
+                }
+            })
+            .then((data) => {
+                console.log(data)
+                if(data.code == 200){
+                    this.fileList = [data.data]
+                    this.fileList.forEach(i=>{
+                        i.name = i.fileName
+                    })
                 }
             })
         }

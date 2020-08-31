@@ -194,7 +194,7 @@ export default {
                 }
                 if(query==='edit'){
                     let selectObj = this.tableData.records.find(i=>i.id===this.selectIds[0])
-                    if(selectObj.sendFinance===0&&selectObj.approveState==1){
+                    if(selectObj.sendFinance===1&&selectObj.approveState==1){
                         this.$message({type: 'warning', message: '已通过状态不能编辑'})
                         return
                     }
@@ -298,6 +298,7 @@ export default {
             this.getList();
         },
         removeOrderFn(){
+            
             if(this.selectIds.length===0){
                 this.$message({type: 'warning', message: '请选择内容'});
                 return
@@ -305,23 +306,34 @@ export default {
                 this.$message({type: 'warning', message: '同时只能选择一条进行删除'})
                 return
             }
-            request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectIds[0]}`, 
-                method: 'delete',
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                request({
+                    url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectIds[0]}`, 
+                    method: 'delete',
+                })
+                .then((data) => {
+                    if(data.code==200 && data.data){
+                        this.$message({type: 'success', message: '删除成功'});
+                    }else{
+                        this.$message({type: 'error', message: '删除失败，请重试'});
+                    }
+                    this.getList();
+                    this.selectIds = []
+                })
+            }).catch(() => {
+               
             })
-            .then((data) => {
-                if(data.code==200 && data.data){
-                    this.$message({type: 'success', message: '删除成功'});
-                }else{
-                    this.$message({type: 'error', message: '删除失败，请重试'});
-                }
-                this.getList();
-                this.selectIds = []
-            })
+            
         },
         headerSort(column){
             this.sort = {};
-            this.sort[column.property] = column.order;
+            this.sort = {
+                order:`${column['property']},${column.order==='desc'?'0':'1'}`
+            }
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
