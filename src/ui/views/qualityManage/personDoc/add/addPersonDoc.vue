@@ -34,8 +34,8 @@
                                     </span>
 
                                     <el-select @change="userNameC" filterable :disabled="type=='edit'"  v-else v-model="form.userNumber" placeholder="请选择员工编号">
-                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.id" :value="opt.id">
-                                            <span>{{opt.id}}({{opt.name}})</span>
+                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.workNumber" :value="opt.workNumber">
+                                            <span>{{opt.workNumber||'【无编号】'}}({{opt.name}})</span>
                                             <span></span>
                                         </el-option>
                                     </el-select>
@@ -52,7 +52,7 @@
                                     </el-tooltip>
                                     </span>
                                     <el-select @change="userNameC" :disabled="type=='edit'" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
-                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.name" :value="opt.id"></el-option>
+                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.name" :value="opt.workNumber"></el-option>
                                     </el-select>
                                 </el-form-item>
 
@@ -336,20 +336,17 @@
                 }
             },
             userNameC(val){
-                // console.log(new Date(1532448000000),12,1);
-                let obj={}
                let data= this.userArrObj[val].userExt
                   this.form={
                     ...this.form,
                     userNumber:val,
-                      userId:val,
+                      userId:this.userArrObj[val].id,
                      userName:this.userArrObj[val].name,
                      contactInformation:this.userArrObj[val].phone||null,
                 }
                 if(data){
                     this.form={
                         ...this.form,
-
                         nation:data.nationId||null,
                         idCard:data.idCard,
                         sex:data.gender==1?'男':'女',

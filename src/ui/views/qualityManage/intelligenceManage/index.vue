@@ -102,8 +102,8 @@
                 },
                 tableRowClassName:(rowIndex,row)=>{
                     let num=60*60*24*1000*10
-                    if (row.endTime ) {
-                        console.log(row.endTime ,new Date().getTime()-num,111112,2222);
+
+                    if (row.endTime<=new Date().getTime()+num ) {
                         return 'warning-row';
                     }
                     return 'tab-row';
