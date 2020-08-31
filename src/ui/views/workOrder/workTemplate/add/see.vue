@@ -50,6 +50,10 @@
                                <input type="text" :name="opt1.placeholder" style="width: 99%" ></input>
                                <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
                            </div>
+                           <div v-else-if="opt1.type==7" style="width: 99%">
+                               <input type="date" :name="opt1.placeholder" style="width: 99%" ></input>
+                               <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
+                           </div>
                            <div v-else-if="opt1.type==5"  style="width:100%">
                                <div>
                                    <div v-for="(k,l) in opt1.value.split(';')" :key="l" style="width:100%;word-wrap: break-word;margin-top: 5px">

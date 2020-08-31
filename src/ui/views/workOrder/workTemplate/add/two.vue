@@ -131,6 +131,8 @@
                     str='radio'+(new Date().getTime())
                 }else if(row.type==6){
                     str='sign'+(new Date().getTime())
+                }else if(row.type==7){
+                    str='date'+(new Date().getTime())
                 }
                 this.$set(row,'placeholder',str)
                 console.log(this.tableData);
