@@ -105,7 +105,8 @@ export default {
             },
             selectedPersonList: [],
             deptList: [],
-            readList:[]
+            readList:[],
+            users:[]
         }
     },
     mounted(){
@@ -175,8 +176,8 @@ export default {
                         message: '推送失败',
                         type: 'error'
                     });
-                    return
                 }
+                this.$refs['form'].resetFields()
             })
         },
         listByFileIdFn(fileId){

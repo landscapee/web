@@ -40,7 +40,7 @@
                 </SearchTable>
             </div>
         </div>
-        <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
+        <userTree ref="userBox" @onSelected="handleUserSelected" :dataRequire='true'></userTree>
     </div>
 </template>
 <script>
@@ -134,7 +134,6 @@ export default {
         },
         headerSort(column){
             this.sort = {}
-            console.log(column)
             this.sort = {
                 order:`${column['property']},${column.order==='desc'?'0':'1'}`
             }
@@ -221,14 +220,14 @@ export default {
                 if(data.code==200){
                     this.$message.success("推送成功！");
                     this.init()
-                }else{
-                    this.$message({
-                        showClose: true,
-                        message: '推送失败',
-                        type: 'error'
-                    });
-                    return
-                }
+               } // else{
+                //     this.$message({
+                //         showClose: true,
+                //         message: '推送失败',
+                //         type: 'error'
+                //     });
+                //     return
+                // }
             })
         },
         listByCodesFn(){
