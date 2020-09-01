@@ -150,7 +150,7 @@
             },
             pushStaff(){
                 let employeeList=[]
-                employeeList=  this.personList.map((k,l)=>{
+                employeeList=  this.userSelect.map((k,l)=>{
                     return{
                         employeeId:k.workNumber,
                         employeeName:k.name,
