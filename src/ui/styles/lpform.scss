@@ -30,9 +30,9 @@
          .el-form-item__error{
             //left:180px;
         }
-        .el-input{
-            width:240px;
-        }
+        //.el-input{
+        //    width:240px;
+        //}
         .el-form-item:not(.is-required){
             .el-form-item__label{
                padding-left: 11px;
@@ -77,16 +77,20 @@
         .el-form-item__content{
             width: calc(100% - 180px);
         }
+        .el-input{
+            width:calc(100%  );
+        }  .el-select{
+            width:calc(100%  );
+        }
+        .el-textarea{
+            width:calc(100% );
+        }
         .row_tow{
             width: 100%;
             text-align: left;
+
             .el-form-item__content{
-                 &>.el-input{
-                          width:calc(100%  )!important;
-                      }
-                &>.el-select{
-                    width:calc(100%   )!important;
-                }
+
             }
 
             .el-form-item{
@@ -96,12 +100,7 @@
         }
         .row_one{
             width: 100%;
-            .el-input{
-                width:calc(100%  );
-            }
-            .el-textarea{
-                  width:calc(100% );
-              }
+
             .el-form-item{
                 margin-right: 0px!important;
                 width: calc(100% - 2px);

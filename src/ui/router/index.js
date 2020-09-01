@@ -507,7 +507,7 @@ let authRoutes = [
                     },
 					{
                         path: '/trainManageAdminPush',
-                        component: () => import('@views/trainManage/trainManageAdmin/pushStaff.vue'),
+                        component: () => import('@views/trainManage/testManage/pushStaff.vue'),
                         name: '培训推送员工',
                         meta: {title: '培训推送员工',icon: 'xxgl' },
                     },
@@ -724,6 +724,21 @@ let authRoutes = [
 					{
 						path: '/addSysParameter',
 						component: () => import('@views/basicData/sysParameter/components/addSysParameter'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					},
+				]
+			},
+			{
+				path: '/tailInfo',
+				component:  () => import('@views/basicData/AirInfo/index'),
+				name: '机尾号信息',
+				meta: {title: '机尾号信息',icon: '' },
+				children:[
+					{
+						path: '/tailInfoAdd',
+						component: () => import('@views/basicData/AirInfo/add'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
