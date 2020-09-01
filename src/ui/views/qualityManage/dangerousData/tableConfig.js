@@ -12,16 +12,16 @@ export const dangerousConfig = (obj) => {
                 { prop: 'dangerRemark', label: '危险源描述',width:'148',sortProp:"dangerRemark", align: 'center',sort:true,search:{type:'input',placeholder:"请输入危险源描述", prop:'dangerRemark'} },
                 { prop: 'securityNumber', label: '安全信息编号',width:'148',sortProp:"securityNumber", align: 'center' ,sort:true,search:{type:'input',placeholder:"请输入安全信息编号", prop:'securityNumber'}},
                 {  prop: 'consequence', label: '可能产生后果' ,width:'148',sortProp:"consequence",align: 'center' , search:{type:'input', placeholder:"请输入可能产生后果", prop:'consequence'}},
-                {  prop: 'possibility', label: '可能性' ,width:'148',sortProp:"possibility", align: 'center' ,search:{type:'input', placeholder:"请输入可能性", prop:'possibility'}},
-                {  prop: 'seriousness', label: '严重性' ,width:'148',sortProp:"seriousness",align: 'center' , search:{type:'input', placeholder:"请输入严重性", prop:'seriousness'}},
-                {  prop: 'riskLevel', label: '风险等级' ,width:'148',sortProp:"riskLevel",align: 'center' , search:{type:'input', placeholder:"请输入风险等级", prop:'riskLevel'}},
+                {  prop: 'possibility', label: '可能性' ,width:'148',sortProp:"possibility",sort:true, align: 'center' ,search:{type:'input', placeholder:"请输入可能性", prop:'possibility'}},
+                {  prop: 'seriousness', label: '严重性' ,width:'148',sortProp:"seriousness",sort:true,align: 'center' , search:{type:'input', placeholder:"请输入严重性", prop:'seriousness'}},
+                {  prop: 'riskLevel', label: '风险等级' ,width:'148',sortProp:"riskLevel",sort:true,align: 'center' , search:{type:'input', placeholder:"请输入风险等级", prop:'riskLevel'}},
                 {  prop: 'acceptability', label: '可接受程度' ,width:'148',sortProp:"acceptability",align: 'center' , search:{type:'input', placeholder:"请输入可接受程度", prop:'acceptability'}},
                 {  prop: 'causeAnalysis', label: '根本原因分析' ,width:'148',sortProp:"causeAnalysis", align: 'center' ,search:{type:'input', placeholder:"请输入根本原因分析", prop:'causeAnalysis'}},
                 {  prop: 'measures', label: '措施' , width:'148',sortProp:"measures",search:{type:'input',align: 'center' , placeholder:"请输入措施", prop:'measures'}},
                 {  prop: 'residualPossibility', label: '剩余可能性' ,width:'148',sortProp:"residualPossibility",align: 'center' , search:{type:'input', placeholder:"请输入剩余可能性", prop:'residualPossibility'}},
                 {  prop: 'residualSeverity', label: '剩余严重性' ,width:'148',sortProp:"residualSeverity",align: 'center' , search:{type:'input', placeholder:"请输入剩余严重性", prop:'residualSeverity'}},
                 {  prop: 'residualRiskLevel', label: '剩余风险等级' ,width:'148',sortProp:"residualRiskLevel",align: 'center' , search:{type:'input', placeholder:"请输入剩余风险等级", prop:'residualRiskLevel'}},
-                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState",align: 'center' , search:{type:'select', placeholder:"请选择控制状态", prop:'controlStateTemp',selectProp:['valData','valData'],data:obj.controlState}},
+                {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState",sort:true,align: 'center' , search:{type:'select', placeholder:"请选择控制状态", prop:'controlStateTemp',selectProp:['valData','valData'],data:obj.controlState}},
                  {  slot:'evaluationResults',label: '评定结果' ,width:'190',sortProp:"evaluationResults",align: 'center' ,search:{fixed:"right",type:'select', placeholder:"请选择评定结果",extendType:'search', prop:'evaluationResultsTemp',selectProp:['valData','valData'],data:obj.commentResults}}
         ]
 };

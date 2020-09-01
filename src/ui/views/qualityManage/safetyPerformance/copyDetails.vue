@@ -48,6 +48,7 @@
                     method: 'post',
                     data:{
                         deptId:this.row.deptId,
+                        id:this.row.id,
                     }
                 }).then((data) => {
                     this.sourcesList=data.data
@@ -104,7 +105,7 @@
 /deep/ .el-dialog{
     width: 600px;
     .el-dialog__body{
-        padding: 30px 30px 0 50px;
+        padding: 30px 30px 20px 50px;
     }
 
 }

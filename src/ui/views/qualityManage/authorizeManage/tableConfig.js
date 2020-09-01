@@ -15,7 +15,7 @@ let modelRange=(row)=>{
    if(row.modelRange){
        arr= row.modelRange.split(';').map((k,l)=>{
            let reg = /(.{1,})\*\*\*(.*)\$\$\$(.*)__(.*)/g;
-            k.replace(reg,'$1')
+           reg.test(k)
            let s=RegExp.$3?'$1（$3）':'$1'
            let bbb=  k.replace(reg,s)
              return bbb

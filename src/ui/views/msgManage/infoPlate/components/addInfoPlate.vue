@@ -166,7 +166,7 @@ export default {
         }
         return item;
       }, []);
-      let list =   this.receiptPerson.map((item) => ({ id: item.id, name: item.name }));
+      let list =this.receiptPerson.map((item) => ({ id: item.id, name: item.name }));
       this.userList = [];
       list.map((item,index)=>{
         this.$set(this.userList, index, item);

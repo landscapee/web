@@ -1,4 +1,13 @@
 
+.el-table::before,
+.mainTable::before,
+.el-table--fit::before,
+.el-table--border::before,
+.el-table--enable-row-hover::before,
+.el-table--enable-row-transition::before{
+    display:none
+}
+
 .G_listOne{
      padding: 0 30px;
     /deep/ .mainTable{

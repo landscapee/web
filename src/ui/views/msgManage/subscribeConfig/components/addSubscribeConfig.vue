@@ -166,7 +166,7 @@ export default {
 			this[list] = without(this[list], tag);
 		},
     userOpen(){
-      this.$refs.userBox.open(this.users, '选择人员', true);
+      this.$refs.userBox.open(this.userList, '选择人员', true);
     },
     resetForm(){
       this.form={};

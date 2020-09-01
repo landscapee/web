@@ -221,8 +221,5 @@
         height: 730px;
         overflow: auto;
     }
-    /deep/ .el-table::before {
 
-        width: 0;
-     }
 </style>

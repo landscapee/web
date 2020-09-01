@@ -152,7 +152,7 @@ export default {
 					this.userSelect=[]
 					d.data.map((k,l)=>{
                         const idx = arr.findIndex((op) => op.id === k.id);
-                        if( idx>-1){
+                         if( idx>-1){
                             arr.splice(idx,1)
 							this.userSelect.push(k)
                         }
@@ -285,10 +285,10 @@ export default {
             this.handleClose();
 		},
 		open(inputList, title, currentDept) {
-  			this.getTree(inputList);
+  			this.getTree(inputList||[]);
 			this.selectAll = false;
 			this.title = title;
-            this.userSelect = [inputList];
+             this.userSelect = inputList||[];
             this.dialogVisible = true;
 		},
 	},

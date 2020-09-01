@@ -306,7 +306,7 @@
                            obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
 
                                let reg = /(.{1,})\*\*\*(.*)\$\$\$(.*)__(.*)/g;
-                               k.replace(reg,'$1')
+                               reg.test(k)
                                return {
                                    name: RegExp.$1,
                                    iata: RegExp.$2,

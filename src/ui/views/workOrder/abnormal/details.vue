@@ -19,6 +19,9 @@
                         <div v-if='item.type==3' class="value3 value">
                             <input type="text" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
                         </div>
+                        <div v-if='item.type==7' class="value3 value">
+                            <input type="date" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
+                        </div>
                         <div v-if='item.type==4' class="value4 value">
                             <img :src="item.value" >
                         </div>
@@ -30,7 +33,7 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div v-if='item.type==6' class="value6  value" style="position:relative">
+                         <div v-if='item.type==6' class="value6  value" style="position:relative">
                             <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
                             <el-button   :disabled="type=='info'" @click="signOthFn('sign_'+index,$event)" type="primary" style="padding: 7px 15px">签字</el-button>
                             <div  style="width:50px;height:50px;position:absolute;left:200px;top:10px">

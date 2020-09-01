@@ -38,7 +38,7 @@ export const selfCheckDetailsConfig = (obj) => {
                 // { prop: 'checkBasisCompany', label: '检查依据-公司', sortProp:"checkBasisCompany", align: 'center',sort:true,search:{type:'input', prop:'checkBasisCompany',placeholder:"请输入检查依据-公司"} },
                 { prop: 'checkObject', label: '检查对象', sortProp:"checkObject", align: 'center',sort:true,search:{type:'select', prop:'checkObject',placeholder:"请选择检查对象",selectProp:['valData','valData'],data:obj.checkObject} },
                 // { prop: 'checkFrequency', label: '检查频次', sortProp:"checkFrequency", align: 'center' ,sort:true,search:{type:'input', prop:'checkFrequency',placeholder:"请输入检查频次"}},
-                {  prop: 'checkTime', label: '检查时间' , sortProp:"checkTime", search:{type:'input', prop:'checkTime', placeholder:"请选择检查时间"}},
+                {  prop: 'checkTime', label: '检查时间' , sortProp:"checkTime", search:{type:'input', prop:'checkTime', placeholder:"请输入检查时间"}},
                 {  prop: 'checkUser', label: '检查人员' , sortProp:"checkUser", search:{type:'input', prop:'checkUser', placeholder:"请输入检查人员",extendType:'search', }},
                 // {  prop: 'checkType', label: '检查类别' , sortProp:"checkType", search:{type:'select',extendType:'search', prop:'checkType', placeholder:"请选择检查类别",selectProp:['valData','valData'],data:obj.checkCategory]}},
               ]
