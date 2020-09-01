@@ -14,8 +14,11 @@ let modelRange=(row)=>{
     let arr=[]
    if(row.modelRange){
        arr= row.modelRange.split(';').map((k,l)=>{
-           let msgArr= k.split('__')[0].split('***')
-           return msgArr.length>1? msgArr[0]+'（'+msgArr[1]+')':msgArr[0]
+           let reg = /(.{1,})\*\*\*(.*)\$\$\$(.*)__(.*)/g;
+            k.replace(reg,'$1')
+           let s=RegExp.$3?'$1（$3）':'$1'
+           let bbb=  k.replace(reg,s)
+             return bbb
        })
    }
     return  arr.join(';')

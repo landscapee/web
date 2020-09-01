@@ -169,6 +169,9 @@
                      userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
                      name: [{ required:true,message:'请输入证书名称', trigger: "blur" }],
                      number: [{ required:true,message:'请输入证书编号', trigger: "blur" }],
+                     endTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
+                     startTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
+                     authorizationType: [{ required:true,message:'请选择授权类型', trigger: "blur" }],
                 },
                 type: "add"
             };
@@ -300,13 +303,15 @@
                            obj.flightType=obj.flightType?obj.flightType.split(';'):[]
                         }
                        if(obj.modelRange){
-
                            obj.modelRange=obj.modelRange.split(';').map((k,l)=>{
-                               let arr=k.split('__')
+
+                               let reg = /(.{1,})\*\*\*(.*)\$\$\$(.*)__(.*)/g;
+                               k.replace(reg,'$1')
                                return {
-                                   name: arr[0].split('***')[0],
-                                   models: arr[0].split('***')[1]?arr[0].split('***')[1].split(','):[],
-                                   id: arr[1],
+                                   name: RegExp.$1,
+                                   iata: RegExp.$2,
+                                   models: RegExp.$3?RegExp.$3.split(','):[],
+                                   id: RegExp.$4,
                                }
                            })
                         }
@@ -387,7 +392,7 @@
                                  let modelRange=[]
                                  if(obj.modelRange.length){
                                      modelRange=obj.modelRange.map((k,l)=>{
-                                         let msg=k.models?`${k.name}***${k.iata}$$$${k.models.join(',')}__${k.id}`:`${k.name}__${k.id}`
+                                          let msg=`${k.name}***${k.iata}$$$${k.models.join(',')}__${k.id}`
                                          return  msg
                                      })
                                  }

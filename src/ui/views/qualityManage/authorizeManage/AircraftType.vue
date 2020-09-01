@@ -81,6 +81,9 @@ v                            show-checkbox
             },
             open(value){
                 this.selectData=[...value]
+                  this.checkArr=value.map((k,l)=>{
+                      return k.id
+                  })
                 request({
                     url:`${this.$ip}/config-client-mms/config/findConfigs?configName=AircraftType`,
                     method: 'get',
