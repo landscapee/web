@@ -234,9 +234,7 @@ export default {
                 this.leftParams.current = 1;
             }else{
                 this.rightForm = searchData;
-                if(searchData.checkMethod){
-                    this.rightForm.checkMethod=searchData.checkMethod.join('')||null
-                }
+                
                 this.rightSelectId=null;
                 this.rightParams.current = 1;
             }

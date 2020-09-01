@@ -129,7 +129,7 @@ export default {
                              if(data.responseCode == 30003||data.responseCode == 30002){
                                  this.$message.warning( data.responseMessage);
                              }
-                              initWebsocket()
+                             window.SOCKET=initWebsocket()
                              this.findUnread();
                              this.$router.push({ path: '/qualityManage' });
                          }else{

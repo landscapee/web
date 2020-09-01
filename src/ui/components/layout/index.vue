@@ -128,6 +128,9 @@ import request from '@lib/axios.js';
                     removeToken();
                     removeUserInfo();
                     this.$router.push({ path: '/' });
+                    if(window.SOCKET){
+                        window.SOCKET.close()
+					}
                 })
 		},
 		onSpread(){

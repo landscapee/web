@@ -33,7 +33,7 @@ export const selfCheckDetailsConfig = (obj) => {
                 { prop: 'checkContents', label: '检查内容', sortProp:"checkContents", align: 'center',sort:true,search:{type:'input', prop:'checkContents',placeholder:"请输入检查内容"} },
                 { prop: 'checkStandard', label: '检查标准', sortProp:"checkStandard", align: 'center',sort:true,search:{type:'input', prop:'checkStandard',placeholder:"请输入检查标准"}},
                 // { prop: 'judgeStandard', label: '符合性判定标准', sortProp:"judgeStandard", align: 'center' ,sort:true,search:{type:'input', prop:'judgeStandard',placeholder:"请输入符合性判定标准"}},
-                { prop: 'checkMethod', label: '检查方式', sortProp:"checkMethod", align: 'center' ,sort:true,search:{type:'select', prop:'checkMethod',multiple:true,placeholder:"请选择检查方式",selectProp:['valData','valData'],data:obj.checkType}},
+                { prop: 'checkMethod', label: '检查方式', sortProp:"checkMethod", align: 'center' ,sort:true,search:{type:'select', prop:'checkMethod', placeholder:"请选择检查方式",selectProp:['valData','valData'],data:obj.checkType}},
                 // { prop: 'checkBasisOfficial', label: '检查依据-局方', sortProp:"checkBasisOfficial", align: 'center' ,sort:true,search:{type:'input', prop:'checkBasisOfficial',placeholder:"请输入检查依据-局方"}},
                 // { prop: 'checkBasisCompany', label: '检查依据-公司', sortProp:"checkBasisCompany", align: 'center',sort:true,search:{type:'input', prop:'checkBasisCompany',placeholder:"请输入检查依据-公司"} },
                 { prop: 'checkObject', label: '检查对象', sortProp:"checkObject", align: 'center',sort:true,search:{type:'select', prop:'checkObject',placeholder:"请选择检查对象",selectProp:['valData','valData'],data:obj.checkObject} },
