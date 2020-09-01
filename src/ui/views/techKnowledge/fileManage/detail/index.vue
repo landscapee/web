@@ -14,9 +14,9 @@
                         <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
                     </div>
                     <div class="right-toolbar">
-                        <div @click="rightMethods('','download')"><icon iconClass="save" ></icon>下载</div>
-                        <div @click="rightMethods('','move')"><icon iconClass="edit" ></icon>移动到</div>
-                        <div @click="batchPushFn"><icon iconClass="edit" ></icon>批量推送</div>
+                        <div @click="rightMethods('','download')"><icon iconClass="download3"></icon>下载</div>
+                        <div @click="rightMethods('','move')"><icon iconClass="yidong" ></icon>移动到</div>
+                        <div @click="batchPushFn"><icon iconClass="push" ></icon>批量推送</div>
                         <div @click="rightMethods('/addFile','add')"><icon iconClass="add"></icon>新增</div>
                         <div @click="rightMethods('/addFile','edit')"><icon iconClass="edit" ></icon>编辑</div>
                         <div @click="rightMethods('','delete')"><icon iconClass="remove" ></icon>删除</div>

@@ -22,7 +22,7 @@ export const sysParameterTable = () => {
         { prop: 'flightNo', label: '航班号', align: 'center',sort:true,sortProp:"flightNo",
         search:{type:'input',placeholder:"请输入航班号",prop:'flightNo'} },
         { prop: 'arrivalAirport', label: '起降机场', align: 'center',sort:true,sortProp:"arrivalAirport",
-        search:{type:'input',placeholder:"请输入起降机场",prop:'arrivalAirportQuery'} },
+        search:{type:'input',placeholder:"请输入起降机场",prop:'arrivalAirport'} },
         { prop: 'approveUserName', label: '审核人', align: 'center',sort:true,
         sortProp:"approveUserName",search:{type:'input',placeholder:"请输入审核人",prop:'approveUserName'} },
         { prop: 'approveTime',width:'140', label: '审核时间', align: 'center',sort:true,

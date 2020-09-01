@@ -18,6 +18,9 @@
                 class="upload_demo"
                 ref="upload"
                 accept='.doc'
+                :limit="1"
+                :file-list="fileList"
+                :on-exceed="handleExceedFn"
                 :on-success='fileUploadSuccessFn'
                 :on-remove='fileRemoveFn'
                 :before-upload='beforeUploadFn'
@@ -99,7 +102,8 @@
                 type: "add",
                 selectedPersonList: [],
                 deptList: [],
-                users:[]
+                users:[],
+                fileList:[]
             };
         },
         created() {
@@ -126,7 +130,6 @@
                     url: `${this.$ip}/mms-charge/chargeTemplate/getById/${this.$route.query.id}`,
                     method: 'get'
                 }).then(d => {
-                    console.log(d)
                     if(d.code==200){
                         let data = d.data
                         this.form.fileName = data.name
@@ -149,6 +152,13 @@
                 }else{
                     this.form = { };
                 }
+                //this.fileList = []
+                this.$refs['upload'].clearFiles()
+                this.$set(this.form,'fileName', '')
+                this.$set(this.form,'formats', '')
+                this.$set(this.form,'fileUrl', '')
+                this.$set(this.form,'size', '')
+                this.$set(this.form,'folderId', '')
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -234,6 +244,10 @@
             fileUploadSuccessFn(response, file, fileList){
                 if(response.code==200){
                     // this.$set(this.form,'fileName', response.data.fileName)
+                    // this.$set(this.form,'formats', response.data.fileSuffix)
+                    // this.$set(this.form,'fileUrl', response.data.filePath)
+                    // this.$set(this.form,'size', response.data.filePath)
+
                     this.form.fileName = response.data.fileName
                     this.form.formats = response.data.fileSuffix
                     //this.form.folderId = response.data.id
@@ -255,12 +269,14 @@
                 this.form.size = ''
             },
             async beforeUploadFn(file){
-                console.log(file)
                 if(this.type == "add"){
                     await this.fileExistsFn(file.name)
                 }else{
                     return true
                 }
+            },
+            handleExceedFn(files, fileList){
+                this.$message({type: 'warning', message: '只能上传一个文件，请将源文件删除后再上传'});
             }
         }
     };

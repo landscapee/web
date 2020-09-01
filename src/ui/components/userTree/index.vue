@@ -85,7 +85,12 @@ export default {
 			}
 		};
 	},
-	props:['treeType'],
+    props:{
+        dataRequire: {
+            type: Boolean,
+            default: false
+        }
+    },
 	watch: {
 
     },
@@ -269,7 +274,13 @@ export default {
  			this.dialogVisible = false;
 		},
 		handleSave() {
-
+            if(this.dataRequire && !this.userSelect.length){
+                this.$message({
+                    message: '请选择需要推送的对象',
+                    type: 'warning'
+                })
+                return
+            }
  			this.$emit('onSelected', this.userSelect,this.deptList);
             this.handleClose();
 		},
@@ -277,7 +288,7 @@ export default {
   			this.getTree(inputList);
 			this.selectAll = false;
 			this.title = title;
-            this.userSelect = inputList;
+            this.userSelect = [inputList];
             this.dialogVisible = true;
 		},
 	},

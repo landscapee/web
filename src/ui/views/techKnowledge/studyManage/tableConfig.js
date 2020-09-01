@@ -32,11 +32,11 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"} 
         },
         { 
-            prop: 'endTime', label: '推送时间', align: 'center',sort:true,sortProp:"endTime", width:'120',
+            prop: 'pushTime', label: '推送时间', align: 'center',sort:true,sortProp:"pushTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             }, 
-            search:{prop:'endTime',type:'date',placeholder:"请输入推送时间"} 
+            search:{prop:'pushTime',type:'date',placeholder:"请输入推送时间"} 
         },
         { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",
             search:{prop:'downloadRate',type:'input',placeholder:"请选择下载率"},
