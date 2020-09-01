@@ -81,7 +81,12 @@ import request from '@lib/axios.js';
 		
 	},
 	mounted(){
-      postal.subscribe({
+        if(window.postal){
+            console.log(window.postal,123,980);
+            postal.unsubscribe(window.postal)
+
+        }
+     window.postal= postal.subscribe({
 			channel: 'websocket_msg',
 			topic: 'message',
 			callback: async data => {
@@ -92,17 +97,22 @@ import request from '@lib/axios.js';
                 .then((data) => {
                     this.tipsNumber = data.data
                 })
- 				this.$notify({
-					title: '收到一条消息',
-					message: data.content.content,
-					position: 'bottom-right'
-				});
+                console.log(data,2,5,8);
+                 if(data.content&&data.content.content){
+                    this.$notify({
+                        title: '收到一条消息',
+                        message: data.content&&data.content.content,
+                        position: 'bottom-right'
+                    });
+				}
+
 			}
 		});
 		postal.subscribe({
 			channel: 'websocket_count',
 			topic: 'count',
 			callback: async data => {
+                console.log(data,3,6,9);
 				localStorage.setItem("msg_count",data);
 				this.tipsNumber = data;
 			}
@@ -131,6 +141,7 @@ import request from '@lib/axios.js';
                     if(window.SOCKET){
                         window.SOCKET.close()
 					}
+
                 })
 		},
 		onSpread(){

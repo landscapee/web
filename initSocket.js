@@ -13,16 +13,14 @@ if(location.port==8080 ||location.port==8089){
     // 监听 message 会话
       let  socket  = io(`${src}?userId=${store.getters.userInfo.id}&device=device2}`,{ forceNew: true });
       // let  socket  = io.connect(`${src}?userId=${store.getters.userInfo.id}&device=device2&radom=${Math.random()}`);
-
      socket.on('message', function (data) {
-         if(typeof data=='string'){
-               localStorage.setItem('socketId', data);
-         }
+         console.log(data,1,4,7);
         postal.publish({
             channel: 'websocket_msg',
             topic: 'message',
             data: data
         });
-    });
+     });
+
      return socket
  };
