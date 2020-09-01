@@ -387,7 +387,7 @@
                                  let modelRange=[]
                                  if(obj.modelRange.length){
                                      modelRange=obj.modelRange.map((k,l)=>{
-                                         let msg=k.models?`${k.name}***${k.models.join(',')}__${k.id}`:`${k.name}__${k.id}`
+                                         let msg=k.models?`${k.name}***${k.iata}$$$${k.models.join(',')}__${k.id}`:`${k.name}__${k.id}`
                                          return  msg
                                      })
                                  }

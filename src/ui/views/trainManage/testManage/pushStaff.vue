@@ -26,7 +26,7 @@
                     <span  >地点：{{showInfo.examSite}}</span>
                 </div>
                 <div style="margin: 20px 0 10px 0">
-                    <span style="font-size: 14px; color: #222222;">已选择&nbsp;<span style="color:#3280e7">{{selectedPersonList.length}}</span>&nbsp;人</span>
+                    <span style="font-size: 14px; color: #222222;">已选择&nbsp;<span style="color:#3280e7">{{userSelect.length}}</span>&nbsp;人</span>
                 </div>
                 <div  class="rowDiv">
                     <el-row>
@@ -43,10 +43,11 @@
                             <div>
                                 <el-card class="box-card" shadow="never" border-radius="2px">
                                     <el-scrollbar style="height:310px">
-                                        <div v-show="personList.length == 0">该部门暂无人员</div>
-                                        <div class="elinput" v-show="personList.length > 0">
+
+                                        <div class="elinput" >
                                             <el-input class="input"  ref="input" placeholder="输入关键字进行搜索" @input="filterTextC" v-model="filterText"> </el-input>
                                         </div>
+                                        <div v-show="personList.length == 0">暂无数据</div>
                                         <el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选</el-checkbox>
                                         <div class="item" v-for="(item, index) in personList" :key="item.id">
                                             <div class="item-time">
@@ -153,6 +154,7 @@
                 employeeList=  this.userSelect.map((k,l)=>{
                     return{
                         employeeId:k.workNumber,
+                        employeeUuid:k.id,
                         employeeName:k.name,
                     }
                 })
@@ -408,6 +410,9 @@
         margin: 10px 0;
         height: 30px;
         width:100%;
+        .el-input{
+            width:calc(100% - 2px);
+        }
     }
     /deep/ .el-input__inner {
         height: 30px;
