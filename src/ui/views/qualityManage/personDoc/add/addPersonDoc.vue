@@ -23,9 +23,9 @@
                 <el-form ref="form" label-position="right" :model="form"  :rules="rules"   :inline="true"  >
                     <table class="nomTable">
                         <tr>
-                            <td class="fTd is-required1">员工编号</td>
+                            <td class="fTd ">员工编号</td>
                             <td class="tTd">
-                                <el-form-item prop="userId"  >
+                                <el-form-item prop=" "  >
                                     <span v-if="type=='info'"    >
                                         	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :content="form.userNumber" placement="top-start">
 												<div>{{ form.userNumber }}</div>
@@ -42,7 +42,7 @@
                             </td>
                             <td class="fTd is-required1">员工姓名</td>
                             <td class="tTd">
-                                <el-form-item prop="userName"  >
+                                <el-form-item prop="userId"  >
                                     <span v-if="type=='info'">
                                      <el-tooltip v-if="form.userName" class="item" effect="dark" :content="form.userName" placement="top-start">
                                         <div>{{ form.userName }}</div>
@@ -314,7 +314,7 @@
                 userArr:[],
                 rules: {
                     userName: [{ required:true,message:'请选择', trigger: "blur" }],
-                    userNumber: [{ required:true,message:'请选择', trigger: "blur" }],
+                    // userNumber: [{ required:true,message:'请选择', trigger: "blur" }],
                 },
                 type: "add"
             };
