@@ -7,7 +7,9 @@
 .el-table--enable-row-transition::before{
     display:none
 }
-
+.el-table__fixed::before{
+    display: none;
+}
 .G_listOne{
      padding: 0 30px;
     /deep/ .mainTable{

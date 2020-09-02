@@ -21,8 +21,8 @@
 
                     <el-form-item label="员工姓名：" prop="userName">
                         <span v-if="type=='info'">{{  form.userName }}</span>
-                         <el-select  :disabled="type=='edit'" @change="userNumberC" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
-                            <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.userName" :value="opt.userNumber">
+                         <el-select  :disabled="type=='edit'" @change="userNumberC" filterable v-else v-model="form.userName" placeholder="请选择员工姓名">
+                            <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.userName" :value="opt.userId">
                                 <span>{{opt.userName}}-{{opt.userNumber}}</span>
                             </el-option>
                         </el-select>
@@ -135,7 +135,7 @@
                     if(data.data&&data.data.records){
                         this.userArr =data.data.records
                         data.data.records.map((k,l)=>{
-                            this.userArrObj[k.userNumber]=k
+                            this.userArrObj[k.userId]=k
                         })
                     }
                     })
@@ -164,7 +164,8 @@
         methods: {
             userNumberC(val){
                 this.$set(this.form,'userName',this.userArrObj[val].userName)
-                this.$set(this.form,'userId',this.userArrObj[val].userId)
+                this.$set(this.form,'userId',val)
+                this.$set(this.form,'userNumber',this.userArrObj[val].userNumber)
             },
             resetForm(){
                 if(this.form.id){

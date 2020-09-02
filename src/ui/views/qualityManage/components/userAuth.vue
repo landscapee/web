@@ -248,7 +248,7 @@
                 request({
                     url:`${this.$ip}/mms-qualification/authorization/list`,
                     method: 'post',
-                    data:{...this.sort,...data,userNumber:this.$route.query.id},
+                    data:{...this.sort,...data,userId:this.$route.query.id},
                     params:{...this.params,}
                 })
                     .then((data) => {

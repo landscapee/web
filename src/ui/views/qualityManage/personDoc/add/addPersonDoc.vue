@@ -25,17 +25,15 @@
                         <tr>
                             <td class="fTd is-required1">员工编号</td>
                             <td class="tTd">
-                                <el-form-item prop="userNumber"  >
+                                <el-form-item prop="userId"  >
                                     <span v-if="type=='info'"    >
                                         	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :content="form.userNumber" placement="top-start">
 												<div>{{ form.userNumber }}</div>
 											</el-tooltip>
-                                        <!--{{form.userNumber}}-->
-                                    </span>
-
+                                     </span>
                                     <el-select @change="userNameC" filterable :disabled="type=='edit'"  v-else v-model="form.userNumber" placeholder="请选择员工编号">
-                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.workNumber" :value="opt.workNumber">
-                                            <span>{{opt.workNumber||'【无编号】'}}({{opt.name}})</span>
+                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.workNumber" :value="opt.id">
+                                            <span>{{opt.workNumber||'[无编号]'}}({{opt.name}})</span>
                                             <span></span>
                                         </el-option>
                                     </el-select>
@@ -46,15 +44,18 @@
                             <td class="tTd">
                                 <el-form-item prop="userName"  >
                                     <span v-if="type=='info'">
-                                        <!--{{form.userName}}-->
-                                    <el-tooltip v-if="form.userName" class="item" effect="dark" :content="form.userName" placement="top-start">
-												<div>{{ form.userName }}</div>
+                                     <el-tooltip v-if="form.userName" class="item" effect="dark" :content="form.userName" placement="top-start">
+                                        <div>{{ form.userName }}</div>
                                     </el-tooltip>
                                     </span>
-                                    <el-select @change="userNameC" :disabled="type=='edit'" filterable v-else v-model="form.userNumber" placeholder="请选择员工姓名">
-                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.name" :value="opt.workNumber"></el-option>
+                                    <el-select @change="userNameC" :disabled="type=='edit'" filterable v-else v-model="form.userId" placeholder="请选择员工姓名">
+                                        <el-option v-for="(opt,index) in userArr" :key="index" :label="opt.name" :value="opt.id">
+                                            <span>{{opt.name}}({{opt.workNumber||'[无编号]'}})</span>
+
+                                        </el-option>
                                     </el-select>
                                 </el-form-item>
+
 
                             </td>
                             <td class="fTd">民族</td>
@@ -322,10 +323,7 @@
 
            this.initPage()
         },
-        mounted(){
-            // this.fileDownload(this.form.diploma,'diploma')
-            // this.fileDownload(this.form.enclosure,'enclosure')
-        },
+
         methods: {
             enter(id,title){
                  this.fileDownload(id,title,1)
@@ -336,13 +334,13 @@
                 }
             },
             userNameC(val){
-               let data= this.userArrObj[val].userExt
-                  this.form={
+                let data = this.userArrObj[val].userExt
+                this.form = {
                     ...this.form,
-                    userNumber:val,
-                      userId:this.userArrObj[val].id,
-                     userName:this.userArrObj[val].name,
-                     contactInformation:this.userArrObj[val].phone||null,
+                    userNumber: this.userArrObj[val].workNumber,
+                    userId: val,
+                    userName: this.userArrObj[val].name,
+                    contactInformation: this.userArrObj[val].phone || null,
                 }
                 if(data){
                     this.form={

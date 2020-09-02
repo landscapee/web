@@ -100,7 +100,7 @@
         methods: {
 
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row.userNumber}});
+                this.$router.push({path:path,query:{ id:row.userId}});
 
             },
             requestTable(searchData){
