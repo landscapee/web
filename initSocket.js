@@ -21,6 +21,5 @@ if(location.port==8080 ||location.port==8089){
             data: data
         });
      });
-
      return socket
  };
