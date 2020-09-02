@@ -32,8 +32,15 @@
             Info
         },
         data() {
+            if(!this.modulObj[this.typeObj1[this.form.type]])return false
+
             return {
                 modulObj:{},
+                typeObj1:{
+                    HS:'airlineTemplateFile',
+                    JF:'bureauTemplateFile',
+                    NB:'internalTemplateFile',
+                },
                  form:{},
                 rules:{
                     type:[{required:true,message:'请选择模板类型',trigger:'blur'}]
@@ -98,10 +105,11 @@
                     let obj=d.data
                     this.W_moduleType=obj.W_moduleType
 
-                });  request({
-                    url:`${this.$ip}/mms-workorder/template/getTemplateFileOption/${row.templateId}`,
-                    method: 'get',
-
+                });
+                request({
+                    url:`${this.$ip}/mms-workorder/template/checkTemplateFileExist`,
+                    method: 'post',
+                    data:[row.template.id]
                 }).then(d => {
                     this.modulObj=d.data
                 });

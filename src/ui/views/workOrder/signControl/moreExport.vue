@@ -42,13 +42,31 @@
             Info
         },
         data() {
+            const type = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('请选择模板类型'));
+                } else {
+                    if(!this.modulObj[this.typeObj1[this.form.type]]){
+                        return callback(new Error('有工单暂无模板类型'));
+
+                    }else{
+                        return callback()
+                    }
+                }
+            };
             return {
+                modulObj:{},
+                typeObj1:{
+                    HS:'airlineTemplateFile',
+                    JF:'bureauTemplateFile',
+                    NB:'internalTemplateFile',
+                },
                 checkArr:[],
                 hoveropt:{},
                 form:{},
                 showItem:false,
                 rules:{
-                    type:[{required:true,message:'请选择模板类型',trigger:'blur'}]
+                    type:[{required:true,validator:type,trigger:'blur'}]
                 },
                 W_moduleType:[],
                 dialogFormVisible:false,
@@ -109,6 +127,16 @@
                 this.checkArr=arr.filter((k,l)=>{
                     return !k.offlineFile
                 })
+                let serialNo=this.checkArr.map((k,l)=>{
+                    return k.template.id
+                })
+                request({
+                    url:`${this.$ip}/mms-workorder/template/checkTemplateFileExist`,
+                    method: 'post',
+                    data:serialNo
+                }).then(d => {
+                    this.modulObj=d.data
+                });
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',

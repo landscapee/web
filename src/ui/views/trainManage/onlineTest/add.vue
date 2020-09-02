@@ -121,7 +121,7 @@
                 }).then(d => {
                     let row=d.data
                      this.params={
-                        employeeId:this.$store.state.user.userInfo.workNumber,
+                        employeeId:this.$store.state.user.userInfo.id,
                         examId:row.id,
                         paperId:row.paperId,
                     }

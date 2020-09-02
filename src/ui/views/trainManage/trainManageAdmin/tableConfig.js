@@ -34,7 +34,7 @@ export const trainAdminResultsConfig = (obj) => {
                 { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}},
 
                  { prop: 'employeeName', label: '员工姓名',sortProp:"employeeName", align: 'center',sort:true,search:{type:'input', prop:'employeeName',placeholder:"请输入", } },
-                 { prop: 'employeeId', label: '员工编号',sortProp:"employeeId", align: 'center',sort:true,search:{type:'input', prop:'employeeId',placeholder:"请输入", } },
+                 { prop: 'employeeNo', label: '员工编号',sortProp:"employeeNo", align: 'center',sort:true,search:{type:'input', prop:'employeeNo',placeholder:"请输入", } },
             { prop: 'trainingName', label: '培训项目',sortProp:"trainingName", align: 'center', },
                  { prop: 'trainingType', label: '培训类别',sortProp:"trainingType", align: 'center', },
                { prop: 'classHour', label: '学时',sortProp:"classHour", align: 'center' , },

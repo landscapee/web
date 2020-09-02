@@ -103,7 +103,7 @@
         data() {
             const code = (rule, value, callback) => {
                 if (!this.form.code) {
-                    return callback(new Error('工单模板编码'));
+                    return callback(new Error('请输入工单模板编码'));
                 } else {
                      request({
                         url:`${this.$ip}/mms-workorder/template/checkCode`,
