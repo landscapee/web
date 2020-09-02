@@ -30,7 +30,7 @@ export const testRuConfig = (testList ,obj) => {
         return [
                 { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
                 { prop: 'employeeName', label: '员工姓名',  sortProp:"employeeName", align: 'center',sort:true ,search:{type:'input', prop:'employeeName',placeholder:"请输入"} },
-                { prop: 'employeeId', label: '员工编号',  sortProp:"employeeId", align: 'center',sort:true ,search:{type:'input', prop:'employeeId',placeholder:"请输入"} },
+                { prop: 'employeeNo', label: '员工编号',  sortProp:"employeeNo", align: 'center',sort:true ,search:{type:'input', prop:'employeeNo',placeholder:"请输入"} },
                 { prop: 'examName', label: '考试名称',  sortProp:"examName", align: 'center',sort:true ,search:{type:'input', prop:'examName',placeholder:"请输入"} },
                 { prop: 'score', label: '分数', sortProp:"score", align: 'center',sort:true ,search:{type:'input', prop:'score',placeholder:"请输入"}},
             { prop: 'examTime', label: '时间',formatter:timeInfo,sortProp:"examTime", align: 'center',sort:true,search:{type:'date', prop:'examTime',placeholder:"请选择"} },

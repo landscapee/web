@@ -153,8 +153,8 @@
                 let employeeList=[]
                 employeeList=  this.userSelect.map((k,l)=>{
                     return{
-                        employeeId:k.workNumber,
-                        employeeUuid:k.id,
+                         employeeNo:k.workNumber,
+                        employeeId:k.id,
                         employeeName:k.name,
                     }
                 })
