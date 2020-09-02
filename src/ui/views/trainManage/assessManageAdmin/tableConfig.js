@@ -28,7 +28,7 @@ export const rightConfig = (obj) => {
         { slot: 'checkbox' , label: '选择',width:'50',search:{ type:'text',label:'过滤'}},
 
         { prop: 'employeeName', label: '员工姓名',sortProp:"employeeName", align: 'center',sort:true,search:{type:'input', prop:'employeeName',placeholder:"请输入", } },
-        { prop: 'employeeId', label: '员工编号',sortProp:"employeeId", align: 'center',sort:true,search:{type:'input', prop:'employeeId',placeholder:"请输入", } },
+        { prop: 'employeeNo', label: '员工编号',sortProp:"employeeNo", align: 'center',sort:true,search:{type:'input', prop:'employeeNo',placeholder:"请输入", } },
         { prop: 'signStatus', label: '是否签到',sortProp:"signStatus", align: 'center' ,sort:true,search:{type:'select', prop:'signStatus', placeholder:"请输入",selectProp:['valData','valData'],data:obj.trainSign}},
          { prop: 'qualifiedStatus', label: '考核结论',sortProp:"qualifiedStatus", align: 'center' ,sort:true,search:{type:'select', prop:'qualifiedStatus', placeholder:"请输入",selectProp:['valData','valData'],data:obj.assessConclusion}},
         { slot: 'certificateNumber', width:'140',label: '证书编号',sortProp:"certificateNo", align: 'center',sort:true,search:{type:'input', prop:'certificateNo', placeholder:"请输入", } },

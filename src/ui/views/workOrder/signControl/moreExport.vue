@@ -20,6 +20,7 @@
                     </el-form-item>
                 </el-form>
                 <div style="color:#7F7F7F;">【说明】：鼠标悬停至工单编号上显示对应工单详情</div>
+                <div style="color:#7F7F7F;margin-top:5px"><span style="visibility: hidden">【说明】：</span>线下工单和非完成工单已被屏蔽</div>
                 <div class="Qfooter" style="margin-top: 30px">
                     <el-button @click="close()">取消</el-button>
                     <el-button type="primary" @click="submit('form')">导出（{{checkArr.length}}）</el-button>
@@ -47,12 +48,13 @@
                     return callback(new Error('请选择模板类型'));
                 } else {
                     if(!this.modulObj[this.typeObj1[this.form.type]]){
-                        return callback(new Error('有工单暂无模板类型'));
+                        return callback(new Error('有工单暂无该模板类型'));
 
                     }else{
                         return callback()
                     }
                 }
+
             };
             return {
                 modulObj:{},
@@ -124,9 +126,7 @@
             },
             open(arr){
                 this.dialogFormVisible=true
-                this.checkArr=arr.filter((k,l)=>{
-                    return !k.offlineFile
-                })
+                this.checkArr=arr
                 let serialNo=this.checkArr.map((k,l)=>{
                     return k.template.id
                 })

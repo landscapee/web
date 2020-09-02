@@ -32,8 +32,17 @@
             Info
         },
         data() {
-            if(!this.modulObj[this.typeObj1[this.form.type]])return false
-
+             const type = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('请选择模板类型'));
+                } else {
+                    if(!this.modulObj[this.typeObj1[this.form.type]]){
+                        return callback(new Error('该工单暂无该模板类型'));
+                    }else{
+                        return callback()
+                    }
+                }
+            };
             return {
                 modulObj:{},
                 typeObj1:{
@@ -43,7 +52,7 @@
                 },
                  form:{},
                 rules:{
-                    type:[{required:true,message:'请选择模板类型',trigger:'blur'}]
+                    type:[{required:true,validator:type,trigger:'blur'}]
                 },
                 W_moduleType:[],
 

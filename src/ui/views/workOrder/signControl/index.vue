@@ -102,7 +102,14 @@
             },
             moreExport(){
                 if(this.checkArr.length){
-                    this.$refs.MoreExport.open(this.checkArr)
+                    let arr=this.checkArr.filter((k,l)=>{
+                        return !k.offlineFile&&k.state==3
+                    })
+                    if(arr.length){
+                        this.$refs.MoreExport.open(arr)
+                    }else{
+                        this.$message.error('请选中至少一行已完成的线上工单');
+                    }
                 }else {
                     this.$message.error('请先选中一行或多行数据');
                 }
