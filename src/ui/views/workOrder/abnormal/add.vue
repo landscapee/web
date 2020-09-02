@@ -2,7 +2,7 @@
     <div class="indexAdd">
         <div class="QCenterRight">
             <div class="QHead">
-                纸制填报工单导入
+                纸制工单{{type=='add'?'导入':type=='info'?"详情":'编辑'}}
             </div>
 
             <div v-if="type!='info'"  class="QheadRight">

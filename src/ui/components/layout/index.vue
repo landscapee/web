@@ -82,8 +82,7 @@ import request from '@lib/axios.js';
 	},
 	mounted(){
         if(window.postal){
-            console.log(window.postal,123,980);
-            postal.unsubscribe(window.postal)
+             postal.unsubscribe(window.postal)
 
         }
      window.postal= postal.subscribe({
@@ -105,7 +104,6 @@ import request from '@lib/axios.js';
                         position: 'bottom-right'
                     });
 				}
-
 			}
 		});
 		postal.subscribe({

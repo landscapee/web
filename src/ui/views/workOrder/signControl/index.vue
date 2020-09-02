@@ -29,7 +29,7 @@
                             <div >
                                 <!--签署工单-->
                                 <el-button v-if="scope.row.offlineFile" class="QoptionButton" @click="Download(scope.row)">下载</el-button>
-                                <el-button v-else class="QoptionButton" @click="exportRow(scope.row)">导出</el-button>
+                                <el-button v-else class="QoptionButton" :disabled="scope.row.state!=3" @click="exportRow(scope.row)">导出</el-button>
                             </div>
                          </template>
                     </el-table-column>
@@ -117,15 +117,14 @@
                     responseType: 'blob'
                 }).then(d => {
                     console.log();
-                    let arr=['工单','word']
+                    let arr=['工单','doc']
                     if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
                         arr=d.headers['content-disposition'].split('=')[1]
                     }
                     let content = d;
-                    debugger
-                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                     let blob = new Blob([content],{type:'application/vnd.ms-excel'})
                     // let blob = new Blob([content],{type:'application/msword'})
-                    const fileName = `${decodeURI(arr[0])}.${arr[1]}`
+                    const fileName = `${decodeURI(arr[0])}`
                     if ('download' in document.createElement('a')) { // 非IE下载
                         const elink = document.createElement('a')
                         elink.download = fileName
@@ -160,6 +159,7 @@
                 this.tableData={records:[]};
                 this.params.current = 1;
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
+                this.checkArr=[]
                 this.getList();
             },
             headerSort(column){
@@ -175,6 +175,7 @@
                 if (num != 2) {
                     this.sort['order'] = column.property + ',' + num;
                 }
+                this.checkArr=[]
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
                 // console.log(column.property,column.order, this.sort,11);
@@ -240,6 +241,7 @@
             },
 
             getList(){
+                this.checkArr=[]
                 let data={...this.form}
                 map(data,((k,l)=>{
                     if(!k){

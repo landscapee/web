@@ -19,7 +19,6 @@
                             <div class="titleColoe">{{get(form.typeVO,'title').split('$')[0]}}</div>
                             <div class="titleColoe">{{get(form.typeVO,'title').split('$')[1]||''}}</div>
                         </div>
-
                     </td>
                 </tr>
             </table>
@@ -44,7 +43,7 @@
                            </template>
                            <div v-else-if="opt1.type==1" >
 
-
+                               <div v-if="show"> {{ '${'+opt1.placeholder+'}'}}</div>
                            </div>
                            <div v-else-if="opt1.type==3" style="width: 99%">
                                <input type="text" :name="opt1.placeholder" style="width: 99%" ></input>

@@ -33,7 +33,7 @@
         },
         data() {
             return {
-
+                modulObj:{},
                  form:{},
                 rules:{
                     type:[{required:true,message:'请选择模板类型',trigger:'blur'}]
@@ -88,6 +88,7 @@
             open(row){
                 this.dialogFormVisible=true
                  this.form={...row}
+
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
@@ -97,6 +98,12 @@
                     let obj=d.data
                     this.W_moduleType=obj.W_moduleType
 
+                });  request({
+                    url:`${this.$ip}/mms-workorder/template/getTemplateFileOption/${row.templateId}`,
+                    method: 'get',
+
+                }).then(d => {
+                    this.modulObj=d.data
                 });
             },
         },

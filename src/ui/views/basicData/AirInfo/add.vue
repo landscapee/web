@@ -2,7 +2,7 @@
     <div class="index">
         <div class="QCenterRight">
             <div class="QHead">
-                课件维护-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
+                机尾号信息-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
             <div v-if="type!='info'"  class="QheadRight">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
