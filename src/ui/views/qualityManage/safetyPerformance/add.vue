@@ -170,13 +170,13 @@ if(val){
                     this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:null, month:null,};
                 }else {
                     this.form={};
-
                 }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
                      this.$refs[form].validate(valid => {
                         if (valid) {
+                            let obj={...this.form}
                             let url
                              if(this.type == "add"){
                                 url=`${this.$ip}/mms-qualification/securityMerits/save`
@@ -186,15 +186,15 @@ if(val){
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data:obj
                             })
-                                .then(data => {
-                                    this.$message.success("保存成功！");
-                                    this.$router.go(-1);
+                                .then(d => {
+                                   if(d.code==200){
+                                       this.$message.success("保存成功！");
+                                       this.$router.go(-1);
+                                   }
                                 })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
+
                         } else {
                             console.log("error submit!!");
                             return false;
