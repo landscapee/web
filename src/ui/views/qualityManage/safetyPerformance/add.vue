@@ -18,7 +18,7 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
+                    <el-form-item label="绩效年月：" prop="yearMonth">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
                         <el-date-picker @change="yearMonth" :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
@@ -59,7 +59,6 @@
         name: "",
         data() {
             const yearMonth = (rule, value, callback) => {
-
                     if (!this.form.yearMonth) {
                         return callback(new Error('绩效年月不能为空'));
                     } else {
@@ -73,9 +72,10 @@
                                     deptId:this.form.deptId,
                                     month:month,
                                     year:year,
+                                    id:this.form.id
                                 }
-                            }).then(response => {
-                                if (!response.data) {
+                            }).then(d => {
+                                if (!d.data&&d.code==200) {
                                     callback();
                                 } else {
                                     callback("该绩效年月已存");
@@ -84,10 +84,7 @@
                         }else {
                             callback("选择部门后将校验");
                         }
-
                     }
-
-
             };
 
             return {
@@ -131,7 +128,7 @@
                         method: "get",
                     }).then(d => {
 
-                        this.form={...d.data ,yearMonth:`${d.data.year}-${d.data.month}`}
+                        this.form={...d.data ,yearMonth:new Date(`${d.data.year}-${d.data.month}`)}
                     })
                         .catch(error => {
                             this.$message.error(error);

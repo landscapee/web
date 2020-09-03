@@ -407,12 +407,12 @@
                  if(tag=='left'){
 
                     map(this.leftForm,((k,l)=>{
-                        console.log(k, l);
+                        console.log(k==='', l);
                         if(k==''){
                             this.leftForm[l]=null
                         }else{
                             if(l=='year'||l=='month'){
-                                this.leftForm[l]=Number(k)
+                                this.leftForm[l]= k===null?null:Number(k)
                             }
                         }
 
