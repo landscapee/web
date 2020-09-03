@@ -32,14 +32,14 @@
             </el-table-column>
             <el-table-column slot="value" label="值"   align="center" >
                 <span slot-scope="{ row ,$index}">
-                   <div v-if="row.type==4">
+                   <div v-if="row.type==4" >
                        <div  class="upUser  ">
 
                            <img @click="upLogoPho(row)" v-if="row.value"  :src="row.value.split('$')[1] " alt="请上传图片">
-                           <el-button v-else @click="upLogoPho(row)"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
+                           <el-button v-else @click="upLogoPho(row,$index)"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
                        </div>
                        <div style="display: none">
-                           <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile($event,row)"></UploadFile>
+                           <UploadFile   accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" :ref="'UploadFile'+$index" @getFile="getFile($event,row,$index)"></UploadFile>
 
                        </div>
                    </div>
@@ -140,11 +140,12 @@
                 console.log(this.tableData);
             },
 
-            upLogoPho(row){
-                 this.$refs.UploadFile.$refs.buttonClick.$el.click()
+            upLogoPho(row,index){
+                 this.$refs['UploadFile'+index].$refs.buttonClick.$el.click()
             },
 
-            getFile(file,row){
+            getFile(file,row,index){
+                debugger
                 request({
                     header:{'Content-Type':'multipart/form-data'},
                     url:`${this.$ip}/mms-file/get-file-by-id/${file.id }`,
