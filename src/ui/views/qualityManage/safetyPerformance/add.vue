@@ -72,7 +72,7 @@
                                     deptId:this.form.deptId,
                                     month:month,
                                     year:year,
-                                    id:this.form.id
+                                    id:this.form.id||null
                                 }
                             }).then(d => {
                                 if (!d.data&&d.code==200) {
