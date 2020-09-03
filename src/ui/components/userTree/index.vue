@@ -15,7 +15,7 @@
 					<el-card class="box-card" shadow="never" border-radius="2px">
 						<el-scrollbar style="height:310px">
 								<div v-show="personList.length == 0">该部门暂无人员</div>
-							<div class="elinput" v-show="personList.length > 0">
+							<div class="elinput" v-show="personList.length > 0" style="width: 100%">
 								<el-input class="input"  ref="input" placeholder="输入关键字进行搜索" @input="filterTextC" v-model="filterText"> </el-input>
 							</div>
 								<el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选</el-checkbox>
@@ -339,6 +339,6 @@ export default {
 }
 /deep/ .el-input__inner {
 	height: 30px;
-	width: 100%;
+	width: calc(100% - 2px);
 }
 </style>

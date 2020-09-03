@@ -6,7 +6,7 @@
 		</div>
 		<div style="height:calc(100% - 50px)">
 			<el-scrollbar style="height:100%">
- 				<el-tree :accordion="accordion ? true : false" :default-expand-all="defaultExpandAll ? false : true" :show-checkbox="showCheckbox" :default-checked-keys="checkedArr" :expand-on-click-node="expandOnClickNode || false" :highlight-current="highlightCurrent" node-key="id" :class="['filter-tree', isShow.heightClass]" :data="data" @node-click="getCurrentNode" @current-change="handleSelectChange" :props="defaultProps" :filter-node-method="filterNode" @check="handleCheck" ref="tree">
+ 				<el-tree :accordion="accordion ? true : false" :default-expand-all="defaultExpandAll ? false : true" :show-checkbox="showCheckbox" :default-checked-keys="checkedArrIdArr" :expand-on-click-node="expandOnClickNode || false" :highlight-current="highlightCurrent" node-key="id" :class="['filter-tree', isShow.heightClass]" :data="data" @node-click="getCurrentNode" @current-change="handleSelectChange" :props="defaultProps" :filter-node-method="filterNode" @check="handleCheck" ref="tree">
 			<span class="custom-tree-node" slot-scope="{ node, data }">
 				<span><i :class="icon(data)"></i>{{ `${node.label}${extendInfo(data)}` }}</span>
 				<span v-if="isShow.tip">
@@ -48,7 +48,7 @@ export default {
 			},
 		};
 	},
-	props: ['data', 'isShow', 'defaultUnCheck', 'showCheckbox', 'defaultExpandAll', 'expandOnClickNode', 'accordion','loading'],
+	props: ['data', 'isShow','checkedArrIdArr', 'defaultUnCheck', 'showCheckbox', 'defaultExpandAll', 'expandOnClickNode', 'accordion','loading'],
 	watch: {
 		filterText(val) {
 			this.$refs.tree.filter(val);
@@ -59,27 +59,22 @@ export default {
 					if (!val || !val.length || !val[0].id) {
 						return;
 					}
-					// if (this.selectedId) {
-					// 	this.$refs.tree.setCurrentKey(this.selectedId);
-					// }
-					// if (!this.selectedId || !this.$refs.tree.getCurrentNode()) {
-					// 	this.$refs.tree.setCurrentKey(val[0].id);
-					// 	this.selectedId = val[0].id;
-					// }
                     this.$refs.tree.setCurrentKey(val[0].id);
                     this.selectedId = val[0].id;
-					// debugger
 					this.$emit('handleSelect', this.$refs.tree.getCurrentNode());
 				});
 			}
 		},
 	},
-	computed: {
-		checkedArr: function() {
-			return getCheckedArr(this.data);
-		},
-	},
+	// computed: {
+	// 	checkedArr: function() {
+	// 		return this.checkedArrIdArr;
+	// 	},
+	// },
 	methods: {
+        setCheckedKeys(arr) {
+            this.$refs.tree.setCheckedKeys(arr||[]);
+        },
 				// 当复选框被选中的时候执行
 		handleCheck(data, checks) {
 			// checks中的数据为选中节点的keys
