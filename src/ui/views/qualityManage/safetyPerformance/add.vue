@@ -18,7 +18,7 @@
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
+                    <el-form-item label="绩效年月：" prop="yearMonth">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
                         <el-date-picker @change="yearMonth" :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
@@ -59,7 +59,6 @@
         name: "",
         data() {
             const yearMonth = (rule, value, callback) => {
-
                     if (!this.form.yearMonth) {
                         return callback(new Error('绩效年月不能为空'));
                     } else {
@@ -73,9 +72,10 @@
                                     deptId:this.form.deptId,
                                     month:month,
                                     year:year,
+                                    id:this.form.id||null
                                 }
-                            }).then(response => {
-                                if (!response.data) {
+                            }).then(d => {
+                                if (!d.data&&d.code==200) {
                                     callback();
                                 } else {
                                     callback("该绩效年月已存");
@@ -84,10 +84,7 @@
                         }else {
                             callback("选择部门后将校验");
                         }
-
                     }
-
-
             };
 
             return {
@@ -131,7 +128,7 @@
                         method: "get",
                     }).then(d => {
 
-                        this.form={...d.data ,yearMonth:`${d.data.year}-${d.data.month}`}
+                        this.form={...d.data ,yearMonth:new Date(`${d.data.year}-${d.data.month}`)}
                     })
                         .catch(error => {
                             this.$message.error(error);
@@ -173,13 +170,13 @@ if(val){
                     this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:null, month:null,};
                 }else {
                     this.form={};
-
                 }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
                      this.$refs[form].validate(valid => {
                         if (valid) {
+                            let obj={...this.form}
                             let url
                              if(this.type == "add"){
                                 url=`${this.$ip}/mms-qualification/securityMerits/save`
@@ -189,15 +186,15 @@ if(val){
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data:obj
                             })
-                                .then(data => {
-                                    this.$message.success("保存成功！");
-                                    this.$router.go(-1);
+                                .then(d => {
+                                   if(d.code==200){
+                                       this.$message.success("保存成功！");
+                                       this.$router.go(-1);
+                                   }
                                 })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
+
                         } else {
                             console.log("error submit!!");
                             return false;

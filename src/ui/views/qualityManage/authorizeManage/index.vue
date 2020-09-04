@@ -66,7 +66,7 @@
                 },
                 tableRowClassName:(rowIndex,row)=>{
                     let num=60*60*24*1000*10
-                    if (row.endTime&&row.endTime<=new Date().getTime()+num ) {
+                    if (row.endTime&&row.endTime<=new Date().getTime()+num &&row.state!==0) {
                         return 'warning-row';
                     }
                     return 'tab-row';

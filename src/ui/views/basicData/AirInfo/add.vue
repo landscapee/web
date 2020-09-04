@@ -20,7 +20,7 @@
                 <div class="row_tow">
                     <el-form-item  label="机尾号：" prop="flightRegisterNo">
                         <span v-if="type=='info'">{{form.flightRegisterNo}}</span>
-                        <el-input v-else v-model="form.flightRegisterNo" placeholder="请输入课件名称"></el-input>
+                        <el-input v-else v-model="form.flightRegisterNo" placeholder="请输入机尾号"></el-input>
                     </el-form-item>
                     <el-form-item  label="机型：" prop="icao">
                         <span v-if="type=='info'">{{form.icao}}</span>
@@ -32,12 +32,11 @@
                 <div class="row_tow">
                     <el-form-item  label="发动机号：" prop="engineNo">
                         <span v-if="type=='info'">{{form.engineNo}}</span>
-                        <el-select   v-else   v-model="form.engineNo" placeholder="请选择发动机号">
+                        <el-select filterable  v-else   v-model="form.engineNo" placeholder="请选择发动机号">
                             <el-option v-for="(opt,index) in options.EngineNo" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
-
             </el-form>
         </div>
     </div>
@@ -53,7 +52,6 @@
         },
         name: "",
         data() {
-
 
             return {
                  form: { },
@@ -128,13 +126,9 @@
                     this.$refs[form].validate(valid => {
                         if (valid) {
                             let url
-                            if(this.type=='add'){
-                                url='/airplaneInfo/save'
-                            }else {
-                                url='/airplaneInfo/update'
-                            }
+
                             request({
-                                url:`${this.$ip}/mms-parameter/rest-api${url}`,
+                                url:`${this.$ip}/mms-parameter/airplaneInfo/saveOrUpdate`,
                                 method: 'post',
                                 data:{...this.form},
                             }).then((d) => {

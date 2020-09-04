@@ -1,12 +1,13 @@
 <template>
     <div>
         <el-dialog title="复制绩效明细"  :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
-            <el-form :model="form" ref="form" :rules="rules">
+            <el-form :model="form" ref="form" inline="true" :rules="rules">
                 <el-form-item label="目标安全绩效：">
                     <span>{{row.year}}-{{row.month}}</span>
                 </el-form-item>
-                <el-form-item label="源安全绩效：">
-                    <el-select style="width:400px" v-model="form.sourcesId">
+                <br>
+                <el-form-item label="源安全绩效：" prop="sourcesId">
+                    <el-select  style="width: 100%" v-model="form.sourcesId">
                         <el-option v-for="(opt,index) in sourcesList" :label="opt.year+'-'+opt.month" :value="opt.id" :key="index">
 
                             <!--<span> {{opt.year}}-{{opt.month}}</span>-->
@@ -33,7 +34,9 @@
         data() {
             return {
                 form:{},
-                rules:{},
+                rules:{
+                    sourcesId:[{required:true,message:'请选择源安全绩效',trigger:'blur'}]
+                },
                 sourcesList:[],
                 row:{},
                 dialogFormVisible:false,
@@ -57,7 +60,6 @@
 
     submit(formName) {
                 this.$refs[formName].validate((valid) => {
-
                     if (valid) {
                          request({
                              url:`${this.$ip}/mms-qualification/securityMerits/copy`,
@@ -67,31 +69,21 @@
                                  ...this.form
                              }
                          }).then((d) => {
-
-                              if(d.data){
+                              if(d.code==200){
                                  this.close();
-                                 // if(this.row.id==this.row.selectedId){
-                                 //     this.$emit('getList');
-                                 // }
                                   this.$emit('getList')
                                  this.$message({
                                      message: '复制成功',
                                      type: 'success',
                                  });
-                             }else {
-                                 this.$message({
-                                     message: '复制失败',
-                                     type: 'error',
-                                 });
                              }
-
                         });
                     }
                 });
             },
             close(){
                 this.row={}
-                this.from={}
+                this.form={}
                 this.dialogFormVisible=false
             }
         },
@@ -106,6 +98,16 @@
     width: 600px;
     .el-dialog__body{
         padding: 30px 30px 20px 50px;
+        .el-form-item{
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .el-form-item__label{
+            width:120px
+        }
+        .el-form-item__content{
+            width:calc(100% - 150px)
+        }
     }
 
 }

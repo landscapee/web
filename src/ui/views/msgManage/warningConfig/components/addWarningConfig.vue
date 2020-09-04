@@ -173,9 +173,9 @@ export default {
       if(tag=='user'){
           this.$refs.userBox.open(this.userList, '选择人员', true);
       }else if(tag=='dept'){
-         this.$refs.deptBox.open({id:this.$store.getters.userInfo.id});
+         this.$refs.deptBox.open(this.deptList||[]);
       }else if(tag=='role'){
-         this.$refs.roleBox.open({id:this.$store.getters.userInfo.id});
+         this.$refs.roleBox.open(this.roleList||[]);
       }else if(tag=='station'){
         //  this.$refs.stationBox.open({id:this.$store.getters.userInfo.id});
       }
@@ -236,6 +236,8 @@ export default {
 @import "@/ui/styles/common_form.scss";
 .addSysParameter {
   margin-top: 40px;
+    height:calc(100vh - 120px);
+    overflow-y: auto;
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {

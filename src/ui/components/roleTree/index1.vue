@@ -21,7 +21,7 @@
                 </div>
             </vue-draggable-resizable>
         </div>
-        <div class="Qfooter" style="margin-top: 15px">
+        <div style="text-align:center;margin-top:10px;">
             <el-button style="margin:0 auto;" @click="close">取消</el-button>
             <el-button style="margin:0 auto;" type="primary" @click="save">保存</el-button>
         </div>
@@ -110,6 +110,7 @@
                 this.dialogVisible = false;
             },
             save() {
+                debugger
                 this.$emit('onSelected', this.persons);
                 this.close();
             },
@@ -176,7 +177,7 @@
             height:580px;
             width: 100%;
             display: flex;
-            border: 1px solid #979797;
+            border: 1px solid black;
             .tree {
             }
             .persons {
