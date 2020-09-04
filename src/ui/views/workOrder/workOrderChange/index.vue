@@ -38,9 +38,9 @@
                     @handleCurrentChange="handleCurrentChange"
                 >
                     <el-table-column slot="option" align='center' label="操作" :width="150"  >
-                        <template  slot-scope="{ row }">
-                            <el-button size='mini' v-show='row.state==0||row.state==2' @click="toPassFn(row)" class="copyButton copyButton1" >通过</el-button>
-                            <el-button size='mini' v-show='row.state==0||row.state==1' @click="torefuseFn(row)" class="copyButton" >拒绝</el-button>
+                        <template  slot-scope="{ row }"> <!--||row.state==2--> <!--row.state==1-->
+                            <el-button size='mini' v-show='row.state==0' @click="toPassFn(row)" class="copyButton copyButton1" >通过</el-button>
+                            <el-button size='mini' v-show='row.state==0' @click="torefuseFn(row)" class="copyButton" >拒绝</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -348,7 +348,7 @@ export default {
             display: flex;
             justify-content: space-between;
             /deep/ .mainTable{
-                height: 500px;
+                height:calc(100vh - 370px);
                 overflow: auto;
                 // /deep/ .el-table__body-wrapper{
                 //     /deep/ tr:last-child{

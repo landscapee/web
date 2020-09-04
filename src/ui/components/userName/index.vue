@@ -30,7 +30,7 @@
     props: {
       title: {
         type: String,
-        default: '标题'
+        default: '身份认证'
       },
       content: {
         type: String,
