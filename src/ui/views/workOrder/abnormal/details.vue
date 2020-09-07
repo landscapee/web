@@ -14,7 +14,7 @@
                             <div>{{item.nameCn}}</div>
                             <div>{{item.nameEn}}</div>
                         </div>
-                        <div v-if='item.type==1' class="value1 value">{{workorder[value5Type[item.value]]}}</div>
+                        <div v-if='item.type==1' :id='item.placeholder' class="value1 value">{{workorder[value5Type[item.value]]}}</div>
                         <div v-if='item.type==2' class="value2 value">{{item.value}}</div>
                         <div v-if='item.type==3' class="value3 value">
                             <input type="text" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
@@ -66,7 +66,7 @@
                                     <div v-for='itemChild in item.contentDetails' :key='itemChild.key' class="flex">
                                         <div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}" > <!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
                                             <div class="textContent" :class="itemChild.id" v-html='itemChild.content' style="text-align: left;padding: 10px 10px;"></div>
-                                             <div v-if="type!='info'" class='checkbox_group  '>
+                                             <div v-if="type!='info'" class='checkbox_group'>
                                                 <el-button  @click="editContent($event,itemChild)" type="primary"  style="padding: 7px 20px">更正</el-button>
                                             </div>
                                         </div>
@@ -129,8 +129,8 @@
                     'filePath':''
                 },
                 value5Type:{
-                    '$flightno':'flightNo',
-                    '$REGno':'tailNo'
+                    '$flightNo':'flightNo',
+                    '$flightRegisterNo':'flightRegisterNo'
                 },
                 isActiveSave:true,
                 isActiveReset:true,
@@ -201,15 +201,10 @@
                         button.eq(i).removeAttr("disabled")
                     }
                     return false
-
-
                 }
-
                 let map = {}
                 if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
-
                     let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
-                    console.log(inputArr,12,3)
                     for(let i=0;i<inputArr.length;i++){
                         map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
                     }
@@ -218,7 +213,6 @@
                         map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
                     }
                     let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
-                    console.log(inputSign)
                     for(let i=0;i<inputSign.length;i++){
                         console.log(inputSign.eq(i))
                         if($("div[elemid="+inputSign.eq(i).attr("id")+"]")){
@@ -231,6 +225,11 @@
                     let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
                     for(let i=0;i<inputText.length;i++){
                         map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
+                    }
+
+                    let inputRadioArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='radio']")
+                    for(let i=0;i<inputRadioArr.length;i++){
+                        map[inputRadioArr.eq(i).attr("name")] = inputRadioArr.eq(i).is(':checked')
                     }
                 }
                 request({
@@ -245,7 +244,6 @@
                     .then((data) => {
                         if(data.code == 200){
                             $($event.target).text('更正')
-debugger
                             if($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")){
                                 let inputButton = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
                                 let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
@@ -415,9 +413,9 @@ debugger
                                     var aDom =  $(".itemSign .kg-img-div")
                                 }
                                 aDom.each((ind, ele)=>{
-                                    if(!Reflect.has(map, $(ele).attr("elemid"))){
+                                    //if(!Reflect.has(map, $(ele).attr("elemid"))){
                                         $(ele)[0].remove()
-                                    }
+                                    //}
                                     //signatureCreator.removeSignature('KG2016093001333', $(ele).attr('signatureid'))
                                 })
                             })
@@ -484,11 +482,13 @@ debugger
                 //     this.$message({type: 'warning', message: '请先点击维修已完成'})
                 //     return
                 // }
+                
                 SignatureInit(val,psd)
+               
                 var signatureCreator = Signature.create()
                 var that = this
                 /* 保护项 */
-                let inputArr = $($event.target).parent('.item').siblings(".item").find(".textContent").find('input')
+                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
                 let protectedItems = []
                 inputArr.each((index, item)=>{
                     if( !($(item).attr("id")&&$(item).attr("id").includes("sign")) ){
@@ -496,61 +496,37 @@ debugger
                     }
                 })
                 protectedItems = protectedItems.filter(i=>i)
-
                 signatureCreator.run({
                     // offsetX:100,
                     // offsetY:100,
-                    protectedItems: protectedItems,
-                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
-                    //                 'item5', 'item6','item7', 'item8',
-                    //                 'item9','item10', 'item11', 'item12',
-                    //                 'item13','item14', 'item15', 'item16',
-                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                    protectedItems: protectedItems, //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
                     position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
                     okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
                         console.log("盖章ID："+this.getSignatureid());
                         console.log("盖章数据："+this.getSignatureData());
                         fn(true);
                         let _this = this
-                        signatureCreator.getBase64Image(
-                            this.getSignatureid(),
-                            this.getSignatureData(),
-                            $($event.target).parent('.item').find(".sign_box").attr("pos"),
-                            function(fn, imgdata,signid, sdata){
-                                that.postSignFn(
-                                    item,
-                                    type,
-                                    _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
-                                    imgdata[1]
-                                )
-                            }
-                        )
-                        // if(type==='pos3'){
-                        //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }else if(type==='pos4'){
-                        //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }
-
+                        
+                        that.$nextTick(()=>{
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                type,
+                                function(fn, imgdata,signid, sdata){
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
+                                        imgdata[1]
+                                    )
+                                }
+                            )
+                        })
                     },
                     cancelCall : function() {//点击取消后的回调方法
                         console.log("取消！")
                     }
                 });
-
-
-                /* 保护项 */
-                // signatureCreator.handWriteDlg({
-                //     image_height: "6.7",
-                //     image_width: "5",
-                //     onBegin: function() {
-                //         console.log('onbegin')
-                //     },
-                //     onEnd: function() {
-                //         console.log('onEnd')
-                //     }
-                // }, function(param){
-
-                // });
             },
             travelSignFn(item,type, $event,val, psd){
                 // if(!$('#2'+item.id).is(':checked')){
@@ -561,7 +537,7 @@ debugger
                 var signatureCreator = Signature.create();
                 var that = this;
                 /* 保护项 */
-                let inputArr = $($event.target).parent('.item').siblings(".item").find(".textContent").find('input')
+                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
                 let protectedItems = []
                 inputArr.each((index, item)=>{
                     if($(item).attr("name").includes("sign")){
@@ -588,7 +564,7 @@ debugger
                         signatureCreator.getBase64Image(
                             this.getSignatureid(),
                             this.getSignatureData(),
-                            $($event.target).parent('.item').find(".sign_box").attr("pos"),
+                            type,
                             function(fn, imgdata,signid, sdata){
                                 that.postSignFn(
                                     item,
@@ -619,6 +595,7 @@ debugger
                     content: '请输入用户名',
                     isShowInput: true
                 }).then(async (val) => {
+                    console.log(val)
                     if(val){
                         _this.signOthFn(type,$event, val)
                     }
@@ -650,7 +627,7 @@ debugger
                         signatureCreator.getBase64Image(
                             this.getSignatureid(),
                             this.getSignatureData(),
-                            $($event.target).parent('.value6').find(".value6_box").attr("pos"),
+                            type,
                             function(fn, imgdata,signid, sdata){
                                 that.signBasicFn({
                                     key:type,
@@ -854,7 +831,7 @@ debugger
                         if(data.code == 200){
                             this.$message({type: 'success', message: '修改成功'})
                         }else{
-                            this.$message({type: 'error', message: data.message})
+                            //this.$message({type: 'error', message: data.message})
                         }
                     })
             },
@@ -862,7 +839,7 @@ debugger
                 if(!this[type]){
                     return false
                 }
-                 this[type] = false
+                this[type] = false
                 let map = {}
                 if(type === 'isActiveSave'){
                     let textArr = $(".base_i_inner").find("input[type='text']");
@@ -873,6 +850,15 @@ debugger
                     checkBoxArr.each((index,ele)=>{
                         map[$(ele).attr("name")] = $(ele).is(':checked')
                     })
+                    let dateArr = $(".base_i_inner").find("input[type='date']")
+                    dateArr.each((index,ele)=>{
+                        map[$(ele).attr("name")] = $(ele).val()
+                    })
+                    let value1Arr = $(".base_i_inner").find(".value1")
+                    value1Arr.each((index, ele)=>{
+                        map[$(ele).attr("id")] = $(ele).text()
+                    })
+                    console.log(map)
                 }else{
                     let textArr = $(".base_i_inner").find("input[type='text']");
                     textArr.each((index, ele)=>{
@@ -920,7 +906,7 @@ debugger
                             //this.airInfo = data.
                             this.$message({type: 'success', message: '保存成功'})
                         }else{
-                            this.$message({type: 'error', message: data.message})
+                           // this.$message({type: 'error', message: data.message})
                         }
                     })  // http://173.100.1.5:8011/mms-file/get-file-by-id/ee899e8629ab71c00c8609b43382336d
             },

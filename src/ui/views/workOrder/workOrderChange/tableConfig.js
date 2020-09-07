@@ -14,19 +14,19 @@ export const sysParameterTable = () => {
         { prop: 'flightNo', label: '航班号', align: 'center', sort:true,sortProp:"flightNo",search:{prop:'flightNo',type:'input',placeholder:"请输入"} },
         { prop: 'airlineCompany', label: '航空公司', align: 'center',sort:true,sortProp:"airlineCompany",search:{prop:'airlineCompany',type:'input',placeholder:"请输入"} },
         { prop: 'airplaneIcao', label: '机型', align: 'center',sort:true,sortProp:"airplaneIcao",search:{prop:'airplaneIcao',type:'input',placeholder:"请输入"} },
-        { prop: 'planArrivalTime', width:'140',label: '计划进港时间', align: 'center',sort:true,
-            formatter: (row, column, cellValue) => {
-                return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
-            sortProp:"planArrivalTime",search:{prop:'planArrivalTime',type:'date',placeholder:"请选择"} 
-        },
-        {
-            prop: 'planDepartureTime', width:'140', label: '计划出港时间', align: 'center',sort:true,sortProp:"planDepartureTime",
-            formatter: (row, column, cellValue) => {
-                return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
-            search:{prop:'planDepartureTime',type:'date',placeholder:"请选择"} 
-        },
+        // { prop: 'planArrivalTime', width:'140',label: '计划进港时间', align: 'center',sort:true,
+        //     formatter: (row, column, cellValue) => {
+        //         return formatDate(cellValue, 'YYYY-MM-DD', '--');
+        //     }, 
+        //     sortProp:"planArrivalTime",search:{prop:'planArrivalTime',type:'date',placeholder:"请选择"} 
+        // },
+        // {
+        //     prop: 'planDepartureTime', width:'140', label: '计划出港时间', align: 'center',sort:true,sortProp:"planDepartureTime",
+        //     formatter: (row, column, cellValue) => {
+        //         return formatDate(cellValue, 'YYYY-MM-DD', '--');
+        //     }, 
+        //     search:{prop:'planDepartureTime',type:'date',placeholder:"请选择"} 
+        // },
         { prop: 'reason', label: '原因', align: 'center',sort:true,sortProp:"reason",search:{prop:'reason',type:'input',placeholder:"请输入"} },
         { prop: 'state', label: '状态', align: 'center',sort:true,sortProp:"state",
             formatter: (row, column, cellValue) => {
