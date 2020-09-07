@@ -70,7 +70,7 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
         { prop: 'flightState', label: '航班类型', sortProp:"flightState", align: 'center',sort:true,search:{type:'select', prop:'flightState',placeholder:"请选择",data:obj.W_flightType,selectProp:['valData','valCode']} },
         { prop: 'template.jobType', label: '作业类型', sortProp:"jobType", align: 'center',sort:true,search:{type:'select', prop:'jobType',placeholder:"请选择",data:obj.W_workType,selectProp:['valData','valCode']} },
         { prop: 'template.personType', label: '作业员类型', sortProp:"personType", align: 'center',sort:true,search:{type:'select', prop:'personType',placeholder:"请选择",data:obj.workUserType,selectProp:['valData','valCode']} },
-        { prop: 'template.etopEnable', formatter:etopEnable,label: '是否适用ETOPS运行', sortProp:"etopEnable", align: 'center',sort:true,search:{type:'select', prop:'etopEnable',placeholder:"请选择",data:obj.applyETOP,selectProp:['valData','valCode']} },
+        { prop: 'template.etopEnable',width:'90', formatter:etopEnable,label: '是否适用ETOPS运行', sortProp:"etopEnable", align: 'center',sort:true,search:{type:'select', prop:'etopEnable',placeholder:"请选择",data:obj.applyETOP,selectProp:['valData','valCode']} },
         { prop: 'state', label: '工单状态',formatter:state, sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请选择",data:arrstate,selectProp:['valData','valCode']} },
         { slot: 'option', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]

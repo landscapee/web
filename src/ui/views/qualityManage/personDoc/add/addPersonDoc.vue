@@ -10,6 +10,7 @@
                     {{type!=='add'?form.userName:''}}人员档案-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
                 </div>
                 <div v-if="type!='info'"  class="QheadRight">
+
                     <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
                         <icon iconClass="save"></icon>保存
                     </div>
@@ -17,6 +18,9 @@
                         <icon iconClass="reset"></icon>重置
                     </div>
                 </div>
+                <!--<div v-if="type=='info'"  @click="exportWord('form')" :class="type!='info'?'isDisabled':''">-->
+                    <!--<icon iconClass="export"></icon>导出Word-->
+                <!--</div>-->
             </div>
 
             <div class="G_form1" style="overflow: auto ; height:calc(100vh - 270px);" >
@@ -286,7 +290,11 @@
     </div>
 
 </template>
+
 <script>
+    // import $ from 'jquery'
+    // import '../../../../../../static/js/FileSaver.js'
+    // import '../../../../../../static/js/jquery.wordexport.js'
     import moment from "moment";
     import InOfficeInfo from './inOfficeInfo/index';
     import WorkExperience from './workExperience/index';
@@ -325,6 +333,9 @@
         },
 
         methods: {
+            exportWord(){
+                // $(".addPersonDoc").wordExport("一键报告")
+            },
             enter(id,title){
                  this.fileDownload(id,title,1)
             },

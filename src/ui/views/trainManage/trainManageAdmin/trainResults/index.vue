@@ -146,8 +146,6 @@ export default {
 
         exportExcel(){
             if(this.tableData.records.length){
-
-
             request({
                 'Content-Type':'application/vnd.ms-excel',
                 // 'Content-Type':'application/octet-stream;charset=utf-8',

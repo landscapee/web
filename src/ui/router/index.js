@@ -599,12 +599,28 @@ let authRoutes = [
 		],
 	},
 	{
-		path: '/WorkOrderManage55',
+		path: '/queryStatistical',
 		component: Layout,
-		redirect: '/WorkOrderManage66',
+		redirect: '/queryIndex',
 		name: '查询统计',
 		meta: {title: '查询统计',icon: 'cxtj' },
-		children: [],
+        children: [
+            {
+                path: '/queryIndex',
+                component: () => import('@views/queryStatistical/query/index'),
+                name: '综合查询',
+                meta: {title: '综合查询',icon: '' },
+
+            },
+            {
+                path: '/statisticalIndex',
+                component: () => import('@views/queryStatistical/statistical/index'),
+                name: '综合统计',
+                meta: {title: '综合统计',icon: ''},
+
+            },
+
+        ],
 	},
 	{
 		path: '/msgManage',

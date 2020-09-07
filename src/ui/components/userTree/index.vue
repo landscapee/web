@@ -287,8 +287,8 @@ export default {
 		open(inputList, title, currentDept) {
   			this.getTree(inputList||[]);
 			this.selectAll = false;
-			this.title = title;
-             this.userSelect = inputList||[];
+			this.title = title||'选择人员';
+			this.userSelect = inputList||[];
             this.dialogVisible = true;
 		},
 	},

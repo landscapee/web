@@ -2,7 +2,7 @@
 	<div class="searchTableWrapper" >
 
 			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
-				<template  v-for="(colConfig, index) in cloneTableConfig">
+				<template  v-for="(colConfig, index) in tableConfig">
 					<template v-if="colConfig.search">
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
 						<span >
@@ -42,7 +42,7 @@
 			</el-table>
 
 			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
-				<template v-for="(colConfig, index) in cloneTableConfig">
+				<template v-for="(colConfig, index) in tableConfig">
 
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
 
@@ -73,7 +73,7 @@ export default {
 		return {
 			resizeCallback:[],
 			headerData:[{}],
-			cloneTableConfig:this.tableConfig,
+			// tableConfig:this.tableConfig,
 			updateWidth:false
 		};
 	},
@@ -86,17 +86,7 @@ export default {
 		}
 	},
 	watch: {
-		tableConfig:function(newVal, oldVal){
-			let that = this;
-			if(!this.updateWidth){
-				newVal.map((item,index)=>{
-					forEach(item, function(value, key) {
-						that.$set(that.cloneTableConfig[index],key,value);
-					});
-					this.$set(this.cloneTableConfig,index,this.cloneTableConfig[index]);
-				})
-			}
-		},
+	
 		data: function(newVal, oldVal){
 			// this.data = newVal;
 			// 重新计算element表格组件布局
@@ -123,7 +113,7 @@ export default {
 		//监听头部拉伸宽度改变表格主体宽度
 		headerDragend(newWidth, oldWidth, column, event){
 			this.updateWidth = true;
-			this.$set(this.cloneTableConfig[column.index],'width',newWidth);
+			this.$set(this.tableConfig[column.index],'width',newWidth);
 			this.$refs.body_table.columns[column.index].realWidth = newWidth;
 		},
 		requestTableData(){
