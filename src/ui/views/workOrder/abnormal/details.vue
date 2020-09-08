@@ -35,7 +35,7 @@
                         </div>
                          <div v-if='item.type==6' class="value6  value" style="position:relative">
                             <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
-                            <el-button   :disabled="type=='info'" @click="signOthFn('sign_'+index,$event)" type="primary" style="padding: 7px 15px">签字</el-button>
+                            <el-button   :disabled="type=='info'" @click="signOthMsgBoxFn('sign_'+index,$event)" type="primary" style="padding: 7px 15px">签字</el-button>
                             <div  style="width:50px;height:50px;position:absolute;left:200px;top:10px">
                                 <div :pos="'sign_'+index" :id="'sign_'+index"></div>
                             </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class=" base_i_inner_btn flex justify_center align_center" v-if="type!='info'">
                         <el-button type="primary" @click="saveBasicFn('isActiveSave')" ><i v-show='!isActiveSave' class="el-icon-loading"></i>保存</el-button>
-                        <el-button  type="primary" @click="saveBasicFn('isActiveReset')" ><i v-show='!isActiveReset' class="el-icon-loading"></i>重置</el-button>
+                        <el-button  type="primary" @click="BasicUpdateFn('isActiveReset')" ><i v-show='!isActiveReset' class="el-icon-loading"></i>重置</el-button>
                     </div>
                 </div>
             </div>
@@ -255,12 +255,16 @@
                                 }
                             }
 
-                            this.init()
+                            this.init(true)
                             this.$message({type: 'success', message: '保存成功'})
                         }
 
                     })
 
+            },
+            BasicUpdateFn(type){
+                this['isActiveReset'] = false
+                this.init(true, true)
             },
             getVOListMap(arr){
                 const result = [];
@@ -295,7 +299,6 @@
                         item._reduceIndex = _itemNumber+ '_' +(reduceIndex)
                     }
                     if(item.contentDetails && item.contentDetails.length){
-
                         item.contentDetails.forEach((itemChild,indexChild)=>{
                             let reg=/(<input\s{0,}|<button\s{0,})(.+?)(\/>|\/button>)/g
                             itemChild.content=itemChild.content.replace(reg,"$1 disabled $2$3" )
@@ -309,9 +312,9 @@
                 console.log(result)
                 return result
             },
-            async init(isClearAll=false){
+            async init(isClearAll=false, BasicUpdateLimit=false){
                 await this.getTemplateById()
-                this.getBySerialNoFn(isClearAll)
+                this.getBySerialNoFn(isClearAll, BasicUpdateLimit)
             },
             getTemplateById(){
                 let _this = this
@@ -343,6 +346,13 @@
                                     $(".textContent button").on('click', function(){
                                         $(this).siblings("input").attr("pos", $(this).siblings("input").attr("id"))
                                         _this.signMsgBoxFn($(this).siblings("input").attr("id"))
+                                    })
+                                    $(".textContent input[type='checkbox']").on('change', function(){
+                                        if($(this).is(":checked")){
+                                            $(this).val('on')
+                                        }else{
+                                            $(this).val('off')
+                                        }
                                     })
                                     //}
                                 })
@@ -394,7 +404,7 @@
                     }
                 })
             },
-            getBySerialNoFn(isClearAll){
+            getBySerialNoFn(isClearAll, BasicUpdateLimit){
                 request({
                     url:`${this.$ip}/mms-workorder/operationInf/getBySerialNo/${this.workorder.serialNo}`,
                     method: 'get',
@@ -432,17 +442,19 @@
                             //let signData = $(".kg-img-div")  // signatureid
 
                             //var that = this
-
-
-                            $(".checkbox_group").find('input[type="checkbox"]').each((it,ele)=>{
-                                $(ele).prop("checked",false).prop("disabled",false)
-                            })
-                            $(".textContent").find('input[type="checkbox"]').each((ite,ele)=>{
-                                $(ele).prop("checked",false)
-                            })
-                            $(".textContent").find('input[type="text"]').each((ite,ele)=>{
-                                $(ele).val("")
-                            })
+                            if(BasicUpdateLimit){
+                        
+                            }else{
+                                $(".checkbox_group").find('input[type="checkbox"]').each((it,ele)=>{
+                                    $(ele).prop("checked",false).prop("disabled",false)
+                                })
+                                $(".textContent").find('input[type="checkbox"]').each((ite,ele)=>{
+                                    $(ele).prop("checked",false)
+                                })
+                                $(".textContent").find('input[type="text"]').each((ite,ele)=>{
+                                    $(ele).val("")
+                                })
+                            }
                             if(infList && infList.length){
                                 infList.forEach(item=>{
                                     $("."+item.contentDetailId).siblings(".checkbox_group").find("#1"+item.contentDetailId).prop("checked", item.workerCompleted).prop("disabled",item.workerCompleted)
@@ -464,10 +476,20 @@
                                                 signatureData : map[i].split('------')[1]
                                             }
                                         )
-                                    }else if(i.includes("input")){
-                                        $("input[name='"+i+"']").val(map[i])
+                                    }else if(i.includes("input") || i.includes("date")){
+                                        if(BasicUpdateLimit){
+                                            $(".base_item input[name='"+i+"']").val(map[i])
+                                            this['isActiveReset'] = true
+                                        }else{
+                                            $("input[name='"+i+"']").val(map[i])
+                                        }
                                     }else{
-                                        $("input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
+                                        if(BasicUpdateLimit){
+                                            $(".base_item input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
+                                            this['isActiveReset'] = true
+                                        }else{
+                                            $("input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
+                                        }
                                     }
                                 }
                                 Signature.loadSignatures(signs)
@@ -594,21 +616,20 @@
                     title: '用户名',
                     content: '请输入用户名',
                     isShowInput: true
-                }).then(async (val) => {
-                    console.log(val)
-                    if(val){
-                        _this.signOthFn(type,$event, val)
+                }).then(async (data) => {
+                    if(data.val && data.psd){
+                        _this.signOthFn(type,$event, data.val, data.psd)
                     }
                 }).catch(() => {
                     // ...
                 });
             },
-            signOthFn(type, $event,val){
+            signOthFn(type, $event, val, psd){
                 if(!this.signBasicActiveFn()){
                     this.$message({type: 'warning', message: '请先完成所有的放行已完成'})
                     return
                 }
-                SignatureInit(val)
+                SignatureInit(val, psd)
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.run({
@@ -867,8 +888,12 @@
                     let checkBoxArr = $(".base_i_inner").find("input[type='checkbox']")
                     checkBoxArr.each((index,ele)=>{
                          $(ele).prop('checked',false)
-                     })
-                     this[type] = true
+                    })
+                    let dateArr = $(".base_i_inner").find("input[type='date']")
+                    dateArr.each((index,ele)=>{
+                        map[$(ele).attr("name")] = $(ele).val()
+                    })
+                    this[type] = true
                     return false
 
                 }
