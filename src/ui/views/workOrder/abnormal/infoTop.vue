@@ -25,7 +25,7 @@
                     <div>  工单模板版本号 </div>
                     <div>{{get(form.typeVO,'version')}}</div>
                     <div>  任务日期 </div>
-                    <div>{{get(workorder,'workTime')}}</div>
+                    <div>{{get(workorder,'workTime') | timeFormat }}</div>
                     <div>  任务号 </div>
                     <div  >{{get(form,'')}}</div>
                     <div>  执行单位 </div>
@@ -95,6 +95,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
     import request from '@lib/axios.js';
     import { extend ,map,get,filter} from "lodash";
     export default {
@@ -106,6 +107,12 @@
                 get:get,
                 contentVOList:[],
                 show:true,
+            }
+        },
+        filters: {
+            timeFormat: function (value, format='YY-MM-DD') {
+                if (!value) return ''
+                return moment(value).format('YYYY-MM-DD')
             }
         },
         computed:{
