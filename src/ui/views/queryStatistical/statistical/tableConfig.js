@@ -70,7 +70,7 @@ export const modelAnalysisConfig = (obj) => {//保障航班航司/机型分析
             { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}},
             ...flight(obj),
             { prop: 'airplaneIcao', label: '机型',sortProp:"airplaneIcao", align: 'center' ,sort:true,search:{type:'input', prop:'airplaneIcao', placeholder:"请输入"}},
-            ...yearMonthArr(obj),
+            ...(yearMonthArr(obj).slice(0,3)),
             ...taskNum(obj)
          ]
          return arr
@@ -80,7 +80,7 @@ export const taskNumConfig = (obj) => {//保障任务量统计
         ...qarr,
         ...flight(obj),
         { prop: 'airplaneIcao', label: '机型',sortProp:"airplaneIcao", align: 'center' ,sort:true,search:{type:'input', prop:'airplaneIcao', placeholder:"请输入"}},
-        { prop: 'qqqq', label: '航班类型',sortProp:"qqqq", align: 'center',sort:true,search:{type:'input', prop:'qqqq',placeholder:"请输入"} },
+        { prop: 'airlineType', label: '航班类型',sortProp:"airlineType", align: 'center',sort:true,search:{type:'input', prop:'airlineType',placeholder:"请输入"} },
         { prop: 'seat', label: '机位',sortProp:"seat", align: 'center',sort:true,search:{type:'input', prop:'seat',placeholder:"请输入"} },
         { prop: 'flightRegisterNo', label: '飞机注册号',sortProp:"flightRegisterNo", align: 'center',sort:true,search:{type:'input', prop:'flightRegisterNo',placeholder:"请输入"} },
         ...yearMonthArr(obj),
@@ -89,7 +89,7 @@ export const taskNumConfig = (obj) => {//保障任务量统计
     return arr
 };
 
-export const unsafeConfig = (obj) => {//保障任务量统计
+export const unsafeConfig = (obj) => {//不安全事件
     let option=obj.unsafeType
     let arr=[ { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}}]
     if(option){
