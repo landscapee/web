@@ -15,6 +15,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="exportWord('info')"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -98,7 +99,38 @@
         },
 
         methods: {
-
+            exportWord(){
+                request({
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-qualification/download/authorization`,
+                    method: 'get',
+                    responseType: 'blob'
+                }).then(d => {
+                    console.log();
+                    let arr=['授权管理','xlsx']
+                    if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                        arr=d.headers['content-disposition'].split('=')[1].split('.')
+                    }
+                    let content = d;
+                    // let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `${decodeURI(arr[0])}.${arr[1]}`
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                });
+            },
             seeOther(row,path){
                 this.$router.push({path:path,query:{ id:row.userId}});
 

@@ -19,17 +19,12 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option3" label="操作" :width="120" >
+                    <el-table-column v-for="(item,index) in options.unsafeType" :key="index"  align="center" :slot="item.valCode" :label="item.valData"   >
                         <template  slot-scope="scope">
-                            <el-button    @click="fileDown(scope.row)">课件下载</el-button>
+                            {{scope.row[item.valData]}}
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" slot="option2" label="操作" :width="120" >
-                        <template  slot-scope="scope">
-                            <el-button    @click="fileDown(scope.row)">课件下载1</el-button>
-                        </template>
-                    </el-table-column>
+
 
 
                 </SearchTable>
@@ -41,7 +36,7 @@
     import ButtonList from "../component/buttonList"
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
-    import { filghtConfig,workloadConfig,workePositiveConfig,modelAnalysisConfig,taskNumConfig } from './tableConfig.js';
+    import { filghtConfig,unsafeConfig,workloadConfig,workePositiveConfig,modelAnalysisConfig,taskNumConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
     import {  extend ,map} from 'lodash';
     export default {
@@ -59,6 +54,7 @@
                     {name:'员工到位及时性统计',id:'3',api:'/mms-report/count/workInTime'},
                     {name:'保障航班航司/机型分析',id:'4',api:'/mms-report/count/airLineIcao'},
                     {name:'保障任务量统计',id:'5',api:'/mms-report/count/task'},
+                    {name:'人员不安全事件统计',id:'6',api:'/mms-report/count/task'},
                      // {name:'桥载工单查询',id:'3'},
                 ],
                 buttonObj:{},
@@ -68,6 +64,7 @@
                     '3':workePositiveConfig,
                     '4':modelAnalysisConfig,
                     '5':taskNumConfig,
+                    '6':unsafeConfig,
                 },
                 tableData:{records:[]},
                 tableConfig:filghtConfig({}),
@@ -91,7 +88,7 @@
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params:{delete:false},
-                    data:["isUse", "loadPermission","CourseBusinessType",'coursewareType','applyObject' ]
+                    data:['unsafeType',"isUse", "loadPermission","CourseBusinessType",'coursewareType','applyObject' ]
                 }).then(d => {
                     this.options=d.data
                     this.tableConfig=this.configObj[this.buttonObj.id](this.options)

@@ -121,14 +121,14 @@
                     },
                     url:`${this.$ip}/mms-workorder/workorder/exportExcel`,
                     method: 'post',
+                    data:{},
                     responseType: 'blob'
                 }).then(d => {
-                    console.log();
-                    let arr=['工单','doc']
+                     let arr=['工单','xlsx']
                     if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
-                        arr=d.headers['content-disposition'].split('=')[1]
+                        arr=d.headers['content-disposition'].split('=')[1].split('.')
                     }
-                    let content = d;
+                     let content = d;
                      let blob = new Blob([content],{type:'application/vnd.ms-excel'})
                     // let blob = new Blob([content],{type:'application/msword'})
                     const fileName = `${decodeURI(arr[0])}`

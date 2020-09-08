@@ -78,7 +78,7 @@
                                 if (!d.data&&d.code==200) {
                                     callback();
                                 } else {
-                                    callback("该绩效年月已存");
+                                    callback("该绩效年月已存在");
                                 }
                             });
                         }else {

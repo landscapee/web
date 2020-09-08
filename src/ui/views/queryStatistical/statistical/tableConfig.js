@@ -88,3 +88,15 @@ export const taskNumConfig = (obj) => {//保障任务量统计
     ]
     return arr
 };
+
+export const unsafeConfig = (obj) => {//保障任务量统计
+    let option=obj.unsafeType
+    let arr=[ { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}}]
+    if(option){
+        for(let i=0;i<option.length;i++){
+            let obj={ slot:option[i].valCode , label: option[i].valData,sortProp:option[i].valCode, align: 'center' ,sort:true,search:{type:'input', prop:option[i].valCode, placeholder:"请输入"}}
+                arr.push(obj)
+        }
+    }
+    return arr
+};

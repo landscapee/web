@@ -35,7 +35,6 @@ export const qiaozaiConfig = (obj) => {  //未完成
         { prop: 'airlineType', label: '桥载空调撤出时间',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'select', prop:'airlineType',selectProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请选择"}},
         { prop: 'airlineType', label: '桥载空调适用时长',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'select', prop:'airlineType',selectProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请选择"}},
         qarr1(obj),
-        { slot: 'option', label: '操作',width:'120', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 
     return arr
@@ -45,7 +44,6 @@ export const qinwuConfig = (obj) => {
         ...qarr(obj),
         qarr1(obj),
          { prop: 'airlineCompanyName', label: '保障时长',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
-        { slot: 'option2', label: '操作',width:'120', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
     return arr
 };
@@ -54,7 +52,6 @@ export const weixiuConfig = (obj) => {
         ...qarr(obj),
         qarr1(obj),
         { prop: 'airlineCompanyName', label: '公司',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
-        { slot: 'option3', label: '操作',width:'120', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
     return arr
 };

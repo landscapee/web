@@ -30,7 +30,20 @@
                     </el-form-item>
 
                 </div>
+                <div class="row_tow itemTS">
+                    <el-form-item  label="类型：" prop="type">
+                        <span v-if="type=='info'">{{form.type}}</span>
+                        <el-select  v-else clearable v-model="form.type" placeholder="请选择类型">
+                            <el-option v-for="(opt,index) in options.unsafeType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
 
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item  label="质量经理签字确认时间：" prop="confirmTime">
+                        <span v-if="type=='info'">{{ form.confirmTime?moment(form.confirmTime).format('YYYY-MM-DD'):''}}</span>
+                        <el-date-picker    type="date" v-else v-model="form.confirmTime" placeholder="请选择时间"></el-date-picker>
+                    </el-form-item>
+
+                </div>
 
                 <div class="row_tow">
                     <el-form-item  label="地点 ：" prop="place">
@@ -64,14 +77,7 @@
                     </el-form-item>
 
                 </div>
-                <div class="row_tow itemTS">
 
-                    <el-form-item  label="质量经理签字确认时间：" prop="confirmTime">
-                        <span v-if="type=='info'">{{ form.confirmTime?moment(form.confirmTime).format('YYYY-MM-DD'):''}}</span>
-                        <el-date-picker    type="date" v-else v-model="form.confirmTime" placeholder="请选择时间"></el-date-picker>
-                    </el-form-item>
-
-                </div>
 
 
 
@@ -90,17 +96,16 @@
         },
         name: "",
         data() {
-
-
             return {
                 pickerOptions: {},
                 pickerOptions1: {},
-                moment:moment,
+                 moment:moment,
                 oldForm:{},
                 form: {},
                 options: {},
                  rules: {
                      occurTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
+                     type: [{ required:true,message:'请选择类型', trigger: "blur" }],
                      nature: [{ required:true,message:'请输入事件性质', trigger: "blur" }],
                      place: [{ required:true,message:'请输入地点', trigger: "blur" }],
                      involvePerson: [{ required:true,message:'请输入涉及人员', trigger: "blur" }],
@@ -125,11 +130,10 @@
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params:{delete:false},
-                    data:["Z_workType" ]
+                    data:["unsafeType" ]
                 }).then(d => {
                     let obj=d.data
                     this.options=obj
-
                 });
                 this.$route.meta.title =
                     this.type == "add"
@@ -222,9 +226,9 @@
     .indexAdd{
         padding: 0 30px;
         .itemTS{
-            /deep/ .el-form-item{
+            /deep/ .el-form-item:nth-child(2){
                 .el-form-item__label{
-                    padding-left: 67px;
+                    /*padding-left: px;*/
                     line-height: 20px;
                 }
             }
@@ -232,7 +236,7 @@
      }
     /deep/ .el-form{
         .el-form-item__label{
-            width: 110px!important;
+            width: 130px!important;
 
         }
         .el-form-item__content{

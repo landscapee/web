@@ -4,7 +4,7 @@
         <router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
-        <div class="addPersonDoc" v-else>
+        <div class="addPersonDoc" ref="export" v-else>
             <div class="QCenterRight">
                 <div class="QHead">
                     {{type!=='add'?form.userName:''}}人员档案-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
@@ -18,9 +18,9 @@
                         <icon iconClass="reset"></icon>重置
                     </div>
                 </div>
-                <!--<div v-if="type=='info'"  @click="exportWord('form')" :class="type!='info'?'isDisabled':''">-->
-                    <!--<icon iconClass="export"></icon>导出Word-->
-                <!--</div>-->
+                <div class="QheadRight" v-if="type=='info'"  @click="saveDocx('form')" :class="type!='info'?'isDisabled':''">
+                    <icon iconClass="export"></icon>导出Word
+                </div>
             </div>
 
             <div class="G_form1" style="overflow: auto ; height:calc(100vh - 270px);" >
@@ -276,10 +276,10 @@
                         </tr>
                     </table>
                     <div style="width:1160px">
-                        <InOfficeInfo @getInfo="getInfo" :type="type" :tableData="form.positionInfList||[]" :id="this.$route.query.id"></InOfficeInfo>
+                        <InOfficeInfo @getInfo="getInfo" :type="type"  :tableData="form.positionInfList||[]" :id="this.$route.query.id"></InOfficeInfo>
                         <WorkExperience @getInfo="getInfo" :type="type" :tableData="form.workInfList||[]" :id="this.$route.query.id"></WorkExperience>
                         <Certificate @getInfo="getInfo" :type="type" :tableData="form.certificateInfList||[]" :id="this.$route.query.id"></Certificate>
-                        <Unsafe @getInfo="getInfo" :type="type" :tableData="form.sincerityInfList||[]" :id="this.$route.query.id"></Unsafe>
+                        <Unsafe @getInfo="getInfo"   :type="type" :tableData="form.sincerityInfList||[]" :id="this.$route.query.id"></Unsafe>
 
                     </div>
                 </el-form>
@@ -292,18 +292,18 @@
 </template>
 
 <script>
-    // import $ from 'jquery'
-    // import '../../../../../../static/js/FileSaver.js'
-    // import '../../../../../../static/js/jquery.wordexport.js'
-    import moment from "moment";
+     import $ from 'jquery'
+    import  {saveAs} from  'save-as';
+     import {asBlob}  from 'html-docx-js-typescript'
+
+     import moment from "moment";
     import InOfficeInfo from './inOfficeInfo/index';
     import WorkExperience from './workExperience/index';
     import Certificate from './certificate/index';
     import Unsafe from './unsafe/index';
-
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
-    import { extend } from "lodash";
+    import { extend,map,clone } from "lodash";
     export default {
         components: {
             Icon,InOfficeInfo,WorkExperience,Certificate,Unsafe
@@ -319,6 +319,7 @@
                 fileObj: {style:'display:none'},
                 options: {},
                 userArrObj: {},
+
                 userArr:[],
                 rules: {
                     userName: [{ required:true,message:'请选择', trigger: "blur" }],
@@ -327,14 +328,43 @@
                 type: "add"
             };
         },
-        created() {
+        mounted(){
 
-           this.initPage()
+        },
+        created() {
+            if(this.$route.path=='/addPersonDoc'){
+
+                this.initPage()
+            }
+
         },
 
         methods: {
             exportWord(){
-                // $(".addPersonDoc").wordExport("一键报告")
+
+            },
+            saveDocx() {
+
+                let htmlString=clone(this.$refs.export.innerHTML)
+                let hObj=this.$refs.export
+                console.log(hObj);
+                $('.addPersonDoc,.addPersonDoc *').each((k,l)=>{
+                    console.log(  window.getComputedStyle(l, null), k,l);
+                    l.style=window.getComputedStyle(l, null)
+                })
+                let s=`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+${htmlString}
+</body>
+</html>`
+                 asBlob(s).then(data => {
+                    saveAs(data, 'file.doc') // 保存为docx文件
+                }) // asBlob() 返回 Promise<Blob|Buffer>，用promise.then还是async语法都行
             },
             enter(id,title){
                  this.fileDownload(id,title,1)

@@ -42,15 +42,16 @@ export default {
         SearchTable
 	},
     name: '',
-    props:['type','id','tableData'],
+    props:['type','id','tableData',],
     data() {
         return {
-             tableConfig:inOfficeInfoConfig({},{}),
+            tableConfig:inOfficeInfoConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
+            unsafeTypeObj:{},
             row:{},
             sort:{},
 
@@ -58,6 +59,24 @@ export default {
         };
     },
    created() {
+        if(this.unsafeType){
+
+        }
+       if(this.$route.path=='/addPersonDoc'){
+           request({
+               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+               method: 'post',
+               params:{delete:false},
+               data:["unsafeType"]
+           }).then(d => {
+               let obj=d.data
+               this.options=obj
+               this.options.unsafeType.map((k,l)=>{
+                   this.unsafeTypeObj[k.valCode]=k.valData
+               })
+               this.tableConfig=inOfficeInfoConfig({},this.unsafeTypeObj)
+           });
+        }
 
     },
 

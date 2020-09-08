@@ -60,6 +60,7 @@
             }
         },
         methods: {
+
             close( ){
                 this.form={}
                 this.dialogFormVisible=false

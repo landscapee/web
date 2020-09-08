@@ -19,16 +19,7 @@
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option3" label="操作" :width="120" >
-                        <template  slot-scope="scope">
-                             <el-button    @click="fileDown(scope.row)">课件下载</el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" slot="option2" label="操作" :width="120" >
-                        <template  slot-scope="scope">
-                             <el-button    @click="fileDown(scope.row)">课件下载1</el-button>
-                        </template>
-                    </el-table-column>
+
 
 
                 </SearchTable>
