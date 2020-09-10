@@ -131,7 +131,7 @@
                      let content = d;
                      let blob = new Blob([content],{type:'application/vnd.ms-excel'})
                     // let blob = new Blob([content],{type:'application/msword'})
-                    const fileName = `${decodeURI(arr[0])}`
+                    const fileName = `${decodeURI(arr[0])}` + '.' + arr[1]
                     if ('download' in document.createElement('a')) { // 非IE下载
                         const elink = document.createElement('a')
                         elink.download = fileName
