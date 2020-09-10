@@ -26,15 +26,7 @@ let qarr=(obj)=>{
 export const qiaozaiConfig = (obj) => {  //未完成
     let arr=[
         ...qarr(obj),
-        { prop: 'airlineCompanyName', label: '是否使用桥载设备',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
-        { prop: 'airlineType', label: '单双电源',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        { prop: 'airlineType', label: '桥载电源投入时间',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        { prop: 'airlineType', label: '桥载电源撤出时间',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        { prop: 'airlineType', label: '桥载电源适用时长',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        { prop: 'airlineType', label: '桥载空调投入时间',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        { prop: 'airlineType', label: '桥载空调撤出时间',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        { prop: 'airlineType', label: '桥载空调适用时长',sortProp:"airlineType", align: 'center' ,sort:true,search:{type:'input', prop:'airlineType',inputProp:['valData','valData'],data:obj.applyObject||[],placeholder:"请输入"}},
-        qarr1(obj),
+       qarr1(obj),
     ]
 
     return arr

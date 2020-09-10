@@ -170,8 +170,7 @@ export default {
                 if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
                     arr=d.headers['content-disposition'].split('=')[1].split('.')
                 }
-                debugger
-                 let content = d;
+                  let content = d;
                 let blob = new Blob([content],{type:'application/vnd.ms-excel'})
                 const fileName = `${decodeURI(arr[0])}`
                 if ('download' in document.createElement('a')) { // 非IE下载

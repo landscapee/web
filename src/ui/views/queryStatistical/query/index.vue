@@ -13,19 +13,19 @@
                 <div style="padding:30px 30px 0px 30px">
                     <el-form :model="form1" :inline="true">
 
-                            <el-form-item label="航空公司：">
-                                <el-select @change="getList1" clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
+                            <el-form-item label="航空公司：" class="firstWidth">
+                                <el-select filterable @change="getList1" clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
                                     <el-option v-for="(opt,index) in airlineCompanyName" :key="index" :label="opt.fullname" :value="opt.iata">
                                         <span>{{opt.iata}}-{{opt.fullname}}</span></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="机型：">
-                                <el-select @change="getList1" clearable   v-model="form1.airplaneIcao" placeholder="请选择">
+                            <el-form-item label="机型：" class="secWidth">
+                                <el-select filterable @change="getList1" clearable   v-model="form1.airplaneIcao" placeholder="请选择">
                                     <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="飞机注册号：">
-                                <!--<el-select @change="getList1" clearable   v-model="form1.flightRegisterNo" placeholder="请选择">-->
+                                <!--<el-select filterable @change="getList1" clearable   v-model="form1.flightRegisterNo" placeholder="请选择">-->
                                     <!--<el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>-->
                                 <!--</el-select>-->
                                 <el-input @keyup.enter.native="getList1" v-model="form1.flightRegisterNo" clearable placeholder="请输入"></el-input>
@@ -43,32 +43,22 @@
                             <el-form-item label="保障人员：">
                                 <el-input @keyup.enter.native="getList1" v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
                             </el-form-item>
-                            <el-form-item label="日期：">
-                                <el-date-picker @change="getList1" v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>至
-                                <el-date-picker @change="getList1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
+                            <el-form-item label="日期：" class="firstWidth">
+                                <el-date-picker @change="getList1"  @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
+                             </el-form-item>
+                            <el-form-item label="至" class="secWidth">
+                                 <el-date-picker @change="getList1" @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
-                            <el-form-item label="适用ETC运行："  >
-                                 <el-select @change="getList1" clearable   v-model="form1.etopEnable" placeholder="请选择">
-                                    <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData" :value="opt.valCode==='false'?false:true"> </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="部门/项目：" prop="department">
-                                 <el-select @change="getList1" clearable   v-model="form1.department" placeholder="请选择">
-                                    <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="统计维度：" prop="dateType">
-                                 <el-select @change="getList1" clearable   v-model="form1.dateType" placeholder="请选择">
-                                    <el-option v-for="(opt,index) in options.statisticType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
-                                </el-select>
-                            </el-form-item>
-
                             <el-form-item  >
                                 <div class="button ">
-                                    <el-button @click="getList1" type="primary">查询</el-button>
+                                    <el-button style="margin-left: 15px" @click="getList1" type="primary">查询</el-button>
                                     <el-button @click="resetForm"  >重置</el-button>
                                 </div>
                             </el-form-item>
+                        <br>
+                        <el-form-item  >
+                            <el-checkbox v-model="form1.etopEnable"  >适用ETOPS运行</el-checkbox>
+                        </el-form-item>
 
 
                     </el-form>
@@ -82,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <SearchTable    scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable  :noSearch="true"  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -111,12 +101,14 @@ export default {
     data() {
         return {
             options:{},
+            pickerOptions: {},
+            pickerOptions1: {},
             airlineCompanyName:[],
             AircraftType:[],
             buttonList:[
                 {name:'勤务工单查询',id:'1',api:'/mms-report/query/service',export:'/mms-report/export/service'},
                 {name:'维修工单查询',id:'2',api:'/mms-report/query/maintenance',export:'/mms-report/export/maintenance'},
-                // {name:'桥载工单查询',id:'3',api:'/mms-report/query/maintenance',export:'/mms-report/export/maintenance'},
+                {name:'桥载工单查询',id:'3',api:'/mms-report/query/maintenance',export:'/mms-report/export/maintenance'},
             ],
             buttonObj:{},
             configObj:{
@@ -296,13 +288,13 @@ export default {
         },
 
         getList( ){
-            let data={...this.form}
+            let data={...this.form1}
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
                 }
             }))
-            data.workOrderParam={...this.form1}
+            // data.workOrderParam={...this.form1}
            request({
                 url:`${this.$ip}${this.buttonObj.api}`,
                   method: 'post',
@@ -324,6 +316,26 @@ export default {
 		},
 		handleCheckedChange() {},
 		handleSelectionChange() {},
+        focus(val){
+            let e=this.form1.endTime?new Date(this.form1.endTime):''
+             this.pickerOptions = {
+                disabledDate(time) {
+                    if (e) {
+                        return time.getTime() >= e.getTime();
+                     }
+                },
+            };
+        } ,
+        focus1(val){
+             let s=this.form1.startTime?new Date(this.form1.startTime):''
+             this.pickerOptions1 = {
+                disabledDate(time) {
+                     if (s) {
+                        return time.getTime() <= s.getTime() ;
+                     }
+                },
+            };
+        },
     },
 };
 </script>
@@ -332,7 +344,7 @@ export default {
 .queryIndex{
     margin-top:14px;
     /deep/ .mainTable{
-        height:calc(100vh - 570px);
+        height:calc(100vh - 610px);
 
     }
     /deep/ .cell> div{
@@ -341,6 +353,21 @@ export default {
     /deep/ .el-form{
         .el-input{
             width: 180px;
+        }
+        .el-form-item__label{
+             text-align: left;
+            padding-left: 15px;
+        }
+        .firstWidth{
+             .el-form-item__label{
+                width: 85px;
+                 padding-left: 0px;
+             }
+        }
+        .secWidth{
+             .el-form-item__label{
+                width: 70px;
+             }
         }
     }
 }
