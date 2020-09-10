@@ -4,7 +4,7 @@
         <router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
-        <div class="addPersonDoc" ref="export" v-else>
+        <div class="addPersonDoc" ref="export" style="width: 100%" v-else>
             <div class="QCenterRight">
                 <div class="QHead">
                     {{type!=='add'?form.userName:''}}人员档案-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
@@ -18,7 +18,7 @@
                         <icon iconClass="reset"></icon>重置
                     </div>
                 </div>
-                <div class="QheadRight" v-if="type=='info'"  @click="saveDocx('form')" :class="type!='info'?'isDisabled':''">
+                <div class="QheadRight" v-if="type=='info'"  @click="exportWord()" :class="type!='info'?'isDisabled':''">
                     <icon iconClass="export"></icon>导出Word
                 </div>
             </div>
@@ -77,13 +77,13 @@
                                     <span v-if="!form.photo">
                                      相片上传
                                 </span>
-                                    <img v-else :src=" form.photoPath" alt="">
+                                    <img id="myimg" v-else :src=" form.photoPath" alt="">
                                 </div>
                                 <div v-else class="upUser G_cursor" @click="upUserPho" >
                                 <span v-if="!form.photo">
                                      相片上传
                                 </span>
-                                    <img v-else :src=" form.photoPath" alt="">
+                                    <img  v-else :src=" form.photoPath" alt="">
 
                                 </div>
                                 <UploadFile  style="display:none"  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg"  ref="upUserPho" @getFile="getFile"></UploadFile>
@@ -293,9 +293,10 @@
 
 <script>
      import $ from 'jquery'
-    import  {saveAs} from  'save-as';
-     import {asBlob}  from 'html-docx-js-typescript'
-
+      import docxtemplater from 'docxtemplater'
+     import PizZip from 'pizzip'
+     import JSZipUtils from 'jszip-utils'
+     import {saveAs} from 'file-saver'
      import moment from "moment";
     import InOfficeInfo from './inOfficeInfo/index';
     import WorkExperience from './workExperience/index';
@@ -310,16 +311,14 @@
         },
         name: "",
         data() {
-
-
             return {
                 moment:moment,
                 oldForm:{},
+                base64:'',
                 form: {courseFileName:'',courseFileId:'',suitableUser:[]},
                 fileObj: {style:'display:none'},
                 options: {},
                 userArrObj: {},
-
                 userArr:[],
                 rules: {
                     userName: [{ required:true,message:'请选择', trigger: "blur" }],
@@ -333,48 +332,129 @@
         },
         created() {
             if(this.$route.path=='/addPersonDoc'){
-
                 this.initPage()
             }
-
         },
 
         methods: {
-            exportWord(){
+            base64DataURLToArrayBuffer(dataURL) {
 
+                 const base64Regex = /^data:image\/(png|jpg|svg|svg\+xml);base64,/;
+                if (!base64Regex.test(dataURL)) {
+                    return false;
+                }
+                const stringBase64 = dataURL.replace(base64Regex, "");
+                let binaryString;
+                if (typeof window !== "undefined") {
+                    binaryString = window.atob(stringBase64);
+                } else {
+                    binaryString = new Buffer(stringBase64, "base64").toString("binary");
+                }
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    const ascii = binaryString.charCodeAt(i);
+                    bytes[i] = ascii;
+                }
+                  return bytes.buffer;
             },
-            saveDocx() {
+            loadFile(url, callback) {
+                JSZipUtils.getBinaryContent(url, callback);
+            },
+            exportWord() {
+                let _this=this
+                var ImageModule = require('docxtemplater-image-module-free');
 
-                let htmlString=clone(this.$refs.export.innerHTML)
-                let hObj=this.$refs.export
-                console.log(hObj);
-                $('.addPersonDoc,.addPersonDoc *').each((k,l)=>{
-                    console.log(  window.getComputedStyle(l, null), k,l);
-                    l.style=window.getComputedStyle(l, null)
+                this.loadFile(`../../../../../../static/docTemplate/exportWord.docx?t=${new Date()}`, function (error, content) {
+                    if (error) {
+                        throw error
+                    };
+
+                    // The error object contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
+                    function replaceErrors(key, value) {
+                        if (value instanceof Error) {
+                            return Object.getOwnPropertyNames(value).reduce(function (error, key) {
+                                error[key] = value[key];
+                                return error;
+                            }, {});
+                        }
+                        return value;
+                    }
+
+
+                    let opts = {}
+                    opts.centered = true;  // 图片居中，在word模板中定义方式为{%%image}
+                    opts.fileType = "docx";
+                    opts.getImage = function(chartId){
+                         return _this.base64DataURLToArrayBuffer(chartId);
+                    }
+
+                    //图片有关代码，没有图片的可以删除
+                    opts.getSize = function (img, tagValue, tagName) {
+                        // FOR FIXED SIZE IMAGE :
+                        return [200, 210];//图片大小 （这个可以写成动态的，开发文档上有）
+
+                    }
+                    var imageModule = new ImageModule(opts);
+
+                    var zip = new PizZip(content);
+
+                    let doc = new docxtemplater();
+                    doc.attachModule(imageModule);
+                    doc.loadZip(zip);
+
+
+                    doc.setData({
+                        userNumber: _this.form.userNumber || '',
+                        userName: _this.form.userName || '',
+                        nation: _this.form.nation || '',
+                        idCard: _this.form.idCard || '',
+                        sex: _this.form.sex || '',
+                        nativePlace: _this.form.nativePlace || '',
+                        zzmm: _this.form.politicalOrientation || '',
+                        education: _this.form.education || '',
+                        university: _this.form.university || '',
+                        major: _this.form.major || '',
+                        Education: _this.form.maintenanceEducation || '',
+                        foreignLevel: _this.form.foreignLevel || '',
+                        contactIn: _this.form.contactInformation || '',
+                        onDuty: _this.form.onDuty || '',
+                        userSNa: _this.form.userSuperiorName || '',
+                        userSNu: _this.form.userSuperiorNumber || '',
+                        membership: _this.form.membershipTime ? _this.moment(_this.form.membershipTime).format('YYYY-MM-DD') : '',
+                        entryTime: _this.form.entryTime ? _this.moment(_this.form.entryTime).format('YYYY-MM-DD') : '',
+                        graduation: _this.form.graduationTime ? _this.moment(_this.form.graduationTime).format('YYYY-MM-DD') : '',
+                        maintenanceT: _this.form.maintenanceTime ? _this.moment(_this.form.maintenanceTime).format('YYYY-MM-DD') : '',
+                        invalidTime: _this.form.invalidTime ? _this.moment(_this.form.invalidTime).format('YYYY-MM-DD') : '',
+                        image:_this.base64,
+                        // image:{
+                        //     "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QIJBywfp3IOswAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAkUlEQVQY052PMQqDQBREZ1f/d1kUm3SxkeAF/FdIjpOcw2vpKcRWCwsRPMFPsaIQSIoMr5pXDGNUFd9j8TOn7kRW71fvO5HTq6qqtnWtzh20IqE3YXtL0zyKwAROQLQ5l/c9gHjfKK6wMZjADE6s49Dver4/smEAc2CuqgwAYI5jU9NcxhHEy60sni986H9+vwG1yDHfK1jitgAAAABJRU5ErkJggg=="
+                        // },
+                        // img: ('https://img.alicdn.com/bao/uploaded/TB1qimQIpXXXXXbXFXXSutbFXXX.jpg'),
+                        item: _this.form.positionInfList || [],
+                        item1: _this.form.workInfList || [],
+                        item2: _this.form.certificateInfList || [],
+                        item3: _this.form.sincerityInfList || [],
+                    });
+
+                    doc.render();
+                    var out = doc.getZip().generate({
+                        type: "blob",
+                        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    }) //Output the document using Data-URI
+                    saveAs(out, "output.docx")
                 })
-                let s=`<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-${htmlString}
-</body>
-</html>`
-                 asBlob(s).then(data => {
-                    saveAs(data, 'file.doc') // 保存为docx文件
-                }) // asBlob() 返回 Promise<Blob|Buffer>，用promise.then还是async语法都行
             },
-            enter(id,title){
-                 this.fileDownload(id,title,1)
+
+            enter(id, title) {
+                this.fileDownload(id, title, 1)
             },
-            leave(){
-                this.fileObj={
-                    style:'display:none'
+            leave() {
+                this.fileObj = {
+                    style: 'display:none'
                 }
             },
-            userNameC(val){
+            userNameC(val) {
                 let data = this.userArrObj[val].userExt
                 this.form = {
                     ...this.form,
@@ -383,105 +463,122 @@ ${htmlString}
                     userName: this.userArrObj[val].name,
                     contactInformation: this.userArrObj[val].phone || null,
                 }
-                if(data){
-                    this.form={
+                if (data) {
+                    this.form = {
                         ...this.form,
-                        nation:data.nationId||null,
-                        idCard:data.idCard,
-                        sex:data.gender==1?'男':'女',
-                        entryTime:data.entryDate?this.$moment(data.entryDate).format('YYYY-MM-DD'):null,
-                        politicalOrientation:data.facePoliticsId||null,
-                        education:data.education||null,
-                     }
+                        nation: data.nationId || null,
+                        idCard: data.idCard,
+                        sex: data.gender == 1 ? '男' : '女',
+                        entryTime: data.entryDate ? this.$moment(data.entryDate).format('YYYY-MM-DD') : null,
+                        politicalOrientation: data.facePoliticsId || null,
+                        education: data.education || null,
+                    }
                 }
             },
 
-            upUserPho(){
-                 this.$refs.upUserPho.$refs.buttonClick.$el.click()
+            upUserPho() {
+                this.$refs.upUserPho.$refs.buttonClick.$el.click()
 
-             },
-            getFile(file){
+            },
+            getFile(file) {
                 console.log(file.id);
-                this.$set(this.form,'photo',file.id)
+                this.$set(this.form, 'photo', file.id)
                 request({
-                    header:{
-                        'Content-Type':'multipart/form-data'
+                    header: {
+                        'Content-Type': 'multipart/form-data'
                     },
-                    url:`${this.$ip}/mms-file/get-file-by-id/${file.id }`,
-                    method:'GET',
+                    url: `${this.$ip}/mms-file/get-file-by-id/${file.id }`,
+                    method: 'GET',
 
                 }).then((d) => {
-                     this.$set(this.form,'photoPath',d.data.filePath)
+                    this.$set(this.form, 'photoPath', d.data.filePath)
                 });
 
-            },  getFile2(file){
-                    this.$set(this.form,'enclosure',file.id)
-                    // this.$set(this.form,'enclosureName',file.name)
-            },  getFile3(file){
-                this.$set(this.form,'diploma',file.id)
+            }, getFile2(file) {
+                this.$set(this.form, 'enclosure', file.id)
+                // this.$set(this.form,'enclosureName',file.name)
+            }, getFile3(file) {
+                this.$set(this.form, 'diploma', file.id)
                 // this.$set(this.form,'diplomaName',file.name)
 
             },
-            fileDownload(id,title,num){
-                if(id){
+            fileDownload(id, title, num) {
+                if (id) {
                     request({
-                        header:{
-                            'Content-Type':'multipart/form-data'
+                        header: {
+                            'Content-Type': 'multipart/form-data'
                         },
-                        url:`${this.$ip}/mms-file/get-file-by-id/${id }`,
-                        method:'GET',
+                        url: `${this.$ip}/mms-file/get-file-by-id/${id }`,
+                        method: 'GET',
 
                     }).then((d) => {
-                        if(d.data){
-                            this.fileObj={
+                        if (d.data) {
+                            this.fileObj = {
                                 ...d.data,
-                                title:title||'',
-                                style:'display:block'
+                                title: title || '',
+                                style: 'display:block'
                             }
-                            if(num!=1){
-                                window.open(d.data.filePath,title)
+                            if (num != 1) {
+                                window.open(d.data.filePath, title)
                             }
                         }
                     });
-                }else {
-                    if(num!=1){
+                } else {
+                    if (num != 1) {
                         this.$message.info('暂无附件')
                     }
                 }
             },
 
-            resetForm(){
-                if(this.form.id){
-                    this.form = {id:this.form.id, };
-                }else{
+            resetForm() {
+                if (this.form.id) {
+                    this.form = {id: this.form.id,};
+                } else {
                     this.form = {};
                 }
             },
-            getInfo(){
+            getInfo() {
                 request({
-                    url:`${this.$ip}/mms-qualification/userRecord/getById/${this.$route.query.id}`,
+                    url: `${this.$ip}/mms-qualification/userRecord/getById/${this.$route.query.id}`,
                     method: "get",
                 }).then(d => {
-                    this.form={...d.data }
-                    if(this.form.photo){
+                    this.form = {...d.data}
+                    if (this.form.photo) {
                         request({
-                            header:{
-                                'Content-Type':'multipart/form-data'
+                            header: {
+                                'Content-Type': 'multipart/form-data'
                             },
-                            url:`${this.$ip}/mms-file/get-file-by-id/${this.form.photo }`,
-                            method:'GET',
+                            url: `${this.$ip}/mms-file/get-file-by-id/${this.form.photo }`,
+                            method: 'GET',
                         }).then((d) => {
-                            this.$set(this.form,'photoPath',d.data.filePath)
+                             this.$set(this.form, 'photoPath', d.data.filePath)
+                        });
+                        request({
+                            header: {
+                                'Content-Type': 'multipart/form-data'
+                            },
+                            url: `${this.$ip}/mms-file/get-file-stream-by-id/${this.form.photo }`,
+                            method: 'GET',
+                        }).then((file) => {
+                            let that=this
+                            let blob=new Blob([file],{type:'image/png'})
+                            const reader = new FileReader();
+                            reader.addEventListener("load", function () {
+                                // convert image file to base64 string
+                                that.base64 = reader.result;
+                            }, false);
+                            if (blob) {
+                                reader.readAsDataURL(blob);
+                            }
                         });
                     }
-
                 })
             },
-            initPage(){
-                   if (this.$route.query&&this.$router.history.current.path == '/addPersonDoc') {
+            initPage() {
+                if (this.$route.query && this.$router.history.current.path == '/addPersonDoc') {
                     this.type = this.$route.query.type;
-                    if(this.$route.query.id){
-                        this.$route.meta.paramsId ={id:this.$route.query.id,type:this.$route.query.type}
+                    if (this.$route.query.id) {
+                        this.$route.meta.paramsId = {id: this.$route.query.id, type: this.$route.query.type}
                     }
                     this.$route.meta.title =
                         this.type == "add"
@@ -492,23 +589,23 @@ ${htmlString}
                                 ? "人员档案详情"
                                 : "";
 
-                      request({
-                        headers: { 'Content-Type': 'text/plain' },
+                    request({
+                        headers: {'Content-Type': 'text/plain'},
                         url: `/sys/user/getAllUserByOrgIdByPage`,
                         method: 'get',
-                        params:{
-                            pageNum:1, pageSize:99999,
-                            orgId:this.$store.state.user.userInfo.orgId
+                        params: {
+                            pageNum: 1, pageSize: 99999,
+                            orgId: this.$store.state.user.userInfo.orgId
                         }
                     }).then((d) => {
-                        if(d.data.list){
-                            this.userArr=[...d.data.list]
-                            d.data.list.map((k,l)=>{
-                                this.userArrObj[k.id]=k
+                        if (d.data.list) {
+                            this.userArr = [...d.data.list]
+                            d.data.list.map((k, l) => {
+                                this.userArrObj[k.id] = k
                             })
                         }
                     });
-                     if(this.type!='add'){
+                    if (this.type != 'add') {
                         this.getInfo()
 
                     }
@@ -516,34 +613,34 @@ ${htmlString}
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
-                      this.$refs[form].validate(valid => {
-                         if (valid) {
+                    this.$refs[form].validate(valid => {
+                        if (valid) {
 
-                                let url
-                                if(this.type=='add'){
-                                    url='/userRecord/save'
-                                }else {
-                                    url='/userRecord/update'
-                                }
-                                let obj={...this.form}
+                            let url
+                            if (this.type == 'add') {
+                                url = '/userRecord/save'
+                            } else {
+                                url = '/userRecord/update'
+                            }
+                            let obj = {...this.form}
 
-                                request({
-                                    url:`${this.$ip}/mms-qualification${url}`,
-                                    method: 'post',
-                                    data:{...obj},
-                                }).then((d) => {
-                                    if(d.code==200){
-                                        this.$message.success("保存成功！");
-                                        if(this.type == "add"){
-                                            this.$router.push({path:'/addPersonDoc',query:{type:"edit",id:d.data.id}})
-                                            this.$set(this.form,'id',d.data.id)
-                                            this.initPage()
-                                        }
+                            request({
+                                url: `${this.$ip}/mms-qualification${url}`,
+                                method: 'post',
+                                data: {...obj},
+                            }).then((d) => {
+                                if (d.code == 200) {
+                                    this.$message.success("保存成功！");
+                                    if (this.type == "add") {
+                                        this.$router.push({path: '/addPersonDoc', query: {type: "edit", id: d.data.id}})
+                                        this.$set(this.form, 'id', d.data.id)
+                                        this.initPage()
                                     }
+                                }
 
-                                })
+                            })
 
-                        }else{
+                        } else {
                             // this.$message.warning('等待文件上传成功后在提交')
                         }
                     });

@@ -104,12 +104,12 @@
                        </div>
                        <div class="row_one " >
                            <el-form-item  label="工作者权限控制：" prop="rolePermissions"  v-if=" (formThree.contentLayout=='C3（三列）'||formThree.contentLayout=='C4（四列）')">
-                               <el-select      multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
-                                   <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                               <el-select    :disabled="formOne.type!='WXGD'"  multiple=""  v-model="formItem.rolePermissions" placeholder="请选择角色权限控制">
+                                   <el-option  v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                </el-select>
                            </el-form-item>
                            <el-form-item  label="指挥者权限控制：" prop="commanderRolePermissions"  v-if="  formThree.contentLayout=='C4（四列）'">
-                               <el-select      multiple=""  v-model="formItem.commanderRolePermissions" placeholder="请选择角色权限控制">
+                               <el-select   :disabled="formOne.type!='WXGD'"   multiple=""  v-model="formItem.commanderRolePermissions" placeholder="请选择角色权限控制">
                                    <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                </el-select>
                            </el-form-item>

@@ -8,15 +8,10 @@
                     <span>员工考试结果</span>
                 </div>
                 <div class="top-toolbar">
-                    <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
-                    <!--<div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>-->
-                    <!--<div @click="delData()"><icon iconClass="remove" ></icon>删除</div>-->
-                    <!--<div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                    <!--<div @click="exportExcel">-->
-                        <!--<icon iconClass="export" ></icon>-->
-                        <!--<a ref="a" :href="`${this.$ip}/mms-qualification/download/securityInformation`"></a>-->
-                        <!--导出Excel-->
-                    <!--</div>-->
+                    <div @click="exportExcel">
+                        <icon iconClass="export" ></icon>
+                        导出Excel
+                    </div>
                 </div>
             </div>
             <div class="main-content">
@@ -161,9 +156,40 @@ export default {
         uploadTest(row){
              this.$refs.UploadTest.open(row.id)
         },
+
         exportExcel(){
-             this.$refs.a.click()
+            request({
+                header:{
+                    'Content-Type':'multipart/form-data'
+                },
+                url:`${this.$ip}/mms-training/examResult/exportByExamId/${this.$route.query.id}`,
+                method: 'get',
+                 responseType: 'blob'
+            }).then(d => {
+                let arr=[]
+                if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                    arr=d.headers['content-disposition'].split('=')[1].split('.')
+                }
+                debugger
+                 let content = d;
+                let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = `${decodeURI(arr[0])}`
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }else { // IE10+下载
+                    navigator.msSaveBlob(blob, fileName)
+                }
+            });
+
         },
+
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null;

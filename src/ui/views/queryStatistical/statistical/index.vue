@@ -88,6 +88,11 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
+                    <el-table-column v-for="(item,index) in options.unsafeType" :key="index"  align="center" :slot="item.valCode" :label="item.valData"   >
+                        <template  slot-scope="scope">
+                            {{scope.row[item.valData]}}
+                        </template>
+                    </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
                 </SearchTable>
             </div>
@@ -310,8 +315,7 @@
                     method: 'post',
                     data:{...this.sort,...data},
                     params:{...this.params,}
-                })
-                    .then((data) => {
+                }).then((data) => {
                         this.tableData = extend({}, {...data.data});
                     })
             },
