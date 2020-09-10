@@ -4,6 +4,8 @@
 			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 				<template  v-for="(colConfig, index) in tableConfig">
 					<template v-if="colConfig.search">
+
+
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
 						<span >
 							<div>{{colConfig.search.label}}</div>
@@ -36,7 +38,10 @@
 						</el-table-column>
 					</template>
 					<template v-else>
-						<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true"></el-table-column>
+
+						<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
+
+						</el-table-column>
 					</template>
 				</template>
 			</el-table>
@@ -90,7 +95,7 @@ export default {
 		data: function(newVal, oldVal){
 			// this.data = newVal;
 			// 重新计算element表格组件布局
-			setTimeout(() => {
+  			setTimeout(() => {
 				this.$refs.body_table.doLayout();
 			}, 100);
 		},
@@ -99,7 +104,8 @@ export default {
 		
 	},
 	mounted() {
-		window.addEventListener('scroll', this.scroll, true);
+
+        window.addEventListener('scroll', this.scroll, true);
 	},
 	methods: {
 
@@ -120,7 +126,7 @@ export default {
 			this.$emit('requestTable', this.headerData[0]);
 		},
 		renderHeaderRow(h,  { column, $index }){
-			return (
+ 			return (
                 <div>
                     <span>{column.label}</span>
                     <Icon iconClass="sort" class="tableSort" nativeOnClick={ 

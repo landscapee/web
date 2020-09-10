@@ -18,9 +18,12 @@
                         <icon iconClass="reset"></icon>重置
                     </div>
                 </div>
-                <div class="QheadRight" v-if="type=='info'"  @click="exportWord()" :class="type!='info'?'isDisabled':''">
-                    <icon iconClass="export"></icon>导出Word
+                <div class="QheadRight"   v-if="type=='info'" >
+                    <div  @click="exportWord"  >
+                        <icon iconClass="export"></icon>导出Word
+                    </div>
                 </div>
+
             </div>
 
             <div class="G_form1" style="overflow: auto ; height:calc(100vh - 270px);" >
@@ -337,114 +340,38 @@
         },
 
         methods: {
-            base64DataURLToArrayBuffer(dataURL) {
-
-                 const base64Regex = /^data:image\/(png|jpg|svg|svg\+xml);base64,/;
-                if (!base64Regex.test(dataURL)) {
-                    return false;
-                }
-                const stringBase64 = dataURL.replace(base64Regex, "");
-                let binaryString;
-                if (typeof window !== "undefined") {
-                    binaryString = window.atob(stringBase64);
-                } else {
-                    binaryString = new Buffer(stringBase64, "base64").toString("binary");
-                }
-                const len = binaryString.length;
-                const bytes = new Uint8Array(len);
-                for (let i = 0; i < len; i++) {
-                    const ascii = binaryString.charCodeAt(i);
-                    bytes[i] = ascii;
-                }
-                  return bytes.buffer;
-            },
-            loadFile(url, callback) {
-                JSZipUtils.getBinaryContent(url, callback);
-            },
-            exportWord() {
-                let _this=this
-                var ImageModule = require('docxtemplater-image-module-free');
-
-                this.loadFile(`../../../../../../static/docTemplate/exportWord.docx?t=${new Date()}`, function (error, content) {
-                    if (error) {
-                        throw error
-                    };
-
-                    // The error object contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
-                    function replaceErrors(key, value) {
-                        if (value instanceof Error) {
-                            return Object.getOwnPropertyNames(value).reduce(function (error, key) {
-                                error[key] = value[key];
-                                return error;
-                            }, {});
-                        }
-                        return value;
+            exportWord(){
+                request({
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/download/userRecord/${this.$route.query.id}`,
+                    method: 'get',
+                    responseType: 'blob'
+                }).then(d => {
+                    let arr=[]
+                    if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                        arr=d.headers['content-disposition'].split('=')[1].split('.')
                     }
-
-
-                    let opts = {}
-                    opts.centered = true;  // 图片居中，在word模板中定义方式为{%%image}
-                    opts.fileType = "docx";
-                    opts.getImage = function(chartId){
-                         return _this.base64DataURLToArrayBuffer(chartId);
+                    let content = d;
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `${decodeURI(arr[0])}`
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
                     }
+                });
 
-                    //图片有关代码，没有图片的可以删除
-                    opts.getSize = function (img, tagValue, tagName) {
-                        // FOR FIXED SIZE IMAGE :
-                        return [200, 210];//图片大小 （这个可以写成动态的，开发文档上有）
-
-                    }
-                    var imageModule = new ImageModule(opts);
-
-                    var zip = new PizZip(content);
-
-                    let doc = new docxtemplater();
-                    doc.attachModule(imageModule);
-                    doc.loadZip(zip);
-
-
-                    doc.setData({
-                        userNumber: _this.form.userNumber || '',
-                        userName: _this.form.userName || '',
-                        nation: _this.form.nation || '',
-                        idCard: _this.form.idCard || '',
-                        sex: _this.form.sex || '',
-                        nativePlace: _this.form.nativePlace || '',
-                        zzmm: _this.form.politicalOrientation || '',
-                        education: _this.form.education || '',
-                        university: _this.form.university || '',
-                        major: _this.form.major || '',
-                        Education: _this.form.maintenanceEducation || '',
-                        foreignLevel: _this.form.foreignLevel || '',
-                        contactIn: _this.form.contactInformation || '',
-                        onDuty: _this.form.onDuty || '',
-                        userSNa: _this.form.userSuperiorName || '',
-                        userSNu: _this.form.userSuperiorNumber || '',
-                        membership: _this.form.membershipTime ? _this.moment(_this.form.membershipTime).format('YYYY-MM-DD') : '',
-                        entryTime: _this.form.entryTime ? _this.moment(_this.form.entryTime).format('YYYY-MM-DD') : '',
-                        graduation: _this.form.graduationTime ? _this.moment(_this.form.graduationTime).format('YYYY-MM-DD') : '',
-                        maintenanceT: _this.form.maintenanceTime ? _this.moment(_this.form.maintenanceTime).format('YYYY-MM-DD') : '',
-                        invalidTime: _this.form.invalidTime ? _this.moment(_this.form.invalidTime).format('YYYY-MM-DD') : '',
-                        image:_this.base64,
-                        // image:{
-                        //     "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QIJBywfp3IOswAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAkUlEQVQY052PMQqDQBREZ1f/d1kUm3SxkeAF/FdIjpOcw2vpKcRWCwsRPMFPsaIQSIoMr5pXDGNUFd9j8TOn7kRW71fvO5HTq6qqtnWtzh20IqE3YXtL0zyKwAROQLQ5l/c9gHjfKK6wMZjADE6s49Dver4/smEAc2CuqgwAYI5jU9NcxhHEy60sni986H9+vwG1yDHfK1jitgAAAABJRU5ErkJggg=="
-                        // },
-                        // img: ('https://img.alicdn.com/bao/uploaded/TB1qimQIpXXXXXbXFXXSutbFXXX.jpg'),
-                        item: _this.form.positionInfList || [],
-                        item1: _this.form.workInfList || [],
-                        item2: _this.form.certificateInfList || [],
-                        item3: _this.form.sincerityInfList || [],
-                    });
-
-                    doc.render();
-                    var out = doc.getZip().generate({
-                        type: "blob",
-                        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    }) //Output the document using Data-URI
-                    saveAs(out, "output.docx")
-                })
             },
+
 
             enter(id, title) {
                 this.fileDownload(id, title, 1)

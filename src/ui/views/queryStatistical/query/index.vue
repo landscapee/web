@@ -15,7 +15,7 @@
 
                             <el-form-item label="航空公司：" class="firstWidth">
                                 <el-select filterable @change="getList1" clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
-                                    <el-option v-for="(opt,index) in airlineCompanyName" :key="index" :label="opt.fullname" :value="opt.iata">
+                                    <el-option v-for="(opt,index) in airlineCompanyName" :key="index" :label="opt.fullname" :value="opt.fullname">
                                         <span>{{opt.iata}}-{{opt.fullname}}</span></el-option>
                                 </el-select>
                             </el-form-item>

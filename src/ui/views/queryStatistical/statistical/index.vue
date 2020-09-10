@@ -14,7 +14,7 @@
 
                         <el-form-item label="航空公司：" class="firstWidth">
                             <el-select filterable @change="getList1" clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
-                                <el-option v-for="(opt,index) in airlineCompanyName" :key="index" :label="opt.fullname" :value="opt.iata">
+                                <el-option v-for="(opt,index) in airlineCompanyName" :key="index" :label="opt.fullname" :value="opt.fullname">
                                     <span>{{opt.iata}}-{{opt.fullname}}</span></el-option>
                             </el-select>
                         </el-form-item>
@@ -24,11 +24,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="飞机注册号：">
-                            <!--<el-select @change="getList1" clearable   v-model="form1.flightRegisterNo" placeholder="请选择">-->
-                            <!--<el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>-->
-                            <!--</el-select>-->
                             <el-input @keyup.enter.native="getList1" v-model="form1.flightRegisterNo" clearable placeholder="请输入"></el-input>
-
                         </el-form-item>
                         <el-form-item label="航班类型：">
                             <el-select @change="getList1" clearable   v-model="form1.airlineType" placeholder="请选择">
@@ -37,7 +33,6 @@
                         </el-form-item>
                         <el-form-item label="机位：">
                             <el-input @keyup.enter.native="getList1" v-model="form1.seat" clearable placeholder="请输入"></el-input>
-
                         </el-form-item>
                         <el-form-item label="保障人员：" >
                             <el-input @keyup.enter.native="getList1" v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
@@ -48,7 +43,6 @@
                         <el-form-item label="至" class="secWidth">
                             <el-date-picker @change="getList1" @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
                         </el-form-item>
-
                         <el-form-item  >
                             <div class="button ">
                                 <el-button style="margin-left: 15px" @click="getList1" type="primary">查询</el-button>
@@ -86,14 +80,14 @@
                         </div>
                     </div>
                 </div>
-                <SearchTable  :noSearch="true"  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable  :noSearch="true"  scrollHeight="370" ref="searchTable" :key="buttonObj.id" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column v-for="(item,index) in options.unsafeType" :key="index"  align="center" :slot="item.valCode" :label="item.valData"   >
+                    <el-table-column v-for="(item) in options.unsafeType" :key="item.valCode"  align="center" :slot="item.valCode" :label="item.valData"   >
                         <template  slot-scope="scope">
                             {{scope.row[item.valData]}}
                         </template>
@@ -126,12 +120,12 @@
                 AircraftType:[],
                 buttonList:[
 
-                    {name:'航班量统计',id:'1',api:'/mms-report/count/flights',export:'/mms-report/export/flights'},
-                    {name:'员工工作量统计',id:'2',api:'/mms-report/count/workload',export:'/mms-report/export/workload'},
-                    {name:'员工到位及时性统计',id:'3',api:'/mms-report/count/workInTime',export:'/mms-report/export/workInTime'},
-                    {name:'保障航班航司/机型分析',id:'4',api:'/mms-report/count/airLineIcao',export:'/mms-report/export/airLineIcao'},
-                    {name:'保障任务量统计',id:'5',api:'/mms-report/count/task',export:'/mms-report/export/task'},
-                    {name:'人员不安全事件统计',id:'6',api:'/mms-report/count/task',export:'/mms-report/export/task'},
+                    {name:'航班量统计',ref:'searchTable',id:'1',api:'/mms-report/count/flights',export:'/mms-report/export/flights'},
+                    {name:'员工工作量统计',ref:'searchTable1',id:'2',api:'/mms-report/count/workload',export:'/mms-report/export/workload'},
+                    {name:'员工到位及时性统计',ref:'searchTable2',id:'3',api:'/mms-report/count/workInTime',export:'/mms-report/export/workInTime'},
+                    {name:'保障航班航司/机型分析',ref:'searchTable3',id:'4',api:'/mms-report/count/airLineIcao',export:'/mms-report/export/airLineIcao'},
+                    {name:'保障任务量统计',ref:'searchTable4',id:'5',api:'/mms-report/count/task',export:'/mms-report/export/task'},
+                    {name:'人员不安全事件统计',ref:'searchTable5',id:'6',api:'/mms-report/count/task',export:'/mms-report/export/task'},
                     // {name:'桥载工单查询',id:'3'},
                 ],
                 buttonObj:{},
@@ -202,7 +196,7 @@
 
         methods: {
             getButton(obj){
-                this.params={
+                 this.params={
                     current: 1,
                     size: 15,
                 }
@@ -210,8 +204,8 @@
                 this.form={}
                 this.form1={checkList:[]}
                 this.buttonObj=obj
-                this.tableConfig=this.configObj[this.buttonObj.id]( this.options)
-                this.getList();
+                this.tableConfig=this.configObj[this.buttonObj.id](this.options)
+                 this.getList();
             },
             resetForm(){
                 this.params={
