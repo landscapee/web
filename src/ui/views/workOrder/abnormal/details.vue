@@ -70,13 +70,14 @@
                                                 <el-button  @click="editContent($event,itemChild)" type="primary"  style="padding: 7px 20px">更正</el-button>
                                             </div>
                                         </div>
-                                        <div  class="item itemSign" :style="{width: col==3 ? '18.3%' : '18.3%'}">
-                                            <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
+                                        <!-- class="item itemSign"-->
+                                        <div  :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"  :style="{width: col==3 ? '18.3%' : '18.3%'}">
+                                            <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px" >签字</el-button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
                                                 <div class="sign_box" :id='"fix_sign_"+itemChild._reduceIndex' :pos='"fix_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
-                                        <div  class="item itemSign" :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
+                                        <div  :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"  :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
                                             <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
                                                 <div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex" :pos='"travel_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
@@ -1254,5 +1255,23 @@
                 color:#fff;
             }
         }
+    }
+    .duijiao{
+
+        background: linear-gradient(
+                        to top right,
+                        rgba(0, 0, 0, 0) 0%,
+                        rgba(0, 0, 0, 0) calc(50% - 1.5px),
+                        rgba(0, 0, 0, 0) 50%,
+                        rgba(0, 0, 0, 0) calc(50% + 1.5px),
+                        rgba(0, 0, 0, 0) 100%
+        ), linear-gradient(
+                        to bottom right,
+                        rgba(0, 0, 0, 0) 0%,
+                        rgba(0, 0, 0, 0) calc(50% - 1.5px),
+                        rgba(0, 0, 0, 1) 50%,
+                        rgba(0, 0, 0, 0) calc(50% + 1.5px),
+                        rgba(0, 0, 0, 0) 100%
+        )!important;
     }
 </style>

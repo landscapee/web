@@ -2261,13 +2261,6 @@ docxtemplater-image-module-free@^1.1.1:
   dependencies:
     xmldom "^0.1.27"
 
-docxtemplater@^3.19.3:
-  version "3.19.3"
-  resolved "https://registry.npm.taobao.org/docxtemplater/download/docxtemplater-3.19.3.tgz#69b315f321a7260a6d96beed83ba8fb8f0b6e576"
-  integrity sha1-abMV8yGnJgptlr7tg7qPuPC25XY=
-  dependencies:
-    xmldom "^0.3.0"
-
 dom-converter@^0.2:
   version "0.2.0"
   resolved "https://registry.npm.taobao.org/dom-converter/download/dom-converter-0.2.0.tgz#6721a9daee2e293682955b6afe416771627bb768"
@@ -2748,11 +2741,6 @@ file-loader@^5.1.0:
   dependencies:
     loader-utils "^1.4.0"
     schema-utils "^2.5.0"
-
-file-saver@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npm.taobao.org/file-saver/download/file-saver-2.0.2.tgz#06d6e728a9ea2df2cce2f8d9e84dfcdc338ec17a"
-  integrity sha1-BtbnKKnqLfLM4vjZ6E383DOOwXo=
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -3936,11 +3924,6 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jszip-utils@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npm.taobao.org/jszip-utils/download/jszip-utils-0.1.0.tgz#8c04cdedcdb291e83f055f5b261b3a3188ceca0b"
-  integrity sha1-jATN7c2ykeg/BV9bJhs6MYjOygs=
-
 jszip@^3.5.0:
   version "3.5.0"
   resolved "https://registry.npm.taobao.org/jszip/download/jszip-3.5.0.tgz#b4fd1f368245346658e781fec9675802489e15f6"
@@ -5006,13 +4989,6 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.npm.taobao.org/pinkie/download/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha1-clVrgM+g1IqXToDnckjoDtT3+HA=
-
-pizzip@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/pizzip/download/pizzip-3.0.6.tgz#223485511f9e23abbb2888fd67734e12fc7861a8"
-  integrity sha1-IjSFUR+eI6u7KIj9Z3NOEvx4Yag=
-  dependencies:
-    pako "~1.0.2"
 
 pkg-dir@^3.0.0:
   version "3.0.0"
@@ -7087,11 +7063,6 @@ xmldom@^0.1.27:
   version "0.1.31"
   resolved "https://registry.npm.taobao.org/xmldom/download/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
   integrity sha1-t2yaG9nwqXN+WnLcNyMc84N14v8=
-
-xmldom@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npm.taobao.org/xmldom/download/xmldom-0.3.0.tgz#e625457f4300b5df9c2e1ecb776147ece47f3e5a"
-  integrity sha1-5iVFf0MAtd+cLh7Ld2FH7OR/Plo=
 
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.5"

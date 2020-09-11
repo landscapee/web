@@ -4,8 +4,6 @@
 			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 				<template  v-for="(colConfig, index) in tableConfig">
 					<template v-if="colConfig.search">
-
-
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
 						<span >
 							<div>{{colConfig.search.label}}</div>
@@ -16,18 +14,39 @@
 							<el-button  class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
 						</span>
 						</el-table-column>
-						<el-table-column :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true">
+						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+										 :width="colConfig.width"
+										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
+										 :label="colConfig.label" v-if="colConfig.search.type=='input'" :key="index"
+										 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-input @keyup.enter.native="requestTableData" :width="140" :type="colConfig.search.type1||'text'"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
-							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
+							<el-input @keyup.enter.native="requestTableData" :width="140"
+									  :type="colConfig.search.type1||'text'"
+									  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear"
+									  :placeholder="colConfig.search.placeholder" class="adv_filter"
+									  v-model="row[colConfig.search.prop]"></el-input>
+							<icon class="table_search" @click.native="requestTableData"
+								  v-if="colConfig.search.extendType && colConfig.search.extendType=='search'"
+								  iconClass="table_search"></icon>
 						</span>
 						</el-table-column>
-						<el-table-column :fixed="colConfig.search.fixed"  :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='select'"   :key="index" :reserve-selection="true">
+						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+										 :width="colConfig.width"
+										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
+										 :label="colConfig.label"
+										 v-if="colConfig.search.type=='select'" :key="index"
+										 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-select @change="requestTableData"  clearable filterable  class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
-								<el-option v-for="item in colConfig.search.data" :key="item.value" :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label" :value="colConfig.search.selectProp?item[colConfig.search.selectProp[1]]:item.value"></el-option>
+							<el-select @change="requestTableData" clearable filterable class="adv_filter"
+									   v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
+								<el-option v-for="item in colConfig.search.data||[]" :key="item.value"
+										   :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label"
+										   :value="colConfig.search.selectProp?item[colConfig.search.selectProp[1]]:item.value">
+								</el-option>
 							</el-select>
-							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
+							<icon class="table_search" @click.native="requestTableData"
+								  v-if="colConfig.search.extendType && colConfig.search.extendType=='search'"
+								  iconClass="table_search"></icon>
 						</span>
 						</el-table-column>
 						<el-table-column  :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true">
@@ -93,7 +112,7 @@ export default {
 	watch: {
 	
 		data: function(newVal, oldVal){
-			// this.data = newVal;
+             // this.data = newVal;
 			// 重新计算element表格组件布局
   			setTimeout(() => {
 				this.$refs.body_table.doLayout();
@@ -126,7 +145,7 @@ export default {
 			this.$emit('requestTable', this.headerData[0]);
 		},
 		renderHeaderRow(h,  { column, $index }){
- 			return (
+  			return (
                 <div>
                     <span>{column.label}</span>
                     <Icon iconClass="sort" class="tableSort" nativeOnClick={ 

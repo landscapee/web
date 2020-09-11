@@ -68,6 +68,8 @@
                     size: 15,
                 },
                 filePath:'#',
+                deptObj:{},
+
                 form:{},
                 row:{},
                 sort:{},
@@ -77,14 +79,22 @@
         created() {
             if(this.$router.history.current.path == '/personDoc'){
                 this.getList();
+
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params:{delete:false},
-                    data:["xingbie"]
+                    data:["xingbie",'dept']
                 }).then(d => {
-                    let obj=d.data
-                    this.tableConfig=personDocTable(obj)
+                    if(d.code==200){
+                         let obj=d.data
+                         let deptObj={}
+                         d.data.dept.map((k,l)=>{
+                             deptObj[k.valCode]=k.valData
+                        })
+                        this.tableConfig=personDocTable(obj,deptObj)
+
+                    }
 
                 });
 

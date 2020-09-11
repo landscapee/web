@@ -277,6 +277,16 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="fTd">部门</td>
+                            <td class="tTd">
+                                <span v-if="type=='info'">{{deptObj[form.deptCode]}}</span>
+                                <el-select   v-else v-model="form.deptCode" placeholder="请选择">
+                                    <el-option v-for="(opt,index) in deptData" :key="index" :value="opt.valCode" :label="opt.valData"> </el-option>
+                                </el-select>
+                            </td>
+                            <td  colspan="5"> </td>
+                        </tr>
                     </table>
                     <div style="width:1160px">
                         <InOfficeInfo @getInfo="getInfo" :type="type"  :tableData="form.positionInfList||[]" :id="this.$route.query.id"></InOfficeInfo>
@@ -295,12 +305,8 @@
 </template>
 
 <script>
-     import $ from 'jquery'
-      import docxtemplater from 'docxtemplater'
-     import PizZip from 'pizzip'
-     import JSZipUtils from 'jszip-utils'
-     import {saveAs} from 'file-saver'
-     import moment from "moment";
+
+        import moment from "moment";
     import InOfficeInfo from './inOfficeInfo/index';
     import WorkExperience from './workExperience/index';
     import Certificate from './certificate/index';
@@ -320,7 +326,8 @@
                 base64:'',
                 form: {courseFileName:'',courseFileId:'',suitableUser:[]},
                 fileObj: {style:'display:none'},
-                options: {},
+                deptData: [],
+                deptObj: {},
                 userArrObj: {},
                 userArr:[],
                 rules: {
@@ -336,6 +343,19 @@
         created() {
             if(this.$route.path=='/addPersonDoc'){
                 this.initPage()
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:['dept']
+                }).then(d => {
+                    if(d.code==200){
+                        this.deptData=d.data.dept
+                        d.data.dept.map((k,l)=>{
+                            this.deptObj[k.valCode]=k.valData
+                        })
+                    }
+                 });
             }
         },
 
@@ -480,24 +500,24 @@
                         }).then((d) => {
                              this.$set(this.form, 'photoPath', d.data.filePath)
                         });
-                        request({
-                            header: {
-                                'Content-Type': 'multipart/form-data'
-                            },
-                            url: `${this.$ip}/mms-file/get-file-stream-by-id/${this.form.photo }`,
-                            method: 'GET',
-                        }).then((file) => {
-                            let that=this
-                            let blob=new Blob([file],{type:'image/png'})
-                            const reader = new FileReader();
-                            reader.addEventListener("load", function () {
-                                // convert image file to base64 string
-                                that.base64 = reader.result;
-                            }, false);
-                            if (blob) {
-                                reader.readAsDataURL(blob);
-                            }
-                        });
+                        // request({
+                        //     header: {
+                        //         'Content-Type': 'multipart/form-data'
+                        //     },
+                        //     url: `${this.$ip}/mms-file/get-file-stream-by-id/${this.form.photo }`,
+                        //     method: 'GET',
+                        // }).then((file) => {
+                        //     let that=this
+                        //     let blob=new Blob([file],{type:'image/png'})
+                        //     const reader = new FileReader();
+                        //     reader.addEventListener("load", function () {
+                        //         // convert image file to base64 string
+                        //         that.base64 = reader.result;
+                        //     }, false);
+                        //     if (blob) {
+                        //         reader.readAsDataURL(blob);
+                        //     }
+                        // });
                     }
                 })
             },

@@ -37,6 +37,7 @@
                         <el-form-item label="保障人员：" >
                             <el-input @keyup.enter.native="getList1" v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
                         </el-form-item>
+                        <br/>
                         <el-form-item label="日期：" class="firstWidth">
                             <el-date-picker @change="getList1"  @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
                         </el-form-item>
