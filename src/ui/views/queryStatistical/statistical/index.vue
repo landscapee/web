@@ -90,7 +90,7 @@
                     </el-table-column>
                     <el-table-column v-for="(item) in options.unsafeType" :key="item.valCode"  align="center" :slot="item.valCode" :label="item.valData"   >
                         <template  slot-scope="scope">
-                            {{scope.row.data?scope.row.data[item.valData]:''}}
+                            {{scope.row.data?scope.row.data[item.valCode]:''}}
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
