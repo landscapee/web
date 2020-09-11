@@ -34,7 +34,7 @@
 										 :width="colConfig.width"
 										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 										 :label="colConfig.label"
-										 v-if="colConfig.search.type=='select'" :key="index"
+ 										 v-if="colConfig.search.type=='select'&& colConfig.search.data" :key="index"
 										 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
 							<el-select @change="requestTableData" clearable filterable class="adv_filter"
