@@ -35,7 +35,7 @@
                         </div>
                          <div v-if='item.type==6' class="value6  value" style="position:relative">
                             <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
-                            <el-button   :disabled="type=='info'" @click="signOthMsgBoxFn('sign_'+index,$event)" type="primary" style="padding: 7px 15px">签字</el-button>
+                            <el-button  v-if="type!='info'" @click="signOthMsgBoxFn('sign_'+index,$event)" type="primary" style="padding: 7px 15px">签字</el-button>
                             <div  style="width:50px;height:50px;position:absolute;left:200px;top:10px">
                                 <div :pos="'sign_'+index" :id="'sign_'+index"></div>
                             </div>
@@ -71,13 +71,13 @@
                                             </div>
                                         </div>
                                         <div  class="item itemSign" :style="{width: col==3 ? '18.3%' : '18.3%'}">
-                                            <el-button   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
+                                            <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
                                                 <div class="sign_box" :id='"fix_sign_"+itemChild._reduceIndex' :pos='"fix_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
                                         <div  class="item itemSign" :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
-                                            <el-button   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
+                                            <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
                                             <div style="width:100%;position:absolute;left:0;top:40px;">
                                                 <div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex" :pos='"travel_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
