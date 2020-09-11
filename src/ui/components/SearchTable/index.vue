@@ -9,9 +9,15 @@
 							<div>{{colConfig.search.label}}</div>
 						</span>
 						</el-table-column>
-						<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true">
+						<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"
+										 :property="colConfig.sortProp" :width="colConfig.width"
+										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
+										 :label="colConfig.label" v-if="colConfig.search.type=='btn'" :key="index"
+										 :reserve-selection="true">
 						<span>
-							<el-button  class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
+							<span   @click="requestTableData" class="rowSvg">
+								<icon :iconClass="colConfig.search.icon" title="搜索"></icon>
+							</span>
 						</span>
 						</el-table-column>
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
@@ -25,15 +31,17 @@
 									  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear"
 									  :placeholder="colConfig.search.placeholder" class="adv_filter"
 									  v-model="row[colConfig.search.prop]"></el-input>
-							<icon class="table_search" @click.native="requestTableData"
-								  v-if="colConfig.search.extendType && colConfig.search.extendType=='search'"
-								  iconClass="table_search"></icon>
+
+							<span   @click="requestTableData" class="rowSvg"
+									v-if="colConfig.search.extendType && colConfig.search.extendType=='search'">
+								<icon  iconClass="table_search" title="搜索"></icon>
+							</span>
 						</span>
 						</el-table-column>
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
 										 :width="colConfig.width"
 										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
-										 :label="colConfig.label"
+										 :label="colConfig.label "
  										 v-if="colConfig.search.type=='select'&& colConfig.search.data" :key="index"
 										 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
@@ -67,19 +75,15 @@
 
 			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
 				<template v-for="(colConfig, index) in tableConfig">
-
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-
-					<el-table-column v-else-if="colConfig.prop=='index'" type="index"  v-bind="colConfig" :key="index" :reserve-selection="true">
-
+					<el-table-column v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
+									 :reserve-selection="true">
 					</el-table-column>
-					<el-table-column v-else :show-overflow-tooltip="true"     v-bind="colConfig" :key="index" :reserve-selection="true">
-
+					<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
+									 :reserve-selection="true">
 					</el-table-column>
 				</template>
 			</el-table>
-
-
 		<el-pagination v-if="data.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
 	</div>
 </template>
@@ -115,7 +119,9 @@ export default {
              // this.data = newVal;
 			// 重新计算element表格组件布局
   			setTimeout(() => {
-				this.$refs.body_table.doLayout();
+  			    if(this.$refs.body_table.doLayout){
+                    this.$refs.body_table.doLayout();
+                }
 			}, 100);
 		},
 	},

@@ -52,11 +52,11 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="option" label="操作" align="center" :width="130" >
+                    <el-table-column slot="option" label="操作" align="center" :width="80" >
                         <template slot-scope="{ row }" >
-                            <span >
-                                <el-button @click="copyDetails(row)" :disabled="row.copy" class="copyButton">复制绩效明细</el-button>
-                            </span>
+                                <span style="padding:2px  " class="rowSvg"  @click="row.copy?'':copyDetails(row)" :class="row.copy?'G_isDisabled':''" >
+                                    <icon iconClass="copyjx" title="复制绩效明细" ></icon>
+                                </span>
                           </template>
                     </el-table-column>
                 </SearchTable>

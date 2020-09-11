@@ -18,7 +18,7 @@ export const safetyConfig = (obj) => {
                 { prop: 'deptName', label: '部门',sortProp:"deptName", align: 'center', search:{type:'select', prop:'deptId',placeholder:"请选择",selectProp:['valData','valCode'],data:obj.dept} },
                 { prop: 'reviewerName', label: '批准人',sortProp:"reviewerName", align: 'center', search:{type:'input', prop:'reviewerName',placeholder:"请输入批准人"} },
                 { prop: 'reviewerTime', label: '审批日期',formatter:timeInfo, sortProp:"reviewerTime", align: 'center',sort:true,search:{type:'date', prop:'reviewerTime',placeholder:"请选择审批日期"}},
-                { slot:'option', width:130,label: '操作',  align: 'center' , search:{type:'btn', label:'搜索',icon:"table_search"}}
+                { slot:'option', width:80,label: '操作',  align: 'center' , search:{type:'btn', label:'搜索',icon:"table_search"}}
               ]
 };
 export const safetyDetailsConfig = (obj) => {

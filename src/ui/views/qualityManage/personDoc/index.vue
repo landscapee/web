@@ -19,6 +19,8 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>上传档案</div>
+
                 </div>
             </div>
             <div class="main-content">
@@ -45,9 +47,11 @@
                 </SearchTable>
             </div>
         </div>
+        <UpDocInfo ref="UpDocInfo" @getTableData="getList1"></UpDocInfo>
     </div>
 </template>
 <script>
+    import UpDocInfo from './uploadDocInfo'
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
     import { personDocTable } from './tableConfig.js';
@@ -56,7 +60,7 @@
     export default {
         components: {
             Icon,
-            SearchTable
+            SearchTable,UpDocInfo
         },
         name: 'personDoc',
         data() {
@@ -108,6 +112,15 @@
             }
         },
         methods: {
+            upDocInfo(){
+                this.$refs.UpDocInfo.open()
+            },
+            getList1(){
+                this.row={}
+                this.selectId=null
+                this.form={}
+              this.getList()
+            },
             seeOther(row,path){
                 this.$router.push({path:path,query:{ id:row.userId}});
 

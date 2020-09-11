@@ -109,7 +109,7 @@ export default {
             buttonList:[
                 {name:'勤务工单查询',id:'1',api:'/mms-report/query/service',export:'/mms-report/export/service'},
                 {name:'维修工单查询',id:'2',api:'/mms-report/query/maintenance',export:'/mms-report/export/maintenance'},
-                {name:'桥载工单查询',id:'3',api:'/mms-report/query/maintenance',export:'/mms-report/export/maintenance'},
+                {name:'桥载工单查询',id:'3',api:'/mms-report/query/bridgeLoad',export:'/mms-report/export/bridgeLoad'},
             ],
             buttonObj:{},
             configObj:{
@@ -127,7 +127,6 @@ export default {
             form1:{},
             row:{},
             sort:{},
-
             selectId:null
         };
     },

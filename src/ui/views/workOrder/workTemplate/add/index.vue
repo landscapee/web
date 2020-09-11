@@ -17,37 +17,17 @@
                 </div>
                 <div class="banner">
                     <div class="bannerHead">
-                        <label @click="radioClick(1)"   :class="radio==1?'el-radio is-checked':'el-radio'">
-                        <span  :class="radio==1?'el-radio__input is-checked':'el-radio__input'">
+                        <template v-for="(opt) in radioList"  >
+                            <label @click="radioClick(opt.id)"   :class="radio==opt.id?'el-radio is-checked':'el-radio'">
+                        <span  :class="radio==opt.id?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
                          <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label" :style="{color:radio==1?'#3280E7':''}">工单类型配置</span>
+                         <span class="el-radio__label" :style="{color:radio==opt.id?'#3280E7':''}">{{opt.name}}</span>
                         </span>
-                        </label>
-                        <i class="el-icon-arrow-right"> </i>
-                        <label @click="radioClick(2)"     :class="radio==2?'el-radio is-checked':'el-radio'">
-                        <span  :class="radio==2?'el-radio__input is-checked':'el-radio__input'">
-                          <span class="el-radio__inner"></span>
-                         <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label" :style="{color:radio==2?'#3280E7':''}">基本信息配置</span>
-                        </span>
-                        </label>
-                        <i class="el-icon-arrow-right"> </i>
-                        <label @click="radioClick(3)"     :class="radio==3?'el-radio is-checked':'el-radio'">
-                        <span  :class="radio==3?'el-radio__input is-checked':'el-radio__input'">
-                          <span class="el-radio__inner"></span>
-                         <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label" :style="{color:radio==3?'#3280E7':''}">工作标签与布局</span>
-                        </span>
-                        </label>
-                        <i class="el-icon-arrow-right"> </i>
-                        <label @click="radioClick(4)"     :class="radio==4?'el-radio is-checked':'el-radio'">
-                        <span  :class="radio==4?'el-radio__input is-checked':'el-radio__input'">
-                          <span class="el-radio__inner"></span>
-                         <span   class="el-radio__original"  ></span>
-                         <span class="el-radio__label" :style="{color:radio==4?'#3280E7':''}">工作项与内容配置</span>
-                        </span>
-                        </label>
+                            </label>
+                            <i class="el-icon-arrow-right"> </i>
+                        </template>
+
                     </div>
                     <div class="component">
                         <One ref="One" :type="type" @getinfo="getOneInfo"   v-if="radio==1" :key="(new Date().toString())"></One>
@@ -94,6 +74,12 @@
         components: {One,Two,Three,Four,See,Details,CopyHistory,UploadModule},
         data() {
             return {
+                radioList:[
+                    {name:'工单类型配置',id:'1'},
+                    {name:'基本信息配置',id:'2'},
+                    {name:'工作标签与布局',id:'3'},
+                    {name:'工作项与内容配置',id:'4'},
+                ],
                 title:'',
                 type:'add',
                 form:{one:{} },

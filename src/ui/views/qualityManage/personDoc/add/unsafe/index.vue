@@ -9,10 +9,10 @@
                     <span>不安全事件及诚信记录</span>
                 </div>
                 <div class="top-toolbar">
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add" ></icon></div>
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit" ></icon></div>
-                    <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove" ></icon></div>
-                    <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon iconClass="info" ></icon></div>
+                    <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  title="新增" ></icon></div>
+                    <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit"  title="编辑" ></icon></div>
+                    <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove"  title="删除" ></icon></div>
+                    <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon  title="详情"  iconClass="info" ></icon></div>
                     <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
                 </div>
             </div>

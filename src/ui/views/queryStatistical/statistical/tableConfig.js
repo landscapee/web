@@ -93,9 +93,9 @@ export const unsafeConfig = (obj) => {//不安全事件
     let option=obj.unsafeType
     let arr=[
         { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}},
-        ...workInfo(obj),
-        { prop: 'dept11', label: '部门',sortProp:"dept11", align: 'center'  },
-
+        { prop: 'userNumber', label: '员工编号',sortProp:"userNumber", align: 'center' ,sort:true },
+        { prop: 'userName', label: '员工编号',sortProp:"userName", align: 'center' ,sort:true },
+        // { prop: 'dept11', label: '部门',sortProp:"dept11", align: 'center'  },
     ]
     if(option){
         for(let i=0;i<option.length;i++){

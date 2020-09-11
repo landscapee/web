@@ -90,7 +90,7 @@
                     </el-table-column>
                     <el-table-column v-for="(item) in options.unsafeType" :key="item.valCode"  align="center" :slot="item.valCode" :label="item.valData"   >
                         <template  slot-scope="scope">
-                            {{scope.row[item.valData]}}
+                            {{scope.row.data?scope.row.data[item.valData]:''}}
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
@@ -126,7 +126,7 @@
                     {name:'员工到位及时性统计',ref:'searchTable2',id:'3',api:'/mms-report/count/workInTime',export:'/mms-report/export/workInTime'},
                     {name:'保障航班航司/机型分析',ref:'searchTable3',id:'4',api:'/mms-report/count/airLineIcao',export:'/mms-report/export/airLineIcao'},
                     {name:'保障任务量统计',ref:'searchTable4',id:'5',api:'/mms-report/count/task',export:'/mms-report/export/task'},
-                    {name:'人员不安全事件统计',ref:'searchTable5',id:'6',api:'/mms-report/count/task',export:'/mms-report/export/task'},
+                    {name:'人员不安全事件统计',ref:'searchTable5',id:'6',api:'/mms-report/count/unsafe',export:'/mms-report/export/unsafe'},
                     // {name:'桥载工单查询',id:'3'},
                 ],
                 buttonObj:{},
