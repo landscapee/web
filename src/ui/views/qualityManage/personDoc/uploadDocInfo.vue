@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog title="人员档案上传"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+        <el-dialog :title="objConfig.title||'人员档案上传'"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :inline="true" :model="form" ref="form" :rules="rules">
                 <el-form-item>
                     <el-input style="width:300px" type="text" v-model="form.filename"  placeholder="仅支持Excel导入"></el-input>
@@ -29,7 +29,7 @@
             </el-form>
             <div class="footer">
                 <el-button @click="close">取消</el-button>
-                <el-button type="primary" @click="submit('form')">导入</el-button>
+                <el-button type="primary" @click="submit('form')">上传</el-button>
             </div>
         </el-dialog>
 
@@ -49,6 +49,7 @@
                 rules:{},
                 id:'',
                 tit:false,
+                objConfig:{},
                 dialogFormVisible:false,
             }
         },
@@ -60,7 +61,8 @@
                 this.$refs.imFile.click()
             },
 
-            open(id){
+            open(obj){
+                this.objConfig=obj
                 this.dialogFormVisible=true
                 // this.id=id
 
@@ -100,7 +102,8 @@
                     header:{
                         'Content-Type':'application/x-www-form-urlencoded'
                     },
-                    url:`${this.$ip}/mms-qualification/userRecord/uploadExcel`,
+
+                    url:`${this.$ip}/mms-qualification/${this.objConfig.api}`,
                     method:'post',
                     // data:data,
                     data:data,
@@ -109,7 +112,7 @@
                         this.close();
                         this.$emit('getTableData')
                         this.$message({
-                            message: '导入成功',
+                            message: '上传成功',
                             type: 'success',
                         });
                     }
@@ -124,8 +127,6 @@
                 this.dialogFormVisible=false
                 this.$refs.file.clearFiles()
             },
-
-
         },
         created() {
 

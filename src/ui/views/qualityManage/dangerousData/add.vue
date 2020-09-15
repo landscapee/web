@@ -1,5 +1,5 @@
 <template>
-    <div class="addSysParameter">
+    <div class="addSysParameter ">
         <div class="top-content">
             <div class="top-content-title">
                 <span>危险数据-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>

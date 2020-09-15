@@ -26,11 +26,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" align='center'  slot="evaluationResults" label="关联信息" :width="190" fixed="right">
-                        <template  slot-scope="{ row }">
-                            <div>{{row.evaluationResults}}</div>
-                        </template>
-                    </el-table-column>
+
 
                 </SearchTable>
             </div>
@@ -74,7 +70,6 @@ export default {
        }).then(d => {
            let obj=d.data
            this.tableConfig=dangerousConfig(obj)
-
        });
     },
     watch:{
@@ -229,6 +224,7 @@ export default {
 /*@import "@/ui/styles/common_list.scss"; */
 .G_listOne{
     margin-top:14px;
-    
+
 }
+
 </style>

@@ -1,6 +1,6 @@
 <template lang="html">
 	<el-dialog :close-on-click-modal="false" class="users-dialog" :title="title" center append-to-body :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
-		<el-row>
+		<el-row >
 			<el-col :span="12">
 				<div>
 					<el-card class="box-card" shadow="never" border-radius="2px">

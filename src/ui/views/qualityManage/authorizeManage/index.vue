@@ -20,8 +20,11 @@
             </div>
             <div class="main-content">
                 <SearchTable  :tableRowClassName="tableRowClassName" scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49"  >
-                        <template slot-scope="{ row }">
+                    <el-table-column :width="49"  slot="radio" label="选择" >
+                        <template slot="header" slot-scope="{ row }"   >
+                            过滤
+                        </template>
+                        <template      >
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>

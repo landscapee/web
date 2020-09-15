@@ -50,7 +50,7 @@ export const workloadConfig = (obj) => {////员工工作量统计
             ...workInfo(obj),
             ...yearMonthArr(obj),
             ...taskNum(obj),
-            { prop: 'workHour', label: '工作时长',sortProp:"workHour", align: 'center' ,sort:true,search:{type:'input', prop:'workHour', placeholder:"请输入"}}
+            // { prop: 'workHour', label: '工作时长',sortProp:"workHour", align: 'center' ,sort:true,search:{type:'input', prop:'workHour', placeholder:"请输入"}}
         ]
          return arr
 };
@@ -94,7 +94,7 @@ export const unsafeConfig = (obj) => {//不安全事件
     let arr=[
         { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}},
         { prop: 'userNumber', label: '员工编号',sortProp:"userNumber", align: 'center' ,sort:true },
-        { prop: 'userName', label: '员工编号',sortProp:"userName", align: 'center' ,sort:true },
+        { prop: 'userName', label: '员工姓名',sortProp:"userName", align: 'center' ,sort:true },
         // { prop: 'dept11', label: '部门',sortProp:"dept11", align: 'center'  },
     ]
     if(option){
