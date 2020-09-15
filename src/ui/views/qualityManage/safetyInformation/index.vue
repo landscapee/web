@@ -236,7 +236,7 @@ export default {
     
 }
 /deep/ .mainTable{
-    height:calc(100vh - 370px);
-    overflow: auto;
+    height:calc(100vh - 240px);
+    /*overflow: auto;*/
 }
 </style>

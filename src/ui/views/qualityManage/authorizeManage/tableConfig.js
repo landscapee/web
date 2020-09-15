@@ -12,19 +12,19 @@ let state=(row)=>{
 };
 let modelRange=(row)=>{
     let arr=[]
-   if(row.modelRange){
-       arr= row.modelRange.split(';').map((k,l)=>{
+    if(row.modelRange){
+        arr= row.modelRange.split(';').map((k,l)=>{
            let reg = /(.{1,})\*\*\*(.*)\$\$\$(.*)__(.*)/g;
            reg.test(k)
            let s=RegExp.$3?'$1（$3）':'$1'
-           let bbb=  k.replace(reg,s)
+            let bbb=  k.replace(reg,s)
              return bbb
        })
    }
     return  arr.join(';')
 }
 export const authorizeConfig = (obj,arr) => {
-        return [
+         return [
             { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
             { prop: 'userNumber', label: '员工编号',sortProp:"userNumber", align: 'center',sort:true,search:{type:'input', prop:'userNumber',placeholder:"请输入"} },
             { prop: 'userName', label: '员工姓名',sortProp:"userName", align: 'center',sort:true,search:{type:'input', prop:'userName',placeholder:"请输入"} },

@@ -52,7 +52,7 @@
 </template>
 <script>
     import UpDocInfo from './uploadDocInfo'
-    import SearchTable from '@/ui/components/SearchTable';
+    import SearchTable from '@/ui/components/SearchTable/index';
     import Icon from '@components/Icon-svg/index';
     import { personDocTable } from './tableConfig.js';
     import request from '@lib/axios.js';
@@ -113,7 +113,7 @@
         },
         methods: {
             upDocInfo(){
-                this.$refs.UpDocInfo.open()
+                this.$refs.UpDocInfo.open({api:'userRecord/uploadExcel',title:'人员档案上传'})
             },
             getList1(){
                 this.row={}

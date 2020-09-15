@@ -43,7 +43,7 @@ export const weixiuConfig = (obj) => {
     let arr=[
         ...qarr(obj),
         qarr1(obj),
-        { prop: 'airlineCompanyName', label: '公司',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
+        // { prop: 'airlineCompanyName', label: '公司',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
     ]
     return arr
 };

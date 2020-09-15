@@ -1,6 +1,6 @@
 export const dangerousConfig = (obj) => {
         return [
-                { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
+                { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'过滤'}},
                 { prop: 'number', label: '编号', width:'148',sortProp:"number", align: 'center',sort:true,search:{type:'input',placeholder:"请输入编号", prop:'number'} },
                 { prop: 'system', label: '系统',width:'148',sortProp:"system", align: 'center',sort:true,search:{type:'input',placeholder:"请输入系统", prop:'system'} },
                 { prop: 'childSystem', label: '子系统',width:'148',sortProp:"childSystem", align: 'center',sort:true,search:{type:'input',placeholder:"请输入子系统", prop:'childSystem'} },
@@ -22,7 +22,7 @@ export const dangerousConfig = (obj) => {
                 {  prop: 'residualSeverity', label: '剩余严重性' ,width:'148',sortProp:"residualSeverity",align: 'center' , search:{type:'input', placeholder:"请输入剩余严重性", prop:'residualSeverity'}},
                 {  prop: 'residualRiskLevel', label: '剩余风险等级' ,width:'148',sortProp:"residualRiskLevel",align: 'center' , search:{type:'input', placeholder:"请输入剩余风险等级", prop:'residualRiskLevel'}},
                 {  prop: 'controlState', label: '控制状态' ,width:'148',sortProp:"controlState",sort:true,align: 'center' , search:{type:'select', placeholder:"请选择控制状态", prop:'controlStateTemp',selectProp:['valData','valData'],data:obj.commentResults}},
-                 {  slot:'evaluationResults',label: '评定结果' ,width:'190',sortProp:"evaluationResults",align: 'center' ,search:{fixed:"right",type:'select', placeholder:"请选择评定结果",extendType:'search', prop:'evaluationResultsTemp',selectProp:['valData','valData'],data:obj.controlState}}
+                 {  prop:'evaluationResults',label: '评定结果' ,width:'190',sortProp:"evaluationResults",align: 'center' ,search:{fixed:"right",type:'select', placeholder:"请选择评定结果",extendType:'search', prop:'evaluationResultsTemp',selectProp:['valData','valData'],data:obj.controlState}}
         ]
 };
  

@@ -1,31 +1,60 @@
 <template>
 	<div class="searchTableWrapper" >
 
-			<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"  highlight-current-row      tooltip-effect="dark"  border>
-				<template  v-for="(colConfig, index) in cloneTableConfig">
+			<el-table   style="width: 100%"  :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
+				<template  v-for="(colConfig, index) in tableConfig">
 					<template v-if="colConfig.search">
 						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
 						<span >
 							<div>{{colConfig.search.label}}</div>
 						</span>
 						</el-table-column>
-						<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='btn'"   :key="index" :reserve-selection="true">
+						<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"
+										 :property="colConfig.sortProp" :width="colConfig.width"
+										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
+										 :label="colConfig.label" v-if="colConfig.search.type=='btn'" :key="index"
+										 :reserve-selection="true">
 						<span>
-							<el-button  class="search-button" @click="requestTableData"><icon :iconClass="colConfig.search.icon" class="table_search"></icon>{{colConfig.search.label}}</el-button>
+							<span   @click="requestTableData" class="rowSvg">
+								<icon :iconClass="colConfig.search.icon" title="搜索"></icon>
+							</span>
 						</span>
 						</el-table-column>
-						<el-table-column :fixed="colConfig.search.fixed" :index="index"  :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='input'"   :key="index" :reserve-selection="true">
+						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+										 :width="colConfig.width"
+										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
+										 :label="colConfig.label" v-if="colConfig.search.type=='input'" :key="index"
+										 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-input @keyup.enter.native="requestTableData" :width="140"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="row[colConfig.search.prop]"></el-input>
-							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
+							<el-input @keyup.enter.native="requestTableData" :width="140"
+									  :type="colConfig.search.type1||'text'"
+									  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear"
+									  :placeholder="colConfig.search.placeholder" class="adv_filter"
+									  v-model="row[colConfig.search.prop]"></el-input>
+
+							<span   @click="requestTableData" class="rowSvg"
+									v-if="colConfig.search.extendType && colConfig.search.extendType=='search'">
+								<icon  iconClass="table_search" title="搜索"></icon>
+							</span>
 						</span>
 						</el-table-column>
-						<el-table-column :fixed="colConfig.search.fixed"  :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='select'"   :key="index" :reserve-selection="true">
+						<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+										 :width="colConfig.width"
+										 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
+										 :label="colConfig.label "
+ 										 v-if="colConfig.search.type=='select'&& colConfig.search.data" :key="index"
+										 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-select @change="requestTableData"  clearable filterable  class="adv_filter" v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
-								<el-option v-for="item in colConfig.search.data" :key="item.value" :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label" :value="colConfig.search.selectProp?item[colConfig.search.selectProp[1]]:item.value"></el-option>
+							<el-select @change="requestTableData" clearable filterable class="adv_filter"
+									   v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
+								<el-option v-for="item in colConfig.search.data||[]" :key="item.value"
+										   :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label"
+										   :value="colConfig.search.selectProp?item[colConfig.search.selectProp[1]]:item.value">
+								</el-option>
 							</el-select>
-							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
+							<icon class="table_search" @click.native="requestTableData"
+								  v-if="colConfig.search.extendType && colConfig.search.extendType=='search'"
+								  iconClass="table_search"></icon>
 						</span>
 						</el-table-column>
 						<el-table-column  :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true">
@@ -36,51 +65,25 @@
 						</el-table-column>
 					</template>
 					<template v-else>
-						<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true"></el-table-column>
+
+						<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
+
+						</el-table-column>
 					</template>
 				</template>
 			</el-table>
 
-			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="dataTable" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName" border>
-				<template v-for="(colConfig, index) in cloneTableConfig">
-
+			<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
+				<template v-for="(colConfig, index) in tableConfig">
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-
-					<el-table-column v-else-if="colConfig.prop=='index'" type="index"  :index="(index1)=>{return index1+1}"  v-bind="colConfig"  :key="index" :reserve-selection="true">
-						<template slot-scope="{row,$index}">
-
-							<template  v-if="$index==0"> </template>
-							<template  v-else>{{  $index }}</template>
-						</template>
+					<el-table-column v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
+									 :reserve-selection="true">
 					</el-table-column>
-					<el-table-column v-else :show-overflow-tooltip="true"   :label="colConfig.label"  v-bind="colConfig" :key="index" :reserve-selection="true">
-						<template slot-scope="{row,$index}">
-
-							<template  v-if="$index==0">
-								<template v-if="colConfig.search">
-									<!--<template    v-if="colConfig.search.type=='text'" :key="index"  >-->
-										<!--<span >-->
-											<!--<div>{{colConfig.search.label}}</div>-->
-										<!--</span>-->
-									<!--</template>-->
-									<!--v-if="colConfig.search.type=='input'"-->
-									<template       >
-											<span  :class="colConfig.search.extendType==='search'?'searchClass':''">
-											<el-input @keyup.enter.native="requestTableData" :width="140"  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear" :placeholder="colConfig.search.placeholder" class="adv_filter" v-model="form[colConfig.search.prop]"></el-input>
- 											</span>
-									</template>
-
-
-								</template>
-							</template>
-							<template  v-else>{{  row[colConfig.prop] }}</template>
-						</template>
-
+					<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
+									 :reserve-selection="true">
 					</el-table-column>
 				</template>
 			</el-table>
-
-
 		<el-pagination v-if="data.current"    background  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="data.current" :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size" layout="total, sizes, prev, pager, next, jumper" :total="data.total"> </el-pagination>
 	</div>
 </template>
@@ -93,50 +96,32 @@ export default {
         Icon,
 	},
 	name: 'SearchTable',
-	props: ['tableConfig', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod'],
+	props: ['tableConfig', 'tableRowClassName', 'data', 'offsetTop', 'page','noSearch','refTag','spanMethod'],
 	data () {
 		return {
-		    form:{},
 			resizeCallback:[],
 			headerData:[{}],
-			cloneTableConfig:this.tableConfig,
+			// tableConfig:this.tableConfig,
 			updateWidth:false
 		};
 	},
 	computed:{
-	  dataTable(){
-		  if(this.data instanceof Array ){
-			  if(Object.keys(this.data[0]).length>1){
-                    this.data.unshift({})
-              }
-		  }else {
-              if(Object.keys(this.data.records[0]).length>1){
-                   this.data.records.unshift({})
-              }
-		  }
-          return this.data
-
-	  }
+        tableRowClassName2(){
+            return ({rowIndex,row})=>{
+                let ss= this.tableRowClassName&&this.tableRowClassName(rowIndex,row)||'tab-row'
+                return ss
+			}
+		}
 	},
 	watch: {
-		tableConfig:function(newVal, oldVal){
-
-			let that = this;
-			if(!this.updateWidth){
-				newVal.map((item,index)=>{
-					forEach(item, function(value, key) {
-						that.$set(that.cloneTableConfig[index],key,value);
-					});
-					this.$set(this.cloneTableConfig,index,this.cloneTableConfig[index]);
-				})
-			}
-		},
+	
 		data: function(newVal, oldVal){
-
-			// this.data = newVal;
+             // this.data = newVal;
 			// 重新计算element表格组件布局
-			setTimeout(() => {
-				this.$refs.body_table.doLayout();
+  			setTimeout(() => {
+  			    if(this.$refs.body_table.doLayout){
+                    this.$refs.body_table.doLayout();
+                }
 			}, 100);
 		},
 	},
@@ -144,9 +129,11 @@ export default {
 		
 	},
 	mounted() {
-		window.addEventListener('scroll', this.scroll, true);
+
+        window.addEventListener('scroll', this.scroll, true);
 	},
 	methods: {
+
 		//计算滚动位置
 		scroll($event) {
 			if(this.$refs.body_table){
@@ -157,14 +144,14 @@ export default {
 		//监听头部拉伸宽度改变表格主体宽度
 		headerDragend(newWidth, oldWidth, column, event){
 			this.updateWidth = true;
-			this.$set(this.cloneTableConfig[column.index],'width',newWidth);
+			this.$set(this.tableConfig[column.index],'width',newWidth);
 			this.$refs.body_table.columns[column.index].realWidth = newWidth;
 		},
 		requestTableData(){
-			this.$emit('requestTable', this.form);
+			this.$emit('requestTable', this.headerData[0]);
 		},
 		renderHeaderRow(h,  { column, $index }){
-			return (
+  			return (
                 <div>
                     <span>{column.label}</span>
                     <Icon iconClass="sort" class="tableSort" nativeOnClick={ 
@@ -191,9 +178,11 @@ export default {
 		tableheaderRowClassName({ row, rowIndex }) {
 			return 'tab-header-row';
 		},
-		tableRowClassName({ row, rowIndex }) {
-			row.index = rowIndex;
-			return 'tab-row';
+		tableRowClassName1({ row, rowIndex }) {
+		    row.index=rowIndex
+            return this.tableRowClassName2({ row, rowIndex })
+
+		//
 		},
 		currentRowChange(row, oldRow) {
 			this.$emit('currentRowChange', row, oldRow);
@@ -383,7 +372,7 @@ export default {
 		}
 	}
 	.el-table--scrollable-x + .mainTable{
-		height: 620px !important;
+		height: 620px ;
 		
 	}
 	/deep/ .el-table--scrollable-x .el-table__body-wrapper{
@@ -394,6 +383,7 @@ export default {
 	}
 	.mainTable{
 		// height: 600px;
+		overflow-y: auto;
 		border-top: 0px;
 		/deep/ .current-row > td {
 			background-color: #A0CBF6;

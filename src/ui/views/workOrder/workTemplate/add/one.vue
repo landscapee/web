@@ -77,9 +77,9 @@
                         <el-option v-for="(opt,index) in options.workUserType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="适用ETOP运行：" :prop=" form.type=='WXGD'?'etopEnable':''"  >
+                <el-form-item  label="适用ETOPS运行：" :prop=" form.type=='WXGD'?'etopEnable':''"  >
                     <span v-if="type=='info'">{{  form.etopEnable?'适用':'不适用' }}</span>
-                    <el-select    v-else clearable v-model="form.etopEnable" placeholder="请选择适用ETOP运行">
+                    <el-select    v-else clearable v-model="form.etopEnable" placeholder="请选择适用ETOPS运行">
                         <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode==='false'?false:true"> </el-option>
                     </el-select>
                 </el-form-item>
@@ -374,7 +374,7 @@
         /deep/ .el-form{
             width: 100%;
             height:340px;
-            padding: 20px 0px 5px 20px;
+            padding: 20px 0px 5px 0px;
 
             .row_three{
                 .el-form-item:nth-child(2) {
@@ -388,7 +388,7 @@
                 width:200px;
             }
             .el-form-item__label{
-                width: 135px;
+                width: 145px;
                 text-align: left;
                 padding: 0;
             }
