@@ -96,12 +96,12 @@ import request from '@lib/axios.js';
                 .then((data) => {
                     this.tipsNumber = data.data
                 })
-                console.log(data,2,5,8);
                  if(data.content&&data.content.content){
                     this.$notify({
                         title: '收到一条消息',
                         message: data.content&&data.content.content,
-                        position: 'bottom-right'
+						position: 'bottom-right',
+						duration: -1
                     });
 				}
 			}
@@ -135,9 +135,11 @@ import request from '@lib/axios.js';
                     this.$store.commit('user/SET_USER_INFO','');
                     removeToken();
                     removeUserInfo();
-                    this.$router.push({ path: '/' });
+					this.$router.push({ path: '/' });
                     if(window.SOCKET){
-                        window.SOCKET.close()
+						window.SOCKET.close()
+						//清空socket对象
+						window.SOCKET = null
 					}
 
                 })

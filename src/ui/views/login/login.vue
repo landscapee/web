@@ -128,8 +128,8 @@ export default {
                              this.$store.commit('user/SET_USER_INFO',data.data);
                              if(data.responseCode == 30003||data.responseCode == 30002){
                                  this.$message.warning( data.responseMessage);
-                             }
-                             window.SOCKET=initWebsocket()
+							 }
+                             initWebsocket()
                              this.findUnread();
                              this.$router.push({ path: '/qualityManage' });
                          }else{

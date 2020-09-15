@@ -68,7 +68,7 @@ Vue.prototype.$subscribeMap = {};
     template: '<App />',
     created () {
         if(!window.SOCKET&&this.$store.state.user.userInfo){
-            window.SOCKET=initWebsocket()
+            initWebsocket()
         }
         // 注册并启动webworker
         // initWebsocket()
