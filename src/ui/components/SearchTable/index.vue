@@ -42,10 +42,11 @@
 									 :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label "
-									 v-if="colConfig.search.type=='select'&& colConfig.search.data" :key="index"
+									 v-if="colConfig.search.type=='select'&& colConfig.search.data&&colConfig.search.data.length" :key="index"
 									 :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-select @change="requestTableData" clearable filterable class="adv_filter"
+							<el-select
+									@change="requestTableData" clearable filterable class="adv_filter"
 									   v-model="row[colConfig.search.prop]" :placeholder="colConfig.search.placeholder">
 								<el-option v-for="item in colConfig.search.data||[]" :key="item.value"
 										   :label="colConfig.search.selectProp?item[colConfig.search.selectProp[0]]:item.label"
