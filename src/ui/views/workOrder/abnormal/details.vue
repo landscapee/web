@@ -72,14 +72,14 @@
                                         </div>
                                         <!-- class="item itemSign"-->
                                         <div  :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"  :style="{width: col==3 ? '18.3%' : '18.3%'}">
-                                            <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px" >签字</el-button>
-                                            <div style="width:100%;position:absolute;left:0;top:40px;">
+                                            <el-button v-if="type!='info'&&itemChild.workerLabel" @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')" type="primary" style="padding: 7px 15px" >签字</el-button>
+                                            <div style="width:100%;position:absolute;left:0;top:40px;" v-if='itemChild.workerLabel'>
                                                 <div class="sign_box" :id='"fix_sign_"+itemChild._reduceIndex' :pos='"fix_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
                                         <div  :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"  :style="{width: col==3 ? '18.3%' : '18.3%'}"  v-if='col==4'>
-                                            <el-button v-if="type!='info'"   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
-                                            <div style="width:100%;position:absolute;left:0;top:40px;">
+                                            <el-button  v-if="type!='info'&&itemChild.commanderLabel" @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')" type="primary" style="padding: 7px 15px">签字</el-button>
+                                            <div style="width:100%;position:absolute;left:0;top:40px;" v-if="itemChild.commanderLabel">
                                                 <div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex" :pos='"travel_sign_"+itemChild._reduceIndex' style="width:100%;height:30px;width:100%"></div>
                                             </div>
                                         </div>
@@ -108,6 +108,7 @@
 
     import naTemp from '@/ui/components/naTemp'
     import { SignatureInit } from '@/ui/lib/Signature.js'
+    import { initParam } from './basicData' 
     export default {
         components:{
              naTemp,InfoTop
@@ -281,7 +282,6 @@
                     }
                     map(item)
                 })
-
                 let reduceIndex= 0
                 let _reduceIndex = 0
                 let itemNumber = 0
@@ -327,7 +327,6 @@
                         .then((data) => {
                             if(data.code==200){
                                 this.contentVOListMap=this.getVOListMap( data.data.template.contentVOList)
-
                                 this.contentVOList = data.data.template.contentVOList
                                 this.workorder = data.data.workorder
                                 this.orderModule= data.data.template
@@ -364,22 +363,150 @@
                         })
                 })
             },
-            showMsgBoxFn(item,type, $event, fnName){
+            findByUserFn(user={}){
+                console.log(user)
+                if(user.userName&&user.password){
+                    return new Promise((resolve, reject)=>{
+                        request({
+                            url:`${this.$ip}/sys/user/findByUser`,
+                            method: 'get',
+                            params:{
+                                user
+                            }
+                        }).then((result) => {
+                            console.log(result)
+                            if(result.responseCode === 1000){
+                                resolve('1')
+                            }else{
+                                resolve('0')
+                            }
+                        })
+                    })
+                }
+                // let a = {
+                //     "userName":"admin",
+                //     "password":"air123456"
+                // }
+            },
+            async showMsgBoxFn(item,type, $event, fnName){
                 let _this = this
-                this.$msgBox.showMsgBox({
-                    isShowInput: true
-                }).then(async (data) => {
-                    if(data.val && data.psd){
-                        _this[fnName](item,type, $event, data.val, data.psd)
+
+                // 判断是否是强身份认证还是弱身份认证
+                if(this.workorder.type.startsWith("WX")){
+                    // 强身份
+                    // http://192.168.4.222:8081/jitGW/random
+                    let original = await _this.jitGWRandomFn()
+                    let result = await this.doDataProcess(initParam, original)
+                    if(result.code == 200){
+                        let user = result.data['_saml_pki_cert_subject']
+                        if(user){
+                            user = user.split(",").filter(i=>i.startsWith("T="))[0].split("=")[1]
+                        }
+                        this.$msgBox.showMsgBox({
+                            isShowPsd:true
+                        }).then(async (data) => {
+                            if(data.psd){
+                                let judegUser =  await this.findByUserFn({userName: user, password: data.psd})
+                                if(judegUser=='1'){
+                                    _this[fnName](item, type, $event, user)
+                                }else{
+                                     this.$message({type: 'error', message: '密码错误，请重新输入'});
+                                }
+                            }
+                        }).catch(() => {
+                            // ...
+                        });
+                    }else{
+                        this.$message({type: 'error', message: result.message});
                     }
-                }).catch(() => {
-                    // ...
-                });
+                }else{
+                    // 弱身份
+                    this.$msgBox.showMsgBox({
+                        isShowInput: true,
+                        isShowPsd: true
+                    }).then(async (data) => {
+                        if(data.val && data.psd){
+                            let judegUser =  await this.findByUserFn({userName: data.val, password: data.psd})
+                            if(judegUser=='1'){
+                                _this[fnName](item,type, $event, data.val, data.psd)
+                            }else{
+                                _this.$message({type: 'error', message: '密码错误，请重新输入'});
+                            }
+                        }
+                    }).catch(() => {
+                        // ...
+                    });
+                }
+            },
+            async doDataProcess(initParam, original){
+                // 证书版本者主题
+                var signSubject = ""; //document.getElementById("rootCADN").value;
+                // 验证认证原文是否为空
+                if(original == ""){
+                    alert("认证原文不能为空!");
+                    return false;
+                }else{
+                    // VCTK初始化参数，数据可从网关系统：认证管理->Key类型管理中导出
+                    //var initParam = "<\?xml version=\"1.0\" encoding=\"gb2312\"\?><authinfo><liblist><lib type=\"CSP\" version=\"1.0\" dllname=\"\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib><lib type=\"SKF\" version=\"1.1\" dllname=\"SERfR01DQUlTLmRsbA==\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib><lib type=\"SKF\" version=\"1.1\" dllname=\"U2h1dHRsZUNzcDExXzMwMDBHTS5kbGw=\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib><lib type=\"SKF\" version=\"1.1\" dllname=\"U0tGQVBJLmRsbA==\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib></liblist></authinfo>";
+                    // 调用网关工具脚本中的detachSignStr方法进行签名，返回签名结果
+                    // 参数说明：initParam：vctk控件初始化参数，authContent：认证原文，signSubject：证书版本者主题
+                    signResult = detachSignStr(initParam, original, signSubject);
+                    if(signResult){
+                        return new Promise((resolve,reject)=>{
+                            this.jitGWAuthFn(undefined, original, signResult).then(res=>{
+                                console.log(res)
+                                resolve(res)
+                            })
+                           
+                        })
+                        
+                    }else{
+                        return false;
+                    }
+                }
+            },
+            jitGWRandomFn(){
+                let qrCodeAuth = 'false';
+                let original = '';
+                return new Promise((resolve,reject)=>{
+                    request({
+                        url:`${this.$signIp}/jitGW/random`,
+                        method: 'get',
+                    }).then((result) => {
+                        if(result.code == 200){
+                            if(result.data.QRCodeAuth == "false"){
+                                resolve(result.data.original)
+                            }else{
+                                qrCodeAuth = result.data.QRCodeAuth;
+                                generateQRCode();
+                                //document.getElementById("qr_div").style.display="";
+                            }
+                        }else{
+                            this.$message({type: 'error', message: '连接失败，请稍后重试'});
+                        }
+                    })
+                })
+            },
+            jitGWAuthFn(authMode='cert', original, signed_data){
+                return new Promise((resolve,reject)=>{
+                    request({
+                        url:`${this.$signIp}/jitGW/auth`,
+                        method: 'post',
+                        data:{
+                            authMode,
+                            original,
+                            signed_data
+                        }
+                    }).then((result) => {
+                        resolve(result)
+                    })
+                })
             },
             signMsgBoxFn(type){
                 let _this = this
                 this.$msgBox.showMsgBox({
-                    isShowInput: true
+                    isShowInput: true,
+                    isShowPsd:true
                 }).then(async (data) => {
                     if(data.val && data.psd){
                         _this.signFn(type, data.val, data.psd)
@@ -414,7 +541,8 @@
                         if(data.code==200){
                             let infList = data.data.infList
                             this.workerCompleteData = data.data.infList
-                            let map = data.data.map
+                            let map = data.data.dataList
+
 
                             // 删除签章
                             this.$nextTick(()=>{
@@ -463,36 +591,39 @@
                                     $("."+item.contentDetailId).siblings(".checkbox_group").find("#3"+item.contentDetailId).prop("checked", item.invalid).prop("disabled",item.invalid)
                                 })
                             }
-                            if(Object.keys(map).length){
+                            if(map.length){
                                 let signs = []
-                                for(let i in map){
-                                    if(i.includes("sign") &&
-                                        map[i].includes("------") &&
-                                        map[i].split("------")[0] &&
-                                        map[i].split("------")[1]
+                                map.forEach(mapItem=>{ 
+                                    if(mapItem.key.includes("sign") &&
+                                        mapItem.value.includes("------") &&
+                                        mapItem.value.split("------")[0] &&
+                                        mapItem.value.split("------")[1]
                                     ){
-                                        signs.push(
-                                            {
-                                                signatureid : map[i].split('------')[0],
-                                                signatureData : map[i].split('------')[1]
-                                            }
-                                        )
-                                    }else if(i.includes("input") || i.includes("date")){
+                                        mapItem.value.split(",").forEach(item=>{
+                                            signs.push(
+                                                {
+                                                    signatureid : item.split('------')[0],
+                                                    signatureData : item.split('------')[1],
+                                                    version: mapItem.version
+                                                }
+                                            )
+                                        })
+                                    }else if(mapItem.key.includes("input") || mapItem.key.includes("date")){
                                         if(BasicUpdateLimit){
-                                            $(".base_item input[name='"+i+"']").val(map[i])
+                                            $(".base_item input[name='"+mapItem.key+"']").val(mapItem.value)
                                             this['isActiveReset'] = true
                                         }else{
-                                            $("input[name='"+i+"']").val(map[i])
+                                            $("input[name='"+mapItem.key+"']").val(mapItem.value)
                                         }
                                     }else{
                                         if(BasicUpdateLimit){
-                                            $(".base_item input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
+                                            $(".base_item input[name='"+mapItem.key+"']").prop('checked',mapItem.value=='true'?true:false)
                                             this['isActiveReset'] = true
                                         }else{
-                                            $("input[name='"+i+"']").prop('checked',map[i]=='true'?true:false)
+                                            $("input[name='"+mapItem.key+"']").prop('checked',mapItem.value=='true'?true:false)
                                         }
                                     }
-                                }
+                                })
                                 Signature.loadSignatures(signs)
                             }
                         }else{
@@ -519,9 +650,17 @@
                     }
                 })
                 protectedItems = protectedItems.filter(i=>i)
+
+                 // 判断签章高度 start
+                let offsetY = 1
+                $('.kg-img-div-'+type).each((ind,ele)=>{
+                    offsetY += $(ele).height()+10
+                })
+                // 判断签章高度 end
+
                 signatureCreator.run({
-                    // offsetX:100,
-                    // offsetY:100,
+                    offsetX:1,
+                    offsetY:offsetY,
                     protectedItems: protectedItems, //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
                     position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
                     okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
@@ -571,7 +710,15 @@
                 })
                 /* 保护项 */
                 protectedItems = protectedItems.filter(i=>i)
+                // 判断签章高度 start
+                let offsetY = 1
+                $('.kg-img-div-'+type).each((ind,ele)=>{
+                    offsetY += $(ele).height()+10
+                })
+                // 判断签章高度 end
                 signatureCreator.run({
+                    offsetX:1,
+                    offsetY:offsetY,
                     protectedItems: protectedItems,
                     // protectedItems:[ 'item1', 'item2', 'item3','item4',
                     //                 'item5', 'item6','item7', 'item8',
@@ -611,19 +758,49 @@
                     }
                 });
             },
-            signOthMsgBoxFn(type, $event){
+            async signOthMsgBoxFn(type, $event){
                 let _this = this
-                this.$msgBox.showMsgBox({
-                    title: '用户名',
-                    content: '请输入用户名',
-                    isShowInput: true
-                }).then(async (data) => {
-                    if(data.val && data.psd){
-                        _this.signOthFn(type,$event, data.val, data.psd)
+                let original = await _this.jitGWRandomFn()
+                let result = await this.doDataProcess(initParam, original)
+                if(result.code == 200){
+                    let user = result.data['_saml_pki_cert_subject']
+                    if(user){
+                        user = user.split(",").filter(i=>i.startsWith("T="))[0].split("=")[1]
                     }
-                }).catch(() => {
-                    // ...
-                });
+                    this.$msgBox.showMsgBox({
+                        isShowPsd:true
+                    }).then(async (data) => {
+                        if(data.psd){
+                            let judegUser =  await this.findByUserFn({userName: user, password: data.psd})
+                            if(judegUser=='1'){
+                               _this.signOthFn(type,$event, user)
+                            }else{
+                                this.$message({type: 'error', message: '密码错误，请重新输入'});
+                            }
+                        }
+                    }).catch(() => {
+                        // ...
+                    });
+                }else{
+                    this.$message({type: 'error', message: result.message});
+                }
+
+
+
+
+
+
+                // let _this = this
+                // this.$msgBox.showMsgBox({
+                //     isShowInput: true,
+                //     isShowPsd:true
+                // }).then(async (data) => {
+                //     if(data.val && data.psd){
+                //         _this.signOthFn(type,$event, data.val, data.psd)
+                //     }
+                // }).catch(() => {
+                //     // ...
+                // });
             },
             signOthFn(type, $event, val, psd){
                 if(!this.signBasicActiveFn()){
@@ -679,7 +856,7 @@
                         if(data.code == 200){
                             this.$message({type: 'success', message: '提交成功'})
                         }else{
-                            this.$message({type: 'error', message: data.message})
+                            //this.$message({type: 'error', message: data.message})
                         }
                     })
             },

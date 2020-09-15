@@ -21,6 +21,7 @@
         imgtag: 0, //签章类型：0：无; 1:公章; 2:私章; 3:法人章; 4:法人签名; 5:手写签名
         certType : 'server',//设置证书在签章服务器
         sealType : 'server',//设置印章从签章服务器取
+        autoCert:true,
         //serverUrl : 'http://173.101.1.52:8080/iSignatureHTML5',
         serverUrl : 'http://173.101.1.134:8089/iSignatureHTML5',
         //serverUrl : 'http://173.101.1.134:8089/iSignatureHTML5/html5',
