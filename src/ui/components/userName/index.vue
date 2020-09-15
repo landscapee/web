@@ -9,13 +9,13 @@
         <use xlink:href="#icon-delete"></use>
       </svg> -->
       <h3 class="title">{{ title }}</h3>
-      <p class="content">{{ content }}</p>
+      <p class="content" v-if='isShowInput'>{{ content }}</p>
       <div>
         <input type="text" v-model="inputValue" v-if="isShowInput" ref="input" > <!--@keyup.enter="confirm"-->
       </div>
-      <p class="content">{{psdTitle}}</p>
+      <p class="content" v-if="isShowPsd">{{psdTitle}}</p>
       <div>
-        <input type="password" v-model="psdValue" v-if="isShowInput" ref="psd" @keyup.enter="confirm">
+        <input type="password" v-model="psdValue" v-if="isShowPsd" ref="psd" @keyup.enter="confirm">
       </div>
       <div class="btn-group">
         <button class="btn-default" @click="cancel" v-show="isShowCancelBtn">{{ cancelBtnText }}</button>
@@ -41,6 +41,7 @@
         default: '请输入密码'
       },
       isShowInput: false,
+      isShowPsd:false,
       inputValue: '',
       psdValue:'',
       isShowCancelBtn: {
@@ -72,10 +73,17 @@
       // 确定,将promise断定为resolve状态
       confirm: function () {
         this.isShowMessageBox = false;
-        if (this.isShowInput && this.psdValue) {
-          this.resolve({val: this.inputValue, psd: this.psdValue});
-        } else {
-          this.resolve('confirm');
+        let iptInfo = {}
+        if(this.isShowInput){
+            iptInfo.val = this.inputValue
+        }
+        if(this.isShowPsd){
+            iptInfo.psd = this.psdValue
+        }
+        if(JSON.stringify(iptInfo)==='{}'){
+            this.resolve('confirm');
+        }else{
+            this.resolve(iptInfo);
         }
         this.remove();
       },

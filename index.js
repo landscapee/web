@@ -28,12 +28,15 @@ import './static/plugin/lang/zh-CN.js'
 import directives from '@lib/directive.js'
 import moment from 'moment'
 //公共ip地址和端口
-if(PROGRAM == 'jwxt.dev'){
+if(PROGRAM == 'jwxt.dev'){  // 本地
     Vue.prototype.$ip = "http://173.100.1.5:8011"
- }else if(PROGRAM == 'jwxt.test'){
+    Vue.prototype.$signIp = "http://192.168.4.222:8081"
+ }else if(PROGRAM == 'jwxt.test'){ // 测试
     Vue.prototype.$ip = "http://173.101.1.30:6070"
- }else if(PROGRAM == 'jwxt.build'){
+    Vue.prototype.$signIp = "http://173.101.1.30:6070/mms-workorder"
+ }else if(PROGRAM == 'jwxt.build'){ // 开发
     Vue.prototype.$ip = "http://173.100.1.5:8011"
+    Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
  }
 import MessageBox from '@/ui/components/userName/index.js';
 Vue.use(MessageBox);
