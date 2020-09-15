@@ -80,6 +80,7 @@
 								 :reserve-selection="true">
 				</el-table-column>
 				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
+								 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false"
 								 :reserve-selection="true">
 				</el-table-column>
 			</template>

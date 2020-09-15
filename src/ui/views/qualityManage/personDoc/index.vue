@@ -25,7 +25,7 @@
             </div>
             <div class="main-content">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49"  >
+                    <el-table-column slot="radio" label="筛选" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
@@ -34,14 +34,11 @@
                     <!--:show-overflow-tooltip="true"-->
                     <el-table-column align="center" slot="option" label="操作" :width="230" >
                         <template  slot-scope="scope">
-                            <div >
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/userQuali')">资质</el-button>
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/userAuth')">授权</el-button>
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/userTrain')">培训考核</el-button>
+                            <el-button class="QoptionButton" @click="seeOther(scope.row,'/userQuali')">资质</el-button>
+                            <el-button class="QoptionButton" @click="seeOther(scope.row,'/userAuth')">授权</el-button>
+                            <el-button class="QoptionButton" @click="seeOther(scope.row,'/userTrain')">培训考核</el-button>
 
-                            </div>
-
-                         </template>
+                        </template>
                     </el-table-column>
 
                 </SearchTable>

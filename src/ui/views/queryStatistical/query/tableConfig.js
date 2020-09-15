@@ -11,7 +11,7 @@ let qarr=(obj)=>{
         { slot: 'radio' , label: '选择',width:'49',search:{ type:'text',label:'过滤'}},
         { prop: 'planDepartureTime', label: '航班日期',formatter:time, sortProp:"planDepartureTime", align: 'center',sort:true,search:{type:'date', prop:'planDepartureTime',placeholder:"请选择"} },
         { prop: 'airlineCompanyName', label: '航空公司',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
-        { prop: 'flightState', label: '机位',sortProp:"flightState", align: 'center',sort:true,search:{type:'input', prop:'flightState', placeholder:"请输入"}},
+        { prop: 'seat', label: '机位',sortProp:"seat", align: 'center',sort:true,search:{type:'input', prop:'seat', placeholder:"请输入"}},
         { prop: 'flightNo', label: '航班号',sortProp:"flightNo", align: 'center' ,sort:true,search:{type:'input', prop:'flightNo',inputProp:['valData','valData'],data:obj.coursewareType||[],placeholder:"请输入"}},
         { prop: 'flightRegisterNo', label: '飞机注册号',sortProp:"flightRegisterNo", align: 'center' ,sort:true,search:{type:'input', prop:'flightRegisterNo',inputProp:['valData','valData'],data:obj.CourseflightRegisterNo||[],placeholder:"请输入"}},
         { prop: 'airplaneIcao', label: '机型',sortProp:"airplaneIcao", align: 'center',sort:true,search:{type:'input', prop:'airplaneIcao',placeholder:"请输入"} },

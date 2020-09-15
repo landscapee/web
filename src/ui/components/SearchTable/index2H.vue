@@ -4,16 +4,28 @@
 			<template v-for="(colConfig, index) in tableConfig">
 				<template v-if="colConfig.search&&colConfig.search.type">
 					<template  v-if="colConfig.slot=='radio'" >
-						<el-table-column  >
-							<template v-if="colConfig.search" slot="header" slot-scope="{row,$index}">
-								过滤
-							</template>
+						<el-table-column :label='colConfig.label'
+										 :reserve-selection="true"  :width="colConfig.width"
+										 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false">
+							<el-table-column   :width="colConfig.width"  >
+								<template   v-if="colConfig.search" slot="header" slot-scope="{row,$index}">
+									筛选
+								</template>
+								<template slot-scope="{ row }">
+									<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+									<icon  iconClass="ky" class="tab_radio" v-else></icon>
+								</template>
+							</el-table-column>
 						</el-table-column>
 					</template>
 					<template  v-else-if="colConfig.slot" >
-						<!--<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>-->
+						<el-table-column :label="colConfig.label" align="center"  :key="index+2"
+										 :reserve-selection="true" :width="colConfig.width"
+										 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false">
+							<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
+						</el-table-column>
 					</template>
-					<el-table-column :show-overflow-tooltip="true" v-bind="colConfig" :key="index+2"
+					<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index+2"
 									 :reserve-selection="true"
 									 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}">
@@ -21,12 +33,13 @@
 						<el-table-column   :show-overflow-tooltip="true"
 										   v-bind="getConfig(colConfig)">
 							<template v-if="colConfig.search" slot="header" slot-scope="{row,$index}">
+								<el-input></el-input>
 							</template>
 						</el-table-column>
 					</el-table-column>
 				</template>
 				<template v-else>
-									<span v-if="colConfig.search" :class="colConfig.search.extendType==='search'?'searchClass':''">
+                    <span v-if="colConfig.search" :class="colConfig.search.extendType==='search'?'searchClass':''">
 										<el-input  v-if="colConfig.search.type=='input'"
 												   class="adv_filter" @keyup.enter.native="requestTableData"
 												   :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear"
@@ -57,9 +70,7 @@
 											<icon class="table_search" @click.native="requestTableData" v-if=" colConfig.search.extendType=='search'" iconClass="table_search"></icon>
 										</span>
 									</span>
-
 					<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-
 					<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index+2"
 									 :reserve-selection="true"
 									 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false"
@@ -373,6 +384,12 @@
 			}
 		}
 	}
-
+	/deep/ .is-group{
+		tr:nth-child(2){
+			th{
+				background: #EFF2F3!important;
+			}
+		}
+	}
 
 </style>

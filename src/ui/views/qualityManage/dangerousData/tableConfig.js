@@ -1,6 +1,6 @@
 export const dangerousConfig = (obj) => {
         return [
-                { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'过滤'}},
+                { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
                 { prop: 'number', label: '编号', width:'148',sortProp:"number", align: 'center',sort:true,search:{type:'input',placeholder:"请输入编号", prop:'number'} },
                 { prop: 'system', label: '系统',width:'148',sortProp:"system", align: 'center',sort:true,search:{type:'input',placeholder:"请输入系统", prop:'system'} },
                 { prop: 'childSystem', label: '子系统',width:'148',sortProp:"childSystem", align: 'center',sort:true,search:{type:'input',placeholder:"请输入子系统", prop:'childSystem'} },

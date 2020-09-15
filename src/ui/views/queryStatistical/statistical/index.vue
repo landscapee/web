@@ -123,7 +123,7 @@
 
                     {name:'航班量统计',ref:'searchTable',id:'1',api:'/mms-report/count/flights',export:'/mms-report/export/flights'},
                     {name:'员工工作量统计',ref:'searchTable1',id:'2',api:'/mms-report/count/workload',export:'/mms-report/export/workload'},
-                    {name:'员工到位及时性统计',ref:'searchTable2',id:'3',api:'/mms-report/count/workInTime',export:'/mms-report/export/workInTime'},
+                    // {name:'员工到位及时性统计',ref:'searchTable2',id:'3',api:'/mms-report/count/workInTime',export:'/mms-report/export/workInTime'},
                     {name:'保障航班航司/机型分析',ref:'searchTable3',id:'4',api:'/mms-report/count/airLineIcao',export:'/mms-report/export/airLineIcao'},
                     {name:'保障任务量统计',ref:'searchTable4',id:'5',api:'/mms-report/count/task',export:'/mms-report/export/task'},
                     {name:'人员不安全事件统计',ref:'searchTable5',id:'6',api:'/mms-report/count/unsafe',export:'/mms-report/export/unsafe'},
@@ -321,6 +321,9 @@
                     data:{...this.sort,...data},
                     params:{...this.params,}
                 }).then((data) => {
+                    data.data.records.map((k,l)=>{
+                        k.id=l
+                    })
                         this.tableData = extend({}, {...data.data});
                     })
             },
