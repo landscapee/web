@@ -3,7 +3,6 @@ const io = require('socket.io-client')
 import postal from 'postal';
 import store from '@store';
 import request from "@lib/axios.js";
-
 export const initWebsocket = (q) => {
     request({
         url: `/mms-notice/notification/getSocketInfo`,
