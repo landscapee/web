@@ -37,6 +37,9 @@ if(PROGRAM == 'jwxt.dev'){  // 本地
  }else if(PROGRAM == 'jwxt.build'){ // 开发
     Vue.prototype.$ip = "http://173.100.1.5:8011"
     Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
+ }else if(PROGRAM == 'jwxt.prod'){
+    Vue.prototype.$ip = "http://10.35.48.34:9090"
+    Vue.prototype.$signIp = "http://10.35.48.34:9090/mms-workorder"
  }
 import MessageBox from '@/ui/components/userName/index.js';
 Vue.use(MessageBox);
