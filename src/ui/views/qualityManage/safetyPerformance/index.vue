@@ -54,8 +54,10 @@
                     </el-table-column>
                     <el-table-column slot="option" label="操作" align="center" :width="80" >
                         <template slot-scope="{ row }" >
-                                <span style="padding:2px  " class="rowSvg"  @click="row.copy?'':copyDetails(row)" :class="row.copy?'G_isDisabled':''" >
-                                    <icon iconClass="copyjx" title="复制绩效明细" ></icon>
+                                <span  class="rowSvg">
+                                    <span  @click="copyDetails(row)" v-if="!row.copy">
+                                    <icon iconClass="copyjx"  title="复制绩效明细" ></icon></span>
+                                    <icon iconClass="copyInfo" v-else title="复制绩效明细" class="rowSvgInfo"></icon>
                                 </span>
                           </template>
                     </el-table-column>
@@ -355,7 +357,7 @@
                     }
                 }
             },
-          
+
             //删除表格行数据
             delData(tag,idstr){
                 let url=null

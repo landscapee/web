@@ -24,7 +24,7 @@
                         <template slot="header" slot-scope="{ row }"   >
                             过滤
                         </template>
-                        <template      >
+                        <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
