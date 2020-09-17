@@ -1,5 +1,5 @@
 <template>
-	<div class="searchTableWrapper" >
+	<div class="searchTableWrapper" :key="$route.path">
 
 		<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 			<template  v-for="(colConfig, index) in tableConfig">
@@ -74,7 +74,7 @@
 			</template>
 		</el-table>
 
-		<el-table :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
+		<el-table  :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
 			<template v-for="(colConfig, index) in tableConfig">
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
 				<el-table-column v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
@@ -103,8 +103,7 @@
             return {
                 resizeCallback:[],
                 headerData:[{}],
-                // tableConfig:this.tableConfig,
-                updateWidth:false
+                 updateWidth:false,
             };
         },
         computed:{
@@ -113,14 +112,14 @@
                     let ss= this.tableRowClassName&&this.tableRowClassName(rowIndex,row)||'tab-row'
                     return ss
                 }
-            }
+            },
         },
         watch: {
 
             data: function(newVal, oldVal){
                 // this.data = newVal;
                 // 重新计算element表格组件布局
-                setTimeout(() => {
+                 setTimeout(() => {
                     if(this.$refs.body_table.doLayout){
                         this.$refs.body_table.doLayout();
                     }
@@ -131,7 +130,6 @@
 
         },
         mounted() {
-
             window.addEventListener('scroll', this.scroll, true);
         },
         methods: {
