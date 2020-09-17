@@ -23,7 +23,8 @@
                             <input type="date" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
                         </div>
                         <div v-if='item.type==4' class="value4 value">
-                            <img :src="item.value" >
+
+                            <img :src="$workImgIp+item.value.split('$')[1]" >
                         </div>
                         <div v-if='item.type==5' class="value5  value flex flex_wrap align_center">
                             <div v-for="(k,l) in item.value.split(';')" :key="l" class="flex align_center">

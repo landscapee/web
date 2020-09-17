@@ -20,6 +20,7 @@
                             <input type="text" :name="item.placeholder" :id="item.placeholder">
                         </div>
                         <div v-if='item.type==4' class="value4 value">
+
                             <img :src="item.value" >
                         </div>
                         <div v-if='item.type==5' class="value5  value flex flex_wrap align_center">

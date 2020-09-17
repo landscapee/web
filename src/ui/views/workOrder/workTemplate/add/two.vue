@@ -34,13 +34,11 @@
                 <span slot-scope="{ row ,$index}">
                    <div v-if="row.type==4" >
                        <div  class="upUser  ">
-
-                           <img @click="upLogoPho(row)" v-if="row.value"  :src="row.value.split('$')[1] " alt="请上传图片">
+                           <img @click="upLogoPho(row,$index)" v-if="row.value"  :src="$workImgIp+row.value.split('$')[1] " alt="请上传图片">
                            <el-button v-else @click="upLogoPho(row,$index)"  style="padding:7px 10px;" ><span style="color:#3280E7">图片上传</span></el-button>
                        </div>
                        <div style="display: none">
                            <UploadFile   accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" :ref="'UploadFile'+$index" @getFile="getFile($event,row,$index)"></UploadFile>
-
                        </div>
                    </div>
                     <div v-else-if="row.type==6" style="text-align: center">
@@ -103,6 +101,7 @@
         },
         created() {
              // console.log(,1,2,3);
+
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -141,17 +140,19 @@
             },
 
             upLogoPho(row,index){
-                 this.$refs['UploadFile'+index].$refs.buttonClick.$el.click()
+                  this.$refs['UploadFile'+index].$refs.buttonClick.$el.click()
             },
 
             getFile(file,row,index){
-                debugger
-                request({
+                 request({
                     header:{'Content-Type':'multipart/form-data'},
                     url:`${this.$ip}/mms-file/get-file-by-id/${file.id }`,
                     method:'GET',
                 }).then((d)=>{
-                     this.$set(row,'value',file.id+'$'+d.data.filePath)
+                	let arr=d.data.filePath.toString().split('/')
+                     arr.splice(0,3)
+                 	let src=arr.join('/')
+	                 this.$set(row,'value',file.id+'$'+src)
                  })
 
             },
