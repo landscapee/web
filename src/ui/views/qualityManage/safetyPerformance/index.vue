@@ -1,5 +1,5 @@
-
 <template>
+
     <div>
           <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
@@ -16,21 +16,15 @@
                             <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-
                             <div @click="exportExcel()">
                                   <icon iconClass="export" ></icon>导出
                               </div>
-
-
                         </div>
-
-
                     </div>
                     <div class="headDiv headDiv2" >
                         <div>
                             <span style="font-weight: bold; font-size: 16px"  >安全绩效明细</span>
                             <span v-if="leftRow.year" style="font-weight:400;color:rgba(136,136,136,1);font-size: 16px" >&nbsp;&nbsp;{{leftRow.deptName}}&nbsp;{{leftRow.year}}年-{{leftRow.month}}月</span>
-
                         </div>
                         <div class="right-toolbar">
                              <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
@@ -75,6 +69,7 @@
         <CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
 
     </div>
+
 </template>
 <script>
     import CopyDetails from './copyDetails'
@@ -145,7 +140,7 @@
 
             // this.getList('left');
         },
-            created() {
+		created() {
 
             this.leftParams.current = 1;
             if(this.$router.history.current.path == '/safetyPerformance'){
@@ -483,74 +478,76 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
-    .businessData{
-        margin-top:14px;
-        .top-content{
-            .top-toolbar{
-                padding: 0px 30px 0px 30px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                .headDiv{
-                    display: flex;justify-content: space-between;
-                    align-items: center;
-                    &>div:first-child{
-                        font-size: 16px;
-                    }
-                }
-                .headDiv1{
-                    width:562px;
-                }
-                .headDiv2{
-                    width:1096px;
-                }
-                .left-toolbar{
-                    text-align: right;
-                }
-                .right-toolbar{
-                    text-align: right;
-                }
-            }
-        }
-        .main-content{
-            padding: 0px 30px 0px 30px;
-            display: flex;
-            justify-content: space-between;
-            /deep/ .left-main-table{
-                width:562px;
-                /deep/ .el-table{
-                    width:562px;
-                }
-                /deep/ .el-table_2_column_14{
-                   /deep/  .cell{
-                        padding: 2px!important;
-                    }
-                }
-                .copyButton{
-                    padding:7px 10px;
-                    background: black;
-                    color:white;
-                }
-            }
-            /deep/ .right-subset-table{
-                width:1096px;
-                /deep/ .el-table{
-                    width:1096px;
-                }
-            }
-            /deep/ .mainTable{
-                height: 600px;
-                overflow: auto;
-                // /deep/ .el-table__body-wrapper{
-                //     /deep/ tr:last-child{
-                //         td{
-                //             border-bottom:0px;
-                //         }
-                //     }
-                // }
-            }
-        }
-    }
+	@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
+
+	.businessData {
+		margin-top: 14px;
+		.top-content {
+			.top-toolbar {
+				padding: 0px 30px 0px 30px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.headDiv {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					& > div:first-child {
+						font-size: 16px;
+					}
+				}
+				.headDiv1 {
+					width: 562px;
+				}
+				.headDiv2 {
+					width: 1096px;
+				}
+				.left-toolbar {
+					text-align: right;
+				}
+				.right-toolbar {
+					text-align: right;
+				}
+			}
+		}
+		.main-content {
+			padding: 0px 30px 0px 30px;
+			display: flex;
+			justify-content: space-between;
+			/deep/ .left-main-table {
+				width: 562px;
+				/deep/ .el-table {
+					width: 562px;
+				}
+				/deep/ .el-table_2_column_14 {
+					/deep/ .cell {
+						padding: 2px !important;
+					}
+				}
+				.copyButton {
+					padding: 7px 10px;
+					background: black;
+					color: white;
+				}
+			}
+			/deep/ .right-subset-table {
+				width: 1096px;
+				/deep/ .el-table {
+					width: 1096px;
+				}
+			}
+			/deep/ .mainTable {
+				height: 600px;
+				overflow: auto;
+				// /deep/ .el-table__body-wrapper{
+				//     /deep/ tr:last-child{
+				//         td{
+				//             border-bottom:0px;
+				//         }
+				//     }
+				// }
+			}
+		}
+	}
 </style>
 

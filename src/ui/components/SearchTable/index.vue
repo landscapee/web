@@ -68,7 +68,6 @@
 				<template v-else>
 
 					<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
-
 					</el-table-column>
 				</template>
 			</template>
