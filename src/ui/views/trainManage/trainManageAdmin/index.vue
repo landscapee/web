@@ -28,12 +28,16 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                     <el-table-column align="center" slot="option" label="操作" :width="190" >
+                     <el-table-column align="center" slot="option" label="操作" :width="100" >
                         <template  slot-scope="scope">
-
-                                <el-button class="QoptionButton" @click="pushStaff(scope.row)">推送员工</el-button>
-                                <el-button class="QoptionButton" @click="trainResults(scope.row)">培训结果</el-button>
-
+                            <div>
+                                <span @click="pushStaff(scope.row)" class="rowSvg">
+                                    <icon iconClass="pushNew" title="推送员工"></icon>
+                                </span>
+                                <span @click="trainResults(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                    <icon iconClass="trainResult" title="培训结果"></icon>
+                                </span>
+                            </div>
                         </template>
                     </el-table-column>
 
@@ -229,7 +233,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .trainManageAdmin{
     margin-top:14px;
     /deep/ .mainTable{

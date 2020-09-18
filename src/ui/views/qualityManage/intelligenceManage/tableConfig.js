@@ -33,7 +33,7 @@ export const leftConfig = (obj) => {
                 { prop: 'certificateType', label: '资质类型',sortProp:"certificateType", align: 'center',sort:true,search:{type:'select', prop:'certificateTypeQuery',placeholder:"请输入",data:obj.Z_aptitudeType,selectProp:['valData','valData']} },
                 { prop: 'awardUnit', label: '颁发单位',sortProp:"awardUnit", align: 'center',sort:true,search:{type:'input', prop:'awardUnit',placeholder:"请输入"} },
                 { prop: 'awardTime', label: '颁发日期',formatter:timeInfo, sortProp:"awardTime", align: 'center',sort:true,search:{type:'date', prop:'awardTime',placeholder:"请选择"}},
-            { slot: 'option', label: '关联信息查看' ,width:'230',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+            { slot: 'option', label: '关联信息查看' ,width:'120',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
               ]
 };
 export const rightConfig = (obj) => {
@@ -45,4 +45,3 @@ export const rightConfig = (obj) => {
                    {  prop: 'endTime', label: '失效日期' ,formatter:timeInfo2,align: 'center', sortProp:"endTime", search:{type:'date', prop:'endTime',extendType:'search', placeholder:"请选择"}},
                ]
 };
- 

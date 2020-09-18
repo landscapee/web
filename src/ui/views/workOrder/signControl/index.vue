@@ -24,12 +24,19 @@
                             <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
                         </template>
                     </el-table-column>
-                     <el-table-column align="center" slot="option" label="操作" :width="80    " >
+                     <el-table-column align="center" slot="option" label="操作" :width="50" >
                         <template  slot-scope="scope">
                             <div >
                                 <!--签署工单-->
-                                <el-button v-if="scope.row.offlineFile" class="QoptionButton" @click="Download(scope.row)">下载</el-button>
-                                <el-button v-else class="QoptionButton" :disabled="scope.row.state!=3" @click="exportRow(scope.row)">导出</el-button>
+<!--                                <el-button v-if="scope.row.offlineFile" class="QoptionButton" @click="Download(scope.row)">下载</el-button>-->
+<!--                                <el-button v-else class="QoptionButton" :disabled="scope.row.state!=3" @click="exportRow(scope.row)">导出</el-button>-->
+
+                                <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
+                                    <icon iconClass="downloadNew" title="下载"></icon>
+                                </span>
+                                <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
+                                    <icon iconClass="exportNew" title="导出"></icon>
+                                </span>
                             </div>
                          </template>
                     </el-table-column>

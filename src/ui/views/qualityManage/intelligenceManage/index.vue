@@ -29,15 +29,19 @@
                                     <icon  iconClass="ky" class="tab_radio" v-else></icon>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" slot="option" label="操作" :width="230" fixed="right">
-                                <template  slot-scope="scope">
-                                    <div >
-                                        <el-button class="QoptionButton" @click="seeOther(scope.row,'/ZuserDoc')">档案</el-button>
-                                        <el-button class="QoptionButton" @click="seeOther(scope.row,'/ZuserAuth')">授权</el-button>
-                                        <el-button class="QoptionButton" @click="seeOther(scope.row,'/ZuserTrain')">培训考核</el-button>
-
+                            <el-table-column align="center" slot="option" label="操作" :width="120" fixed="right">
+                                <template slot-scope="scope">
+                                    <div>
+                                        <span @click="seeOther(scope.row,'/ZuserDoc')" class="rowSvg">
+                                            <icon iconClass="personDoc" title="档案"></icon>
+                                        </span>
+                                        <span @click="seeOther(scope.row,'/ZuserAuth')" class="rowSvg" style="margin: 0 10px">
+                                            <icon iconClass="authorization" title="授权"></icon>
+                                        </span>
+                                        <span @click="seeOther(scope.row,'/ZuserTrain')" class="rowSvg">
+                                            <icon iconClass="check" title="培训考核"></icon>
+                                        </span>
                                     </div>
-
                                 </template>
                             </el-table-column>
 

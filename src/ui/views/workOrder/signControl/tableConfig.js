@@ -55,7 +55,7 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
         }
     }
     return [
-        { slot: 'checkbox' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
+        { slot: 'checkbox' , label: '选择',width:'50',search:{type:'text',label:'过滤'}},
         { prop: 'workTime', label: '任务日期',formatter:timeInfo1, sortProp:"workTime", align: 'center',sort:true ,search:{type:'date', prop:'workTime',placeholder:"请选择"} },
         { prop: 'isOffline', label: '线上/线下', sortProp:"isOffline", align: 'center',sort:true,search:{type:'input', prop:'isOffline',placeholder:"请输入"}},
         { prop: 'serialNo', label: '工单流水号',sortProp:"serialNo", align: 'center',sort:true,search:{type:'input', prop:'serialNo',placeholder:"请输入"} },
@@ -72,8 +72,7 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
         { prop: 'template.personType', label: '作业员类型', sortProp:"personType", align: 'center',sort:true,search:{type:'select', prop:'personType',placeholder:"请选择",data:obj.workUserType,selectProp:['valData','valCode']} },
         { prop: 'template.etopEnable',width:'90', formatter:etopEnable,label: '是否适用ETOPS运行', sortProp:"etopEnable", align: 'center',sort:true,search:{type:'select', prop:'etopEnable',placeholder:"请选择",data:obj.applyETOP,selectProp:['valData','valCode']} },
         { prop: 'state', label: '工单状态',formatter:state, sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请选择",data:arrstate,selectProp:['valData','valCode']} },
-        { slot: 'option', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'option', label: '操作' ,width:'50',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 
- 

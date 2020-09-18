@@ -30,17 +30,20 @@
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option" label="操作" :width="230"   >
-                        <template  slot-scope="scope">
-                            <div >
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserDoc')">档案</el-button>
-
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserQuali')">资质</el-button>
-                                <el-button class="QoptionButton" @click="seeOther(scope.row,'/SuserTrain')">培训考核</el-button>
-
+                    <el-table-column align="center" slot="option" label="操作" :width="120"   >
+                        <template slot-scope="scope">
+                            <div>
+                                <span @click="seeOther(scope.row,'/SuserDoc')" class="rowSvg">
+                                    <icon iconClass="personDoc" title="档案"></icon>
+                                </span>
+                                <span @click="seeOther(scope.row,'/SuserQuali')" class="rowSvg" style="margin: 0 10px">
+                                    <icon iconClass="qualification" title="资质"></icon>
+                                </span>
+                                <span @click="seeOther(scope.row,'/SuserTrain')" class="rowSvg">
+                                    <icon iconClass="check" title="培训考核"></icon>
+                                </span>
                             </div>
-
-                         </template>
+                        </template>
                     </el-table-column>
 
                 </SearchTable>

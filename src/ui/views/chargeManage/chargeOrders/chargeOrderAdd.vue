@@ -83,46 +83,46 @@
                     <div class='form-item-l'>
                         <el-form-item label="除冰车/Aircraft Deicing System" prop="aircraftDeicingSystem" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:262px;'>{{ruleForm.aircraftDeicingSystem}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.aircraftDeicingSystem" style='width:262px;'></el-input>
-                            <span class='form_inlne_val1' style='width:58px;'>小时/Hour</span>    
+                            <el-input v-else type='number' min='0' v-model="ruleForm.aircraftDeicingSystem" style='width:262px;'></el-input>
+                            <span class='form_inlne_val1' style='width:58px;'>小时/Hour</span>
                         </el-form-item>
                         <el-form-item label="高/低压氮气/High/Low pressure Nitrogen" prop="pressureNitrogen" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:246px;'>{{ruleForm.pressureNitrogen}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.pressureNitrogen" style='width:246px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.pressureNitrogen" style='width:246px;'></el-input>
                             <span class='form_inlne_val1' style='width:74px;'>次/Operation</span>
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="加液压油/Hydraulic" prop="hydraulic" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:254px;'>{{ruleForm.hydraulic}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.hydraulic" style='width:254px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.hydraulic" style='width:254px;'></el-input>
                             <span class='form_inlne_val1' style='width:66px;'>加仑/Gallon</span>
                         </el-form-item>
                         <el-form-item label="充氧气/瓶/Oxygcn Cart/Bottle" prop="oxygenBottle" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:266px;'>{{ruleForm.oxygenBottle}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.oxygenBottle" style='width:266px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.oxygenBottle" style='width:266px;'></el-input>
                             <span class='form_inlne_val1' style='width:54px;'>次/Bottle</span>
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="加滑油/Oil" prop="oil" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:256px;'>{{ruleForm.oil}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.oil" style='width:256px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.oil" style='width:256px;'></el-input>
                             <span class='form_inlne_val1' style='width:68px;'>夸脱/Quart</span>
                         </el-form-item>
                         <el-form-item label="飞机除冰液 (原液)/DF Plus" prop="dfPlus" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:178px;'>{{ruleForm.dfPlus}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.dfPlus" style='width:178px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.dfPlus" style='width:178px;'></el-input>
                             <span class='form_inlne_val1' style='width:142px;'>公斤(公升)/Kilogram(Litre)</span>
                         </el-form-item>
                     </div>
                     <div class='form-item-l'>
                         <el-form-item label="人工时/Man hour" prop="hours" :label-width='labelWidth'>
                             <span v-if="isInfo" class='form_inlne_val' style='width:106px;'>{{ruleForm.people}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.people" style='width:106px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.people" style='width:106px;'></el-input>
                             <span class='form_inlne_val1' style='width:50px;'>人/Man</span>
                             <span v-if="isInfo" class='form_inlne_val' style='width:108px;'>{{ruleForm.hours}}</span>
-                            <el-input v-else type='number' v-model="ruleForm.hours" style='width:108px;'></el-input>
+                            <el-input v-else type='number' min='0' v-model="ruleForm.hours" style='width:108px;'></el-input>
                             <span class='form_inlne_val1' style='width:56px;'>小时/Hour</span>
                         </el-form-item>
                         <el-form-item label="其他" prop="others" :label-width='labelWidth'>
@@ -149,7 +149,7 @@
                             </el-upload>
                             <span  v-if="type=='info'" class='form_inlne_val' style='width:160px;'>{{fileList.map(i=>i.name).toString()}}</span>
                         </el-form-item>
-                        
+
                     </div>
                 </el-form>
             </div>
@@ -297,7 +297,7 @@ export default {
         chargeSaveFn(){
             let ruleForm = this.undefinedToNullFn(this.ruleForm)
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/save`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/save`,
                 method: 'post',
                 data: ruleForm
             })
@@ -313,7 +313,7 @@ export default {
         chargeUpdateFn(){
             let ruleForm = this.undefinedToNullFn(this.ruleForm)
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/update`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/update`,
                 method: 'post',
                 data: ruleForm
             })
@@ -385,7 +385,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     .main-content{
         .header{

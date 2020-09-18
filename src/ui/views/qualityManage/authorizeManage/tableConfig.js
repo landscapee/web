@@ -35,8 +35,7 @@ export const authorizeConfig = (obj,arr) => {
             { prop: 'flightType', label: '授权航班类型',sortProp:"flightType", align: 'center',sort:true,search:{type:'select', prop:'flightType',placeholder:"请选择",data:obj.accreditFlightType,selectProp:['valData','valData']} },
             { prop: 'modelRange', label: '授权机型',formatter:modelRange,sortProp:"modelRange", align: 'center',sort:true,search:{type:'select', prop:'modelRange',placeholder:"请选择",data:arr,selectProp:['name','id']} },
             { prop: 'state', label: '授权状态',formatter:state,sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请选择",data:obj.accreditState,selectProp:['valData','valCode']} },
-             { slot: 'option', label: '关联信息查看' ,width:'230',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+             { slot: 'option', label: '关联信息查看' ,width:'120',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
               ]
 };
 
- 

@@ -26,10 +26,16 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="230"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="100"  >
                         <template  slot-scope="scope">
-                            <el-button  class="copyButton copyButton1" @click="pushStaff('/testManagePushStaff',scope.row)">考试推送员工</el-button>
-                            <el-button  class="copyButton" @click="testPush('/testManageResults',scope.row)">员工考试结果</el-button>
+                            <div>
+                                <span @click="pushStaff('/testManagePushStaff',scope.row)" class="rowSvg">
+                                    <icon iconClass="pushNew" title="考试推送员工"></icon>
+                                </span>
+                                <span @click="testPush('/testManageResults',scope.row)" class="rowSvg" style="margin-left:10px">
+                                    <icon iconClass="trainResult" title="员工考试结果"></icon>
+                                </span>
+                            </div>
                         </template>
                     </el-table-column>
 
@@ -231,7 +237,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
 

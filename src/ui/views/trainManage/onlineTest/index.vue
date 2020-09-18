@@ -18,11 +18,12 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="120"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="80"  >
                         <template  slot-scope="{ row }">
                             <div >
-                                <el-button  class="copyButton copyButton1" @click="lineTest('/onlineTestDo',row)">参加考试</el-button>
-
+                                <span @click="lineTest('/onlineTestDo',row)" :class="'rowSvg'">
+                                    <icon iconClass="exam" title="参加考试"></icon>
+                                </span>
                             </div>
                          </template>
                     </el-table-column>
@@ -183,7 +184,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .onlineTest{
     margin-top:14px;
 

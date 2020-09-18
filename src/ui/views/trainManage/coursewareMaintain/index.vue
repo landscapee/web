@@ -24,11 +24,12 @@
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="fileDown" label="操作" :width="120" >
+                    <el-table-column align="center" slot="fileDown" label="操作" :width="60" >
                         <template  slot-scope="scope">
                             <form action="#" method="GET" ref="formLoad"></form>
-                            <!--<el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton"  >课件下载</el-button>-->
-                            <el-button :disabled="!scope.row.courseFileId||scope.row.downloadPermission=='禁止下载'" class="QoptionButton" @click="fileDown(scope.row)">课件下载</el-button>
+                            <span @click="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'':fileDown(scope.row)" :class="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'rowSvg rowSvgInfo':'rowSvg'">
+                                    <icon iconClass="downloadNew" title="课件下载"></icon>
+                            </span>
                         </template>
                     </el-table-column>
 
@@ -243,7 +244,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .coursewareMaintain{
     margin-top:14px;
     /deep/ .mainTable{

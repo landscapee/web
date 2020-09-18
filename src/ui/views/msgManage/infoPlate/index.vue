@@ -31,7 +31,9 @@
                     </el-table-column>
                     <el-table-column slot="attachment" label="附件"  align="center" >
                         <template slot-scope="{ row }">
-                            <el-button :disabled="!(row.fileInfoList&&row.fileInfoList.length)" @click="downloadFile(row)" size="mini">下载</el-button>
+                            <span @click="(row.fileInfoList&&row.fileInfoList.length)?downloadFile(row):''" :class="(row.fileInfoList&&row.fileInfoList.length)?'rowSvg':'rowSvg rowSvgInfo'">
+                                <icon iconClass="downloadNew" title="下载"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="148" align="center" >
@@ -80,7 +82,7 @@ export default {
     },
    created() {
        this.findDataDictionary();
-      
+
     },
     mounted(){
         this.$eventBus.$on('infoPlate', msg => {
@@ -126,7 +128,7 @@ export default {
         },
         findUnread(){
 			request({
-				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`,
 				method: 'get',
 			})
 			.then((data) => {
@@ -136,7 +138,7 @@ export default {
 					data: data.data
 				});
 			}).catch((error) => {
-					
+
 			});
 		},
         clickAction(action,id){
@@ -162,7 +164,7 @@ export default {
                 this.params.current = 1;
                 this.getList();
             }).catch((error) => {
-            
+
             });
         },
         switchTable(index){
@@ -233,7 +235,7 @@ export default {
                 })
                 .then(() => {
                     request({
-                        url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/delete/${this.selectId}`:`${this.$ip}/mms-notice/notificationRecipient/delete/${this.selectId}`, 
+                        url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/delete/${this.selectId}`:`${this.$ip}/mms-notice/notificationRecipient/delete/${this.selectId}`,
                         method: 'delete',
                     })
                     .then((data) => {
@@ -255,7 +257,7 @@ export default {
         getList(){
 
             request({
-                url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`, 
+                url:this.isActive==0?`${this.$ip}/mms-notice/notificationPublish/list`:`${this.$ip}/mms-notice/notificationRecipient/list`,
                 method: 'post',
                 data:this.isActive==0?{...this.sort,...this.form}:{...this.sort,...this.form,states:[0,1]},
                 params:this.params
@@ -263,7 +265,7 @@ export default {
             .then((data) => {
                 this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -279,12 +281,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-        }    
+        }
     }
 }
 </style>

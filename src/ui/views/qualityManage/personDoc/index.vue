@@ -32,12 +32,19 @@
                         </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option" label="操作" :width="230" >
+                    <el-table-column align="center" slot="option" label="操作" :width="120" >
                         <template  slot-scope="scope">
-                            <el-button class="QoptionButton" @click="seeOther(scope.row,'/userQuali')">资质</el-button>
-                            <el-button class="QoptionButton" @click="seeOther(scope.row,'/userAuth')">授权</el-button>
-                            <el-button class="QoptionButton" @click="seeOther(scope.row,'/userTrain')">培训考核</el-button>
-
+                            <div>
+                                <span @click="seeOther(scope.row,'/userQuali')" class="rowSvg">
+                                    <icon iconClass="qualification" title="资质"></icon>
+                                </span>
+                                <span @click="seeOther(scope.row,'/userAuth')" class="rowSvg" style="margin: 0 10px">
+                                    <icon iconClass="authorization" title="授权"></icon>
+                                </span>
+                                <span @click="seeOther(scope.row,'/userTrain')" class="rowSvg">
+                                    <icon iconClass="check" title="培训考核"></icon>
+                                </span>
+                            </div>
                         </template>
                     </el-table-column>
 

@@ -23,7 +23,7 @@ export const testConfig = (testList,obj) => {
                 { prop: 'businessType', label: '业务类型',sortProp:"businessType", align: 'center',sort:true,search:{type:'select', prop:'businessType',placeholder:"请选择",selectProp:['valData','valData'],data:obj.businessType,} },
                 { prop: 'examStatus', label: '考试状态',sortProp:"examStatus", align: 'center',sort:true,search:{type:'select', prop:'examStatus',placeholder:"请选择",selectProp:['valData','valData'],data:obj.testState} },
                 { prop: 'description', label: '简介',sortProp:"description", align: 'center',sort:true,search:{type:'input', prop:'description',placeholder:"请输入" } },
-                { slot: 'option', label: '操作',width:'230', align: 'center', search:{type:'btn',label:'搜索',icon:"table_search" } },
+                { slot: 'option', label: '操作',width:'100', align: 'center', search:{type:'btn',label:'搜索',icon:"table_search" } },
          ]
 };
 export const testRuConfig = (testList ,obj) => {
@@ -46,4 +46,3 @@ export const testRuConfig = (testList ,obj) => {
                   { slot: 'option', label: '操作',width:'210',  align: 'center', search:{type:'btn',label:'搜索',icon:"table_search"} },
          ]
 };
- 
