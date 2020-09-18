@@ -36,43 +36,43 @@
 
                 <div class="row_tow">
                     <el-form-item  label="部门：" prop="dept">
-                        <span v-if="type=='info'">{{  form.dept }}</span>
+                        <span v-if="type=='info'">{{  form.dept || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.dept" placeholder="由员工名称选择带出"></el-input>
 
                     </el-form-item>
                     <el-form-item label="岗位：" prop="post">
-                        <span v-if="type=='info'">{{form.post}}</span>
+                        <span v-if="type=='info'">{{form.post || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.post" placeholder="由员工名称选择带出"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_tow">
                     <el-form-item  label="岗位等级：" prop="postLevel">
-                        <span v-if="type=='info'">{{  form.postLevel }}</span>
+                        <span v-if="type=='info'">{{  form.postLevel || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.postLevel" placeholder="由员工名称选择带出"></el-input>
 
                     </el-form-item>
                     <el-form-item label="岗位序列：" prop="postSeri">
-                        <span v-if="type=='info'">{{form.postSeri}}</span>
+                        <span v-if="type=='info'">{{form.postSeri || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.postSeri" placeholder="由员工名称选择带出"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_tow">
                     <el-form-item  label="职位：" prop="job">
-                        <span v-if="type=='info'">{{  form.job }}</span>
+                        <span v-if="type=='info'">{{  form.job || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.job" placeholder="由员工名称选择带出"></el-input>
                     </el-form-item>
                 </div>
 
                 <div class="row_tow">
                     <el-form-item  label="授权类型：" prop="authorizationType">
-                        <span v-if="type=='info'">{{  form.authorizationType }}</span>
+                        <span v-if="type=='info'">{{  form.authorizationType || '--'}}</span>
                          <el-select     v-else v-model="form.authorizationType" placeholder="请选择授权类型">
                             <el-option v-for="(opt,index) in options.roleControl" :key="index" :label="opt.valData" :value="opt.valData">
                              </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item  label="授权单位：" prop="authorizedUnitCode">
-                        <span v-if="type=='info'">{{  form.authorizedUnitCode }}</span>
+                        <span v-if="type=='info'">{{  form.authorizedUnitCode || '--'}}</span>
                          <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位">
                              <!--shortName-->
                             <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.id">
@@ -101,7 +101,7 @@
 
                 <div class="row_tow">
                     <el-form-item  label="授权航班类型：" prop="flightType">
-                        <span v-if="type=='info'">{{  form.flightType }}</span>
+                        <span v-if="type=='info'">{{  form.flightType || '--'}}</span>
                         <el-select multiple  filterable v-else v-model="form.flightType" placeholder="请选择授权航班类型">
                             <el-option v-for="(opt,index) in options.accreditFlightType" :key="index" :label="opt.valData" :value="opt.valData">
                             </el-option>
@@ -109,7 +109,7 @@
 
                     </el-form-item>
                     <el-form-item  label="授权生效日期：" prop="startTime">
-                        <span v-if="type=='info'">{{ form.startTime?moment(form.startTime).format('YYYY-MM-DD'):''}}</span>
+                        <span v-if="type=='info'">{{ form.startTime?moment(form.startTime).format('YYYY-MM-DD'):'--'}}</span>
                         <el-date-picker  @focus="focus" :picker-options="pickerOptions" type="date" v-else v-model="form.startTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
 
@@ -124,7 +124,7 @@
 
                     </el-form-item>
                     <el-form-item  label="授权失效日期：" prop="endTime">
-                        <span v-if="type=='info'">{{ form.endTime?moment(form.endTime).format('YYYY-MM-DD'):''}}</span>
+                        <span v-if="type=='info'">{{ form.endTime?moment(form.endTime).format('YYYY-MM-DD'):'--'}}</span>
                         <el-date-picker :disabled="type=='edit'&&dateDis" @focus="focus1" :picker-options="pickerOptions1" type="date" v-else v-model="form.endTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
                 </div>
