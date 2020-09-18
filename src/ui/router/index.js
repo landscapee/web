@@ -123,7 +123,6 @@ let authRoutes = [
                     }
 				]
 			},
-
 			{
 				path: '/authorizeManage',
 				component: () => import('@views/qualityManage/authorizeManage/index'),
@@ -777,8 +776,24 @@ let authRoutes = [
 				]
 			}
 		],
-	}
-	
+	},
+	{
+		path: '/electronicFence',
+		component: Layout,
+		redirect: '/electronicFenceIndex',
+		name: '电子围栏',
+		meta: {title: '电子围栏',icon: 'xxgl' },
+		children: [
+			{
+				path: '/electronicFenceIndex',
+				component: () => import('@views/electronicFence/index'),
+				name: '电子围栏',
+				meta: {title: '电子围栏',icon: '' },
+				children:[]
+			},
+		],
+	},
+
 ];
 let defaultRoutes = [
   {path: '/',name: 'login',	component: () => import('@views/login/login')},

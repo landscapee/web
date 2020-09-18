@@ -30,17 +30,18 @@ import moment from 'moment'
 //公共ip地址和端口
 if(PROGRAM == 'jwxt.dev'){  // 本地
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
+    Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
  }else if(PROGRAM == 'jwxt.test'){ // 测试
     Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$signIp = "http://173.101.1.30:6070/mms-workorder"
+    Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
  }else if(PROGRAM == 'jwxt.build'){ // 开发
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
+     Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
+     Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
  }else if(PROGRAM == 'jwxt.prod'){
     Vue.prototype.$ip = "http://10.35.48.34:9090"
     Vue.prototype.$signIp = "http://10.35.48.34:9090/mms-workorder"
- }
+  }
 import MessageBox from '@/ui/components/userName/index.js';
 Vue.use(MessageBox);
 import singleDialog from '@/ui/components/singleDialog/index.js';
