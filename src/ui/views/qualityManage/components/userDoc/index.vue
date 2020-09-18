@@ -341,7 +341,7 @@
 </script>
 <style scoped lang="scss">
     .courseware{
-        padding:0 30px;
+        /*padding:0 30px;*/
     }
     .hoverSpanFile{
         &>span  {

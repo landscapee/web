@@ -50,12 +50,21 @@
         height:18px;
         width:18px;
          vertical-align: text-top;
-
+        fill:red;
+    }
+    .svg-icon:hover{
+        fill: #3e77ff;
     }
 }
 .rowSvgInfo{
-
+    .svg-icon{
+        fill: #979797;
         cursor: not-allowed!important;
+
+    }
+    .svg-icon:hover{
+        fill: #979797;
+    }
 
 }
 

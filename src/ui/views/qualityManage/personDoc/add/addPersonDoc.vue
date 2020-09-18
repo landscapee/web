@@ -98,13 +98,17 @@
                             <td class="fTd">身份证号</td>
                             <td class="tTd">
                                 <span v-if="type=='info'">{{form.idCard}}</span>
-                                <el-input   v-else v-model="form.idCard" placeholder="请输入身份证号"></el-input>
+                                <el-form-item v-else   prop="idCard">
+                                    <el-input  v-model="form.idCard" placeholder="请输入身份证号" ></el-input>
+                                </el-form-item>
                             </td>
                             <td class="fTd">性别</td>
                             <td class="tTd">
                                 <span v-if="type=='info'">{{form.sex}}</span>
-                                <el-input v-else v-model="form.sex" placeholder="请输入性别"></el-input>
-
+<!--                                <el-input v-else v-model="form.sex" placeholder="请输入性别"></el-input>-->
+                                <el-select v-else v-model="form.sex" clearable placeholder="请选择性别">
+                                    <el-option v-for="item in sexOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+                                </el-select>
                             </td>
                             <td class="fTd">籍贯</td>
                             <td class="sTd" >
@@ -332,9 +336,17 @@
                 userArr:[],
                 rules: {
                     userName: [{ required:true,message:'请选择', trigger: "blur" }],
+                    idCard:  [
+                        {
+                            pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
+                            message: '身份证号格式错误！',
+                            trigger: 'blur'
+                        }
+                    ]
                     // userNumber: [{ required:true,message:'请选择', trigger: "blur" }],
                 },
-                type: "add"
+                type: "add",
+                sexOptions:[{value:"男",label:"男"},{value:"女",label:"女"}]
             };
         },
         mounted(){
@@ -562,7 +574,6 @@
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
-
                             let url
                             if (this.type == 'add') {
                                 url = '/userRecord/save'
@@ -599,7 +610,6 @@
 </script>
 <style scoped lang="scss">
     .addPersonDoc {
-        padding:0 30px;
         .hoverSpanFile{
             &>span  {
                 padding: 15px;

@@ -48,31 +48,28 @@
                     </el-table-column>
                     <el-table-column slot="option" label="操作" align="center" :width="80" >
                         <template slot-scope="{ row }" >
-                                <span  class="rowSvg">
-                                    <span  @click="copyDetails(row)" v-if="!row.copy">
-                                    <icon iconClass="copyjx"  title="复制绩效明细" ></icon></span>
-                                    <icon iconClass="copyInfo" v-else title="复制绩效明细" class="rowSvgInfo"></icon>
-                                </span>
-						</template>
-					</el-table-column>
-				</SearchTable>
-				<SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig"
-							 refTag="right-table" ref="right-table"
-							 @requestTable="requestTable(arguments[0],'right','right-table')"
-							 @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')"
-							 @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')">
-					<el-table-column slot="radio" label="选择" :width="49">
-						<template slot-scope="{ row }">
-							<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-							<icon iconClass="ky" class="tab_radio" v-else></icon>
-						</template>
-					</el-table-column>
-				</SearchTable>
-			</div>
-		</div>
-		<CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
 
-	</div>
+                                    <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="copyjx"  title="复制绩效明细" ></icon>
+                                    </span>
+
+                          </template>
+                    </el-table-column>
+                </SearchTable>
+                <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
+                    <el-table-column slot="radio" label="选择" :width="49"   >
+                        <template slot-scope="{ row }">
+                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                        </template>
+                    </el-table-column>
+                </SearchTable>
+            </div>
+        </div>
+        <CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
+
+    </div>
+
 </template>
 <script>
     import CopyDetails from './copyDetails'

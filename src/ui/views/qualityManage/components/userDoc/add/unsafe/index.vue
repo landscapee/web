@@ -47,11 +47,24 @@ export default {
             form:{},
             row:{},
             sort:{},
-
+            unsafeTypeObj:{},
             selectId:null
         };
     },
    created() {
+       request({
+           url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           params: {delete: false},
+           data: ["unsafeType"]
+       }).then(d => {
+           let obj = d.data
+           this.options = obj
+           this.options.unsafeType.map((k, l) => {
+               this.unsafeTypeObj[k.valCode] = k.valData
+           })
+           this.tableConfig = inOfficeInfoConfig({}, this.unsafeTypeObj)
+       });
 
     },
 
@@ -180,7 +193,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
 .top-toolbar{
