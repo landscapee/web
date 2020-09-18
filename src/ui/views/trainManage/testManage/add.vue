@@ -99,7 +99,7 @@
                 <div class="  row_one">
                     <el-form-item label="考试简介：" prop="description">
                         <span v-if="type=='info'">{{form.description}}</span>
-                        <el-input v-else v-model="form.description" type="textarea" :rows="3"  placeholder="请输入考试简介"></el-input>
+                        <el-input v-else v-model="form.description" type="textarea" :rows="3"  placeholder="请输入考试简介" maxlength="255" ></el-input>
                     </el-form-item>
                 </div>
             </el-form>

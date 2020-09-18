@@ -205,7 +205,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
 .top-toolbar{
