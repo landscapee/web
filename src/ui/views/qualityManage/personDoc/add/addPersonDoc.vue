@@ -365,7 +365,7 @@
                     header:{
                         'Content-Type':'multipart/form-data'
                     },
-                    url:`${this.$ip}/download/userRecord/${this.$route.query.id}`,
+                    url:`${this.$ip}/mms-qualification/download/userRecord/${this.$route.query.id}`,
                     method: 'get',
                     responseType: 'blob'
                 }).then(d => {
@@ -374,7 +374,7 @@
                         arr=d.headers['content-disposition'].split('=')[1].split('.')
                     }
                     let content = d;
-                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    let blob = new Blob([content],{type:'application/msword'})
                     const fileName = `${decodeURI(arr[0])}`
                     if ('download' in document.createElement('a')) { // 非IE下载
                         const elink = document.createElement('a')
