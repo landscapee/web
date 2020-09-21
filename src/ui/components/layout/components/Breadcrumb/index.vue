@@ -2,9 +2,10 @@
 	<div class="breadcrumb_main">
 		<transition-group name="breadcrumb">
 			<span v-for="(item, index) in levelList" :key="item.path">
+
 				<img v-if="index == 0" :src="ic_arrow"  class="source_img"/>
 				<img v-if="index != 0" :src="ic_arrow_2" class="arrow_img"/>
-				<span v-if="index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
+				<span v-if="index == levelList.length - 1" class="no-redirect no-redirect-last">{{ item.meta.title }}</span>
 				<a v-else @click.prevent="handleLink(item)" class="no-redirect">{{ item.meta.title }}</a>
 			</span>
 		</transition-group>
@@ -42,7 +43,8 @@ export default {
 			//   matched = [{ path: '/home', meta: { title: '首页' }}].concat(matched)
 			// }
 
-			this.levelList = matched.filter((item) => item.meta && item.meta.title && item.meta.breadcrumb !== false);
+            this.levelList = matched.filter((item) => item.meta && item.meta.title && item.meta.breadcrumb !== false);
+            console.log(this.levelList)
 		},
 		isDashboard(route) {
 			const name = route && route.name;
@@ -58,12 +60,15 @@ export default {
 			return toPath(params);
 		},
 		handleLink(item) {
-			const { redirect, path } = item;
+            console.log(item,11111,111);
+            console.log(this.$router);
+            const { redirect, path ,meta} = item;
 			if (redirect) {
 				this.$router.push(redirect);
 				return;
 			}
-			this.$router.push(path);
+
+ 			this.$router.push({path,query:meta.paramsId});
 		},
 	},
 };
@@ -75,7 +80,7 @@ export default {
 	align-items: center;
 	height: 40px;
 	width: 100%;
-	float: left;
+
 	color: #6A7785;
 	border-bottom:solid 1px #E4E8EB;
 	img{

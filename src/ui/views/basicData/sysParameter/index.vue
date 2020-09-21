@@ -109,28 +109,33 @@ export default {
             }
         },
         delData(){
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning',
-			})
-            .then(() => {
-                request({
-                    url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
-                    method: 'post',
-                    data:{id:this.selectId}
+            if(this.selectId!=null){
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
                 })
-                .then((data) => {
-                   this.$message({type: 'success',message: '删除成功'});
-                    this.getList();
+                .then(() => {
+                    request({
+                        url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
+                        method: 'post',
+                        data:{id:this.selectId}
+                    })
+                    .then((data) => {
+                    this.$message({type: 'success',message: '删除成功'});
+                        this.getList();
+                        this.selectId = null;
+                    })
                 })
-            })
-            .catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除',
+                    });
                 });
-            });
+            }else{
+                this.$message.error('请先选中一行数据');
+            }
         },
         getList(){
            request({
@@ -163,7 +168,6 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;

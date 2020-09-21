@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue模板</title>
+    <script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style type="text/css">
+    html,
+    body #div{
+        margin: 0px;
+        height: 100%;
+        width: 100%
+    }
+
+    /*地图容器*/
+    .container {
+        width: 100%;
+        height: 100%
+    }
+
+    /*地图按钮最外层容器*/
+    .bnmap-box {
+        position: fixed;
+        top: 10px;
+        right: 10px
+    }
+</style>
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript"
+        src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>
+<body>
+<!--装地图容器-->
+<div id="app">
+    <div id="map" class="container"></div>
+    <div class="bnmap-box">
+        <div class="layui-input-inline" style="width: 600px;">
+            <input type="text" id="keyword" value="" placeholder="输入关键字查询" class="layui-input"
+                   style="float:left;height:16px;width:58%;margin-right:8px;"/>
+            <button id="search-button" data-title="搜索" data-tooltip="2"
+                    class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm"
+                    style="float:left">查询
+            </button>
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="addF();"
+                    style="float:left">添加
+            </button>
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="edit();"
+                    style="float:left">修改
+            </button>
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="deleteF();"
+                    style="float:left">删除
+            </button>
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm"
+                    onclick="clearQuery();"
+                    style="float:left">清除
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 临时图形存放
+
+
+    var temporaryGraphic = null;
+    var BNEdit = null;
+    var BNMap = null;
+    var bnSymbol = null;
+    // 编辑标识
+    var ISEdit = false,
+        isadd = false;
+    var edit = null,
+        addF, deleteF;
+    var BNGeometry;
+    var layer;
+    var windows;
+    var attributeQuery;
+    var propertiesMap = {
+        "mapId03": "2576", //底图图层id
+        "layerId01": "33723", //电子围栏图层id
+    };
+    var layerId = propertiesMap.layerId01;
+
+
+    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys", "js/BNGeometry", "js/jquery-3.2.1.min"],
+        function (BNSymbol, util, BNFactory, BNDirectorys) {
+            bnSymbol = new BNSymbol();
+            BNMap = new BNFactory(propertiesMap.mapId03, {
+                "id": "map",
+                "options": {
+                    logo: false,
+                    slider: false
+                }
+            });
+            BNMap.bindEvent(null, "load", function (evt) {
+                BNMap.setPointCenter();
+                regEvent();
+                initQuery();
+                window.parent.postMessage('success')
+            });
+            BNGeometry = new BNFactory("BNGeometry", BNMap);
+            BNEdit = new BNFactory("BNEdit", BNMap);
+            windows = new BNFactory("BNWindow");
+            layer = BNMap.getLayer(layerId);
+        });
+
+    function regEvent() {
+        //初始化地图编辑功能
+        BNMap.bindEvent(layerId, "click", function (event) {
+            if (ISEdit) {
+                var html = `<div class="editTuc">
+                                <p>名称：<input type="text" name="name" value="${event.graphic.attributes.NAME}"/></p>
+                                <p>OBJECTID：<input type="text" name="OBJECTID" value="${event.graphic.attributes.OBJECTID}"/></p>
+                            </div>`
+                windows.setTitle("基本信息");
+                windows.setContent(html);
+                windows.show(event);
+            } else {
+                var html = `<div class="seeTuc">
+                                <p>名称：${event.graphic.attributes.NAME}</p>
+                                <p>OBJECTID：${event.graphic.attributes.OBJECTID}</p>
+                            </div>`
+                windows.setTitle("基本信息");
+                windows.setContent(html);
+                windows.show(event);
+            }
+        });
+
+        BNMap.InnerMap.on("click", function () {
+            if (ISEdit && !isadd && temporaryGraphic) {
+                let val = $('#keyword').val();
+                let attr = temporaryGraphic.graphic.attributes;
+                attr.NAME = val ? val : 'testadd';
+                BNEdit.endOperation(layerId, temporaryGraphic.graphic, attr, function () {
+                    ISEdit = false;
+                    BNEdit.stop();
+                }, function () {
+                    ISEdit = false;
+                    BNEdit.stop();
+                });
+            }
+        });
+        // 面图层绑定事件
+        layer.on("click", function (event) {
+            // 每次拿到最新的图形
+            temporaryGraphic = event;
+            if (ISEdit && !isadd) {
+                BNEdit.startOperation(event, function (data) {
+                }); //
+            }
+        });
+    }
+
+    function initQuery() {
+        $("#search-button").bind("click", function () {
+            attributeQuery();
+        });
+    }
+
+    addF = function () {
+        isadd = true;
+        // 启动编辑
+        BNEdit.start("add");
+        ISEdit = true;
+        // 编辑标识修改
+        BNEdit.startOperation('polygon', function (data) {
+            let attr = {
+                NAME: 'testadd'
+            };
+            var graphics = BNMap.graphic(data, bnSymbol);
+            BNEdit.endOperation(layerId, graphics, attr, function () {
+                alert("添加成功");
+                ISEdit = false;
+                BNEdit.stop();
+                isadd = false;
+            }, function () {
+                alert("添加失败");
+                ISEdit = false;
+                BNEdit.stop();
+                isadd = false;
+            });
+        }, function (data) {
+        });
+
+    };
+    edit = function () {
+        // 启动编辑
+        BNEdit.start("edit");
+        // 编辑标识修改
+        ISEdit = true;
+    };
+    deleteF = function () {
+        // 启动编辑
+        BNEdit.start("delete");
+        // 编辑标识修改
+        ISEdit = true;
+    };
+
+    function clearQuery() {
+        BNMap.clear();
+        BNMap.clearHighLight();
+    }
+
+    attributeQuery = function () {
+        var simpleLineSymbol = bnSymbol.simpleLineSymbol("solid", "green", 2); //线
+        var polygonSymbol = bnSymbol.polygonSymbol(
+            "solid", //面的样式  实线
+            simpleLineSymbol, //边框样式
+            "rgba(255, 0, 255, 0.5)" //面的填充颜色
+        );
+        BNMap.mapQuery(
+            layerId, {
+                "fields": ["NAME"], //要查询的字段
+                "where": "NAME like '%" + $("#keyword").val() + "%'", //查询参数
+                // "where": "NAME = " + $("#keyword").val() + "%'", //查询参数
+                "Symbol": {
+                    "polygon": polygonSymbol
+                }
+            },
+            true, //是否高亮
+            true, //是否定位
+            function (data) { //查询 ，data是查询结果集
+                // clearQuery()
+            },
+            function (data) { //查询报错后的异常回调
+            }
+        );
+    }
+
+    function onclickLayui(text) {
+        layui.use('layer', function () {
+            layer.open({
+                type: 1
+                , offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                , id: 'layerDemo' + 'auto' //防止重复弹出
+                , content: text
+                , btnAlign: 'c' //按钮居中
+                , shade: 0 //不显示遮罩
+                , yes: function () {
+                    layer.closeAll();
+                }
+            });
+        })
+    }
+
+
+    window.addEventListener(
+        'message',
+        function (data) {
+            if (data) {
+            }
+        },
+        false,
+    );
+
+</script>
+
+
+</body>
+</html>

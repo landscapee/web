@@ -1,20 +1,17 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testMaintenanceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceAddAdd'" :key="$route.path"></router-view>
-
-        <div v-else-if="this.$router.history.current.path == '/testMaintenance'" :key="$route.path" class="sysParameter">
+         <router-view v-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
+        <div v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path" class="sysParameter">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>试卷维护</span>
+                    <span>员工考试结果</span>
                 </div>
                 <div class="top-toolbar">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel">
+                        <icon iconClass="export" ></icon>
+                        导出Excel
+                    </div>
                 </div>
             </div>
             <div class="main-content">
@@ -25,33 +22,66 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <!--<el-table-column :show-overflow-tooltip="true" slot="remark" label="备注" :width="190" fixed="right">-->
-                        <!--<template  slot-scope="{ row }">-->
-                            <!--<span>{{row.remark}}</span>-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
+                    <el-table-column   slot="employeeFileId" label="试卷名称"   >
+                        <template  slot-scope="scope">
+                            <div @click="upload(scope.row)" class="G_cursor" style="color:#0a76a4;text-align: center">
+                                附件
+                                <a href="" ref="aA"></a>
+                            </div>
+
+                        </template>
+                    </el-table-column>
+                    <el-table-column   slot="option" label="操作" :width="210"  >
+                        <template  slot-scope="scope">
+                            <div style="height:40px;line-height: 26px;text-align: center">
+                                <el-button  :disabled="!scope.row.employeeFileId"  @click="scoreEntry(scope.row)"
+                                              style=" padding:3px 7px; background: black; color:white;margin: 0">
+                                    <div>分数</div>
+                                    <div>录入</div>
+                                </el-button>
+                                <el-button  class="copyButton" @click="testResults('/testManagePushStaff',scope.row)"
+                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
+
+                                    <div>考试结果</div>
+                                    <div>推送</div>
+                                </el-button>
+                                <el-button  class="copyButton" @click="uploadTest( scope.row)"
+                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
+
+                                    <div>纸质试卷</div>
+                                    <div>归档上传</div>
+                                </el-button>
+                            </div>
+
+                        </template>
+                    </el-table-column>
 
                 </SearchTable>
             </div>
         </div>
+        <SeeImg ref="SeeImg"></SeeImg>
+        <UploadTest ref="UploadTest" @getList="getList"></UploadTest>
+        <ScoreEntry ref="ScoreEntry" @getList="getList"></ScoreEntry>
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/SearchTable';
+    import UploadTest from './uploadTest'
+    import ScoreEntry from './scoreEntry'
+ import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { testMainConfig } from './tableConfig.js';
+import { testRuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable
+        SearchTable,UploadTest,ScoreEntry
 	},
     name: '',
     data() {
         return {
-            tableData:{records:[]},
-            tableConfig:testMainConfig(),
+            tableData:{records:[ ]},
+            tableConfig:testRuConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
@@ -59,10 +89,28 @@ export default {
             form:{},
             row:{},
             sort:{},
-            selectId:null
+            selectId:null,
         };
     },
    created() {
+       request({
+           url:`${this.$ip}/mms-training/paperInfo/list`,
+           method: 'post',
+           data:{},
+           params:{size:10000,current:1}
+       }).then((data) => {
+           request({
+               url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+               method: 'post',
+               params:{delete:false},
+               data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
+           }).then(d => {
+               let obj=d.data
+               this.tableConfig =testRuConfig(data.data.records||[],obj)
+
+           });
+       })
+
        this.getList();
     },
     watch:{
@@ -72,9 +120,75 @@ export default {
         }
     },
     methods: {
-        exportExcel(){
-             this.$refs.a.click()
+        upload(row){
+            if(row.employeeFileId){
+                request({
+                    // application/x-www-form-urlencoded
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-file/get-file-by-id/${row.employeeFileId }`,
+                    method:'GET',
+
+                }).then((d) => {
+                    this.$refs.SeeImg.open(d.data,'纸制试卷查看')
+                });
+            }else {
+                this.$message.info('暂无附件')
+            }
+
         },
+        testResults(path,row){
+            request({
+                url:`${this.$ip}/mms-training/examResult/send` ,
+                method: 'post',
+                data:{employeeId:row.employeeId,examId:row.examId,employeeName:row.employeeName}
+            }).then((d) => {
+                if(d.code==200){}
+                    this.getList();
+                    this.$message({type: 'success',message: '推送成功'});
+                })
+        },
+        scoreEntry(row){
+            
+            this.$refs.ScoreEntry.open(row)
+        },
+        uploadTest(row){
+             this.$refs.UploadTest.open(row.id)
+        },
+
+        exportExcel(){
+            request({
+                header:{
+                    'Content-Type':'multipart/form-data'
+                },
+                url:`${this.$ip}/mms-training/examResult/exportByExamId/${this.$route.query.id}`,
+                method: 'get',
+                 responseType: 'blob'
+            }).then(d => {
+                let arr=[]
+                if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                    arr=d.headers['content-disposition'].split('=')[1].split('.')
+                }
+                  let content = d;
+                let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = `${decodeURI(arr[0])}`
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }else { // IE10+下载
+                    navigator.msSaveBlob(blob, fileName)
+                }
+            });
+
+        },
+
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null;
@@ -133,57 +247,33 @@ export default {
                 }
             }
         },
-        delData(){
-            if(this.selectId==null){
-                this.$message.error('请先选中一行数据');
-            }else{
-                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                })
-                    .then(() => {
-                        request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
-                            method: 'delete',
-                            // params:{id:this.selectId}
-                        })
-                            .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
-                            })
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除',
-                        });
-                    });            }
 
-        },
         getList(){
             let data={...this.form}
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
-                }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
-                    }
-                    delete data.infTime
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-training/examResult/list`,
                  method: 'post',
-                data:{...this.sort,...data},
+                data:{...this.sort,...data,examId:this.$route.query.id},
                params:{...this.params,}
             })
-            .then((data) => {
-                  this.tableData = extend({},
-                     {...data.data}
-                 );
+            .then((d) => {
+                request({
+                    url:`${this.$ip}/mms-training/examInfo/info/${this.$route.query.id}`,
+                    method: "get",
+                }).then(d1 => {
+                    d.data.records= d.data.records.map((k,l)=>{
+                        return {...d1.data,...k}
+                    })
+                    this.tableData = extend({},
+                        {...d.data}
+                    );
+                    console.log(this.tableData,1,1);
+                })
 
              })
         },
@@ -204,7 +294,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
     
 }
 </style>

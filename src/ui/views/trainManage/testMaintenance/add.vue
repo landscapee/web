@@ -1,15 +1,15 @@
 <template>
-    <div class="add">
+    <div class="addTest">
 
-        <div   class="top-content">
-            <div class="top-content-title">
-                <span>试卷{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+        <div   class="QCenterRight">
+            <div class="QHead">
+              试卷{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
-            <div    class="top-toolbar">
+            <div    class="QheadRight">
                 <div @click="preview"  >
                     <icon iconClass="info"></icon>预览
                 </div>
-                <div @click="exportTest"  v-if="type!='add1'">
+                <div :class="type!='add'?'':'isDisabled'" @click="exportTest"  >
                     <icon iconClass="export"></icon>导出
                 </div>
                 <div @click="type!='info'?saveForm('form'):()=>{}" v-if="type!='info'" >
@@ -20,110 +20,101 @@
                 </div>
             </div>
         </div>
-        <div style="  font-size: 18px" >试卷基本信息</div>
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
+        <div style="  font-size: 18px;font-weight: bold" >试卷基本信息</div>
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
 
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
+            <el-form  label-position="right"  :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="试卷名称：" prop="infSources">
-                        <span v-if="type=='info'">{{form.infSources}}</span>
-                        <el-input v-else v-model="form.infSources" placeholder="请输入试卷名称"></el-input>
+                    <el-form-item label="试卷名称：" prop="paperName">
+                        <span v-if="type=='info'">{{form.paperName}}</span>
+                        <el-input v-else v-model="form.paperName" placeholder="请输入试卷名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="试卷编码：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime?form.infTime.split(' ')[0]:''}}</span>
-                        <el-input v-else v-model="form.infSources" placeholder="请输入试卷编码"></el-input>
+                    <el-form-item label="试卷编码：" prop="paperCode">
+                        <span v-if="type=='info'">{{  form.paperCode}}</span>
+                        <el-input v-else v-model="form.paperCode" placeholder="请输入试卷编码"></el-input>
                     </el-form-item>
-                    <el-form-item label="考试时长：" prop="place">
-                        <span v-if="type=='info'">{{form.place}}</span>
-                        <el-input v-else v-model="form.place" placeholder="请输入考试时长"></el-input>分
+                    <el-form-item style="position: relative" label="考试时长：" prop="totalTime">
+                        <span v-if="type=='info'">{{form.totalTime}}分钟</span>
+                        <el-input v-else type="number" v-model="form.totalTime" placeholder="请输入考试时长"></el-input>
+                        <span v-if="type!='info'" style="position: absolute;top:0;right:-20px">分</span>
                     </el-form-item>
-                    <el-form-item label="试卷类别：" prop="responsibleUnit">
-                        <span v-if="type=='info'">{{form.responsibleUnit}}</span>
-                        <el-select v-else clearable v-model="form.situation" placeholder="请选择试卷类别">
-                            <el-option label="资质类" value="资质类"> </el-option>
-                            <el-option label="资质类" value="资质类"> </el-option>
-                            <el-option label="入职培训类" value="入职培训类"> </el-option>
-                            <el-option label="日常管理类" value="日常管理类"> </el-option>
-                            <el-option label="专业类" value="专业类"> </el-option>
+                    <el-form-item label="试卷类别：" prop="paperType">
+                        <span v-if="type=='info'">{{form.paperType}}</span>
+                        <el-select v-else clearable v-model="form.paperType" placeholder="请选择试卷类别">
+
+                            <el-option v-for="(opt,index) in options.paperCategory" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="考试类型：" prop="situation">
-                        <span v-if="type=='info'">{{form.situation}}</span>
-                         <el-select v-else clearable v-model="form.situation" placeholder="请选择考试类型">
-                            <el-option label="开放式" value="开放式"> </el-option>
-                            <el-option label="封闭式" value="封闭式"> </el-option>
-                        </el-select>
+                    <el-form-item label="考试类型：" prop="testType">
+                        <span v-if="type=='info'">{{form.testType}}</span>
+                         <el-select v-else clearable v-model="form.testType" placeholder="请选择考试类型">
+                             <el-option v-for="(opt,index) in options.testCategory" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
+                         </el-select>
                     </el-form-item>
-                    <el-form-item label="资质类型：" prop="situation">
-                        <span v-if="type=='info'">{{form.situation}}</span>
-                         <el-select v-else clearable v-model="form.situation" placeholder="请选择考试资质类型">
-                            <el-option label="维修" value="维修"> </el-option>
-                            <el-option label="桥载" value="桥载"> </el-option>
-                            <el-option label="勤务" value="勤务"> </el-option>
-                            <el-option label="安全" value="安全"> </el-option>
-                        </el-select>
+                    <el-form-item label="资质类型：" prop="qualificationType">
+                        <span v-if="type=='info'">{{form.qualificationType}}</span>
+                         <el-select v-else clearable v-model="form.qualificationType" placeholder="请选择考试资质类型">
+                             <el-option v-for="(opt,index) in options.qualificationType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                         </el-select>
                     </el-form-item>
-                    <el-form-item label="业务类型：" prop="situation">
-                    <span v-if="type=='info'">{{form.situation}}</span>
-                    <el-select v-else clearable v-model="form.situation" placeholder="请选择业务类型">
-                        <el-option label="维修" value="维修"> </el-option>
-                        <el-option label="桥载" value="桥载"> </el-option>
-                        <el-option label="勤务" value="勤务"> </el-option>
-                        <el-option label="质量" value="质量"> </el-option>
+                    <el-form-item label="业务类型：" prop="businessType">
+                    <span v-if="type=='info'">{{form.businessType}}</span>
+                    <el-select v-else clearable v-model="form.businessType" placeholder="请选择业务类型">
+                        <el-option v-for="(opt,index) in options.businessType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                     </el-select>
                 </el-form-item>
-                    <el-form-item label="适用对象：" prop="situation">
-                    <span v-if="type=='info'">{{form.situation}}</span>
-                    <el-select v-else clearable v-model="form.situation" placeholder="请选择适用对象">
-                        <el-option label="机务部" value="机务部"> </el-option>
-                        <el-option label="桥载项目" value="桥载项目"> </el-option>
-                        <el-option label="勤务项目" value="勤务项目"> </el-option>
-                        <el-option label="维修项目" value="维修项目"> </el-option>
-                        <el-option label="质量室" value="质量室"> </el-option>
-                        <el-option label="培训室" value="培训室"> </el-option>
-                        <el-option label="工程技术资料室" value="工程技术资料室"> </el-option>
+                    <el-form-item label="适用对象：" prop="suitableUser">
+                    <span v-if="type=='info'">{{form.suitableUser}}</span>
+                    <el-select v-else clearable v-model="form.suitableUser" placeholder="请选择适用对象">
+                        <el-option v-for="(opt,index) in options.applyObject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                     </el-select>
                 </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
-                    <el-form-item label="试题简介：" prop="version">
-                        <span v-if="type=='info'">{{form.version}}</span>
-                        <el-input v-else v-model="form.version" placeholder="请输入试题简介"></el-input>
+                    <el-form-item label="试卷简介：" prop="description">
+                        <span v-if="type=='info'">{{form.description}}</span>
+                        <el-input v-else v-model="form.description" placeholder="请输入试题简介"></el-input>
                     </el-form-item>
 
                 </div>
             </el-form>
         </div>
         <div class="headDiv1">
-            <div style="font-size: 18px" >所含试题 <span style="color:#7F7F7F;font-size: 18px">（数量{{form.arrTable.length}}）</span></div>
+            <div  > <span style="font-size: 18px;font-weight: bold">所含试题</span>  <span style="color:#7F7F7F;font-size: 18px">（数量{{arrTable.records&&arrTable.records.length}}）</span></div>
             <div class="topToolbar">
-                <div @click="importExcel"><icon iconClass="add" ></icon>导入</div>
-                <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                <div @click="addOrEditOrInfo('info')"><icon iconClass="remove" ></icon>详情</div>
-                <div @click="exportExcel()">
-                    <icon iconClass="export" ></icon>导出
-                    <a ref="a" :href="`${this.$ip}/qualification/download/securityMerits`"></a>
-                </div>
+                <div @click="type=='info'?'':importExcel() " :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  ></icon>导入</div>
+                <div @click="type=='info'?'':addOrEditOrInfo('add') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add" ></icon>新增</div>
+                <div @click="type=='info'?'':addOrEditOrInfo('edit') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit" ></icon>编辑</div>
+                <div @click="type=='info'?'':delData('left','leftSelectId') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove" ></icon>删除</div>
+                <div @click="addOrEditOrInfo('info')"  ><icon iconClass="info" ></icon>详情</div>
+                <!--<div @click="exportExcel()">-->
+                    <!--<icon iconClass="export" ></icon>导出-->
+                    <!--<a ref="a" :href="`${this.$ip}/mms-training/download/securityMerits`"></a>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="TableContent main-content ">
-            <SearchTable  ref="searchTable" :data="form.arrTable" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                <el-table-column slot="radio" label="选择" :width="49" fixed="left">
-                    <template slot-scope="{ row }">
-                        <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                        <icon  iconClass="ky" class="tab_radio" v-else></icon>
+
+            <SearchTable   ref="searchTable" :data="arrTable" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <el-table-column slot="radio" label="选择" :width="49"  >
+                    <template slot-scope="{ row ,$index}">
+                        <div >
+                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                        </div>
                     </template>
                 </el-table-column>
             </SearchTable>
-
         </div>
         <ExportTest ref="ExportTest" ></ExportTest>
-        <ImportExcel ref="ImportExcel" ></ImportExcel>
+        <ImportExcel ref="ImportExcel" @getTableData="getList"></ImportExcel>
     </div>
 </template>
 <script>
@@ -140,92 +131,175 @@
         },
         name: "",
         data() {
-            const checkInfNumber = (rule, value, callback) => {
+            const paperCode = (rule, value, callback) => {
                 if (!value) {
                      return callback(new Error('试卷编码不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-training/paperInfo/verify?paperCode=${value}&id=${this.$route.query.id||null}`,
                         method: 'get',
-                    }).then(response => {
-                        console.log(response,10);
-                        if (!response.data) {
-
-                            callback();
-                        } else {
+                    }).then(d => {
+                        console.log(d,10);
+                        if(d.code==200){
+                            if (!d.data) {
+                                callback();
+                            } else {
+                                callback("该试卷编码已存在");
+                            }
+                        }else {
                             callback("该试卷编码已存在");
                         }
+
+                    });
+                }
+            };
+            const paperName = (rule, value, callback) => {
+                if (!value) {
+                     return callback(new Error('试卷编码不能为空'));
+                } else {
+                    request({
+                        url:`${this.$ip}/mms-training/paperInfo/verifyName?paperName=${value}&id=${this.$route.query.id||null}`,
+                        method: 'get',
+                    }).then(d => {
+                         if(d.code==200){
+                            if (!d.data) {
+                                callback();
+                            } else {
+                                callback("该试卷名称已存在");
+                            }
+                        }else {
+                            callback("该试卷名称已存在");
+                        }
+
                     });
                 }
             };
             return {
-                form: {
-                    arrTable:[],
-                },
+                form: {},
+                formT:{},
                 rules: {
-                    infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
+                    paperName: [{required: true, validator:paperName, trigger: "blur" }],
+                    totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" }],
+                    testType: [{ required: true, message: "请选择考试类型", trigger: "blur" }],
+                     paperCode: [{ required: true, validator:paperCode, trigger: "blur" }],
                   },
-                 tableConfig:testMainAddConfig(),
+                 tableConfig:testMainAddConfig({}),
                 params:{
                   size:15,
                   current:1,
                 },
-                index:null,
-                row:null,
+                arrTable:{},
+                options:{},
+                 row:null,
                 sort:{},
                 selectId:null,
-                type: "add"
+                type: "add",
+
             };
         },
 
 
         created() {
-             if (this.$route.query ) {
-                console.log(1,1,this.$router);
-                this.type = this.$route.query.type;
-                this.$route.meta.title =
-                    this.type == "add"
-                        ? "试卷-新增"
-                        : this.type == "edit"
-                        ? "试卷-编辑"
-                        : this.type == "info"
-                            ? "试卷-详情"
-                            : "";
-                 if(this.$route.query.data){
-                     let data=JSON.parse( this.$route.query.data)
-                     this.form={...data}
-                 }
-                 if(this.$route.query.row){
-                     let row=JSON.parse( this.$route.query.row)
-                     this.row={...row}
-                     this.index=row.index
-                 }
+            if(this.$router.history.current.path == '/testMaintenanceAdd'){
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    data:["testCategory",'selectType', "paperCategory","qualificationType","businessType","applyObject",]
+                }).then(d => {
+                    this.options=d.data
+                    let obj=d.data
+                    this.tableConfig=testMainAddConfig(obj)
+                });
+
             }
+            this.initPage()
+
         },
         methods: {
-            preview() {
+            initPage(){
+                if (this.$route.query ) {
+                    console.log(1,1,this.$router);
+                    this.type = this.$route.query.type;
+
+                    this.$route.meta.title =
+                        this.type == "add"
+                            ? "试卷-新增"
+                            : this.type == "edit"
+                            ? "试卷-编辑"
+                            : this.type == "info"
+                                ? "试卷-详情"
+                                : "";
+                    if(this.type!='add'){
+                        this.getDetails()
+
+                    }
+                }
+            },
+            preview(){
+
+                if(this.form.id){
+                    this.$router.push({path:'/testMaintenanceSee',query:{ type:this.type,id:this.form.id, }});
+
+                }else {
+                    this.$message.error('请先保存试卷基本信息');
+                }
 
             },
             exportTest() {
                 console.log(1);
-                this.$refs.ExportTest.open(this.form)
+                if(this.type!='add'){
+                    this.$refs.ExportTest.open(this.form)
+                }
             },
             importExcel() {
                 console.log(1);
-                this.$refs.ImportExcel.open(this.form)
+                if(this.$route.query.id){
+                    this.$refs.ImportExcel.open(this.form.id)
+                }else {
+                    this.$message.error('请先保存试卷基本信息');
+                }
             },
             exportExcel() {
 
             },
-            resetForm() {
-                this.form = { arrTable:[],};
-                this.row=null
-                this.index=null
+            getList(){
+                request({
+                    url:`${this.$ip}/mms-training/questionInfo/list`,
+                    method: 'post',
+                    params:this.params,
+                    data:{paperId:this.form.id,...this.formT ,...this.sort}
+                }).then(data => {
+                     if(data.code==200){
+                        this.arrTable=data.data
+                        this.row=null
+                    }
+
+                });
             },
+            getDetails() {
+                request({
+                    url:`${this.$ip}/mms-training/paperInfo/info/${this.$route.query.id}`,
+                    method: 'get',
+                }).then(data => {
+                     if(data.code==200){
+                        this.form={...data.data,questionInfoList:data.data.questionInfoList||[],}
+                        this.getList()
+                     }
+
+                });
+            },
+            resetForm(){
+                if(this.form.id){
+                    this.form = {id:this.form.id };
+                }else{
+                    this.form = {};
+                }
+                this.row=null
+             },
             requestTable(searchData){
-                this.form = searchData;
+                this.formT = searchData;
                 this.selectId=null;
-                    this.tableData={records:[]};
+                this.tableData={records:[]};
                 this.params.current = 1;
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.getList();
@@ -243,23 +317,20 @@
                 if(num!=2){
                     this.sort['order'] = column.property+','+num;
                 }
-
-                this.$refs.searchTable.$refs.body_table.setCurrentRow();
+                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
-                console.log(column.property,column.order, this.sort,11);
-                this.getList();
+                 this.getList();
             },
             listenToCheckedChange(row, column, event){
 
                 let select = row.selected;
-                this.form.arrTable.map((r,l) =>{
+                this.arrTable.records.map((r,l) =>{
                     if(r.selected){
                         r.selected = false;
                     }
 
                 })
-                this.index=row.index
-                row.selected  = !select;
+                 row.selected  = !select;
                 if(row.selected ){
                     this.row = row;
                 }else {
@@ -267,19 +338,18 @@
                 }
 
                 this.params.current = 1;
-                console.log(row, column, event,199);
-                this.$set(this.form.arrTable,row.index,row);
-            },
+                 this.$set(this.arrTable.records,row.index,row);
+             },
 
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
                     this.$refs[form].validate(valid => {
                         if (valid) {
                             let url
-                            if (this.type == "add") {
-                                url = `${this.$ip}/qualification/securityInformation/save`
+                            if (this.type == "add"&&!this.form.id) {
+                                url = `${this.$ip}/mms-training/paperInfo/save`
                             } else {
-                                url = `${this.$ip}/qualification/securityInformation/update`
+                                url = `${this.$ip}/mms-training/paperInfo/update`
                             }
                             request({
                                 url,
@@ -288,10 +358,13 @@
                             })
                                 .then(d => {
                                     this.$message.success("保存成功！");
-                                    let data=JSON.parse(this.form)
-                                    this.$router.push({path:'/testMaintenance',query:{form:data}});
+                                    if(this.type == "add"){
+                                        this.$router.push({path:'/testMaintenanceAdd',query:{type:"edit",id:d.data}})
+                                        this.$set(this.form,'id',d.data)
+                                        this.initPage()
+                                    }
 
-                                })
+                                 })
                                 .catch(error => {
                                     this.$message.success(error);
                                 });
@@ -303,23 +376,26 @@
                 }
             },
             addOrEditOrInfo(tag){
-                let data=JSON.stringify(this.form)
-                let row
-                if(this.row){
-                      row=JSON.stringify(this.row)
+                //  let row
+                // if(this.row){
+                //       row=JSON.stringify(this.row)
+                // }else {
+                //     row=''
+                // }
+                if(this.form.id){
+                    if(tag=='add'){
+                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',id:this.form.id, }});
+                    }else if(tag == 'edit' || tag == 'info'){
+                        if(this.row==null){
+                            this.$message.error('请先选中一行数据');
+                        }else{
+                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,sId:this.row.id}});
+                        }
+                    }
                 }else {
-                    row=''
+                    this.$message.error('请先保存试卷基本信息');
                 }
 
-                if(tag=='add'){
-                    this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',data:data,row:row,}});
-                }else if(tag == 'edit' || tag == 'info'){
-                    if(this.row==null){
-                        this.$message.error('请先选中一行数据');
-                    }else{
-                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,data:data,row:row,index:this.index}});
-                    }
-                }
             },
             delData() {
                 if (this.row == null) {
@@ -331,10 +407,12 @@
                         type: 'warning',
                     })
                         .then(() => {
-                            this.form.arrTable.splice(this.row.index,1)
-                            this.row=null
-                            this.index=null
-                            this.$message({type: 'success', message: '删除成功'});
+                            request({
+                                url:`${this.$ip}/mms-training/questionInfo/delete/${this.row.id}`,
+                                method: 'delete',
+                            }).then(data => {
+                                  this.getList()
+                            });
                         })
                 }
             },
@@ -353,82 +431,93 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
 
     @import "@/ui/styles/common_form.scss";
     .headDiv1{
         display: flex;
         justify-content: space-between;
     }
-.TableContent{
-
+.main-info{
+    /deep/ .el-form-item{
+        margin-bottom: 10px!important;
+    }
 }
-    .main-content{
-        overflow-y: auto;
-        /*height:calc(100vh - 260px);*/
-        margin-top: 20px!important;
-        .aRow_custom{
-            text-align:left;
-             /deep/ .el-form-item{
-                width:calc( 100% - 30px)!important;
-                .el-form-item__content{
-                    width: calc( 100% - 95px)!important;
-                }
-                .el-input{
-                    width: 100% !important;
-                }
 
+    .addTest {
+        padding: 0 40px ;
+        /deep/ .mainTable{
+            height: 320px!important;
+            overflow: auto;
+            /deep/ .el-table__fixed{
+                height: 319px !important;
             }
-         }
-    }
-    .main-info{
-        span{
-            font-weight: bold!important;
-         }
+        }
+         .main-content{
+            overflow-y: auto;
+            overflow-x: hidden;
+             margin-top: 20px!important;
+            .aRow_custom{
+                text-align:left;
+                /deep/ .el-form-item{
+                    width:100%!important;
+                    .el-form-item__content{
+                        width: calc( 100% - 110px)!important;
+                    }
+                    .el-input{
+                        width: 100% !important;
+                    }
+
+                }
+            }
+        }
+        .main-info{
+            span{
+                /*font-weight: bold!important;*/
+            }
 
 
-    }
-    .add {
-        padding: 0 15px 0px 15px ;
-        margin-top: 40px;
+        }
         /deep/ .el-table{
             margin: 0!important;
         }
         .headDiv1{
             &>div{
-               line-height: 32px;
+                line-height: 32px;
+
+
+            }
+            .topToolbar>div{
+                margin-left: 12px;
+                margin-right: 0!important;
             }
             margin: 15px 0 10px 0;
         }
         .TableContent.main-content{
             margin: 0!important;
         }
+
         .el-form {
             width: 100%;
 
             /deep/ .el-form-item__label {
-                width: 95px;
+                width: 110px;
                 text-align: right;
             }
             /deep/ .el-form-item__content {
-                margin-left: 95px;
+                margin-left: 110px;
             }
             /deep/ .el-input{
                 width: 220px!important;
                 margin-right: 5px;
             }
 
-            /deep/ .mainTable{
-                height: 600px;
-                overflow: auto;
 
-            }
             .row_custom{
                 @include common-input;
                 display: flex;
                 justify-content: space-between;
                 /deep/ .el-form-item__content{
-                     width: 250px;
+                    width: 220px;
                     text-align: left;
                 }
                 &:first-child {
@@ -441,11 +530,18 @@
             }
             .row_item_row{
                 .el-form-item {
-                    width: calc(100% - 95px);
+                    width: calc(100% - 110px);
                 }
             }
         }
 
 
     }
+
+    /deep/ .el-form-item:not(.is-required){
+        .el-form-item__label{
+            padding-left: 11px;
+        }
+    }
+
 </style>

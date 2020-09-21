@@ -2,7 +2,7 @@
         <div  class="historyInfoPlate">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>发布信息-历史</span>
+                    <span>接收信息-历史</span>
                 </div>
             </div>
             <div class="main-content">
@@ -13,28 +13,36 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
+                     <el-table-column slot="attachment" label="附件"  align="center" >
+                        <template slot-scope="{ row }">
+                              <el-button @click="downloadFile(row)" size="mini">下载</el-button>
+                        </template>
+                    </el-table-column>
                      <el-table-column slot="relationInfo" label="关联信息" :width="148" >
                     </el-table-column>
                 </SearchTable>
             </div>
+             <Download ref="downloadFile"></Download>
         </div>
 </template>
 <script>
+import Download from '@/ui/components/download';
 import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
-import { historyInfoPlateTable } from '../../tableConfig.js';
+import { historyPlateReceiveTable } from '../../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
 export default {
     components: {
         Icon,
-        SearchTable
+        SearchTable,
+          Download
 	},
     name: '',
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:historyInfoPlateTable(),
+            tableConfig:historyPlateReceiveTable(),
             params:{
 				current: 1,
 				size: 15,
@@ -45,6 +53,7 @@ export default {
         };
     },
    created() {
+       this.findDataDictionary();
        this.getList();
     },
     watch:{
@@ -56,6 +65,27 @@ export default {
         }
     },
     methods: {
+        downloadFile(row){
+            if(row.fileInfoList){
+                this.$refs.downloadFile.open(row.fileInfoList);
+            }else{
+                this.$message.warning("暂无文件可以下载");
+            }
+        },
+         findDataDictionary(){
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: "post",
+                data: ["infoTypeCode"]
+            })
+            .then(data => {
+              let infoSelect = data.data["infoTypeCode"];
+              this.tableConfig = historyPlateReceiveTable(infoSelect);
+            })
+            .catch(error => {
+             this.$message.success(error);
+            });
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -89,17 +119,13 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-notice/notificationRecipient/list`, 
                 method: 'post',
-                data:{...this.sort,...this.form},
+                data:{...this.sort,...this.form,state:-1},
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+               this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });
@@ -119,11 +145,9 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .historyInfoPlate{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-            overflow: auto;
         }    
     }
 }

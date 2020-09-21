@@ -20,7 +20,6 @@
                 <div class="top-toolbar">
                      <div @click="exportExcel()">
                         <icon iconClass="export" ></icon>导出
-                        <a ref="a" :href="`${this.$ip}/qualification/download/yearSecurityMerits?year=${form.year}&deptId=${form.deptId}`"></a>
                     </div>
 
                 </div>
@@ -49,10 +48,9 @@
         data() {
             return {
                 yearS:[],
-                 deptData:[{label:'厂务部',value:'dfd'},{label:'我相信部',value:'ddfd'},],
+                 deptData:[ ],
                 deptDataObj:{
-                    ddfd:'我相信部',
-                    'dfd':'厂务部',
+
                 },
                 tableData:[],
                 tableConfig:safetyYearConfig(),
@@ -63,16 +61,17 @@
         },
         created() {
             this.form = {
-                deptId:'dfd',
+                deptId:'server',
                 year:new Date().getFullYear()+'',
             };
 
 
             request({
-                url:`${this.$ip}/qualification/securityMerits/getYearList`,
+                url:`${this.$ip}/mms-qualification/securityMerits/getYearList`,
                 method: 'get',
              }).then((d)=>{
                 this.yearS=d.data.map((k,l)=>{
+
                      return{
                         label:k,
                         value:k,
@@ -80,15 +79,20 @@
                 })
             })
             request({
-                url:`${this.$ip}/qualification/businessDictionaryValue/listByCode/dept`,
-                method: 'get',
-             }).then((d)=>{
-                this.deptData=d.data.map((k,l)=>{
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["dept",]
+
+            }).then((d)=>{
+                this.deptData=d.data.dept.map((k,l)=>{
+                    this.deptDataObj[k.valCode]=k.valData
                      return{
-                        label:k,
-                        value:k,
+                        label:k.valData,
+                        value:k.valCode,
                     }
                 })
+                let num=this.deptDataObj[this.form.deptId].length*28+40
+                this.$refs.dept.$el.style.width=`${num}px`
             })
             this.getList();
         },
@@ -96,8 +100,7 @@
 
         },
         mounted(){
-            let num=this.deptDataObj[this.form.deptId].length*28+40
-            this.$refs.dept.$el.style.width=`${num}px`
+
         },
         methods: {
             deptFouce(val){
@@ -112,8 +115,28 @@
             },
 
             exportExcel(){
-                console.log(this.form);
-                this.$refs.a.click()
+                 request({
+                    'Content-Type':'application/vnd.ms-excel',
+                     url: `${this.$ip}/mms-qualification/download/yearSecurityMerits?year=${this.form.year}&deptId=${this.form.deptId}`,
+                    method: 'get',
+                    responseType: 'blob',
+                }).then((d)=>{
+                    const content = d
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `年度-安全绩效（${this.deptDataObj[this.form.deptId]}部${this.form.year}年） `
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                })
             },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
@@ -131,9 +154,9 @@
             },
             getList(){
                 request({
-                    url:`${this.$ip}/qualification/securityMerits/getList`,
+                    url:`${this.$ip}/mms-qualification/securityMerits/getList`,
                      method: 'post',
-                    data:{deptName:this.form.deptId,year:this.form.year}
+                    data:{deptId:this.form.deptId,year:Number(this.form.year)}
                 }).then((d) => {
                         this.tableData =[]
                     let sss={...d}
@@ -175,7 +198,7 @@
 <style scoped lang="scss">
     @import "@/ui/styles/common_list.scss";
     .sysParameter{
-        margin-top:40px;
+        margin-top:14px;
 
     }
     .top-content-title{
@@ -198,8 +221,5 @@
         height: 730px;
         overflow: auto;
     }
-    /deep/ .el-table::before {
 
-        width: 0;
-     }
 </style>

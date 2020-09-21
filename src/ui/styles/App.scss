@@ -1,15 +1,9 @@
 /*引入对话框样式*/
 @import "./common_dialog.scss";
+@import "lpList";
+@import "lpform";
+@import "lpGG";
 /*重置element样式*/
 @import "./resetElement.scss";
 /*svg图标样式*/
-.svg-icon {
-    width:.16rem;
-    height:.16rem;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
-}
-#app {
-    height: 100%;
-}
+

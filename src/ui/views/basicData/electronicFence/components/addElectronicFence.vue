@@ -16,27 +16,27 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_item_row row_item">
-          <el-form-item label="机位号" prop="parkingNo">
+          <el-form-item label="机位号：" prop="parkingNo">
             <span v-if="type=='info'">{{form.parkingNo}}</span>
             <el-input v-else v-model="form.parkingNo" placeholder="请输入机位号"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom">
-          <el-form-item label="定点经度" prop="longitude">
+          <el-form-item label="定点经度：" prop="longitude">
             <span v-if="type=='info'">{{form.longitude}}</span>
             <el-input v-else v-model.number="form.longitude" placeholder="请输入定点经度"></el-input>
           </el-form-item>
-          <el-form-item label="定点纬度" prop="latitude">
+          <el-form-item label="定点纬度：" prop="latitude">
             <span v-if="type=='info'">{{form.latitude}}</span>
             <el-input v-else v-model.number="form.latitude" placeholder="请输入定点纬度"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom">
-          <el-form-item label="定点半径" prop="radius">
+          <el-form-item label="定点半径：" prop="radius">
             <span v-if="type=='info'">{{form.radius}}</span>
             <el-input v-else v-model.number="form.radius" placeholder="请输入定点半径"></el-input>
           </el-form-item>
-          <el-form-item label="允许最大误差值" prop="maxError">
+          <el-form-item label="允许最大误差值：" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
             <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"></el-input>
           </el-form-item>
@@ -139,6 +139,7 @@ export default {
             })
             .then(data => {
               this.$message.success("保存成功！");
+              this.$parent.selectId = null;
               this.$router.go(-1);
             })
             .catch(error => {
@@ -161,15 +162,15 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 125px;
+        width: 145px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 125px;
+        margin-left: 145px;
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 366px;
+            width: 346px;
             text-align: left;
         }
         @include common-input;
@@ -183,7 +184,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 125px);
+          width: calc(100% - 145px);
         }
       }
   }

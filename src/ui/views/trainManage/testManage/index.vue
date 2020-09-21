@@ -15,7 +15,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出Excel</div>
+                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
                 </div>
             </div>
             <div class="main-content">
@@ -26,10 +26,16 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="230"  >
-                        <template  slot-scope="{ row }">
-                            <el-button  class="copyButton copyButton1" @click="testPush('/testManagePushStaff',row)">考试推送员工</el-button>
-                            <el-button  class="copyButton" @click="testPush('/testManageResults',row)">员工考试结果</el-button>
+                    <el-table-column   slot="option" label="操作" align="center" :width="100"  >
+                        <template  slot-scope="scope">
+                            <div>
+                                <span @click="pushStaff('/testManagePushStaff',scope.row)" class="rowSvg">
+                                    <icon iconClass="pushNew" title="考试推送员工"></icon>
+                                </span>
+                                <span @click="testPush('/testManageResults',scope.row)" class="rowSvg" style="margin-left:10px">
+                                    <icon iconClass="trainResult" title="员工考试结果"></icon>
+                                </span>
+                            </div>
                         </template>
                     </el-table-column>
 
@@ -53,7 +59,7 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testConfig(),
+            tableConfig:testConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
@@ -61,11 +67,33 @@ export default {
             form:{},
             row:{},
             sort:{},
+
             selectId:null
         };
     },
    created() {
-       this.getList();
+        if(this.$router.history.current.path == '/testManage'){
+            this.getList();
+            request({
+                url:`${this.$ip}/mms-training/paperInfo/list`,
+                method: 'post',
+                data:{},
+                params:{size:10000,current:1}
+            }).then((data) => {
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params:{delete:false},
+                    data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
+                }).then(d => {
+                    let obj=d.data
+                    this.tableConfig =testConfig(data.data.records||[],obj)
+
+                });
+            })
+
+        }
+
     },
     watch:{
         '$route':function(val,nm){
@@ -74,8 +102,12 @@ export default {
         }
     },
     methods: {
+        // row:JSON.stringify(row)
         testPush(path,row){
-          this.$router.push(path,row)
+          this.$router.push({path:path,query:{id:row.id,}})
+        },
+        pushStaff(path,row){
+          this.$router.push({path:path,query:{id:row.id,paperId:row.paperId}})
         },
         exportExcel(){
              this.$refs.a.click()
@@ -134,7 +166,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -149,14 +181,15 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-training/examInfo/delete/`+this.selectId,
                             method: 'delete',
-                            // params:{id:this.selectId}
-                        })
+                         })
                             .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                                if(data.code==200){
+                                    this.getList();
+                                    this.selectId   = null;
+                                    this.$message({type: 'success',message: '删除成功'});
+                                }
                             })
                     })
                     .catch(() => {
@@ -172,23 +205,20 @@ export default {
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
-                }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
-                    }
-                    delete data.infTime
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-training/examInfo/list`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
-                  this.tableData = extend({},
-                     {...data.data}
-                 );
+                if(data.code==200){
+                    this.tableData = extend({}, {...data.data});
+                }
+
+
 
              })
         },
@@ -207,9 +237,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
 
     .copyButton{
         margin: 0;
@@ -220,5 +250,8 @@ export default {
     .copyButton1{
         margin-right: 3px;
     }
+}
+/deep/ .mainTable{
+    height: 600px;
 }
 </style>

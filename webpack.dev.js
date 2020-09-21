@@ -6,6 +6,7 @@
  * @LastEditors: xdh.ss
  * @LastEditTime: 2020-04-13 14:02:35
  */
+
 const merge = require('webpack-merge');
 const argv = require('yargs').argv;
 const common = require('./webpack.common.js');
@@ -20,14 +21,18 @@ if (argv.Program === 'jwxt.dev') {
 module.exports = merge(common, {
     devtool: 'inline-source-map',
     devServer: {
-        host:'127.0.0.1',
+        host:'0.0.0.0',
         port: port,
         open: true,
         progress: true, // 打包过程中的进度条
         noInfo: false, // 隐藏bundle信息
         proxy: { // 代理
-            '/api/': {
-                target: `http://173.100.1.87`, //飞行区登录开发
+           '/api/':{
+               target: `http://173.100.1.87`, //飞行区登录开发
+               changeOrigin: true,
+           },
+            '/': {
+                target: `http://173.100.1.5:8011`, //开发本地访问
                 changeOrigin: true,
             },
             // '/apidev/': {

@@ -18,9 +18,9 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" label="关联信息" :width="148" >
-                        <template >
-                            <el-button size="mini" @click="clickAction()">已读</el-button>
+                    <el-table-column slot="relationInfo" align='center' :width="148" >
+                        <template slot-scope="{ row }" v-if="row.state==0">
+                            <el-button size="mini" @click="clickAction(row)">已读</el-button>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -34,6 +34,7 @@ import Icon from '@components/Icon-svg/index';
 import { warningSearchTable } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
+import postal from 'postal';
 export default {
     components: {
         Icon,
@@ -48,7 +49,7 @@ export default {
 				current: 1,
 				size: 15,
             },
-            form:{},
+            form:{state:0},
             sort:{},
             selectId:null
         };
@@ -65,11 +66,37 @@ export default {
         }
     },
     methods: {
-        clickAction(){
+         findUnread(){
+			request({
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				method: 'get',
+			})
+			.then((data) => {
+				postal.publish({
+					channel: 'websocket_count',
+					topic: 'count',
+					data: data.data
+				});
+			}).catch((error) => {
+					
+			});
+		},
+        clickAction(row){
+            request({
+                url:`${this.$ip}/mms-warning/warning/read/${row.id}`, 
+                method: 'get',
+            })
+            .then((data) => {
+                this.$message.success("已读成功！");
+                this.findUnread();
+                this.getList();
+            }).catch((error) => {
             
+            });
         },
         requestTable(searchData){
             this.form = searchData;
+            this.form.state = 0;
             this.selectId=null,
             this.tableData={records:[]};
             this.params.current = 1;
@@ -110,11 +137,7 @@ export default {
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+                 this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });
@@ -134,11 +157,9 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-            overflow: auto;
         }    
     }
 }

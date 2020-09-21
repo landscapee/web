@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanAdd'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="businessData">
@@ -16,7 +17,7 @@
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                            <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/examination/${this.leftSelectId}`"></a>导出</div>
+                            <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
                         </div>
 
 
@@ -49,6 +50,7 @@
                 <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
                     <el-table-column slot="radio" label="选择" :width="49"   >
                         <template slot-scope="{ row }">
+
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
@@ -74,8 +76,8 @@ export default {
         return {
             tableLeftData:{records:[]},
             tableRightData:{records:[]},
-            businessTableConfig:selfCheckConfig(),
-            businessSubsetConfig:selfCheckDetailsConfig(),
+            businessTableConfig:selfCheckConfig({}),
+            businessSubsetConfig:selfCheckDetailsConfig({}),
             leftParams:{
 				current: 1,
 				size: 18,
@@ -100,7 +102,7 @@ export default {
         '$route':function(val,nm){
             console.log(1,val,nm);
             if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
-                this.leftParams.size=this.tableLeftData.records.length
+                this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                 this.leftParams.current=1
                 this.getList('left');
             }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
@@ -108,6 +110,19 @@ export default {
                 this.rightParams.current = 1
                 this.getList('right');
                 // this.toFrom=nm.query.type
+            }else if(val.path=='/selfCheckPlan'){
+                this.leftParams.size=18
+                this.leftParams.current=1
+                this.rightParams.current = 1
+                this.leftRow={}
+                this.rightRow={}
+                this.leftForm={}
+                this.rightForm={}
+                this.leftSelectId=null
+                this.rightSelectId=null
+                this.tableRightData.records=[]
+                this.tableLeftData.records=[]
+                this.getList('left');
             }
         }
     },
@@ -115,9 +130,20 @@ export default {
          // console.log(this.$route,12);
         this.leftParams.current = 1;
        this.getList('left');
+        request({
+            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+            method: 'post',
+            params:{delete:false},
+            data:["checkProject", "checkType",'checkObject','checkCategory','dept']
+        }).then(d => {
+            let obj=d.data
+            this.businessSubsetConfig=selfCheckDetailsConfig(obj)
+            this.businessTableConfig=selfCheckConfig(obj)
+
+        });
     },
 
-　　　　mounted() {
+　　mounted() {
         if( this.$refs.mainContent){
             this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
         }
@@ -125,10 +151,44 @@ export default {
 
     methods: {
         exportExcel(){
-            if(this.leftSelectId==null){
+             if(this.leftSelectId==null){
                 this.$message.error('请先选中一行数据');
             }else{
-                this.$refs.a.click()
+                 request.interceptors.response.use(function (response) {
+                     // Do something with response data
+                     console.log(response,1,1,1);
+                     return response;
+                 }, function (error) {
+                     // Do something with response error
+                     return Promise.reject(error);
+                 });
+                request({
+                    header:{
+                        'content-disposition':'attachment;filename=total.xls',
+                        'content-type':'application/octet-stream'
+                    },
+                    // 'Content-Type':'application/vnd.ms-excel',
+                     url: `${this.$ip}/mms-qualification/download/examination/${this.leftSelectId}`,
+                    method: 'get',
+                    responseType: 'blob',
+                    // responseType: 'arraybuffer',
+                }).then((d,q,w)=>{
+                    const content = d
+                     let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `法定自查检查计划（${this.leftRow.deptName}部${this.leftRow.year}年）`
+                     if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                })
             }
         },
         //监听滚动
@@ -143,7 +203,7 @@ export default {
             var scrollHeight = bady.scrollHeight;
             //获取滚动元素标识
             var tag = bady.parentElement.__vue__.refTag;
-            if(scrollTop+windowHeight>=scrollHeight){
+             if(scrollTop+windowHeight>=scrollHeight){
                 if(tag=='left-table'){
                     if(this.leftParams.size!=18){
                         this.leftParams.size=18
@@ -166,6 +226,7 @@ export default {
         //查询表头数据
         requestTable(searchData,tag,tableTag){
             if(tag=='left'){
+
                 this.leftForm = searchData;
                 this.leftSelectId=null,
                 this.rightSelectId=null,
@@ -173,6 +234,7 @@ export default {
                 this.leftParams.current = 1;
             }else{
                 this.rightForm = searchData;
+                
                 this.rightSelectId=null;
                 this.rightParams.current = 1;
             }
@@ -226,6 +288,8 @@ export default {
                 if(row.selected){
                     this.leftSelectId = row.id;
                     this.leftRow={...row}
+                    this.rightSelectId = null;
+
                 }else{
                     this.leftSelectId = null;
                     this.rightSelectId = null;
@@ -254,7 +318,7 @@ export default {
                     this.$message.error('请先选中一行数据');
                 }else{
                     let data=JSON.stringify(this.leftRow)
-                    this.$router.push({path:'/selfCheckPlanAdd',query:{type:tag,data:data,id:this.leftSelectId}});
+                    this.$router.push({path:'/selfCheckPlanAdd',query:{type:tag, id:this.leftSelectId}});
                 }
             }
         },
@@ -274,7 +338,7 @@ export default {
                 }else{
                     let data=JSON.stringify(this.rightRow)
 
-                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag,data:data,id:this.rightSelectId}});
+                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag, id:this.rightSelectId}});
                 }
             }
         },
@@ -282,9 +346,9 @@ export default {
         delData(tag,idstr){
             let url=null
             if(tag=='left'&&this.leftSelectId){
-                url=`${this.$ip}/qualification/examination/delete/${this.leftSelectId}`
+                url=`${this.$ip}/mms-qualification/examination/delete/${this.leftSelectId}`
              }else if(tag=='right'&&this.rightSelectId ){
-                url=`${this.$ip}/qualification/examinationDetail/delete/${this.rightSelectId}`
+                url=`${this.$ip}/mms-qualification/examinationDetail/delete/${this.rightSelectId}`
              }
             if(url){
                 this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -297,22 +361,24 @@ export default {
                                 url:url,
                                 method: 'delete',
                             }).then((data) => {
-                                    this.$message({type: 'success',message: '删除成功'});
-                                    if(tag=='left'){
-                                        this.leftRow={}
-                                        this.rightRow={}
-                                        this.leftSelectId=null
-                                        this.rightSelectId=null
-                                        this.leftParams.current = 1;
-                                        this.rightParams.current= 1;
-                                        this.tableRightData.records=[]
-                                    }else{
-                                        this.rightSelectId=null
-                                         this.rightRow={}
-                                        this.rightParams.current= 1;
-                                    }
+                                  if(data.code==200){
+                                      this.$message({type: 'success',message: '删除成功'});
+                                      if(tag=='left'){
+                                          this.leftRow={}
+                                          this.rightRow={}
+                                          this.leftSelectId=null
+                                          this.rightSelectId=null
+                                          this.leftParams.current = 1;
+                                          this.rightParams.current= 1;
+                                          this.tableRightData.records=[]
+                                      }else{
+                                          this.rightSelectId=null
+                                          this.rightRow={}
+                                          this.rightParams.current= 1;
+                                      }
 
-                                    this.getList(tag);
+                                      this.getList(tag);
+                                  }
                                 })
                     })
                     .catch(() => {
@@ -332,13 +398,13 @@ export default {
                     }
                 }))
                 request({
-                     url:`${this.$ip}/qualification/examination/list`,
+                     url:`${this.$ip}/mms-qualification/examination/list`,
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,},
                     params:{...this.leftParams}
                 })
                     .then((data) => {
-                        data.data.records.map((k,l)=>{
+                         data.data.records.map((k,l)=>{
                             if(k.id==this.leftSelectId){
                                 k.selected=true
                                 this.leftRow=k
@@ -364,7 +430,7 @@ export default {
                         }
                     }))
                     request({
-                         url:`${this.$ip}/qualification/examinationDetail/list`,
+                         url:`${this.$ip}/mms-qualification/examinationDetail/list`,
                         method: 'post',
                         data:{...this.rightForm,examinationId:this.leftSelectId,...this.rightSort,},
                         params:{...this.rightParams}
@@ -376,8 +442,8 @@ export default {
                                 this.rightRow=k
                             }
                         })
-                         if(this.rightParams.current==1){
-                            this.tableRightData.records = data.data.records;
+                          if(this.rightParams.current==1){
+                            this.tableRightData.records = data.data.records
                         }else{
                             this.tableRightData.records.push.apply(this.tableRightData.records,data.data.records);
                         }
@@ -397,8 +463,8 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
 .businessData{
-    margin-top:40px;
-    .top-content{
+    padding-top: 14px;
+     .top-content{
         .top-toolbar{
             padding: 0px 30px 0px 30px;
             display: flex;
@@ -445,7 +511,7 @@ export default {
         /deep/ .mainTable{
             height: 600px!important;
             overflow: auto!important;
-        }
+         }
 
 
     }

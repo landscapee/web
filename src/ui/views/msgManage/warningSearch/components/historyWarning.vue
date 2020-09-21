@@ -4,15 +4,7 @@
                 <div class="top-content-title">
                     <span>预警历史</span>
                 </div>
-                <div class="top-toolbar">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
-                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
-                </div>
+                <div class="top-toolbar"></div>
             </div>
             <div class="main-content">
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
@@ -47,13 +39,13 @@ export default {
 				current: 1,
 				size: 15,
             },
-            form:{},
+            form:{state:1},
             sort:{},
             selectId:null
         };
     },
    created() {
-     
+       this.getList();
     },
     watch:{
         params:{
@@ -138,11 +130,7 @@ export default {
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+                this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });
@@ -162,11 +150,9 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-            overflow: auto;
         }    
     }
 }

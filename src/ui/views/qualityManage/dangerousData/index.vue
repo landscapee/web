@@ -1,20 +1,24 @@
 <template>
     <div>
-         <router-view v-if="this.$router.history.current.path == '/dangerousDataAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/dangerousDataIndex'" :key="$route.path" class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
+
+         <router-view v-if="this.$route.path== '/dangerousDataAdd'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path== '/dangerousDataIndex'" :key="$route.path" class="  G_listOne">
+            <div class="  QCenterRight">
+                <div class="  QHead_list">
                     <span>危险数据</span>
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/dangerData`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon>
+                        <!--<a ref="a" :href="`${this.$ip}/mms-qualification/download/dangerData`"></a>-->
+                        导出
+                    </div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class=" ">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
@@ -22,11 +26,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" slot="evaluationResults" label="关联信息" :width="190" fixed="right">
-                        <template  slot-scope="{ row }">
-                            <span>{{row.evaluationResults}}</span>
-                        </template>
-                    </el-table-column>
+
 
                 </SearchTable>
             </div>
@@ -34,7 +34,7 @@
     </div>
 </template>
 <script>
-import SearchTable from '@/ui/components/SearchTable';
+    import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
@@ -48,12 +48,13 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:dangerousConfig(),
+            tableConfig:dangerousConfig({}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
+
             row:{},
             sort:{},
             selectId:null
@@ -61,13 +62,43 @@ export default {
     },
    created() {
        this.getList();
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           params:{delete:false},
+           data:["commentResults", "controlState",]
+       }).then(d => {
+           let obj=d.data
+           this.tableConfig=dangerousConfig(obj)
+       });
     },
     watch:{
 
     },
     methods: {
         exportExcel(){
-          this.$refs.a.click()
+            request({
+                headers: {
+                    'Content-Type': 'application/vnd.ms-excel',
+                },
+                 url: `${this.$ip}/mms-qualification/download/dangerData`,
+                method: 'get',
+                responseType: 'blob',
+             }).then((d)=>{
+                const content = d
+                const blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = '危险数据'
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }
+            })
         },
         requestTable(searchData){
             this.form = searchData;
@@ -112,6 +143,7 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
+            console.log(this.$route.path);
             let data=JSON.stringify(this.row)
             if(tag=='add'){
                 this.$router.push({path:'/dangerousDataAdd',query:{type:'add'}});
@@ -119,7 +151,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -135,13 +167,15 @@ export default {
                     .then(() => {
                         request({
                             // url:`http://173.100.1.126:3000/mock/639/dangerData/delete`,
-                            url:`${this.$ip}/qualification/dangerData/delete/${this.selectId}`,
+                            url:`${this.$ip}/mms-qualification/dangerData/delete/${this.selectId}`,
                             method: 'delete',
                          })
                             .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                               if(data.code==200){
+                                   this.getList();
+                                   this.selectId   = null;
+                                   this.$message({type: 'success',message: '删除成功'});
+                               }
                             })
                     })
                     .catch(() => {
@@ -160,7 +194,7 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/dangerData/list`,
+                url:`${this.$ip}/mms-qualification/dangerData/list`,
                 method: 'post',
                 data:{...this.sort,...this.form},
                params:{...this.params,}
@@ -187,9 +221,10 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
-.sysParameter{
-    margin-top:40px;
-    
+/*@import "@/ui/styles/common_list.scss"; */
+.G_listOne{
+    margin-top:14px;
+
 }
+
 </style>

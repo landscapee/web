@@ -14,19 +14,19 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="绩效年月：" :prop="type=='add'?'yearMonth':''">
+                    <el-form-item label="绩效年月：" prop="yearMonth">
                         <span v-if="type=='info'">{{form.yearMonth}}</span>
-                        <el-date-picker :disabled="type=='edit'" @change="yearMonthChange" v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
+                        <el-date-picker @change="yearMonth" :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="部门：" prop="deptName">
-                        <span v-if="type=='info'">{{form.deptName}}</span>
-                        <el-select clearable v-else v-model="form.deptName" placeholder="请选择部门">
-                            <el-option label="sfsd" value="dfd"></el-option>
+                    <el-form-item label="部门：" prop="deptId">
+                        <span v-if="type=='info'">{{form.deptId}}</span>
+                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择部门">
+                            <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                      </el-form-item>
 
@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.reviewerName" placeholder="请输入批准人"></el-input>
                     </el-form-item>
                     <el-form-item label="批准日期：" prop="reviewerTime">
-                        <span v-if="type=='info'">{{form.reviewerTime?form.reviewerTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{form.reviewerTime?moment(form.reviewerTime).format('YYYY-MM-DD'):''}}</span>
                          <el-date-picker  v-else v-model="form.reviewerTime" type="date" placeholder="请选择批准日期"></el-date-picker>
 
                     </el-form-item>
@@ -47,6 +47,8 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -57,23 +59,32 @@
         name: "",
         data() {
             const yearMonth = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('绩效年月不能为空'));
-                } else {
-                    let year=value.getFullYear()+''
-                    let month= value.getMonth()+1+''
-                    request({
-                        url:`${this.$ip}/qualification/securityMerits/numberExists/${year},${month}`,
-                        method: 'get',
-
-                    }).then(response => {
-                        if (!response.data) {
-                            callback();
-                        } else {
-                            callback("该绩效年月已存");
+                    if (!this.form.yearMonth) {
+                        return callback(new Error('绩效年月不能为空'));
+                    } else {
+                        if(this.form.deptId){
+                            let year=this.form.yearMonth.getFullYear()+''
+                            let month= this.form.yearMonth.getMonth()+1+''
+                            request({
+                                url:`${this.$ip}/mms-qualification/securityMerits/numberExists`,
+                                method: 'post',
+                                data:{
+                                    deptId:this.form.deptId,
+                                    month:month,
+                                    year:year,
+                                    id:this.form.id||null
+                                }
+                            }).then(d => {
+                                if (!d.data&&d.code==200) {
+                                    callback();
+                                } else {
+                                    callback("该绩效年月已存在");
+                                }
+                            });
+                        }else {
+                            callback("选择部门后将校验");
                         }
-                    });
-                }
+                    }
             };
 
             return {
@@ -81,14 +92,26 @@
                     year:null,
                     month:null,
                 },
+                moment:moment,
+                options:{},
                 rules: {
-                    yearMonth: [{ validator:yearMonth, trigger: "blur" }],
-                    // system: [{ required: true, message: "请输入", trigger: "blur" }],
+                    yearMonth: [{ required: true,validator:yearMonth, trigger: "blur" }],
+                    deptId: [{ required: true, message: "请选择", trigger: "blur" },
+
+                        ],
                  },
                 type: "add"
             };
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["dept",]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -100,43 +123,78 @@
                             ? "部门月度安全绩效详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data,yearMonth:`${data.year}-${data.month}`}
+                     request({
+                        url:`${this.$ip}/mms-qualification/securityMerits/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data ,yearMonth:new Date(`${d.data.year}-${d.data.month}`)}
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
+
+        },
+        watch:{
+          'form.yearMonth':function (val) {
+if(val){
+    // this.form.year=Number(val.getFullYear() )
+    // this.form.month= Number(val.getMonth()+1 )
+    console.log(val, this.form);
+}
+
+          }
         },
         methods: {
-            yearMonthChange(val){
-                let date=val
-                console.log(date, val);
-                this.form.year=val.getFullYear()+''
-                this.form.month= val.getMonth()+1+''
+            yearMonth(val){
+                if(val){
+                    this.form.year=Number(val.getFullYear() )
+                    this.form.month= Number(val.getMonth()+1 )
+                    console.log(val, this.form);
+                }
+            },
+            deptNameChange(val){
+                let data
+                this.$refs.form.validateField('yearMonth')
+                this.options.dept.map((k,l)=>{
+                    if(val==k.valCode){
+                        data=k.valData
+                    }
+                })
+                this.$set(this.form,'deptName',data)
             },
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:null, month:null,};
+                }else {
+                    this.form={};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
-                    this.$refs[form].validate(valid => {
+                     this.$refs[form].validate(valid => {
                         if (valid) {
+                            let obj={...this.form}
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityMerits/save`
+                                url=`${this.$ip}/mms-qualification/securityMerits/save`
                             }else {
-                                url=`${this.$ip}/qualification/securityMerits/update`
+                                url=`${this.$ip}/mms-qualification/securityMerits/update`
                             }
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data:obj
                             })
-                                .then(data => {
-                                    this.$message.success("保存成功！");
-                                    this.$router.go(-1);
+                                .then(d => {
+                                   if(d.code==200){
+                                       this.$message.success("保存成功！");
+                                       this.$router.go(-1);
+                                   }
                                 })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
+
                         } else {
                             console.log("error submit!!");
                             return false;
@@ -159,7 +217,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
@@ -177,9 +235,16 @@
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 61px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;
+            }
+            .el-form-item.is-required{
+                /deep/ .el-form-item__label {
+
+                    padding-left: 50px;
+                }
             }
             .row_item_row,.row_item{
                /deep/ .el-input{

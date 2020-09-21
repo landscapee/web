@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom aRow_custom">
@@ -37,7 +37,7 @@
                         <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
                     </el-form-item>
                     <el-form-item label="时间：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime?form.infTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{  form.infTime? moment(form.infTime).format('YYYY-MM-DD'):''}}</span>
                         <el-date-picker  v-else v-model="form.infTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
 
@@ -60,9 +60,9 @@
                     <el-form-item label="违规/差错：" prop="situation">
                         <span v-if="type=='info'">{{form.situation}}</span>
                          <el-select v-else clearable v-model="form.situation" placeholder="请选择违规/差错">
-                            <el-option label="违规" value="违规"> </el-option>
-                            <el-option label="差错" value="差错"> </el-option>
-                        </el-select>
+                             <el-option v-for="(opt,index) in options.Q_BadMistake" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
+                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -82,9 +82,9 @@
                 <div class="row_custom">
 
 
-                    <el-form-item label="控制状态：" prop="controlSate">
-                        <span v-if="type=='info'">{{form.controlSate}}</span>
-                        <el-input v-else v-model="form.controlSate" placeholder="请输入控制状态"></el-input>
+                    <el-form-item label="控制状态：" prop="controlState">
+                        <span v-if="type=='info'">{{form.controlState}}</span>
+                        <el-input v-else v-model="form.controlState" placeholder="请输入控制状态"></el-input>
                     </el-form-item>
                     <el-form-item label="工作环节：" prop="workLink">
                         <span v-if="type=='info'">{{form.workLink}}</span>
@@ -97,11 +97,11 @@
                         <span v-if="type=='info'">{{form.keyWord}}</span>
                         <el-input v-else v-model="form.keyWord" placeholder="请输入关键词"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否安全/服务事件：" prop="serviceEvents">
+                    <el-form-item label="是否安全/服务事件：" class="itemLineHeight" prop="serviceEvents">
                         <span v-if="type=='info'">{{form.serviceEvents}}</span>
                         <el-select clearable v-else v-model="form.serviceEvents" placeholder="请选择是否安全/服务事件">
-                            <el-option label="违规" value="违规"> </el-option>
-                            <el-option label="差错" value="差错"> </el-option>
+                            <el-option v-for="(opt,index) in options.Q_securityServices" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+
                         </el-select>
                     </el-form-item>
                 </div>
@@ -119,6 +119,8 @@
     </div>
 </template>
 <script>
+    import moment from 'moment'
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -133,7 +135,7 @@
                      return callback(new Error('信息编号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityInformation/infNumberExists/${value}`,
+                        url:`${this.$ip}/mms-qualification/securityInformation/infNumberExists/${value}`,
                         method: 'get',
                     }).then(response => {
                         console.log(response,10);
@@ -147,6 +149,8 @@
                 }
             };
             return {
+                options: {},
+                moment: moment,
                 form: {},
                 rules: {
                     infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
@@ -166,14 +170,33 @@
                             ? "安全信息详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                    request({
+                        url:`${this.$ip}/mms-qualification/securityInformation/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data }
+                    })
+
                 }
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["Q_BadMistake", "Q_securityServices",]
+            }).then(d => {
+                this.options=d.data
+            });
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,infNumber:this.form.infNumber};
+                }else {
+                    this.form={};
+                }
+
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -181,11 +204,11 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityInformation/save`
+                                url=`${this.$ip}/mms-qualification/securityInformation/save`
                                 // url=`http://173.100.1.126:3000/mock/639/securityInformation/save`
                             }else {
                                 // url=`http://173.100.1.126:3000/mock/639/securityInformation/update`
-                                url=`${this.$ip}/qualification/securityInformation/update`
+                                url=`${this.$ip}/mms-qualification/securityInformation/update`
 
                             }
                             request({
@@ -214,7 +237,7 @@
     @import "@/ui/styles/common_form.scss";
     .main-content{
         overflow-y: auto;
-        height:calc(100vh - 260px);
+        height:calc(100vh - 300px);
         /*margin-top: 80px!important;*/
         .aRow_custom{
             text-align:left;
@@ -222,7 +245,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
@@ -240,6 +263,7 @@
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 50px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;
@@ -269,6 +293,11 @@
                     width: calc(100% - 165px);
                 }
             }
+        }
+    }
+    .itemLineHeight{
+        /deep/ .el-form-item__label{
+            line-height: 20px;
         }
     }
 </style>

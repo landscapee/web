@@ -28,12 +28,8 @@ const HtmlWebpackPluginConfig = {
     vue: true,
     hash: true
 }
-
-if (argv.Program === 'jwxt.dev' || argv.Program === 'jwxt.build') {
-    html_webpack_plugin = new HtmlWebpackPlugin(_.extend(HtmlWebpackPluginConfig, {title: '机务系统'}));
-    indexJs = './index.js';
-}
-
+html_webpack_plugin = new HtmlWebpackPlugin(_.extend(HtmlWebpackPluginConfig, {title: '机务系统'}));
+indexJs = './index.js';
 function resolve (dir) {
     return path.join(__dirname, dir)
 }

@@ -8,73 +8,119 @@ let authRoutes = [
   {
     	path: '/qualityManage',
 		component: Layout,
-		redirect: '/intelligenceManage',
+		redirect: '/personDoc',
 		name: '质量管理',
 		meta: {title: '质量管理',icon: 'zlgl' },
 		children: [
+            {
+                path: '/personDoc',
+                component: () => import('@views/qualityManage/personDoc/index'),
+                name: '人员档案',
+                meta: {	title: '人员档案',icon: ''},
+                children:[
+                    {
+                        path: '/addPersonDoc',
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
+                        name: '新增',
+                        meta: {	title: '新增',	icon: '',paramsId:''	},
+                        hidden:true,
+                        children:[
+                            {
+                                path: '/inOfficeInfoAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
+                                name: '任职信息新增',
+                                meta: {	title: '任职信息新增',	icon: ''	},
+                                hidden:true,
+
+                            },  {
+                                path: '/workExperienceAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
+                                name: '工作经验新增',
+                                meta: {	title: '工作经验新增',	icon: ''	},
+                                hidden:true,
+
+                            }, {
+                                path: '/certificateAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
+                                name: '证书新增',
+                                meta: {	title: '证书新增',	icon: ''	},
+                                hidden:true,
+
+                            },{
+                                path: '/unsafeAdd',
+                                component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
+                                name: '不安全事件及诚信记录新增',
+                                meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
+                                hidden:true,
+
+                            },
+
+                        ]
+                    },
+                    {
+                        path: '/userQuali',
+                        component: () => import('@views/qualityManage/components/userQuali'),
+                        name: '员工资质',
+                        meta: {	title: '员工资质',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/userAuth',
+                        component: () => import('@views/qualityManage/components/userAuth'),
+                        name: '员工授权',
+                        meta: {	title: '员工授权',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/userTrain',
+                        component: () => import('@views/qualityManage/components/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
+                ]
+            },
 			{
 				path: '/intelligenceManage',
 				component: () => import('@views/qualityManage/intelligenceManage/index'),
 				name: '资质管理',
-				meta: {	title: '资质管理',	icon: ''	},
+				meta: {	title: '资质管理',	icon: '',keepAlive:true	},
 				children:[
 					{
 						path: '/addQualifications',
-						component: () => import('@views/qualityManage/intelligenceManage/components/addQualifications'),
+						component: () => import('@views/qualityManage/intelligenceManage/add'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
 					{
-						path: '/assRecord',
-						component: () => import('@views/qualityManage/intelligenceManage/components/assRecord'),
-						name: '资质培训考核记录',
-						meta: {	title: '资质培训考核记录',	icon: ''	},
-						hidden:true
-					},
-					{
-						path: '/exaRecord',
-						component: () => import('@views/qualityManage/intelligenceManage/components/exaRecord'),
-						name: '人员资质考试记录',
-						meta: {	title: '人员资质考试记录',	icon: ''	},
-						hidden:true
-					}
-				]
-			},
-			{
-				path: '/personDoc',
-				component: () => import('@views/qualityManage/personDoc/index'),
-				name: '人员档案',
-				meta: {	title: '人员档案',icon: ''},
-				children:[
-					{
-						path: '/addPersonDoc',
-						component: () => import('@views/qualityManage/personDoc/components/addPersonDoc'),
+						path: '/addQualificationsDetails',
+						component: () => import('@views/qualityManage/intelligenceManage/addDetails'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
-					{
-						path: '/userQuali',
-						component: () => import('@views/qualityManage/personDoc/components/userQuali'),
-						name: '员工资质',
-						meta: {	title: '员工资质',	icon: ''	},
-						hidden:true
-					},
-					{
-						path: '/userAuth',
-						component: () => import('@views/qualityManage/personDoc/components/userAuth'),
-						name: '员工授权',
-						meta: {	title: '员工授权',	icon: ''	},
-						hidden:true
-					},
-					{
-						path: '/userAssRecord',
-						component: () => import('@views/qualityManage/personDoc/components/userAssRecord'),
-						name: '培训考核',
-						meta: {	title: '培训考核',	icon: ''	},
-						hidden:true
-					}
+                    {
+                        path: '/ZuserDoc',
+                        component: () => import('@views/qualityManage/components/userDoc/index'),
+                        name: '员工档案',
+                        meta: {	title: '员工档案',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/ZuserAuth',
+                        component: () => import('@views/qualityManage/components/userAuth'),
+                        name: '员工授权',
+                        meta: {	title: '员工授权',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/ZuserTrain',
+                        component: () => import('@views/qualityManage/components/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
 				]
 			},
 			{
@@ -85,35 +131,35 @@ let authRoutes = [
 				children:[
 					{
 						path: '/addAuthorizeManage',
-						component: () => import('@views/qualityManage/authorizeManage/components/addAuthorizeManage'),
+						component: () => import('@views/qualityManage/authorizeManage/add'),
 						name: '新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
-					{
-						path: '/authUserQuali',
-						component: () => import('@views/qualityManage/authorizeManage/components/userQuali'),
-						name: '员工资质',
-						meta: {	title: '员工资质',	icon: ''	},
-						hidden:true
-					},
+                    {
+                        path: '/SuserQuali',
+                        component: () => import('@views/qualityManage/components/userQuali'),
+                        name: '员工资质',
+                        meta: {	title: '员工资质',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/SuserDoc',
+                        component: () => import('@views/qualityManage/components/userDoc/index'),
+                        name: '员工档案',
+                        meta: {	title: '员工档案',	icon: ''	},
+                        hidden:true
+                    },
+                    {
+                        path: '/SuserTrain',
+                        component: () => import('@views/qualityManage/components/userTrain.vue'),
+                        name: '培训考核',
+                        meta: {	title: '培训考核',	icon: ''	},
+                        hidden:true
+                    }
 				]
 			},
-			{
-				path: '/warningManage',
-				component: () => import('@views/qualityManage/warningManage/index'),
-				name: '预警管理',
-				meta: {title: '预警管理',icon: ''},
-				children:[
-					{
-						path: '/addWarningManage',
-						component: () => import('@views/qualityManage/warningManage/components/addWarningManage'),
-						name: '新增',
-						meta: {	title: '新增',	icon: ''	},
-						hidden:true
-					}
-				]
-			},
+
 			{
 				path: '/selfCheckPlan',
 				component: () => import('@views/qualityManage/selfCheckPlan/index'),
@@ -193,26 +239,202 @@ let authRoutes = [
 	{
 		path: '/WorkOrderManage',
 		component: Layout,
-		redirect: '/WorkOrderManage2',
+		redirect: '/WorkTemplate',
 		name: '工单管理',
 		meta: {title: '工单管理',icon: 'gdgl' },
-		children: [],
+		children: [
+            {
+                path: '/orderDemo',
+                component: () => import('@views/workOrder/signDemo/index.vue'),
+                name: 'demo',
+                meta: {title: 'demo',icon: '', },
+            },
+            {
+                path: '/WorkTemplate',
+                component: () => import('@views/workOrder/workTemplate/index'),
+                name: '模板管理',
+                meta: {title: '模板管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/WorkTemplateAdd',
+                        component: () => import('@views/workOrder/workTemplate/add/index'),
+                        name: '新增工单模板配置',
+                        meta: {title: '新增工单模板配置',icon: 'xxgl' },
+                    }
+                ]
+            },
+            {
+                path: '/signControl',
+                component: () => import('@views/workOrder/signControl/index'),
+                name: '完工签署',
+                meta: {title: '完工签署',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/signControlAdd',
+                        component: () => import('@views/workOrder/signControl/add'),
+                        name: '完工签署详情',
+                        meta: {title: '完工签署详情',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/WorkAbnormalDetails',
+                        component: () => import('@views/workOrder/abnormal/details'),
+                        name: '异常更改',
+                        meta: {title: '异常更改',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/WorkPaperDetails',
+                        component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
+                        name: '异常更改',
+                        meta: {title: '异常更改',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/WorkAbnormalAdd',
+                        component: () => import('@views/workOrder/abnormal/add'),
+                        name: '纸制填报工单导入',
+                        meta: {title: '纸制填报工单导入',icon: 'xxgl' },
+                    },
+                ]
+            },
+            // {
+            //     path: '/WorkAbnormal',
+            //     component: () => import('@views/workOrder/abnormal/index'),
+            //     name: '异常管理',
+            //     meta: {title: '工单异常管理',icon: 'xxgl' },
+            //     children:[
+            //         {
+            //             path: '/WorkAbnormalDetails',
+            //             component: () => import('@views/workOrder/abnormal/details'),
+            //             name: '工单详情',
+            //             meta: {title: '工单详情',icon: 'xxgl' },
+            //         },
+            //         {
+            //             path: '/WorkPaperDetails',
+            //             component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
+            //             name: '工单详情',
+            //             meta: {title: '工单详情',icon: 'xxgl' },
+            //         },
+            //         {
+            //             path: '/WorkAbnormalAdd',
+            //             component: () => import('@views/workOrder/abnormal/add'),
+            //             name: '纸制填报工单导入',
+            //             meta: {title: '纸制填报工单导入',icon: 'xxgl' },
+            //         },
+            //     ],
+            //     hidden:true
+            // },
+            {
+                path: '/workOrderChange',
+                component: () => import('@views/workOrder/workOrderChange/index'),
+                name: '变更审核',
+                meta: {title: '变更审核',icon: 'xxgl' },
+                children:[
+
+                ]
+            },
+        ],
 	},
 	{
 		path: '/WorkOrderManage3',
 		component: Layout,
-		redirect: '/WorkOrderManage4',
+		redirect: '/templateManage',
 		name: '收费管理',
 		meta: {title: '收费管理',icon: 'sfgl' },
-		children: [],
+		children: [
+            {
+				path: '/templateManage',
+				component: () => import('@views/chargeManage/templateManage/index'),
+				name: '模板管理',
+                meta: {title: '模板管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/templateAdd',
+                        component: () => import('@views/chargeManage/templateManage/templateAdd'),
+                        name: '新增',
+                        meta: {title: '新增',icon: 'xxgl' }
+                    },
+                    {
+                        path: '/templateHistory',
+                        component: () => import('@views/chargeManage/templateManage/templateHistory'),
+                        name: '历史版本',
+                        meta: {title: '历史版本',icon: 'xxgl' }
+                    }
+                ]
+            },
+            {
+				path: '/chargeOrders',
+				component: () => import('@views/chargeManage/chargeOrders/index'),
+				name: '收费单',
+                meta: {title: '收费单',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/chargeOrderAdd',
+                        component: () => import('@views/chargeManage/chargeOrders/chargeOrderAdd'),
+                        name: '新增',
+                        meta: {title: '新增',icon: 'xxgl' }
+                    }
+                ]
+            }
+                
+        ],
 	},
 	{
 		path: '/WorkOrderManage5',
 		component: Layout,
-		redirect: '/WorkOrderManage6',
+		redirect: '/fileManage',
 		name: '技术资料',
 		meta: {title: '技术资料',icon: 'jszl' },
-		children: [],
+		children: [
+            {
+				path: '/fileManage',
+				component: () => import('@views/techKnowledge/fileManage/index'),
+				name: '文件管理',
+                meta: {title: '文件管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/detail',
+                        component: () => import('@views/techKnowledge/fileManage/detail/index'),
+                        name: '工单',
+                        meta: {title: '工单',icon: 'xxgl' }
+                    },
+                    {
+                        path: '/addFile',
+                        component: () => import('@views/techKnowledge/fileManage/detail/addFile'),
+                        name: '新增文件',
+                        meta: {title: '新增文件',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/batchPush',
+                        component: () => import('@views/techKnowledge/fileManage/detail/batchPush'),
+                        name: '批量推送',
+                        meta: {title: '批量推送',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/fileHistory',
+                        component: () => import('@views/techKnowledge/fileManage/detail/fileHistory'),
+                        name: '工单历史版本',
+                        meta: {title: '工单历史版本',icon: 'xxgl' },
+                    },
+                    {
+                        path: '/readTrack',
+                        component: () => import('@views/techKnowledge/fileManage/detail/readTrack'),
+                        name: '工单阅读推送',
+                        meta: {title: '工单阅读推送',icon: 'xxgl' },
+                    }
+                ]
+            },
+            {
+                path:'/studyManage',
+                component:() => import('@views/techKnowledge/studyManage/index'),
+                name:'学习管理',
+                meta: {title: '学习管理',icon: 'xxgl' }
+            },
+            {
+                path:'/userManage',
+                component:() => import('@views/techKnowledge/studyManage/userManage'),
+                name:'个人管理',
+                meta: {title: '个人管理',icon: 'xxgl' }
+            }
+        ],
 	},
 	{
 		path: '/peixunKaohe',
@@ -222,10 +444,19 @@ let authRoutes = [
 		meta: {title: '培训考核',icon: 'pxkh' },
 		children: [
 			{
-				path: '/WorkOrderManage8',
-				component: ()=>{},
+				path: '/coursewareMaintain',
+                component: () => import('@views/trainManage/coursewareMaintain/index'),
 				name: '课件维护',
 				meta: {title: '课件维护',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/coursewareMaintainAdd',
+                        component: () => import('@views/trainManage/coursewareMaintain/add'),
+                        name: '课件维护新增',
+                        meta: {title: '课件维护新增',icon: 'xxgl' },
+
+                    },
+                ]
 			},
 			{
 				path: '/testMaintenance',
@@ -250,14 +481,66 @@ let authRoutes = [
                         children:[
 
                         ]
+					},{
+                        path: '/testMaintenanceSee',
+                        component: () => import('@views/trainManage/testMaintenance/see'),
+                        name: '预览',
+                        meta: {title: '预览',icon: 'xxgl' },
+                        children:[
+
+                        ]
 					},
 				]
 			},
 			{
-				path: '/WorkOrderManage11',
-				component: ()=>{},
+				path: '/trainManageAdmin',
+                component: () => import('@views/trainManage/trainManageAdmin/index'),
 				name: '培训管理',
 				meta: {title: '培训管理',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/trainManageAdminAdd',
+                        component: () => import('@views/trainManage/trainManageAdmin/add'),
+                        name: '培训管理新增',
+                        meta: {title: '培训管理新增',icon: 'xxgl' },
+                    },
+					{
+                        path: '/trainManageAdminPush',
+                        component: () => import('@views/trainManage/testManage/pushStaff.vue'),
+                        name: '培训推送员工',
+                        meta: {title: '培训推送员工',icon: 'xxgl' },
+                    },
+					{
+                        path: '/trainManageAdminResults',
+                        component: () => import('@views/trainManage/trainManageAdmin/trainResults/index'),
+                        name: '员工培训结果',
+                        meta: {title: '员工培训结果',icon: 'xxgl',paramsId:''  },
+                        children:[
+                            {
+                                path: '/trainManageAdminResultsAdd',
+                                component: () => import('@views/trainManage/trainManageAdmin/trainResults/add'),
+                                name: '培训管理新增',
+                                meta: {title: '培训管理新增',icon: 'xxgl' },
+                            },
+                        ]
+                    },
+
+
+                ]
+			},
+			{
+				path: '/trainManageUser',
+                component: () => import('@views/trainManage/trainManageUser/index'),
+				name: '我的培训',
+				meta: {title: '我的培训',icon: 'xxgl' },
+                children:[
+                    {
+                        path: '/trainManageUserAdd',
+                        component: () => import('@views/trainManage/trainManageUser/add'),
+                        name: '我的培训详情',
+                        meta: {title: '我的培训详情',icon: 'xxgl' },
+                    },
+                ]
 			},
 			{
 				path: '/testManage',
@@ -292,26 +575,51 @@ let authRoutes = [
                 ]
 			},
 			{
-				path: '/WorkOrderManage33',
-				component: ()=>{},
+				path: '/onlineTestIndex',
+				component:() => import('@views/trainManage/onlineTest/index.vue'),
 				name: '在线考试',
 				meta: {title: '在线考试',icon: 'xxgl' },
+                children:[
+					{   path: '/onlineTestDo',
+                        component: () => import('@views/trainManage/onlineTest/add.vue'),
+                        name: '在线考试',
+                        meta: {title: '在线考试',icon: 'xxgl' },
+					},
+				]
 			},
 			{
-				path: '/WorkOrderManage44',
-				component: ()=>{},
+				path: '/assessManageAdmin',
+                component: () => import('@views/trainManage/assessManageAdmin/index'),
 				name: '考核管理',
 				meta: {title: '考核管理',icon: 'xxgl' },
+
+
 			},
 		],
 	},
 	{
-		path: '/WorkOrderManage55',
+		path: '/queryStatistical',
 		component: Layout,
-		redirect: '/WorkOrderManage66',
+		redirect: '/queryIndex',
 		name: '查询统计',
 		meta: {title: '查询统计',icon: 'cxtj' },
-		children: [],
+        children: [
+            {
+                path: '/queryIndex',
+                component: () => import('@views/queryStatistical/query/index'),
+                name: '综合查询',
+                meta: {title: '综合查询',icon: '' },
+
+            },
+            {
+                path: '/statisticalIndex',
+                component: () => import('@views/queryStatistical/statistical/index'),
+                name: '综合统计',
+                meta: {title: '综合统计',icon: ''},
+
+            },
+
+        ],
 	},
 	{
 		path: '/msgManage',
@@ -376,6 +684,13 @@ let authRoutes = [
 						hidden:true
 					},
 					{
+						path: '/infoPlateDetails',
+						component: () => import('@views/msgManage/infoPlate/components/infoPlateDetails'),
+						name: '详情',
+						meta: {	title: '详情',	icon: ''	},
+						hidden:true
+					},
+					{
 						path: '/historyInfoPlate',
 						component: () => import('@views/msgManage/infoPlate/components/historyInfoPlate'),
 						name: '历史',
@@ -431,6 +746,21 @@ let authRoutes = [
 				]
 			},
 			{
+				path: '/tailInfo',
+				component:  () => import('@views/basicData/AirInfo/index'),
+				name: '机尾号信息',
+				meta: {title: '机尾号信息',icon: '' },
+				children:[
+					{
+						path: '/tailInfoAdd',
+						component: () => import('@views/basicData/AirInfo/add'),
+						name: '新增',
+						meta: {	title: '新增',	icon: ''	},
+						hidden:true
+					},
+				]
+			},
+			{
 				path: '/electronicFence',
 				component: () => import('@views/basicData/electronicFence/index'),
 				name: '机位电子围栏',
@@ -446,8 +776,24 @@ let authRoutes = [
 				]
 			}
 		],
-	}
-	
+	},
+	{
+		path: '/electronicFence',
+		component: Layout,
+		redirect: '/electronicFenceIndex',
+		name: '电子围栏',
+		meta: {title: '电子围栏',icon: 'xxgl' },
+		children: [
+			{
+				path: '/electronicFenceIndex',
+				component: () => import('@views/electronicFence/index'),
+				name: '电子围栏',
+				meta: {title: '电子围栏',icon: '' },
+				children:[]
+			},
+		],
+	},
+
 ];
 let defaultRoutes = [
   {path: '/',name: 'login',	component: () => import('@views/login/login')},

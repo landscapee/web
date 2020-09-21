@@ -1,7 +1,10 @@
 <template>
 <svg class="svg-icon" aria-hidden="true">
-  <use :xlink:href="iconName"></use>
+  <title>{{title}} </title>
+  <use ref="use" :xlink:href="iconName"></use>
+
 </svg>
+
 </template>
 
 <script>
@@ -12,6 +15,9 @@
                 type: String,
                 required: true
             },
+            title: {
+                type: String,
+             },
         },
         computed: {
             iconName() {

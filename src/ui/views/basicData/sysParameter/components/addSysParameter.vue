@@ -16,23 +16,23 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_item_row row_item">
-          <el-form-item label="系统参数编码" prop="sysParamCode">
+          <el-form-item label="系统参数编码：" prop="sysParamCode">
             <span v-if="type=='info' || type=='edit' ">{{form.sysParamCode}}</span>
             <el-input v-if="type=='add'" v-model="form.sysParamCode" placeholder="请输入系统参数编码"></el-input>
           </el-form-item>
         </div>
         <div class="row_custom">
-          <el-form-item label="系统参数" prop="sysParamName">
+          <el-form-item label="系统参数：" prop="sysParamName">
             <span v-if="type=='info'">{{form.sysParamName}}</span>
             <el-input v-else v-model="form.sysParamName" placeholder="请输入系统参数"></el-input>
           </el-form-item>
-          <el-form-item label="系统参数值" prop="sysParamValue">
+          <el-form-item label="系统参数值：" prop="sysParamValue">
             <span v-if="type=='info'">{{form.sysParamValue}}</span>
             <el-input v-else v-model="form.sysParamValue" placeholder="请输入系统参数值"></el-input>
           </el-form-item>
         </div>
         <div class="row_item_row row_item">
-          <el-form-item label="系统参数说明" prop="sysParamComment">
+          <el-form-item label="系统参数说明：" prop="sysParamComment">
             <span v-if="type=='info'">{{form.sysParamComment}}</span>
             <el-input v-else v-model="form.sysParamComment" placeholder="请输入系统参数说明"></el-input>
           </el-form-item>
@@ -104,6 +104,7 @@ export default {
             })
             .then(data => {
               this.$message.success("保存成功！");
+              this.$parent.selectId = null;
               this.$router.go(-1);
             })
             .catch(error => {
@@ -126,15 +127,15 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 120px;
+        width: 150px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 120px;
+        margin-left: 150px;
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 377px;
+            width: 347px;
             text-align: left;
         }
         @include common-input;
@@ -148,7 +149,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 120px);
+          width: calc(100% - 150px);
         }
       }
   }

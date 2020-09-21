@@ -1,5 +1,5 @@
 <template>
-    <div class="addSysParameter">
+    <div class="addSysParameter ">
         <div class="top-content">
             <div class="top-content-title">
                 <span>危险数据-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
@@ -112,9 +112,9 @@
                     </el-form-item>
                 </div>
                 <div class="row_custom">
-                    <el-form-item label="剩余可能性：" prop="residuaPossibility">
-                        <span v-if="type=='info'">{{form.residuaPossibility}}</span>
-                        <el-input v-else v-model="form.residuaPossibility" placeholder="请输入剩余可能性"></el-input>
+                    <el-form-item label="剩余可能性：" prop="residualPossibility">
+                        <span v-if="type=='info'">{{form.residualPossibility}}</span>
+                        <el-input v-else v-model="form.residualPossibility" placeholder="请输入剩余可能性"></el-input>
                     </el-form-item>
                     <el-form-item label="剩余严重性：" prop="residualSeverity">
                         <span v-if="type=='info'">{{form.residualSeverity}}</span>
@@ -129,9 +129,8 @@
                     <el-form-item label="控制状态：" prop="controlState">
                         <span v-if="type=='info'">{{form.controlState}}</span>
                         <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
-                            <el-option label="q" value="q"> </el-option>
-                            <el-option label="qq" value="qq"> </el-option>
-                        </el-select>
+                            <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
@@ -139,8 +138,7 @@
                         <span v-if="type=='info'">{{form.evaluationResults}}</span>
 
                         <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
-                            <el-option label="q" value="q"> </el-option>
-                            <el-option label="qq" value="qq"> </el-option>
+                             <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -158,14 +156,14 @@
         components: {
             Icon
         },
-        name: "",
+        name: "add",
         data() {
             const checkNumber = (rule, value, callback) => {
                 if(value){
                     let val=value.replace(/^\s+|\s+$/g,"")
                     if(val){
                         request({
-                            url:`${this.$ip}/qualification/dangerData/numberExists/${value}`,
+                            url:`${this.$ip}/mms-qualification/dangerData/numberExists/${value}`,
                             method: 'get',
                         }).then(response => {
                             console.log(response,10);
@@ -188,7 +186,7 @@
 
             };
             return {
-
+                options:{},
                 form: {},
                 rules: {
                     number: [{ validator:checkNumber,trigger: "blur" }],
@@ -198,7 +196,7 @@
             };
         },
         created() {
-            if (this.$route.query) {
+             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "add"
@@ -209,14 +207,35 @@
                             ? "危险数据详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                      request({
+                        url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data }
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["commentResults", "controlState",]
+            }).then(d => {
+                     this.options=d.data
+            });
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,number:this.form.number};
+                }else {
+                    this.form={};
+                }
+
             },
             saveQualifications(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -224,9 +243,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/dangerData/save`
+                                url=`${this.$ip}/mms-qualification/dangerData/save`
                              }else {
-                                 url=`${this.$ip}/qualification/dangerData/update`
+                                 url=`${this.$ip}/mms-qualification/dangerData/update`
                             }
                             request({
                                 url,
@@ -254,7 +273,7 @@
     @import "@/ui/styles/common_form.scss";
     .main-content{
         overflow-y: auto;
-        height:calc(100vh - 260px);
+        height:calc(100vh - 300px);
         /*margin-top: 80px!important;*/
         .aRow_custom{
             text-align:left;
@@ -262,7 +281,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
@@ -279,10 +298,11 @@
         .el-form {
             width: 1060px;
             /deep/ .el-form-item__label {
-                width: 150px;
+                width: 170px;padding-left: 30px;
+
             }
             /deep/ .el-form-item__content {
-                margin-left: 150px;
+                margin-left: 170px;
             }
             .row_item_row,.row_item{
                /deep/ .el-input{
@@ -292,7 +312,7 @@
             .row_custom{
                 /deep/ .el-form-item__content{
                     /*height: 40px;*/
-                    width: 377px;
+                    width: 357px;
                     text-align: left;
                 }
                 @include common-input;
@@ -306,7 +326,7 @@
             }
             .row_item_row{
                 .el-form-item {
-                    width: calc(100% - 150px);
+                    width: calc(100% - 170px);
                 }
             }
         }

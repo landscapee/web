@@ -14,17 +14,18 @@
         }
        
         /deep/.el-form-item__label{
+            text-align: left;
             font-size:16px;
             font-family:SourceHanSansCN-Regular,SourceHanSansCN;
             font-weight:400;
             color:rgba(34,34,34,1);
         }
         /deep/  .el-textarea__inner,/deep/ .el-input__inner{
-            border-radius:2px;
-            border:1px solid rgba(151,151,151,1);
-            font-size:16px;
-            padding-left: 16px;
-        }
+              border-radius:2px;
+              border:1px solid rgba(151,151,151,1);
+              font-size:16px;
+              padding-left: 16px;
+          }
         /deep/ input::-webkit-input-placeholder {
             font-size:16px;
             font-family:SourceHanSansCN-Regular,SourceHanSansCN;
@@ -44,11 +45,7 @@
                 font-size: 15px;
             }
         }
-        /deep/ .el-form-item__label:before {
-            content: '';
-            color: unset;
-            margin-right:unset;
-        }
+
     }
 }
 .top-content{

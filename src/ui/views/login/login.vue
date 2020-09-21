@@ -20,7 +20,7 @@
 						</span>
 						<el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="请输入您的密码" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
 					</el-form-item>
-					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin">登录 →</el-button>
+					<el-button :loading="loading" class="loginBtn"  @click.native.prevent="handleLogin('loginForm')">登录 →</el-button>
 				</el-form>
 			</el-row>
 		</div>
@@ -28,13 +28,15 @@
 </template>
 
 <script>
+
+    import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';
-import { MessageBox, Message } from 'element-ui';
 import request from '@lib/axios.js';
 import logo from './assets/img/login-logo.png';
 import userimg from './assets/img/login-username.png';
 import pwdimg from './assets/img/login-password.png';
 import './assets/index.scss';
+import postal from 'postal';
 export default {
 	name: 'Login',
 	data() {
@@ -61,8 +63,8 @@ export default {
 				password: '',
 			},
 			loginRules: {
-				username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-				password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+				// username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+				// password: [{ required: true, trigger: 'blur', validator: validatePassword }],
 			},
 			loading: false,
 			passwordType: 'password',
@@ -89,13 +91,28 @@ export default {
 				this.$refs.password.focus();
 			});
 		},
+		findUnread(){
+			request({
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				method: 'get',
+			})
+			.then((data) => {
+				postal.publish({
+					channel: 'websocket_count',
+					topic: 'count',
+					data: data.data
+				});
+			}).catch((error) => {
+					
+			});
+		},
 		handleLogin() {
-			this.$refs.loginForm.validate((valid) => {
-				if (valid) {
+ 			this.$refs.loginForm.validate((valid) => {
+ 				if (valid) {
 					this.loading = true;
 					removeToken();
 					request({
-						url:'/api/sso/login/login', 
+						url:`${this.$ip}/sso/login/login`,
 						method: 'post',
 						data:this.loginForm,
 						headers: {
@@ -104,14 +121,22 @@ export default {
 						}
 					})
 					.then((data) => {
-                         if (data.responseCode != 1000) {
-                            this.$message.error( data.responseMessage);
+                          if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
+                              setToken(data.data.token);
+                             setUserInfo(data.data);
+                             this.$store.commit('user/SET_TOKEN',data.data.token);
+                             this.$store.commit('user/SET_USER_INFO',data.data);
+                             if(data.responseCode == 30003||data.responseCode == 30002){
+                                 this.$message.warning( data.responseMessage);
+							 }
+                             initWebsocket(this)
+                             this.findUnread();
+                             this.$router.push({ path: '/qualityManage' });
                          }else{
-							setToken(data.data.token);
-							setUserInfo(data.data);
-                            this.$router.push({ path: '/qualityManage' });
+                             this.$message.error( data.responseMessage);
+
                          }
-                         this.loading = false;
+                    this.loading = false;
 					}).catch((error) => {
 						 this.loading = false;
 					});

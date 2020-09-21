@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
 
@@ -25,8 +25,9 @@
                     </el-form-item>
                     <el-form-item label="检查项目：" prop="checkProject">
                         <span v-if="type=='info'">{{form.checkProject}}</span>
-                        <el-input  v-else v-model="form.checkProject" placeholder="请输入检查项目"></el-input>
-                        <!--<el-date-picker ></el-date-picker>-->
+                         <el-select v-else v-model="form.checkProject" placeholder="请选择检查项目">
+                            <el-option v-for="(opt,index) in options.checkProject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                        </el-select>
                     </el-form-item>
 
                 </div>
@@ -36,8 +37,10 @@
                         <el-input v-else v-model="form.checkContents" placeholder="请输入检查内容"></el-input>
                     </el-form-item>
                     <el-form-item label="检查方式：" prop="checkMethod">
-                        <span v-if="type=='info'">{{form.checkMethod}}</span>
-                        <el-input v-else v-model="form.checkMethod" placeholder="请输入检查方式"></el-input>
+                        <span v-if="type=='info'">{{form.checkMethod?form.checkMethod.join(','):'' }}</span>
+                         <el-select   v-else multiple v-model="form.checkMethod" placeholder="请选择检查方式">
+                            <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -70,7 +73,7 @@
                     <el-form-item label="检查对象：" prop="checkObject">
                         <span v-if="type=='info'">{{form.checkObject}}</span>
                          <el-select v-else clearable v-model="form.checkObject" placeholder="请选择检查对象">
-                            <el-option label="jiwu" value="jiwu"> </el-option>
+                             <el-option v-for="(opt,index) in options.checkObject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                     <el-form-item label="检查频次：" prop="checkFrequency">
@@ -83,7 +86,7 @@
 
 
                     <el-form-item label="检查时间：" prop="checkTime">
-                        <span v-if="type=='info'">{{form.checkTime}}</span>
+                        <span v-if="type=='info'">{{form.checkTime?moment(form.checkTime).format('YYYY-MM-DD'):''}}</span>
                         <el-input v-else v-model="form.checkTime" placeholder="请输入检查时间"></el-input>
                     </el-form-item>
                     <el-form-item label="检查人员：" prop="checkUser">
@@ -96,7 +99,7 @@
                     <el-form-item label="检查类别：" prop="checkType">
                         <span v-if="type=='info'">{{form.checkType}}</span>
                         <el-select v-else clearable v-model="form.checkType" placeholder="请选择检查类别">
-                            <el-option label="违规" value="违规"> </el-option>
+                            <el-option v-for="(opt,index) in options.checkCategory||[]" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
                 </div>
@@ -105,6 +108,8 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -120,7 +125,7 @@
                     return callback(new Error('序号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/examinationDetail/numberExists`,
+                        url:`${this.$ip}/mms-qualification/examinationDetail/numberExists`,
                         method: 'POST',
                         data:{
                             examinationId: this.$route.query.id,
@@ -136,15 +141,24 @@
                 }
             };
             return {
-                form: {},
+                moment:moment,
+                form: {checkMethod:[]},
                 rules: {
                     number: [{validator:infNumberIs, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
+                options:{},
                 type: "add"
             };
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["checkProject", "checkType",'checkObject','checkCategory']
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -156,17 +170,29 @@
                             ? "法定自查检查计划明细详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
-                }else {
+
+
+                    request({
+                        url:`${this.$ip}/mms-qualification/examinationDetail/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+                        debugger
+                        this.form={...d.data,checkMethod:d.data.checkMethod?d.data.checkMethod.split(','):[] }
+                    })
+                 }else {
                     // this.form.examinationId
                     this.$set(this.form,'examinationId',this.$route.query.id)
                 }
             }
         },
         methods: {
+
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id,checkMethod:[],number:this.form.number };
+                }else {
+                    this.form={checkMethod:[]};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -174,22 +200,26 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/examinationDetail/save`
+                                url=`${this.$ip}/mms-qualification/examinationDetail/save`
                              }else {
-                                 url=`${this.$ip}/qualification/examinationDetail/update`
+                                 url=`${this.$ip}/mms-qualification/examinationDetail/update`
+                            }
+                            let data={...this.form}
+                            if(data.checkMethod){
+                                data.checkMethod=data.checkMethod.join(',')
                             }
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data: data
                             })
                                 .then(data => {
-                                    this.$message.success("保存成功！");
-                                    this.$router.go(-1);
+                                  if(data.code==200){
+                                      this.$message.success("保存成功！");
+                                      this.$router.go(-1);
+                                  }
                                 })
-                                .catch(error => {
-                                    this.$message.success(error);
-                                });
+
                         } else {
                             console.log("error submit!!");
                             return false;
@@ -204,7 +234,7 @@
     @import "@/ui/styles/common_form.scss";
     .main-content{
         overflow-y: auto;
-        height:calc(100vh - 260px);
+        height:calc(100vh - 300px);
         /*margin-top: 80px!important;*/
         .aRow_custom{
             text-align:left;
@@ -212,7 +242,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
@@ -230,6 +260,7 @@
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 70px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;

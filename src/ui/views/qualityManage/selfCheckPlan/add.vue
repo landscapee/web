@@ -14,18 +14,19 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
+            <el-form    :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom">
-                    <el-form-item label="计划年度：" prop="year">
+                    <el-form-item label="计划年度：" prop="year1">
                         <span v-if="type=='info'">{{form.year}}</span>
-                        <el-input v-else v-model="form.year" type="number" placeholder="请输入计划年度"></el-input>
-                    </el-form-item>
-                    <el-form-item label="计划部门：" prop="deptName">
-                        <span v-if="type=='info'">{{form.deptName}}</span>
-                        <el-select clearable v-else v-model="form.deptName" placeholder="请选择计划部门">
-                            <el-option label="sfsd" value="dfd"></el-option>
+                        <el-date-picker @change="year1"    v-else v-model="form.year1" placeholder="请选择计划年度" type="year"></el-date-picker>
+                        <!--:disabled="type=='edit'"-->
+                     </el-form-item>
+                    <el-form-item label="计划部门：" prop="deptId">
+                        <span v-if="type=='info'">{{form.deptId}}</span>
+                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择计划部门">
+                            <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                      </el-form-item>
 
@@ -36,9 +37,8 @@
                         <el-input v-else v-model="form.reviewerName" placeholder="请输入审批人"></el-input>
                     </el-form-item>
                     <el-form-item label="审批日期：" prop="reviewerTime">
-                        <span v-if="type=='info'">{{form.reviewerTime?form.reviewerTime.split(' ')[0]:''}}</span>
+                        <span v-if="type=='info'">{{form.reviewerTime? this.$moment(form.reviewerTime).format('YYYY-MM-DD'):''}}</span>
                          <el-date-picker  v-else v-model="form.reviewerTime" placeholder="请选择审批日期"></el-date-picker>
-
                     </el-form-item>
                 </div>
                 <div class="row_custom aRow_custom">
@@ -53,6 +53,7 @@
     </div>
 </template>
 <script>
+    import moment from "moment";
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -64,14 +65,22 @@
         data() {
             return {
                 form: {},
+                options: {},
                 rules: {
-                    // infNumber: [{ required: true, message: "请输入信息编号", trigger: "blur" }],
+                    year1: [{ required: true, message: "请选择", trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
             };
         },
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["dept",]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -83,14 +92,39 @@
                             ? "法定自查检查计划详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+                    let id= this.$route.query.id
+                     request({
+                        url:`${this.$ip}/mms-qualification/examination/getById/${id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data,year1:new Date(d.data.year)}
+                        debugger
+                    })
                 }
             }
         },
         methods: {
+            year1(val){
+                if(val){
+                    this.form.year=Number(val.getFullYear() )
+                 }
+            },
+            deptNameChange(val){
+                let data
+                this.options.dept.map((k,l)=>{
+                    if(val==k.valCode){
+                        data=k.valData
+                    }
+                })
+                this.$set(this.form,'deptName',data)
+            },
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={id:this.form.id };
+                }else {
+                    this.form={};
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -98,9 +132,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/examination/save`
+                                url=`${this.$ip}/mms-qualification/examination/save`
                              }else {
-                                 url=`${this.$ip}/qualification/examination/update`
+                                 url=`${this.$ip}/mms-qualification/examination/update`
                             }
                             request({
                                 url,
@@ -136,11 +170,12 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
             /*padding: 0!important;*/
+            text-align: left;
         }
         .aRow_custom{
             span{
@@ -149,11 +184,12 @@
         }
     }
     .addSysParameter {
-        margin-top: 40px;
+        margin-top: 36px;
         .el-form {
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 60px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;

@@ -2,11 +2,11 @@
     <div>
 
          <router-view v-if="this.$router.history.current.path == '/onlineTestDo'" :key="$route.path"></router-view>
-
-        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="sysParameter">
+        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="onlineTest">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>{{}}-需参加的在线考试</span>
+                    <!--this.$store.state.user.userInfo.administrativeId-->
+                    <span>{{this.$store.state.user.userInfo.name}}-需参加的在线考试</span>
                 </div>
 
             </div>
@@ -18,9 +18,13 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="160"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="80"  >
                         <template  slot-scope="{ row }">
-                            <el-button  class="copyButton copyButton1" @click="lineTest('/onlineTestDo',row)">参加考试</el-button>
+                            <div >
+                                <span @click="lineTest('/onlineTestDo',row)" :class="'rowSvg'">
+                                    <icon iconClass="exam" title="参加考试"></icon>
+                                </span>
+                            </div>
                          </template>
                     </el-table-column>
 
@@ -43,8 +47,8 @@ export default {
     name: '',
     data() {
         return {
-            tableData:{records:[{}]},
-            tableConfig:lineTestConfig(),
+            tableData:{records:[]},
+             tableConfig:lineTestConfig({}),
             params:{
 				current: 1,
 				size: 15,
@@ -56,6 +60,16 @@ export default {
         };
     },
    created() {
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           params:{delete:false},
+           data:["testType", "testCategory1","zizhiType",'businessType', ]
+       }).then(d => {
+           let obj=d.data
+           this.tableConfig =lineTestConfig( obj)
+
+       });
        this.getList();
     },
     watch:{
@@ -66,7 +80,18 @@ export default {
     },
     methods: {
         lineTest(path,row){
-          this.$router.push(path,row)
+            // console.log(row.examTime,new Date().getTime()- 8.64e7);
+
+            if(row.examTime>new Date().getTime()- 8.64e7){
+
+                this.$router.push({
+                    path:path,
+                    query:{id:row.examId}
+                })
+            }else{
+                this.$message.info('考试已过期，下次请提前参加')
+            }
+
         },
 
         requestTable(searchData){
@@ -122,23 +147,25 @@ export default {
             map(data,((k,l)=>{
                 if(!k){
                     data[l]=null
-                }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
-                    }
-                    delete data.infTime
                 }
+
             }))
-           request({
-                url:`${this.$ip}/mms-qualification/securityInformation/list`,
+            request({
+                url:`${this.$ip}/mms-training/examLine/list`,
                  method: 'post',
-                data:{...this.sort,...data},
+                   data:{...this.sort,...data,employeeId:this.$store.state.user.userInfo.id},
                params:{...this.params,}
             })
             .then((data) => {
-                  this.tableData = extend({},
-                     {...data.data}
-                 );
+                if(data.code==200){
+                    data.data.records.map((k,l)=>{
+                        k.id=l+1
+                    })
+                    this.tableData = extend({},
+                        {...data.data}
+                    );
+                }
+
 
              })
         },
@@ -157,9 +184,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
-.sysParameter{
-    margin-top:40px;
+@import "@/ui/styles/common_list.scss";
+.onlineTest{
+    margin-top:14px;
 
     .copyButton{
         margin: 0;
@@ -169,6 +196,9 @@ export default {
     }
     .copyButton1{
         margin-right: 3px;
+    }
+    /deep/ .mainTable{
+        height: 600px;
     }
 }
 </style>

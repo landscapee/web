@@ -3,6 +3,7 @@
 
          <router-view v-if="this.$router.history.current.path == '/testMaintenanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceAddAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceSee'" :key="$route.path"></router-view>
 
         <div v-else-if="this.$router.history.current.path == '/testMaintenance'" :key="$route.path" class="sysParameter">
             <div class="top-content">
@@ -14,7 +15,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出</div>-->
                 </div>
             </div>
             <div class="main-content">
@@ -47,11 +48,11 @@ export default {
         Icon,
         SearchTable
 	},
-    name: '',
+    name: 'textMindex',
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:testMainConfig(),
+            tableConfig:testMainConfig({}),
             params:{
 				current: 1,
 				size: 15,
@@ -63,7 +64,21 @@ export default {
         };
     },
    created() {
-       this.getList();
+        if(this.$router.history.current.path == '/testMaintenance'){
+            this.getList();
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["testCategory", "paperCategory","qualificationType", "businessType","applyObject", "selectType",]
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig=testMainConfig(obj)
+
+            });
+
+        }
+
     },
     watch:{
         '$route':function(val,nm){
@@ -122,14 +137,13 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let data=JSON.stringify(this.row)
-            if(tag=='add'){
+             if(tag=='add'){
                 this.$router.push({path:'/testMaintenanceAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -144,14 +158,16 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-training/paperInfo/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
                             .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                              if(data.code==200){
+                                  this.getList();
+                                  this.selectId   = null;
+                                  this.$message({type: 'success',message: '删除成功'});
+                              }
                             })
                     })
                     .catch(() => {
@@ -175,16 +191,13 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
-                 method: 'post',
+                url:`${this.$ip}/mms-training/paperInfo/list`,
+                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
             })
             .then((data) => {
-                  this.tableData = extend({},
-                     {...data.data}
-                 );
-
+                  this.tableData = extend({}, {...data.data});
              })
         },
         handleSizeChange(size) {
@@ -204,7 +217,11 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
     
+}
+/deep/ .mainTable{
+    height: 600px;
+
 }
 </style>

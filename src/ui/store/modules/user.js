@@ -1,6 +1,7 @@
 import { getToken, setToken, setRoleCode, removeToken, removeRoleCode, getUserInfo, setUserInfo, removeUserInfo } from '@lib/auth';
 import { resetRouter } from '@router';
 import { extend, get } from 'lodash';
+import {socket} from "../../../../initSocket";
 
 const state = {
 	token: getToken(),
@@ -8,6 +9,7 @@ const state = {
 	avatar: '/static/img/default_user.df927a67.png',
 	userInfo: getUserInfo(),
 	roles: null,
+    socket:null
 };
 
 const mutations = {
@@ -26,6 +28,10 @@ const mutations = {
 	SET_ROLES: (state, roles) => {
 		state.roles = roles;
 	},
+    SET_SOCKET: (state, roles) => {
+        console.log(state, roles);
+         state.socket = roles;
+	},
 };
 
 const actions = {
@@ -34,7 +40,7 @@ const actions = {
 		const { username, password } = userInfo;
 		return new Promise((resolve, reject) => {
             request({
-                url: '/api/sso/login/login',
+                url: `${this.$ip}/sso/login/login`,
                 method: 'post',
                 data:{ username: username.trim(), password: password },
             })
@@ -42,7 +48,8 @@ const actions = {
 					if (response.responseCode !== 1000) {
 						return reject(response.responseMessage);
 					}
-					const { data } = response;
+                    console.log(response,'login')
+                   const { data } = response;
 					commit('SET_ROLES', null);
 					commit('SET_TOKEN', data.token);
 					commit('SET_USER_INFO', data);
@@ -71,6 +78,7 @@ const actions = {
 			resolve(state.userInfo);
 		});
 	},
+
 
 	// user logout
 	logout({ commit, state }) {

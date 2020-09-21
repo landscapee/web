@@ -1,0 +1,70 @@
+
+.el-table::before,
+.mainTable::before,
+.el-table--fit::before,
+.el-table--border::before,
+.el-table--enable-row-hover::before,
+.el-table--enable-row-transition::before{
+    display:none
+}
+.el-table__fixed::before{
+    display: none;
+}
+.G_listOne{
+     padding: 0 30px;
+    /deep/ .mainTable{
+        height:calc(100vh - 240px);
+        overflow: auto;
+    }
+    .QlistBody{
+
+    }
+
+}
+.warning-row{
+    td{
+        color: #E93570!important;
+    }
+}
+
+.G_listTwo{
+     padding: 0 30px;
+    /deep/ .mainTable{
+        height:calc(100vh - 400px);
+        overflow: auto;
+    }
+    .QlistBody{
+        justify-content: left;
+
+        .QlistLeft{
+            width:45%;
+            margin-right:30px;
+        }
+        .QlistRight{
+            width:calc(55% - 30px)
+        }
+    }
+}
+.rowSvg{
+    .svg-icon{
+        height:18px;
+        width:18px;
+        vertical-align: text-top;
+        fill:#3d568e;
+    }
+    .svg-icon:hover{
+        fill: #293a62;
+    }
+}
+.rowSvgInfo{
+    .svg-icon{
+        fill: #d0d0d0;
+        cursor: not-allowed!important;
+
+    }
+    .svg-icon:hover{
+        fill: #d0d0d0;
+    }
+
+}
+

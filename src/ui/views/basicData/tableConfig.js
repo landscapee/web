@@ -2,7 +2,7 @@ export const businessDataTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'dicCode', label: '业务数据类型编码', align: 'center',sort:true,sortProp:"dicCodeMode",search:{type:'input',placeholder:"请输入编码",prop:'dicCode'} },
-        { prop: 'dicType', label: '业务数据类型', align: 'center',sort:true,sortProp:"dicTypeMode",search:{type:'select',placeholder:"请选择类型",selectProp:["aaa","bbb"],data:[{aaa:"类型1",bbb:"1"},{aaa:"类型2",bbb:"2"}],prop:'dicType'} },
+        { prop: 'dicType', label: '业务数据类型', align: 'center',sort:true,sortProp:"dicTypeMode",search:{type:'input',placeholder:"请输入类型",selectProp:["aaa","bbb"],data:[{aaa:"类型1",bbb:"1"},{aaa:"类型2",bbb:"2"}],prop:'dicType'} },
         { prop: 'dicSummary', label: '业务数据类型说明', align: 'center',sort:true,sortProp:"dicSummaryMode",search:{type:'input',placeholder:"请输入说明",prop:'dicSummary'} },
         { prop: 'enableMaintain', label: '是否运行维护类型', align: 'center',
         formatter: function(row) {
@@ -15,7 +15,7 @@ export const businessSubsetTable = () => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'valCode', label: '业务数据编码', align: 'center',sort:true,sortProp:"valCodeMode",search:{type:'input',placeholder:"请输入编码",prop:'valCode'} },
-        { prop: 'valData', label: '业务数据', align: 'center',sort:true,sortProp:"valDataMode",search:{type:'select',placeholder:"请选择数据",data:[{label:"类型1",value:"1"},{label:"类型2",value:"2"}],prop:'valData'} },
+        { prop: 'valData', label: '业务数据', align: 'center',sort:true,sortProp:"valDataMode",search:{type:'input',placeholder:"请输入数据",prop:'valData'} },
         { prop: 'valSummary', label: '业务数据说明', align: 'center',sort:true,sortProp:"valSummaryMode",search:{type:'input',placeholder:"请输入说明",prop:'valSummary'} },
         { prop: 'valStatus', label: '是否启用', align: 'center',
         formatter: function(row) {

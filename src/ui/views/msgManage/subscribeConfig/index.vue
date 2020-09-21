@@ -50,10 +50,11 @@ export default {
             },
             form:{},
             sort:{},
-            selectId:null
+            selectId:null,
         };
     },
    created() {
+       this.findDataDictionary();
        this.getList();
     },
     watch:{
@@ -65,6 +66,20 @@ export default {
         }
     },
     methods: {
+        findDataDictionary(){
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: "post",
+                data: ["infoTypeCode"]
+            })
+            .then(data => {
+              let infoSelect = data.data["infoTypeCode"];
+              this.tableConfig = subscribeConfigTable(infoSelect);
+            })
+            .catch(error => {
+             this.$message.success(error);
+            });
+        },
         requestTable(searchData){
             this.form = searchData;
             this.selectId=null,
@@ -108,42 +123,42 @@ export default {
             }
         },
         delData(){
-            this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning',
-			})
-            .then(() => {
-                request({
-                    url:`${this.$ip}/mms-parameter/notificationSubscribe/delete/${this.selectId}`, 
-                    method: 'post',
-                    data:{id:this.selectId}
+            if(this.selectId!=null){
+                this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
                 })
-                .then((data) => {
-                   this.$message({type: 'success',message: '删除成功'});
-                    this.getList();
+                .then(() => {
+                    request({
+                        url:`${this.$ip}/mms-notice/notificationSubscribe/delete/${this.selectId}`, 
+                        method: 'delete',
+                    })
+                    .then((data) => {
+                        this.$message({type: 'success',message: '删除成功'});
+                        this.getList();
+                         this.selectId = null;
+                    })
                 })
-            })
-            .catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除',
+                    });
                 });
-            });
+            }else{
+                this.$message.error('请先选中一行数据');
+            }
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/notificationSubscribe/list`, 
+                url:`${this.$ip}/mms-notice/notificationSubscribe/list`, 
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
             })
             .then((data) => {
-                if(this.params.current==1){
-                    this.tableData = {records: data.data.items,current:1,size:this.params.size,total:data.data.total}
-                }else{
-                    this.tableData = {records: data.data.items,...this.params,total:data.data.total}
-                }
+               this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
             
             });
@@ -163,7 +178,6 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;

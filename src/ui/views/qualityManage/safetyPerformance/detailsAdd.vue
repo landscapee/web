@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
+        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div></div>
                 <div class="row_custom aRow_custom">
@@ -33,7 +33,7 @@
                     <el-form-item label="指标类型：" prop="quotaType">
                         <span v-if="type=='info'">{{form.quotaType}}</span>
                         <el-select v-else clearable v-model="form.quotaType" placeholder="请选择指标类型">
-                            <el-option label="违规" value="违规"> </el-option>
+                            <el-option v-for="(opt,index) in options.indicateType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -54,9 +54,9 @@
                         <span v-if="type=='info'">{{form.targetValue}}</span>
                         <el-input v-else v-model="form.targetValue" placeholder="请输入目标值"></el-input>
                     </el-form-item>
-                    <el-form-item label="预警规则：" prop="warningWules">
-                        <span v-if="type=='info'">{{form.warningWules}}</span>
-                        <el-input  v-else v-model="form.warningWules" placeholder="请输入预警规则"></el-input>
+                    <el-form-item label="预警规则：" prop="warningRules">
+                        <span v-if="type=='info'">{{form.warningRules}}</span>
+                        <el-input  v-else v-model="form.warningRules" placeholder="请输入预警规则"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_item_row row_item">
@@ -102,10 +102,10 @@
                     return callback(new Error('编号不能为空'));
                 } else {
                     request({
-                        url:`${this.$ip}/qualification/securityMeritsDetail/numberExists`,
+                        url:`${this.$ip}/mms-qualification/securityMeritsDetail/numberExists`,
                         method: 'POST',
                         data:{
-                            securityMeritsId: this.$route.query.id,
+                            securityMeritsId: this.$route.query.securityMeritsId,
                             number:value,
                         }
                     }).then(response => {
@@ -120,6 +120,7 @@
 
             return {
                 form: {},
+                options: {},
                 rules: {
                     number: [{validator:number, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -129,6 +130,13 @@
         },
 
         created() {
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["indicateType",]
+            }).then(d => {
+                this.options=d.data
+            });
             if (this.$route.query) {
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
@@ -140,17 +148,30 @@
                             ? "安全绩效明细详情"
                             : "";
                 if(this.type == "edit" || this.type == "info"){
-                    let data=JSON.parse( this.$route.query.data)
-                    this.form={...data}
+
+                    request({
+                        url:`${this.$ip}/mms-qualification/securityMeritsDetail/getById/${this.$route.query.id}`,
+                        method: "get",
+                    }).then(d => {
+
+                        this.form={...d.data,securityMeritsId:this.$route.query.securityMeritsId ,id:this.$route.query.id}
+                    })
+                        .catch(error => {
+                            this.$message.error(error);
+                        });
                 }else {
-                    this.form={securityMeritsId:this.$route.query.id}
-                    console.log(this.form,11111);
-                }
+                    this.form={securityMeritsId:this.$route.query.securityMeritsId}
+                 }
             }
         },
         methods: {
             resetForm(){
-                this.form={};
+                if(this.type=='edit'){
+                    this.form={securityMeritsId:this.form.securityMeritsId,number:this.form.number, };
+                }else {
+                    this.form={};
+
+                }
             },
             saveForm(form) {
                 if (this.type == "add" || this.type == "edit") {
@@ -158,9 +179,9 @@
                         if (valid) {
                             let url
                              if(this.type == "add"){
-                                url=`${this.$ip}/qualification/securityMeritsDetail/save`
+                                url=`${this.$ip}/mms-qualification/securityMeritsDetail/save`
                              }else {
-                                 url=`${this.$ip}/qualification/securityMeritsDetail/update`
+                                 url=`${this.$ip}/mms-qualification/securityMeritsDetail/update`
 
                             }
                             request({
@@ -189,7 +210,7 @@
     @import "@/ui/styles/common_form.scss";
     .main-content{
         overflow-y: auto;
-        height:calc(100vh - 260px);
+        height:calc(100vh - 300px);
         /*margin-top: 80px!important;*/
         .aRow_custom{
             text-align:left;
@@ -197,7 +218,7 @@
     }
     .main-info{
         span{
-            font-weight: bold!important;
+            /*font-weight: bold!important;*/
             /*margin: 0!important;*/
         }
         /deep/ .el-form-item__label{
@@ -215,6 +236,7 @@
             width: 1000px;
             /deep/ .el-form-item__label {
                 width: 165px;
+                padding-left: 40px;
             }
             /deep/ .el-form-item__content {
                 margin-left: 165px;

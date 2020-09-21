@@ -11,7 +11,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/qualification/download/securityInformation`"></a>导出</div>
+                    <div @click="exportExcel"><icon iconClass="export" ></icon> 导出</div>
                 </div>
             </div>
             <div class="main-content">
@@ -48,12 +48,13 @@ export default {
     data() {
         return {
             tableData:{records:[]},
-            tableConfig:sadetyInfoConfig(),
+            tableConfig:sadetyInfoConfig({}),
             params:{
 				current: 1,
 				size: 15,
             },
             form:{},
+
             row:{},
             sort:{},
             selectId:null
@@ -61,13 +62,44 @@ export default {
     },
    created() {
        this.getList();
+       request({
+           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+           method: 'post',
+           data:["Q_BadMistake", "Q_securityServices",]
+       }).then(d => {
+           let obj=d.data
+           this.tableConfig=sadetyInfoConfig(obj)
+
+       });
     },
     watch:{
 
     },
     methods: {
         exportExcel(){
-             this.$refs.a.click()
+            request({
+                'Content-Type':'application/vnd.ms-excel',
+                // 'Content-Type':'application/octet-stream;charset=utf-8',
+                url: `${this.$ip}/mms-qualification/download/securityInformation`,
+                method: 'get',
+                responseType: 'blob',
+                params:{startTime:this.form.startTime,endTime:this.form.endTime }
+            }).then((d)=>{
+                const content = d
+
+                const blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = '安全信息'
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }
+            })
         },
         requestTable(searchData){
             this.form = searchData;
@@ -123,7 +155,7 @@ export default {
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/safetyInformationAdd',query:{type:tag,data:data}});
+                     this.$router.push({path:'/safetyInformationAdd',query:{type:tag,id:this.row.id}});
                 }
             }
         },
@@ -138,14 +170,16 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/qualification/securityInformation/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-qualification/securityInformation/delete/`+this.selectId,
                             method: 'delete',
                             // params:{id:this.selectId}
                         })
                             .then((data) => {
-                                this.getList();
-                                this.selectId   = null;
-                                this.$message({type: 'success',message: '删除成功'});
+                              if(data.code==200){
+                                  this.getList();
+                                  this.selectId   = null;
+                                  this.$message({type: 'success',message: '删除成功'});
+                              }
                             })
                     })
                     .catch(() => {
@@ -169,7 +203,7 @@ export default {
                 }
             }))
            request({
-                url:`${this.$ip}/qualification/securityInformation/list`,
+                url:`${this.$ip}/mms-qualification/securityInformation/list`,
                  method: 'post',
                 data:{...this.sort,...data},
                params:{...this.params,}
@@ -198,7 +232,11 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
-    margin-top:40px;
+    margin-top:14px;
     
+}
+/deep/ .mainTable{
+    height:calc(100vh - 240px);
+    /*overflow: auto;*/
 }
 </style>

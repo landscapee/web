@@ -1,7 +1,7 @@
-
 <template>
+
     <div>
-        <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
+          <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceYear'" :key="$route.path"></router-view>
         <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="businessData">
@@ -16,22 +16,15 @@
                             <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-
                             <div @click="exportExcel()">
                                   <icon iconClass="export" ></icon>导出
-                                  <a ref="a" :href="`${this.$ip}/qualification/download/securityMerits/${this.leftSelectId}`"></a>
                               </div>
-
-
                         </div>
-
-
                     </div>
                     <div class="headDiv headDiv2" >
                         <div>
                             <span style="font-weight: bold; font-size: 16px"  >安全绩效明细</span>
                             <span v-if="leftRow.year" style="font-weight:400;color:rgba(136,136,136,1);font-size: 16px" >&nbsp;&nbsp;{{leftRow.deptName}}&nbsp;{{leftRow.year}}年-{{leftRow.month}}月</span>
-
                         </div>
                         <div class="right-toolbar">
                              <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
@@ -53,11 +46,13 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="option" label="操作" :width="130" >
-                        <template slot-scope="{ row }">
-                            <span @click.stop="copyDetails(row)">
-                                <el-button :disabled="row.copy" class="copyButton">复制绩效明细</el-button>
-                            </span>
+                    <el-table-column slot="option" label="操作" align="center" :width="80" >
+                        <template slot-scope="{ row }" >
+
+                                    <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="copyjx"  title="复制绩效明细" ></icon>
+                                    </span>
+
                           </template>
                     </el-table-column>
                 </SearchTable>
@@ -72,7 +67,9 @@
             </div>
         </div>
         <CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
+
     </div>
+
 </template>
 <script>
     import CopyDetails from './copyDetails'
@@ -92,8 +89,8 @@
             return {
                 tableLeftData:{records:[]},
                 tableRightData:{records:[]},
-                businessTableConfig:safetyConfig(),
-                businessSubsetConfig:safetyDetailsConfig(),
+                businessTableConfig:safetyConfig({}),
+                businessSubsetConfig:safetyDetailsConfig({}),
                 leftParams:{
                     current: 1,
                     size: 18,
@@ -114,26 +111,60 @@
         },
         watch:{
             '$route':function(val,nm){
-                console.log(1,val.path,nm.path);
+                 console.log(1,val.path,nm.path);
                 if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceAdd'){
-
-                    this.leftParams.size=this.tableLeftData.records.length
+                     this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
                 }else if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceDetailsAdd'){
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
                     this.getList('right');
-                }else {
-
-                }
+                }else if(val.path=='/safetyPerformance'){
+                    this.leftParams.size=18;
+                    this.leftParams.current=1;
+                    this.rightParams.current = 1;
+                    this.leftRow={};
+                    this.rightRow={};
+                    this.leftForm={};
+                    this.rightForm={};
+                    this.leftSelectId=null;
+                    this.rightSelectId=null;
+                    this.tableRightData.records=[];
+                    this.tableLeftData.records=[];
+                    this.getList('left');
+                   }
             }
         },
-        created() {
+        activated(q,b){
+
+            // this.getList('left');
+        },
+		created() {
+
             this.leftParams.current = 1;
             if(this.$router.history.current.path == '/safetyPerformance'){
                 this.getList('left');
             }
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                data:["dept",]
+            }).then(d => {
+                let obj=d.data
+                this.businessTableConfig=safetyConfig(obj)
+
+            });
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["indicateType",]
+            }).then(d => {
+                let obj=d.data
+                this.businessSubsetConfig=safetyDetailsConfig(obj)
+
+            });
 
         },
         mounted() {
@@ -141,12 +172,36 @@
         },
 
         methods: {
+
             exportExcel(){
                 console.log(1);
+            // <a ref="a" :href="`${this.$ip}/mms-qualification/download/securityMerits/${this.leftSelectId}`"></a>
+
                 if(this.leftSelectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$refs.a.click()
+                    request({
+                        'Content-Type':'application/vnd.ms-excel',
+                         url: `${this.$ip}/mms-qualification/download/securityMerits/${this.leftSelectId}`,
+                        method: 'get',
+                        responseType: 'blob',
+                    }).then((d)=> {
+                        const content = d
+                        let blob = new Blob([content], {type: 'application/vnd.ms-excel'})
+                        const fileName = `月度安全绩效（${this.leftRow.deptName}部${this.leftRow.year}年${this.leftRow.month}月） `
+                        if ('download' in document.createElement('a')) { // 非IE下载
+                            const elink = document.createElement('a')
+                            elink.download = fileName
+                            elink.style.display = 'none'
+                            elink.href = URL.createObjectURL(blob)
+                            document.body.appendChild(elink)
+                            elink.click()
+                            URL.revokeObjectURL(elink.href) // 释放URL 对象
+                            document.body.removeChild(elink)
+                        } else { // IE10+下载
+                            navigator.msSaveBlob(blob, fileName)
+                        }
+                    })
                 }
             },
             copyDetails(row){
@@ -156,6 +211,8 @@
             },
             //监听滚动
             handleScroll($event){
+                console.log($event);
+
                 // 获取滚动条的dom
                 var bady = $event.target;
                 // 获取距离顶部的距离
@@ -238,8 +295,12 @@
                 if(tag=="left"){
                     if(row.selected){
                         this.leftSelectId = row.id;
+                        this.rightSelectId = null;
+
                         this.leftRow={...row}
                     }else{
+
+                        this.leftRow={}
                         this.leftSelectId = null;
                         this.rightSelectId = null;
                         this.tableRightData.records=[]
@@ -266,7 +327,7 @@
                         this.$message.error('请先选中一行数据');
                     }else{
                         let data=JSON.stringify(this.leftRow)
-                        this.$router.push({path:'/safetyPerformanceAdd',query:{type:tag,data:data,id:this.leftSelectId}});
+                        this.$router.push({path:'/safetyPerformanceAdd',query:{type:tag, id:this.leftSelectId}});
                     }
                 }
             },
@@ -279,7 +340,7 @@
                     if(this.leftSelectId==null){
                         this.$message.error('请先选中左侧列表一行数据');
                     }else{
-                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:'add',id:this.leftSelectId}});
+                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:'add',securityMeritsId:this.leftSelectId}});
                     }
                 }else if(tag == 'edit' || tag=='info'){
                     if(this.rightSelectId==null){
@@ -287,18 +348,18 @@
                     }else{
                         let data=JSON.stringify(this.rightRow)
 
-                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:tag,data:data,id:this.rightSelectId}});
+                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:tag,securityMeritsId:this.leftSelectId,id:this.rightSelectId}});
                     }
                 }
             },
-          
+
             //删除表格行数据
             delData(tag,idstr){
                 let url=null
                  if(tag=='left'&&this.leftSelectId){
-                    url=`${this.$ip}/qualification/securityMerits/delete/${this.leftSelectId}`
+                    url=`${this.$ip}/mms-qualification/securityMerits/delete/${this.leftSelectId}`
                 }else if(tag=='right'&&this.rightSelectId ){
-                    url=`${this.$ip}/qualification/securityMeritsDetail/delete/${this.rightSelectId}`
+                    url=`${this.$ip}/mms-qualification/securityMeritsDetail/delete/${this.rightSelectId}`
                 }
                 if(url){
                     this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -311,21 +372,23 @@
                                 url:url,
                                 method: 'delete',
                             }).then((data) => {
-                                this.$message({type: 'success',message: '删除成功'});
-                                if(tag=='left'){
-                                    this.leftParams.current = 1;
-                                    this.rightParams.current= 1;
-                                    this.rightSelectId=null
-                                    this.rightRow={}
-                                    this.leftSelectId=null
-                                    this.leftRow={}
-                                    this.tableRightData.records=[]
-                                 }else{
-                                    this.rightSelectId=null
-                                    this.rightRow={}
-                                    this.rightParams.current= 1;
-                                }
-                                this.getList(tag);
+                               if(data.code==200){
+                                   this.$message({type: 'success',message: '删除成功'});
+                                   if(tag=='left'){
+                                       this.leftParams.current = 1;
+                                       this.rightParams.current= 1;
+                                       this.rightSelectId=null
+                                       this.rightRow={}
+                                       this.leftSelectId=null
+                                       this.leftRow={}
+                                       this.tableRightData.records=[]
+                                   }else{
+                                       this.rightSelectId=null
+                                       this.rightRow={}
+                                       this.rightParams.current= 1;
+                                   }
+                                   this.getList(tag);
+                               }
                             })
                         })
                         .catch(() => {
@@ -338,15 +401,21 @@
             },
 
             getList(tag,scroll){
-                if(tag=='left'){
+                 if(tag=='left'){
 
                     map(this.leftForm,((k,l)=>{
-                        if(!k){
+                        console.log(k==='', l);
+                        if(k==''){
                             this.leftForm[l]=null
+                        }else{
+                            if(l=='year'||l=='month'){
+                                this.leftForm[l]= k===null?null:Number(k)
+                            }
                         }
+
                     }))
                     request({
-                         url:`${this.$ip}/qualification/securityMerits/list`,
+                         url:`${this.$ip}/mms-qualification/securityMerits/list`,
                         method: 'post',
                         data:{...this.leftForm,...this.leftSort,},
                         params:{...this.leftParams}
@@ -359,8 +428,7 @@
                                 }
                             })
                              if(this.leftParams.current==1){
-
-                                this.tableLeftData.records = data.data.records;
+                                 this.tableLeftData.records = data.data.records;
                             }else{
                                 this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.records);
                             }
@@ -379,7 +447,7 @@
                             }
                         }))
                         request({
-                            url:`${this.$ip}/qualification/securityMeritsDetail/list`,
+                            url:`${this.$ip}/mms-qualification/securityMeritsDetail/list`,
                             method: 'post',
                             data:{...this.rightForm,securityMeritsId:this.leftSelectId,...this.rightSort},
                             params:{...this.rightParams}
@@ -410,74 +478,76 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
-    .businessData{
-        margin-top:40px;
-        .top-content{
-            .top-toolbar{
-                padding: 0px 30px 0px 30px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                .headDiv{
-                    display: flex;justify-content: space-between;
-                    align-items: center;
-                    &>div:first-child{
-                        font-size: 16px;
-                    }
-                }
-                .headDiv1{
-                    width:562px;
-                }
-                .headDiv2{
-                    width:1096px;
-                }
-                .left-toolbar{
-                    text-align: right;
-                }
-                .right-toolbar{
-                    text-align: right;
-                }
-            }
-        }
-        .main-content{
-            padding: 0px 30px 0px 30px;
-            display: flex;
-            justify-content: space-between;
-            /deep/ .left-main-table{
-                width:562px;
-                /deep/ .el-table{
-                    width:562px;
-                }
-                /deep/ .el-table_2_column_14{
-                   /deep/  .cell{
-                        padding: 2px!important;
-                    }
-                }
-                .copyButton{
-                    padding:7px 10px;
-                    background: black;
-                    color:white;
-                }
-            }
-            /deep/ .right-subset-table{
-                width:1096px;
-                /deep/ .el-table{
-                    width:1096px;
-                }
-            }
-            /deep/ .mainTable{
-                height: 600px;
-                overflow: auto;
-                // /deep/ .el-table__body-wrapper{
-                //     /deep/ tr:last-child{
-                //         td{
-                //             border-bottom:0px;
-                //         }
-                //     }
-                // }
-            }
-        }
-    }
+	@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
+
+	.businessData {
+		margin-top: 14px;
+		.top-content {
+			.top-toolbar {
+				padding: 0px 30px 0px 30px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.headDiv {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					& > div:first-child {
+						font-size: 16px;
+					}
+				}
+				.headDiv1 {
+					width: 562px;
+				}
+				.headDiv2 {
+					width: 1096px;
+				}
+				.left-toolbar {
+					text-align: right;
+				}
+				.right-toolbar {
+					text-align: right;
+				}
+			}
+		}
+		.main-content {
+			padding: 0px 30px 0px 30px;
+			display: flex;
+			justify-content: space-between;
+			/deep/ .left-main-table {
+				width: 562px;
+				/deep/ .el-table {
+					width: 562px;
+				}
+				/deep/ .el-table_2_column_14 {
+					/deep/ .cell {
+						padding: 2px !important;
+					}
+				}
+				.copyButton {
+					padding: 7px 10px;
+					background: black;
+					color: white;
+				}
+			}
+			/deep/ .right-subset-table {
+				width: 1096px;
+				/deep/ .el-table {
+					width: 1096px;
+				}
+			}
+			/deep/ .mainTable {
+				height: 600px;
+				overflow: auto;
+				// /deep/ .el-table__body-wrapper{
+				//     /deep/ tr:last-child{
+				//         td{
+				//             border-bottom:0px;
+				//         }
+				//     }
+				// }
+			}
+		}
+	}
 </style>
 
