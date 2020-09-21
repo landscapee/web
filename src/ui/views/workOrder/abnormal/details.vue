@@ -507,7 +507,7 @@
                 let original = '';
                 return new Promise((resolve, reject) => {
                     request({
-                        url: `${this.$signIp}/jitGW/random`,
+                        url: `${this.$ip}/mms-workorder/jitGW/random`,
                         method: 'get',
                     }).then((result) => {
                         if (result.code == 200) {
@@ -527,7 +527,7 @@
             jitGWAuthFn(authMode = 'cert', original, signed_data) {
                 return new Promise((resolve, reject) => {
                     request({
-                        url: `${this.$signIp}/jitGW/auth`,
+                        url: `${this.$ip}/mms-workorder/jitGW/auth`,
                         method: 'post',
                         data: {
                             authMode,
