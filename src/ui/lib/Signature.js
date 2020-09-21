@@ -13,7 +13,7 @@ import Vue from 'vue'
     Signature.init({//初始化属性
         //keysn:'0741170010110516',
         keysn, // 'test001', // 002
-        password:'123456',
+         password:'123456',
         //keysn:'test001',
         //usercode:"test002",
         delCallBack: delCB,
