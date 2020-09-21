@@ -32,10 +32,8 @@
                     <!--:show-overflow-tooltip="true"-->
                     <el-table-column align="center" slot="option" label="操作" :width="160" >
                         <template  slot-scope="scope">
-
                             <div >
                                 <el-button class="QoptionButton" @click="enable(scope.row)"  v-if="scope.row.state===0&&scope.row.history===false">启用</el-button>
-
                                 <el-button class="QoptionButton" @click="addOrEditOrInfo1(scope.row,'edit')" v-if="scope.row.state!==3">改版</el-button>
                                 <el-button class="QoptionButton" @click="unEnable(scope.row)"  v-if="scope.row.state===1">停用</el-button>
                             </div>
