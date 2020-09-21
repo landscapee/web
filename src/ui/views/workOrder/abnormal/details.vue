@@ -408,9 +408,13 @@
                             }
                         }).then((result) => {
                             console.log(result)
-                            if (result.responseCode === 1000) {
+                            if(result.responseCode === 1000){
+                              if(result.data.length>0){
                                 resolve('1')
-                            } else {
+                              }else{
+                                resolve('0')
+                              }
+                            }else{
                                 resolve('0')
                             }
                         })

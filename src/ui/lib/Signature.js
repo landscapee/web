@@ -1,3 +1,4 @@
+import Vue from 'vue'
  export function SignatureInit(keysn='0002',password='123456'){
     function delCB(signatureid, signatureData) {
         for (var key in Signature.list) {
@@ -23,7 +24,7 @@
         sealType : 'server',//设置印章从签章服务器取
         autoCert:true,
         //serverUrl : 'http://173.101.1.52:8080/iSignatureHTML5',
-        serverUrl : 'http://173.101.1.134:8089/iSignatureHTML5',
+        serverUrl : `${Vue.prototype.$ipSign}/iSignatureHTML5`,
         //serverUrl : 'http://173.101.1.134:8089/iSignatureHTML5/html5',
         showSealsDlg:'auto',  // 一个章不显示，默认第一个
         //serverUrl : 'http://192.168.0.151:8080/iSignatureHTML5',
