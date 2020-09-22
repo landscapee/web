@@ -99,7 +99,6 @@
                     }).then(d => {
 
                         this.form={...d.data,year1:new Date(d.data.year)}
-                        debugger
                     })
                 }
             }

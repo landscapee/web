@@ -6,16 +6,18 @@
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable ref="searchTable" refTag="searchTable" max-height="250" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                     <el-table-column slot="attachment" label="附件"  align="center" >
+                     <el-table-column slot="attachment" label="附件"  align="center" :width="70">
                         <template slot-scope="{ row }">
-                              <el-button @click="downloadFile(row)" size="mini">下载</el-button>
+                            <span @click="row.fileInfoList?downloadFile(row):''" :class="row.fileInfoList?'rowSvg':'rowSvg rowSvgInfo'">
+                                <icon iconClass="downloadNew" title="下载"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                      <el-table-column slot="relationInfo" label="关联信息" :width="148" >
@@ -76,10 +78,10 @@ export default {
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: "post",
-                data: ["infoTypeCode"]
+                data: ["infoType"]
             })
             .then(data => {
-              let infoSelect = data.data["infoTypeCode"];
+              let infoSelect = data.data["infoType"];
               this.tableConfig = historyPlateReceiveTable(infoSelect);
             })
             .catch(error => {
@@ -96,7 +98,17 @@ export default {
         },
         headerSort(column){
             this.sort = {};
-            this.sort[column.property] = column.order;
+            let num = null;
+            if(column.order=='desc'){
+                num = 0
+            }else if(column.order=='asc'){
+                num = 1
+            }else{
+                num = 2
+            }
+            if(num!=2){
+                this.sort['order'] = column.property+','+num;
+            }
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
@@ -119,7 +131,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-notice/notificationRecipient/list`, 
+                url:`${this.$ip}/mms-notice/notificationRecipient/list`,
                 method: 'post',
                 data:{...this.sort,...this.form,state:-1},
                 params:this.params
@@ -127,7 +139,7 @@ export default {
             .then((data) => {
                this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -143,12 +155,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .historyInfoPlate{
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-        }    
+        }
     }
 }
 </style>

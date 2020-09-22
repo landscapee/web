@@ -68,7 +68,7 @@ export default {
     methods: {
          findUnread(){
 			request({
-				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+				url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`,
 				method: 'get',
 			})
 			.then((data) => {
@@ -78,12 +78,12 @@ export default {
 					data: data.data
 				});
 			}).catch((error) => {
-					
+
 			});
 		},
         clickAction(row){
             request({
-                url:`${this.$ip}/mms-warning/warning/read/${row.id}`, 
+                url:`${this.$ip}/mms-warning/warning/read/${row.id}`,
                 method: 'get',
             })
             .then((data) => {
@@ -91,7 +91,7 @@ export default {
                 this.findUnread();
                 this.getList();
             }).catch((error) => {
-            
+
             });
         },
         requestTable(searchData){
@@ -105,7 +105,17 @@ export default {
         },
         headerSort(column){
             this.sort = {};
-            this.sort[column.property] = column.order;
+            let num = null;
+            if(column.order=='desc'){
+                num = 0
+            }else if(column.order=='asc'){
+                num = 1
+            }else{
+                num = 2
+            }
+            if(num!=2){
+                this.sort['order'] = column.property+','+num;
+            }
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
@@ -131,7 +141,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-warning/warning/list`, 
+                url:`${this.$ip}/mms-warning/warning/list`,
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
@@ -139,7 +149,7 @@ export default {
             .then((data) => {
                  this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -155,12 +165,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     .main-content{
         /deep/ .mainTable{
             height: 600px;
-        }    
+        }
     }
 }
 </style>

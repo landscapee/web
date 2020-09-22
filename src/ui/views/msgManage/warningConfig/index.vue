@@ -11,7 +11,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
+
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
@@ -76,7 +76,17 @@ export default {
         },
         headerSort(column){
             this.sort = {};
-            this.sort[column.property] = column.order;
+            let num = null;
+            if(column.order=='desc'){
+                num = 0
+            }else if(column.order=='asc'){
+                num = 1
+            }else{
+                num = 2
+            }
+            if(num!=2){
+                this.sort['order'] = column.property+','+num;
+            }
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
@@ -117,7 +127,7 @@ export default {
                 })
                 .then(() => {
                     request({
-                        url:`${this.$ip}/mms-warning/warningTemplate/delete/${this.selectId}`, 
+                        url:`${this.$ip}/mms-warning/warningTemplate/delete/${this.selectId}`,
                         method: 'delete',
                     })
                     .then((data) => {
@@ -138,7 +148,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-warning/warningTemplate/list`, 
+                url:`${this.$ip}/mms-warning/warningTemplate/list`,
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
@@ -146,7 +156,7 @@ export default {
             .then((data) => {
                 this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -162,13 +172,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     .main-content{
         /deep/ .mainTable{
             height: 600px;
             overflow: auto;
-        }    
+        }
     }
 }
 </style>

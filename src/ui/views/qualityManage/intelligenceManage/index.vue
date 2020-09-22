@@ -104,14 +104,16 @@
                     current: 1,
                     size: 18,
                 },
-                tableRowClassName:(rowIndex,row)=>{
-                    let num=60*60*24*1000*10
-
-                    if (row.endTime<=new Date().getTime()+num ) {
-                        return 'warning-row';
+                tableRowClassName: (rowIndex, row) => {
+                    if (this.overdue !== -1) {
+                        let num = 60 * 60 * 24 * 1000 * this.overdue;
+                        if (row.endTime <= new Date().getTime() + num) {
+                            return 'warning-row';
+                        }
                     }
                     return 'tab-row';
                 },
+                overdue:-1,
                 leftRow:{},
                 rightRow:{},
                 leftForm:{},
@@ -166,7 +168,13 @@
 
                 });
             }
-
+            request({
+                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`,
+                method: 'post',
+                data:{'sysParamCode':'ZZGQ','current':1,'size':15}
+            }).then(d => {
+                this.overdue = d.data.items[0].sysParamValue;
+            });
         },
 
         mounted() {
