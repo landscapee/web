@@ -24,7 +24,7 @@
                                     <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="飞机注册号：">
+                            <el-form-item label="飞机注册号：" class="threeItemForm">
                                 <!--<el-select filterable @change="getList1" clearable   v-model="form1.flightRegisterNo" placeholder="请选择">-->
                                     <!--<el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>-->
                                 <!--</el-select>-->
@@ -40,28 +40,28 @@
                                 <el-input @keyup.enter.native="getList1" v-model="form1.seat" clearable placeholder="请输入"></el-input>
 
                             </el-form-item>
-                            <el-form-item label="保障人员：">
-                                <el-input @keyup.enter.native="getList1" v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
-                            </el-form-item>
+
                         <br/>
-                            <el-form-item label="日期：" class="firstWidth">
+                            <el-form-item label="航班日期：" class="firstWidth">
                                 <el-date-picker @change="getList1"  @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
                              </el-form-item>
                             <el-form-item label="至" class="secWidth">
                                  <el-date-picker @change="getList1" @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
+                        <el-form-item label="适用ETOPS运行：" class="threeItemForm">
+                            <el-select @change="getList1"  clearable   v-model="form1.etopEnable"  placeholder="请选择">
+                                <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode==='false'?false:true"> </el-option>
+                             </el-select>
+                        </el-form-item>
+                        <el-form-item label="保障人员：">
+                            <el-input @keyup.enter.native="getList1" v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
+                        </el-form-item>
                             <el-form-item  >
-                                <div class="button ">
+                                <div class="button">
                                     <el-button style="margin-left: 15px" @click="getList1" type="primary">查询</el-button>
                                     <el-button @click="resetForm"  >重置</el-button>
                                 </div>
                             </el-form-item>
-                        <br>
-                        <el-form-item  >
-                            <el-checkbox v-model="form1.etopEnable"  >适用ETOPS运行</el-checkbox>
-                        </el-form-item>
-
-
                     </el-form>
                 </div>
 
@@ -290,8 +290,8 @@ export default {
         getList( ){
             let data={...this.form1}
             map(data,((k,l)=>{
-                if(!k){
-                    data[l]=null
+                  if(typeof k==='string'&&!k.replace(/(^\s*)|(\s*$)/g, "") ){
+                     data[l]=null
                 }
             }))
             // data.workOrderParam={...this.form1}
@@ -344,7 +344,7 @@ export default {
 .queryIndex{
     margin-top:14px;
     /deep/ .mainTable{
-        height:calc(100vh - 610px);
+        height:calc(100vh - 550px);
 
     }
     /deep/ .cell> div{
@@ -357,6 +357,11 @@ export default {
         .el-form-item__label{
              text-align: left;
             padding-left: 15px;
+        }
+        .threeItemForm{
+            .el-form-item__label{
+                width: 150px;
+            }
         }
         .firstWidth{
              .el-form-item__label{

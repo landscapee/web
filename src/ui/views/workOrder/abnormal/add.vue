@@ -261,7 +261,7 @@
                 this.$refs.userBox.open(arr, '选择人员', true);
             },
             handleClose(tag,index){
-                this.userList.splice(index,1)
+                this.form.operatorList.splice(index,1)
             },
             getFile(fileIds){
                 console.log(fileIds,1,2);

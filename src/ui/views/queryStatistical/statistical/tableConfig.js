@@ -10,12 +10,18 @@ let qarr=[
     { prop: 'department', label: '部门/项目', sortProp:"department", align: 'center',sort:true,search:{type:'input', prop:'department',placeholder:"请输入"} }
 ];
 // inputProp:['valData','valData'],data:obj.coursewareType||[],
+let timeString=(prop)=>{
+    return (row)=>{
+         return  row[prop]||'--'
+    }
+}
+
 let yearMonthArr=(obj)=>{
    return [
-        { prop: 'year', label: '年',sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入"} },
-        { prop: 'month', label: '月',sortProp:"month", align: 'center',sort:true,search:{type:'input', prop:'month', placeholder:"请输入"}},
-        { prop: 'day', label: '日',sortProp:"day", align: 'center' ,sort:true,search:{type:'input', prop:'day',placeholder:"请输入"}},
-        { prop: 'hour', label: '小时',sortProp:"hour", align: 'center' ,sort:true,search:{type:'input', prop:'hour', placeholder:"请输入"}}
+        { prop: 'year', label: '年',sortProp:"year", formatter:timeString('year'),align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入"} },
+        { prop: 'month', label: '月',sortProp:"month",formatter:timeString('month'), align: 'center',sort:true,search:{type:'input', prop:'month', placeholder:"请输入"}},
+        { prop: 'day', label: '日',sortProp:"day", align: 'center' ,formatter:timeString('day'),sort:true,search:{type:'input', prop:'day',placeholder:"请输入"}},
+        { prop: 'hour', label: '小时',sortProp:"hour", align: 'center' ,formatter:timeString('hour'),sort:true,search:{type:'input', prop:'hour', placeholder:"请输入"}}
 
     ];
 }

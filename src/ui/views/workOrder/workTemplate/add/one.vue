@@ -79,7 +79,7 @@
                 </el-form-item>
                 <el-form-item  label="适用ETOPS运行：" :prop=" form.type=='WXGD'?'etopEnable':''"  >
                     <span v-if="type=='info'">{{  form.etopEnable?'适用':'不适用' }}</span>
-                    <el-select    v-else clearable v-model="form.etopEnable" placeholder="请选择适用ETOPS运行">
+                    <el-select    v-else clearable v-model="form.etopEnable" placeholder="请选择">
                         <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode==='false'?false:true"> </el-option>
                     </el-select>
                 </el-form-item>
