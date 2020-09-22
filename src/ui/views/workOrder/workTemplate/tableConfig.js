@@ -48,7 +48,7 @@ export const workOrderConfig = (obj,arr) => {
             // { prop: 'enableTime', label: '模板启用日期',formatter:timeInfo,sortProp:"enableTime", align: 'center',sort:true,search:{type:'date', prop:'enableTime',placeholder:"请选择", } },
             { prop: 'createUserName', label: '模板编制人',sortProp:"createUserName", align: 'center',sort:true,search:{type:'input', prop:'createUserName',placeholder:"请输入"} },
             { prop: 'publishTime', label: '版本发布日期',formatter:timeInfo1,sortProp:"publishTime", align: 'center',sort:true,search:{type:'date', prop:'publishTime',placeholder:"请选择" } },
-            { prop: 'effectiveTime', label: '版本生效日期',formatter:timeInfo,sortProp:"effectiveTime", align: 'center',sort:true,search:{type:'date', prop:'effectiveTime',placeholder:"请选择" } },
+            { prop: 'enableTime', label: '版本生效日期',formatter:timeInfo,sortProp:"effectiveTime", align: 'center',sort:true,search:{type:'date', prop:'effectiveTime',placeholder:"请选择" } },
             { prop: 'invalidTime', label: '版本失效日期',formatter:timeInfo3,sortProp:"invalidTime", align: 'center',sort:true,search:{type:'date', prop:'invalidTime',placeholder:"请选择" } },
             { prop: 'state', label: '版本状态',formatter:state, sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请选择",data:obj.W_versionState,selectProp:['valData','valCode']} },
             { slot: 'option', label: '操作' ,width:'160',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}

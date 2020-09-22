@@ -44,9 +44,9 @@
                     <div v-else-if="row.type==6" style="text-align: center">
                         <!--签章-->
                     </div>
-                    <div v-else-if="row.type==1" style="text-align: center">
+                    <div v-else-if="row.type==1" style="text-align: center"  >
                         <!--任务排班信息获取-->
-                        <el-select v-model="row.value" >
+                        <el-select v-model="row.value" :key="$index">
                             <el-option v-for="(opt,index1) in W_taskGet" :key="index1" :label="opt.valData" :value="opt.valCode"></el-option>
                         </el-select>
                     </div>
@@ -157,7 +157,7 @@
 
             },
             addList(){
-                this.tableData.push({templateId:this.$route.query.id,enable:true})
+                this.tableData.push({templateId:this.$route.query.id,value:null,enable:true})
             },
             listenToCheckedChange(row, column, event){
                 let select = row.selected;

@@ -21,7 +21,7 @@ let yearMonthArr=(obj)=>{
         { prop: 'year', label: '年',sortProp:"year", formatter:timeString('year'),align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入"} },
         { prop: 'month', label: '月',sortProp:"month",formatter:timeString('month'), align: 'center',sort:true,search:{type:'input', prop:'month', placeholder:"请输入"}},
         { prop: 'day', label: '日',sortProp:"day", align: 'center' ,formatter:timeString('day'),sort:true,search:{type:'input', prop:'day',placeholder:"请输入"}},
-        { prop: 'hour', label: '小时',sortProp:"hour", align: 'center' ,formatter:timeString('hour'),sort:true,search:{type:'input', prop:'hour', placeholder:"请输入"}}
+        // { prop: 'hour', label: '小时',sortProp:"hour", align: 'center' ,formatter:timeString('hour'),sort:true,search:{type:'input', prop:'hour', placeholder:"请输入"}}
 
     ];
 }
