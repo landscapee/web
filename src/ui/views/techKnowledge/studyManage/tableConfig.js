@@ -17,26 +17,26 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
         { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
         { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
         { prop: 'version', label: '版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入版本"} },
-        { 
+        {
             prop: 'startTime', label: '生效日期', align: 'center', width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
+            },
             search:{prop:'startTime',type:'date',placeholder:"请输入生效日期"}
         },
-        { 
+        {
             prop: 'endTime', label: '有效期至', align: 'center',sort:true,sortProp:"endTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
-            search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"} 
+            },
+            search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"}
         },
-        { 
+        {
             prop: 'pushTime', label: '推送时间', align: 'center',sort:true,sortProp:"pushTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
-            search:{prop:'pushTime',type:'date',placeholder:"请输入推送时间"} 
+            },
+            search:{prop:'pushTime',type:'date',placeholder:"请输入推送时间"}
         },
         { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",
             search:{prop:'downloadRate',type:'input',placeholder:"请选择下载率"},
@@ -75,29 +75,29 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
         { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
         { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
         { prop: 'version', label: '版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入版本"} },
-        { 
+        {
             prop: 'startTime', label: '生效日期', align: 'center', width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
+            },
             search:{prop:'startTime',type:'date',placeholder:"请输入生效日期"}
         },
-        { 
+        {
             prop: 'endTime', label: '有效期至', align: 'center',sort:true,sortProp:"endTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
-            search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"} 
+            },
+            search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"}
         },
-        { 
-            prop: 'endTime', label: '推送时间', align: 'center',sort:true,sortProp:"endTime", width:'120',
+        {
+            prop: 'pushTime', label: '推送时间', align: 'center',sort:true,sortProp:"pushTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
-            }, 
-            search:{prop:'endTime',type:'date',placeholder:"请输入推送时间"} 
+            },
+            search:{prop:'pushTime',type:'date',placeholder:"请输入推送时间"}
         },
         { prop: 'read', label: '是否阅读', align: 'center',sort:true,sortProp:"read",
-            search:{prop:'read',type:'select',placeholder:"请选择", selectProp:["label","id"], 
+            search:{prop:'read',type:'select',placeholder:"请选择", selectProp:["label","id"],
             data: [{label:"未阅读",id:"0"},{label:"阅读中",id:"1"},{label:"已阅读",id:"2"}]  },
             formatter: (row, column, cellValue) => {
                 let readStatus = {
@@ -106,14 +106,14 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
                     '2': '已阅读'
                 }
                 return readStatus[row.read]
-            }, 
-           
+            },
+
          },
         { prop: 'readingTime', label: '阅读时长', align: 'center',sort:true,sortProp:"readingTime",
             search:{prop:'readingTime',type:'input',placeholder:"请选择阅读时长"},
             formatter: (row, column, cellValue) => {
                 return timeMinuteFormat(row.readingTime)
-            }, 
+            },
         },
         { slot: 'option', label: '操作',width:'230', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
