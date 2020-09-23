@@ -72,16 +72,19 @@
                     size: 15,
                 },
                 tableRowClassName:(rowIndex,row)=>{
-                    let num=60*60*24*1000*10
-                    if (row.endTime&&row.endTime<=new Date().getTime()+num &&row.state!==0) {
-                        return 'warning-row';
+                    if (this.overdue!==-1){
+                        let num=60*60*24*1000*this.overdue
+                        if (row.endTime&&row.endTime<=new Date().getTime()+num &&row.state!==0) {
+                            return 'warning-row';
+                        }
                     }
                     return 'tab-row';
                 },
                 form:{},
                 row:{},
                 sort:{},
-                selectId:null
+                selectId:null,
+                overdue:-1
             };
         },
         created() {
@@ -101,6 +104,13 @@
                             this.tableConfig=authorizeConfig(obj,d1.data||[])
                     });
                 });
+                request({
+                     url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`,
+                     method: 'post',
+                     data:{'sysParamCode':'SQSX','current':1,'size':15}
+                 }).then(d => {
+                     this.overdue=d.data.items[0].sysParamValue;
+                 });
                }
         },
 

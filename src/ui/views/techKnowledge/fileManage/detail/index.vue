@@ -27,14 +27,15 @@
             </div>
              <div class="main-content">
                 <SearchTable
-                    refTag="searchTable" 
-                    ref="searchTable"  
-                    @requestTable="requestTable(arguments[0])"   
-                    @listenToCheckedChange="listenToCheckedChange(arguments[0])" 
-                    @headerSort="headerSort(arguments[0])"  
-                    :data="tableData" 
+                    refTag="searchTable"
+                    ref="searchTable"
+                    @requestTable="requestTable(arguments[0])"
+                    @listenToCheckedChange="listenToCheckedChange(arguments[0])"
+                    @headerSort="headerSort(arguments[0])"
+                    :data="tableData"
                     :tableConfig="businessTableConfig"
-                    @handleSizeChange="handleSizeChange" 
+                    :tableRowClassName="tableRowClassName"
+                    @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange"
                 >
                     <el-table-column slot="radio" label="选择" :width="49" >
@@ -80,7 +81,17 @@ export default {
             tableData:{records:[]},
             selectObjs:[],
             issueDeptArr:[],
-            positionArr:[]
+            positionArr:[],
+            tableRowClassName:(rowIndex,row)=>{
+                if (this.overdue!==-1){
+                    let num=60*60*24*1000*this.overdue
+                    if (row.endTime&&row.endTime<=new Date().getTime()+num &&row.state!==0) {
+                        return 'warning-row';
+                    }
+                }
+                return 'tab-row';
+            },
+            overdue:-1
         };
     },
     mounted(){
@@ -114,6 +125,13 @@ export default {
             }
             this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
         })
+        request({
+            url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`,
+            method: 'post',
+            data:{'sysParamCode':'WJGQTJ','current':1,'size':15}
+        }).then(d => {
+            this.overdue=d.data.items[0].sysParamValue;
+        });
     },
     methods:{
         init(){
@@ -212,7 +230,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`, 
+                url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{
                     folderId: this.$route.query.folderId,
@@ -222,7 +240,7 @@ export default {
                 }
             })
             .then((data) => {
-                // order:'number,0' // 0 倒序 1 正序 
+                // order:'number,0' // 0 倒序 1 正序
                 console.log(data)
                 // this.sort = {
                 //     order:`${number},${data.order==='desc'?'0':'1'}`
@@ -271,7 +289,7 @@ export default {
             // })
             row.selected  = !select
             if(row.selected){
-                this.selectObjs.push(row)  //row.id 
+                this.selectObjs.push(row)  //row.id
             }else{
                 let arr = this.arrRemEleFn(this.selectObjs.map(i=>i.id), row.id)
                 this.selectObjs = this.selectObjs.filter(item=>{
@@ -295,7 +313,7 @@ export default {
             }
             console.log(arr)
             return arr
-            
+
         },
         // 批量推送
         batchPushFn(){
@@ -336,7 +354,7 @@ export default {
             this.getList()
 		},
             // request({
-            //     url:`${this.$ip}/mms-file/get-file-stream-by-file-path/`, 
+            //     url:`${this.$ip}/mms-file/get-file-stream-by-file-path/`,
             //     method: 'get',
             //     params:{
             //         filePath:'/M00/00/01/rWQBjl78OA2ABsKmAAApuVAdayM314.jpg'
@@ -344,15 +362,15 @@ export default {
             // })
             // .then((data) => {
             //     console.log(data)
-            // }) 
+            // })
     },
     watch: {
     },
-   
+
 }
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
+@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 .index{
     .inner{
         .top_content{
@@ -424,10 +442,10 @@ export default {
                 //         }
                 //     }
                 // }
-            }    
+            }
         }
     }
-    
+
 }
 </style>
- 
+

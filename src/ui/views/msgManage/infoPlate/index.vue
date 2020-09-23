@@ -22,14 +22,14 @@
                 </div>
             </div>
             <div class="main-content">
-                <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
+                <SearchTable :key="isActive" ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="attachment" label="附件"  align="center" >
+                    <el-table-column slot="attachment" label="附件"  align="center" :width="70">
                         <template slot-scope="{ row }">
                             <span @click="(row.fileInfoList&&row.fileInfoList.length)?downloadFile(row):''" :class="(row.fileInfoList&&row.fileInfoList.length)?'rowSvg':'rowSvg rowSvgInfo'">
                                 <icon iconClass="downloadNew" title="下载"></icon>
@@ -108,13 +108,14 @@ export default {
             }
         },
         findDataDictionary(){
+            console.log("index findDataDictionary")
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: "post",
-                data: ["infoTypeCode"]
+                data: ["infoType"]
             })
             .then(data => {
-              this.infoSelect = data.data["infoTypeCode"];
+              this.infoSelect = data.data["infoType"];
               this.tableConfig = infoPlateSendTable(this.infoSelect);
                if(this.$route.query && this.$route.query.type=='receive'){
                     this.switchTable(1);
@@ -187,7 +188,17 @@ export default {
         },
         headerSort(column){
             this.sort = {};
-            this.sort[column.property] = column.order;
+            let num = null;
+            if(column.order=='desc'){
+                num = 0
+            }else if(column.order=='asc'){
+                num = 1
+            }else{
+                num = 2
+            }
+            if(num!=2){
+                this.sort['order'] = column.property+','+num;
+            }
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
@@ -221,7 +232,11 @@ export default {
                    if(tag == 'info'){
                         this.$router.push({path:'/infoPlateDetails',query:{type:tag,id:this.selectId,tag:this.isActive==0?'send':'receive'}});
                     }else{
-                        this.$router.push({path:'/addInfoPlate',query:{type:tag,id:this.selectId}});
+                       if (this.selectRow.state === 1) {
+                           this.$message.info("信息已发布，无法编辑！")
+                       } else {
+                           this.$router.push({path: '/addInfoPlate', query: {type: tag, id: this.selectId}});
+                       }
                     }
                 }
             }

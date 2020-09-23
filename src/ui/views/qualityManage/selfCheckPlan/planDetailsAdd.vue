@@ -176,7 +176,6 @@
                         url:`${this.$ip}/mms-qualification/examinationDetail/getById/${this.$route.query.id}`,
                         method: "get",
                     }).then(d => {
-                        debugger
                         this.form={...d.data,checkMethod:d.data.checkMethod?d.data.checkMethod.split(','):[] }
                     })
                  }else {

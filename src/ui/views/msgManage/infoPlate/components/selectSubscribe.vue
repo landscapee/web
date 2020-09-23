@@ -94,15 +94,19 @@ export default {
 		},
 		getList(){
            request({
-                 url:`${this.$ip}/mms-notice/notificationSubscribe/list`, 
+                 url:`${this.$ip}/mms-notice/notificationSubscribe/list`,
                 method: 'post',
                 data:{...this.sort,...this.form},
                 params:this.params
             })
             .then((data) => {
-               this.tableData = extend({}, this.tableData, data.data);
+            	//筛选已启用的数据来显示
+				data.data.records = data.data.records.filter((item)=>{
+					return item.enable;
+				})
+               this.tableData = extend({}, this.tableData,data.data );
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -127,7 +131,7 @@ export default {
     /deep/ .mainTable{
         height: 450px;
         overflow: auto;
-    }    
+    }
 }
 
 </style>
