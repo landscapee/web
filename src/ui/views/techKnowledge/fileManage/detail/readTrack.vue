@@ -32,7 +32,7 @@
                     <el-form  label-position="right" align='left' :model="form" :rules="rules" ref="form" >
                         <div class="row_item_row row_item">
                             <el-form-item label="阅读推送：" prop="description">
-                                <el-input v-model="form.description" readonly type="textarea" :rows="3"  placeholder="请选择阅读推送"></el-input>
+                                <el-input v-model="form.description" readonly type="textarea" :rows="3" placeholder="请选择阅读推送"></el-input>
                             </el-form-item>
                         </div>
                     </el-form>
@@ -51,7 +51,8 @@
                     <div class="readLists" v-show='readList.length'>
                         <div class="list" v-for='(item, index) in readList' :key='index' >
                             <div class="row">
-                                <div class="name">{{item.downloadTime | formatDate('YYYY-MM-DD HH:MM')}}{{item.userName}}</div> <!--（维修）-->
+                                <div class="name">{{item.userName}}</div> <!--（维修）-->
+                                <div class="download">{{item.downloadTime | formatDate('YYYY-MM-DD HH:MM')}}</div>
                                 <div class="type">{{readStatus[item.read]}}</div>
                                 <div class="time">{{item.readingTime}}min</div>
                             </div>
@@ -119,7 +120,7 @@ export default {
         },
         getByIdFn(){
             request({
-                url: `${this.$ip}/mms-knowledge/file/getById/${this.$route.query.id}`, 
+                url: `${this.$ip}/mms-knowledge/file/getById/${this.$route.query.id}`,
                 method: 'get',
             })
             .then((data) => {
@@ -143,7 +144,7 @@ export default {
                 if (valid) {
                     this.pushBatchFn()
                 }
-               
+
             })
         },
         pushBatchFn(){
@@ -290,16 +291,16 @@ export default {
             .el-form {
                 width: 800px;
                 /deep/ .el-form-item__label {
-                    width: 100px;
+                    width: 110px;
                 }
                 /deep/ .el-form-item__content {
-                    margin-left: 100px;
+                    margin-left: 110px;
                 }
                 .row_item_row,.row_item{
                     /deep/ .el-form-item{
                         width:calc( 100% - 1px)!important;
                         .el-form-item__content{
-                            width: calc( 100% - 100px)!important;
+                            width: calc( 100% - 110px)!important;
                         }
                         .el-input{
                             width: 100% !important;
@@ -311,7 +312,7 @@ export default {
                     }
                 }
                 /deep/ .el-input{
-                    width: 240px;
+                    width: 200px;
                     margin-right: 2px;
                 }
                 .row_custom{
@@ -384,8 +385,12 @@ export default {
                         line-height:50px;
                         font-size:14px;
                         .name{
-                            width:320px;
+                            width:250px;
                             text-align: left;
+                        }
+                        .download{
+                            width:150px;
+                            text-align:left;
                         }
                         .type{
                             width:100px;

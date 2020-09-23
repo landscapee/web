@@ -41,7 +41,7 @@
                 </SearchTable>
             </div>
         </div>
-        <el-dialog title="模板选择" :visible.sync="dialogTemplateVisible" width='300px'>
+        <el-dialog title="模板选择" center :visible.sync="dialogTemplateVisible" width='300px'>
             <el-form :model="form">
                 <el-form-item label="模板" :label-width="'60px'">
                     <el-select v-model="form.fileUrl" placeholder="请选择模板"  style='width:86%;'>
@@ -104,7 +104,7 @@ export default {
             this.approveNumber = 0
             this.sendNumber = 0
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/getNumber`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/getNumber`,
                 method: 'post',
             })
             .then((data) => {
@@ -115,7 +115,7 @@ export default {
         },
         revokeFn(row){
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/revoke`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/revoke`,
                 method: 'post',
                 data:{
                     id:row.id,
@@ -133,7 +133,7 @@ export default {
         },
         approveFn(row={}, type=false){
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/approve`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/approve`,
                 method: 'post',
                 data:{
                     id:row.id,
@@ -163,7 +163,7 @@ export default {
                 return
             }
             request({
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/send`, 
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/send`,
                 method: 'post',
                 data:{
                     id:this.selectIds[0],
@@ -221,11 +221,11 @@ export default {
                 excel:{
                     name:'/chargeBillFlxgz/excelExport',
                     ext:'xlsx'
-                } 
+                }
             }
             if(!this.form.fileUrl){
                 this.dialogTemplateVisible = false
-                reutrn 
+                reutrn
             }
             request({
                 // headers: {
@@ -237,7 +237,7 @@ export default {
             }).then((d)=>{
                 const content = d
                 const blob = new Blob([content]) //,{type:'application/vnd.ms-excel'}
-                const fileName = `机务服务非例行工作结算清单.${urlObj[type]['ext']}` 
+                const fileName = `机务服务非例行工作结算清单.${urlObj[type]['ext']}`
                 if ('download' in document.createElement('a')) { // 非IE下载
                     const elink = document.createElement('a')
                     elink.download = fileName
@@ -264,7 +264,7 @@ export default {
                 excel:{
                     name:'/chargeBillFlxgz/excelExport',
                     ext:'xlsx'
-                } 
+                }
             }
             request({
                 // headers: {
@@ -276,7 +276,7 @@ export default {
             }).then((d)=>{
                 const content = d
                 const blob = new Blob([content]) //,{type:'application/vnd.ms-excel'}
-                const fileName = `机务服务非例行工作结算清单.${urlObj[type]['ext']}` 
+                const fileName = `机务服务非例行工作结算清单.${urlObj[type]['ext']}`
                 if ('download' in document.createElement('a')) { // 非IE下载
                     const elink = document.createElement('a')
                     elink.download = fileName
@@ -298,7 +298,7 @@ export default {
             this.getList();
         },
         removeOrderFn(){
-            
+
             if(this.selectIds.length===0){
                 this.$message({type: 'warning', message: '请选择内容'});
                 return
@@ -312,7 +312,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 request({
-                    url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectIds[0]}`, 
+                    url:`${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectIds[0]}`,
                     method: 'delete',
                 })
                 .then((data) => {
@@ -325,9 +325,9 @@ export default {
                     this.selectIds = []
                 })
             }).catch(() => {
-               
+
             })
-            
+
         },
         headerSort(column){
             this.sort = {};
@@ -348,7 +348,7 @@ export default {
             row.selected  = !select;
             if(row.selected){
                 //this.selectId = row.id;
-                this.selectIds.push(row.id)  //row.id 
+                this.selectIds.push(row.id)  //row.id
             }else{
                 //this.selectId = null;
                 this.selectIds = this.arrRemEleFn(this.selectIds, row.id)
@@ -390,7 +390,7 @@ export default {
                 })
                 .then(() => {
                     request({
-                        url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
+                        url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`,
                         method: 'post',
                         data:{id:this.selectIds[0]}
                     })
@@ -411,8 +411,8 @@ export default {
             }
         },
         getList(){
-           request({   
-                url:`${this.$ip}/mms-charge/chargeBillFlxgz/list?current=${this.params.current}&size=${this.params.size}`, 
+           request({
+                url:`${this.$ip}/mms-charge/chargeBillFlxgz/list?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{...this.sort,...this.form}
             })
@@ -426,7 +426,7 @@ export default {
                 this.getNumberFn()
                 console.log(this.tableData)
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -439,9 +439,13 @@ export default {
 		handleCheckedChange() {},
         handleSelectionChange() {},
         effectiveListFn(){
+            if(this.selectIds.length===0){
+                this.$message({type: 'warning', message: '必须选择内容才能导出'});
+                return
+            }
             this.dialogTemplateVisible = true;
-            request({   
-                url:`${this.$ip}/mms-charge/chargeTemplate/effectiveList`, 
+            request({
+                url:`${this.$ip}/mms-charge/chargeTemplate/effectiveList`,
                 method: 'post',
             })
             .then((data) => {
@@ -458,7 +462,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     .top-right{
         position: absolute;
@@ -475,7 +479,7 @@ export default {
         /deep/ .mainTable{
             height: 600px;
             overflow: auto;
-        }    
+        }
     }
 }
 .dialog-footer{

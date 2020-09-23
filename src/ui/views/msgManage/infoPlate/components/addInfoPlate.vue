@@ -42,14 +42,16 @@
           <el-button @click="handleSelectUser('subscribe')">按订阅方式</el-button>
           <el-button @click="handleSelectUser('object')">接收对象选择</el-button>
         </div>
-        <div class="row_custom3">
+        <div class="row_item_row row_item">
           <el-form-item label="是否要求处理：" prop="require">
             <el-radio v-model="form.require" :label="true">是</el-radio>
             <el-radio v-model="form.require" :label="false">否</el-radio>
            </el-form-item>
-           <el-form-item label="要求处理时间：" prop="deadline">
+        </div>
+        <div class="row_item_row row_item" v-if="form.require">
+          <el-form-item label="要求处理时间：" prop="deadline">
             <span v-if="type=='info'">{{form.deadline}}</span>
-            <el-date-picker v-model="form.deadline" type="date" placeholder="请选择要求处理时间"></el-date-picker>
+            <el-date-picker v-model="form.deadline" type="date" placeholder="请选择要求处理时间" style="width: 200px"></el-date-picker>
           </el-form-item>
         </div>
         <div class="row_custom5">
@@ -309,15 +311,15 @@ export default {
         display: inline-block;
       }
       /deep/ .el-form-item__label {
-        width: 130px;
+        width: 140px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 130px;
+        margin-left: 140px;
       }
        .row_custom6{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 870px;
+            width: 860px;
             text-align: left;
         }
         @include common-input;
@@ -329,7 +331,7 @@ export default {
         }
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 788px;
+            width: 778px;
             text-align: left;
         }
         @include common-input;
@@ -357,7 +359,7 @@ export default {
         }
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 610px;
+            width: 600px;
             text-align: left;
         }
         @include common-input;
@@ -379,7 +381,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 130px);
+          width: calc(100% - 140px);
         }
       }
   }

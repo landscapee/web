@@ -29,10 +29,10 @@
 						 class="demo-ruleForm" style=" width:1400px;">
 					<el-row>
 						<el-col :span="12">
-							<el-form-item label="航空公司/Airline" prop="airLine" :label-width='labelWidth'>
+							<el-form-item label="航班号/Flight No" prop="flightNo" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
-									  style='width:320px;'>{{ruleForm.airLine}}</span>
-								<el-input v-else v-model="ruleForm.airLine" style='width:320px;'></el-input>
+									  style='width:320px;'>{{ruleForm.flightNo}}</span>
+								<el-input v-else v-model="ruleForm.flightNo" style='width:320px;'></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
@@ -73,10 +73,10 @@
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
-							<el-form-item label="航班号/Flight No" prop="flightNo" :label-width='labelWidth'>
+							<el-form-item label="航空公司/Airline" prop="airLine" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
-									  style='width:320px;'>{{ruleForm.flightNo}}</span>
-								<el-input v-else v-model="ruleForm.flightNo" style='width:320px;'></el-input>
+									  style='width:320px;'>{{ruleForm.airLine}}</span>
+								<el-input v-else v-model="ruleForm.airLine" style='width:320px;'></el-input>
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -267,7 +267,7 @@
 					aircraftType: '', // 飞机型号
 					aircraftReg: '', // 机号
 					flightNo: '', // 航班号
-					arrivalAirport: 'CTU',  // 起降机场
+					arrivalAirport: 'TFU',  // 起降机场
 					nonroutineWork: '', //非例行工作内容
 					people: '', // 人
 					hours: '',  // 小时
@@ -282,8 +282,8 @@
 				},
 				labelWidth: '300px',
 				rules: {
-					airLine: [
-						{required: true, message: '请输入航空公司', trigger: 'change'},
+					flightNo: [
+						{required: true, message: '请输入航班号', trigger: 'change'},
 					],
 					workDate: [
 						{required: true, message: '请选择时间', trigger: 'change'}

@@ -21,17 +21,17 @@
             </div>
              <div class="main-content">
                 <SearchTable
-                    refTag="searchTable" 
-                    ref="searchTable"  
-                    @requestTable="requestTable(arguments[0])"   
-                    @listenToCheckedChange="listenToCheckedChange(arguments[0])" 
+                    refTag="searchTable"
+                    ref="searchTable"
+                    @requestTable="requestTable(arguments[0])"
+                    @listenToCheckedChange="listenToCheckedChange(arguments[0])"
                     @headerSort="headerSort(arguments[0])"
-                    :data="tableData" 
+                    :data="tableData"
                     :tableConfig="businessTableConfig"
-                    @handleSizeChange="handleSizeChange" 
+                    @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange"
                 >
-                    <el-table-column slot="radio" label="选择" :width="49" fixed="left">
+                    <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
@@ -98,7 +98,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`, 
+                url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{
                     folderId: this.$route.query.folderId,
@@ -108,7 +108,7 @@ export default {
                 }
             })
             .then((data) => {
-                // order:'number,0' // 0 倒序 1 正序 
+                // order:'number,0' // 0 倒序 1 正序
                 console.log(data)
                 // this.sort = {
                 //     order:`${number},${data.order==='desc'?'0':'1'}`
@@ -155,7 +155,7 @@ export default {
             // })
             row.selected  = !select
             if(row.selected){
-                this.selectObjs.push(row)  //row.id 
+                this.selectObjs.push(row)  //row.id
             }else{
                 let arr = this.arrRemEleFn(this.selectObjs.map(i=>i.id), row.id)
                 this.selectObjs = this.selectObjs.filter(item=>{
@@ -252,7 +252,7 @@ export default {
         getFileList(){
             return new Promise((resolve,reject)=>{
                 request({
-                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    url:`${this.$ip}/mms-knowledge/folder/list`,
                     method: 'post',
                 })
                 .then((data) => {
@@ -275,11 +275,11 @@ export default {
     },
     watch: {
     },
-   
+
 }
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
+@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 .index{
     .inner{
         .top_content{
@@ -351,10 +351,10 @@ export default {
                 //         }
                 //     }
                 // }
-            }    
+            }
         }
     }
-    
+
 }
 </style>
- 
+

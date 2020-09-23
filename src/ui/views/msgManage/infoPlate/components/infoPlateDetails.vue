@@ -15,17 +15,17 @@
     </div>
     <div class="main-content">
       <el-form label-position="right" :model="form"  ref="form" >
-        <div class="row_item">   
+        <div class="row_item">
             <el-form-item label="发送时间：" label-width="164px" >
-                <span >{{form.sendDate}}</span>
+                <span >{{formatTime(form.sendDate)}}</span>
             </el-form-item>
             <el-form-item :label="this.parentType=='send'?'接收单位：':'发送单位：'"  label-width="164px">
-                <span >{{this.receivingUnit}}</span>
+                <span >{{this.receivingUnit||'--'}}</span>
             </el-form-item>
         </div>
         <div class="row_item_row row_item">
             <el-form-item :label="this.parentType=='send'?'接收人：':'发送人：'"  label-width="164px">
-                <span >{{this.receiver}}</span>
+                <span >{{this.receiver || '--'}}</span>
             </el-form-item>
         </div>
         <div class="row_item_row row_item">
@@ -33,7 +33,7 @@
                 <span >{{form.content}}</span>
             </el-form-item>
         </div>
-        <div class="row_item">   
+        <div class="row_item">
           <el-form-item label="信息类型：" label-width="164px">
             <span >{{form.type}}</span>
           </el-form-item>
@@ -43,12 +43,12 @@
         </div>
        <div class="row_item_row row_item">
           <el-form-item label="要求处理时间：" label-width="164px">
-            <span >{{form.deadline}}</span>
+            <span >{{this.formatTime(form.deadline)}}</span>
           </el-form-item>
         </div>
-         <div class="row_item">   
+         <div class="row_item">
           <el-form-item label="实际处理时间：" label-width="164px">
-            <span >{{form.type}}</span>
+            <span >{{formatTime(form.handleTime)}}</span>
           </el-form-item>
           <el-form-item label="是否要求接收处理：" label-width="164px">
              <span >{{form.require?'是':form.require==false?'否':''}}</span>
@@ -69,6 +69,8 @@ import Download from '@/ui/components/download';
 import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
+import {formatDate} from "../../../../../../lib/tools";
+
 
 export default {
   components: {
@@ -89,7 +91,7 @@ export default {
     };
   },
   mounted(){
-   
+
   },
   created() {
     if (this.$route.query) {
@@ -107,13 +109,12 @@ export default {
         })
         .then(data => {
             this.form = data.data;
-            if(this.form.state){
-              if(this.parentType=='send'){
-                this.form.state = this.form.state==0?'未发布':'已发布';
-              }else{
-                this.form.state = this.form.state==0?'未处理':this.form.state==1?'已处理':this.form.state==-1?'已关闭':'';
-              }
+            if (this.parentType === 'send') {
+                this.form.state = this.form.state === 0 ? '未发布' : '已发布';
+            } else {
+                this.form.state = this.form.state === 0 ? '未处理' : this.form.state === 1 ? '已处理' : this.form.state === -1 ? '已关闭' : '';
             }
+
             if(this.form.receiptDepartment){
                let arr = [];
               this.form.receiptDepartment.map(item=>{
@@ -147,8 +148,11 @@ export default {
       }else{
         this.$message.warning("暂无文件可以下载");
       }
-       
+
     },
+      formatTime(date){
+        return formatDate(date, 'YYYY-MM-DD', '--')
+      }
   }
 };
 </script>
