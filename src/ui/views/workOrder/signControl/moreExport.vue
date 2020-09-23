@@ -2,7 +2,7 @@
     <div>
         <el-dialog title="工单批量导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <div style=" padding: 32px 40px 28px 50px; ">
-                <div  v-show="showItem" :style=" ` position: absolute;left:600px;background:white;width:90%;padding:15px` "  >
+                <div  v-show="showItem" :style=" ` position: absolute;left:600px;background:white;width:90%;padding:15px;  box-shadow: darkgrey 10px 10px 30px 5px ;` "  >
                     <Info :form="hoveropt"></Info>
                 </div>
                 <div class="divBoxF">

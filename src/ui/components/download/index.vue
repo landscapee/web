@@ -47,7 +47,10 @@ export default {
 <style lang="scss" scoped>
 /deep/ .el-dialog {
 	width: 650px;
-	/*height: 300px;*/
+	.el-dialog__body{
+		max-height: 600px;
+		overflow-y: auto;
+	}
 	.diaDiv {
 		padding: 40px 20px;
 		& > div {

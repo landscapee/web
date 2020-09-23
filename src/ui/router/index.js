@@ -243,12 +243,7 @@ let authRoutes = [
 		name: '工单管理',
 		meta: {title: '工单管理',icon: 'gdgl' },
 		children: [
-            {
-                path: '/orderDemo',
-                component: () => import('@views/workOrder/signDemo/index.vue'),
-                name: 'demo',
-                meta: {title: 'demo',icon: '', },
-            },
+
             {
                 path: '/WorkTemplate',
                 component: () => import('@views/workOrder/workTemplate/index'),

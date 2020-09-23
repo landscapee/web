@@ -90,24 +90,53 @@
         methods: {
 
             enable(row,path){
-                request({
-                    url:`${this.$ip}/mms-workorder/template/enable/${row.id}`,
-                    method: 'get',
-                 })
-                    .then((data) => {
-                        this.$message.success('操作成功')
-                        this.getList()
-                    })
+                let url=`${this.$ip}/mms-workorder/template/enable/${row.id}`
+                this.optionsPrompt('启用',url)
+
+            },
+            addOrEditOrInfo1(row,tag){
+                this.optionsPrompt('改版',()=>{
+                    request({
+                        url:`${this.$ip}/mms-workorder/template/copyByVersion`,
+                        method: 'post',
+                        params:{id:this.$route.query.id},
+                        data: {
+                            code:row.code,
+                            version:row.version,
+                        }
+                    }).then(d => {
+                        if( d.code==200){
+                            this.$router.push({path:'/WorkTemplateAdd',query:{type:tag,id:d.data.typeVO.id}});
+                        }
+                    });
+                })
+            },
+            optionsPrompt(text,url){
+                this.$confirm(`此操作将${text}该工单模板，是否继续`,'提示',{
+                    confirmButtonTex:'确定',
+                    cancelButtonTex:'取消',
+                    type:'warning'
+                }).then(()=>{
+                   if( typeof url=='string'){
+                       request({
+                           url:url,
+                           method: 'get',
+                       }).then((d) => {
+                           if(d.code==200){
+                               this.$message.success('操作成功')
+                               this.getList()
+                           }
+                       })
+                   }else{
+                       url()
+                   }
+                }).catch((d)=>{
+                    this.$message.info('已取消操作')
+                })
             },
             unEnable(row,path){
-                request({
-                    url:`${this.$ip}/mms-workorder/template/invalid/${row.id}`,
-                    method: 'get',
-                }).then((data) => {
-                        this.$message.success('操作成功')
-                        this.getList()
-                    })
-
+                let url=`${this.$ip}/mms-workorder/template/invalid/${row.id}`
+                this.optionsPrompt('停用',url)
             },
             requestTable(searchData){
                 this.form = searchData;
@@ -166,23 +195,7 @@
                     }
                 }
             },
-            addOrEditOrInfo1(row,tag){
-                request({
 
-                    url:`${this.$ip}/mms-workorder/template/copyByVersion`,
-                    method: 'post',
-                    params:{id:this.$route.query.id},
-                    data: {
-                        code:row.code,
-                        version:row.version,
-                    }
-                }).then(d => {
-                    if( d.code==200){
-                         this.$router.push({path:'/WorkTemplateAdd',query:{type:tag,id:d.data.typeVO.id}});
-                    }
-                });
-
-            },
             delData(){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');

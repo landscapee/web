@@ -105,7 +105,7 @@
                 <div class="row_tow">
                     <el-form-item  label="纸制工单文件：" prop="offlineFile">
                         <span v-if="type=='info'">
-                                 <el-button v-if="form.offlineFile" @click="Download(form)" type="primary" style="padding:7px 25px">下载</el-button>
+                                 <el-button v-if="form.offlineFile" @click="Download(form.offlineFile)" type="primary" style="padding:7px 25px">下载</el-button>
 
                         </span>
                         <UploadFile @start="showFile" v-else :disabled="true"  :listNone="true" accept=".jpg,.png,.gif,.jpeg,.pdf"  ref="UploadFile" @getFile="getFile"  ></UploadFile>
@@ -229,9 +229,12 @@
                             method: 'post',
                             params:{fileIds:this.form.offlineFile}
                         }).then(d1 => {
-                             if(d.code==200&&this.$refs.UploadFile&&this.$refs.UploadFile.getFileList){
+                             if(d.code==200){
                                 this.fileList=d1.data
-                                this.$refs.UploadFile.getFileList(d1.data)
+                                 if( this.$refs.UploadFile&&this.$refs.UploadFile.getFileList){
+                                     this.$refs.UploadFile.getFileList(d1.data)
+
+                                 }
                             }
                         });
                     })
@@ -247,7 +250,7 @@
                 }
             },
             Download( ){
-                this.$refs.Download.open(this.fileList)
+                 this.$refs.Download.open(this.fileList)
 
             },
             departmentIdCh(val){

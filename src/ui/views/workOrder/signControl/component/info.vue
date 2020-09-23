@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div  >
         <div class="DivBox">
             <div class="item">
                 <div class="left">任务日期：</div>
@@ -7,23 +7,23 @@
             </div>
             <div class="item">
                 <div class="left">任务号：</div>
-                <div class="right">{{form.ommsJobNo}}</div>
+                <div class="right">{{form.ommsJobNo||'--'}}</div>
             </div>
             <div class="item">
                 <div class="left">工单编号：</div>
-                <div class="right">{{form.serialNo}}</div>
+                <div class="right">{{form.serialNo||'--'}}</div>
             </div>
             <div class="item">
                 <div class="left">工单模板编码：</div>
-                <div class="right">{{get(form.template,'code')}}</div>
+                <div class="right">{{get(form.template,'code')||'--'}}</div>
             </div>
             <div class="item">
                 <div class="left">模板名称：</div>
-                <div class="right">{{get(form.template,'title')}}</div>
+                <div class="right">{{get(form.template,'title')||'--'}}</div>
             </div>
             <div class="item">
                 <div class="left">模板版本号：</div>
-                <div class="right">{{get(form.template,'version')}}werwerwerwerwerwerew</div>
+                <div class="right">{{get(form.template,'version')||'--'}} </div>
             </div>
         </div>
     </div>
@@ -51,6 +51,7 @@
 
 <style lang="scss" scoped>
     .DivBox {
+
         .item{
             display: flex;
             height:30px;

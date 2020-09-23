@@ -63,7 +63,9 @@
                     </div>
                     <div class="row_one" v-if="formItem.itemType==1">
                         <el-form-item  label="" prop="noSmallItem">
-                            <el-checkbox @change="noSmallItemC"  v-model="formItem.noSmallItem"  :label="true">无工作小项</el-checkbox>
+                            <el-checkbox  @change="noSmallItemC"  v-model="formItem.noSmallItem"  :label="true" :disabled="formItem.contentDetails&&formItem.contentDetails.length" :title="formItem.contentDetails&&formItem.contentDetails.length?'删除内容后可操作':''">
+                                无工作小项
+                            </el-checkbox>
                         </el-form-item>
                     </div>
                      <div class="row_one" v-if="formItem.itemType==3&&(formOne.type=='QWSJGD'||formOne.type=='QWJJGD')">
