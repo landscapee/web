@@ -3,28 +3,85 @@
 <head >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>vue模板</title>
-    <script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <!--<title>vue模板</title>-->
+    <!--<script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>-->
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
 </head>
 <body>
 <div id="app">
-    <p>{{message}}</p>
-    <el-button type="success">成功按钮</el-button>
-</div>
+    <p onclick="xxxo()">{{message}}</p>
+ </div>
 <script>
-    new Vue({
-        el: '#app',
-        data: {
-            message: 'Hello world'
+     let s= ''
+        let o=new String(' 111 ')
+     String.prototype.trim111=function(s) {
+         return this.replace(/(^\s*)(.[^\s]*)(\s*$)/g,'$2')
+     }
+     // o.replace(/(^\s*)(.*)(\s*$)/g,'$1')
+    // let q= o.replace(/(^\s*)|(\s*$)/g, "")
+    let q= o.trim111()
+    console.log(!s,q);
+    // new Vue({
+    //     el: '#app',
+    //     data: {
+    //         message: 'Hello world'
+    //     },
+    //     created(){
+    //         this.$message.success('sdfsdfsdfsdf')
+    //     }
+    // })
+    let  a=2
+    let obj={
+        a:1,
+        b:(q,w,e)=>{
+            console.log(this,this.a);
+            let  aaa= ()=>{
+                console.log(this,this.a);
+            }
+            aaa()
+
         },
-        created(){
-            this.$message.success('sdfsdfsdfsdf')
+        c:function (q,w,e) {
+            this.b()
+            console.log('woshifengexian')
+            console.log(this,this.a);
+
+         let  aaa= ()=>{
+             console.log(this,this.a);
+            }
+            aaa()
         }
-    })
-</script>
+    }
+    obj.b()
+    obj.c()
+    function* yyyy() {
+        let arr=[1,2,3,4,5,6,7];
+        for(let i=0;i<arr.length;i++){
+            console.log(arr[i]);
+            let aa=yield arr[i];
+            if(aa){
+                i--
+            }
+        }
+        yield arr[1];
+        yield arr[2];
+        yield arr[4];
+        yield arr[3];
+        yield arr[5];
+       let aaa= yield arr[6];
+        if(aaa){
+
+        }
+
+    }
+     let xxx=yyyy()
+     function xxxo(){
+         console.log(1,1,1);
+         console.log(xxx.next(true));
+     }
+ </script>
 </body>
 </html>
 

@@ -176,6 +176,13 @@
             if (this.$route.query) {
                 this.id = this.$route.query.id
                 this.type = this.$route.query.type
+                this.type = this.$route.query.type;
+                this.$route.meta.title =
+                     this.type == "edit"
+                        ? "异常更改"
+                        : this.type == "info"
+                            ? "工单详情"
+                            : "";
             }
         },
         mounted() {

@@ -10,6 +10,11 @@
                 <div class="QHead_list">
                     <span> 资质管理</span>
                 </div>
+                <div class="QheadRight"     >
+                    <div  @click="exportWord"  >
+                        <icon iconClass="export"></icon>导出Excel
+                    </div>
+                </div>
                 <div class="QlistBody Qdisplay">
                     <div class="QlistLeft" style="width:65%" ref="mainContent">
                         <div class="QCenterRight" >
@@ -183,6 +188,46 @@
             }
         },
         methods: {
+            exportWord(){
+                let obj={
+                    qualifyId:this.leftSelectId||null,
+                    userNumber:this.leftForm.userNumber||null,
+                    userName:this.leftForm.userName||null,
+                    certificateType:this.leftForm.certificateTypeQuery||null,
+                    applicableBusiness:this.rightForm.applicableBusiness||null,
+                }
+
+                request({
+                    header:{
+                        'Content-Type':'multipart/form-data'
+                    },
+                    url:`${this.$ip}/mms-qualification/download/qualify`,
+                    method: 'get',
+                    params:obj,
+                    responseType: 'blob'
+                }).then(d => {
+                    let arr=[]
+                    if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                        arr=d.headers['content-disposition'].split('=')[1].split('.')
+                    }
+                    let content = d;
+                    let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    const fileName = `${decodeURI(arr[0])}`
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    }else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                });
+
+            },
             seeOther(row,path){
                 this.$router.push({path:path,query:{ id:row.userId}});
 
