@@ -1,7 +1,5 @@
 <template>
     <div>
-
-
         <div v-if="this.$router.history.current.path == '/statisticalIndex'" :key="$route.path" class="statisticalIndex">
             <div class="top-content">
                 <div class="top-content-title">
@@ -161,7 +159,7 @@
         created() {
             this.buttonObj=this.buttonList[0]
             if(this.$route.path == '/statisticalIndex'){
-                this.getList(this.buttonObj);
+                // this.getList(this.buttonObj);
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
@@ -212,7 +210,7 @@
                 this.form1={checkList:[]}
                 this.buttonObj=obj
                 this.tableConfig=this.configObj[this.buttonObj.id](this.options)
-                 this.getList();
+                 // this.getList();
             },
             resetForm(){
                 this.params={
@@ -232,14 +230,17 @@
                 }
                 this.getList()
             },
+
             export2(){
+                let data={ }
+                data.workOrderParam={...this.form1}
                 request({
                     header:{
                         'Content-Type':'multipart/form-data'
                     },
                     url:`${this.$ip}${this.buttonObj.export}`,
                     method: 'post',
-                    data:{},
+                    data,
                     responseType: 'blob'
                 }).then(d => {
                     let arr=[]
@@ -316,7 +317,6 @@
             getList( ){
                 let data={...this.form}
                 map(data,((k,l)=>{
-
                     if(typeof k==='string'&&!k.replace(/(^\s*)|(\s*$)/g, "") ){
                         data[l]=null
                     }

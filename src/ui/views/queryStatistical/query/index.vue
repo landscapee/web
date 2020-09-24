@@ -133,7 +133,7 @@ export default {
    created() {
         this.buttonObj=this.buttonList[0]
         if(this.$route.path == '/queryIndex'){
-            this.getList(this.buttonObj);
+            // this.getList(this.buttonObj);
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -189,7 +189,7 @@ export default {
             this.form1={}
             this.buttonObj=obj
             this.tableConfig=this.configObj[this.buttonObj.id]( this.options)
-            this.getList();
+            // this.getList();
         },
         resetForm(){
             this.params={
@@ -207,13 +207,14 @@ export default {
             this.getList()
         },
         export2(){
+            let data={...this.form1}
             request({
                 header:{
                     'Content-Type':'multipart/form-data'
                 },
                 url:`${this.$ip}${this.buttonObj.export}`,
                 method: 'post',
-                data:{},
+                data,
                 responseType: 'blob'
             }).then(d => {
                 let arr=[]
