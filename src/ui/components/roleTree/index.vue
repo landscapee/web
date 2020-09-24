@@ -282,7 +282,7 @@
             open(inputList, title, currentDept) {
                 this.getTree(inputList||[]);
                 this.selectAll = false;
-                this.title = title;
+                this.title = title || '选择角色';
                 this.userSelect = inputList||[];
                 this.dialogVisible = true;
             },

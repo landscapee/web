@@ -22,7 +22,7 @@
                         <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                         <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                         <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                        
+
                         <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                         <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                     </div>
@@ -108,7 +108,7 @@ export default {
         //监听滚动
         handleScroll($event){
             // 获取滚动条的dom
-            var bady = $event.target;   
+            var bady = $event.target;
 　　　　　　 // 获取距离顶部的距离
             var scrollTop = bady.scrollTop;
             // 获取可视区的高度
@@ -143,7 +143,7 @@ export default {
                 this.rightParams.current = 1;
             }
            this.$refs[tableTag].$refs.body_table.setCurrentRow();
-         
+
            this.getList(tag);
         },
         //表头排序
@@ -170,8 +170,11 @@ export default {
             if(tag=="left"){
                 if(row.selected){
                     this.leftSelectId = row.id;
+                    this.rightSelectId = null;
                 }else{
                     this.leftSelectId = null;
+                    //左边未选中，清除右边显示数据
+                    this.tableRightData.records=[];
                 }
                 this.leftRowState = row.enableMaintain==0?false:true;
                 this.rightParams.current = 1;
@@ -227,7 +230,7 @@ export default {
                 })
                 .then(() => {
                     request({
-                        url:tag=='left'?`${this.$ip}/mms-parameter/rest-api/businessDictionary/del`:`${this.$ip}/mms-parameter/rest-api/businessDictionaryValue/del`, 
+                        url:tag=='left'?`${this.$ip}/mms-parameter/rest-api/businessDictionary/del`:`${this.$ip}/mms-parameter/rest-api/businessDictionaryValue/del`,
                         method: 'post',
                         data:{id:this[idstr]}
                     })
@@ -238,7 +241,7 @@ export default {
                     }else{
                         this.rightParams.current= 1;
                     }
-                    
+
                     this.getList(tag);
                     })
                 })
@@ -255,7 +258,7 @@ export default {
         getList(tag,scroll){
             if(tag=='left'){
                 request({
-                    url:`${this.$ip}/mms-parameter/rest-api/businessDictionary/query`, 
+                    url:`${this.$ip}/mms-parameter/rest-api/businessDictionary/query`,
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,...this.leftParams}
                 })
@@ -269,12 +272,12 @@ export default {
                        this.leftParams.current = --this.leftParams.current;
                     }
                 }).catch((error) => {
-             
+
                 });
             }else{
                 if(this.leftSelectId!=null){
                     request({
-                        url:`${this.$ip}/mms-parameter/rest-api/businessDictionaryValue/query`, 
+                        url:`${this.$ip}/mms-parameter/rest-api/businessDictionaryValue/query`,
                         method: 'post',
                         data:{...this.rightForm,dicId:this.leftSelectId,...this.rightSort,...this.rightParams}
                     })
@@ -288,7 +291,7 @@ export default {
                             this.rightParams.current = --this.rightParams.current;
                         }
                     }).catch((error) => {
-                
+
                     });
                 }
             }
@@ -297,7 +300,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
+@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 .businessData{
     .top-content{
         .top-toolbar{
@@ -341,7 +344,7 @@ export default {
             //         }
             //     }
             // }
-        }    
+        }
     }
 }
 </style>

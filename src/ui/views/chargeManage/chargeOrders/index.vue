@@ -31,11 +31,17 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                     <el-table-column slot="option" align='center' label="操作" :width="230">
+                     <el-table-column slot="option" align='center' label="操作" :width="80">
                         <template  slot-scope="{ row }">
-                            <el-button @click='revokeFn(row)' v-if='row.sendFinance===1' size='mini' class="copyButton" >撤销</el-button>
-                            <el-button @click='approveFn(row,false)' v-else-if='row.sendFinance===0&&row.approveState==1' size='mini' class="copyButton" >不通过</el-button>
-                            <el-button @click='approveFn(row,true)' v-else-if='row.sendFinance===0&&row.approveState!=1' size='mini' class="copyButton" >通过</el-button>
+                            <span @click='revokeFn(row)' v-if='row.sendFinance===1' class="rowSvg" >
+                                <icon iconClass="resetNew" title="撤销"></icon>
+                            </span>
+                            <span @click='approveFn(row,false)' v-else-if='row.sendFinance===0&&row.approveState==1' class="rowSvg" >
+                                    <icon iconClass="nopass" title="不通过"></icon>
+                            </span>
+                            <span @click='approveFn(row,true)' v-else-if='row.sendFinance===0&&row.approveState!=1' class="rowSvg" >
+                                <icon iconClass="pass" title="通过"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                 </SearchTable>

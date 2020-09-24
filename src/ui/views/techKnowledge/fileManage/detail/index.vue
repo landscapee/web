@@ -44,10 +44,14 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="option" align='center' label="操作" :width="230"  >
+                    <el-table-column slot="option" align='center' label="操作" :width="100"  >
                         <template  slot-scope="{ row }">
-                            <el-button size='mini' @click="toHistoryListFn(row)" class="copyButton copyButton1" >历史版本</el-button>
-                            <el-button size='mini' @click="toReadTrackFn(row)" class="copyButton" >阅读推送</el-button>
+                            <span @click="toHistoryListFn(row)" class="rowSvg" style="margin-right: 10px">
+                                <icon iconClass="historyNew" title="历史版本"></icon>
+                            </span>
+                            <span @click="toReadTrackFn(row)" class="rowSvg">
+                                <icon iconClass="push" title="阅读推送"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                 </SearchTable>

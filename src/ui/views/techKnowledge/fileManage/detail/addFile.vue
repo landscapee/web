@@ -28,7 +28,7 @@
                 <div class="el-upload__tip" slot="tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg...</div>
             </el-upload>
         </div>
-        
+
         <div :class=" type=='info'?'main-content main-info':'main-content'"  >
             <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
                 <div class="row_custom">
@@ -98,7 +98,7 @@
                 }else{
                     return ''
                 }
-                
+
             }
         },
         name: "",
@@ -196,7 +196,7 @@
                         });
                         return
                     }
-                    
+
                 })
             },
 
@@ -316,7 +316,7 @@
                                 reject()
                             });
                             return
-                            
+
                         }
                     })
                 })

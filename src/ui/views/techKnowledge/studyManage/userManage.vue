@@ -21,22 +21,24 @@
             </div>
              <div class="main-content">
                 <SearchTable
-                    refTag="searchTable" 
-                    ref="searchTable"  
-                    @requestTable="requestTable(arguments[0])"   
-                    @listenToCheckedChange="listenToCheckedChange(arguments[0])" 
+                    refTag="searchTable"
+                    ref="searchTable"
+                    @requestTable="requestTable(arguments[0])"
+                    @listenToCheckedChange="listenToCheckedChange(arguments[0])"
                     @headerSort="headerSort(arguments[0])"
-                    :data="tableData" 
+                    :data="tableData"
                     :tableConfig="businessTableConfig"
-                    @handleSizeChange="handleSizeChange" 
+                    @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange"
                 >
-                <el-table-column slot="option" align='left' label="操作" :width="230"  >
+                <el-table-column slot="option" align='center' label="操作" :width="100"  >
                         <template  slot-scope="{ row }"> <!---->
-                            <el-button size='mini' @click="toDownloadFn(row)" class="copyButton copyButton1" >下载</el-button>
-                            <el-button v-if='row.read==2' size='mini' disabled="disabled" class="copyButton">已完成</el-button>
-                            <el-button v-else-if='row.read==1' size='mini' @click="toCompleteFn(row)" class="copyButton">完成阅读</el-button>
-                            <el-button v-else size='mini' disabled="disabled" class="copyButton">完成阅读</el-button>
+                            <span @click="toDownloadFn(row)" class="rowSvg" style="margin-right: 10px">
+                                <icon iconClass="downloadNew" title="下载"></icon>
+                            </span>
+                            <span @click="toCompleteFn(row)" class="rowSvg" :style="row.read===1?'':'visibility: hidden'">
+                                <icon iconClass="finishRead" title="完成阅读"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -86,7 +88,7 @@ export default {
         },
         getList(){
             request({
-                url:`${this.$ip}/mms-knowledge/fileStudy/userStudyList?current=${this.params.current}&size=${this.params.size}`, 
+                url:`${this.$ip}/mms-knowledge/fileStudy/userStudyList?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{
                     //...this.params,
@@ -95,7 +97,7 @@ export default {
                 }
             })
             .then((data) => {
-                // order:'number,0' // 0 倒序 1 正序 
+                // order:'number,0' // 0 倒序 1 正序
                 console.log(data)
                 // this.sort = {
                 //     order:`${number},${data.order==='desc'?'0':'1'}`
@@ -115,7 +117,7 @@ export default {
             a.href = Url
             a.click()
             document.body.removeChild(a)
-            
+
             this.selectObjs=[]
             await this.toDownloadRecodeFn(row)
             this.getList()
@@ -123,7 +125,7 @@ export default {
         toDownloadRecodeFn(row){
             return new Promise((resolve,reject) => {
                 request({
-                    url:`${this.$ip}/mms-knowledge/fileStudy/download/${row.id}`, 
+                    url:`${this.$ip}/mms-knowledge/fileStudy/download/${row.id}`,
                     method: 'get'
                 })
                 .then((data) => {resolve()})
@@ -131,7 +133,7 @@ export default {
         },
         toCompleteFn(row){
             request({
-                url:`${this.$ip}/mms-knowledge/fileStudy/completeRead/${row.id}`, 
+                url:`${this.$ip}/mms-knowledge/fileStudy/completeRead/${row.id}`,
                 method: 'get'
             })
             .then((data) => {
@@ -184,7 +186,7 @@ export default {
             // })
             row.selected  = !select
             if(row.selected){
-                this.selectObjs.push(row)  //row.id 
+                this.selectObjs.push(row)  //row.id
             }else{
                 this.arrRemEleFn(this.selectObjs.map(i=>i.id), row.id)
                 //this.selectObjs = null
@@ -229,7 +231,7 @@ export default {
         getFileList(){
             return new Promise((resolve,reject)=>{
                 request({
-                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    url:`${this.$ip}/mms-knowledge/folder/list`,
                     method: 'post',
                 })
                 .then((data) => {
@@ -252,11 +254,11 @@ export default {
     },
     watch: {
     },
-   
+
 }
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
+@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 .index{
     .inner{
         .top_content{
@@ -328,10 +330,10 @@ export default {
                 //         }
                 //     }
                 // }
-            }    
+            }
         }
     }
-    
+
 }
 </style>
- 
+

@@ -57,7 +57,7 @@
         </div>
         <div class="row_custom2">
            <el-form-item label="角色：" >
-              <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择岗位</el-button>
+              <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择角色</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
 									<el-tag :key="tag.id" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose('roleList',tag)">
@@ -67,7 +67,7 @@
 							</div>
            </el-form-item>
            <el-form-item label="部门：" >
-              <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择岗位</el-button>
+              <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择部门</el-button>
 							<div class="tagBox">
 								<el-scrollbar style="height:100px">
 									<el-tag :key="tag.id" v-for="tag in deptList" closable :disable-transitions="false" @close="handleClose('deptList',tag)">
@@ -208,7 +208,7 @@ export default {
                }
              })
            });
-           let content = {recipientType:[{type:"department",value:this.deptList},{type:"job",value:this.stationList},{type:"role",value:this.roleList},{type:"selected",value:this.userList},{type:"relation",value:pushObject}]} 
+           let content = {recipientType:[{type:"department",value:this.deptList},{type:"job",value:this.stationList},{type:"role",value:this.roleList},{type:"selected",value:this.userList},{type:"relation",value:pushObject}]}
            request({
               url,
               method: "post",
@@ -241,28 +241,28 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 100px;
+        width: 110px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 100px;
+        margin-left: 110px;
       }
       .row_custom2{
         height: 166px;
         /deep/ .el-form-item__content{
             height: 40px;
-            width:395px;
+            width:385px;
             text-align: left;
         }
         @include common-input;
         /deep/ span{
-          font-size:12px!important; 
+          font-size:12px!important;
           margin-left: 5px!important;
         }
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 369px;
+            width: 359px;
             text-align: left;
         }
         @include common-input;
@@ -276,7 +276,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 100px);
+          width: calc(100% - 110px);
         }
       }
   }

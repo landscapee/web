@@ -115,7 +115,7 @@
 							<el-form-item label="除冰车/Aircraft Deicing System" prop="aircraftDeicingSystem"
 										  :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.aircraftDeicingSystem}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.aircraftDeicingSystem"
+								<el-input v-else v-model="ruleForm.aircraftDeicingSystem"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>小时/Hour</span>
 							</el-form-item>
@@ -124,7 +124,7 @@
 							<el-form-item label="高/低压氮气/High/Low pressure Nitrogen" prop="pressureNitrogen"
 										  :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.pressureNitrogen}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.pressureNitrogen"
+								<el-input v-else v-model="ruleForm.pressureNitrogen"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>次/Operation</span>
 							</el-form-item>
@@ -135,7 +135,7 @@
 							<el-form-item label="加液压油/Hydraulic" prop="hydraulic" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:250px;'>{{ruleForm.hydraulic}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.hydraulic"
+								<el-input v-else v-model="ruleForm.hydraulic"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>加仑/Gallon</span>
 							</el-form-item>
@@ -144,7 +144,7 @@
 							<el-form-item label="充氧气/瓶/Oxygcn Cart/Bottle" prop="oxygenBottle"
 										  :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.oxygenBottle}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.oxygenBottle"
+								<el-input v-else v-model="ruleForm.oxygenBottle"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>次/Bottle</span>
 							</el-form-item>
@@ -154,7 +154,7 @@
 						<el-col :span="12">
 							<el-form-item label="加滑油/Oil" prop="oil" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.oil}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.oil"
+								<el-input v-else v-model="ruleForm.oil"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>夸脱/Quart</span>
 							</el-form-item>
@@ -163,7 +163,7 @@
 							<el-form-item label="飞机除冰液 (原液)/DF Plus" prop="dfPlus" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:178px;'>{{ruleForm.dfPlus}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.dfPlus"
+								<el-input v-else v-model="ruleForm.dfPlus"
 										  style='width:178px;'></el-input>
 								<span class='form_inlne_val1'>公斤(公升)/Kilogram(Litre)</span>
 							</el-form-item>
@@ -171,16 +171,18 @@
 					</el-row>
 					<el-row>
 						<el-col :span="12">
-							<el-form-item label="人工时/Man hour" prop="hours" :label-width='labelWidth'>
+							<el-form-item label="人工时/Man hour" prop="people" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:95px;'>{{ruleForm.people}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.people"
-										  style='width:95px;'></el-input>
+								<el-input v-else v-model="ruleForm.people"
+										  style='width:100px;'></el-input>
 								<span class='form_inlne_val1'>人/Man</span>
+							</el-form-item>
+							<el-form-item prop="hours">
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:95px;'>{{ruleForm.hours}}</span>
-								<el-input v-else type='number' min='0' v-model="ruleForm.hours"
-										  style='width:95px;'></el-input>
+								<el-input v-else v-model="ruleForm.hours"
+										  style='width:90px;'></el-input>
 								<span class='form_inlne_val1'>小时/Hour</span>
 							</el-form-item>
 						</el-col>
@@ -259,6 +261,13 @@
 		},
 		name: '',
 		data() {
+			var validateNumber = (rule, value, callback) => {
+				if (value === '' || (Number(value) > 0 && Number(value) < 10000000)) {
+					callback();
+				}else {
+					callback(new Error('请输入不超过8位数的正整数'));
+				}
+			};
 			return {
 				ruleForm: {
 					airLine: '',  // 航空公司
@@ -287,6 +296,30 @@
 					],
 					workDate: [
 						{required: true, message: '请选择时间', trigger: 'change'}
+					],
+					aircraftDeicingSystem:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					pressureNitrogen:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					hydraulic:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					oxygenBottle:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					oil:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					dfPlus:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					people:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
+					],
+					hours:[
+						{required: false,validator: validateNumber, trigger: 'blur'}
 					]
 				},
 				type: 'add',

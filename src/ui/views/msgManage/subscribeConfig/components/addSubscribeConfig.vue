@@ -206,10 +206,10 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 100px;
+        width: 110px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 100px;
+        margin-left: 110px;
       }
       .row_custom3{
          /deep/ .el-form-item__content{
@@ -219,7 +219,7 @@ export default {
         }
         @include common-input;
         /deep/ span{
-          font-size:12px!important; 
+          font-size:12px!important;
           margin-left: 5px!important;
         }
       }
@@ -232,14 +232,14 @@ export default {
         }
         @include common-input;
         /deep/ span{
-          font-size:12px!important; 
+          font-size:12px!important;
           margin-left: 5px!important;
         }
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 397px;
+            width: 387px;
             text-align: left;
         }
         @include common-input;
@@ -253,7 +253,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 100px);
+          width: calc(100% - 110px);
         }
       }
   }

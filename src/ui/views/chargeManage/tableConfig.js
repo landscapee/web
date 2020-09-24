@@ -25,8 +25,8 @@ export const sysParameterTable = () => {
         search:{type:'input',placeholder:"请输入起降机场",prop:'arrivalAirport'} },
         { prop: 'approveUserName', label: '审核人', align: 'center',sort:true,
         sortProp:"approveUserName",search:{type:'input',placeholder:"请输入审核人",prop:'approveUserName'} },
-        { prop: 'approveTime',width:'140', label: '审核时间', align: 'center',sort:true,
-            sortProp:"approveTime",search:{type:'date',placeholder:"请选择审核时间",prop:'approveTimeQuery'},
+        { prop: 'approveTime',width:'140', label: '审核日期', align: 'center',sort:true,
+            sortProp:"approveTime",search:{type:'date',placeholder:"请选择审核日期",prop:'approveTimeQuery'},
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD HH:mm', '--')
             }
@@ -35,7 +35,7 @@ export const sysParameterTable = () => {
             sortProp:"approveState",
             search:{
                 type:'select',placeholder:"请选择审核状态",prop:'approveState',
-                selectProp:["labelData", "valData"], 
+                selectProp:["labelData", "valData"],
                 data: [{valData:"0",labelData:'未审核'},{valData:"1",labelData:'审核成功'},{valData:"2",labelData:'审核失败'}],
             },
             formatter: (row, column, cellValue) => {
@@ -61,7 +61,7 @@ export const sysParameterTable = () => {
                 return a[row.sendFinance]
             }
         },
-        { slot: 'option', label: '操作',width:'230', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'option', label: '操作',width:'80', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 }
 
