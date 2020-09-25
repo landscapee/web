@@ -14,6 +14,8 @@
                     <div  @click="exportWord"  >
                         <icon iconClass="export"></icon>导出Excel
                     </div>
+                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>资质上传</div>
+
                 </div>
                 <div class="QlistBody Qdisplay">
                     <div class="QlistLeft" style="width:65%" ref="mainContent">
@@ -77,6 +79,7 @@
                     </div>
                 </div>
             </div>
+            <UpDocInfo ref="UpDocInfo" @getTableData="getList1"></UpDocInfo>
 
         </div>
     </div>
@@ -87,10 +90,12 @@
     import { rightConfig,leftConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
     import {  extend,map,get } from 'lodash';
+    import UpDocInfo from '../components/uploadDocInfo'
+
     export default {
         components: {
             Icon,
-            SearchTable,
+            SearchTable,UpDocInfo
         },
         name: '',
         data() {
@@ -188,6 +193,15 @@
             }
         },
         methods: {
+            upDocInfo(){
+                this.$refs.UpDocInfo.open({api:'mms-qualification/qualify/uploadExcel',title:'资质上传'})
+            },
+            getList1(){
+                this.row={}
+                this.selectId=null
+                this.form={}
+                this.getList('left')
+             },
             exportWord(){
                 let obj={
                     qualifyId:this.leftSelectId||null,
@@ -424,7 +438,7 @@
 
 
             getList(tag,scroll){
-                 if(tag=='left'){
+                  if(tag=='left'){
                     map(this.leftForm,((k,l)=>{
                         if(!k){
                             this.leftForm[l]=null

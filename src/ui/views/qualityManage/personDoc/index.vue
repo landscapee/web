@@ -55,7 +55,7 @@
     </div>
 </template>
 <script>
-    import UpDocInfo from './uploadDocInfo'
+    import UpDocInfo from '../components/uploadDocInfo'
     import SearchTable from '@/ui/components/SearchTable/index';
     import Icon from '@components/Icon-svg/index';
     import { personDocTable } from './tableConfig.js';
@@ -117,7 +117,7 @@
         },
         methods: {
             upDocInfo(){
-                this.$refs.UpDocInfo.open({api:'userRecord/uploadExcel',title:'人员档案上传'})
+                this.$refs.UpDocInfo.open({api:'mms-qualification/userRecord/uploadExcel',title:'人员档案上传'})
             },
             getList1(){
                 this.row={}

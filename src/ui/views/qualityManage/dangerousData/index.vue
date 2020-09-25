@@ -16,6 +16,8 @@
                         <!--<a ref="a" :href="`${this.$ip}/mms-qualification/download/dangerData`"></a>-->
                         导出
                     </div>
+                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>危险数据上传</div>
+
                 </div>
             </div>
             <div class=" ">
@@ -31,9 +33,13 @@
                 </SearchTable>
             </div>
         </div>
+        <UpDocInfo ref="UpDocInfo" @getTableData="getList1"></UpDocInfo>
+
     </div>
 </template>
 <script>
+    import UpDocInfo from '../components/uploadDocInfo'
+
     import SearchTable from '@/ui/components/SearchTable';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
@@ -42,6 +48,7 @@ import {  extend,map } from 'lodash';
 export default {
     components: {
         Icon,
+        UpDocInfo,
         SearchTable
 	},
     name: '',
@@ -76,6 +83,15 @@ export default {
 
     },
     methods: {
+        getList1(){
+            this.row={}
+            this.selectId=null
+            this.form={}
+            this.getList()
+        },
+        upDocInfo(){
+            this.$refs.UpDocInfo.open({api:'mms-qualification/dangerData/uploadExcel',title:'危险数据上传'})
+        },
         exportExcel(){
             request({
                 headers: {

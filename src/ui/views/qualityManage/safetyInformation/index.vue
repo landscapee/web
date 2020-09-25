@@ -12,6 +12,8 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel"><icon iconClass="export" ></icon> 导出</div>
+                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>安全信息上传</div>
+
                 </div>
             </div>
             <div class="main-content">
@@ -31,6 +33,8 @@
                 </SearchTable>
             </div>
         </div>
+        <UpDocInfo ref="UpDocInfo" @getTableData="getList1"></UpDocInfo>
+
     </div>
 </template>
 <script>
@@ -39,8 +43,11 @@ import Icon from '@components/Icon-svg/index';
 import { sadetyInfoConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
+import UpDocInfo from '../components/uploadDocInfo'
+
 export default {
     components: {
+        UpDocInfo,
         Icon,
         SearchTable
 	},
@@ -76,6 +83,15 @@ export default {
 
     },
     methods: {
+        upDocInfo(){
+            this.$refs.UpDocInfo.open({api:'mms-qualification/securityInformation/uploadExcel',title:'安全信息上传'})
+        },
+        getList1(){
+            this.row={}
+            this.selectId=null
+            this.form={}
+            this.getList()
+        },
         exportExcel(){
             request({
                 'Content-Type':'application/vnd.ms-excel',

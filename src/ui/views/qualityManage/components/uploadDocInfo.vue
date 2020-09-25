@@ -103,7 +103,7 @@
                         'Content-Type':'application/x-www-form-urlencoded'
                     },
 
-                    url:`${this.$ip}/mms-qualification/${this.objConfig.api}`,
+                    url:`${this.$ip}/${this.objConfig.api}`,
                     method:'post',
                     // data:data,
                     data:data,

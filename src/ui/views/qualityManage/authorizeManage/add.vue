@@ -98,7 +98,12 @@
 
 
                 </div>
-
+                <div class="row_one">
+                    <el-form-item  label="授权机型说明："  >
+                        <span v-if="type=='info'">{{  form.modelRangeRemark || '--'}}</span>
+                        <el-input   v-else v-model="form.modelRangeRemark" placeholder="请输入授权机型说明"></el-input>
+                    </el-form-item>
+                </div>
                 <div class="row_tow">
                     <el-form-item  label="授权航班类型：" prop="flightType">
                         <span v-if="type=='info'">{{  form.flightType || '--'}}</span>
