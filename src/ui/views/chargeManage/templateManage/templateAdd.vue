@@ -17,7 +17,7 @@
             <el-upload
                 class="upload_demo"
                 ref="upload"
-                accept='.doc'
+                accept='.doc,.docx'
                 :limit="1"
                 :file-list="fileList"
                 :on-exceed="handleExceedFn"
@@ -29,29 +29,29 @@
             >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">点击或将文件拖拽到这里上传</div>
-                <div class="el-upload__tip" slot="tip">支持扩展名：.doc</div>
+                <div class="el-upload__tip" slot="tip">支持扩展名：.doc .docx</div>
             </el-upload>
         </div>
-        
-        <div :class=" type=='info'?'main-content main-info':'main-content'"  >
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
-                <div class="row_custom">
-                    <el-form-item  label="模板名称：" prop="fileName" style="width:100%;">
+
+        <div :class=" type=='info'?'G_form G_formInfo':'G_form'">
+            <el-form  label-position="right" :model="form" :rules="rules" ref="form" :inline="true">
+                <div class="row_one">
+                    <el-form-item  label="模板名称：" prop="fileName">
                         <span v-if="type=='info'">{{form.fileName}}</span>
-                        <el-input v-else v-model="form.fileName" readonly placeholder="请输入模板名称" style='width: 642px;'></el-input>
+                        <el-input v-else v-model="form.fileName" readonly placeholder="请输入模板名称"></el-input>
                     </el-form-item>
                 </div>
-                <div :class="this.type=='add'?'row_custom aRow_custom':'row_custom'" >
-                    <el-form-item label="有效期限：" prop="time"  style="width:100%;">
+                <div :class="this.type=='add'?'row_one aRow_custom':'row_one'" >
+                    <el-form-item label="有效日期：" prop="time"  >
                         <span v-if="type=='info'">{{form.startTime | formatDate}}-{{form.endTime | formatDate}}</span>
                         <el-date-picker
                             v-else
                             v-model="form.time"
                             type="daterange"
-                            style="width:400px"
                             range-separator="至"
                             start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            end-placeholder="结束日期"
+                            style="width:100%;">
                         </el-date-picker>
                     </el-form-item>
                 </div>
@@ -78,7 +78,7 @@
                 }else{
                     return ''
                 }
-                
+
             }
         },
         name: "",
@@ -143,7 +143,7 @@
                         });
                         return
                     }
-                    
+
                 })
             },
             resetForm(){
@@ -236,7 +236,7 @@
                                 reject()
                             });
                             return
-                            
+
                         }
                     })
                 })
@@ -311,70 +311,93 @@
         width: 1200px;
         margin:14px auto 0;
         .upload_box{
-            width:100%;
+            width: 600px;
+            text-align: center;
+            margin: 15px auto;
             .upload_demo{
-                width:300px;
+                /*width:300px;*/
                 margin:0 auto;
                 text-align:center;
             }
         }
-        .el-form {
-            width: 1000px;
-            /deep/ .el-form-item__label {
-                width: 165px;
-            }
-            /deep/ .el-form-item__content {
-                margin-left: 165px;
-            }
-            .row_item_row,.row_item{
-                /deep/ .el-input{
-                    /*width:600px!important;*/
-                }
-                /deep/ .el-form-item{
-                    width:calc( 100% - 32px)!important;
-                    .el-form-item__content{
-                        width: calc( 100% - 165px)!important;
-                    }
-                    .el-input{
-                        width: 100% !important;
-                    }
-                    .el-textarea{
-                        width: 100% !important;
-                    }
+        /*<!--.el-form {-->*/
+        /*<!--    width: 1000px;-->*/
+        /*<!--    /deep/ .el-form-item__label {-->*/
+        /*<!--        width: 165px;-->*/
+        /*<!--    }-->*/
+        /*<!--    /deep/ .el-form-item__content {-->*/
+        /*<!--        margin-left: 165px;-->*/
+        /*<!--    }-->*/
+        /*<!--    .row_item_row,.row_item{-->*/
+        /*<!--        /deep/ .el-input{-->*/
+        /*<!--            !*width:600px!important;*!-->*/
+        /*<!--        }-->*/
+        /*<!--        /deep/ .el-form-item{-->*/
+        /*<!--            width:calc( 100% - 32px)!important;-->*/
+        /*<!--            .el-form-item__content{-->*/
+        /*<!--                width: calc( 100% - 165px)!important;-->*/
+        /*<!--            }-->*/
+        /*<!--            .el-input{-->*/
+        /*<!--                width: 100% !important;-->*/
+        /*<!--            }-->*/
+        /*<!--            .el-textarea{-->*/
+        /*<!--                width: 100% !important;-->*/
+        /*<!--            }-->*/
 
-                }
+        /*<!--        }-->*/
+        /*<!--    }-->*/
+        /*<!--    /deep/ .el-input{-->*/
+        /*<!--        width: 240px;-->*/
+        /*<!--        margin-right: 2px;-->*/
+        /*<!--    }-->*/
+        /*<!--    .row_custom{-->*/
+        /*<!--        /deep/ .el-form-item__content{-->*/
+        /*<!--            !*height: 40px;*!-->*/
+        /*<!--            width: 332px;-->*/
+        /*<!--            text-align: left;-->*/
+        /*<!--        }-->*/
+        /*<!--        @include common-input;-->*/
+        /*<!--        &:first-child {-->*/
+        /*<!--            .el-form-item {-->*/
+        /*<!--                &:last-child {-->*/
+        /*<!--                    //margin-left: 93px;-->*/
+        /*<!--                }-->*/
+        /*<!--            }-->*/
+        /*<!--        }-->*/
+        /*<!--    }-->*/
+        /*<!--    .row_item_row{-->*/
+        /*<!--        .el-form-item {-->*/
+        /*<!--            width: calc(100% - 165px);-->*/
+        /*<!--        }-->*/
+        /*<!--    }-->*/
+        /*<!--}-->*/
+        /*<!--.list2{-->*/
+        /*<!--    display:flex;-->*/
+        /*<!--    align-items: center;-->*/
+        /*<!--    justify-content: flex-end;-->*/
+        /*<!--    .text{-->*/
+        /*<!--        margin-right:10px;-->*/
+        /*<!--    }-->*/
+        /*<!--}-->*/
+    }
+    /deep/ .el-upload-dragger {
+        width: 600px;
+        height: 200px;
+    }
+
+    /deep/ .G_form {
+        margin-top: 20px;
+        .el-form {
+            width: 600px;
+            padding: 0;
+            .el-form-item__label{
+                padding: 0 ;
             }
-            /deep/ .el-input{
-                width: 240px;
-                margin-right: 2px;
+            .el-form-item__label {
+                width: 110px !important;
             }
-            .row_custom{
-                /deep/ .el-form-item__content{
-                    /*height: 40px;*/
-                    width: 332px;
-                    text-align: left;
-                }
-                @include common-input;
-                &:first-child {
-                    .el-form-item {
-                        &:last-child {
-                            //margin-left: 93px;
-                        }
-                    }
-                }
-            }
-            .row_item_row{
-                .el-form-item {
-                    width: calc(100% - 165px);
-                }
-            }
-        }
-        .list2{
-            display:flex;
-            align-items: center;
-            justify-content: flex-end;
-            .text{
-                margin-right:10px;
+            .el-form-item__content {
+                width: calc(100% - 110px) !important;
             }
         }
     }
