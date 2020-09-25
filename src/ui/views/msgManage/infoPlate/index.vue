@@ -42,7 +42,7 @@
                                 <icon iconClass="publish" title="发布"></icon>
                             </span>
                             <span @click="clickAction('receive',row.id)" v-if="isActive==1 && row.state==0" class="rowSvg">
-                                    <icon iconClass="revision" title="接收处理"></icon>
+                                    <icon iconClass="receiveHandle" title="接收处理"></icon>
                             </span>
                             <span @click="clickAction('close',row.id)" v-if="isActive==1 && row.state==1" class="rowSvg" >
                                 <icon iconClass="nopass" title="关闭"></icon>

@@ -218,7 +218,7 @@
         content:'\e78f';
     }
     /deep/ .mainTable{
-        height: 730px;
+        height:calc(100vh - 300px);
         overflow: auto;
     }
 

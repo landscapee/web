@@ -51,7 +51,6 @@ export const safetyYearConfig = () => {
                 { prop: 'content', label: '内容',   align: 'center',  },
                 { prop: 'project', label: '责任人/项目',   align: 'center',  },
                 { prop: 'implementation', label: '落实情况',   align: 'center' , },
-                 {  prop: 'monitorState',  label: '状态监控（绩效）' ,  },
+                 {  prop: 'monitorState',  label: '状态监控（绩效）' ,align: 'center'  },
               ]
 };
- 

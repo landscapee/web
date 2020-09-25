@@ -369,7 +369,7 @@ let authRoutes = [
                     }
                 ]
             }
-                
+
         ],
 	},
 	{
@@ -701,7 +701,7 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/businessData',
 		name: '基础数据',
-		meta: {title: '基础数据',icon: 'xxgl' },
+		meta: {title: '基础数据',icon: 'basicData' },
 		children: [
 			{
 				path: '/businessData',
@@ -772,22 +772,22 @@ let authRoutes = [
 			}
 		],
 	},
-	{
-		path: '/electronicFence',
-		component: Layout,
-		redirect: '/electronicFenceIndex',
-		name: '电子围栏',
-		meta: {title: '电子围栏',icon: 'xxgl' },
-		children: [
-			{
-				path: '/electronicFenceIndex',
-				component: () => import('@views/electronicFence/index'),
-				name: '电子围栏',
-				meta: {title: '电子围栏',icon: '' },
-				children:[]
-			},
-		],
-	},
+	// {
+	// 	path: '/electronicFence',
+	// 	component: Layout,
+	// 	redirect: '/electronicFenceIndex',
+	// 	name: '电子围栏',
+	// 	meta: {title: '电子围栏',icon: 'xxgl' },
+	// 	children: [
+	// 		{
+	// 			path: '/electronicFenceIndex',
+	// 			component: () => import('@views/electronicFence/index'),
+	// 			name: '电子围栏',
+	// 			meta: {title: '电子围栏',icon: '' },
+	// 			children:[]
+	// 		},
+	// 	],
+	// },
 
 ];
 let defaultRoutes = [
