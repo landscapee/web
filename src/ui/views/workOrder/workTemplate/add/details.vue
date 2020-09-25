@@ -4,7 +4,6 @@
             <div class="QHead">
                 工单模板详情
             </div>
-
         </div>
         <div   class="  G_form G_formInfo " >
             <el-form ref="form" label-position="right"   :inline="true"  >

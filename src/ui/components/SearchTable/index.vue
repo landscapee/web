@@ -1,6 +1,5 @@
 <template>
 	<div class="searchTableWrapper" :key="$route.path">
-
 		<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 			<template  v-for="(colConfig, index) in tableConfig">
 				<template v-if="colConfig.search">
