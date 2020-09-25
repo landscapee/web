@@ -4,8 +4,8 @@
         <router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
-        <div class="addPersonDoc" ref="export" style="width: 100%" v-else>
-            <div class="QCenterRight">
+        <div class="addPersonDoc" ref="export" style="width: 100%;" v-else>
+            <div class="QCenterRight" style="margin-right: 30px">
                 <div class="QHead">
                     {{type!=='add'?form.userName:''}}人员档案-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
                 </div>

@@ -1,6 +1,6 @@
 <template>
-    <div class="trainManageAdmin">
-        <div class="QCenterRight">
+    <div>
+        <div class="QCenterRight trainManageAdmin">
             <div class="QHead">
                  培训管理-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
@@ -347,7 +347,7 @@
 </script>
 <style scoped lang="scss">
     .trainManageAdmin{
-        padding:0 30px;
+        margin-right:30px;
     }
     .G_form{
         /*margin-left: calc(50% - 470px);*/
