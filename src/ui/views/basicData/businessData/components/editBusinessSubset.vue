@@ -130,15 +130,15 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 130px;
+        width: 140px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 130px;
+        margin-left: 140px;
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 320px;
+            width: 310px;
             text-align: left;
         }
         @include common-input;
@@ -152,7 +152,7 @@ export default {
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 130px);
+          width: calc(100% - 140px);
         }
       }
   }

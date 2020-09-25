@@ -30,12 +30,18 @@
                          </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option" label="操作" :width="160" >
+                    <el-table-column align="center" slot="option" label="操作" :width="100">
                         <template  slot-scope="scope">
                             <div >
-                                <el-button class="QoptionButton" @click="enable(scope.row)"  v-if="scope.row.state===0&&scope.row.history===false">启用</el-button>
-                                <el-button class="QoptionButton" @click="addOrEditOrInfo1(scope.row,'edit')" v-if="scope.row.state!==3">改版</el-button>
-                                <el-button class="QoptionButton" @click="unEnable(scope.row)"  v-if="scope.row.state===1">停用</el-button>
+                                <span @click="addOrEditOrInfo1(scope.row,'edit')" class="rowSvg" v-if="scope.row.state!==3">
+                                    <icon iconClass="revision" title="改版"></icon>
+                                </span>
+                                <span  @click="enable(scope.row)" class="rowSvg" v-if="scope.row.state===0&&scope.row.history===false">
+                                    <icon iconClass="enable" title="启用"></icon>
+                                </span>
+                                <span  @click="unEnable(scope.row)"  class="rowSvg" v-if="scope.row.state===1">
+                                    <icon iconClass="disable" title="停用"></icon>
+                                </span>
                             </div>
                          </template>
                     </el-table-column>
@@ -206,7 +212,7 @@
                         type: 'warning',
                     })
                         .then(() => {
-                            
+
                             request({
                                 url:`${this.$ip}/mms-workorder/template/delete/`+this.selectId,
                                 method: 'delete',
@@ -271,5 +277,4 @@
             height:calc(100vh - 370px);
         }
     }
-
 </style>

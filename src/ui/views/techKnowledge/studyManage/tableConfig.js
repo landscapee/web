@@ -115,6 +115,6 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
                 return timeMinuteFormat(row.readingTime)
             },
         },
-        { slot: 'option', label: '操作',width:'230', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'option', label: '操作',width:'100', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };

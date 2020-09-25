@@ -36,11 +36,17 @@
                             </span>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" label="关联信息" :width="148" align="center" >
+                    <el-table-column slot="relationInfo" label="关联信息" :width="80" align="center" >
                         <template slot-scope="{ row }">
-                             <el-button size="mini" @click="clickAction('release',row.id)" v-if="isActive==0 && row.state==0">发布</el-button>
-                             <el-button size="mini" @click="clickAction('receive',row.id)" v-if="isActive==1 && row.state==0">接收处理</el-button>
-                             <el-button size="mini" @click="clickAction('close',row.id)" v-if="isActive==1 && row.state==1">关闭</el-button>
+                            <span @click="clickAction('release',row.id)" v-if="isActive==0 && row.state==0" class="rowSvg" >
+                                <icon iconClass="publish" title="发布"></icon>
+                            </span>
+                            <span @click="clickAction('receive',row.id)" v-if="isActive==1 && row.state==0" class="rowSvg">
+                                    <icon iconClass="revision" title="接收处理"></icon>
+                            </span>
+                            <span @click="clickAction('close',row.id)" v-if="isActive==1 && row.state==1" class="rowSvg" >
+                                <icon iconClass="nopass" title="关闭"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                 </SearchTable>

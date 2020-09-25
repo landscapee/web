@@ -29,7 +29,7 @@ export const warningSearchTable = () => {
         },align: 'center',sort:true,sortProp:"sendDate",search:{prop:'sendDate',type:'date',placeholder:"请选择日期"} },
         { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"source",search:{prop:'source',type:'input',placeholder:"请输入来源"} },
         { prop: 'content', label: '内容', align: 'center',search:{prop:'content',type:'input',placeholder:"请输入内容"} },
-        { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'relationInfo', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const warningSearchHistoryTable = () => {
@@ -128,7 +128,7 @@ export const infoPlateSendTable = (infoSelect) => {
         formatter: (row, column, cellValue) => {
             return cellValue==0?'未发布':cellValue==1?'已发布':cellValue==-1?'已关闭':'';
         },align: 'center',sort:true,sortProp:"state",search:{prop:'state',type:'select',data:[{'label':'未发布',value:0},{'label':'已发布',value:1}],placeholder:"请选择信息状态"} },
-        { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'relationInfo', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const infoPlateReceiveTable = (infoSelect) => {

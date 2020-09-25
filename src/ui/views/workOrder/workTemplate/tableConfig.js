@@ -46,7 +46,7 @@ export const workOrderConfig = (obj,arr) => {
             { prop: 'enableTime', label: '版本生效日期',formatter:timeInfo,sortProp:"enableTime", align: 'center',sort:true,search:{type:'date', prop:'enableTime',placeholder:"请选择" } },
             { prop: 'invalidTime', label: '版本失效日期',formatter:timeInfo3,sortProp:"invalidTime", align: 'center',sort:true,search:{type:'date', prop:'invalidTime',placeholder:"请选择" } },
             { prop: 'state', label: '版本状态',formatter:state, sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请选择",data:obj.W_versionState,selectProp:['valData','valCode']} },
-            { slot: 'option', label: '操作' ,width:'160',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+            { slot: 'option', label: '操作' ,width:'100',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
               ]
 };
 export const twoConfig = (obj,arr) => {
@@ -62,4 +62,3 @@ export const twoConfig = (obj,arr) => {
               ]
 };
 
- 

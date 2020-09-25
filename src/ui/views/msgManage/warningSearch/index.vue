@@ -18,9 +18,11 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" align='center' :width="148" >
+                    <el-table-column slot="relationInfo" align='center' :width="80" >
                         <template slot-scope="{ row }" v-if="row.state==0">
-                            <el-button size="mini" @click="clickAction(row)">已读</el-button>
+                            <span @click="clickAction(row)" class="rowSvg">
+                                <icon iconClass="finishRead" title="已读"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                 </SearchTable>

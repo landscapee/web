@@ -162,29 +162,29 @@ export default {
    .el-form {
       width: 1000px;
       /deep/ .el-form-item__label {
-        width: 145px;
+        width: 155px;
       }
       /deep/ .el-form-item__content {
-        margin-left: 145px;
+        margin-left: 155px;
       }
       .row_custom{
         /deep/ .el-form-item__content{
             height: 40px;
-            width: 346px;
+            width: 336px;
             text-align: left;
         }
         @include common-input;
-       
+
         /deep/ .el-form-item {
             &:last-child {
               margin-left:10px;
             }
         }
-       
+
       }
       .row_item_row{
         .el-form-item {
-          width: calc(100% - 145px);
+          width: calc(100% - 155px);
         }
       }
   }

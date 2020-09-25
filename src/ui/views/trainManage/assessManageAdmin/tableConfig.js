@@ -32,6 +32,6 @@ export const rightConfig = (obj) => {
         { prop: 'signStatus', label: '是否签到',sortProp:"signStatus", align: 'center' ,sort:true,search:{type:'select', prop:'signStatus', placeholder:"请输入",selectProp:['valData','valData'],data:obj.trainSign}},
          { prop: 'qualifiedStatus', label: '考核结论',sortProp:"qualifiedStatus", align: 'center' ,sort:true,search:{type:'select', prop:'qualifiedStatus', placeholder:"请输入",selectProp:['valData','valData'],data:obj.assessConclusion}},
         { slot: 'certificateNumber', width:'140',label: '证书编号',sortProp:"certificateNo", align: 'center',sort:true,search:{type:'input', prop:'certificateNo', placeholder:"请输入", } },
-         { slot: 'option', label: '操作',width:'140', sortProp:"description", align: 'center',sort:true,search:{ type:'btn',label:'搜索',icon:"table_search"} },
+         { slot: 'option', label: '操作',width:'100', sortProp:"description", align: 'center',sort:true,search:{ type:'btn',label:'搜索',icon:"table_search"} },
     ]
 };
