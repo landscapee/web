@@ -18,6 +18,7 @@ import router from './src/ui/router';
 import store from './src/ui/store';
 import './src/ui/icons';
 import Logger from './lib/logger';
+import {removeToken} from './lib/auth';
 import './src/ui/config/ui';
 import VueDraggableResizable from 'vue-draggable-resizable';
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css';
@@ -84,6 +85,11 @@ Vue.prototype.$subscribeMap = {};
     router,
     store,
     template: '<App />',
+     data(){
+        return{
+
+        }
+     },
     created () {
         if(!window.SOCKET&&this.$store.state.user.userInfo){
             initWebsocket(this)
@@ -94,4 +100,19 @@ Vue.prototype.$subscribeMap = {};
         // workerProces.start()
 
       },
+     mounted () {
+
+         let beginTime=0
+         let differTime=0
+         window.onunload =  ()=>{
+              differTime = new Date().getTime() -  beginTime;
+              if( differTime <= 5) {
+                  removeToken()
+             }
+         }
+         window.onbeforeunload =  ()=>{
+               beginTime = new Date().getTime();
+         };
+     },
+
  })

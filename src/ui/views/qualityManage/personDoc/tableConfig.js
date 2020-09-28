@@ -3,7 +3,7 @@
 
 export const personDocTable = (obj,deptObj) => {
     let dept=(row)=>{
-        if(row.deptCode){
+        if(row.deptCode&&deptObj){
             return deptObj[row.deptCode]
         }
         return ''
