@@ -209,6 +209,7 @@
                 this.form={}
                 this.form1={checkList:[]}
                 this.buttonObj=obj
+                this.tableData={records:[]}
                 this.tableConfig=this.configObj[this.buttonObj.id](this.options)
                  // this.getList();
             },

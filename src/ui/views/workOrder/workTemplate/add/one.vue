@@ -23,7 +23,8 @@
                         <el-option v-for="(opt,index) in options.worldorderType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="所属航司代码：" :prop=" form.type=='WXGD'?'airlineCompanyCode':''">
+                <el-form-item  label="所属航司代码："  prop="airlineCompanyCode" :rules=" form.type=='WXGD'?rules.airlineCompanyCode:[{required:false}]" >
+
                     <span v-if="type=='info'">{{  form.airlineCompanyCode }}</span>
                     <el-select  @change="iataChange"   v-else filterable v-model="form.airlineCompanyCode" placeholder="请选择所属航司代码">
                         <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.iata" :value="opt.iata">
@@ -37,7 +38,7 @@
                 </el-form-item>
             </div>
             <div class="row_three rowT">
-                <el-form-item label="航司LOGO：" :prop=" form.type=='WXGD'?'airlineCompanyLogo':''"  >
+                <el-form-item label="航司LOGO："  prop="airlineCompanyLogo" :rules=" form.type=='WXGD'?rules.airlineCompanyLogo:[{required:false}]"   >
                     <div  class="upUser  ">
                         <span v-if="!form.airlineCompanyLogo" style="color:#888888">
                                     请上传图片
@@ -47,16 +48,16 @@
                     </div>
                     <div style="display: none">
                         <UploadFile  accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" ref="UploadFile" @getFile="getFile"></UploadFile>
-
                     </div>
                 </el-form-item>
-                <el-form-item  label="机型：" :prop=" form.type=='WXGD'?'airplane':''"  >
+                <el-form-item  label="机型：" prop="airplane" :rules=" form.type=='WXGD'?rules.airplane:[{required:false}]" >
                     <span v-if="type=='info'">{{  form.airplane }}</span>
                     <el-select   multiple  v-else filterable v-model="form.airplane" collapse-tags placeholder="请选择机型">
                         <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.id"> </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item  label="航班类型：" :prop=" form.type=='WXGD'?'airlineType':''"  >
+
+                <el-form-item  label="航班类型："   prop="airlineType" :rules=" form.type=='WXGD'?rules.airlineType:[{required:false}]"  >
                     <span v-if="type=='info'">{{  form.airlineType }}</span>
                     <el-select       v-else clearable v-model="form.airlineType" placeholder="请选择航班类型">
                         <el-option v-for="(opt,index) in options.W_flightType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>

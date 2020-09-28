@@ -17,7 +17,7 @@
                 </div>
                 <div class="banner">
                     <div class="bannerHead">
-                        <template v-for="(opt) in radioList"  >
+                        <template v-for="(opt,index) in radioList"  >
                             <label @click="radioClick(opt.id)"   :class="radio==opt.id?'el-radio is-checked':'el-radio'">
                         <span  :class="radio==opt.id?'el-radio__input is-checked':'el-radio__input'">
                           <span class="el-radio__inner"></span>
@@ -25,7 +25,7 @@
                          <span class="el-radio__label" :style="{color:radio==opt.id?'#3280E7':''}">{{opt.name}}</span>
                         </span>
                             </label>
-                            <i class="el-icon-arrow-right"> </i>
+                            <i v-show="index!=radioList.length-1" class="el-icon-arrow-right"> </i>
                         </template>
 
                     </div>

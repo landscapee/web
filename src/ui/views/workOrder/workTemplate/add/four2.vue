@@ -378,9 +378,10 @@
                     paId:num==1?this.addItemObj.id:null,
                     itemType:num==1?3:1,
                     noSmallItem:true,
+                    number:num==1?`${this.addItemObj.number}.${this.addItemObj.children.length+1}`:this.dataItem.length*1+1,
                     templateBaseId:this.$route.query.id,
                 }
-                this.formItem={...obj}
+                 this.formItem={...obj}
                 if(num==1){
                     this.addItemObj.children.push(obj)
                 }else{
