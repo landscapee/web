@@ -34,24 +34,14 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="260"  >
+                    <el-table-column   slot="option" label="操作" align="center" :width="100"  >
                         <template  slot-scope="scope">
-                            <!--style="height:40px;line-height: 26px;text-align: center"-->
-                            <div style="position:relative">
-                                <!--style=" padding:3px 7px; background: black; color:white;margin: 0"-->
-                                <el-button  class="QoptionButton"  @click="SignEvaluation(scope.row)">
-                                    <!--<div>分数</div>-->
-                                    <!--<div>录入</div>-->
-                                    培训签到&评价
-                                </el-button>
-                                <el-button  class="QoptionButton" @click="testResults(scope.row)">
-                                    <!--<div>考试结果</div>-->
-                                    <!--<div>推送</div>-->
-                                    评价推送上级
-                                </el-button>
-
-                            </div>
-
+                            <span @click="SignEvaluation(scope.row)" class="rowSvg" style="margin-right: 10px">
+                                <icon iconClass="evaluate" title="培训签到&评价"></icon>
+                            </span>
+                            <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg">
+                                <icon iconClass="pushNew" title="评价推送上级"></icon>
+                            </span>
                         </template>
                     </el-table-column>
 
@@ -70,7 +60,7 @@ import request from '@lib/axios.js';
 import {  extend ,map,get} from 'lodash';
 export default {
     components: {
-        Icon, SearchTable,SignEvaluation, 
+        Icon, SearchTable,SignEvaluation,
 	},
     name: '',
     data() {

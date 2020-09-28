@@ -41,6 +41,6 @@ export const trainAdminResultsConfig = (obj) => {
                 { prop: 'qualifiedStatus', label: '考核成绩',sortProp:"qualifiedStatus", align: 'center' ,sort:true,search:{type:'input', prop:'qualifiedStatus', placeholder:"请输入"}},
                 { prop: 'certificateNo', label: '证书编号',sortProp:"certificateNo", align: 'center',sort:true,search:{type:'input', prop:'certificateNo', placeholder:"请输入", } },
                 { slot: 'remark', label: '备注',width:'200',  sortProp:"remark", align: 'center',sort:true,search:{type:'input', prop:'remark', placeholder:"请输入", } },
-                 { slot: 'option', label: '操作',width:'260',  align: 'center', search:{type:'btn',label:'搜索',icon:"table_search"} },
+                 { slot: 'option', label: '操作',width:'100',  align: 'center', search:{type:'btn',label:'搜索',icon:"table_search"} },
          ]
 };

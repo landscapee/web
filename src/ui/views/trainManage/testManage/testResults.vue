@@ -31,27 +31,19 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="210"  >
+                    <el-table-column   slot="option" label="操作" :width="150" align='center' >
                         <template  slot-scope="scope">
-                            <div style="height:40px;line-height: 26px;text-align: center">
-                                <el-button  :disabled="!scope.row.employeeFileId"  @click="scoreEntry(scope.row)"
-                                              style=" padding:3px 7px; background: black; color:white;margin: 0">
-                                    <div>分数</div>
-                                    <div>录入</div>
-                                </el-button>
-                                <el-button  class="copyButton" @click="testResults('/testManagePushStaff',scope.row)"
-                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
 
-                                    <div>考试结果</div>
-                                    <div>推送</div>
-                                </el-button>
-                                <el-button  class="copyButton" @click="uploadTest( scope.row)"
-                                            style=" padding:3px 7px; background: black; color:white;margin: 0">
+                                <span @click="scoreEntry(scope.row)" :class="!scope.row.employeeFileId?'rowSvg rowSvgInfo':'rowSvg'" style="margin-right: 10px">
+                                    <icon iconClass="score" title="分数录入"></icon>
+                                </span>
+                                <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg" style="margin-right: 10px">
+                                    <icon iconClass="push" title="考试结果推送"></icon>
+                                </span>
+                                <span @click="uploadTest( scope.row)" class="rowSvg" style="margin-right: 10px">
+                                    <icon iconClass="uploadingNew" title="纸质试卷归档上传"></icon>
+                                </span>
 
-                                    <div>纸质试卷</div>
-                                    <div>归档上传</div>
-                                </el-button>
-                            </div>
 
                         </template>
                     </el-table-column>
@@ -150,7 +142,7 @@ export default {
                 })
         },
         scoreEntry(row){
-            
+
             this.$refs.ScoreEntry.open(row)
         },
         uploadTest(row){
@@ -292,9 +284,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
-    
+
 }
 </style>

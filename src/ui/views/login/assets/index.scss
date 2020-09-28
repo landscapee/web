@@ -36,7 +36,7 @@ $dark_gray: #889aa4;
 			&::-webkit-input-placeholder {
 				color: #89A3B5;
 			}
-   
+
 		}
 	}
 	.el-form-item {
@@ -197,7 +197,7 @@ $dark_gray: #889aa4;
 		.el-col {
 			height: 100%;
 		}
-		
+
 	}
 
 	.login-form {
@@ -248,4 +248,9 @@ $dark_gray: #889aa4;
 		cursor: pointer;
 		user-select: none;
 	}
+	.updatePwd:hover{
+		color: #5cb6ff;
+		cursor: pointer;
+	}
+
 }
