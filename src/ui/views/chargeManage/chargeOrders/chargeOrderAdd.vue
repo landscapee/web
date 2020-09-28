@@ -206,7 +206,7 @@
 										class="upload_demo"
 										ref="upload"
 										:limit='1'
-										accept='.doc,.jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF'
+										accept='.jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP'
 										:on-success='fileUploadSuccessFn'
 										:on-exceed="handleExceedFn"
 										:on-remove='fileRemoveFn'
@@ -215,7 +215,7 @@
 								>
 									<el-button size="small" type="primary">{{type=='edit'?'重新上传':'上传'}}</el-button>
 								</el-upload>
-								<span v-if="type=='info'" class='form_inlne_val' style='width:160px;'>{{fileList.map(i=>i.name).toString()}}</span>
+								<span v-if="type=='info'" class='hoverSpanFile'  @click="preImg">{{fileList.map(i=>i.name).toString()}}</span>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12"></el-col>
@@ -225,6 +225,7 @@
 				</el-form>
 			</div>
 		</div>
+		<SeeImg ref="SeeImg"></SeeImg>
 	</div>
 </template>
 <script>
@@ -262,10 +263,10 @@
 		name: '',
 		data() {
 			var validateNumber = (rule, value, callback) => {
-				if (value === '' || (Number(value) > 0 && Number(value) < 10000000)) {
+				if (value === '' || value === undefined || (Number(value) > 0 && Number(value) < 10000000)) {
 					callback();
 				}else {
-					callback(new Error('请输入不超过8位数的正整数'));
+					callback(new Error('请输入不超过8位数的正数'));
 				}
 			};
 			return {
@@ -484,6 +485,9 @@
 							})
 						}
 					})
+			},
+			preImg(){
+				this.$refs.SeeImg.open(this.fileList[0],'纸质收费单')
 			}
 		},
 	};
@@ -523,5 +527,9 @@
 				font-size: 1rem;
 			}
 		}
+	}
+	.hoverSpanFile:hover  {
+		color: #5cb6ff;
+		cursor: pointer;
 	}
 </style>

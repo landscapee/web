@@ -43,6 +43,6 @@ export const testRuConfig = (testList ,obj) => {
             { slot: 'employeeFileId', label: '纸质试卷',sortProp:"employeeFileId", align: 'center' ,sort:true,/*search:{type:'input', prop:'employeeFileId',placeholder:"请输入"}*/},
 
             // { prop: 'place', label: '纸质试卷',  sortProp:"examTime", align: 'center',sort:true ,search:{type:'input', prop:'place',placeholder:"请输入"}},
-                  { slot: 'option', label: '操作',width:'210',  align: 'center', search:{type:'btn',label:'搜索',icon:"table_search"} },
+                  { slot: 'option', label: '操作',width:'150',  align: 'center', search:{type:'btn',label:'搜索',icon:"table_search"} },
          ]
 };

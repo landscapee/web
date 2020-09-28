@@ -27,20 +27,24 @@
             </div>
              <div class="main-content">
                 <SearchTable
-                    refTag="searchTable" 
-                    ref="searchTable"  
-                    @requestTable="requestTable(arguments[0])"   
-                    @listenToCheckedChange="listenToCheckedChange(arguments[0])" 
-                    @headerSort="headerSort(arguments[0])"  
-                    :data="tableData" 
+                    refTag="searchTable"
+                    ref="searchTable"
+                    @requestTable="requestTable(arguments[0])"
+                    @listenToCheckedChange="listenToCheckedChange(arguments[0])"
+                    @headerSort="headerSort(arguments[0])"
+                    :data="tableData"
                     :tableConfig="businessTableConfig"
-                    @handleSizeChange="handleSizeChange" 
+                    @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange"
                 >
                     <el-table-column slot="option" align='center' label="操作" :width="150"  >
                         <template  slot-scope="{ row }"> <!--||row.state==2--> <!--row.state==1-->
-                            <el-button size='mini' v-show='row.state==0' @click="toPassFn(row)" class="copyButton copyButton1" >通过</el-button>
-                            <el-button size='mini' v-show='row.state==0' @click="torefuseFn(row)" class="copyButton" >拒绝</el-button>
+                            <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
+                                    <icon iconClass="pass" title="通过"></icon>
+                            </span>
+                            <span @click="torefuseFn(row)" v-show='row.state===0' class="rowSvg">
+                                    <icon iconClass="nopass" title="拒绝"></icon>
+                            </span>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -162,7 +166,7 @@ export default {
         },
         getList(){
             request({
-                url:`${this.$ip}/mms-workorder/changeReport/list?current=${this.params.current}&size=${this.params.size}`, 
+                url:`${this.$ip}/mms-workorder/changeReport/list?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{
                     ...this.sort,
@@ -170,7 +174,7 @@ export default {
                 }
             })
             .then((data) => {
-                // order:'number,0' // 0 倒序 1 正序 
+                // order:'number,0' // 0 倒序 1 正序
                 // this.sort = {
                 //     order:`${number},${data.order==='desc'?'0':'1'}`
                 // }
@@ -202,7 +206,7 @@ export default {
         },
         //表格选中事件
         listenToCheckedChange(row,tag,tableTag){
-           
+
         },
         fileMoveFn(){
             this.$refs.fileMove.openFn(this.selectObjs[0].id)
@@ -214,7 +218,7 @@ export default {
             }
             console.log(arr)
             return arr
-            
+
         },
         // 批量推送
         batchPushFn(){
@@ -250,7 +254,7 @@ export default {
         auditFn(row, state){
             return new Promise((resolve,reject)=>{
                 request({
-                    url:`${this.$ip}/mms-workorder/changeReport/audit`, 
+                    url:`${this.$ip}/mms-workorder/changeReport/audit`,
                     method: 'get',
                     params:{
                         id:row.id,
@@ -264,7 +268,7 @@ export default {
                             type: 'success'
                         });
                     }
-                    
+
                     resolve(data)
                 })
             })
@@ -281,11 +285,11 @@ export default {
     },
     watch: {
     },
-   
+
 }
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
+@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 .index{
     .inner{
         .top_content{
@@ -357,10 +361,10 @@ export default {
                 //         }
                 //     }
                 // }
-            }    
+            }
         }
     }
-    
+
 }
 </style>
- 
+
