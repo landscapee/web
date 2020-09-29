@@ -10,13 +10,13 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/personDoc',
 		name: '质量管理',
-		meta: {title: '质量管理',icon: 'zlgl' },
+		meta: {title: '质量管理',icon: 'zlgl' ,roles: ['R_qualityManage']},
 		children: [
             {
                 path: '/personDoc',
                 component: () => import('@views/qualityManage/personDoc/index'),
                 name: '人员档案',
-                meta: {	title: '人员档案',icon: ''},
+                meta: {	title: '人员档案',icon: '',roles: ['R_qualityManage/personDoc']},
                 children:[
                     {
                         path: '/addPersonDoc',
@@ -84,7 +84,7 @@ let authRoutes = [
 				path: '/intelligenceManage',
 				component: () => import('@views/qualityManage/intelligenceManage/index'),
 				name: '资质管理',
-				meta: {	title: '资质管理',	icon: '',keepAlive:true	},
+				meta: {	title: '资质管理',	icon: '',keepAlive:true	,roles: ['R_qualityManage/intelligenceManage']},
 				children:[
 					{
 						path: '/addQualifications',
@@ -127,7 +127,7 @@ let authRoutes = [
 				path: '/authorizeManage',
 				component: () => import('@views/qualityManage/authorizeManage/index'),
 				name: '授权管理',
-				meta: {title: '授权管理',	icon: ''},
+				meta: {title: '授权管理',	icon: '',roles: ['R_qualityManage/authorizeManage']},
 				children:[
 					{
 						path: '/addAuthorizeManage',
@@ -164,7 +164,7 @@ let authRoutes = [
 				path: '/selfCheckPlan',
 				component: () => import('@views/qualityManage/selfCheckPlan/index'),
 				name: '自查计划',
-				meta: {title: '自查计划',icon: '',keepAlive: true},
+				meta: {title: '自查计划',icon: '',keepAlive: true,roles: ['R_qualityManage/selfCheckPlan']},
 				children:[
                     {
                         path: '/selfCheckPlanAdd',
@@ -184,7 +184,7 @@ let authRoutes = [
 				path: '/safetyPerformance',
 				component: () => import('@views/qualityManage/safetyPerformance/index'),
 				name: '安全绩效',
-				meta: {title: '安全绩效',icon: '',keepAlive: true},
+				meta: {title: '安全绩效',icon: '',keepAlive: true,roles: ['R_qualityManage/safetyPerformance']},
 				children:[
                     {
                         path: '/safetyPerformanceAdd',
@@ -209,7 +209,7 @@ let authRoutes = [
 				path: '/safetyInformationIndex',
 				component: () => import('@views/qualityManage/safetyInformation/index'),
 				name: '安全信息',
-				meta: {title: '安全信息',icon: ''},
+				meta: {title: '安全信息',icon: '',roles: ['R_qualityManage/safetyInformationIndex']},
 				children:[
                     {
                         path: '/safetyInformationAdd',
@@ -223,7 +223,7 @@ let authRoutes = [
 				path: '/dangerousDataIndex',
 				component: () => import('@views/qualityManage/dangerousData/index'),
 				name: '危险数据',
-				meta: {title: '危险数据',icon: ''},
+				meta: {title: '危险数据',icon: '',roles: ['R_qualityManage/dangerousDataIndex']},
 				children:[
 					{
                         path: '/dangerousDataAdd',
@@ -241,14 +241,14 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/WorkTemplate',
 		name: '工单管理',
-		meta: {title: '工单管理',icon: 'gdgl' },
+		meta: {title: '工单管理',icon: 'gdgl',roles:['R_WorkOrderManage'] },
 		children: [
 
             {
                 path: '/WorkTemplate',
                 component: () => import('@views/workOrder/workTemplate/index'),
                 name: '模板管理',
-                meta: {title: '模板管理',icon: 'xxgl' },
+                meta: {title: '模板管理',icon: 'xxgl',roles:['R_WorkOrderManage/WorkTemplate'] },
                 children:[
                     {
                         path: '/WorkTemplateAdd',
@@ -262,7 +262,7 @@ let authRoutes = [
                 path: '/signControl',
                 component: () => import('@views/workOrder/signControl/index'),
                 name: '完工签署',
-                meta: {title: '完工签署',icon: 'xxgl' },
+                meta: {title: '完工签署',icon: 'xxgl' ,roles:['R_WorkOrderManage/signControl']},
                 children:[
                     {
                         path: '/signControlAdd',
@@ -321,10 +321,8 @@ let authRoutes = [
                 path: '/workOrderChange',
                 component: () => import('@views/workOrder/workOrderChange/index'),
                 name: '变更审核',
-                meta: {title: '变更审核',icon: 'xxgl' },
-                children:[
-
-                ]
+                meta: {title: '变更审核',icon: 'xxgl',roles:['R_WorkOrderManage/workOrderChange'] },
+                children:[]
             },
         ],
 	},
@@ -333,13 +331,13 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/templateManage',
 		name: '收费管理',
-		meta: {title: '收费管理',icon: 'sfgl' },
+		meta: {title: '收费管理',icon: 'sfgl' ,roles:['R_WorkOrderManage3']},
 		children: [
             {
 				path: '/templateManage',
 				component: () => import('@views/chargeManage/templateManage/index'),
 				name: '模板管理',
-                meta: {title: '模板管理',icon: 'xxgl' },
+                meta: {title: '模板管理',icon: 'xxgl',roles:['R_WorkOrderManage3/templateManage'] },
                 children:[
                     {
                         path: '/templateAdd',
@@ -359,7 +357,7 @@ let authRoutes = [
 				path: '/chargeOrders',
 				component: () => import('@views/chargeManage/chargeOrders/index'),
 				name: '收费单',
-                meta: {title: '收费单',icon: 'xxgl' },
+                meta: {title: '收费单',icon: 'xxgl',roles:['R_WorkOrderManage3/chargeOrders'] },
                 children:[
                     {
                         path: '/chargeOrderAdd',
@@ -377,13 +375,13 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/fileManage',
 		name: '技术资料',
-		meta: {title: '技术资料',icon: 'jszl' },
+		meta: {title: '技术资料',icon: 'jszl',roles:['R_WorkOrderManage5'] },
 		children: [
             {
 				path: '/fileManage',
 				component: () => import('@views/techKnowledge/fileManage/index'),
 				name: '文件管理',
-                meta: {title: '文件管理',icon: 'xxgl' },
+                meta: {title: '文件管理',icon: 'xxgl',roles:['R_WorkOrderManage5/fileManage'] },
                 children:[
                     {
                         path: '/detail',
@@ -421,13 +419,13 @@ let authRoutes = [
                 path:'/studyManage',
                 component:() => import('@views/techKnowledge/studyManage/index'),
                 name:'学习管理',
-                meta: {title: '学习管理',icon: 'xxgl' }
+                meta: {title: '学习管理',icon: 'xxgl',roles:['R_WorkOrderManage5/studyManage'] }
             },
             {
                 path:'/userManage',
                 component:() => import('@views/techKnowledge/studyManage/userManage'),
                 name:'个人管理',
-                meta: {title: '个人管理',icon: 'xxgl' }
+                meta: {title: '个人管理',icon: 'xxgl' ,roles:['R_WorkOrderManage5/userManage']}
             }
         ],
 	},
@@ -436,13 +434,13 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/testMaintenance',
 		name: '培训考核',
-		meta: {title: '培训考核',icon: 'pxkh' },
+		meta: {title: '培训考核',icon: 'pxkh' ,roles:['R_peixunKaohe']},
 		children: [
 			{
 				path: '/coursewareMaintain',
                 component: () => import('@views/trainManage/coursewareMaintain/index'),
 				name: '课件维护',
-				meta: {title: '课件维护',icon: 'xxgl' },
+				meta: {title: '课件维护',icon: 'xxgl'  ,roles:['R_peixunKaohe/coursewareMaintain']},
                 children:[
                     {
                         path: '/coursewareMaintainAdd',
@@ -457,7 +455,7 @@ let authRoutes = [
 				path: '/testMaintenance',
 				component: () => import('@views/trainManage/testMaintenance/index'),
 				name: '试卷维护',
-				meta: {title: '试卷维护',icon: 'xxgl' , },
+				meta: {title: '试卷维护',icon: 'xxgl'  ,roles:['R_peixunKaohe/testMaintenance']},
                 children:[
 					{
                         path: '/testMaintenanceAdd',
@@ -491,7 +489,7 @@ let authRoutes = [
 				path: '/trainManageAdmin',
                 component: () => import('@views/trainManage/trainManageAdmin/index'),
 				name: '培训管理',
-				meta: {title: '培训管理',icon: 'xxgl' },
+				meta: {title: '培训管理',icon: 'xxgl' ,roles:['R_peixunKaohe/trainManageAdmin'] },
                 children:[
                     {
                         path: '/trainManageAdminAdd',
@@ -527,7 +525,7 @@ let authRoutes = [
 				path: '/trainManageUser',
                 component: () => import('@views/trainManage/trainManageUser/index'),
 				name: '我的培训',
-				meta: {title: '我的培训',icon: 'xxgl' },
+				meta: {title: '我的培训',icon: 'xxgl'  ,roles:['R_peixunKaohe/trainManageUser']},
                 children:[
                     {
                         path: '/trainManageUserAdd',
@@ -541,7 +539,7 @@ let authRoutes = [
 				path: '/testManage',
 				component: () => import('@views/trainManage/testManage/index'),
 				name: '考试管理',
-				meta: {title: '考试管理',icon: 'xxgl' },
+				meta: {title: '考试管理',icon: 'xxgl' ,roles:['R_peixunKaohe/testManage'] },
                 children:[
                     {
                         path: '/testManageAdd',
@@ -573,7 +571,7 @@ let authRoutes = [
 				path: '/onlineTestIndex',
 				component:() => import('@views/trainManage/onlineTest/index.vue'),
 				name: '在线考试',
-				meta: {title: '在线考试',icon: 'xxgl' },
+				meta: {title: '在线考试',icon: 'xxgl'  ,roles:['R_peixunKaohe/onlineTestIndex']},
                 children:[
 					{   path: '/onlineTestDo',
                         component: () => import('@views/trainManage/onlineTest/add.vue'),
@@ -586,7 +584,7 @@ let authRoutes = [
 				path: '/assessManageAdmin',
                 component: () => import('@views/trainManage/assessManageAdmin/index'),
 				name: '考核管理',
-				meta: {title: '考核管理',icon: 'xxgl' },
+				meta: {title: '考核管理',icon: 'xxgl' ,roles:['R_peixunKaohe/assessManageAdmin'] },
 
 
 			},
@@ -597,20 +595,20 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/queryIndex',
 		name: '查询统计',
-		meta: {title: '查询统计',icon: 'cxtj' },
+		meta: {title: '查询统计',icon: 'cxtj' ,roles:['R_queryStatistical']},
         children: [
             {
                 path: '/queryIndex',
                 component: () => import('@views/queryStatistical/query/index'),
                 name: '综合查询',
-                meta: {title: '综合查询',icon: '' },
+                meta: {title: '综合查询',icon: ''  ,roles:['R_queryStatistical/queryIndex']},
 
             },
             {
                 path: '/statisticalIndex',
                 component: () => import('@views/queryStatistical/statistical/index'),
                 name: '综合统计',
-                meta: {title: '综合统计',icon: ''},
+                meta: {title: '综合统计',icon: '' ,roles:['R_queryStatistical/statisticalIndex']},
 
             },
 
@@ -621,13 +619,13 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/warningConfig',
 		name: '消息管理',
-		meta: {title: '消息管理',icon: 'xxgl' },
+		meta: {title: '消息管理',icon: 'xxgl',roles:['R_msgManage'] },
 		children: [
 			{
 				path: '/warningConfig',
 				component: () => import('@views/msgManage/warningConfig/index'),
 				name: '预警配置',
-				meta: {title: '预警配置',icon: '' },
+				meta: {title: '预警配置',icon: '',roles:['R_msgManage/warningConfig'] },
 				children:[
 					{
 						path: '/addWarningConfig',
@@ -641,7 +639,7 @@ let authRoutes = [
 				path: '/warningSearch',
 				component: () => import('@views/msgManage/warningSearch/index'),
 				name: '预警查询',
-				meta: {title: '预警查询',icon: ''},
+				meta: {title: '预警查询',icon: '',roles:['R_msgManage/warningSearch']},
 				children:[
 					{
 						path: '/historyWarning',
@@ -655,7 +653,7 @@ let authRoutes = [
 				path: '/subscribeConfig',
 				component: () => import('@views/msgManage/subscribeConfig/index'),
 				name: '订阅配置',
-				meta: {title: '订阅配置',icon: '' },
+				meta: {title: '订阅配置',icon: '' ,roles:['R_msgManage/subscribeConfig']},
 				children:[
 					{
 						path: '/addSubscribeConfig',
@@ -669,7 +667,7 @@ let authRoutes = [
 				path: '/infoPlate',
 				component: () => import('@views/msgManage/infoPlate/index'),
 				name: '信息平台',
-				meta: {title: '信息平台',icon: ''},
+				meta: {title: '信息平台',icon: '',roles:['R_msgManage/infoPlate']},
 				children:[
 					{
 						path: '/addInfoPlate',
@@ -701,13 +699,13 @@ let authRoutes = [
 		component: Layout,
 		redirect: '/businessData',
 		name: '基础数据',
-		meta: {title: '基础数据',icon: 'basicData' },
+		meta: {title: '基础数据',icon: 'basicData' ,roles:['R_basicData']},
 		children: [
 			{
 				path: '/businessData',
 				component: () => import('@views/basicData/businessData/index'),
 				name: '业务数据类型',
-				meta: {title: '业务数据类型',icon: '',keepAlive: true },
+				meta: {title: '业务数据类型',icon: '',keepAlive: true  ,roles:['R_basicData/businessData']},
 				children:[
 					{
 						path: '/editBusinessData',
@@ -729,7 +727,7 @@ let authRoutes = [
 				path: '/sysParameter',
 				component:  () => import('@views/basicData/sysParameter/index'),
 				name: '系统参数',
-				meta: {title: '系统参数',icon: '' },
+				meta: {title: '系统参数',icon: '' ,roles:['R_basicData/sysParameter'] },
 				children:[
 					{
 						path: '/addSysParameter',
@@ -744,7 +742,7 @@ let authRoutes = [
 				path: '/tailInfo',
 				component:  () => import('@views/basicData/AirInfo/index'),
 				name: '机尾号信息',
-				meta: {title: '机尾号信息',icon: '' },
+				meta: {title: '机尾号信息',icon: '' ,roles:['R_basicData/tailInfo'] },
 				children:[
 					{
 						path: '/tailInfoAdd',
@@ -759,7 +757,7 @@ let authRoutes = [
 				path: '/electronicFence',
 				component: () => import('@views/basicData/electronicFence/index'),
 				name: '机位电子围栏',
-				meta: {title: '机位电子围栏',icon: '' },
+				meta: {title: '机位电子围栏',icon: ''  ,roles:['R_basicData/electronicFence']},
 				children:[
 					{
 						path: '/addElectronicFence',
@@ -772,22 +770,22 @@ let authRoutes = [
 			}
 		],
 	},
-	// {
-	// 	path: '/electronicFence',
-	// 	component: Layout,
-	// 	redirect: '/electronicFenceIndex',
-	// 	name: '电子围栏',
-	// 	meta: {title: '电子围栏',icon: 'xxgl' },
-	// 	children: [
-	// 		{
-	// 			path: '/electronicFenceIndex',
-	// 			component: () => import('@views/electronicFence/index'),
-	// 			name: '电子围栏',
-	// 			meta: {title: '电子围栏',icon: '' },
-	// 			children:[]
-	// 		},
-	// 	],
-	// },
+	{
+		path: '/electronicFence',
+		component: Layout,
+		redirect: '/electronicFenceIndex',
+		name: '电子围栏',
+		meta: {title: '电子围栏',icon: 'xxgl' },
+		children: [
+			{
+				path: '/electronicFenceIndex',
+				component: () => import('@views/electronicFence/index'),
+				name: '电子围栏',
+				meta: {title: '电子围栏',icon: '' },
+				children:[]
+			},
+		],
+	},
 
 ];
 let defaultRoutes = [

@@ -1,7 +1,7 @@
 <template>
     <div   v-loading="loading"
            element-loading-text="拼命加载中">
-        <!--<iframe :src="url1"  frameborder="no" border="0"  class='iframe' ref="threeMap" id='threeMap' name="threeMap"></iframe>-->
+        <iframe :src="url1"  frameborder="no" border="0"  class='iframe' ref="threeMap" id='threeMap' name="threeMap"></iframe>
     </div>
 </template>
 
@@ -13,7 +13,7 @@
         data() {
             return {
                 loading:true,
-                // url1: '../../../../static/electronicFence/index2.html',
+                url1: '../../../../static/electronicFence/index2.html',
                 vueId:"myParentId"
             }
         },
