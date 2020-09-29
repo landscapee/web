@@ -175,7 +175,7 @@ export const infoPlateReceiveTable = (infoSelect) => {
             },
             align: 'center',sort:true,sortProp:"state",search:{prop:'state',type:'select',data:[{'label':'未处理','value':0},{'label':'已处理','value':1}],placeholder:"请输入信息状态"}
         },
-        { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'relationInfo', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const historyPlateReceiveTable = (infoSelect) => {
