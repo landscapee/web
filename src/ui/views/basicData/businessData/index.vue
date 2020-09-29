@@ -326,12 +326,18 @@ export default {
             width:837px;
             /deep/ .el-table{
                 width:837px;
+                .el-table__body{
+                    width: 837px !important;
+                }
             }
         }
         /deep/ .right-subset-table{
             width:824px;
             /deep/ .el-table{
                 width:824px;
+                .el-table__body{
+                    width: 824px !important;
+                }
             }
         }
         /deep/ .mainTable{

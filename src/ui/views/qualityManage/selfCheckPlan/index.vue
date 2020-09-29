@@ -234,12 +234,12 @@ export default {
                 this.leftParams.current = 1;
             }else{
                 this.rightForm = searchData;
-                
+
                 this.rightSelectId=null;
                 this.rightParams.current = 1;
             }
            this.$refs[tableTag].$refs.body_table.setCurrentRow();
-         
+
            this.getList(tag);
         },
         //表头排序
@@ -453,7 +453,7 @@ export default {
                         }
 
                     }).catch((error) => {
-                
+
                     });
                 }
             }
@@ -500,12 +500,18 @@ export default {
             width:562px;
             /deep/ .el-table{
                 width:562px;
+                .el-table__body{
+                    width: 562px !important;
+                }
             }
         }
         /deep/ .right-subset-table{
             width:1096px;
             /deep/ .el-table{
                 width:1096px;
+                .el-table__body{
+                    width: 1096px !important;
+                }
             }
         }
 

@@ -224,9 +224,9 @@
 
 <style lang="scss" scoped >
 	/deep/ .mainTable{
-		 .el-table__body{
-			width:1697px!important;
-		}
+		/* .el-table__body{*/
+		/*	width:1697px!important;*/
+		/*}*/
 	}
 	.searchTableWrapper{
 		/deep/ .tableSort {

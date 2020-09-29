@@ -24,14 +24,14 @@
                             <td class="tTd">
                                      <span  >
                                         {{form.userName}}
-                                     
+
                                     </span>
                             </td>
                             <td class="fTd">职务</td>
                             <td class="tTd" >
                                 <span  >
                                     {{form.post}}
-                                 
+
                                 </span>
                              </td>
 
@@ -136,7 +136,7 @@
 
                 tableLeftData:[],
                 tableRightData:[],
-                leftTableConfig:leftConfig({}),
+                    leftTableConfig:leftConfig({}),
                 rightTableConfig:rightConfig({}),
                 leftParams:{
                     current: 1,
@@ -352,6 +352,6 @@
                 }
              }
         }
-       
+
     }
 </style>

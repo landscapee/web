@@ -252,7 +252,7 @@ export default {
         getFileList(){
             return new Promise((resolve,reject)=>{
                 request({
-                    url:`${this.$ip}/mms-knowledge/folder/list`,
+                    url:`${this.$ip}/mms-knowledge/folder/folderNameList`,
                     method: 'post',
                 })
                 .then((data) => {

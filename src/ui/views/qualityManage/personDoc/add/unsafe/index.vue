@@ -237,5 +237,8 @@ export default {
 /deep/ .mainTable{
     height: 300px;
     overflow: auto;
+    .el-table__body{
+        width: 1160px !important;
+    }
 }
 </style>

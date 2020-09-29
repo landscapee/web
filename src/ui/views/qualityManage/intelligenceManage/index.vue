@@ -521,5 +521,19 @@
                 height:30px;
             }
         }
+        /deep/.QlistLeft{
+            /deep/ .el-table {
+                .el-table__body{
+                    width: 65% !important;
+                }
+            }
+        }
+        /deep/.QlistRight{
+            /deep/ .el-table {
+                .el-table__body{
+                    width: calc(35% - 30px) !important;
+                }
+            }
+        }
     }
 </style>
