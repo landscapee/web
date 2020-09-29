@@ -123,26 +123,16 @@ import request from '@lib/axios.js';
 		},
 		logout(){
 		    let sessionId= localStorage.getItem('socketId');
-                 request({
-                    url:`${this.$ip}/mms-notice/notification/disconnect`,
-                    method: 'get',
-					params:{
-                        sessionId,
-						userId:this.$store.state.user.userInfo.id
-					}
-                }).then((d) => {
-                    this.$store.commit('user/SET_TOKEN','');
-                    this.$store.commit('user/SET_USER_INFO','');
-                    removeToken();
-                    removeUserInfo();
-					this.$router.push({ path: '/' });
-                    if(window.SOCKET){
-						window.SOCKET.close()
-						//清空socket对象
-						window.SOCKET = null
-					}
-
-                })
+			this.$store.commit('user/SET_TOKEN','');
+			this.$store.commit('user/SET_USER_INFO','');
+			removeToken();
+			removeUserInfo();
+			this.$router.push({ path: '/' });
+			if(window.SOCKET){
+				window.SOCKET.close()
+				//清空socket对象
+				window.SOCKET = null
+			}
 		},
 		onSpread(){
 			this.isOpen = !this.isOpen;
