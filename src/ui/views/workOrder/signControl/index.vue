@@ -19,18 +19,14 @@
             </div>
             <div class="main-content">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                    <el-table-column slot="checkbox" align="center" label="选择" :width="50"   >
+                    <el-table-column slot="checkbox" align="center" label="选择" :width="49"   >
                         <template slot-scope="scope">
                             <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
                         </template>
                     </el-table-column>
-                     <el-table-column align="center" slot="option" label="操作" :width="50" >
+                     <el-table-column align="center" slot="option" label="操作" :width="59" >
                         <template  slot-scope="scope">
                             <div >
-                                <!--签署工单-->
-<!--                                <el-button v-if="scope.row.offlineFile" class="QoptionButton" @click="Download(scope.row)">下载</el-button>-->
-<!--                                <el-button v-else class="QoptionButton" :disabled="scope.row.state!=3" @click="exportRow(scope.row)">导出</el-button>-->
-
                                 <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
                                     <icon iconClass="downloadNew" title="下载"></icon>
                                 </span>

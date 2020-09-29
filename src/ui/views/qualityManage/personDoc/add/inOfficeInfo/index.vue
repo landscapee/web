@@ -186,7 +186,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
 .top-toolbar{
@@ -218,5 +218,8 @@ export default {
 /deep/ .mainTable{
     height: 300px;
     overflow: auto;
+    .el-table__body{
+        width: 1160px !important;
+    }
 }
 </style>

@@ -5,7 +5,7 @@
                 <div class="QHead">
                     {{form.userName}}培训考核
                 </div>
-                <div class="QheadRight">
+                <div class="QheadRight" style="margin-right: 30px">
 
                     <div @click="exportExcel('/examResult/exportByEmplpoyeeId/')">
                         <icon iconClass="export" ></icon>
@@ -219,7 +219,7 @@
     }
 
     .courseware {
-        padding: 0 30px;
+        padding: 0px;
 
     }
 .formbox{

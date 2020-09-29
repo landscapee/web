@@ -518,6 +518,9 @@
 				width: 562px;
 				/deep/ .el-table {
 					width: 562px;
+                    .el-table__body{
+                        width: 562px !important;
+                    }
 				}
 				/deep/ .el-table_2_column_14 {
 					/deep/ .cell {
@@ -534,6 +537,9 @@
 				width: 1096px;
 				/deep/ .el-table {
 					width: 1096px;
+                    .el-table__body{
+                        width: 1096px !important;
+                    }
 				}
 			}
 			/deep/ .mainTable {

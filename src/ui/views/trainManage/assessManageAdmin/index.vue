@@ -446,5 +446,19 @@ this.tableRightData.records.map((k,l)=>{
              height:30px;
           }
      }
+     /deep/.QlistLeft{
+         /deep/ .el-table {
+             .el-table__body{
+                 width: 45% !important;
+             }
+         }
+     }
+     /deep/.QlistRight{
+         /deep/ .el-table {
+             .el-table__body{
+                 width: calc(55% - 30px) !important;
+             }
+         }
+     }
 }
 </style>
