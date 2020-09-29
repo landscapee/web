@@ -78,7 +78,7 @@ import request from '@lib/axios.js';
 		}
 	},
 	created(){
-		
+
 	},
 	mounted(){
         if(window.postal){
@@ -90,7 +90,7 @@ import request from '@lib/axios.js';
 			topic: 'message',
 			callback: async data => {
                 request({
-                    url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`, 
+                    url:`${this.$ip}/mms-notice/notificationRecipient/countUndo`,
                     method: 'get',
                 })
                 .then((data) => {
@@ -226,7 +226,7 @@ import request from '@lib/axios.js';
 	/deep/ .el-menu{
 		border:0px;
 		background: unset;
-		
+
 		.el-menu-item{
 			background: #162C41;
 			color: #fff;
@@ -331,7 +331,7 @@ import request from '@lib/axios.js';
 		left: 0px;
 		transform:rotate(180deg);
 	}
-	
+
 }
 
 </style>

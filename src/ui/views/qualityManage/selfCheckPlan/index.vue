@@ -259,7 +259,6 @@ export default {
             }
 
             if(tag=='left'){
-                this.$refs[str].$refs.body_table.setCurrentRow();
                 this.leftParams.current = 1;
                 this.leftSelectId=null
                 this.rightSelectId=null
@@ -271,6 +270,8 @@ export default {
                 this.rightSelectId=null
                 this.rightParams.current = 1;
             }
+            this.$refs[str].$refs.body_table.setCurrentRow();
+
             this.getList(tag);
         },
         //表格选中事件
@@ -461,7 +462,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss"; 
+@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 .businessData{
     padding-top: 14px;
      .top-content{
@@ -510,7 +511,7 @@ export default {
 
         /deep/ .mainTable{
             height: 600px!important;
-            overflow: auto!important;
+            /*overflow: auto!important;*/
          }
 
 

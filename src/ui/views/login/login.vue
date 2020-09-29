@@ -130,7 +130,8 @@ export default {
 						}
 					})
 					.then((data) => {
-                          if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
+                                            console.log(data.data,'login');
+                                            if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
                               setToken(data.data.token);
                              setUserInfo(data.data);
                              this.$store.commit('user/SET_TOKEN',data.data.token);
