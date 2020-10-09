@@ -130,21 +130,23 @@ export default {
 						}
 					})
 					.then((data) => {
-                                            console.log(data.data,'login');
-                                            if (data.responseCode == 1000||data.responseCode == 30003||data.responseCode == 30002) {
-                              setToken(data.data.token);
-                             setUserInfo(data.data);
-                             this.$store.commit('user/SET_TOKEN',data.data.token);
-                             this.$store.commit('user/SET_USER_INFO',data.data);
-                             if(data.responseCode == 30003||data.responseCode == 30002){
-                                 this.$message.warning( data.responseMessage);
-							 }
-                             initWebsocket(this)
-                             this.findUnread();
-                             this.$router.push({ path: '/qualityManage' });
+						console.log(data.data,'login');
+						if (data.responseCode === 1000||data.responseCode === 30003||data.responseCode === 30002) {
+							setToken(data.data.token);
+							setUserInfo(data.data);
+							this.$store.commit('user/SET_TOKEN',data.data.token);
+							this.$store.commit('user/SET_USER_INFO',data.data);
+							initWebsocket(this);
+							this.findUnread();
+							//跳转到修改密码页面
+							if(data.responseCode === 30003||data.responseCode === 30002){
+								// this.$message.warning(data.responseMessage);
+								this.$refs['pwd'].open(data.responseMessage,data.data);
+							}else {
+								this.$router.push({ path: '/qualityManage' });
+							}
                          }else{
-                             this.$message.error( data.responseMessage);
-
+							this.$message.error( data.responseMessage);
                          }
                     this.loading = false;
 					}).catch((error) => {
