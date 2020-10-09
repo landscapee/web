@@ -13,7 +13,7 @@
 		<el-container>
 		<el-aside  :class="isOpen?'open-menu':'left-menu'" >
  			<el-menu  router :default-active="routePath" :unique-opened="true">
-				<el-submenu :index="item.path" v-for="(item,index) in asyncRoutes" :key="index">
+				<el-submenu v-if="item.meta"  :index="item.path" v-for="(item,index) in permission_routes" :key="index">
 					<template slot="title">
 						<icon :iconClass="item.meta.icon" ></icon>
           				<span>{{item.name}}</span>
@@ -39,7 +39,9 @@
 </template>
 <script>
  import postal from 'postal';
-import { asyncRoutes } from '@/ui/router';
+ import { mapGetters } from 'vuex';
+
+ import { asyncRoutes } from '@/ui/router';
 import logo from './assets/img/logo.png';
 import bell from './assets/img/ic_bell.png';
 import esc from './assets/img/ic_esc.png';
@@ -68,6 +70,10 @@ import request from '@lib/axios.js';
 		isOpen:false
       }
 	},
+      computed: {
+          ...mapGetters(['permission_routes']),
+
+      },
 	watch: {
 		$route: {
 			handler: function(val, oldVal){
@@ -79,7 +85,7 @@ import request from '@lib/axios.js';
 	},
 	created(){
 
-	},
+        },
 	mounted(){
         if(window.postal){
              postal.unsubscribe(window.postal)
@@ -124,6 +130,7 @@ import request from '@lib/axios.js';
 		logout(){
 		    let sessionId= localStorage.getItem('socketId');
 			this.$store.commit('user/SET_TOKEN','');
+			this.$store.commit('user/SET_ROLES',null);
 			this.$store.commit('user/SET_USER_INFO','');
 			removeToken();
 			removeUserInfo();

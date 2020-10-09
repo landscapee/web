@@ -5,13 +5,15 @@ import table from "./modules/table.js";
 import user from './modules/user';
 import getters from './getters';
 import socketObj from './modules/socketObj';
+import permission from './modules/permission';
 Vue.use(Vuex)
 const store = new Vuex.Store({
     modules: {
         data: sysMsg,
         table,
         user,
-        socketObj
+        socketObj,
+        permission
     },
     getters,
 })

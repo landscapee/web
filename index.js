@@ -28,6 +28,8 @@ import './static/plugin/kindeditor-all-min.js'
 import './static/plugin/lang/zh-CN.js'
 import directives from '@lib/directive.js'
 import moment from 'moment'
+import './permission';
+
 //公共ip地址和端口
 if(PROGRAM == 'jwxt.dev'){  // 本地
     Vue.prototype.$ip = "http://173.100.1.5:8011"
