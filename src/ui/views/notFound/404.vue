@@ -1,11 +1,11 @@
 <template>
 	<div class="wscn-http404-container">
-		<div class="wscn-http404">
+ 		<div class="wscn-http404">
 			<div class="pic-404">
-				<img class="pic-404__parent" src="assets/404.png" alt="404" />
-				<img class="pic-404__child left" src="assets/404_cloud.png" alt="404" />
-				<img class="pic-404__child mid" src="assets/404_cloud.png" alt="404" />
-				<img class="pic-404__child right" src="assets/404_cloud.png" alt="404" />
+				<img class="pic-404__parent" :src="img404" alt="404" />
+				<img class="pic-404__child left" :src="cloud404" alt="404" />
+				<img class="pic-404__child mid" :src="cloud404" alt="404" />
+				<img class="pic-404__child right" :src="cloud404" alt="404" />
 			</div>
 			<div class="bullshit">
 				<div class="bullshit__oops">OOPS!</div>
@@ -22,8 +22,16 @@
 </template>
 
 <script>
+	import img404 from './assets/img/404.png'
+	import cloud404 from './assets/img/404_cloud.png'
 export default {
 	name: 'Page404',
+    data(){
+	return {
+            img404,
+            cloud404,
+	}
+    },
 	computed: {
 		message() {
 			return 'The webmaster said that you can not enter this page...';

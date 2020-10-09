@@ -817,10 +817,11 @@ let authRoutes = [
 			},
 		],
 	},
-
+    { path: '*', redirect: '/404', hidden: true }
 ];
 let defaultRoutes = [
   {path: '/',name: 'login',	component: () => import('@views/login/login')},
+  // {path: '/login',name: 'login',	component: () => import('@views/login/login')},
   {path: '/table',name: 'table',	component: () => import('@views/table/table')},
   {path: '/workOrder',name: 'workOrder',	component: () => import('@views/workOrder/workOrder')},
   {path: '/404',component: () => import('@views/notFound/404')},
@@ -834,7 +835,7 @@ export const asyncRoutes = authRoutes;
 const createRouter = () =>
 	new Router({
 		scrollBehavior: () => ({x: 0, y: 0 }),
-		routes: constantRoutes.concat(asyncRoutes),
+		routes: constantRoutes,
 		fallback: false,
 	});
 const router = createRouter();
