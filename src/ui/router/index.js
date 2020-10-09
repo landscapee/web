@@ -323,7 +323,38 @@ let authRoutes = [
                 name: '变更审核',
                 meta: {title: '变更审核',icon: 'xxgl',roles:['R_WorkOrderManage/workOrderChange'] },
                 children:[]
-            },
+            }, {
+				path: '/myWorkOrder',
+				component: () => import('@views/workOrder/myWorkOrder/index'),
+				name: '我的工单',
+				meta: {title: '我的工单',icon: 'xxgl'},
+				children:[
+					{
+						path: '/MySignControlAdd',
+						component: () => import('@views/workOrder/signControl/add'),
+						name: '我的工单详情',
+						meta: {title: '我的工单详情',icon: 'xxgl' },
+					},
+					{
+						path: '/MyWorkAbnormalDetails',
+						component: () => import('@views/workOrder/abnormal/details'),
+						name: '异常更改',
+						meta: {title: '异常更改',icon: 'xxgl' },
+					},
+					{
+						path: '/MyWorkPaperDetails',
+						component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
+						name: '异常更改',
+						meta: {title: '异常更改',icon: 'xxgl' },
+					},
+					{
+						path: '/MyWorkAbnormalAdd',
+						component: () => import('@views/workOrder/abnormal/add'),
+						name: '纸制填报工单导入',
+						meta: {title: '纸制填报工单导入',icon: 'xxgl' },
+					},
+				]
+			},
         ],
 	},
 	{

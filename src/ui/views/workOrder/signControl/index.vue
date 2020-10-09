@@ -11,7 +11,7 @@
                 </div>
                 <div class="top-toolbar">
                     <div  @click="seeOther(null,'WorkAbnormalAdd')"> <icon iconClass="#" style="width: 0;" ></icon>纸制填报工单导入</div>
-                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>
+<!--                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>-->
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" style="margin-right:0"></icon>详情</div>
                     <div @click="Export()"><icon iconClass="export" ></icon>导出Excel</div>
                     <div @click="moreExport()"><icon iconClass="export" ></icon>批量导出</div>
@@ -24,7 +24,7 @@
                             <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
                         </template>
                     </el-table-column>
-                     <el-table-column align="center" slot="option" label="操作" :width="59" >
+                     <el-table-column align="center" slot="option" label="操作" :width="80" >
                         <template  slot-scope="scope">
                             <div >
                                 <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
@@ -32,6 +32,13 @@
                                 </span>
                                 <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
                                     <icon iconClass="exportNew" title="导出"></icon>
+                                </span>
+                                <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
+                                      @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                    <icon iconClass="unlock" title="解锁"></icon>
+                                </span>
+                                <span v-else @click="abnormalChange(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                    <icon iconClass="editNew" title="异常更改"></icon>
                                 </span>
                             </div>
                          </template>
@@ -228,7 +235,26 @@
                     this.$router.push({path:src,query:{ id:data,type:'info'}});
                  }
             },
-            abnormalChange( ){
+            unlock(row){
+                this.$confirm('是否确认将此维修工单异常更改解锁?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                }).then(() => {
+                    request({
+                        url: `${this.$ip}/mms-workorder/workorder/unlock`,
+                        method: 'get',
+                        params:{id:row.id}
+                    }).then((d) => {
+                        if (d.code === 200) {
+                            this.getList();
+                            this.$message({type: 'success', message: '解锁成功'});
+                        }
+                    })
+                });
+            },
+            abnormalChange(row){
+                /*
                 if(this.checkArr.length!=1){
                     let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
                     this.$message.error(s);
@@ -245,7 +271,19 @@
                     }else{
                         this.$message.error('请先完成工单');
                     }
+                }
+                */
+                if(row.state===3){
+                    let src='/WorkAbnormalDetails';
+                    let data=row.id;
+                    if(row.offlineFile){
+                        src='/WorkAbnormalAdd'
                     }
+                    this.$router.push({path:src,query:{ id:data,type:'edit'}});
+                    // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
+                }else{
+                    this.$message.error('请先完成工单');
+                }
 
 
             },

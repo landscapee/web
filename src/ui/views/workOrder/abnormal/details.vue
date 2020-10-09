@@ -130,6 +130,9 @@
 					</div>
 				</div>
 			</div>
+			<div style="text-align: right;margin-top: 20px" v-if="needSubmit">
+				<el-button type="primary" @click="submit">提交</el-button>
+			</div>
 		</div>
 
 	</div>
@@ -170,6 +173,7 @@
                 },
                 isActiveSave: true,
                 isActiveReset: true,
+				needSubmit: false
             }
         },
         created() {
@@ -183,6 +187,7 @@
                         : this.type == "info"
                             ? "工单详情"
                             : "";
+                this.needSubmit = this.$route.query.needSubmit;
             }
         },
         mounted() {
@@ -1201,7 +1206,18 @@
                         //signatureCreator.removeSignature('KG2016093001333', $(ele).attr("signatureid"));
                     })
                 }
-            }
+            },
+			submit(){
+				request({
+					url: `${this.$ip}/mms-workorder/workorder/submit/${this.id}`,
+					method: 'get',
+				}).then((data) => {
+					if (data.code===200){
+						this.$message({type: 'success', message: '提交成功'});
+						this.$router.push({path: '/myWorkOrder'});
+					}
+				})
+			}
         }
     }
 

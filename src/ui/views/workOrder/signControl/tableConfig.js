@@ -72,7 +72,7 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
         { prop: 'template.personType',width:'110',  label: '作业员类型', sortProp:"personType", align: 'center',sort:true,search:{type:'select', prop:'personType',placeholder:"请选择",data:obj.workUserType,selectProp:['valData','valCode']} },
         { prop: 'template.etopEnable',width:'90', formatter:etopEnable,label: '是否适用ETOPS运行', sortProp:"etopEnable", align: 'center',sort:true,search:{type:'select', prop:'etopEnable',placeholder:"请选择",data:obj.applyETOP,selectProp:['valData','valCode']} },
         { prop: 'state',width:'100',  label: '工单状态',formatter:state, sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请选择",data:arrstate,selectProp:['valData','valCode']} },
-        { slot: 'option', label: '操作' ,width:'60',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { slot: 'option', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 
