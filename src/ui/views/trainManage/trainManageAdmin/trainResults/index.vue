@@ -39,7 +39,7 @@
                             <span @click="SignEvaluation(scope.row)" class="rowSvg" style="margin-right: 10px">
                                 <icon iconClass="evaluate" title="培训签到&评价"></icon>
                             </span>
-                            <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg">
+                            <span @click="testResults(scope.row)" class="rowSvg">
                                 <icon iconClass="pushNew" title="评价推送上级"></icon>
                             </span>
                         </template>

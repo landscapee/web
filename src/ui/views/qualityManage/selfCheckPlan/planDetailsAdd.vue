@@ -86,7 +86,7 @@
 
 
                     <el-form-item label="检查时间：" prop="checkTime">
-                        <span v-if="type=='info'">{{form.checkTime?moment(form.checkTime).format('YYYY-MM-DD'):''}}</span>
+                        <span v-if="type=='info'">{{form.checkTime}}</span>
                         <el-input v-else v-model="form.checkTime" placeholder="请输入检查时间"></el-input>
                     </el-form-item>
                     <el-form-item label="检查人员：" prop="checkUser">

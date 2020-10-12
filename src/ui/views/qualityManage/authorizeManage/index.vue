@@ -72,9 +72,9 @@
                     size: 15,
                 },
                 tableRowClassName:(rowIndex,row)=>{
-                    if (this.overdue!==-1){
-                        let num=60*60*24*1000*this.overdue
-                        if (row.endTime&&row.endTime<=new Date().getTime()+num &&row.state!==0) {
+                    if (this.overdue !== -1) {
+                        let num = 60 * 60 * 24 * 1000 * this.overdue;
+                        if (row.endTime && row.endTime <= new Date().getTime() + num && row.state === 1) {
                             return 'warning-row';
                         }
                     }

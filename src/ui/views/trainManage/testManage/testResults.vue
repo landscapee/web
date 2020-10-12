@@ -34,13 +34,13 @@
                     <el-table-column   slot="option" label="操作" :width="150" align='center' >
                         <template  slot-scope="scope">
 
-                                <span @click="scoreEntry(scope.row)" :class="!scope.row.employeeFileId?'rowSvg rowSvgInfo':'rowSvg'" style="margin-right: 10px">
+                                <span @click="!scope.row.employeeFileId?'':scoreEntry(scope.row)" :class="!scope.row.employeeFileId?'rowSvg rowSvgInfo':'rowSvg'">
                                     <icon iconClass="score" title="分数录入"></icon>
                                 </span>
-                                <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg" style="margin-right: 10px">
+                                <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg" style="margin:0 10px">
                                     <icon iconClass="push" title="考试结果推送"></icon>
                                 </span>
-                                <span @click="uploadTest( scope.row)" class="rowSvg" style="margin-right: 10px">
+                                <span @click="uploadTest( scope.row)" class="rowSvg">
                                     <icon iconClass="uploadingNew" title="纸质试卷归档上传"></icon>
                                 </span>
 

@@ -35,7 +35,7 @@
             return {
                 form:{},
                 rules:{
-                    appraiseContent:[{required:true,message: '请输入考试分数',trigger:'blur'}]
+                    appraiseContent:[{required:true,message: '请输入培训评价',trigger:'blur'}]
                 },
                 options:{},
                 row:{},
