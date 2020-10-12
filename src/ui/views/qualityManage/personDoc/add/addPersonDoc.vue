@@ -554,7 +554,8 @@
                         method: 'get',
                         params: {
                             // pageNum: 1, pageSize: 99999,
-                            orgId: this.$store.state.user.userInfo.orgId
+                            orgId: this.$store.state.user.userInfo.orgId,
+                            deptRelation:true
                         }
                     }).then((d) => {
                         if (d.data) {
