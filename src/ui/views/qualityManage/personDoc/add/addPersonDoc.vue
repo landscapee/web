@@ -49,7 +49,7 @@
                             </td>
                             <td class="fTd is-required1">员工姓名</td>
                             <td class="tTd">
-                                <el-form-item prop="userId"  >
+                                <el-form-item prop="userName"  >
                                     <span v-if="type=='info'">
                                      <el-tooltip v-if="form.userName" class="item" effect="dark" :content="form.userName" placement="top-start">
                                         <div>{{ form.userName }}</div>
@@ -335,7 +335,7 @@
                 userArrObj: {},
                 userArr:[],
                 rules: {
-                    userName: [{ required:true,message:'请选择', trigger: "blur" }],
+                    userName: [{ required:true,message:'请选择员工姓名', trigger: "blur" }],
                     idCard:  [
                         {
                             pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,

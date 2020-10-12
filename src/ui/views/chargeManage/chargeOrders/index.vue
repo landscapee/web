@@ -200,7 +200,7 @@ export default {
                 }
                 if(query==='edit'){
                     let selectObj = this.tableData.records.find(i=>i.id===this.selectIds[0])
-                    if(selectObj.sendFinance===1&&selectObj.approveState==1){
+                    if(selectObj.approveState===1){
                         this.$message({type: 'warning', message: '已通过状态不能编辑'})
                         return
                     }
@@ -337,8 +337,19 @@ export default {
         },
         headerSort(column){
             this.sort = {};
-            this.sort = {
-                order:`${column['property']},${column.order==='desc'?'0':'1'}`
+            // this.sort = {
+            //     order:`${column['property']},${column.order==='desc'?'0':'1'}`
+            // }
+            let num = null
+            if (column.order == 'desc') {
+                num = 0
+            } else if (column.order == 'asc') {
+                num = 1
+            } else {
+                num = 2
+            }
+            if (num != 2) {
+                this.sort['order'] = column.property + ',' + num;
             }
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
