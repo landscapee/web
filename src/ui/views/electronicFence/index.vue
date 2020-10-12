@@ -42,6 +42,7 @@
                  function(data) {
                        if (data.data=='success' ) {
                           self.loading=false
+                           debugger
                          console.log(data.data,1,4222,2,self.$refs.threeMap);
                           if(self.$refs.threeMap){
                               self.$refs.threeMap.contentWindow.postMessage(1112211)

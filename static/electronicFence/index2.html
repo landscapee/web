@@ -32,8 +32,10 @@
     }
 </style>
 <script type="text/javascript" src="./jquery.min.js"></script>
-<script type="text/javascript"
-        src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>
+<!--<script type="text/javascript" src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>-->
+
+<!--内网测试-->
+<script type="text/javascript" src="http://10.35.16.13:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>
 <body>
 <!--装地图容器-->
 <div id="app">
@@ -81,26 +83,32 @@
     var windows;
     var attributeQuery;
     var propertiesMap = {
-        "mapId03": "2576", //底图图层id
-        "layerId01": "33723", //电子围栏图层id
+        // "mapId03": "2576", //底图图层id
+        "mapId03": "3280", //底图图层id 内网
+
+         // "layerId01": "33723", //电子围栏图层id
+         "layerId01":'42967' , //电子围栏图层id 内网
+        // ['42967','40027','40033']
     };
     var layerId = propertiesMap.layerId01;
 
 
-    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys", "js/BNGeometry", "js/jquery-3.2.1.min"],
+    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys","js/BNMap", "js/BNGeometry", "js/jquery-3.2.1.min"],
         function (BNSymbol, util, BNFactory, BNDirectorys) {
             bnSymbol = new BNSymbol();
             BNMap = new BNFactory(propertiesMap.mapId03, {
                 "id": "map",
                 "options": {
                     logo: false,
-                    slider: false
+                    slider: false,
+                    showLabels:true
                 }
             });
-            BNMap.bindEvent(null, "load", function (evt) {
-                BNMap.setPointCenter();
+             BNMap.bindEvent(null, "load", function (evt) {
+                 BNMap.setPointCenter();
                 regEvent();
                 initQuery();
+
                 window.parent.postMessage('success')
             });
             BNGeometry = new BNFactory("BNGeometry", BNMap);
@@ -111,8 +119,10 @@
 
     function regEvent() {
         //初始化地图编辑功能
-        BNMap.bindEvent(layerId, "click", function (event) {
-            if (ISEdit) {
+        // 40027 dian
+        // ['42967','40027','40033']
+         BNMap.bindEvent(layerId, "click", function (event) {
+             if (ISEdit) {
                 var html = `<div class="editTuc">
                                 <p>名称：<input type="text" name="name" value="${event.graphic.attributes.NAME}"/></p>
                                 <p>OBJECTID：<input type="text" name="OBJECTID" value="${event.graphic.attributes.OBJECTID}"/></p>

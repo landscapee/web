@@ -835,7 +835,8 @@ export const asyncRoutes = authRoutes;
 const createRouter = () =>
 	new Router({
 		scrollBehavior: () => ({x: 0, y: 0 }),
-		routes: constantRoutes,
+		// routes: constantRoutes,
+		routes: constantRoutes.concat(authRoutes),
 		fallback: false,
 	});
 const router = createRouter();

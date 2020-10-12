@@ -81,6 +81,7 @@
              layerId: null,
             propertiesMap: {
                 "mapId03": "2576", //底图图层id
+                // "mapId03": "3280", //底图图层id 内网
                 "layerId01": "33723", //电子围栏图层id
             },
         },
@@ -240,7 +241,7 @@
                 false,
             );
             require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys", "js/BNGeometry","js/BNMap", "js/jquery-3.2.1.min"],
-                function (BNSymbol, util, BNFactory, BNDirectorys,BNGeometry,BNMap) {
+                function (BNSymbol, util, BNFactory, BNDirectorys,BNGeometry) {
                     self.bnSymbol = new BNSymbol();
                   window.BNMap = self.BNMap = new BNFactory(self.propertiesMap.mapId03, {
                         "id": "map",

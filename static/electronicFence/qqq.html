@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> - </title>
+<style type="text/css">
+	html,body{margin:0px;height:100%;width:100%}
+	/*装地图容器*/
+	.container{width:100%;height:100%}
+	/*地图按钮最外层容器*/
+	.bnmap-box{position:fixed;top:10px;right:10px}
+</style>
+<script type="text/javascript" src="/examples/lib/jquery.min.js"></script>
+<script type="text/javascript" src="/examples/lib/common.js"></script>
+<link rel="stylesheet" href="/examples/layui/css/layui.css">
+<script type="text/javascript" src="/examples/layui/layui.js"></script>
+<script id='apiScript' type="text/javascript">
+    pz();
+    if(window.location.pathname.split("cn/")[1].split("/")[0]=="2.0"){
+        document.write("<script type=\"text/javascript\" src=\'"+propertiesMap.apiUrl2+"'><\/script>");
+    }else{
+        document.write("<script type=\"text/javascript\" src=\'"+propertiesMap.apiUrl+"'><\/script>");
+    }
+</script>
+<body>
+
+<html>
+<head></head>
+<body>
+<!--装地图容器-->
+<div id="map" class="container"></div>
+<div class="bnmap-box">
+	<button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="addArea();">添加面</button>
+</div>
+</body>
+</html>
+
+
+<script>
+    var BNMap = null;
+    var bnSymbol=null;
+    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys", "js/jquery-3.2.1.min"],
+        function(BNSymbol, util, BNFactory, BNDirectorys) {
+            var mapId = propertiesMap.mapId01;
+            // 获取面坐标
+            var addArea01 = propertiesMap.x;
+            var addArea02 = propertiesMap.y;
+            var addArea03 = propertiesMap.x+1000;
+            var addArea04 = propertiesMap.y;
+            var addArea05 = propertiesMap.x;
+            var addArea06 = propertiesMap.y+1000;
+            // 创建符号
+            bnSymbol=new BNSymbol();
+            // 创建Geometry
+            var BNGeometry = new BNFactory("BNGeometry",BNMap);
+            // 初始化地图
+            BNMap = new BNFactory(mapId, {
+                "id": "map",
+                "options": {
+                    logo: false,
+                    slider: false,
+                    minZoom: 1,
+                    maxZoom: 8
+                }
+            });
+            BNMap.bindEvent(null,"load",function(evt){
+                BNMap.setPointCenter();
+            });
+            var graphicsLayer=BNMap.creatGraphicsLayer({id:"demo"});
+            BNMap.addGraphicsLayer(graphicsLayer);
+            addArea = function() {
+                //面 使用坐标新增
+                var polygonJson  = {
+                    "rings":[[
+                        [addArea01,addArea02],
+                        [addArea03,addArea04],
+                        [addArea05,addArea06],
+                        [addArea01,addArea02]
+                    ]],
+                    "spatialReference":BNMap.spatialReference
+                };
+                polygon=BNGeometry.createPolygon(polygonJson);
+                // 线
+                var simpleLineSymbol= bnSymbol.simpleLineSymbol("solid","red",2);
+                var polygonSymbol=bnSymbol.polygonSymbol(
+                    // 面的样式  实线
+                    "solid",
+                    // 边框样式
+                    simpleLineSymbol,
+                    // 面的填充颜色
+                    "blue"
+                );
+                var graphics=BNMap.graphic(polygon,polygonSymbol);
+                graphicsLayer.add(graphics);
+                BNMap.setCenter(BNGeometry.createPoint(addArea01,addArea02, BNMap.spatialReference));
+            };
+        });
+
+</script>
+
+</body>
+</html>

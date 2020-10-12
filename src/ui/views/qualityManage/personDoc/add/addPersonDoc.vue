@@ -549,17 +549,17 @@
                                 : "";
 
                     request({
-                        headers: {'Content-Type': 'text/plain'},
-                        url: `/sys/user/getAllUserByOrgIdByPage`,
+                        // headers: {'Content-Type': 'text/plain'},
+                        url: `/sys/user/getUsersByOrgId`,
                         method: 'get',
                         params: {
-                            pageNum: 1, pageSize: 99999,
+                            // pageNum: 1, pageSize: 99999,
                             orgId: this.$store.state.user.userInfo.orgId
                         }
                     }).then((d) => {
-                        if (d.data.list) {
-                            this.userArr = [...d.data.list]
-                            d.data.list.map((k, l) => {
+                        if (d.data) {
+                            this.userArr = [...d.data]
+                            d.data.map((k, l) => {
                                 this.userArrObj[k.id] = k
                             })
                         }
