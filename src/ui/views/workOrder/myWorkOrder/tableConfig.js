@@ -16,6 +16,7 @@ let obj1={
     2:'作业中',
     3:'完成',
     4:'无效',
+    5:'异常更改中',
 }
 let arrstate=[
     {valData:'待执行',valCode:0},
@@ -23,6 +24,7 @@ let arrstate=[
     {valData:'作业中',valCode:2},
     {valData:'完成',valCode:3},
     {valData:'无效',valCode:4},
+    {valData:'异常更改中',valCode:5},
  ]
 let state=(row)=>{
 

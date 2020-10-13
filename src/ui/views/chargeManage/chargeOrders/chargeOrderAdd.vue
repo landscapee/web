@@ -115,7 +115,7 @@
 							<el-form-item label="除冰车/Aircraft Deicing System" prop="aircraftDeicingSystem"
 										  :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.aircraftDeicingSystem}}</span>
-								<el-input v-else v-model="ruleForm.aircraftDeicingSystem"
+								<el-input v-else v-model="ruleForm.aircraftDeicingSystem" @input="changeCode('aircraftDeicingSystem','hours')"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>小时/Hour</span>
 							</el-form-item>
@@ -124,7 +124,7 @@
 							<el-form-item label="高/低压氮气/High/Low pressure Nitrogen" prop="pressureNitrogen"
 										  :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.pressureNitrogen}}</span>
-								<el-input v-else v-model="ruleForm.pressureNitrogen"
+								<el-input v-else v-model="ruleForm.pressureNitrogen" @input="changeCode('pressureNitrogen','number')"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>次/Operation</span>
 							</el-form-item>
@@ -135,7 +135,7 @@
 							<el-form-item label="加液压油/Hydraulic" prop="hydraulic" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:250px;'>{{ruleForm.hydraulic}}</span>
-								<el-input v-else v-model="ruleForm.hydraulic"
+								<el-input v-else v-model="ruleForm.hydraulic" @input="changeCode('hydraulic','gallon')"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>加仑/Gallon</span>
 							</el-form-item>
@@ -144,7 +144,7 @@
 							<el-form-item label="充氧气/瓶/Oxygcn Cart/Bottle" prop="oxygenBottle"
 										  :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.oxygenBottle}}</span>
-								<el-input v-else v-model="ruleForm.oxygenBottle"
+								<el-input v-else v-model="ruleForm.oxygenBottle" @input="changeCode('oxygenBottle','number')"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>次/Bottle</span>
 							</el-form-item>
@@ -154,7 +154,7 @@
 						<el-col :span="12">
 							<el-form-item label="加滑油/Oil" prop="oil" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:250px;'>{{ruleForm.oil}}</span>
-								<el-input v-else v-model="ruleForm.oil"
+								<el-input v-else v-model="ruleForm.oil" @input="changeCode('oil','quart')"
 										  style='width:250px;'></el-input>
 								<span class='form_inlne_val1'>夸脱/Quart</span>
 							</el-form-item>
@@ -163,7 +163,7 @@
 							<el-form-item label="飞机除冰液 (原液)/DF Plus" prop="dfPlus" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:178px;'>{{ruleForm.dfPlus}}</span>
-								<el-input v-else v-model="ruleForm.dfPlus"
+								<el-input v-else v-model="ruleForm.dfPlus" @input="changeCode('dfPlus','kilogram')"
 										  style='width:178px;'></el-input>
 								<span class='form_inlne_val1'>公斤(公升)/Kilogram(Litre)</span>
 							</el-form-item>
@@ -174,14 +174,14 @@
 							<el-form-item label="人工时/Man hour" prop="people" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:95px;'>{{ruleForm.people}}</span>
-								<el-input v-else v-model="ruleForm.people"
+								<el-input v-else v-model="ruleForm.people" @input="changeCode('people','number')"
 										  style='width:100px;'></el-input>
 								<span class='form_inlne_val1'>人/Man</span>
 							</el-form-item>
-							<el-form-item prop="hours">
+							<el-form-item >
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:95px;'>{{ruleForm.hours}}</span>
-								<el-input v-else v-model="ruleForm.hours"
+								<el-input v-else v-model="ruleForm.hours" @input="changeCode('hours','hours')"
 										  style='width:90px;'></el-input>
 								<span class='form_inlne_val1'>小时/Hour</span>
 							</el-form-item>
@@ -262,13 +262,13 @@
 		},
 		name: '',
 		data() {
-			var validateNumber = (rule, value, callback) => {
-				if (value === '' || value === undefined || (Number(value) > 0 && Number(value) < 10000000)) {
-					callback();
-				}else {
-					callback(new Error('请输入不超过8位数的正数'));
-				}
-			};
+			// var validateNumber = (rule, value, callback) => {
+			// 	if (value === '' || value === undefined || (Number(value) > 0 && Number(value) < 10000000)) {
+			// 		callback();
+			// 	}else {
+			// 		callback(new Error('请输入不超过8位数的正数'));
+			// 	}
+			// };
 			return {
 				ruleForm: {
 					airLine: '',  // 航空公司
@@ -298,30 +298,30 @@
 					workDate: [
 						{required: true, message: '请选择时间', trigger: 'change'}
 					],
-					aircraftDeicingSystem:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					pressureNitrogen:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					hydraulic:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					oxygenBottle:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					oil:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					dfPlus:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					people:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					],
-					hours:[
-						{required: false,validator: validateNumber, trigger: 'blur'}
-					]
+					// aircraftDeicingSystem:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// pressureNitrogen:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// hydraulic:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// oxygenBottle:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// oil:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// dfPlus:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// people:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ],
+					// hours:[
+					// 	{required: false,validator: validateNumber, trigger: 'blur'}
+					// ]
 				},
 				type: 'add',
 				fileList: []
@@ -346,6 +346,27 @@
 			}
 		},
 		methods: {
+			changeCode(key,type){
+				if (type !== 'number') {
+					// 先把非数字的都替换掉(空)，除了数字和.
+					this.$set(this.ruleForm,key,this.ruleForm[key].replace(/[^\d.]/g, ""));
+					// 必须保证第一个为数字而不是.
+					this.$set(this.ruleForm,key,this.ruleForm[key].replace(/^\./g, ""));
+					// 保证只有出现一个.而没有多个.
+					this.$set(this.ruleForm,key,this.ruleForm[key].replace(/\.{2,}/g, "."));
+					//保证.只出现一次，而不能出现两次以上
+					this.$set(this.ruleForm,key,this.ruleForm[key].replace(".", "$#$").replace(/\./g, "").replace("$#$", "."));
+					//小数只能输入后两位
+					this.$set(this.ruleForm,key,this.ruleForm[key].replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'));
+				}else {
+					//只能输入数字
+					this.$set(this.ruleForm,key,this.ruleForm[key].replace(/[^\d]/g, ""));
+				}
+				if (this.ruleForm[key] > 10000000) {
+					this.$message.warning('最大输入8位数！');
+					this.$set(this.ruleForm,key,10000000);
+				}
+			},
 			fileUploadSuccessFn(response, file, fileList) {
 				console.log(response)
 				if (response.code == 200) {

@@ -43,6 +43,10 @@
         },
         methods: {
             start(val){
+                if (!val) {
+                    this.$set(this.form,'startTime',null);
+                    return
+                }
                 if(this.form1.end){
                      if(val.getTime()<=this.form1.end.getTime()){
                         this.$set(this.form,'startTime',val.getFullYear()+'')
@@ -54,6 +58,10 @@
                     this.$set(this.form,'startTime',val.getFullYear()+'')
                 }
             }, end(val){
+                if (!val) {
+                    this.$set(this.form,'endTime',null);
+                    return
+                }
                  if(this.form1.start ){
                     if(val.getTime()>=this.form1.start.getTime()){
                         this.$set(this.form,'endTime',val.getFullYear()+'')
@@ -110,7 +118,8 @@
             },
             close(){
                 this.row={}
-                this.from={}
+                this.form={}
+                this.form1={}
                 this.dialogFormVisible=false
             }
         },

@@ -12,7 +12,7 @@
                         <span  >{{form.version}}</span>
                     </el-form-item>
                     <el-form-item  label="最新版本标识：" >
-                        <span  >{{form.history+''}}</span>
+                        <span  >{{form.history?'否':'是'}}</span>
                     </el-form-item>
                 </div>
 
@@ -26,12 +26,11 @@
                 </div>
                 <div class="row_tow">
                     <el-form-item  label="模板启用日期："   >
-                         <span  >{{form.enableTime?this.$moment(form.enableTime).format('YYYY-MM-DD'):''}}</span>
+                         <span  >{{form.enableTime?this.$moment(form.enableTime).format('YYYY-MM-DD'):'--'}}</span>
 
                     </el-form-item>
-                    <el-form-item  label="模板停用日期："  >
-                         <span  >{{form.invalidTime?this.$moment(form.invalidTime).format('YYYY-MM-DD'):''}}</span>
-
+                    <el-form-item  label="版本状态："   >
+                        <span  >{{  getState }}</span>
                     </el-form-item>
                 </div>
                 <div class="row_tow">
@@ -39,27 +38,19 @@
                         <span  >{{  form.createUserName }}</span>
                     </el-form-item>
                     <el-form-item  label="版本发布日期："  >
-                        <span  >{{form.publishTime?this.$moment(form.publishTime).format('YYYY-MM-DD'):''}}</span>
+                        <span  >{{form.publishTime?this.$moment(form.publishTime).format('YYYY-MM-DD'):'--'}}</span>
                     </el-form-item>
                 </div>
                 <div class="row_tow">
                     <el-form-item  label="版本生效日期："   >
-                         <span  >{{form.effectiveTime?this.$moment(form.effectiveTime).format('YYYY-MM-DD'):''}}</span>
+                         <span  >{{form.enableTime?this.$moment(form.enableTime).format('YYYY-MM-DD'):'--'}}</span>
 
                     </el-form-item>
                     <el-form-item  label="版本失效日期："  >
-                         <span  >{{form.invalidTime?this.$moment(form.invalidTime).format('YYYY-MM-DD'):''}}</span>
+                         <span  >{{form.invalidTime?this.$moment(form.invalidTime).format('YYYY-MM-DD'):'--'}}</span>
 
                     </el-form-item>
                 </div>
-                <div class="row_tow">
-                    <el-form-item  label="版本状态："   >
-                        <span  >{{  getState }}</span>
-                    </el-form-item>
-
-                </div>
-
-
             </el-form>
 
 
