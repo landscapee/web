@@ -836,7 +836,7 @@ const createRouter = () =>
 	new Router({
 		scrollBehavior: () => ({x: 0, y: 0 }),
 		// routes: constantRoutes,
-		routes: constantRoutes.concat(authRoutes),
+		routes: constantRoutes,
 		fallback: false,
 	});
 const router = createRouter();
