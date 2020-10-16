@@ -73,7 +73,7 @@
                     </el-form-item>
                     <el-form-item  label="授权单位：" prop="authorizedUnitCode">
                         <span v-if="type=='info'">{{  form.authorizedUnitCode || '--'}}</span>
-                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位">
+                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位" clearable>
                              <!--shortName-->
                             <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.id">
                              </el-option>
@@ -107,7 +107,7 @@
                 <div class="row_tow">
                     <el-form-item  label="授权航班类型：" prop="flightType">
                         <span v-if="type=='info'">{{  form.flightType || '--'}}</span>
-                        <el-select multiple  filterable v-else v-model="form.flightType" placeholder="请选择授权航班类型">
+                        <el-select multiple  filterable v-else v-model="form.flightType" placeholder="请选择授权航班类型" clearable>
                             <el-option v-for="(opt,index) in options.accreditFlightType" :key="index" :label="opt.valData" :value="opt.valData">
                             </el-option>
                         </el-select>

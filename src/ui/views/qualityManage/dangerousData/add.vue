@@ -128,7 +128,7 @@
                     </el-form-item>
                     <el-form-item label="控制状态：" prop="controlState">
                         <span v-if="type=='info'">{{form.controlState}}</span>
-                        <el-select v-else v-model="form.controlState" placeholder="请选择控制状态">
+                        <el-select v-else v-model="form.controlState" placeholder="请选择控制状态" clearable>
                             <el-option v-for="(opt,index) in options.commentResults" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
@@ -137,7 +137,7 @@
                     <el-form-item label="评定结果：" prop="evaluationResults">
                         <span v-if="type=='info'">{{form.evaluationResults}}</span>
 
-                        <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果">
+                        <el-select v-else v-model="form.evaluationResults" placeholder="请选择评定结果" clearable>
                              <el-option v-for="(opt,index) in options.controlState" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>

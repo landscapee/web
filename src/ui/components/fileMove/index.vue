@@ -2,8 +2,8 @@
     <div>
         <el-dialog title="提示" center :visible.sync="dialogFormVisible" width="30%">
             <el-form :model="form">
-                <el-form-item label="文件夹：" :label-width="formLabelWidth">
-                    <el-select v-model="form.folderId" placeholder="请选择文件夹" style="width:100%;">
+                <el-form-item label="文件夹：" :label-width="formLabelWidth" label-width="80">
+                    <el-select v-model="form.folderId" placeholder="请选择文件夹" style="width:calc(100% - 80px);">
                         <el-option v-for="item in fileList" :key='item.index' :label="item.label" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -32,7 +32,7 @@
         methods:{
             getFileList(){
                 request({
-                    url:`${this.$ip}/mms-knowledge/folder/list`, 
+                    url:`${this.$ip}/mms-knowledge/folder/list`,
                     method: 'post',
                 })
                 .then((data) => {
@@ -64,7 +64,7 @@
                     folderId: this.form.folderId
                 }
                 request({
-                    url:`${this.$ip}/mms-knowledge/file/move`, 
+                    url:`${this.$ip}/mms-knowledge/file/move`,
                     method: 'post',
                     data: postData
                 })

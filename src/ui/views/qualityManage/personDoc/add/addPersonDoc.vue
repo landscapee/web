@@ -285,7 +285,7 @@
                             <td class="fTd">部门</td>
                             <td class="tTd">
                                 <span v-if="type=='info'">{{deptObj[form.deptCode]}}</span>
-                                <el-select   v-else v-model="form.deptCode" placeholder="请选择">
+                                <el-select   v-else v-model="form.deptCode" placeholder="请选择" clearable>
                                     <el-option v-for="(opt,index) in deptData" :key="index" :value="opt.valCode" :label="opt.valData"> </el-option>
                                 </el-select>
                             </td>

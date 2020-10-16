@@ -26,7 +26,7 @@
                 <el-form-item  label="所属航司代码："  prop="airlineCompanyCode" :rules=" form.type=='WXGD'?rules.airlineCompanyCode:[{required:false}]" >
 
                     <span v-if="type=='info'">{{  form.airlineCompanyCode }}</span>
-                    <el-select  @change="iataChange"   v-else filterable v-model="form.airlineCompanyCode" placeholder="请选择所属航司代码">
+                    <el-select  @change="iataChange"   v-else filterable v-model="form.airlineCompanyCode" clearable placeholder="请选择所属航司代码">
                         <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.iata" :value="opt.iata">
                             <span>{{opt.iata}}-{{opt.fullname}}</span>
                         </el-option>

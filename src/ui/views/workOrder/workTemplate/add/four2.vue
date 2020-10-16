@@ -119,7 +119,7 @@
                        <div class="row_one " >
                            <div v-for="(item,index) in formItem.suitableRange" :key="index">
                                <el-form-item  label="适用范围类型：" prop="type">
-                                   <el-select    @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型">
+                                   <el-select    @change="limmitTypeC(index)" v-model="item.type" placeholder="请选择适用范围类型" clearable>
                                        <el-option v-for="(opt,index) in options.applyRangeType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                    </el-select>
                                    <el-select    multiple filterable v-if="item.type=='适用机型范围'"  v-model="item.values" placeholder="请选择机型">

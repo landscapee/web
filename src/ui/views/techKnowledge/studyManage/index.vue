@@ -33,8 +33,10 @@
                 >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                            <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row">.</el-checkbox>
+
+<!--                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
+<!--                            <icon  iconClass="ky" class="tab_radio" v-else></icon>-->
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -344,6 +346,9 @@ export default {
             /deep/ .mainTable{
                 height: 500px!important;
                 overflow: auto;
+                .el-checkbox__label{
+                    display: none;
+                }
                 // /deep/ .el-table__body-wrapper{
                 //     /deep/ tr:last-child{
                 //         td{

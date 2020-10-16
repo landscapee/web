@@ -25,10 +25,11 @@
             </div>
             <div class="main-content">
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
-                    <el-table-column slot="radio" label="选择" :width="49" >
-                        <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                    <el-table-column slot="checkbox" label="选择" :width="49" >
+                        <template slot-scope="scope">
+                            <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="selectIds" :label="scope.row.id" value="dasdasd">.</el-checkbox>
+<!--                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
+<!--                            <icon  iconClass="ky" class="tab_radio" v-else></icon>-->
                         </template>
                     </el-table-column>
                      <el-table-column slot="option" align='center' label="操作" :width="80">
@@ -76,6 +77,7 @@ export default {
     name: '',
     data() {
         return {
+
             tableData:{records:[]},
             tableConfig:sysParameterTable(),
             params:{
@@ -496,6 +498,9 @@ export default {
         /deep/ .mainTable{
             height: 600px;
             overflow: auto;
+            .el-checkbox__label{
+                display: none;
+            }
         }
     }
 }

@@ -59,7 +59,7 @@
                 <div class="row_tow">
                     <el-form-item  label="资质类型：" prop="certificateType">
                         <span v-if="type=='info'">{{  form.certificateType }}</span>
-                         <el-select   filterable v-else v-model="form.certificateType" placeholder="请选择资质类型">
+                         <el-select   filterable v-else v-model="form.certificateType" placeholder="请选择资质类型" clearable>
                             <el-option v-for="(opt,index) in options.Z_aptitudeType" :key="index" :label="opt.valData" :value="opt.valData">
                              </el-option>
                         </el-select>

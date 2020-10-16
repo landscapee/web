@@ -1,7 +1,7 @@
 import { formatDate } from '@lib/tools.js';
 export const sysParameterTable = () => {
     return [
-        { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
+        { slot: 'checkbox' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'workDate',width:'100', label: '日期', align: 'center',sort:true,sortProp:"workDate",
             search:{type:'date',placeholder:"请选择时间",prop:'workDateQuery'},
             formatter: (row, column, cellValue) => {

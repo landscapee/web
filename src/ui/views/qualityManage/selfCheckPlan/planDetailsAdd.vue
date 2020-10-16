@@ -25,7 +25,7 @@
                     </el-form-item>
                     <el-form-item label="检查项目：" prop="checkProject">
                         <span v-if="type=='info'">{{form.checkProject}}</span>
-                         <el-select v-else v-model="form.checkProject" placeholder="请选择检查项目">
+                         <el-select v-else v-model="form.checkProject" placeholder="请选择检查项目" clearable>
                             <el-option v-for="(opt,index) in options.checkProject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -38,7 +38,7 @@
                     </el-form-item>
                     <el-form-item label="检查方式：" prop="checkMethod">
                         <span v-if="type=='info'">{{form.checkMethod?form.checkMethod.join(','):'' }}</span>
-                         <el-select   v-else multiple v-model="form.checkMethod" placeholder="请选择检查方式">
+                         <el-select   v-else multiple v-model="form.checkMethod" placeholder="请选择检查方式" clearable>
                             <el-option v-for="(opt,index) in options.checkType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -72,7 +72,7 @@
 
                     <el-form-item label="检查对象：" prop="checkObject">
                         <span v-if="type=='info'">{{form.checkObject}}</span>
-                         <el-select v-else clearable v-model="form.checkObject" placeholder="请选择检查对象">
+                         <el-select v-else clearable v-model="form.checkObject" placeholder="请选择检查对象" clearable>
                              <el-option v-for="(opt,index) in options.checkObject" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
@@ -98,7 +98,7 @@
                 <div class="row_custom aRow_custom">
                     <el-form-item label="检查类别：" prop="checkType">
                         <span v-if="type=='info'">{{form.checkType}}</span>
-                        <el-select v-else clearable v-model="form.checkType" placeholder="请选择检查类别">
+                        <el-select v-else clearable v-model="form.checkType" placeholder="请选择检查类别" clearable>
                             <el-option v-for="(opt,index) in options.checkCategory||[]" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                          </el-select>
                     </el-form-item>
