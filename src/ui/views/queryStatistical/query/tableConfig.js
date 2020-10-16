@@ -28,7 +28,6 @@ export const qiaozaiConfig = (obj) => {  //未完成
         ...qarr(obj),
        qarr1(obj),
 		{ prop: 'serviceTime', label: '保障时长(分)',sortProp:"serviceTime", align: 'center',sort:true,search:{type:'input', prop:'serviceTime',placeholder:"请输入"} },
-
 	]
 
     return arr
@@ -45,8 +44,9 @@ export const weixiuConfig = (obj) => {
     let arr=[
         ...qarr(obj),
         qarr1(obj),
-		{ prop: 'serviceTime', label: '保障时长(分)',sortProp:"serviceTime", align: 'center',sort:true,search:{type:'input', prop:'serviceTime',placeholder:"请输入"} },
-		// { prop: 'airlineCompanyName', label: '公司',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
+        { prop: 'serviceTime', label: '保障时长(分)',sortProp:"serviceTime", align: 'center',sort:true,search:{type:'input', prop:'serviceTime',placeholder:"请输入"} },
+        // { prop: 'airlineCompanyName', label: '公司',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入"} },
+
     ]
     return arr
 };
