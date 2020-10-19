@@ -18,8 +18,8 @@ export const initWebsocket = (vue) => {
         // let  socket  = io.connect(`${src}?userId=${store.getters.userInfo.id}&device=device2&radom=${Math.random()}`);
         socket.on('message', function (data) {
             console.log('收到消息: ' + JSON.stringify(data))
-            //只有这种类型的通知才提示弹窗
-            if (data.type === 'notification') {
+            //只有下面类型的通知才提示弹窗
+            if (data.type === 'notification' || data.type === 'warning') {
                 postal.publish({
                     channel: 'websocket_msg',
                     topic: 'message',
