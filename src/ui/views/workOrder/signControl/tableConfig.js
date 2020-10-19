@@ -64,7 +64,7 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
 
         { prop: 'template.code',label: '工单模板编码',sortProp:"code", align: 'center',sort:true,search:{type:'input', prop:'code',placeholder:"请输入"} },
         { prop: 'template.title', label: '工单名称',sortProp:"title", align: 'center',sort:true,search:{type:'input', prop:'title',placeholder:"请输入"} },
-         { prop: 'template.type',width:'150',  formatter:worktype,label: '工单类型',sortProp:"type", align: 'center',sort:true,search:{type:'select', prop:'type',placeholder:"请输入",data:obj.worldorderType,selectProp:['valData','valCode'] } },
+         { prop: 'template.type',width:'150',  formatter:worktype,label: '工单类型',sortProp:"type", align: 'center',sort:true,search:{type:'select', prop:'type',placeholder:"请选择",data:obj.worldorderType,selectProp:['valData','valCode'] } },
 
         { prop: 'airlineCompanyCode',width:'110',  label: '航司代码',sortProp:"airlineCompanyCode", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyCode',placeholder:"请输入",data:arr,selectProp:['name','id'] } },
         { prop: 'airlineCompanyName',width:'110',  label: '航司名称',sortProp:"airlineCompanyName", align: 'center',sort:true,search:{type:'input', prop:'airlineCompanyName',placeholder:"请输入" ,data:arr1,selectProp:['name','id']} },

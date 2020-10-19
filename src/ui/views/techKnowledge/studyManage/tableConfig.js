@@ -22,36 +22,36 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            search:{prop:'startTime',type:'date',placeholder:"请输入生效日期"}
+            search:{prop:'startTime',type:'date',placeholder:"请选择生效日期"}
         },
         {
             prop: 'endTime', label: '有效期至', align: 'center',sort:true,sortProp:"endTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"}
+            search:{prop:'endTime',type:'date',placeholder:"请选择有效期至"}
         },
         {
             prop: 'pushTime', label: '推送时间', align: 'center',sort:true,sortProp:"pushTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            search:{prop:'pushTime',type:'date',placeholder:"请输入推送时间"}
+            search:{prop:'pushTime',type:'date',placeholder:"请选择推送时间"}
         },
         { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",
-            search:{prop:'downloadRate',type:'input',placeholder:"请选择下载率"},
+            search:{prop:'downloadRate',type:'input',placeholder:"请输入下载率"},
             formatter: (row, column, cellValue) => {
                 return row.downloadRate?row.downloadRate+'%':'0%'
             }
         },
         { prop: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",
-            search:{prop:'readingRate',type:'input',placeholder:"请选择阅读率"},
+            search:{prop:'readingRate',type:'input',placeholder:"请输入阅读率"},
             formatter: (row, column, cellValue) => {
                 return row.readingRate?row.readingRate+'%':'0%'
             }
         },
         { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",
-            search:{prop:'averageReadingTime',type:'input',placeholder:"请选择平均阅读时长(分)",extendType:'search'},
+            search:{prop:'averageReadingTime',type:'input',placeholder:"请输入平均阅读时长(分)",extendType:'search'},
             formatter: (row, column, cellValue) => {
                 return timeMinuteFormat(row.averageReadingTime)
             }
@@ -80,21 +80,21 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            search:{prop:'startTime',type:'date',placeholder:"请输入生效日期"}
+            search:{prop:'startTime',type:'date',placeholder:"请选择生效日期"}
         },
         {
             prop: 'endTime', label: '有效期至', align: 'center',sort:true,sortProp:"endTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            search:{prop:'endTime',type:'date',placeholder:"请输入有效期至"}
+            search:{prop:'endTime',type:'date',placeholder:"请选择有效期至"}
         },
         {
             prop: 'pushTime', label: '推送时间', align: 'center',sort:true,sortProp:"pushTime", width:'120',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
             },
-            search:{prop:'pushTime',type:'date',placeholder:"请输入推送时间"}
+            search:{prop:'pushTime',type:'date',placeholder:"请选择推送时间"}
         },
         { prop: 'read', label: '是否阅读', align: 'center',sort:true,sortProp:"read",
             search:{prop:'read',type:'select',placeholder:"请选择", selectProp:["label","id"],
@@ -110,7 +110,7 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
 
          },
         { prop: 'readingTime', label: '阅读时长', align: 'center',sort:true,sortProp:"readingTime",
-            search:{prop:'readingTime',type:'input',placeholder:"请选择阅读时长"},
+            search:{prop:'readingTime',type:'input',placeholder:"请输入阅读时长"},
             formatter: (row, column, cellValue) => {
                 return timeMinuteFormat(row.readingTime)
             },

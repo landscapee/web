@@ -34,9 +34,6 @@
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
                             <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row">.</el-checkbox>
-
-<!--                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
-<!--                            <icon  iconClass="ky" class="tab_radio" v-else></icon>-->
                         </template>
                     </el-table-column>
                 </SearchTable>

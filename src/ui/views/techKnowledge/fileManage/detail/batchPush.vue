@@ -86,7 +86,7 @@ export default {
             }else{
                 return ''
             }
-            
+
         }
     },
     data(){
@@ -174,7 +174,7 @@ export default {
                 if (valid) {
                     this.pushBatchFn()
                 }
-               
+
             })
         },
         pushBatchFn(){
@@ -288,16 +288,16 @@ export default {
         .el-form {
             width: 800px;
             /deep/ .el-form-item__label {
-                width: 100px;
+                width: 110px;
             }
             /deep/ .el-form-item__content {
-                margin-left: 100px;
+                margin-left: 110px;
             }
             .row_item_row,.row_item{
                 /deep/ .el-form-item{
                     width:calc( 100% - 32px)!important;
                     .el-form-item__content{
-                        width: calc( 100% - 100px)!important;
+                        width: calc( 100% - 110px)!important;
                     }
                     .el-input{
                         width: 100% !important;

@@ -36,7 +36,7 @@
                     </el-form-item>
                     <el-form-item style="position: relative" label="考试时长：" prop="totalTime">
                         <span v-if="type=='info'">{{form.totalTime}}分钟</span>
-                        <el-input v-else type="number" v-model="form.totalTime" placeholder="请输入考试时长"></el-input>
+                        <el-input v-else v-model="form.totalTime" placeholder="请输入考试时长"></el-input>
                         <span v-if="type!='info'" style="position: absolute;top:0;right:-20px">分</span>
                     </el-form-item>
                     <el-form-item label="试卷类别：" prop="paperType">
@@ -80,7 +80,7 @@
                 <div class="row_custom aRow_custom">
                     <el-form-item label="试卷简介：" prop="description">
                         <span v-if="type=='info'">{{form.description}}</span>
-                        <el-input v-else v-model="form.description" placeholder="请输入试题简介"></el-input>
+                        <el-input v-else v-model="form.description" placeholder="请输入试卷简介"></el-input>
                     </el-form-item>
 
                 </div>
@@ -179,7 +179,26 @@
                 formT:{},
                 rules: {
                     paperName: [{required: true, validator:paperName, trigger: "blur" }],
-                    totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" }],
+                    totalTime: [{ required: true, message: "请输入考试时长", trigger: "blur" },
+                        {
+                            validator: (rule, value, callback) => {
+                                if(value!==''){
+                                    if (typeof Number(value) == 'number' && !window.isNaN(Number(value))&&(value+'').split('.').length===1) {
+                                        if (value <= 0) {
+                                            callback(new Error('考试时长应该大于0'));
+                                        } else {
+                                            callback();
+                                        }
+                                    } else {
+                                        callback(new Error('必须为整数类型'));
+                                    }
+                                }else{
+                                    callback();
+                                }
+
+                            },
+                            trigger: 'change',
+                        }],
                     testType: [{ required: true, message: "请选择考试类型", trigger: "blur" }],
                      paperCode: [{ required: true, validator:paperCode, trigger: "blur" }],
                   },

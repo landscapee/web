@@ -26,7 +26,7 @@ export const safetyDetailsConfig = (obj) => {
                 { slot: 'radio' , label: '选择', width:49,search:{ type:'text',label:'过滤'}},
                 { prop: 'number', label: '编号',  sortProp:"number", align: 'center',sort:true,search:{type:'input', prop:'number',placeholder:"请输入编号"} },
                 { prop: 'quota', label: '指标', sortProp:"quota", align: 'center',sort:true,search:{type:'input', prop:'quota',placeholder:"请输入指标"} },
-                { prop: 'quotaType', label: '指标类型', sortProp:"quotaType", align: 'center',sort:true,search:{type:'select', prop:'quotaType',placeholder:"请输入指标类型",selectProp:['valData','valData'],data:obj.indicateType} },
+                { prop: 'quotaType', label: '指标类型', sortProp:"quotaType", align: 'center',sort:true,search:{type:'select', prop:'quotaType',placeholder:"请选择指标类型",selectProp:['valData','valData'],data:obj.indicateType} },
                 { prop: 'sources', label: '监控信息来源', sortProp:"sources", align: 'center',sort:true,search:{type:'input', prop:'sources',placeholder:"请输入监控信息来源"}},
                 // { prop: 'formulas', label: '计算公式', sortProp:"formulas", align: 'center' ,sort:true,search:{type:'input', prop:'formulas',placeholder:"请输入计算公式"}},
                 // { prop: 'targetValue', label: '目标值', sortProp:"targetValue", align: 'center' ,sort:true,search:{type:'input', prop:'targetValue',placeholder:"请输入目标值"}},
