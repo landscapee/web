@@ -555,7 +555,8 @@
                         params: {
                             // pageNum: 1, pageSize: 99999,
                             orgId: this.$store.state.user.userInfo.orgId,
-                            deptRelation:true
+                            deptRelation:false,
+                            needRole:false
                         }
                     }).then((d) => {
                         if (d.data) {
