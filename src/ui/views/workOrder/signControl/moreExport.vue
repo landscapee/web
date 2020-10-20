@@ -48,7 +48,7 @@
                     return callback(new Error('请选择模板类型'));
                 } else {
                     if(!this.modulObj[this.typeObj1[this.form.type]]){
-                        return callback(new Error('有工单暂无该模板类型'));
+                        return callback(new Error('该工单暂无此类型模板'));
 
                     }else{
                         return callback()

@@ -785,10 +785,10 @@ let authRoutes = [
 				]
 			},
 			{
-				path: '/electronicFence',
+				path: '/electronicFenceConfig',
 				component: () => import('@views/basicData/electronicFence/index'),
-				name: '机位电子围栏',
-				meta: {title: '机位电子围栏',icon: ''  ,roles:['R_basicData/electronicFence']},
+				name: '电子围栏误差配置',
+				meta: {title: '电子围栏误差配置',icon: ''  ,roles:['R_basicData/electronicFence']},
 				children:[
 					{
 						path: '/addElectronicFence',
@@ -798,25 +798,16 @@ let authRoutes = [
 						hidden:true
 					},
 				]
-			}
-		],
-	},
-	{
-		path: '/electronicFence',
-		component: Layout,
-		redirect: '/electronicFenceIndex',
-		name: '电子围栏',
-		meta: {title: '电子围栏',icon: 'xxgl' },
-		children: [
+			},
 			{
-				path: '/electronicFenceIndex',
+				path: '/electronicFence',
 				component: () => import('@views/electronicFence/index'),
-				name: '电子围栏',
-				meta: {title: '电子围栏',icon: '' },
-				children:[]
+				name: '电子围栏展示',
+				meta: {title: '电子围栏展示',icon: 'xxgl' },
 			},
 		],
 	},
+
     { path: '*', redirect: '/404', hidden: true }
 ];
 let defaultRoutes = [

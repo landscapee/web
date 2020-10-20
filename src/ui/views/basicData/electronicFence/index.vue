@@ -1,17 +1,17 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addElectronicFence'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/electronicFence'" class="electronicFence">
+        <div v-if="this.$router.history.current.path == '/electronicFenceConfig'" class="electronicFence">
             <div class="top-content">
                 <div class="top-content-title">
-                    <span>机位电子围栏</span>
+                    <span>电子围栏误差配置</span>
                 </div>
                 <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
+
                     <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
@@ -117,7 +117,7 @@ export default {
                 })
                 .then(() => {
                     request({
-                        url:`${this.$ip}/mms-parameter/rest-api/electronicFence/del`, 
+                        url:`${this.$ip}/mms-parameter/rest-api/electronicFence/del`,
                         method: 'post',
                         data:{id:this.selectId}
                     })
@@ -139,7 +139,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/electronicFence/query`, 
+                url:`${this.$ip}/mms-parameter/rest-api/electronicFence/query`,
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })
@@ -150,7 +150,7 @@ export default {
                     this.tableData = {records: data.data.items,...this.params,total:data.data.total}
                 }
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -166,13 +166,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .electronicFence{
     .main-content{
         /deep/ .mainTable{
             height: 600px;
             overflow: auto;
-        }    
+        }
     }
 }
 </style>
