@@ -7,6 +7,7 @@
 
 <script>
     // import '../../../../static/electronicFence/index1.html'
+
      export default {
         name: "index",
         components: {},

@@ -19,40 +19,51 @@
 						</div>
 						<div v-if='item.type==2' class="value2 value">{{item.value}}</div>
 						<div v-if='item.type==3' class="value3 value">
-							<input type="text" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
+							<input type="text" :disabled="type=='info'"
+							       :name="item.placeholder" :id="item.placeholder">
 						</div>
 						<div v-if='item.type==7' class="value3 value">
-							<input type="date" :disabled="type=='info'" :name="item.placeholder" :id="item.placeholder">
+							<input type="date" :disabled="type=='info'"
+							       :name="item.placeholder" :id="item.placeholder">
 						</div>
 						<div v-if='item.type==4' class="value4 value">
 
 							<img :src="$workImgIp+item.value.split('$')[1]">
 						</div>
-						<div v-if='item.type==5' class="value5  value flex flex_wrap align_center">
-							<div v-for="(k,l) in item.value.split(';')" :key="l" class="flex align_center">
-								<input type="checkbox" :disabled="type=='info'" :name="item.placeholder.split(';')[l]"
-									   class="Wtui-checkbox">{{k}}&nbsp;
+						<div v-if='item.type==5'
+						     class="value5  value flex flex_wrap align_center">
+							<div v-for="(k,l) in item.value.split(';')" :key="l"
+							     class="flex align_center">
+								<input type="checkbox" :disabled="type=='info'"
+								       :name="item.placeholder.split(';')[l]"
+								       class="Wtui-checkbox">{{k}}&nbsp;
 								<!-- <div style="width: 100%" >
 									{{'${'+item.placeholder.split(';')[l]+'}'}}
 								</div> -->
 							</div>
 						</div>
-						<div v-if='item.type==6' class="value6  value" style="position:relative">
+						<div v-if='item.type==6' class="value6  value"
+						     style="position:relative">
 							<!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
-							<el-button v-if="type!='info'" @click="signOthMsgBoxFn('sign_'+index,$event)" type="primary"
-									   style="padding: 7px 15px">签字
+							<el-button v-if="type!='info'"
+								   @click="signOthMsgBoxFn('sign_'+index,$event)"
+								   type="primary"
+								   style="padding: 7px 15px">签字
 							</el-button>
 							<div style="width:50px;height:50px;position:absolute;left:200px;top:10px">
 								<div :pos="'sign_'+index" :id="'sign_'+index"></div>
 							</div>
 						</div>
 					</div>
-					<div class=" base_i_inner_btn flex justify_center align_center" v-if="type!='info'">
-						<el-button type="primary" @click="saveBasicFn('isActiveSave')"><i v-show='!isActiveSave'
-																						  class="el-icon-loading"></i>保存
+					<div class=" base_i_inner_btn flex justify_center align_center"
+					     v-if="type!='info'">
+						<el-button type="primary" @click="saveBasicFn('isActiveSave')"><i
+							v-show='!isActiveSave'
+							class="el-icon-loading"></i>保存
 						</el-button>
-						<el-button type="primary" @click="BasicUpdateFn('isActiveReset')"><i v-show='!isActiveReset'
-																							 class="el-icon-loading"></i>重置
+						<el-button type="primary" @click="BasicUpdateFn('isActiveReset')"><i
+							v-show='!isActiveReset'
+							class="el-icon-loading"></i>重置
 						</el-button>
 					</div>
 				</div>
@@ -62,68 +73,94 @@
 				<div class="order_c_main">
 					<div class="item1 flex">
 						<div style="width:18%;">{{labelVO.itemLabel}}</div>
-						<div :style="{width: col==3 ? '67%' : '52%'}">{{labelVO.contentLabel}}</div>
-						<div :style="{width: col==3 ? '15%' : '15%'}">{{labelVO.workerLabel}}</div>
-						<div :style="{width: col==3 ? '15%' : '15%'}" v-if='col==4'>{{labelVO.commanderLabel}}</div>
+						<div :style="{width: col==3 ? '67%' : '52%'}">{{labelVO.contentLabel}}
+						</div>
+						<div :style="{width: col==3 ? '15%' : '15%'}">{{labelVO.workerLabel}}
+						</div>
+						<div :style="{width: col==3 ? '15%' : '15%'}" v-if='col==4'>
+							{{labelVO.commanderLabel}}
+						</div>
 					</div>
 					<div class="order_c_b">
 						<div v-for='(item, index) in contentVOListMap' :key='item.id'>
 
 							<div class="flex">
 								<div class="item flex align_start"
-									 style="width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
-									<na-temp v-if='item.notApplicable' :active='item.active'
-											 @changeActiveFn='changeActiveFn(item)'></na-temp>
+								     style="width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
+									<na-temp v-if='item.notApplicable'
+										 :active='item.active'
+										 @changeActiveFn='changeActiveFn(item)'></na-temp>
 									{{item.reduceIndex}}
 								</div>
 
-								<div style="width:82%;" v-if='item.contentDetails&&item.contentDetails.length'>
-									<div v-for='itemChild in item.contentDetails' :key='itemChild.key' class="flex">
-										<div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}">
+								<div style="width:82%;"
+								     v-if='item.contentDetails&&item.contentDetails.length'>
+									<div v-for='itemChild in item.contentDetails'
+									     :key='itemChild.key' class="flex">
+										<div class="item"
+										     :style="{width: col==3 ? '81.7%' : '63.4%'}">
 											<!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
-											<div class="textContent" :class="itemChild.id" v-html='itemChild.content'
-												 style="text-align: left;padding: 10px 10px;"></div>
-											<div v-if="type!='info'" class='checkbox_group'>
-												<el-button @click="editContent($event,itemChild)" type="primary"
-														   style="padding: 7px 20px">更正
+											<div class="textContent"
+											     :class="itemChild.id"
+											     v-html='itemChild.content'
+											     style="text-align: left;padding: 10px 10px;"></div>
+											<div v-if="type!='info'"
+											     class='checkbox_group'>
+												<el-button
+													@click="editContent($event,itemChild)"
+													type="primary"
+													style="padding: 7px 20px">
+													更正
 												</el-button>
 											</div>
 										</div>
-										<!-- class="item itemSign"-->
 										<div :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
-											 :style="{width: col==3 ? '18.3%' : '18.3%'}">
-											<el-button v-if="type!='info'&&itemChild.workerLabel"
-													   @click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')"
-													   type="primary" style="padding: 7px 15px">签字
+										     :style="{width: col==3 ? '18.3%' : '18.3%'}">
+											<el-button
+												v-if="type!='info'&&itemChild.workerLabel"
+												@click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')"
+												type="primary"
+												style="padding: 7px 15px">
+												签字
 											</el-button>
 											<div style="width:100%;position:absolute;left:0;top:40px;"
-												 v-if='itemChild.workerLabel'>
-												<div class="sign_box" :id='"fix_sign_"+itemChild._reduceIndex'
-													 :pos='"fix_sign_"+itemChild._reduceIndex'
-													 style="width:100%;height:30px;width:100%"></div>
+											     v-if='itemChild.workerLabel'>
+												<div class="sign_box"
+												     :id='"fix_sign_"+itemChild._reduceIndex'
+												     :pos='"fix_sign_"+itemChild._reduceIndex'
+												     style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
 										<div :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
-											 :style="{width: col==3 ? '18.3%' : '18.3%'}" v-if='col==4'>
-											<el-button v-if="type!='info'&&itemChild.commanderLabel"
-													   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
-													   type="primary" style="padding: 7px 15px">签字
+										     :style="{width: col==3 ? '18.3%' : '18.3%'}"
+										     v-if='col==4'>
+											<el-button
+												v-if="type!='info'&&itemChild.commanderLabel"
+												@click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
+												type="primary"
+												style="padding: 7px 15px">
+												签字
 											</el-button>
 											<div style="width:100%;position:absolute;left:0;top:40px;"
-												 v-if="itemChild.commanderLabel">
-												<div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex"
-													 :pos='"travel_sign_"+itemChild._reduceIndex'
-													 style="width:100%;height:30px;width:100%"></div>
+											     v-if="itemChild.commanderLabel">
+												<div class="sign_box"
+												     :id="'travel_sign_'+itemChild._reduceIndex"
+												     :pos='"travel_sign_"+itemChild._reduceIndex'
+												     style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div v-else class='flex' style="width:82%;">
-									<div class="item" :style="{width: col==3 ? '81.7%' : '63.4%'}">
-										<div class="textContent" v-html='item.name'></div>
+									<div class="item"
+									     :style="{width: col==3 ? '81.7%' : '63.4%'}">
+										<div class="textContent"
+										     v-html='item.name'></div>
 									</div>
-									<div class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
-									<div v-if='col==4' class="item" :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+									<div class="item"
+									     :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+									<div v-if='col==4' class="item"
+									     :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
 								</div>
 							</div>
 						</div>
@@ -173,7 +210,7 @@
                 },
                 isActiveSave: true,
                 isActiveReset: true,
-				needSubmit: false
+                needSubmit: false
             }
         },
         created() {
@@ -182,11 +219,11 @@
                 this.type = this.$route.query.type
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
-                     this.type == "edit"
+                    this.type == "edit"
                         ? "异常更改"
                         : this.type == "info"
-                            ? "工单详情"
-                            : "";
+                        ? "工单详情"
+                        : "";
                 this.needSubmit = this.$route.query.needSubmit;
             }
         },
@@ -280,6 +317,7 @@
                         map[inputRadioArr.eq(i).attr("name")] = inputRadioArr.eq(i).is(':checked')
                     }
                 }
+                console.log(this.workorder);
                 request({
                     url: `${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
                     method: 'post',
@@ -421,13 +459,13 @@
                             }
                         }).then((result) => {
                             console.log(result)
-                            if(result.responseCode === 1000){
-                              if(result.data.length>0){
-                                resolve('1')
-                              }else{
-                                resolve('0')
-                              }
-                            }else{
+                            if (result.responseCode === 1000) {
+                                if (result.data.length > 0) {
+                                    resolve('1')
+                                } else {
+                                    resolve('0')
+                                }
+                            } else {
                                 resolve('0')
                             }
                         })
@@ -440,7 +478,6 @@
             },
             async showMsgBoxFn(item, type, $event, fnName) {
                 let _this = this
-
                 // 判断是否是强身份认证还是弱身份认证
                 if (this.workorder.type.startsWith("WX")) {
                     // 强身份
@@ -1208,17 +1245,17 @@
                     })
                 }
             },
-			submit(){
-				request({
-					url: `${this.$ip}/mms-workorder/workorder/submit/${this.id}`,
-					method: 'get',
-				}).then((data) => {
-					if (data.code===200){
-						this.$message({type: 'success', message: '提交成功'});
-						this.$router.push({path: '/myWorkOrder'});
-					}
-				})
-			}
+            submit() {
+                request({
+                    url: `${this.$ip}/mms-workorder/workorder/submit/${this.id}`,
+                    method: 'get',
+                }).then((data) => {
+                    if (data.code === 200) {
+                        this.$message({type: 'success', message: '提交成功'});
+                        this.$router.push({path: '/myWorkOrder'});
+                    }
+                })
+            }
         }
     }
 
@@ -1500,19 +1537,19 @@
 	.duijiao {
 
 		background: linear-gradient(
-						to top right,
-						rgba(0, 0, 0, 0) 0%,
-						rgba(0, 0, 0, 0) calc(50% - 1.5px),
-						rgba(0, 0, 0, 0) 50%,
-						rgba(0, 0, 0, 0) calc(50% + 1.5px),
-						rgba(0, 0, 0, 0) 100%
+				to top right,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 0) calc(50% - 1.5px),
+				rgba(0, 0, 0, 0) 50%,
+				rgba(0, 0, 0, 0) calc(50% + 1.5px),
+				rgba(0, 0, 0, 0) 100%
 		), linear-gradient(
-						to bottom right,
-						rgba(0, 0, 0, 0) 0%,
-						rgba(0, 0, 0, 0) calc(50% - 1.5px),
-						rgba(0, 0, 0, 1) 50%,
-						rgba(0, 0, 0, 0) calc(50% + 1.5px),
-						rgba(0, 0, 0, 0) 100%
+				to bottom right,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 0) calc(50% - 1.5px),
+				rgba(0, 0, 0, 1) 50%,
+				rgba(0, 0, 0, 0) calc(50% + 1.5px),
+				rgba(0, 0, 0, 0) 100%
 		) !important;
 	}
 </style>

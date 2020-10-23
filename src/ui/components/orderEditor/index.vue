@@ -27,6 +27,7 @@ export default {
         }
     },
   props: {
+      serialNumber:String,
     content: {
       type: String,
       default: ''
@@ -311,16 +312,10 @@ export default {
             let d=new Date()
             let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-            editor.insertHtml('<input type="text"  id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
+            editor.insertHtml('<input type="text"   v-model="formContent[$$$'+num+'input'+ _this.inputIndex +']" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
         })
     })
-    // // 单选
-    // KindEditor.plugin('checkradio', function(K) {
-    //     var editor = this, name = 'checkradio'
-    //     editor.clickToolbar(name, function() {
-    //         _this.$refs.addRadioDialog.open('radio')
-    //     })
-    // })
+
     // 多选
     KindEditor.plugin('checkbox', function(K) {
         var editor = this, name = 'checkbox'
@@ -329,14 +324,7 @@ export default {
             // editor.insertHtml('<input type="checkbox" name="1">是<input type="checkbox"  name="1">否')
         })
     })
-    // NA
-    // KindEditor.plugin('na', function(K) {
-    //     var editor = this, name = 'na'
-    //     editor.clickToolbar(name, function() {
-    //         _this.inputIndex+=1
-    //         editor.insertHtml('<input type="radio" name="$$$'+_this.inputIndex+'">是<input type="radio"  name="$$$'+_this.inputIndex+'">否')
-    //     })
-    // })
+
     // 签章
     KindEditor.plugin('sign', function(K) {
         var editor = this, name = 'sign'
@@ -510,7 +498,7 @@ body{
                 let d=new Date()
                 let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-                return `<input type='checkbox' eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}'  id='${'$$$'+num+'_'+obj[type]+this.inputIndex}' name='${'$$$'+num+'_'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
+                return `<input type='checkbox'  eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}' v-model='${'formContent[$$$'+num+'_'+obj[type]+this.inputIndex+']'}' id='${'$$$'+num+'_'+obj[type]+this.inputIndex}' name='${'$$$'+num+'_'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }

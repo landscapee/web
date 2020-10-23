@@ -3,10 +3,7 @@ import store from './src/ui/store';
 import { Message } from 'element-ui';
 import { getToken } from './lib/auth'; // get token from cookie
 import getPageTitle from './lib/get-page-title';
-
-
 const whiteList = ['/','/login']; // no redirect whitelist
-
 router.beforeEach(async (to, from, next) => {
  	// document.title = getPageTitle(to.meta.title);
  	const hasToken = getToken();
@@ -25,7 +22,7 @@ router.beforeEach(async (to, from, next) => {
 
                     router.addRoutes(accessRoutes);
  					// next();
-					next({ ...to, replace: true });
+ 					next({ ...to ,replace:true});
 				} catch (error) {
 					// remove token and go to login page to re-login
 					await store.dispatch('user/resetToken');

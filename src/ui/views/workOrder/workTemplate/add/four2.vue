@@ -150,6 +150,7 @@
                        </div>
                    </div>
                     <order-editor
+                        :serialNumber="this.formItem.serialNumber"
                             id="editor_id" height="400px" width="100%"
                             :content.sync="formItem[key]"
                             :loadStyleMode="false"
@@ -560,7 +561,6 @@
                             })
                         }
                     }
-
                 })
             },
             positionItem(num){
@@ -706,6 +706,7 @@
                                       if( obj[this.key]){
                                           obj[this.key]=obj[this.key].replace(/\$\$\$/g,this.formItem.serialNumber+'_')
                                       }
+
                                 }
                             }
                             request({
