@@ -135,18 +135,13 @@
 										<div style="min-height:120px;"  :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
 										     :style="{width: col==3 ? '18.3%' : '18.3%'}"
 										     v-if='col==4'>
-											<el-button
-												v-if="type!='info'&&itemChild.commanderLabel"
+											<el-button v-if="type!='info'&&itemChild.commanderLabel"
 												@click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
-												type="primary"
-												style="padding: 7px 15px">
+												type="primary" style="padding: 7px 15px">
 												签字
 											</el-button>
-											<div style="width:100%;position:absolute;left:0;top:40px;"
-											     v-if="itemChild.commanderLabel">
-												<div class="sign_box"
-												     :id="'travel_sign_'+itemChild._reduceIndex"
-												     :pos='"travel_sign_"+itemChild._reduceIndex'
+											<div style="width:100%;position:absolute;left:0;top:40px;" v-if="itemChild.commanderLabel">
+												<div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex" :pos='"travel_sign_"+itemChild._reduceIndex'
 												     style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
