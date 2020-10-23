@@ -86,7 +86,7 @@
 
 							<div class="flex">
 								<div class="item flex align_start"
-								     style="width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
+								     style="min-height:120px;width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
 									<na-temp v-if='item.notApplicable'
 										 :active='item.active'
 										 @changeActiveFn='changeActiveFn(item)'></na-temp>
@@ -98,7 +98,8 @@
 									<div v-for='itemChild in item.contentDetails'
 									     :key='itemChild.key' class="flex">
 										<div class="item"
-										     :style="{width: col==3 ? '81.7%' : '63.4%'}">
+											 style="min-height:120px;"
+											 :style="{width: col==3 ? '81.7%' : '63.4%'}">
 											<!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
 											<div class="textContent"
 											     :class="itemChild.id"
@@ -114,7 +115,7 @@
 												</el-button>
 											</div>
 										</div>
-										<div :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
+										<div style="min-height:120px;" :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
 										     :style="{width: col==3 ? '18.3%' : '18.3%'}">
 											<el-button
 												v-if="type!='info'&&itemChild.workerLabel"
@@ -131,7 +132,7 @@
 												     style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
-										<div :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
+										<div style="min-height:120px;"  :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
 										     :style="{width: col==3 ? '18.3%' : '18.3%'}"
 										     v-if='col==4'>
 											<el-button
@@ -151,7 +152,7 @@
 										</div>
 									</div>
 								</div>
-								<div v-else class='flex' style="width:82%;">
+								<div v-else class='flex' style="width:82%">
 									<div class="item"
 									     :style="{width: col==3 ? '81.7%' : '63.4%'}">
 										<div class="textContent"
@@ -1410,6 +1411,7 @@
 			.order_c_main {
 				.order_c_b {
 					border-right: 1px solid #333;
+
 				}
 				.textContentParent {
 					position: relative;

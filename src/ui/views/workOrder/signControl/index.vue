@@ -254,25 +254,6 @@
                 });
             },
             abnormalChange(row){
-                /*
-                if(this.checkArr.length!=1){
-                    let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
-                    this.$message.error(s);
-                }else{
-                    if(this.checkArr[0].state==3){
-                        let src='/WorkAbnormalDetails'
-                        let data=this.checkArr[0].id
-                        if(this.checkArr[0]&&this.checkArr[0].offlineFile){
-                            src='/WorkAbnormalAdd'
-                        }
-                         this.$router.push({path:src,query:{ id:data,type:'edit'}});
-                        // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
-
-                    }else{
-                        this.$message.error('请先完成工单');
-                    }
-                }
-                */
                 if(row.state===3){
                     let src='/WorkAbnormalDetails';
                     let data=row.id;
@@ -284,7 +265,6 @@
                 }else{
                     this.$message.error('请先完成工单');
                 }
-
 
             },
 
