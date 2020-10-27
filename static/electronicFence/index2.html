@@ -32,10 +32,10 @@
     }
 </style>
 <script type="text/javascript" src="./jquery.min.js"></script>
-<!--<script type="text/javascript" src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>-->
+<script type="text/javascript" src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>
 
 <!--内网测试-->
-<script type="text/javascript" src="http://10.35.16.13:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>
+<!--<script type="text/javascript" src="http://10.35.16.13:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>-->
 <body>
 <!--装地图容器-->
 <div id="app">
@@ -83,11 +83,11 @@
     var windows;
     var attributeQuery;
     var propertiesMap = {
-        // "mapId03": "2576", //底图图层id
-        "mapId03": "3280", //底图图层id 内网
+        "mapId03": "2576", //底图图层id
+        // "mapId03": "3280", //底图图层id 内网
 
-         // "layerId01": "33723", //电子围栏图层id
-         "layerId01":'42967' , //电子围栏图层id 内网
+         "layerId01": "33723", //电子围栏图层id
+         // "layerId01":'42967' , //电子围栏图层id 内网
         // ['42967','40027','40033']
     };
     var layerId = propertiesMap.layerId01;

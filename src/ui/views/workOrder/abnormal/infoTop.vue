@@ -33,63 +33,28 @@
                 </div>
                 <div  class="rowdiv">
                     <div>  作业类型 </div>
-                    <div>{{get(form.typeVO,'jobType')}}</div>
+                    <div>{{get(form.typeVO,'jobType')||'--'}}</div>
                     <div>  作业员类型 </div>
-                    <div>{{get(form.typeVO,'personType')}}</div>
+                    <div>{{get(form.typeVO,'personType')||'--'}}</div>
                     <div>  航班号 </div>
-                    <div  >{{get(form,'flightNo')}}</div>
+                    <div  >{{get(workorder,'flightNo')||'--'}}</div>
                     <div>  航班类型 </div>
-                    <div  >{{get(form.typeVO,'airlineType')}}</div>
+                    <div  >{{get(workorder,'airlineType')||'--'}}</div>
                 </div>
                 <div  class="rowdiv">
                     <div>  机型 </div>
-                    <div style="overflow: hidden;" :title="airplane">{{airplane}}</div>
+                    <div style="overflow: hidden;" :title="airplane">{{airplane||'--'}}</div>
                     <div>  飞机注册号</div>
-                    <div>{{get(form,'flightRegisterNo')}}</div>
+                    <div>{{get(workorder,'flightRegisterNo')||'--'}}</div>
                     <div>  所属航空公司代码</div>
-                    <div >{{get(form.typeVO,'airlineCompanyCode')}}</div>
+                    <div >{{get(workorder,'airlineCompanyCode')||'--'}}</div>
                     <div>  所属航空公司 </div>
-                    <div>{{get(form.typeVO,'airlineCompany')}}</div>
+                    <div>{{get(workorder,'airlineCompanyName')||'--'}}</div>
                 </div>
 
             </div>
 
-            <!--<div class="info" v-if="getbaseItemVOList&&getbaseItemVOList.length>0">-->
-                <!--<div class="lastRow" v-for="(opt) in Math.ceil(getbaseItemVOList.length/3)" :key="opt" >-->
-                    <!--<el-row>-->
-                        <!--<el-col class="colCenter" :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">-->
-                            <!--<div>{{opt1.nameCn}}</div>-->
-                            <!--<div>{{opt1.nameEn}}</div>-->
-                        <!--</el-col>-->
-                    <!--</el-row>-->
-                    <!--<el-row>-->
-                        <!--<el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"    v-if="opt1.enable||!opt1.type">-->
 
-                            <!--<img v-if="opt1.type==4"   :src="opt1.value.split('$')[1]" alt="加载失败">-->
-                            <!--<template v-else-if="opt1.type==2">-->
-                                <!--{{opt1.value}}-->
-                            <!--</template>-->
-                            <!--<div v-else-if="opt1.type==1" >-->
-                            <!--</div>-->
-                            <!--<div v-else-if="opt1.type==3" >-->
-                                <!--<input type="text" :name="opt1.placeholder" ></input>-->
-                             <!--</div>-->
-                            <!--<div v-else-if="opt1.type==5" >-->
-                                <!--<div>-->
-                                    <!--<div v-for="(k,l) in opt1.value.split(';')" :key="l">-->
-                                        <!--<input type="checkbox" :name="opt1.placeholder.split(';')[l]" class="Wtui-checkbox" ></input>{{k}}-->
-
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div> </div>-->
-                            <!--</div>-->
-                            <!--<div v-else-if="opt1.type==6" >-->
-
-                            <!--</div>-->
-                        <!--</el-col>-->
-                    <!--</el-row>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
     </div>
 </template>
@@ -117,7 +82,7 @@
         },
         computed:{
             airplane(){
-                let arr=this.get(this.form.typeVO,'airplane')||[]
+                let arr=this.get(this.workorder,'airplane')||[]
                  let s= arr.map((k,l)=>{
                     return k.name
                 })
@@ -161,7 +126,6 @@
 
         },
         created() {
-
         },
     }
 </script>
