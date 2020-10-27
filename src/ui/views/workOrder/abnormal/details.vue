@@ -163,6 +163,9 @@
 					</div>
 				</div>
 			</div>
+			<div id="kg-img-div-postil1" style="border:1px red solid;width: 100px;height:100px">
+				<img src="#" alt="">
+			</div>
 			<div style="text-align: right;margin-top: 20px" v-if="needSubmit">
 				<el-button type="primary" @click="submit">提交</el-button>
 			</div>
@@ -912,6 +915,7 @@
                                     value: _this.getSignatureid().toString() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1]
                                 })
+                                $('#kg-img-div-postil1').find('img').attr('src',imgdata);
                             }
                         )
                     },
