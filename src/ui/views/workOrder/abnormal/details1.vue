@@ -465,6 +465,7 @@
                     })
             },
             fixedSignFn(item,type, $event){
+                debugger
                 if(!$('#1'+item.id).is(':checked')){
                     this.$message({type: 'warning', message: '请先点击维修已完成'})
                     return
