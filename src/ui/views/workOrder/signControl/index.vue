@@ -37,7 +37,10 @@
                                       @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
                                     <icon iconClass="unlock" title="解锁"></icon>
                                 </span>
-                                <span v-else @click="abnormalChange(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
+                                      @click="(scope.row.state!==3 && scope.row.template.type!=='WXGD' &&scope.row.isOffline==='线上') ? '':abnormalChange(scope.row)"
+                                      :class="(scope.row.state!==3 && scope.row.template.type!=='WXGD' &&scope.row.isOffline==='线上') ? 'rowSvg rowSvgInfo':'rowSvg'"
+                                      style="margin-left: 10px">
                                     <icon iconClass="editNew" title="异常更改"></icon>
                                 </span>
                             </div>
