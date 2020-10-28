@@ -2,7 +2,7 @@
 // 参数说明：initParam：vctk控件初始化参数
 // 参数说明：authContent：认证原文
 // 参数说明：signSubject：证书版发者主题
-function detachSignStr(initParam,authContent,signSubject){
+function detachSignStr(initParam,authContent,f1,f2){
 	// 验证认证原文不能为空
 	if(authContent == ""){
 		alert("认证原文不能为空!");
@@ -29,12 +29,14 @@ function detachSignStr(initParam,authContent,signSubject){
 		if(JIT_GW_ExtInterface.GetLastError() !=0){
 			if (JIT_GW_ExtInterface.GetLastError() == 3758096386
 					|| JIT_GW_ExtInterface.GetLastError() == 2148532334){
-				alert("用户取消操作");
-				return;
+				// alert("用户取消操作");
+				f1()
+				return ;
 			}else if (JIT_GW_ExtInterface.GetLastError() == -536870815
 					|| JIT_GW_ExtInterface.GetLastError() == 3758096481) {
-				alert("没有找到有效的证书，如果使用的是KEY，请确认已经插入key");
-				return;
+				// alert("没有找到有效的证书，如果使用的是KEY，请确认已经插入key");
+				f2()
+				return ;
 			}else{
 				alert(JIT_GW_ExtInterface.GetLastErrorMessage());
 				return;

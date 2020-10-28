@@ -1,5 +1,6 @@
 import Vue from 'vue'
- export function SignatureInit(keysn='0002',password='123456'){
+
+export function SignatureInit(keysn='0002',password='123456', isCheck=false){
     function delCB(signatureid, signatureData) {
         for (var key in Signature.list) {
             if (signatureid == key && Signature.list[signatureid].keysn == signatureData.keysn) {
@@ -13,20 +14,21 @@ import Vue from 'vue'
     Signature.init({//初始化属性
         //keysn:'0741170010110516',
         keysn, // 'test001', // 002
-         password:'123456',
+        password,
         //keysn:'test001',
         //usercode:"test002",
         delCallBack: delCB,
-        //icon_remove : false,//撤销签章按钮隐S藏显示，缺省显示 false不显示。
+        //icon_remove : false,//撤销签章按钮隐藏显示，缺省显示 false不显示。
         //icon_sign : false, //证书信息按钮隐藏显示，缺省显示 false不显示。
         imgtag: 0, //签章类型：0：无; 1:公章; 2:私章; 3:法人章; 4:法人签名; 5:手写签名
+        timestamp: true,
         certType : 'server',//设置证书在签章服务器
         sealType : 'server',//设置印章从签章服务器取
         autoCert:true,
         //serverUrl : 'http://173.101.1.52:8080/iSignatureHTML5',
         serverUrl : `${Vue.prototype.$ipSign}/iSignatureHTML5`,
         //serverUrl : 'http://173.101.1.134:8089/iSignatureHTML5/html5',
-        showSealsDlg:'auto',  // 一个章不显示，默认第一个
+        //showSealsDlg:'auto',  // 一个章不显示，默认第一个
         //serverUrl : 'http://192.168.0.151:8080/iSignatureHTML5',
         documentid:'KG2016093001333',//设置文档ID
         documentname:'测试文档KG2016093001',//设置文档名称
@@ -35,5 +37,10 @@ import Vue from 'vue'
         pw_timeout:'s1800', //s：秒；h:小时；d:天
         scaleImage: 1, //签章图片的缩放比例
         showNoPW:true, // 签章时候显示密码
+        signdate:{
+            ischeck:!isCheck,
+            fontSize:14,
+            position:'居中下(章外)',
+        },
     });
 }

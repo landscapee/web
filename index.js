@@ -52,14 +52,14 @@ if(PROGRAM == 'jwxt.dev'){  // 本地
     Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
  }else if(PROGRAM == 'jwxt.prod'){
     Vue.prototype.$workImgIp = "http://10.35.48.34:8888"
-    Vue.prototype.$ip = "http://10.35.48.34/api"
-    Vue.prototype.$signIp = "http://10.35.48.34/api/mms-workorder"
+    Vue.prototype.$ip = "http://10.33.144.1:6076/api"
+    Vue.prototype.$signIp = "http://10.33.144.1:6076/api/mms-workorder"
  }
 const ipSign = {
   'jwxt.dev':"http://173.101.1.134:8089",
   'jwxt.build':"http://173.101.1.134:8089",
   'jwxt.test':'http://173.101.1.134:8089',
-  'jwxt.prod':'http://10.35.48.35:8089'
+  'jwxt.prod':'http://10.33.144.57:8089'
 }
 Vue.prototype.$ipSign = ipSign[PROGRAM]
 import MessageBox from '@/ui/components/userName/index.js';

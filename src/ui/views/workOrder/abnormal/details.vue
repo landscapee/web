@@ -20,35 +20,35 @@
 						<div v-if='item.type==2' class="value2 value">{{item.value}}</div>
 						<div v-if='item.type==3' class="value3 value">
 							<input type="text" :disabled="type=='info'"
-							       :name="item.placeholder" :id="item.placeholder">
+								   :name="item.placeholder" :id="item.placeholder">
 						</div>
 						<div v-if='item.type==7' class="value3 value">
 							<input type="date" :disabled="type=='info'"
-							       :name="item.placeholder" :id="item.placeholder">
+								   :name="item.placeholder" :id="item.placeholder">
 						</div>
 						<div v-if='item.type==4' class="value4 value">
 
 							<img :src="$workImgIp+item.value.split('$')[1]">
 						</div>
 						<div v-if='item.type==5'
-						     class="value5  value flex flex_wrap align_center">
+							 class="value5  value flex flex_wrap align_center">
 							<div v-for="(k,l) in item.value.split(';')" :key="l"
-							     class="flex align_center">
+								 class="flex align_center">
 								<input type="checkbox" :disabled="type=='info'"
-								       :name="item.placeholder.split(';')[l]"
-								       class="Wtui-checkbox">{{k}}&nbsp;
+									   :name="item.placeholder.split(';')[l]"
+									   class="Wtui-checkbox">{{k}}&nbsp;
 								<!-- <div style="width: 100%" >
 									{{'${'+item.placeholder.split(';')[l]+'}'}}
 								</div> -->
 							</div>
 						</div>
 						<div v-if='item.type==6' class="value6  value"
-						     style="position:relative">
+							 style="position:relative">
 							<!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
 							<el-button v-if="type!='info'"
-								   @click="signOthMsgBoxFn('sign_'+index,$event)"
-								   type="primary"
-								   style="padding: 7px 15px">签字
+									   @click="signOthMsgBoxFn('sign_'+index,$event)"
+									   type="primary"
+									   style="padding: 7px 15px">签字
 							</el-button>
 							<div style="width:50px;height:50px;position:absolute;left:200px;top:10px">
 								<div :pos="'sign_'+index" :id="'sign_'+index"></div>
@@ -56,7 +56,7 @@
 						</div>
 					</div>
 					<div class=" base_i_inner_btn flex justify_center align_center"
-					     v-if="type!='info'">
+						 v-if="type!='info'">
 						<el-button type="primary" @click="saveBasicFn('isActiveSave')"><i
 							v-show='!isActiveSave'
 							class="el-icon-loading"></i>保存
@@ -86,27 +86,27 @@
 
 							<div class="flex">
 								<div class="item flex align_start"
-								     style="min-height:120px;width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
+									 style="min-height:120px;width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
 									<na-temp v-if='item.notApplicable'
-										 :active='item.active'
-										 @changeActiveFn='changeActiveFn(item)'></na-temp>
+											 :active='item.active'
+											 @changeActiveFn='changeActiveFn(item)'></na-temp>
 									{{item.reduceIndex}}
 								</div>
 
 								<div style="width:82%;"
-								     v-if='item.contentDetails&&item.contentDetails.length'>
+									 v-if='item.contentDetails&&item.contentDetails.length'>
 									<div v-for='itemChild in item.contentDetails'
-									     :key='itemChild.key' class="flex">
+										 :key='itemChild.key' class="flex">
 										<div class="item"
 											 style="min-height:120px;"
 											 :style="{width: col==3 ? '81.7%' : '63.4%'}">
 											<!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
 											<div class="textContent"
-											     :class="itemChild.id"
-											     v-html='itemChild.content'
-											     style="text-align: left;padding: 10px 10px;"></div>
+												 :class="itemChild.id"
+												 v-html='itemChild.content'
+												 style="text-align: left;padding: 10px 10px;"></div>
 											<div v-if="type!='info'"
-											     class='checkbox_group'>
+												 class='checkbox_group'>
 												<el-button
 													@click="editContent($event,itemChild)"
 													type="primary"
@@ -115,8 +115,9 @@
 												</el-button>
 											</div>
 										</div>
-										<div style="min-height:120px;" :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
-										     :style="{width: col==3 ? '18.3%' : '18.3%'}">
+										<div style="min-height:120px;"
+											 :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
+											 :style="{width: col==3 ? '18.3%' : '18.3%'}">
 											<el-button
 												v-if="type!='info'&&itemChild.workerLabel"
 												@click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')"
@@ -125,44 +126,48 @@
 												签字
 											</el-button>
 											<div style="width:100%;position:absolute;left:0;top:40px;"
-											     v-if='itemChild.workerLabel'>
+												 v-if='itemChild.workerLabel'>
 												<div class="sign_box"
-												     :id='"fix_sign_"+itemChild._reduceIndex'
-												     :pos='"fix_sign_"+itemChild._reduceIndex'
-												     style="width:100%;height:30px;width:100%"></div>
+													 :id='"fix_sign_"+itemChild._reduceIndex'
+													 :pos='"fix_sign_"+itemChild._reduceIndex'
+													 style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
-										<div style="min-height:120px;"  :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
-										     :style="{width: col==3 ? '18.3%' : '18.3%'}"
-										     v-if='col==4'>
+										<div style="min-height:120px;"
+											 :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
+											 :style="{width: col==3 ? '18.3%' : '18.3%'}"
+											 v-if='col==4'>
 											<el-button v-if="type!='info'&&itemChild.commanderLabel"
-												@click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
-												type="primary" style="padding: 7px 15px">
+													   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
+													   type="primary" style="padding: 7px 15px">
 												签字
 											</el-button>
-											<div style="width:100%;position:absolute;left:0;top:40px;" v-if="itemChild.commanderLabel">
-												<div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex" :pos='"travel_sign_"+itemChild._reduceIndex'
-												     style="width:100%;height:30px;width:100%"></div>
+											<div style="width:100%;position:absolute;left:0;top:40px;"
+												 v-if="itemChild.commanderLabel">
+												<div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex"
+													 :pos='"travel_sign_"+itemChild._reduceIndex'
+													 style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div v-else class='flex' style="width:82%">
 									<div class="item"
-									     :style="{width: col==3 ? '81.7%' : '63.4%'}">
+										 :style="{width: col==3 ? '81.7%' : '63.4%'}">
 										<div class="textContent"
-										     v-html='item.name'></div>
+											 v-html='item.name'></div>
 									</div>
 									<div class="item"
-									     :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+										 :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
 									<div v-if='col==4' class="item"
-									     :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+										 :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
 			<div style="text-align: right;margin-top: 20px" v-if="needSubmit">
 				<el-button type="primary" @click="submit">提交</el-button>
 			</div>
@@ -435,7 +440,7 @@
                                     })
                                     //}
                                 })
-								this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
+                                this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
                                 resolve()
                             } else {
                                 this.$message({type: 'error', message: '新增失败，请重试'});
@@ -472,15 +477,17 @@
                 //     "password":"air123456"
                 // }
             },
+            // sign
             async showMsgBoxFn(item, type, $event, fnName) {
                 let _this = this
                 // 判断是否是强身份认证还是弱身份认证
                 if (this.workorder.type.startsWith("WX")) {
                     // 强身份
+
                     // http://192.168.4.222:8081/jitGW/random
                     let original = await _this.jitGWRandomFn()
                     let result = await this.doDataProcess(initParam, original)
-                    if (result.code == 200) {
+                     if (result.code == 200) {
                         let user = result.data['_saml_pki_cert_subject']
                         if (user) {
                             user = user.split(",").filter(i => i.startsWith("T="))[0].split("=")[1]
@@ -499,8 +506,6 @@
                         }).catch(() => {
                             // ...
                         });
-                    } else {
-                        this.$message({type: 'error', message: result.message});
                     }
                 } else {
                     // 弱身份
@@ -511,7 +516,7 @@
                         if (data.val && data.psd) {
                             let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
                             if (judegUser == '1') {
-                                _this[fnName](item, type, $event, data.val, data.psd)
+                                _this['_' + fnName](item, type, $event, data.val, data.psd)
                             } else {
                                 _this.$message({type: 'error', message: '密码错误，请重新输入'});
                             }
@@ -521,10 +526,282 @@
                     });
                 }
             },
+            // 3sign
+            fixedSignFn(item, type, $event, val, psd) {
+                // if(!$('#1'+item.id).is(':checked')){
+                //     this.$message({type: 'warning', message: '请先点击维修已完成'})
+                //     return
+                // }
+
+                SignatureInit(val, psd,this.labelVO.noSignTime)
+
+                var signatureCreator = Signature.create()
+                var that = this
+                /* 保护项 */
+                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
+                let protectedItems = []
+                inputArr.each((index, item) => {
+                    if (!($(item).attr("id") && $(item).attr("id").includes("sign"))) {
+                        protectedItems.push($(item).attr("id"))
+                    }
+                })
+                protectedItems = protectedItems.filter(i => i)
+
+                // 判断签章高度 start
+                let offsetY = 1
+                $('.kg-img-div-' + type).each((ind, ele) => {
+                    offsetY += $(ele).height() + 10
+                })
+                // 判断签章高度 end
+
+                signatureCreator.run({
+                    offsetX: 1,
+                    offsetY: offsetY,
+                    protectedItems: protectedItems, //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                    okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                        console.log("盖章ID：" + this.getSignatureid());
+                        console.log("盖章数据：" + this.getSignatureData());
+                        fn(true);
+                        let _this = this
+
+                        that.$nextTick(() => {
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                type,
+                                function (fn, imgdata, signid, sdata) {
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
+                                        imgdata[1]
+                                    )
+                                }
+                            )
+                        })
+                    },
+                    cancelCall: function () {//点击取消后的回调方法
+                        console.log("取消！")
+                    }
+                });
+            },
+            _fixedSignFn(item, type, $event, val, psd) {
+
+                SignatureInit(val, undefined, this.labelVO.noSignTime)
+                var signatureCreator = Signature.create()
+                var that = this
+                /* 保护项 */
+                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
+                let protectedItems = []
+                inputArr.each((index, item) => {
+                    if (!($(item).attr("id") && $(item).attr("id").includes("sign"))) {
+                        protectedItems.push($(item).attr("id"))
+                    }
+                })
+                protectedItems = protectedItems.filter(i => i)
+                // 判断签章高度 start
+                console.log(protectedItems)
+                // 判断签章高度 end
+                signatureCreator.handWriteDlg({
+                    image_height: "1",
+                    image_width: "2",
+                    canvas_width: "100",
+                    canvas_height: "50",
+                    onBegin: function () {
+                        console.log('onbegin');
+                    },
+                    onEnd: function () {
+                        console.log('onEnd');
+                    }
+                }, function (param) {
+                    let offsetY = 1
+                    $('.kg-img-div-' + type).each((ind, ele) => {
+                        offsetY += $(ele).height() + 10
+                    })
+                    signatureCreator.runHW(param, {
+                        offsetX: 1,
+                        offsetY: offsetY,
+                        protectedItems: protectedItems,
+                        //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            // console.log("盖章ID："+this.getSignatureid());
+                            // console.log("盖章数据："+this.getSignatureData());
+
+                            fn(true);
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parents('.item').find(".sign_box").attr("pos"),
+                                function (fn, imgdata, signid, sdata) {
+                                    // this.src=imgdata
+
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
+                                        imgdata[1]
+                                    )
+                                }
+                            )
+
+                        },
+                        cancelCall: function () {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    });
+                });
+            },
+            // 4sign
+            travelSignFn(item, type, $event, val, psd) {
+                // if(!$('#2'+item.id).is(':checked')){
+                //     this.$message({type: 'warning', message: '请先点击放行已完成'})
+                //     return
+                // }
+                SignatureInit(val, psd,this.labelVO.noSignTime)
+                var signatureCreator = Signature.create();
+                var that = this;
+                /* 保护项 */
+                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
+                let protectedItems = []
+                inputArr.each((index, item) => {
+                    if ($(item).attr("name").includes("sign")) {
+
+                    } else {
+                        protectedItems.push($(item).attr("id"))
+                    }
+                })
+                /* 保护项 */
+                protectedItems = protectedItems.filter(i => i)
+                // 判断签章高度 start
+                let offsetY = 1
+                $('.kg-img-div-' + type).each((ind, ele) => {
+                    offsetY += $(ele).height() + 10
+                })
+                // 判断签章高度 end
+                signatureCreator.run({
+                    offsetX: 1,
+                    offsetY: offsetY,
+                    protectedItems: protectedItems,
+                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                    //                 'item5', 'item6','item7', 'item8',
+                    //                 'item9','item10', 'item11', 'item12',
+                    //                 'item13','item14', 'item15', 'item16',
+                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                    okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                        console.log("盖章ID：" + this.getSignatureid());
+                        console.log("盖章数据：" + this.getSignatureData());
+                        fn(true);
+                        let _this = this
+                        signatureCreator.getBase64Image(
+                            this.getSignatureid(),
+                            this.getSignatureData(),
+                            type,
+                            function (fn, imgdata, signid, sdata) {
+                                that.postSignFn(
+                                    item,
+                                    type,
+                                    _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
+                                    imgdata[1]
+                                )
+                            }
+                        )
+                        // if(type==='pos3'){
+                        //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                        // }else if(type==='pos4'){
+                        //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
+                        // }
+                        // console.log(that.workerSignatureData)
+                        // console.log(that.customerSignatureData)
+
+                    },
+                    cancelCall: function () {//点击取消后的回调方法
+                        console.log("取消！")
+                    }
+                });
+            },
+            _travelSignFn(item, type, $event, val, psd) {
+                SignatureInit(val, undefined, this.labelVO.noSignTime)
+                var signatureCreator = Signature.create();
+                var that = this;
+                /* 保护项 */
+                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
+                let protectedItems = []
+                inputArr.each((index, item) => {
+                    if ($(item).attr("name").includes("sign")) {
+
+                    } else {
+                        protectedItems.push($(item).attr("id"))
+                    }
+                })
+                /* 保护项 */
+                protectedItems = protectedItems.filter(i => i)
+
+                // 判断签章高度 start
+                signatureCreator.handWriteDlg({
+                    image_height: "1",
+                    image_width: "2",
+                    canvas_width: "100",
+                    canvas_height: "50",
+                    onBegin: function () {
+                        console.log('onbegin');
+                    },
+                    onEnd: function () {
+                        console.log('onEnd');
+                    }
+                }, function (param) {
+                    let offsetY = 1
+                    $('.kg-img-div-' + type).each((ind, ele) => {
+                        offsetY += $(ele).height() + 10
+                    })
+                    signatureCreator.runHW(param, {
+                        offsetX: 1,
+                        offsetY: offsetY,
+                        protectedItems: protectedItems,
+                        // protectedItems:[ 'item1', 'item2', 'item3','item4',
+                        //                 'item5', 'item6','item7', 'item8',
+                        //                 'item9','item10', 'item11', 'item12',
+                        //                 'item13','item14', 'item15', 'item16',
+                        //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID：" + this.getSignatureid());
+                            console.log("盖章数据：" + this.getSignatureData());
+                            fn(true);
+                            let _this = this
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                $($event.target).parents('.item').find(".sign_box").attr("pos"),
+                                function (fn, imgdata, signid, sdata) {
+                                    that.postSignFn(
+                                        item,
+                                        type,
+                                        _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
+                                        imgdata[1]
+                                    )
+                                }
+                            )
+                        },
+                        cancelCall: function () { //点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    });
+                });
+            },
             async doDataProcess(initParam, original) {
                 // 证书版本者主题
                 var signSubject = ""; //document.getElementById("rootCADN").value;
                 // 验证认证原文是否为空
+				let f1=()=>{
+				    this.$message.info('操作已取消')
+				}
+				let f2=()=>{
+				    this.$message.info('没有找到有效的证书，如果使用的是KEY，请确认已经插入key')
+				}
                 if (original == "") {
                     alert("认证原文不能为空!");
                     return false;
@@ -533,8 +810,8 @@
                     //var initParam = "<\?xml version=\"1.0\" encoding=\"gb2312\"\?><authinfo><liblist><lib type=\"CSP\" version=\"1.0\" dllname=\"\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib><lib type=\"SKF\" version=\"1.1\" dllname=\"SERfR01DQUlTLmRsbA==\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib><lib type=\"SKF\" version=\"1.1\" dllname=\"U2h1dHRsZUNzcDExXzMwMDBHTS5kbGw=\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib><lib type=\"SKF\" version=\"1.1\" dllname=\"U0tGQVBJLmRsbA==\" ><algid val=\"SHA1\" sm2_hashalg=\"sm3\"/></lib></liblist></authinfo>";
                     // 调用网关工具脚本中的detachSignStr方法进行签名，返回签名结果
                     // 参数说明：initParam：vctk控件初始化参数，authContent：认证原文，signSubject：证书版本者主题
-                    signResult = detachSignStr(initParam, original, signSubject);
-                    if (signResult) {
+                    signResult = detachSignStr(initParam, original, f1,f2);
+                     if (signResult) {
                         return new Promise((resolve, reject) => {
                             this.jitGWAuthFn(undefined, original, signResult).then(res => {
                                 console.log(res)
@@ -599,7 +876,7 @@
                 });
             },
             signFn(type, val, psd) {
-                SignatureInit(val, psd)
+                SignatureInit(val, psd,this.labelVO.noSignTime)
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.run({
@@ -714,133 +991,7 @@
                         }
                     })
             },
-            fixedSignFn(item, type, $event, val, psd) {
-                // if(!$('#1'+item.id).is(':checked')){
-                //     this.$message({type: 'warning', message: '请先点击维修已完成'})
-                //     return
-                // }
 
-                SignatureInit(val, psd)
-
-                var signatureCreator = Signature.create()
-                var that = this
-                /* 保护项 */
-                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
-                let protectedItems = []
-                inputArr.each((index, item) => {
-                    if (!($(item).attr("id") && $(item).attr("id").includes("sign"))) {
-                        protectedItems.push($(item).attr("id"))
-                    }
-                })
-                protectedItems = protectedItems.filter(i => i)
-
-                // 判断签章高度 start
-                let offsetY = 1
-                $('.kg-img-div-' + type).each((ind, ele) => {
-                    offsetY += $(ele).height() + 10
-                })
-                // 判断签章高度 end
-
-                signatureCreator.run({
-                    offsetX: 1,
-                    offsetY: offsetY,
-                    protectedItems: protectedItems, //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID：" + this.getSignatureid());
-                        console.log("盖章数据：" + this.getSignatureData());
-                        fn(true);
-                        let _this = this
-
-                        that.$nextTick(() => {
-                            signatureCreator.getBase64Image(
-                                this.getSignatureid(),
-                                this.getSignatureData(),
-                                type,
-                                function (fn, imgdata, signid, sdata) {
-                                    that.postSignFn(
-                                        item,
-                                        type,
-                                        _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
-                                        imgdata[1]
-                                    )
-                                }
-                            )
-                        })
-                    },
-                    cancelCall: function () {//点击取消后的回调方法
-                        console.log("取消！")
-                    }
-                });
-            },
-            travelSignFn(item, type, $event, val, psd) {
-                // if(!$('#2'+item.id).is(':checked')){
-                //     this.$message({type: 'warning', message: '请先点击放行已完成'})
-                //     return
-                // }
-                SignatureInit(val, psd)
-                var signatureCreator = Signature.create();
-                var that = this;
-                /* 保护项 */
-                let inputArr = $($event.target).parents('.item').siblings(".item").find(".textContent").find('input')
-                let protectedItems = []
-                inputArr.each((index, item) => {
-                    if ($(item).attr("name").includes("sign")) {
-
-                    } else {
-                        protectedItems.push($(item).attr("id"))
-                    }
-                })
-                /* 保护项 */
-                protectedItems = protectedItems.filter(i => i)
-                // 判断签章高度 start
-                let offsetY = 1
-                $('.kg-img-div-' + type).each((ind, ele) => {
-                    offsetY += $(ele).height() + 10
-                })
-                // 判断签章高度 end
-                signatureCreator.run({
-                    offsetX: 1,
-                    offsetY: offsetY,
-                    protectedItems: protectedItems,
-                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
-                    //                 'item5', 'item6','item7', 'item8',
-                    //                 'item9','item10', 'item11', 'item12',
-                    //                 'item13','item14', 'item15', 'item16',
-                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID：" + this.getSignatureid());
-                        console.log("盖章数据：" + this.getSignatureData());
-                        fn(true);
-                        let _this = this
-                        signatureCreator.getBase64Image(
-                            this.getSignatureid(),
-                            this.getSignatureData(),
-                            type,
-                            function (fn, imgdata, signid, sdata) {
-                                that.postSignFn(
-                                    item,
-                                    type,
-                                    _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
-                                    imgdata[1]
-                                )
-                            }
-                        )
-                        // if(type==='pos3'){
-                        //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }else if(type==='pos4'){
-                        //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }
-                        // console.log(that.workerSignatureData)
-                        // console.log(that.customerSignatureData)
-
-                    },
-                    cancelCall: function () {//点击取消后的回调方法
-                        console.log("取消！")
-                    }
-                });
-            },
             async signOthMsgBoxFn(type, $event) {
                 let _this = this
                 let original = await _this.jitGWRandomFn()
@@ -886,7 +1037,7 @@
                     this.$message({type: 'warning', message: '请先完成所有的放行已完成'})
                     return
                 }
-                SignatureInit(val, psd)
+                SignatureInit(val, psd,this.labelVO.noSignTime)
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.run({
@@ -912,7 +1063,7 @@
                                     value: _this.getSignatureid().toString() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1]
                                 })
-                            }
+                             }
                         )
                     },
                     cancelCall: function () {//点击取消后的回调方法

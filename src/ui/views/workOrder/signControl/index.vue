@@ -268,7 +268,6 @@
                 }else{
                     this.$message.error('请先完成工单');
                 }
-
             },
 
             getList(){
