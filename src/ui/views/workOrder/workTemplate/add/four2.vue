@@ -123,7 +123,7 @@
                                        <el-option v-for="(opt,index) in options.applyRangeType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                    </el-select>
                                    <el-select    multiple filterable v-if="item.type=='适用机型范围'"  v-model="item.values" placeholder="请选择机型">
-                                       <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
+                                       <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.iata" :value="opt.iata"> </el-option>
                                    </el-select>
                                    <el-select    v-else multiple  v-model="item.values" placeholder="请选择发动机">
                                        <el-option v-for="(opt,index) in options.EngineNo" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>

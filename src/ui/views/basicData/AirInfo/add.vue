@@ -25,7 +25,7 @@
                     <el-form-item  label="机型：" prop="icao">
                         <span v-if="type=='info'">{{form.icao}}</span>
                         <el-select  v-else  filterable    v-model="form.icao" placeholder="请选择机型">
-                            <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
+                            <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.iata" :value="opt.iata"> </el-option>
                         </el-select>
                     </el-form-item>
                 </div>
