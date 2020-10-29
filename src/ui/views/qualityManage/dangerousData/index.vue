@@ -2,12 +2,12 @@
     <div>
 
          <router-view v-if="this.$route.path== '/dangerousDataAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$route.path== '/dangerousDataIndex'" :key="$route.path" class="  G_listOne">
-            <div class="  QCenterRight">
-                <div class="  QHead_list">
+        <div v-else-if="this.$route.path== '/dangerousDataIndex'" :key="$route.path"  class="coursewareMaintain">
+            <div class="top-content">
+                <div class="top-content-title">
                     <span>危险数据</span>
                 </div>
-                <div class="QheadRight">
+                <div class="top-toolbar">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
@@ -20,7 +20,7 @@
 
                 </div>
             </div>
-            <div class=" ">
+            <div class="main-content">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
@@ -237,10 +237,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-/*@import "@/ui/styles/common_list.scss"; */
-.G_listOne{
+@import "@/ui/styles/common_list.scss";
+.coursewareMaintain{
     margin-top:14px;
-
+    /deep/ .mainTable{
+        height:calc(100vh - 370px);
+    }
 }
 
 </style>

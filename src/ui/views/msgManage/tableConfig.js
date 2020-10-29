@@ -134,7 +134,7 @@ export const infoPlateSendTable = (infoSelect) => {
 export const infoPlateReceiveTable = (infoSelect) => {
     return [
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
-        { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"type",search:{prop:'type',type:'select',selectProp:["valData","valData"],data:infoSelect,placeholder:"请选择信息类型"} },
+        { prop: 'type', label: '信息类型', align: 'center',sort:true,sortProp:"type",search:{prop:'type',type:'input',selectProp:["valData","valData"],data:infoSelect,placeholder:"请输入信息类型"} },
         { prop: 'sendDate', label: '发送时间',
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--');
