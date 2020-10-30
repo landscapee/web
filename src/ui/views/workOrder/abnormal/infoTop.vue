@@ -39,11 +39,11 @@
                     <div>  航班号 </div>
                     <div  >{{get(workorder,'flightNo')||'--'}}</div>
                     <div>  航班类型 </div>
-                    <div  >{{get(workorder,'airlineType')||'--'}}</div>
+                    <div  >{{get(workorder,'flightState')||'--'}}</div>
                 </div>
                 <div  class="rowdiv">
                     <div>  机型 </div>
-                    <div style="overflow: hidden;" :title="airplane">{{airplane||'--'}}</div>
+                    <div style="overflow: hidden;"  >{{ get(workorder,'airplaneIcao')||'--'}}</div>
                     <div>  飞机注册号</div>
                     <div>{{get(workorder,'flightRegisterNo')||'--'}}</div>
                     <div>  所属航空公司代码</div>
