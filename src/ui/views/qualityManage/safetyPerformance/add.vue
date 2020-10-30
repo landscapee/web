@@ -167,7 +167,18 @@ if(val){
             },
             resetForm(){
                 if(this.type=='edit'){
-                    this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:null, month:null,};
+                    // this.form={id:this.form.id,yearMonth:this.form.yearMonth,year:this.form.year, month:this.form.month,};
+                    for (let key in this.form) {
+                        console.log(key,this.form[key],typeof (this.form[key]));
+                        if (key !== 'id'&& key!=='yearMonth'&& key!=='year'&& key!=='month') {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
+
                 }else {
                     this.form={};
                 }

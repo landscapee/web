@@ -13,8 +13,8 @@ let timeInfo=(row)=>{
 export const safetyConfig = (obj) => {
         return [
                 { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
-                { prop: 'year', label: '年份',width:60,sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入年份",clear:false} },
-                { prop: 'month', label: '月份',width:60,sortProp:"month", align: 'center',sort:true,search:{type:'input', prop:'month',placeholder:"请输入月份",clear:false} },
+                { prop: 'year', label: '年份',width:60,sortProp:"year", align: 'center',sort:true,search:{type:'input',isNumber:true, prop:'year',placeholder:"请输入年份",clear:false} },
+                { prop: 'month', label: '月份',width:60,sortProp:"month", align: 'center',sort:true,search:{type:'input',isNumber:true, prop:'month',placeholder:"请输入月份",clear:false} },
                 { prop: 'deptName', label: '部门',sortProp:"deptName", align: 'center', search:{type:'select', prop:'deptId',placeholder:"请选择",selectProp:['valData','valCode'],data:obj.dept} },
                 { prop: 'reviewerName', label: '批准人',sortProp:"reviewerName", align: 'center', search:{type:'input', prop:'reviewerName',placeholder:"请输入批准人"} },
                 { prop: 'reviewerTime', label: '审批日期',formatter:timeInfo, sortProp:"reviewerTime", align: 'center',sort:true,search:{type:'date', prop:'reviewerTime',placeholder:"请选择审批日期"}},

@@ -375,7 +375,12 @@
             },
             resetForm(){
                 if(this.form.id){
-                    this.form = {id:this.form.id,modelRange:[] };
+                    this.form.authorizationType = "";
+                    this.form.authorizedUnitCode = "";
+                    this.form.modelRangeRemark = "";
+                    this.form.flightType = "";
+                    this.form.startTime = null;
+                    this.form.modelRange = [];
                 }else{
                     this.form = { modelRange:[]};
                 }

@@ -231,7 +231,16 @@
         methods: {
             resetForm(){
                 if(this.type=='edit'){
-                    this.form={id:this.form.id,number:this.form.number};
+                    // this.form={id:this.form.id,number:this.form.number};
+                    for (let key in this.form) {
+                        if (key !== 'id' && key!=='number') {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
                 }else {
                     this.form={};
                 }

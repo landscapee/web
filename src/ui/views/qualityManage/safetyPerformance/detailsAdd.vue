@@ -122,7 +122,7 @@
                 form: {},
                 options: {},
                 rules: {
-                    number: [{validator:number, trigger: "blur" }],
+                    number: [{validator:number, trigger: "blur",required:true }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 type: "add"
@@ -167,7 +167,15 @@
         methods: {
             resetForm(){
                 if(this.type=='edit'){
-                    this.form={securityMeritsId:this.form.securityMeritsId,number:this.form.number, };
+                    for (let key in this.form) {
+                        if (key !== 'id' && key !== 'securityMeritsId' && key !== 'number') {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
                 }else {
                     this.form={};
 

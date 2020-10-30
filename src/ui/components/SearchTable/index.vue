@@ -29,8 +29,8 @@
 									  :type="colConfig.search.type1||'text'"
 									  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear"
 									  :placeholder="colConfig.search.placeholder" class="adv_filter"
-									  v-model="row[colConfig.search.prop]"></el-input>
-
+									  v-model="row[colConfig.search.prop]"
+									  @input="filterNumber($event,row,colConfig.search.prop,colConfig.search.isNumber)"></el-input>
 							<span   @click="requestTableData" class="rowSvg"
 									v-if="colConfig.search.extendType && colConfig.search.extendType=='search'">
 								<icon  iconClass="table_search" title="搜索"></icon>
@@ -214,6 +214,11 @@
                 this.multipleSelection = val;
                 this.$emit('listenToSelectionChange', val);
             },
+			filterNumber(value,row,prop,isNumber){
+				if (isNumber) {
+					row[prop]=value.replace(/[^\d]/g,'')
+				}
+			}
         },
 
         beforeDestroy() {
