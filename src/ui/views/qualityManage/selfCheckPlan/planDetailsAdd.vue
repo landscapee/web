@@ -188,7 +188,16 @@
 
             resetForm(){
                 if(this.type=='edit'){
-                    this.form={id:this.form.id,checkMethod:[],number:this.form.number };
+                    for (let key in this.form) {
+                        if (key !== 'id'&& key!=='number' && key!=='examinationId') {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
+                    this.form.checkMethod=[];
                 }else {
                     this.form={checkMethod:[]};
                 }

@@ -153,7 +153,7 @@
                 moment: moment,
                 form: {},
                 rules: {
-                    infNumber: [{ validator:checkInfNumber, trigger: "blur" }],
+                    infNumber: [{ validator:checkInfNumber, trigger: "blur",required:true }],
                   },
                 type: "add"
             };
@@ -192,7 +192,16 @@
         methods: {
             resetForm(){
                 if(this.type=='edit'){
-                    this.form={id:this.form.id,infNumber:this.form.infNumber};
+                    // this.form={id:this.form.id,infNumber:this.form.infNumber};
+                    for (let key in this.form) {
+                        if (key !== 'id'&&key!=='infNumber') {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
                 }else {
                     this.form={};
                 }
