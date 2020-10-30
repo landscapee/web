@@ -131,7 +131,7 @@ export default {
 					})
 					.then((data) => {
 						console.log(data.data,'login');
-						if (data.responseCode === 1000||data.responseCode === 30003||data.responseCode === 30002) {
+						if (data.responseCode === 1000||data.responseCode === 30003||data.responseCode === 30002||data.responseCode === 30010) {
 							setToken(data.data.token);
 							setUserInfo(data.data);
 							this.$store.commit('user/SET_TOKEN',data.data.token);
@@ -139,6 +139,9 @@ export default {
 							initWebsocket(this);
 							this.findUnread();
 							//跳转到修改密码页面
+							if(data.responseCode === 30010){
+							    this.$message.warning(data.responseMessage)
+							}
 							if(data.responseCode === 30003||data.responseCode === 30002){
 								// this.$message.warning(data.responseMessage);
 								this.$refs['pwd'].open(data.responseMessage,data.data);

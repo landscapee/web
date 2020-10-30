@@ -611,10 +611,10 @@
                 console.log(protectedItems)
                 // 判断签章高度 end
                 signatureCreator.handWriteDlg({
-                    image_height: "1",
-                    image_width: "4",
-                    // canvas_width: "100",
-                    // canvas_height: "50",
+                    image_height: "3",
+                    image_width: "6",
+                    // canvas_width: "500",
+                    // canvas_height: "200",
                     onBegin: function () {
                         console.log('onbegin');
                     },
@@ -627,7 +627,7 @@
                         offsetY += $(ele).height() + 10
                     })
                     signatureCreator.runHW(param, {
-                        offsetX: 1,
+                        offsetX: 5,
                         offsetY: offsetY,
                         protectedItems: protectedItems,
                         //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
@@ -750,7 +750,7 @@
                 // 判断签章高度 start
                 signatureCreator.handWriteDlg({
                     image_height: "2",
-                    image_width: "6",
+                    image_width: "4",
                     canvas_width: "100",
                     canvas_height: "50",
                     onBegin: function () {
@@ -824,7 +824,6 @@
                                 console.log(res)
                                 resolve(res)
                             })
-
                         })
 
                     } else {
@@ -849,7 +848,7 @@
                                 //document.getElementById("qr_div").style.display="";
                             }
                         } else {
-                            this.$message({type: 'error', message: '连接失败，请稍后重试'});
+                            this.$message({type: 'error', message: result.message});
                         }
                     })
                 })
@@ -1000,10 +999,11 @@
             },
 
             async signOthMsgBoxFn(type, $event) {
+
                 let _this = this
                 let original = await _this.jitGWRandomFn()
                 let result = await this.doDataProcess(initParam, original)
-                if (result.code == 200) {
+                 if (result.code == 200) {
                     let user = result.data['_saml_pki_cert_subject']
                     if (user) {
                         user = user.split(",").filter(i => i.startsWith("T="))[0].split("=")[1]
@@ -1022,8 +1022,6 @@
                     }).catch(() => {
                         // ...
                     });
-                } else {
-                    this.$message({type: 'error', message: result.message});
                 }
 
 
@@ -1369,25 +1367,31 @@
             signBasicActiveFn() {
                 return Array.from($(".commanderComplete")).every(i => $(i).is(":checked"))
             },
-            deleteSignFn(getSignatureid, getSignatureData) {
+
+            deleteSignFn(getSignatureid, getSignatureData){
+                console.log(this.contentId);
                 let key = $(`div[signatureid='${getSignatureid}']`).attr("elemid")
+                let contentDetailId = ''
+                let value = getSignatureid
                 request({
-                    url: `${this.$ip}/mms-workorder/operationInf/deleteSign`,
+                    url:`${this.$ip}/mms-workorder/operationInf/cancelSign`,
                     method: 'post',
-                    data: {
+                    data:{
                         serialNo: this.workorder.serialNo,
-                        key
+                        key,
+                        contentDetailId,
+                        value
                     }
                 })
                     .then((data) => {
-                        console.log(data)
-                        if (data.code == 200) {
+                        if(data.code == 200){
                             //this.$message({type: 'success', message: '保存成功'})
-                        } else {
+                        }else{
                             //this.$message({type: 'error', message: data.message})
                         }
                     })
             },
+
             removeSignatureFn(signatureid) {
                 if (signatureid) {
                     $(`[signatureid=${signatureid}]`)[0].remove();
