@@ -559,11 +559,13 @@
                             needRole:false
                         }
                     }).then((d) => {
-                        if (d.data) {
+                        if (d.responseCode===1000 && d.data) {
                             this.userArr = [...d.data]
                             d.data.map((k, l) => {
                                 this.userArrObj[k.id] = k
                             })
+                        }else {
+                            this.$message.error(d.responseMessage);
                         }
                     });
                     if (this.type != 'add') {

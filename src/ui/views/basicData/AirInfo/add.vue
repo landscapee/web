@@ -20,7 +20,10 @@
                 <div class="row_tow">
                     <el-form-item  label="机尾号：" prop="flightRegisterNo">
                         <span v-if="type=='info'">{{form.flightRegisterNo}}</span>
-                        <el-input v-else v-model="form.flightRegisterNo" placeholder="请输入机尾号"></el-input>
+                        <div  v-else>
+                            <el-input v-model="form.flightRegisterNo" placeholder="请输入机尾号"></el-input>
+                            <div class="hint">多个机尾号请以 ; (英文分号)分隔</div>
+                        </div>
                     </el-form-item>
                     <el-form-item  label="机型：" prop="icao">
                         <span v-if="type=='info'">{{form.icao}}</span>
@@ -60,7 +63,15 @@
                 AircraftTypeObj:{},
                 rules: {
                     engineNo: [{ required:true,message:'请选择发动机号', trigger: "blur" }],
-                    flightRegisterNo: [{ required:true,message:'请输入机尾号', trigger: "blur" }],
+                    flightRegisterNo: [{ required:true,message:'请输入机尾号', trigger: "blur",
+                        validator:(rule, value, callback) =>{
+                            if (value && value.trim()) {
+                                callback(value.trim());
+                            }else {
+                                callback(new Error("请输入机尾号"));
+                            }
+                        }
+                        }],
                     icao: [{ required:true,message:'请选择机型', trigger: "blur" }],
 
                 },
@@ -161,6 +172,10 @@
         .el-input{
             width: calc(100% - 50px)!important;
         }
+    }
+    .hint{
+        color: red;
+        font-size: 14px;
     }
 
 </style>
