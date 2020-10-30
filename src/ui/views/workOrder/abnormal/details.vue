@@ -172,14 +172,17 @@
 				<el-button type="primary" @click="submit">提交</el-button>
 			</div>
 		</div>
-
+<div>
+	<div id="kg-img-div-postil1" style="border:1px red solid;width: 200px;height:200px">
+		<img src="#" alt="">
+	</div>
+</div>
 	</div>
 </template>
 <script>
     import $ from 'jquery'
     import request from '@lib/axios.js';
     import InfoTop from './infoTop'
-
     import naTemp from '@/ui/components/naTemp'
     import {SignatureInit} from '@/ui/lib/Signature.js'
     import {initParam} from './basicData'
@@ -533,7 +536,7 @@
                 //     return
                 // }
 
-                SignatureInit(val, psd,this.labelVO.noSignTime)
+                SignatureInit(val, psd,this.labelVO.noSignTime,1.5)
 
                 var signatureCreator = Signature.create()
                 var that = this
@@ -555,6 +558,7 @@
                 // 判断签章高度 end
 
                 signatureCreator.run({
+
                     offsetX: 1,
                     offsetY: offsetY,
                     protectedItems: protectedItems, //设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
@@ -571,6 +575,9 @@
                                 this.getSignatureData(),
                                 type,
                                 function (fn, imgdata, signid, sdata) {
+                                    $('#kg-img-div-postil1').find('img').attr('src',imgdata);
+
+
                                     that.postSignFn(
                                         item,
                                         type,
@@ -605,9 +612,9 @@
                 // 判断签章高度 end
                 signatureCreator.handWriteDlg({
                     image_height: "1",
-                    image_width: "2",
-                    canvas_width: "100",
-                    canvas_height: "50",
+                    image_width: "4",
+                    // canvas_width: "100",
+                    // canvas_height: "50",
                     onBegin: function () {
                         console.log('onbegin');
                     },
@@ -637,7 +644,7 @@
                                 $($event.target).parents('.item').find(".sign_box").attr("pos"),
                                 function (fn, imgdata, signid, sdata) {
                                     // this.src=imgdata
-
+                                     $('#kg-img-div-postil1').find('img').attr('src',imgdata);
                                     that.postSignFn(
                                         item,
                                         type,
@@ -660,7 +667,7 @@
                 //     this.$message({type: 'warning', message: '请先点击放行已完成'})
                 //     return
                 // }
-                SignatureInit(val, psd,this.labelVO.noSignTime)
+                SignatureInit(val, psd,this.labelVO.noSignTime,1.5)
                 var signatureCreator = Signature.create();
                 var that = this;
                 /* 保护项 */
@@ -742,8 +749,8 @@
 
                 // 判断签章高度 start
                 signatureCreator.handWriteDlg({
-                    image_height: "1",
-                    image_width: "2",
+                    image_height: "2",
+                    image_width: "6",
                     canvas_width: "100",
                     canvas_height: "50",
                     onBegin: function () {
@@ -1037,7 +1044,7 @@
                     this.$message({type: 'warning', message: '请先完成所有的放行已完成'})
                     return
                 }
-                SignatureInit(val, psd,this.labelVO.noSignTime)
+                SignatureInit(val, psd,this.labelVO.noSignTime,1.5)
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.run({
@@ -1074,6 +1081,7 @@
             postSignFn(item, type, getSignatureid) {
                 request({
                     url: `${this.$ip}/mms-workorder/operationInf/sign`,
+                    // url: `${this.$ip}/mms-workorder/operationInf/exceptionSign`,
                     method: 'post',
                     data: {
                         contentDetailId: item.id, //'42b51712b93254d2ede69d6ef251c68c', //item.id,

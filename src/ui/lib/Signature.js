@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-export function SignatureInit(keysn='0002',password='123456', isCheck=false){
+export function SignatureInit(keysn='0002',password='123456', isCheck=false,num){
     function delCB(signatureid, signatureData) {
         for (var key in Signature.list) {
             if (signatureid == key && Signature.list[signatureid].keysn == signatureData.keysn) {
@@ -35,12 +35,12 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false){
         //quickClose: false,//
         verifyResType : 'click touchend',//验证响应方式，默认click。避免在特殊情况下（如IOS、webview）环境下第一次点击不响应的问题
         pw_timeout:'s1800', //s：秒；h:小时；d:天
-        scaleImage: 1, //签章图片的缩放比例
+        scaleImage: num||1, //签章图片的缩放比例
         showNoPW:true, // 签章时候显示密码
         signdate:{
             ischeck:!isCheck,
-            fontSize:14,
-            position:'居中下(章外)',
+            fontSize:12,
+            position:'居中下(章内)',
         },
     });
 }

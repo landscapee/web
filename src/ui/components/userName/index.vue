@@ -3,119 +3,154 @@
   <div class="message-box" v-show="isShowMessageBox">
     <div class="mask" @click="cancel"></div>
     <div class="message-content">
-        <!-- <img class="icon" src="@/assets/img/close.svg" alt="关闭" @click="cancel"> -->
-        <span class="icon" @click="cancel">x</span>
+      <!-- <img class="icon" src="@/assets/img/close.svg" alt="关闭" @click="cancel"> -->
+      <span class="icon" @click="cancel">x</span>
       <!-- <svg class="icon" aria-hidden="true" >
         <use xlink:href="#icon-delete"></use>
       </svg> -->
-      <h3 class="title">{{ title }}</h3>
-      <p class="content" v-if='isShowInput'>{{ content }}</p>
-      <div>
-        <input type="text" v-model="inputValue" v-if="isShowInput" ref="input" > <!--@keyup.enter="confirm"-->
-      </div>
-      <p class="content" v-if="isShowPsd">{{psdTitle}}</p>
-      <div>
-        <input type="password" v-model="psdValue" v-if="isShowPsd" ref="psd" @keyup.enter="confirm">
-      </div>
+      <el-form :model="form" :rules="rules" ref="form">
+        <el-form-item prop="inputValue">
+          <h3 class="title">{{ title }}</h3>
+          <p class="content" v-if='isShowInput'>{{ content }}</p>
+          <div>
+            <input type="text" v-model="form.inputValue" v-if="isShowInput" ref="input" > <!--@keyup.enter="confirm"-->
+          </div>
+
+        </el-form-item>
+        <el-form-item prop="psdValue">
+
+          <p class="content" v-if="isShowPsd">{{psdTitle}}</p>
+          <div>
+            <input type="password" v-model="form.psdValue" v-if="isShowPsd" ref="psd" @keyup.enter="confirm('form')">
+          </div>
+        </el-form-item>
+      </el-form>
+
       <div class="btn-group">
         <button class="btn-default" @click="cancel" v-show="isShowCancelBtn">{{ cancelBtnText }}</button>
-        <button class="btn-primary btn-confirm" @click="confirm" v-show="isShowConfimrBtn">{{ confirmBtnText }}</button>
+        <button class="btn-primary btn-confirm" @click="confirm('form')" v-show="isShowConfimrBtn">{{ confirmBtnText }}</button>
       </div>
     </div>
   </div>
 </template>
- 
+
 <script>
-  export default {
-    props: {
-      title: {
-        type: String,
-        default: '身份认证'
-      },
-      content: {
-        type: String,
-        default: '请输入用户名'
-      },
-      psdTitle:{
-        type: String,
-        default: '请输入密码'
-      },
-      isShowInput: false,
-      isShowPsd:false,
-      inputValue: '',
-      psdValue:'',
-      isShowCancelBtn: {
-        type: Boolean,
-        default: true
-      },
-      isShowConfimrBtn: {
-        type: Boolean,
-        default: true
-      },
-      cancelBtnText: {
-        type: String,
-        default: '取消'
-      },
-      confirmBtnText: {
-        type: String,
-        default: '确定'
-      }
-    },
-    data () {
-      return {
-        isShowMessageBox: false,
-        resolve: '',
-        reject: '',
-        promise: '' // 保存promise对象
-      };
-    },
-    methods: {
-      // 确定,将promise断定为resolve状态
-      confirm: function () {
-        this.isShowMessageBox = false;
-        let iptInfo = {}
-        if(this.isShowInput){
-            iptInfo.val = this.inputValue
+  import {getUserInfo} from '@lib/auth'
+     export default {
+        props: {
+            title: {
+                type: String,
+                default: '身份认证'
+            },
+            content: {
+                type: String,
+                default: '请输入用户名'
+            },
+            psdTitle:{
+                type: String,
+                default: '请输入密码'
+            },
+            isShowInput: false,
+            isShowPsd:false,
+
+            isShowCancelBtn: {
+                type: Boolean,
+                default: true
+            },
+            isShowConfimrBtn: {
+                type: Boolean,
+                default: true
+            },
+            cancelBtnText: {
+                type: String,
+                default: '取消'
+            },
+            confirmBtnText: {
+                type: String,
+                default: '确定'
+            }
+        },
+        data () {
+            return {
+                form:{
+                    inputValue:"",
+                    psdValue:'',
+                },
+                rules:{
+                    inputValue:[{required:true,message:'请输入用户名',trigger:'blur'}],
+                    psdValue:[{required:true,message:'请输入密码',trigger:'blur'}]
+                },
+                isShowMessageBox: false,
+                resolve: '',
+                reject: '',
+                promise: '' // 保存promise对象
+            };
+        },
+        computed:{
+            inputValue(){
+                return this.form.inputValue
+            },
+            psdValue(){
+                return this.form.psdValue
+            },
+        },
+         created(){
+
+             this.$set(this.form,'inputValue',getUserInfo().userName)
+           },
+        methods: {
+            // 确定,将promise断定为resolve状态
+            confirm (form) {
+                this.$refs[form].validate(valid => {
+                    if (valid) {
+                        this.isShowMessageBox = false;
+                        let iptInfo = {}
+                        if(this.isShowInput){
+                            iptInfo.val = this.inputValue
+                        }
+                        if(this.isShowPsd){
+                            iptInfo.psd = this.psdValue
+                        }
+                        if(JSON.stringify(iptInfo)==='{}'){
+                            this.resolve('confirm');
+                        }else{
+                            this.resolve(iptInfo);
+                        }
+
+                    }
+                });
+
+
+            },
+            // 取消,将promise断定为reject状态
+            cancel () {
+                this.isShowMessageBox = false;
+                this.reject('cancel');
+                this.remove();
+            },
+            // 弹出messageBox,并创建promise对象
+            showMsgBox () {
+                this.isShowMessageBox = true;
+                this.promise = new Promise((resolve, reject) => {
+                    this.resolve = resolve;
+                    this.reject = reject;
+                });
+                // 返回promise对象
+                return this.promise;
+            },
+            remove: function () {
+                setTimeout(() => {
+                    this.destroy();
+                }, 300);
+            },
+            destroy: function () {
+                this.$destroy();
+                document.body.removeChild(this.$el);
+            }
         }
-        if(this.isShowPsd){
-            iptInfo.psd = this.psdValue
-        }
-        if(JSON.stringify(iptInfo)==='{}'){
-            this.resolve('confirm');
-        }else{
-            this.resolve(iptInfo);
-        }
-        this.remove();
-      },
-      // 取消,将promise断定为reject状态
-      cancel: function () {
-        this.isShowMessageBox = false;
-        this.reject('cancel');
-        this.remove();
-      },
-      // 弹出messageBox,并创建promise对象
-      showMsgBox: function () {
-        this.isShowMessageBox = true;
-        this.promise = new Promise((resolve, reject) => {
-          this.resolve = resolve;
-          this.reject = reject;
-        });
-        // 返回promise对象
-        return this.promise;
-      },
-      remove: function () {
-        setTimeout(() => {
-          this.destroy();
-        }, 300);
-      },
-      destroy: function () {
-        this.$destroy();
-        document.body.removeChild(this.$el);
-      }
-    }
-  };
+    };
 </script>
- 
+
 <style lang="scss" scoped>
   .message-box {
     position: relative;
@@ -141,6 +176,7 @@
       background: #fff;
       z-index: 50001;
       .icon {
+        z-index: 10;
         position: absolute;
         font-size:34px;
         top: 12px;
@@ -191,48 +227,48 @@
         justify-content: center;
         overflow: hidden;
         .btn-default {
-            letter-spacing: 5px;
-            text-indent: 5px;
-            color: #333333;
-            background-color: #ffffff;
-            width: auto;
-            overflow: visible;
-            display: inline-block;
-            padding: 10px 20px;
-            _margin-left: 5px;
-            margin-bottom: 0;
-            font-size: 18px;
-            font-weight: normal;
-            line-height: 1.428571429;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            background-image: none;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
+          letter-spacing: 5px;
+          text-indent: 5px;
+          color: #333333;
+          background-color: #ffffff;
+          width: auto;
+          overflow: visible;
+          display: inline-block;
+          padding: 10px 20px;
+          _margin-left: 5px;
+          margin-bottom: 0;
+          font-size: 18px;
+          font-weight: normal;
+          line-height: 1.428571429;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: middle;
+          cursor: pointer;
+          background-image: none;
+          border: 1px solid #cccccc;
+          border-radius: 4px;
         }
         .btn-primary {
-            letter-spacing: 5px;
-            text-indent: 5px;
-            width: auto;
-            overflow: visible;
-            display: inline-block;
-            padding: 10px 20px;
-            _margin-left: 5px;
-            margin-bottom: 0;
-            font-size: 18px;
-            font-weight: normal;
-            line-height: 1.428571429;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            background-image: none;
-            border: 1px solid #ca2121;
-            border-radius: 4px;
-            background-color: #C62929;
-            color: #ffffff;
+          letter-spacing: 5px;
+          text-indent: 5px;
+          width: auto;
+          overflow: visible;
+          display: inline-block;
+          padding: 10px 20px;
+          _margin-left: 5px;
+          margin-bottom: 0;
+          font-size: 18px;
+          font-weight: normal;
+          line-height: 1.428571429;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: middle;
+          cursor: pointer;
+          background-image: none;
+          border: 1px solid #ca2121;
+          border-radius: 4px;
+          background-color: #C62929;
+          color: #ffffff;
         }
         .btn-confirm {
           margin-left: 12px;
