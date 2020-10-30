@@ -169,7 +169,15 @@
             },
             resetForm(){
                 if(this.form.id){
-                    this.form = {id:this.form.id };
+                    for (let key in this.form) {
+                        if (!(key === 'id' || key === 'userName' || key === 'userNumber' || key === 'userId') ) {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
                 }else{
                     this.form = { };
                 }

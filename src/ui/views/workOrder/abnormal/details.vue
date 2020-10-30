@@ -966,13 +966,16 @@
                                         mapItem.value.split("------")[1]
                                     ) {
                                         mapItem.value.split(",").forEach(item => {
-                                            signs.push(
-                                                {
-                                                    signatureid: item.split('------')[0],
-                                                    signatureData: item.split('------')[1],
-                                                    version: mapItem.version
-                                                }
-                                            )
+                                            if(item){
+                                                signs.push(
+                                                    {
+                                                        signatureid: item.split('------')[0],
+                                                        signatureData: item.split('------')[1],
+                                                        version: mapItem.version
+                                                    }
+                                                )
+                                            }
+
                                         })
                                     } else if (mapItem.key.includes("input") || mapItem.key.includes("date")) {
                                         if (BasicUpdateLimit) {
@@ -1076,6 +1079,7 @@
                     }
                 })
             },
+			// 保存签名数据
             postSignFn(item, type, getSignatureid) {
                 request({
                     url: `${this.$ip}/mms-workorder/operationInf/sign`,

@@ -120,7 +120,16 @@
             },
             resetForm(){
                 if(this.type=='edit'){
-                    this.form={id:this.form.id };
+                    for (let key in this.form) {
+                        if (key !== 'id') {
+                            if (typeof(this.form[key]) ==='string'){
+                                this.form[key] = "";
+                            } else if (typeof(this.form[key]) ==='number'){
+                                this.form[key] = null;
+                            }
+                        }
+                    }
+                    this.form.year1=null;
                 }else {
                     this.form={};
                 }
