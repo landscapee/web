@@ -172,11 +172,11 @@
 				<el-button type="primary" @click="submit">提交</el-button>
 			</div>
 		</div>
-<!--<div>-->
-	<!--<div id="kg-img-div-postil1" style="border:1px red solid;width: 200px;height:200px">-->
-		<!--<img src="#" alt="">-->
-	<!--</div>-->
-<!--</div>-->
+<div>
+	<div id="kg-img-div-postil1" style="border:1px red solid;width: 200px;height:200px">
+		<img src="#" alt="">
+	</div>
+</div>
 	</div>
 </template>
 <script>
@@ -253,6 +253,8 @@
                 });
 
             }
+
+
         },
         computed: {
             getbaseItemVOList() {
@@ -273,6 +275,7 @@
                 }
             }
         },
+
         methods: {
             editContent($event, item) {
                 if (!item.editState) {
@@ -403,7 +406,8 @@
             },
             async init(isClearAll = false, BasicUpdateLimit = false) {
                 await this.getTemplateById()
-                this.getBySerialNoFn(isClearAll, BasicUpdateLimit)
+                await this.getBySerialNoFn(isClearAll, BasicUpdateLimit)
+
             },
             getTemplateById() {
                 let _this = this
@@ -932,7 +936,7 @@
                             // }
 
                             // this.deepMap = JSON.parse(JSON.stringify(map))
-                            SignatureInit()
+                            SignatureInit('0002','123456',false,1,this.type)
                             var signatureCreator = Signature.create()
                             //let signData = $(".kg-img-div")  // signatureid
 
@@ -994,6 +998,8 @@
                                     }
                                 })
                                 Signature.loadSignatures(signs)
+
+
                             }
                         } else {
                             this.$message({type: 'error', message: '新增失败，请重试'});
@@ -1082,8 +1088,8 @@
 			// 保存签名数据
             postSignFn(item, type, getSignatureid) {
                 request({
-                    url: `${this.$ip}/mms-workorder/operationInf/sign`,
-                    // url: `${this.$ip}/mms-workorder/operationInf/exceptionSign`,
+                    // url: `${this.$ip}/mms-workorder/operationInf/sign`,
+                    url: `${this.$ip}/mms-workorder/operationInf/exceptionSign`,
                     method: 'post',
                     data: {
                         contentDetailId: item.id, //'42b51712b93254d2ede69d6ef251c68c', //item.id,
@@ -1343,8 +1349,7 @@
                         serialNo: this.workorder.serialNo,  // 工单流水号
                         ...obj
                     }
-                })
-                    .then((data) => {
+                }).then((data) => {
                         if (data.code == 200) {
                             //this.airInfo = data.
                             this.$message({type: 'success', message: '保存成功'})
