@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-export function SignatureInit(keysn='0002',password='123456', isCheck=false,num){
+export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,type){
     function delCB(signatureid, signatureData) {
         for (var key in Signature.list) {
             if (signatureid == key && Signature.list[signatureid].keysn == signatureData.keysn) {
@@ -11,15 +11,16 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false,num)
         }
         return true;
     }
-    Signature.init({//初始化属性
+     Signature.init({//初始化属性
         //keysn:'0741170010110516',
         keysn, // 'test001', // 002
         password,
         //keysn:'test001',
         //usercode:"test002",
         delCallBack: delCB,
-        //icon_remove : false,//撤销签章按钮隐藏显示，缺省显示 false不显示。
-        //icon_sign : false, //证书信息按钮隐藏显示，缺省显示 false不显示。
+        icon_remove : type!=='info' ,//撤销签章按钮隐藏显示，缺省显示 false不显示。
+        icon_signverify : type!=='info', //签名验证按钮隐藏显示，默认显示。
+        icon_sealinfo : type!=='info', //签章验证按钮隐藏显示，默认显示。
         imgtag: 0, //签章类型：0：无; 1:公章; 2:私章; 3:法人章; 4:法人签名; 5:手写签名
         timestamp: true,
         certType : 'server',//设置证书在签章服务器

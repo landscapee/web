@@ -107,13 +107,22 @@
                                            <div style="margin-right: 10px"    class="logo" >
                                                <div v-if="opt.hook">
                                                    <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
+                                                   <div v-if="show" style="width:60px;word-wrap: break-word" >
+                                                       {{ '${gou_'+opt.serialNumber+'}'}}
+                                                   </div>
                                                </div>
                                                <div v-if="opt.notApplicable">
                                                    <icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>
+                                                   <div v-if="show" style="width:60px;word-wrap: break-word" >
+                                                       {{ '${na_'+opt.serialNumber+'}'}}
+                                                   </div>
                                                </div>
                                                <div v-if="opt.cycle">
 
                                                    <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
+                                                   <div v-if="show" style="width:60px;word-wrap: break-word" >
+                                                       {{ '${cycle_'+opt.serialNumber+'}'}}
+                                                   </div>
                                                </div>
                                            </div>
                                            <div>{{opt.number}}</div>
@@ -136,12 +145,21 @@
                                         <div style="margin-right: 10px"    class="logo" >
                                             <div v-if="opt.p.hook">
                                                 <icon-svg iconClass="gouUncheck" style="height:20px;width:30px"></icon-svg>
+                                                <div v-if="show" style="width:60px;word-wrap: break-word" >
+                                                    {{ '${gou_'+opt.p.serialNumber+'}'}}
+                                                </div>
                                             </div>
                                             <div v-if="opt.p.notApplicable">
                                                 <icon-svg iconClass="naUncheck" style="height:20px;width:30px"></icon-svg>
+                                                <div v-if="show" style="width:60px;word-wrap: break-word" >
+                                                    {{ '${na_'+opt.p.serialNumber+'}'}}
+                                                </div>
                                             </div>
                                             <div v-if="opt.p.cycle">
                                                 <icon-svg iconClass="quanUncheck" style="height:20px;width:30px"></icon-svg>
+                                                <div v-if="show" style="width:60px;word-wrap: break-word" >
+                                                    {{ '${cycle_'+opt.p.serialNumber+'}'}}
+                                                </div>
                                             </div>
                                         </div>
                                         <div>{{opt.p.number}}</div>

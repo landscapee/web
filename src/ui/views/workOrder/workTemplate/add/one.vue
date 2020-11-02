@@ -53,7 +53,7 @@
                 <el-form-item  label="机型：" prop="airplane" :rules=" form.type=='WXGD'?rules.airplane:[{required:false}]" >
                     <span v-if="type=='info'">{{  form.airplane }}</span>
                     <el-select   multiple  v-else filterable v-model="form.airplane" collapse-tags placeholder="请选择机型">
-                        <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.id"> </el-option>
+                        <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.iata" :value="opt.id"> </el-option>
                     </el-select>
                 </el-form-item>
 
