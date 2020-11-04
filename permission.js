@@ -19,10 +19,13 @@ router.beforeEach(async (to, from, next) => {
 					// get user info
 					let userInfo = await store.dispatch('user/getInfo');
  					let accessRoutes = await store.dispatch('permission/generateRoutes', userInfo.menus);
-
-                    router.addRoutes(accessRoutes);
- 					// next();
- 					next({ ...to ,replace:true});
+                     router.addRoutes(accessRoutes);
+                     let blo=false
+						for(let i=0;i<accessRoutes.length;i++)	{
+                             accessRoutes[i].path===to.path?blo=true:''
+						}
+ 					if(!blo&&to.path=="/qualityManage")to.path=accessRoutes[0].path
+                    next({ ...to ,replace:true});
 				} catch (error) {
 					// remove token and go to login page to re-login
 					await store.dispatch('user/resetToken');
@@ -46,6 +49,7 @@ router.beforeEach(async (to, from, next) => {
 });
 router.onReady(() => {
 	const hasToken = getToken();
+	debugger
      if (hasToken) {
 		store.dispatch('user/getInfo').then((userInfo) => {
 			store.dispatch('permission/generateRoutes', userInfo.menus).then((accessRoutes) => {

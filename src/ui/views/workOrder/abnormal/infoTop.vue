@@ -22,7 +22,13 @@
                     <div  >{{get(form.typeVO,'title')}}</div>
                 </div>
                 <div  class="rowdiv" >
-                    <div>  工单模板版本号 </div>
+                    <div>
+
+                        <span class="mobanspan" >
+                            <span  >工单模板</span>
+                            <span  >版本号</span>
+                        </span>
+                    </div>
                     <div>{{get(form.typeVO,'version')}}</div>
                     <div>  任务日期 </div>
                     <div>{{get(workorder,'workTime') | timeFormat }}</div>
@@ -46,7 +52,9 @@
                     <div style="overflow: hidden;"  >{{ get(workorder,'airplaneIcao')||'--'}}</div>
                     <div>  飞机注册号</div>
                     <div>{{get(workorder,'flightRegisterNo')||'--'}}</div>
-                    <div>  所属航空公司代码</div>
+                    <div>
+                        所属航空 <br>公司代码
+                    </div>
                     <div >{{get(workorder,'airlineCompanyCode')||'--'}}</div>
                     <div>  所属航空公司 </div>
                     <div>{{get(workorder,'airlineCompanyName')||'--'}}</div>
@@ -230,7 +238,7 @@
             border-top: 1px #979797 solid;
 
             div:last-child{
-                width:40%;
+                width:calc(40% + 0px);
             }
         }
         .rowdiv{
@@ -239,6 +247,12 @@
             justify-content: left;
             border-bottom: 1px #979797 solid;
             height:45px;
+            .mobanspan{
+                width: 100%;
+                span{
+                    display: block;text-align: center
+                }
+            }
             div{
                display: flex;
                 align-items: center;
@@ -249,10 +263,11 @@
             }
             div:nth-child(even){
              justify-content: left;
-                padding:0 15px;
+                padding:0 5px;
                 width:15%;
             }
             div:nth-child(odd){
+                word-break: break-word;
                justify-content: center;
                  width:10%;
             }
