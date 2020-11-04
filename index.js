@@ -33,26 +33,20 @@ import './permission';
 //公共ip地址和端口
 if(PROGRAM == 'jwxt.dev'){  // 本地
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-    Vue.prototype.$workImgIp = " http://173.100.1.142/"
-    Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
-    // Vue.prototype.$workImgIp = " http://173.101.1.133/"
+    // Vue.prototype.$workImgIp = " http://173.100.1.142/"
+     Vue.prototype.$workImgIp = " http://173.101.1.133/"
     // Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
  }else if(PROGRAM == 'jwxt.test'){ // 测试
-    Vue.prototype.$signIp = "http://173.100.1.5:8011/mms-workorder"
 
     Vue.prototype.$workImgIp = " http://173.101.1.133/"
 	  Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
  }else if(PROGRAM == 'jwxt.build'){ // 开发
 	  Vue.prototype.$workImgIp = " http://173.100.1.142/"
 	  Vue.prototype.$ip = "http://173.100.1.5:8011"
-    Vue.prototype.$GisIp = "http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"
  }else if(PROGRAM == 'jwxt.prod'){
     Vue.prototype.$workImgIp = "http://10.35.48.34:8888"
     Vue.prototype.$ip = "http://10.33.144.1:6076/api"
-    Vue.prototype.$signIp = "http://10.33.144.1:6076/api/mms-workorder"
- }
+  }
 const ipSign = {
   'jwxt.dev':"http://173.101.1.134:8089",
   'jwxt.build':"http://173.101.1.134:8089",
@@ -107,15 +101,16 @@ Vue.prototype.$subscribeMap = {};
 
          let beginTime=0
          let differTime=0
-         window.onunload =  ()=>{
+         window.onbeforeunload =  (e)=>{
+             beginTime = new Date().getTime();
+         };
+         window.onunload =  (e)=>{
               differTime = new Date().getTime() -  beginTime;
-              if( differTime <= 5) {
+             if( differTime <= 6) {
                   removeToken()
              }
          }
-         window.onbeforeunload =  ()=>{
-               beginTime = new Date().getTime();
-         };
+
      },
 
  })

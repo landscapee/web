@@ -1,10 +1,10 @@
 <template>
 	<div class="index" style="display: flex;flex-direction: column;align-items: center">
-		<div style="width: 80%;">
+		<div style="width: 60%;">
 			<div style="text-align: center;font-size: 20px;padding: 20px ">工单分派信息</div>
 			<InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
 		</div>
-		<div style="width: 80%;">
+		<div style="width: 60%;">
 			<div style="text-align: center;font-size: 20px;padding: 20px 20px 0px 20px ">工单签署信息</div>
 
 			<div class="base_item" style="margin: 20px 0">
@@ -72,12 +72,12 @@
 			<div class="order_content">
 				<div class="order_c_main">
 					<div class="item1 flex">
-						<div style="width:18%;">{{labelVO.itemLabel}}</div>
-						<div :style="{width: col==3 ? '67%' : '52%'}">{{labelVO.contentLabel}}
+						<div style="width:12%;">{{labelVO.itemLabel}}</div>
+						<div :style="{width: col==3 ? '70%' : '55%'}">{{labelVO.contentLabel}}
 						</div>
-						<div :style="{width: col==3 ? '15%' : '15%'}">{{labelVO.workerLabel}}
+						<div :style="{width: col==3 ? '18%' : '16.5%'}">{{labelVO.workerLabel}}
 						</div>
-						<div :style="{width: col==3 ? '15%' : '15%'}" v-if='col==4'>
+						<div :style="{width: col==3 ? '18%' : '16.5%'}" v-if='col==4'>
 							{{labelVO.commanderLabel}}
 						</div>
 					</div>
@@ -86,25 +86,25 @@
 
 							<div class="flex">
 								<div class="item flex align_start"
-									 style="min-height:120px;width:18%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
+									 style="min-height:120px;width:12%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
 									<na-temp v-if='item.notApplicable'
 											 :active='item.active'
 											 @changeActiveFn='changeActiveFn(item)'></na-temp>
 									{{item.reduceIndex}}
 								</div>
 
-								<div style="width:82%;"
+								<div style="width:88%;"
 									 v-if='item.contentDetails&&item.contentDetails.length'>
 									<div v-for='itemChild in item.contentDetails'
 										 :key='itemChild.key' class="flex">
 										<div class="item"
 											 style="min-height:120px;"
-											 :style="{width: col==3 ? '81.7%' : '63.4%'}">
+											 :style="{width: col==3 ? '79.8%' : '62.5%'}">
 											<!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
 											<div class="textContent"
 												 :class="itemChild.id"
 												 v-html='itemChild.content'
-												 style="text-align: left;padding: 10px 10px;"></div>
+												 style="text-align: left;padding: 10px 10px;min-height: 70px"></div>
 											<div v-if="type!='info'"
 												 class='checkbox_group'>
 												<el-button
@@ -117,7 +117,7 @@
 										</div>
 										<div style="min-height:120px;"
 											 :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
-											 :style="{width: col==3 ? '18.3%' : '18.3%'}">
+											 :style="{width: col==3 ? '20.2%' : '18.75%'}">
 											<el-button
 												v-if="type!='info'&&itemChild.workerLabel"
 												@click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')"
@@ -135,7 +135,7 @@
 										</div>
 										<div style="min-height:120px;"
 											 :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
-											 :style="{width: col==3 ? '18.3%' : '18.3%'}"
+											 :style="{width: col==3 ? '20.2%' : '18.75%'}"
 											 v-if='col==4'>
 											<el-button v-if="type!='info'&&itemChild.commanderLabel"
 													   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
@@ -151,16 +151,16 @@
 										</div>
 									</div>
 								</div>
-								<div v-else class='flex' style="width:82%">
+								<div v-else class='flex' style="width:88%">
 									<div class="item"
-										 :style="{width: col==3 ? '81.7%' : '63.4%'}">
+										 :style="{width: col==3 ? '80%' : '62.5%'}">
 										<div class="textContent"
 											 v-html='item.name'></div>
 									</div>
 									<div class="item"
-										 :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+										 :style="{width: col==3 ? '20.2%' : '18.75%'}"></div>
 									<div v-if='col==4' class="item"
-										 :style="{width: col==3 ? '18.3%' : '18.3%'}"></div>
+										 :style="{width: col==3 ? '20%.2' : '18.75%'}"></div>
 								</div>
 							</div>
 						</div>
