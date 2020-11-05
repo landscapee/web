@@ -103,6 +103,7 @@
 											<!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
 											<div class="textContent"
 												 :class="itemChild.id"
+												 :contentId="itemChild.id"
 												 v-html='itemChild.content'
 												 style="text-align: left;padding: 10px 10px;min-height: 70px"></div>
 											<div v-if="type!='info'"
@@ -393,7 +394,7 @@
                     if (item.contentDetails && item.contentDetails.length) {
                         item.contentDetails.forEach((itemChild, indexChild) => {
                             let reg = /(<input\s{0,}|<button\s{0,})(.+?)(\/>|\/button>)/g
-                            itemChild.content = itemChild.content.replace(reg, "$1 disabled $2$3")
+                            if(itemChild.content)itemChild.content = itemChild.content.replace(reg, "$1 disabled $2$3");
                             itemChild.reduceIndex = item.reduceIndex + '.' + (indexChild + 1)
                             itemChild._reduceIndex = item._reduceIndex + '_' + (indexChild + 1)
                             // itemChild['buttonName'] = '更正'
@@ -435,8 +436,9 @@
                                 this.$nextTick(() => {
                                     //if($(".textContent button").innerText ==='签章'){
                                     $(".textContent button").on('click', function () {
+                                        let contentId= $(this).parents(".textContent").attr("contentId")
                                         $(this).siblings("input").attr("pos", $(this).siblings("input").attr("id"))
-                                        _this.signMsgBoxFn($(this).siblings("input").attr("id"))
+                                        _this.signMsgBoxFn($(this).siblings("input").attr("id"),contentId)
                                     })
                                     $(".textContent input[type='checkbox']").on('change', function () {
                                         if ($(this).is(":checked")) {
@@ -872,36 +874,74 @@
                     })
                 })
             },
-            signMsgBoxFn(type) {
+
+            signMsgBoxFn(type,id){
                 let _this = this
                 this.$msgBox.showMsgBox({
                     isShowInput: true,
-                    isShowPsd: true
+                    isShowPsd:true
                 }).then(async (data) => {
-                    if (data.val && data.psd) {
-                        _this.signFn(type, data.val, data.psd)
-                    }
-                }).catch(() => {
-                    // ...
-                });
-            },
-            signFn(type, val, psd) {
-                SignatureInit(val, psd,this.labelVO.noSignTime)
-                var signatureCreator = Signature.create()
-                var that = this
-                signatureCreator.run({
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
-                    okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                        console.log("盖章ID：" + this.getSignatureid());
-                        console.log("盖章数据：" + this.getSignatureData());
-                        that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
-                        fn(true)
-                    },
-                    cancelCall: function () {//点击取消后的回调方法
-                        console.log("取消！")
+                    if(data.val && data.psd){
+                        let judegUser =  await this.findByUserFn({userName: data.val, password: data.psd})
+                        if(judegUser=='1'){
+                            _this.signFn(type, data.val, data.psd,id)
+
+                        }else{
+                            _this.$message({type: 'error', message: judegUser});
+                        }
                     }
                 })
             },
+			// 内容签章
+            signFn(type,val,psd,id){
+                SignatureInit(val, undefined,this.labelVO.noSignTime)
+                var signatureCreator = Signature.create()
+                var that = this
+                signatureCreator.handWriteDlg({
+                    image_height: "3",
+                    image_width: "6",
+                    canvas_width: "100",
+                    canvas_height: "50",
+                    onBegin: function() {
+                        console.log('onbegin');
+                    },
+                    onEnd: function() {
+                        console.log('onEnd');
+                    }
+                }, function(param){
+                    signatureCreator.runHW(param, {
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function(fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            console.log("盖章ID："+this.getSignatureid());
+                            console.log("盖章数据："+this.getSignatureData());
+                            let _this = this
+                            that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
+                            fn(true)
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                type,
+                                // $($event.target).parents('.item').find(".sign_box").attr("pos"),
+                                function(fn1, imgdata,signid, sdata){
+                                    $('#kg-img-div-postil1').find('img').attr('src',imgdata);
+
+                                    that.postSignFn(
+                                        {id},
+                                        type,
+                                        _this.getSignatureid()+'------'+_this.getSignatureData()+'------'+
+                                        imgdata[1],
+                                        true
+                                    )
+                                }
+                            )
+                        },
+                        cancelCall : function() {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    })
+                })
+            },
+
             getBySerialNoFn(isClearAll, BasicUpdateLimit) {
                 request({
                     url: `${this.$ip}/mms-workorder/operationInf/getBySerialNo/${this.workorder.serialNo}`,

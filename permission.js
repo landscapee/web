@@ -23,6 +23,7 @@ router.beforeEach(async (to, from, next) => {
                      let blo=false
 						for(let i=0;i<accessRoutes.length;i++)	{
                              accessRoutes[i].path===to.path?blo=true:''
+                            if(blo==true) return false
 						}
  					if(!blo&&to.path=="/qualityManage")to.path=accessRoutes[0].path
                     next({ ...to ,replace:true});
@@ -49,8 +50,7 @@ router.beforeEach(async (to, from, next) => {
 });
 router.onReady(() => {
 	const hasToken = getToken();
-	debugger
-     if (hasToken) {
+      if (hasToken) {
 		store.dispatch('user/getInfo').then((userInfo) => {
 			store.dispatch('permission/generateRoutes', userInfo.menus).then((accessRoutes) => {
 				router.addRoutes(accessRoutes);
