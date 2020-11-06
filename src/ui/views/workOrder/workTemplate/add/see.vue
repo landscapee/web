@@ -166,7 +166,7 @@
                                     </div>
                                 </td>
 
-                                <td v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'" style="text-align: left;">
+                                <td class="contenttable" v-html="opt.content" :width="get(form.labelVO,'contentLayout')=='C4（四列）'?'50%':get(form.labelVO,'contentLayout')=='C3（三列）'?'66%':'83%'" style="text-align: left;">
 
                                 </td>
                                 <td width="17%"  v-if="get(form.labelVO,'contentLayout')=='C3（三列）'||get(form.labelVO,'contentLayout')=='C4（四列）'" :class="opt.workerLabel?'':'duijiao'" >
@@ -381,6 +381,11 @@
 </script>
 
 <style lang="scss" scoped>
+    .contenttable{
+        /deep/ table{
+            width: 100%!important;
+        }
+    }
 .seeConfig{
     width:100%;
     height:calc(100vh - 100px);

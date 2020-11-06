@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 
 export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,type){
@@ -18,9 +19,9 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,
         //keysn:'test001',
         //usercode:"test002",
         delCallBack: delCB,
-        icon_remove : type!=='info' ,//撤销签章按钮隐藏显示，缺省显示 false不显示。
-        icon_signverify : type!=='info', //签名验证按钮隐藏显示，默认显示。
-        icon_sealinfo : type!=='info', //签章验证按钮隐藏显示，默认显示。
+        icon_remove : type ,//撤销签章按钮隐藏显示，缺省显示 false不显示。
+        icon_signverify : type  , //签名验证按钮隐藏显示，默认显示。
+        icon_sealinfo : type , //签章验证按钮隐藏显示，默认显示。
         imgtag: 0, //签章类型：0：无; 1:公章; 2:私章; 3:法人章; 4:法人签名; 5:手写签名
         timestamp: true,
         certType : 'server',//设置证书在签章服务器
