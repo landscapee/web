@@ -66,7 +66,7 @@
                     flightRegisterNo: [{ required:true,message:'请输入机尾号', trigger: "blur",
                         validator:(rule, value, callback) =>{
                             if (value && value.trim()) {
-                                callback(value.trim());
+                                callback();
                             }else {
                                 callback(new Error("请输入机尾号"));
                             }
@@ -137,7 +137,6 @@
                     this.$refs[form].validate(valid => {
                         if (valid) {
                             let url
-
                             request({
                                 url:`${this.$ip}/mms-parameter/airplaneInfo/saveOrUpdate`,
                                 method: 'post',
