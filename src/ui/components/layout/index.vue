@@ -40,8 +40,8 @@
 <script>
  import postal from 'postal';
  import { mapGetters } from 'vuex';
+ import { resetRouter,asyncRoutes } from '@router';
 
- import { asyncRoutes } from '@/ui/router';
 import logo from './assets/img/logo.png';
 import bell from './assets/img/ic_bell.png';
 import esc from './assets/img/ic_esc.png';
@@ -134,6 +134,7 @@ import request from '@lib/axios.js';
 			this.$store.commit('user/SET_USER_INFO','');
 			removeToken();
 			removeUserInfo();
+            resetRouter();
 			this.$router.push({ path: '/' });
 			if(window.SOCKET){
 				window.SOCKET.close()

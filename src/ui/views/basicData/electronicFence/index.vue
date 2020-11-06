@@ -12,8 +12,8 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
 
-                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
+<!--                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>-->
+<!--                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>-->
                 </div>
             </div>
             <div class="main-content">

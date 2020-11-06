@@ -46,12 +46,12 @@
 							 style="position:relative">
 							<!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
 							<el-button v-if="type!='info'"
-									   @click="signOthMsgBoxFn('sign_'+index,$event)"
+									   @click="signOthMsgBoxFn(item.placeholder,$event)"
 									   type="primary"
 									   style="padding: 7px 15px">签字
 							</el-button>
 							<div style="width:50px;height:50px;position:absolute;left:200px;top:10px">
-								<div :pos="'sign_'+index" :id="'sign_'+index"></div>
+								<div :pos="item.placeholder" :id="item.placeholder"></div>
 							</div>
 						</div>
 					</div>
@@ -187,7 +187,7 @@
     import naTemp from '@/ui/components/naTemp'
     import {SignatureInit} from '@/ui/lib/Signature.js'
     import {initParam} from './basicData'
-
+// require('../../../../../static/kinggrid/all')
     export default {
         components: {
             naTemp, InfoTop
@@ -218,10 +218,13 @@
                 needSubmit: false
             }
         },
+		beforeCreate(){
+            // location.reload();
+		},
         created() {
+
             if (this.$route.query) {
                 this.id = this.$route.query.id
-                this.type = this.$route.query.type
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "edit"
@@ -233,6 +236,7 @@
             }
         },
         mounted() {
+            SignatureInit('0002','123456',false,1,this.type!=='info')
             let _this = this
             //SignatureInit()
             this.init()
@@ -305,16 +309,7 @@
                     for (let i = 0; i < inputNa.length; i++) {
                         map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
                     }
-                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
-                    for (let i = 0; i < inputSign.length; i++) {
-                        console.log(inputSign.eq(i))
-                        if ($("div[elemid=" + inputSign.eq(i).attr("id") + "]")) {
-                            let signatureid = $("div[elemid=" + inputSign.eq(i).attr("id") + "]").attr("signatureid")
-                            if (signatureid) {
-                                map[inputSign.eq(i).attr("name")] = signatureid + '------' + this.templateSignObj[signatureid]
-                            }
-                        }
-                    }
+
                     let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
                     for (let i = 0; i < inputText.length; i++) {
                         map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
@@ -325,8 +320,7 @@
                         map[inputRadioArr.eq(i).attr("name")] = inputRadioArr.eq(i).is(':checked')
                     }
                 }
-                console.log(this.workorder);
-                request({
+                 request({
                     url: `${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
                     method: 'post',
                     data: {
@@ -617,8 +611,8 @@
                 console.log(protectedItems)
                 // 判断签章高度 end
                 signatureCreator.handWriteDlg({
-                    image_height: "3",
-                    image_width: "6",
+                    image_height: "2",
+                    image_width: "4",
                     // canvas_width: "500",
                     // canvas_height: "200",
                     onBegin: function () {
@@ -976,7 +970,8 @@
                             // }
 
                             // this.deepMap = JSON.parse(JSON.stringify(map))
-                            SignatureInit('0002','123456',false,1,this.type)
+							let blo =this.type=='edit'
+                             SignatureInit('0002','123456',false,1,blo)
                             var signatureCreator = Signature.create()
                             //let signData = $(".kg-img-div")  // signatureid
 
@@ -1011,6 +1006,12 @@
                                     ) {
                                         mapItem.value.split(",").forEach(item => {
                                             if(item){
+                                                if( "undefined"===item.split('------')[1]){
+                                                    console.log('key',mapItem.key);
+                                                }
+                                                else {
+                                                    console.log('keytrue',mapItem.key);
+												}
                                                 signs.push(
                                                     {
                                                         signatureid: item.split('------')[0],
@@ -1037,9 +1038,7 @@
                                         }
                                     }
                                 })
-                                Signature.loadSignatures(signs)
-
-
+                                 Signature.loadSignatures(signs)
                             }
                         } else {
                             this.$message({type: 'error', message: '新增失败，请重试'});

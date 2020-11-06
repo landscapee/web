@@ -39,12 +39,17 @@
 import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';
 import request from '@lib/axios.js';
+import {filterAsyncRoutes} from '@store/modules/permission.js';
+import { asyncRoutes, constantRoutes } from '@/ui/router';
+
 import logo from './assets/img/login-logo.png';
 import userimg from './assets/img/login-username.png';
 import pwdimg from './assets/img/login-password.png';
 import './assets/index.scss';
 import postal from 'postal';
 import UpdatePwd from "./updatePwd";
+import router from '@/ui/router';
+
 export default {
 	name: 'Login',
 	components: {UpdatePwd},
@@ -143,10 +148,18 @@ export default {
 							    this.$message.warning(data.responseMessage)
 							}
 							if(data.responseCode === 30003||data.responseCode === 30002){
-								// this.$message.warning(data.responseMessage);
 								this.$refs['pwd'].open(data.responseMessage,data.data);
 							}else {
-								this.$router.push({ path: '/qualityManage' });
+							    let accessedRoutes = filterAsyncRoutes(asyncRoutes, data.data.menus)
+ 							    if(accessedRoutes[0].path=='*'){
+							        this.$message.warning('您没有此系统任何菜单权限，请联系管理员配置相应权限。')
+                                    this.loading = false;
+									return false
+								}
+                                router.addRoutes(accessedRoutes);
+ 							    let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
+								let path=index>-1?'/qualityManage':accessedRoutes[0].path
+                                    this.$router.push({ path: path});
 							}
                          }else{
 							this.$message.error( data.responseMessage);
