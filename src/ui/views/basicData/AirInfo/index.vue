@@ -173,7 +173,7 @@ export default {
                 url:`${this.$ip}/mms-parameter/rest-api/airplaneInfo/list`,
                 method: 'post',
 
-                data:{...data,...this.params,}
+                data:{...data,...this.params,...this.sort}
             }).then(d => {
                 if(d.code==200){
                     this.tableData={
