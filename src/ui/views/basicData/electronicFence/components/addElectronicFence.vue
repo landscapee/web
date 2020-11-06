@@ -5,10 +5,10 @@
         <span>机位电子围栏-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
@@ -22,7 +22,8 @@
           </el-form-item>
           <el-form-item label="允许最大误差值：" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
-            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"></el-input>
+            <el-input v-else v-model="form.maxError" placeholder="请输入允许最大误差值"
+                      @input="changeCode('maxError')"></el-input>
           </el-form-item>
         </div>
 <!--        <div class="row_custom">-->
@@ -128,6 +129,18 @@ export default {
     }
   },
   methods: {
+    changeCode(key){
+      // 先把非数字的都替换掉(空)，除了数字和.
+      this.$set(this.form,key,this.form[key].replace(/[^\d.]/g, ""));
+      // 必须保证第一个为数字而不是.
+      this.$set(this.form,key,this.form[key].replace(/^\./g, ""));
+      // 保证只有出现一个.而没有多个.
+      this.$set(this.form,key,this.form[key].replace(/\.{2,}/g, "."));
+      //保证.只出现一次，而不能出现两次以上
+      this.$set(this.form,key,this.form[key].replace(".", "$#$").replace(/\./g, "").replace("$#$", "."));
+      //小数只能输入后两位
+      this.$set(this.form,key,this.form[key].replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'));
+    },
     resetForm(){
       this.form={};
     },

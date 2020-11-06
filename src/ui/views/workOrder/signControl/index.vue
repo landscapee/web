@@ -274,7 +274,7 @@
                 this.checkArr=[]
                 let data={...this.form}
                 map(data,((k,l)=>{
-                    if(!k){
+                    if(k!==0 && !k){
                         data[l]=null
                     }
                     if(l=='state'&&k){

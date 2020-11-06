@@ -407,7 +407,7 @@
 					if (d.code == 200) {
 						this.deptData = d.data.dept
 						d.data.dept.map((k, l) => {
-							this.deptObj[k.valCode] = k.valData
+							this.$set(this.deptObj,k.valCode,k.valData);
 						})
 					}
 				});
