@@ -281,6 +281,12 @@ let authRoutes = [
                         meta: {title: '异常更改',icon: 'xxgl' },
                     },
                     {
+                        path: '/WorkAbnormalDetails1',
+                        component: () => import('@views/workOrder/abnormal/details1'),
+                        name: '工单详情',
+                        meta: {title: '工单详情',icon: 'xxgl' },
+                    },
+                    {
                         path: '/WorkPaperDetails',
                         component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
                         name: '异常更改',

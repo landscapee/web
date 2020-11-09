@@ -12,7 +12,7 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,
         }
         return true;
     }
-     Signature.init({//初始化属性
+ Signature.init({//初始化属性
         //keysn:'0741170010110516',
         keysn, // 'test001', // 002
         password,
@@ -45,4 +45,4 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,
             position:'居中下(章内)',
         },
     });
-}
+ }

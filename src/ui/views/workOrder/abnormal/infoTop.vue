@@ -33,7 +33,7 @@
                     <div>  任务日期 </div>
                     <div>{{get(workorder,'workTime') | timeFormat }}</div>
                     <div>  任务号 </div>
-                    <div  >{{get(form,'')}}</div>
+                    <div  >{{get(form,'ommsJobNo')}}</div>
                     <div>  执行单位 </div>
                     <div >{{get(workorder,'department')}}</div>
                 </div>

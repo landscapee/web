@@ -95,7 +95,8 @@ export default {
 　　mounted() {
        this.$eventBus.$on('updatedata', msg => {
             if(msg == 'left'){
-                this.leftParams.current = 1;
+
+                 this.leftParams.current = 1;
                 this.getList('left');
             }else if(msg == 'right'){
                 this.rightParams.current = 1;
@@ -222,6 +223,7 @@ export default {
         },
         //删除表格行数据
         delData(tag,idstr){
+
             if(this[idstr]!=null){
                 this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -255,8 +257,10 @@ export default {
                 this.$message.error('请先选中一行数据');
             }
         },
-        getList(tag,scroll){
-            if(tag=='left'){
+
+
+getList(tag,scroll){
+             if(tag=='left'){
                 request({
                     url:`${this.$ip}/mms-parameter/rest-api/businessDictionary/query`,
                     method: 'post',
