@@ -75,6 +75,7 @@ export default {
             this.getList();
         },
         headerSort(column){
+            console.log(JSON.stringify(column))
             this.sort = {};
             this.sort[column.property] = column.order;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
@@ -138,6 +139,15 @@ export default {
             }
         },
         getList(){
+            for (let v of this.tableConfig){
+                console.log(v)
+                if (this.form[v.prop]){
+                    if(v.search.type1 === 'number'){
+                        let numV = parseInt(this.form[v.prop]);
+                        this.form[v.prop] = numV;
+                    }
+                }
+            }
            request({
                 url:`${this.$ip}/mms-parameter/rest-api/electronicFence/query`,
                 method: 'post',
