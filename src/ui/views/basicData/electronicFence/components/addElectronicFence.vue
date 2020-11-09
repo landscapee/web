@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="允许最大误差值：" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
-            <el-input v-else v-model="form.maxError" placeholder="请输入允许最大误差值"
+            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"
                       @input="changeCode('maxError')"></el-input>
           </el-form-item>
         </div>
@@ -155,9 +155,8 @@ export default {
                 method: "post",
                 data: {parkingNo : this.form.parkingNo}
               }).then(data=>{
-                if(data.code===200 && data.data){
+                if(data.code===200 && data.data.length > 0){
                   this.$message.warning('机位已配置!')
-                  console.log('abc')
                   return false;
                 }
                 let url = this.type == "add"?`${this.$ip}/mms-parameter/rest-api/electronicFence/add`:`${this.$ip}/mms-parameter/rest-api/electronicFence/update`
