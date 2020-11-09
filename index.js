@@ -33,10 +33,11 @@ import './permission';
 
 //公共ip地址和端口
 if(PROGRAM == 'jwxt.dev'){  // 本地
-    // Vue.prototype.$ip = "http://173.100.1.5:8011"
+    Vue.prototype.$ip = "http://173.100.1.5:8011"
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
+    //*****如需使用测试环境配置，请用 test环境启用，不要直接在这修改******
      // Vue.prototype.$workImgIp = " http://173.101.1.133/"
-    Vue.prototype.$ip = "http://173.101.1.30:6070"
+    // Vue.prototype.$ip = "http://173.101.1.30:6070"
  }else if(PROGRAM == 'jwxt.test'){ // 测试
 
     Vue.prototype.$workImgIp = " http://173.101.1.133/"

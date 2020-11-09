@@ -75,6 +75,7 @@ export default {
             this.getList();
         },
         headerSort(column){
+            console.log(JSON.stringify(column))
             this.sort = {};
             this.sort[column.property] = column.order;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
