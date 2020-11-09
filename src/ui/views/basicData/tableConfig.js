@@ -40,6 +40,6 @@ export const electronicFenceTable = () => {
         // { prop: 'longitude', label: '定点经度', align: 'center',search:{prop: 'longitude',type:'input',placeholder:"请输入定点经度"} },
         // { prop: 'latitude', label: '定点纬度', align: 'center',search:{prop: 'latitude',type:'input',placeholder:"请输入定点纬度"} },
         // { prop: 'radius', label: '定点半径(米)', align: 'center',search:{prop: 'radius',type:'input',placeholder:"请输入定点半径(米)"} },
-        { prop: 'maxError', label: '允许最大误差值(米)',width:'540', align: 'center',search:{prop: 'maxError',type:'input',extendType:'search',placeholder:"请输入允许最大误差值(米)"}},
+        { prop: 'maxError', label: '允许最大误差值(米)',width:'540', align: 'center',search:{prop: 'maxError',type:'input',type1:'number',isNumber:'true',extendType:'search',placeholder:"请输入允许最大误差值(米)"}},
     ]
 };

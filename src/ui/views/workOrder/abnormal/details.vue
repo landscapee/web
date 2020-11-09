@@ -192,10 +192,9 @@
         components: {
             naTemp, InfoTop
         },
-
         data() {
             return {
-                type: '',
+              type: '',
                 contentVOListMap: [],
                 contentVOList: [],
                 workorder: {},
@@ -225,6 +224,9 @@
 
             if (this.$route.query) {
                 this.id = this.$route.query.id
+
+
+
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "edit"

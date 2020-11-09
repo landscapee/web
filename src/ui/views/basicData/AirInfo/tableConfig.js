@@ -11,8 +11,8 @@ let timeInfo=(row)=>{
 export const  Config = (obj) => {
         return [
                 { slot: 'radio' , label: '选择',width:'49', },
-                { prop: 'flightRegisterNo', label: '机尾号', sortProp:"flightRegisterNo", align: 'center',sort:true,search:{type:'input', prop:'flightRegisterNo',placeholder:"请输入机尾号"} },
-                { prop: 'icao', label: '机型', sortProp:"icao", align: 'center',sort:true,search:{type:'input', prop:'icao',placeholder:"请输入机型"} },
-                { prop: 'engineNo', label: '发动机号', sortProp:"engineNo", align: 'center',sort:true,search:{type:'input', prop:'engineNo',placeholder:"请输入发动机号"} },
+                { prop: 'flightRegisterNo', label: '机尾号', sortProp:"flightRegisterNoMode", align: 'center',sort:true,search:{type:'input', prop:'flightRegisterNo',placeholder:"请输入机尾号"} },
+                { prop: 'icao', label: '机型', sortProp:"icaoMode", align: 'center',sort:true,search:{type:'input', prop:'icao',placeholder:"请输入机型"} },
+                { prop: 'engineNo', label: '发动机号', sortProp:"engineNoMode", align: 'center',sort:true,search:{type:'input', prop:'engineNo',placeholder:"请输入发动机号"} },
                ]
 };
