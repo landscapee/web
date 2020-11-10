@@ -44,28 +44,19 @@
 								</el-scrollbar>
 							</div>
           </el-form-item>
-          <el-form-item label="岗位：" >
-            <el-button @click="userOpen('station')" size="mini" icon="el-icon-plus">选择岗位</el-button>
-							<div class="tagBox">
-								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.id" v-for="tag in stationList" closable :disable-transitions="false" @close="handleClose('stationList',tag)">
-										{{ tag.name }}
-									</el-tag>
-								</el-scrollbar>
-							</div>
-          </el-form-item>
+			<el-form-item label="角色：" >
+				<el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择角色</el-button>
+				<div class="tagBox">
+					<el-scrollbar style="height:100px">
+						<el-tag :key="tag.id" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose('roleList',tag)">
+							{{ tag.name }}
+						</el-tag>
+					</el-scrollbar>
+				</div>
+			</el-form-item>
         </div>
         <div class="row_custom2">
-           <el-form-item label="角色：" >
-              <el-button @click="userOpen('role')" size="mini" icon="el-icon-plus">选择角色</el-button>
-							<div class="tagBox">
-								<el-scrollbar style="height:100px">
-									<el-tag :key="tag.id" v-for="tag in roleList" closable :disable-transitions="false" @close="handleClose('roleList',tag)">
-										{{ tag.name }}
-									</el-tag>
-								</el-scrollbar>
-							</div>
-           </el-form-item>
+
            <el-form-item label="部门：" >
               <el-button @click="userOpen('dept')" size="mini" icon="el-icon-plus">选择部门</el-button>
 							<div class="tagBox">
@@ -247,7 +238,17 @@ export default {
         margin-left: 110px;
       }
       .row_custom2{
+
+		  text-align: left;
         height: 166px;
+		  .tagBox{
+			  width: 359px;
+			  border:1px solid #979797;
+			  margin: 0!important;
+		  }
+		  /deep/ .el-button{
+			  border:1px solid #979797;
+		  }
         /deep/ .el-form-item__content{
             height: 40px;
             width:385px;
@@ -258,6 +259,26 @@ export default {
           font-size:12px!important;
           margin-left: 5px!important;
         }
+		  /deep/ .el-form-item:first-child{
+			  .el-form-item__label{
+				  text-align: left;
+				  padding-left: 10px;
+			  }
+
+		  }
+		  /deep/ .el-form-item:nth-child(2){
+			  .el-form-item__label{
+				  text-align: left;
+				  padding-left: 30px!important;
+				  /*margin-left: 20px;*/
+			  }
+			  .el-form-item__content{
+				  padding-left: 30px;
+				  /*margin-left: 110px!important;*/
+			  }
+
+		  }
+
       }
       .row_custom{
         /deep/ .el-form-item__content{
