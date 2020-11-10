@@ -1,7 +1,7 @@
 <template>
     <div>
 
- 
+
         <div v-if="this.$router.history.current.path == '/queryIndex'" :key="$route.path" class="queryIndex">
             <div class="top-content">
                 <div class="top-content-title">
@@ -21,7 +21,7 @@
                             </el-form-item>
                             <el-form-item label="机型：" class="secWidth">
                                 <el-select filterable @change="getList1" clearable   v-model="form1.airplaneIcao" placeholder="请选择">
-                                    <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
+                                    <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.iata" :value="opt.iata"> </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="飞机注册号：" class="threeItemForm">
@@ -342,7 +342,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .queryIndex{
     margin-top:14px;
     /deep/ .mainTable{
