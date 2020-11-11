@@ -150,7 +150,7 @@ export default {
 							if(data.responseCode === 30003||data.responseCode === 30002){
 								this.$refs['pwd'].open(data.responseMessage,data.data);
 							}else {
-							    let accessedRoutes = filterAsyncRoutes(asyncRoutes, data.data.menus)
+							    let accessedRoutes = filterAsyncRoutes(asyncRoutes, data.data.menus||[])
  							    if(accessedRoutes[0].path=='*'){
 							        this.$message.warning('您没有此系统任何菜单权限，请联系管理员配置相应权限。')
                                     this.loading = false;

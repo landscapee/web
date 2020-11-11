@@ -53,7 +53,10 @@
             return {
                 form:{templateBaseId:this.$route.query.id,contentLayout:'R2（二列）',noSignTime:true},
                 options:{},
-                 rules:{},
+                 rules:{
+                     workerLabel:[{required:true,len:2,trigger:'blur'}],
+                     commanderLabel:[],
+                 },
             }
         },
         watch: {

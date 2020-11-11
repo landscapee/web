@@ -42,8 +42,7 @@ export function filterAsyncRoutes(routes, roles) {
 	const res = [];
 	routes.forEach((route) => {
 		const tmp = { ...route };
-        console.log(tmp.component);
-        if (hasPermission(roles, tmp)) {
+         if (hasPermission(roles, tmp)) {
 			if (tmp.children) {
 				tmp.children = filterAsyncRoutes(tmp.children, roles);
 			}
