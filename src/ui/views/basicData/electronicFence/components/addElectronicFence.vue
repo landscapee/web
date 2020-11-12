@@ -16,36 +16,16 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="机位号：" prop="parkingNo">
+          <el-form-item label="机位号：" prop="parkingNo"> 
             <span v-if="type=='info'">{{form.parkingNo}}</span>
-            <el-input v-else v-model="form.parkingNo" placeholder="请输入机位号"></el-input>
+            <el-input v-else v-model="form.parkingNo" placeholder="请输入机位号"  :disabled="type=='add'?false:true"></el-input>
           </el-form-item>
           <el-form-item label="允许最大误差值：" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
-            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"
-                      @input="changeCode('maxError')"></el-input>
+            <el-input-number v-else v-model.number="form.maxError" placeholder="误差值" :min="0" :max="999"
+                      @input="changeCode('maxError')"></el-input-number>
           </el-form-item>
         </div>
-<!--        <div class="row_custom">-->
-<!--          <el-form-item label="定点经度：" prop="longitude">-->
-<!--            <span v-if="type=='info'">{{form.longitude}}</span>-->
-<!--            <el-input v-else v-model.number="form.longitude" placeholder="请输入定点经度"></el-input>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="定点纬度：" prop="latitude">-->
-<!--            <span v-if="type=='info'">{{form.latitude}}</span>-->
-<!--            <el-input v-else v-model.number="form.latitude" placeholder="请输入定点纬度"></el-input>-->
-<!--          </el-form-item>-->
-<!--        </div>-->
-<!--        <div class="row_custom">-->
-<!--          <el-form-item label="定点半径：" prop="radius">-->
-<!--            <span v-if="type=='info'">{{form.radius}}</span>-->
-<!--            <el-input v-else v-model.number="form.radius" placeholder="请输入定点半径"></el-input>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="允许最大误差值：" prop="maxError">-->
-<!--            <span v-if="type=='info'">{{form.maxError}}</span>-->
-<!--            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"></el-input>-->
-<!--          </el-form-item>-->
-<!--        </div>-->
       </el-form>
     </div>
   </div>
@@ -148,9 +128,9 @@ export default {
       if (this.type == "add" || this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            //如果是添加操作，验证机位唯一性
-            if(this.type == 'add'){
-              request({
+              //如果是添加操作，验证机位唯一性
+              if(this.type == 'add'){
+                request({
                 url:'/mms-parameter/rest-api/electronicFence/queryByParkingNo',
                 method: "post",
                 data: {parkingNo : this.form.parkingNo}
@@ -159,13 +139,12 @@ export default {
                   this.$message.warning('机位已配置!')
                   return false;
                 }
-                let url = this.type == "add"?`${this.$ip}/mms-parameter/rest-api/electronicFence/add`:`${this.$ip}/mms-parameter/rest-api/electronicFence/update`
+                let url = `${this.$ip}/mms-parameter/rest-api/electronicFence/add`
                 request({
                   url,
                   method: "post",
-                  data: this.type == "edit"?{...this.form,id:this.$route.query.id}:this.form
-                })
-                .then(data => {
+                  data: this.form
+                }).then(data => {
                   this.$message.success("保存成功！");
                   this.$parent.selectId = null;
                   this.$router.go(-1);
@@ -173,6 +152,21 @@ export default {
                 .catch(error => {
                   this.$message.success(error);
                 });
+              });
+            }else if(this.type == 'edit'){
+              let url = `${this.$ip}/mms-parameter/rest-api/electronicFence/update`
+              request({
+                url,
+                method: "post",
+                data: {...this.form,id:this.$route.query.id}
+              }).then(data => {
+                if(data.code == 200){
+                  this.$message.success("保存成功！");
+                  this.$parent.selectId = null;
+                  this.$router.go(-1);
+                }
+              }).catch(error => {
+                this.$message.success(error);
               });
             }
           } else {
