@@ -187,7 +187,6 @@
     import naTemp from '@/ui/components/naTemp'
     import {SignatureInit} from '@/ui/lib/Signature.js'
     import {initParam} from './basicData'
-// require('../../../../../static/kinggrid/all')
     export default {
         components: {
             naTemp, InfoTop
