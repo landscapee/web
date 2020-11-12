@@ -11,7 +11,7 @@ export const testMainConfig = (obj) => {
                 { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
                 { prop: 'paperName', label: '试卷名称', sortProp:"paperName", align: 'center',sort:true,search:{type:'input', prop:'paperName',placeholder:"请输入"} },
                 { prop: 'paperCode', label: '试卷编码',sortProp:"paperCode", align: 'center',sort:true,search:{type:'input', prop:'paperCode',placeholder:"请输入"} },
-                { prop: 'totalTime', label: '考试时长(分)',sortProp:"totalTime", align: 'center',sort:true,search:{type:'input', prop:'totalTime',placeholder:"请输入"} },
+                { prop: 'totalTime', label: '考试时长(分)',sortProp:"totalTime", align: 'center',sort:true,search:{type:'input', prop:'totalTime',placeholder:"请输入",isNumber:true} },
                 { prop: 'paperType', label: '试卷类别',sortProp:"paperType", align: 'center',sort:true,search:{type:'select', prop:'paperType',selectProp:['valData','valData'],data:obj.paperCategory||[],placeholder:"请选择"}},
                 { prop: 'testType', label: '考试类型',sortProp:"testType", align: 'center' ,sort:true,search:{type:'select', prop:'testType',selectProp:['valData','valData'],data:obj.testCategory||[],placeholder:"请选择"}},
                 { prop: 'qualificationType', label: '考试资质类型',sortProp:"qualificationType", align: 'center' ,sort:true,search:{type:'select', prop:'qualificationType',selectProp:['valData','valData'],data:obj.qualificationType||[],placeholder:"请选择"}},
@@ -33,7 +33,6 @@ export const testMainAddConfig = (obj) => {
                 { prop: 'optionE', label: '选项E',  align: 'center', search:{type:'input', prop:'optionE',placeholder:"请输入"} },
                 { prop: 'optionF', label: '选项F',  align: 'center', search:{type:'input', prop:'optionF',placeholder:"请输入"} },
                 { prop: 'answer', label: '正确答案',  align: 'center', search:{type:'input', prop:'answer',placeholder:"请输入",} },
-                { prop: 'score', label: '分值', sortProp:"score", align: 'center',sort:true, search:{type:'input', prop:'score',placeholder:"请输入",extendType:'search',} },
+                { prop: 'score', label: '分值', sortProp:"score", align: 'center',sort:true, search:{type:'input', prop:'score',placeholder:"请输入",extendType:'search',isNumber:true} },
          ]
 };
- 

@@ -18,7 +18,7 @@
                         </el-form-item>
                         <el-form-item label="机型："  class="secWidth">
                             <el-select filterable @change="getList1" clearable   v-model="form1.airplaneIcao" placeholder="请选择">
-                                <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.name" :value="opt.name"> </el-option>
+                                <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.iata" :value="opt.iata"> </el-option>
                             </el-select>
                         </el-form-item>
 
