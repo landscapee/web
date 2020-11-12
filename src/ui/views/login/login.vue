@@ -147,7 +147,7 @@ export default {
 							if(data.responseCode === 30010){
 							    this.$message.warning(data.responseMessage)
 							}
-							if(data.responseCode === 30003||data.responseCode === 30002){
+ 							if(data.responseCode === 30003||data.responseCode === 30002){
 								this.$refs['pwd'].open(data.responseMessage,data.data);
 							}else {
 							    let accessedRoutes = filterAsyncRoutes(asyncRoutes, data.data.menus)
@@ -156,10 +156,11 @@ export default {
                                     this.loading = false;
 									return false
 								}
-                                router.addRoutes(accessedRoutes);
- 							    let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
-								let path=index>-1?'/qualityManage':accessedRoutes[0].path
-                                    this.$router.push({ path: path});
+                                  router.addRoutes(accessedRoutes);
+  							    // let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
+								// let path=index>-1?'/qualityManage':accessedRoutes[0].children[0].path
+								let path=accessedRoutes[0].children[0].path
+                                    this.$router.push({ path: path,replace:true});
 							}
                          }else{
 							this.$message.error( data.responseMessage);
