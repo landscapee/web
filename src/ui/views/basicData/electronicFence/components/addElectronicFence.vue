@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="允许最大误差值：" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
-            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值"
+            <el-input v-else v-model="form.maxError" placeholder="请输入允许最大误差值"
                       @input="changeCode('maxError')"></el-input>
           </el-form-item>
         </div>
