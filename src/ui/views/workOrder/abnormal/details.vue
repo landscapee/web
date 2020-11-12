@@ -2,6 +2,10 @@
 	<div class="index" style="display: flex;flex-direction: column;align-items: center">
 		<div style="width: 60%;">
 			<div style="text-align: center;font-size: 20px;padding: 20px ">工单分派信息</div>
+				<div  class="top-toolbar">
+					<div @click="onPreview()"><icon iconClass="imgPre" ></icon>黄页预览</div>
+				</div>
+			<el-image-viewer v-if="showViewer" :url-list="urlList" :on-close="closeViewer"></el-image-viewer>
 			<InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
 		</div>
 		<div style="width: 60%;">
@@ -72,13 +76,21 @@
 			<div class="order_content">
 				<div class="order_c_main">
 					<div class="item1 flex">
-						<div style="width:12%;">{{labelVO.itemLabel}}</div>
-						<div :style="{width: col==3 ? '70%' : '55%'}">{{labelVO.contentLabel}}
+						<div style="width:12%;">
+							<div>{{labelVO.itemLabel}}</div>
+							<div>{{labelVO.itemLabelEnglish}}</div>
 						</div>
-						<div :style="{width: col==3 ? '18%' : '16.5%'}">{{labelVO.workerLabel}}
+						<div :style="{width: col==3 ? '70%' : '55%'}">
+							<div>{{labelVO.contentLabel}}</div>
+							<div>{{labelVO.contentLabelEnglish}}</div>
+						</div>
+						<div :style="{width: col==3 ? '18%' : '16.5%'}">
+							<div>{{labelVO.workerLabel}}</div>
+							<div>{{labelVO.workerLabelEnglish}}</div>
 						</div>
 						<div :style="{width: col==3 ? '18%' : '16.5%'}" v-if='col==4'>
-							{{labelVO.commanderLabel}}
+							<div>{{labelVO.commanderLabel}}</div>
+							<div>{{labelVO.commanderLabelEnglish}}</div>
 						</div>
 					</div>
 					<div class="order_c_b">
@@ -187,8 +199,12 @@
     import naTemp from '@/ui/components/naTemp'
     import {SignatureInit} from '@/ui/lib/Signature.js'
     import {initParam} from './basicData'
+	import ElImageViewer from "element-ui/packages/image/src/image-viewer";
+	import Icon from '@components/Icon-svg/index';
+// require('../../../../../static/kinggrid/all')
     export default {
         components: {
+			ElImageViewer,Icon,
             naTemp, InfoTop
         },
         data() {
@@ -213,8 +229,10 @@
                 },
                 isActiveSave: true,
                 isActiveReset: true,
-                needSubmit: false
-            }
+                needSubmit: false,
+				showViewer :false,
+				urlList:[],
+			}
         },
 		beforeCreate(){
             // location.reload();
@@ -283,6 +301,34 @@
         },
 
         methods: {
+			onPreview() {
+				if (!this.workorder.pageFile) {
+					this.$message.info("该工单暂无黄页图片")
+				} else {
+					this.showViewer = true;
+					request({
+						url: `${this.$ip}/mms-file/get-files-by-ids/`,
+						method: 'post',
+						params: {
+							fileIds: this.workorder.pageFile,
+						}
+					}).then((data) => {
+						if (data.code === 200) {
+							for (let i = 0; i < data.data.length; i++) {
+								this.urlList.push(data.data[i].filePath);
+							}
+						} else {
+							this.$message.error(data.message);
+						}
+					}).catch((error) => {
+						this.$message.error(error);
+					});
+				}
+			},
+			// 关闭查看器
+			closeViewer() {
+				this.showViewer = false
+			},
             editContent($event, item) {
                 if (!item.editState) {
                     $($event.target).text('保存')
@@ -1469,6 +1515,7 @@
 
 </script>
 <style scoped lang='scss'>
+
 	.clear:after {
 		content: '';
 		visibility: hidden;
@@ -1760,5 +1807,41 @@
 				rgba(0, 0, 0, 0) calc(50% + 1.5px),
 				rgba(0, 0, 0, 0) 100%
 		) !important;
+	}
+	/deep/ .el-icon-circle-close:before {
+		font-size: 32px;
+		content: "\e79d";
+	}
+	.top-toolbar{
+		text-align: right;
+		right: 0px;
+		margin-bottom: 10px;
+		.isDisabled{
+			background: rgba(208,208,208,1);
+			color: #6A7785;
+			cursor: not-allowed;
+			.svg-icon{
+				// fill: rgba(208,208,208,1);
+			}
+		}
+		div{
+			user-select: none;
+			cursor: pointer;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			height: 32px;
+			line-height: 32px;
+			padding: 7px;
+			border-radius:2px;
+			border:1px solid rgba(208,208,208,1);
+			color: #3D568E;
+			.svg-icon{
+				height:18px;
+				width:18px;
+				margin-right: 4px;
+				vertical-align: text-top;
+			}
+		}
 	}
 </style>

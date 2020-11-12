@@ -19,10 +19,10 @@
                             <el-input   v-model="form.contentLabel" placeholder="请输入中文 "></el-input>
                             <el-input   v-model="form.contentLabelEnglish" placeholder="请输入英文 "></el-input>                        </el-form-item>
                         <el-form-item  label="工作者标签：" prop="workerLabel	"  v-if="form.contentLayout=='C3（三列）'||form.contentLayout=='C4（四列）'">
-                            <el-input   v-model="form.workerLabel	" placeholder="请输入中文 "></el-input>
+                            <el-input   v-model="form.workerLabel	" placeholder="请输入中文 " maxlength="4"></el-input>
                             <el-input   v-model="form.workerLabelEnglish" placeholder="请输入英文 "></el-input>                        </el-form-item>
                         <el-form-item  label="指挥者标签：" prop="commanderLabel" v-if="form.contentLayout=='C4（四列）'">
-                            <el-input   v-model="form.commanderLabel" placeholder="请输入中文 "></el-input>
+                            <el-input   v-model="form.commanderLabel" placeholder="请输入中文 " maxlength="4"></el-input>
                             <el-input   v-model="form.commanderLabelEnglish" placeholder="请输入英文 "></el-input>
                         </el-form-item>
                     </div>
