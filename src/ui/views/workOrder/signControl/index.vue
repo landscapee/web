@@ -1,8 +1,7 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalDetails1'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'" :key="$route.path"></router-view>
          <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="signControl">
@@ -232,9 +231,7 @@
                     this.$message.error(s);
                 }else{
                     let src='/WorkAbnormalDetails'
-                    if(tag=='info'){
-                        src='WorkAbnormalDetails1'
-                    }
+
                     let data=this.checkArr[0].id
                     if(this.checkArr[0]&&this.checkArr[0].offlineFile){
                         src='/WorkAbnormalAdd'
