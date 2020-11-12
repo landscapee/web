@@ -38,8 +38,8 @@
                                     <icon iconClass="unlock" title="解锁"></icon>
                                 </span>
                                 <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
-                                      @click="(scope.row.state!==3 && scope.row.template.type!=='WXGD' &&scope.row.isOffline==='线上') ? '':abnormalChange(scope.row)"
-                                      :class="(scope.row.state!==3 && scope.row.template.type!=='WXGD' &&scope.row.isOffline==='线上') ? 'rowSvg rowSvgInfo':'rowSvg'"
+                                      @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
+                                      :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"
                                       style="margin-left: 10px">
                                     <icon iconClass="editNew" title="异常更改"></icon>
                                 </span>
@@ -69,6 +69,13 @@
             SearchTable,MoreExport,Export
         },
         name: 'authorizeManage',
+        computed:{
+          isLineWX(){
+              return (scope)=>{
+                  return scope.row.state!==3 && scope.row.template.type!=='WXGD' &&scope.row.isOffline==='线上'
+              }
+          }
+        },
         data() {
             return {
                 tableData:{records:[]},
@@ -264,8 +271,9 @@
                     if(row.offlineFile){
                         src='/WorkAbnormalAdd'
                     }
+                    localStorage.setItem('refresh','true')
                     this.$router.push({path:src,query:{ id:data,type:'edit'}});
-                    // this.$router.push({path:'/WorkAbnormalDetails',query:{id:this.selectId}});
+
                 }else{
                     this.$message.error('请先完成工单');
                 }

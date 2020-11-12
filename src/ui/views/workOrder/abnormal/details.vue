@@ -241,9 +241,6 @@
 
             if (this.$route.query) {
                 this.id = this.$route.query.id
-
-
-
                 this.type = this.$route.query.type;
                 this.$route.meta.title =
                     this.type == "edit"
@@ -253,6 +250,11 @@
                         : "";
                 this.needSubmit = this.$route.query.needSubmit;
             }
+            if(localStorage.getItem('refresh')=='true'){
+                localStorage.removeItem('refresh')
+                location.reload()
+
+			}
         },
         mounted() {
             SignatureInit('0002','123456',false,1,this.type!=='info')

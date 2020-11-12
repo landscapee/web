@@ -39,11 +39,10 @@ function hasPermission(roles, route) {
  * @param roles
  */
 export function filterAsyncRoutes(routes, roles) {
-	const res = [];
+ 	const res = [];
 	routes.forEach((route) => {
 		const tmp = { ...route };
-        console.log(tmp.component);
-        if (hasPermission(roles, tmp)) {
+         if (hasPermission(roles, tmp)) {
 			if (tmp.children) {
 				tmp.children = filterAsyncRoutes(tmp.children, roles);
 			}
@@ -73,7 +72,7 @@ const mutations = {
 			// } else {
 				accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
 			// }
-			commit('SET_ROUTES', accessedRoutes);
+ 			commit('SET_ROUTES', accessedRoutes);
   			resolve(accessedRoutes);
 		});
 	},

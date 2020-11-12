@@ -247,7 +247,6 @@ let authRoutes = [
 		name: '工单管理',
 		meta: {title: '工单管理',icon: 'gdgl',roles:['R_WorkOrderManage'] },
 		children: [
-
             {
                 path: '/WorkTemplate',
                 component: () => import('@views/workOrder/workTemplate/index'),
