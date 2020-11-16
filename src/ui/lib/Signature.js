@@ -41,7 +41,7 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,
         showNoPW:true, // 签章时候显示密码
         signdate:{
             ischeck:!isCheck,
-            fontSize:12,
+            fontSize:20,
             position:'居中下(章内)',
         },
     });
