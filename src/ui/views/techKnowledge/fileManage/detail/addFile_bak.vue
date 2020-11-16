@@ -42,7 +42,7 @@
                                     <el-select v-model="ruleForm.issueDept" placeholder="请选择发行单位" style='width:310px'>
                                         <el-option label="维修部" value="1"></el-option>
                                     </el-select>
-                                </div> 
+                                </div>
                             </div>
                             <div class="item">
                                 <div class="label">所属岗位:</div>
@@ -50,7 +50,7 @@
                                     <el-select v-model="ruleForm.issueDept" placeholder="请选择发行单位" style='width:310px'>
                                         <el-option label="维修部" value="1"></el-option>
                                     </el-select>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                         <br>
@@ -69,11 +69,11 @@
                                         end-placeholder="结束日期">
                                     </el-date-picker>
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
-                        <br>    
+                        <br>
                         <div class="list1">
                             <div class="item">
                                 <div class="label">
@@ -89,7 +89,7 @@
                             <span class="text">已选{{selectedPersonList.length}}对象</span><el-button type="primary" @click="choiceSelectFn">对象选择</el-button>
                         </div>
                 </div>
-                
+
             </div>
         </div>
         <userTree ref="userBox" @onSelected="handleUserSelected"></userTree>
@@ -124,7 +124,7 @@
             };
         },
         mounted(){
-            
+
         },
         methods: {
             choiceSelectFn(){
@@ -137,7 +137,7 @@
                 console.log(deptList)
             },
             submitForm() {
-               
+
             },
         }
     };
@@ -195,6 +195,7 @@
                         width:18px;
                         margin-right: 4px;
                         vertical-align: text-top;
+                        fill: #3D568E;
                     }
                 }
             }
@@ -231,7 +232,7 @@
                         margin-right:10px;
                     }
                 }
-               
+
             }
         }
     }

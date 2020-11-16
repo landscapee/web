@@ -328,6 +328,7 @@ export default {
                             width:18px;
                             margin-right: 4px;
                             vertical-align: text-top;
+                            fill: #3D568E;
                         }
                     }
                 }
