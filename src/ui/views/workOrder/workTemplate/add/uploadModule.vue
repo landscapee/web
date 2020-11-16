@@ -124,7 +124,7 @@
             submit(){
                 let obj={
                     ...this.form,
-                    id:this.$route.query.id,
+                    id:this.id,
                 }
                   request({
                     url:`${this.$ip}/mms-workorder/template/upload`,
@@ -132,15 +132,17 @@
                     data:obj
                 }).then(d => {
                     if( d.code==200){
-                        this.close()
+                        this.$emit('getList');
+                        this.close();
                         this.$message.success("上传成功")
                     }
                 });
             },
             open(id){
+                this.id = id;
                 this.dialogFormVisible=true
                  request({
-                    url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
+                    url:`${this.$ip}/mms-workorder/template/getById/${this.id}`,
                     method: 'get',
                 }).then((data) => {
                     if(data.code==200){
