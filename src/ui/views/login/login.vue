@@ -156,11 +156,11 @@ export default {
                                     this.loading = false;
 									return false
 								}
-                                  router.addRoutes(accessedRoutes);
+								router.addRoutes(accessedRoutes);
   							    // let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
 								// let path=index>-1?'/qualityManage':accessedRoutes[0].children[0].path
 								let path=accessedRoutes[0].children[0].path
-                                    this.$router.push({ path: path,replace:true});
+								this.$router.push({ path: path,replace:true});
 							}
                          }else{
 							this.$message.error( data.responseMessage);

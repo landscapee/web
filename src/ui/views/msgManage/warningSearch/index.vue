@@ -99,7 +99,7 @@ export default {
         requestTable(searchData){
             this.form = searchData;
             this.form.state = 0;
-            this.selectId=null,
+            this.selectId=null;
             this.tableData={records:[]};
             this.params.current = 1;
             this.$refs.searchTable.$refs.body_table.setCurrentRow();

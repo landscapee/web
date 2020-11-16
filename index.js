@@ -1,6 +1,6 @@
 /*
- * @Descripttion: 
- * @version: 
+ * @Descripttion:
+ * @version:
  * @Author: xdh.ss
  * @Date: 2020-05-13 09:50:30
  * @LastEditors: xdh.ss
@@ -35,10 +35,10 @@ import "./permission";
 
 //公共ip地址和端口
  if (PROGRAM == "jwxt.dev") {  // 本地
-    // Vue.prototype.$ip = "http://173.100.1.5:8011"
+    Vue.prototype.$ip = "http://173.100.1.5:8011"
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
     // Vue.prototype.$workImgIp = " http://173.101.1.133/"
-    Vue.prototype.$ip = "http://173.101.1.30:6070"
+    // Vue.prototype.$ip = "http://173.101.1.30:6070"
 } else if (PROGRAM == "jwxt.test") { // 测试
 
 
