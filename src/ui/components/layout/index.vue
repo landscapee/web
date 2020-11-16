@@ -1,13 +1,19 @@
 <template>
 	<el-container  class="layout-container">
 		<el-header class="layout-header">
-			<img :src="logo" class="logo_icon" />
+			<icon iconClass="logo" class="logo_icon"></icon>
 			<span class="header_title">{{sysname}}</span>
 			<div class="header-right">
-				<i class="bell_tips">{{tipsNumber}}</i>
-				<span><img :src="usericon" />{{username}}</span>
-				<span @click="goInfo"><img :src="bell" />消息</span>
-				<span @click="logout"><img :src="esc" />退出</span>
+
+				<span class="buttons"><icon iconClass="usericon"></icon>{{username}}</span>
+				<span class="buttons" @click="goInfo">
+					<span style="position: relative">
+						<icon iconClass="msg"></icon>
+						<i class="bell_tips">{{tipsNumber}}</i>
+					</span>
+					消息
+				</span>
+				<span class="buttons" @click="logout"><icon iconClass="logout" ></icon>退出</span>
 			</div>
 		</el-header>
 		<el-container>
@@ -179,42 +185,7 @@ import request from '@lib/axios.js';
 			color:rgba(255,255,255,1);
 			margin-left: 65px;
 		}
-		.header-right{
-			position: absolute;
-			right: 0px;
-			color: #fff;
-			img{
-				vertical-align: text-bottom;
-				margin-right: 8px;
-				width: 16px;
-				height:16px;
-			}
-			.bell_tips{
-				position: absolute;
-				left:95px;
-				top: -11px;
-				padding: 1px;
-				background: #E93570;
-				color: #fff;
-				border-radius: 5px;
-				font-size:10px;
-				font-style:normal;
-				font-family:SourceHanSansCN-Medium,SourceHanSansCN;
-				font-weight:500;
-				line-height:10px;
-			}
-			span{
-				margin-right: 15px;
-				cursor: pointer;
-			}
-			span:not(:last-child):after{
-				content:'|';
-				width:2px;
-				height:16px;
-				color:#00549A;
-				margin-left: 12px;
-			}
-		}
+
 		.logo_icon{
 			margin-left:63px;
 			width:109px;
@@ -331,5 +302,50 @@ import request from '@lib/axios.js';
 	}
 
 }
+.header-right svg{
 
+	width: 16px;
+	height: 16px;
+	margin-right: 8px;
+	vertical-align: middle;
+}
+
+.header-right{
+	margin-right: 15px;
+	position: absolute;
+	right: 0px;
+	color: #fff;
+	display: flex;
+	justify-content: flex-end ;
+	.bell_tips{
+		position: absolute;
+		right:2px;
+		top: -8px;
+		padding: 1px 4px;
+		background: #E93570;
+		color: #fff;
+		border-radius: 8px;
+		font-size:8px;
+		font-style:normal;
+		font-family:SourceHanSansCN-Medium,SourceHanSansCN;
+		font-weight:500;
+ 	}
+	span{
+		cursor: pointer;
+	}
+	span:not(:last-child):after{
+		content:'|';
+		width:2px;
+		height:16px;
+		color:#00549A;
+		margin-left: 12px;
+	}
+}
+.buttons{
+	margin-left: 15px;
+	display: flex;
+	flex-direction: row;
+	justify-content: right;
+	align-items: center;
+}
 </style>

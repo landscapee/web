@@ -11,9 +11,6 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    
-                    <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>
                 </div>
             </div>
             <div class="main-content">
@@ -117,7 +114,7 @@ export default {
                 })
                 .then(() => {
                     request({
-                        url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`, 
+                        url:`${this.$ip}/mms-parameter/rest-api/sysParam/del`,
                         method: 'post',
                         data:{id:this.selectId}
                     })
@@ -139,7 +136,7 @@ export default {
         },
         getList(){
            request({
-                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`, 
+                url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`,
                 method: 'post',
                 data:{...this.params,...this.sort,...this.form}
             })
@@ -150,7 +147,7 @@ export default {
                     this.tableData = {records: data.data.items,...this.params,total:data.data.total}
                 }
             }).catch((error) => {
-            
+
             });
         },
         handleSizeChange(size) {
@@ -166,13 +163,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     .main-content{
         /deep/ .mainTable{
             height: 600px;
             overflow: auto;
-        }    
+        }
     }
 }
 </style>
