@@ -13,6 +13,7 @@
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div @click="upTemplate()"><icon iconClass="upload" ></icon>上传模板</div>
                 </div>
             </div>
 
@@ -49,6 +50,7 @@
                 </SearchTable>
             </div>
         </div>
+        <UploadModule ref="UploadModule"  @getList="getList"></UploadModule>
     </div>
 </template>
 <script>
@@ -57,10 +59,12 @@
     import { workOrderConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
     import {  extend ,map} from 'lodash';
+    import UploadModule from './add/uploadModule'
     export default {
         components: {
             Icon,
-            SearchTable
+            SearchTable,
+            UploadModule
         },
         name: 'authorizeManage',
         data() {
@@ -94,10 +98,17 @@
         },
 
         methods: {
+            upTemplate(){
+                if(this.selectId==null){
+                    this.$message.error('请先选中一行数据');
+                }else{
+                    this.$refs.UploadModule.open(this.row.id)
+                }
 
+            },
             enable(row,path){
                 let url=`${this.$ip}/mms-workorder/template/enable/${row.id}`
-                this.optionsPrompt('启用',url)
+                this.optionsPrompt('启用',url,row)
 
             },
             addOrEditOrInfo1(row,tag){
@@ -117,8 +128,12 @@
                     });
                 })
             },
-            optionsPrompt(text,url){
-                this.$confirm(`此操作将${text}该工单模板，是否继续`,'提示',{
+            optionsPrompt(text,url,row){
+                let msg = '';
+                if ('启用' == text && !row.airlineTemplateFile && !row.bureauTemplateFile && !row.internalTemplateFile) {
+                    msg = '当前工单暂未上传模板，';
+                }
+                this.$confirm(`此操作将${text}该工单模板，${msg}是否继续`,'提示',{
                     confirmButtonTex:'确定',
                     cancelButtonTex:'取消',
                     type:'warning'
