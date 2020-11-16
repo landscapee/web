@@ -941,8 +941,8 @@
                 var signatureCreator = Signature.create()
                 var that = this
                 signatureCreator.handWriteDlg({
-                    image_height: "3",
-                    image_width: "6",
+                    image_height: "2",
+                    image_width: "4",
                     canvas_width: "100",
                     canvas_height: "50",
                     onBegin: function() {

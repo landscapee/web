@@ -98,12 +98,16 @@ export const authorizeConfig11 = (obj) => {
         { prop: 'state', label: '授权状态',formatter:state,sortProp:"state", align: 'center',sort:true,search:{type:'select', prop:'state',placeholder:"请输入",data:obj.accreditState,selectProp:['valData','valCode']} },
      ]
 };
+
 let modelRange=(row)=>{
     let arr=[]
     if(row.modelRange){
         arr= row.modelRange.split(';').map((k,l)=>{
-            let msgArr= k.split('__')[0].split('***')
-            return msgArr.length>1? msgArr[0]+'（'+msgArr[1]+')':msgArr[0]
+            let reg = /(.{1,})\*\*\*(.*)\$\$\$(.*)__(.*)/g;
+            reg.test(k)
+            let s=RegExp.$3?'$1（$3）':'$1'
+            let bbb=  k.replace(reg,s)
+            return bbb
         })
     }
     return  arr.join(';')
