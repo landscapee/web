@@ -36,7 +36,7 @@
                                     <icon  iconClass="ky" class="tab_radio" v-else></icon>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" slot="option" label="操作" :width="120" fixed="right">
+                            <el-table-column align="center" slot="option" label="操作" :width="120">
                                 <template slot-scope="scope">
                                     <div>
                                         <span @click="seeOther(scope.row,'/ZuserDoc')" class="rowSvg">

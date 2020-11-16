@@ -4,7 +4,7 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
         { prop: 'size', label: '大小(kb)', align: 'center', sort:true,sortProp:"size",
-            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小"},
+            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小",isNumber:true},
             formatter:(row, column, cellValue) => {
                 if(row.size&&!isNaN(parseInt(row.size))){
                     return (row.size/1024).toFixed(1)
@@ -45,13 +45,13 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             }
         },
         { prop: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",
-            search:{prop:'readingRate',type:'input',placeholder:"请输入阅读率"},
+            search:{prop:'readingRate',type:'input',placeholder:"请输入阅读率",isNumber:true},
             formatter: (row, column, cellValue) => {
                 return row.readingRate?row.readingRate+'%':'0%'
             }
         },
         { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",
-            search:{prop:'averageReadingTime',type:'input',placeholder:"请输入平均阅读时长(分)",extendType:'search'},
+            search:{prop:'arTime',type:'input',placeholder:"请输入平均阅读时长(分)",extendType:'search',isMinute:true},
             formatter: (row, column, cellValue) => {
                 return timeMinuteFormat(row.averageReadingTime)
             }
@@ -62,7 +62,7 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
         { prop: 'size', label: '大小(kb)', align: 'center', sort:true,sortProp:"size",
-            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小"},
+            search:{prop:'sizeQuery',type:'input',placeholder:"请输入大小",isNumber:true},
             formatter:(row, column, cellValue) => {
                 if(row.size&&!isNaN(parseInt(row.size))){
                     return (row.size/1024).toFixed(1)
@@ -110,7 +110,7 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
 
          },
         { prop: 'readingTime', label: '阅读时长', align: 'center',sort:true,sortProp:"readingTime",
-            search:{prop:'readingTime',type:'input',placeholder:"请输入阅读时长"},
+            search:{prop:'readingTime',type:'input',placeholder:"请输入阅读时长",isNumber:true},
             formatter: (row, column, cellValue) => {
                 return timeMinuteFormat(row.readingTime)
             },

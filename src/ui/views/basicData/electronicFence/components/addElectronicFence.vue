@@ -16,14 +16,13 @@
     <div class="main-content">
       <el-form label-position="right" :model="form" :rules="rules" ref="form" >
         <div class="row_custom">
-          <el-form-item label="机位号：" prop="parkingNo"> 
+          <el-form-item label="机位号：" prop="parkingNo">
             <span v-if="type=='info'">{{form.parkingNo}}</span>
             <el-input v-else v-model="form.parkingNo" placeholder="请输入机位号"  :disabled="type=='add'?false:true"></el-input>
           </el-form-item>
           <el-form-item label="允许最大误差值：" prop="maxError">
             <span v-if="type=='info'">{{form.maxError}}</span>
-            <el-input-number v-else v-model.number="form.maxError" placeholder="误差值" :min="0" :max="999"
-                      @input="changeCode('maxError')"></el-input-number>
+            <el-input v-else v-model.number="form.maxError" placeholder="请输入允许最大误差值" maxlength="3"></el-input>
           </el-form-item>
         </div>
       </el-form>

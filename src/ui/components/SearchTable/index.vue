@@ -29,8 +29,9 @@
 									  :type="colConfig.search.type1||'text'"
 									  :clearable="colConfig.search.clear===undefined?true:colConfig.search.clear"
 									  :placeholder="colConfig.search.placeholder" class="adv_filter"
+									  :maxlength="colConfig.search.isNumber?10: ''"
 									  v-model="row[colConfig.search.prop]"
-									  @input="filterNumber($event,row,colConfig.search.prop,colConfig.search.isNumber)"></el-input>
+									  @input="filterNumber($event,row,colConfig.search.prop,colConfig.search)"></el-input>
 							<span   @click="requestTableData" class="rowSvg"
 									v-if="colConfig.search.extendType && colConfig.search.extendType=='search'">
 								<icon  iconClass="table_search" title="搜索"></icon>
@@ -148,7 +149,7 @@
                 this.$refs.body_table.columns[column.index].realWidth = newWidth;
             },
             requestTableData(){
-                this.$emit('requestTable', this.headerData[0]);
+                 this.$emit('requestTable', {...this.headerData[0]});
             },
             renderHeaderRow(h,  { column, $index }){
                 return (
@@ -214,9 +215,14 @@
                 this.multipleSelection = val;
                 this.$emit('listenToSelectionChange', val);
             },
-			filterNumber(value,row,prop,isNumber){
-				if (isNumber) {
-					row[prop]=value.replace(/[^\d]/g,'')
+			filterNumber(value,row,prop,search){
+				if (search.isNumber) {
+					row[prop]=value.replace(/[^\d]/g,'');
+				}else if (search.isMinute){
+					let reg=/([^\d])?(\d{1,})([^(\+|-])?(\+|-)?([^(\+|-])?/g;
+					let a = reg.test(value);
+					let s=RegExp.$2+RegExp.$4;
+					row[prop]=value.replace(value,s);
 				}
 			}
         },

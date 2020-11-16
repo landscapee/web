@@ -36,7 +36,7 @@ export const testRuConfig = (testList ,obj) => {
                 { prop: 'examName', label: '考试名称',  sortProp:"examName", align: 'center',sort:false ,search1:{type:'input', prop:'examName',placeholder:"请输入"} },
                 { prop: 'score', label: '分数', sortProp:"score", align: 'center',sort:false ,search1:{type:'input', prop:'score',placeholder:"请输入"}},
             { prop: 'examTime', label: '时间',formatter:timeInfo,sortProp:"examTime", align: 'center',sort:false,search1:{type:'date', prop:'examTime',placeholder:"请选择"} },
-            { prop: 'totalTime', label: '时长(分)',sortProp:"totalTime", align: 'center',sort:false,search1:{type:'input', prop:'totalTime',placeholder:"请输入"}},
+            { prop: 'totalTime', label: '时长(分)',sortProp:"totalTime", align: 'center',sort:false,search1:{type:'input', prop:'totalTime',placeholder:"请输入",isNumber:true}},
             { prop: 'examSite', label: '地点',sortProp:"examSite", align: 'center' ,sort:false,search1:{type:'input', prop:'examSite',placeholder:"请输入"}},
             { prop: 'examType', label: '类型',sortProp:"examType", align: 'center' ,sort:false,search1:{type:'select', prop:'examType',placeholder:"请选择",data:obj.testCategory1,selectProp:['valData','valData'],}},
             { prop: 'qualificationType', label: '资质类型',sortProp:"qualificationType", align: 'center',sort:false,search1:{type:'select', prop:'qualificationType',placeholder:"请选择",selectProp:['valData','valData'],data:obj.zizhiType,} },
@@ -48,4 +48,3 @@ export const testRuConfig = (testList ,obj) => {
                   { slot: 'option', label: '操作',width:'210',  align: 'center', search1:{type:'btn',label:'搜索',icon:"table_search1"} },
          ]
 };
- 
