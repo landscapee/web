@@ -144,6 +144,8 @@ export default {
             }
         },
         getList(){
+            this.form.recipientTypeSearch = this.form.recipientType
+            delete this.form.recipientType
            request({
                 url:`${this.$ip}/mms-warning/warningTemplate/list`,
                 method: 'post',
