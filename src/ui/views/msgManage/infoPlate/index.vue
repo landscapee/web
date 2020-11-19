@@ -3,15 +3,13 @@
         <router-view v-if="this.$router.history.current.path == '/addInfoPlate'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/infoPlateDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/historyInfoPlate'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/infoPlate'" class="sysParameter">
-            <div class="top-content">
-                <div class="top-left-toolbar">
-                    <span :class="isActive==index?'isActive':''" @click="switchTable(index)" v-for="(name,index) in ['发布信息','接收信息']" :key="index">{{name}}</span>
+        <div v-if="this.$router.history.current.path == '/infoPlate'" class="QCenterRight G_listOne">
+            <div  >
+
+                <div class="QHead">
+                   {{this.isActive==0?'发布信息':'接收信息'}}
                 </div>
-                <div class="top-content-title">
-                    <span>{{this.isActive==0?'发布信息':'接收信息'}}</span>
-                </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div :class="isActive==0?'isDisabled':''" @click="isActive==0?()=>{}:addOrEditOrInfo('history')"><icon iconClass="history" ></icon>历史</div>
                     <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
                     <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
@@ -19,7 +17,10 @@
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="top-left-toolbar">
+                <span :class="isActive==index?'isActive':''" @click="switchTable(index)" v-for="(name,index) in ['发布信息','接收信息']" :key="index">{{name}}</span>
+            </div>
+            <div class="tableOneBox">
                 <SearchTable :key="isActive" ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
@@ -300,12 +301,39 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.sysParameter{
-    .main-content{
+    .G_listOne{
         /deep/ .mainTable{
-            height: 600px;
+            height:calc(100vh - 380px) !important;
+            overflow: auto;
         }
     }
-}
+
+    .mainTable{
+        height:calc(100vh - 500px) !important;
+        overflow: auto;
+    }
+    .top-left-toolbar{
+        .isActive{
+            color: #fff;
+            background-color: #3280e7;
+        }
+        span{
+            display: inline-block;
+            padding: 0px 10px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            color: #3280e7;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        span:first-child{
+            border-radius: 3px 0 0 3px;
+            border: solid 1px #3280e7;
+        }
+        span:last-child{
+            border-radius: 0 3px 3px 0;
+            border: solid 1px #3280e7;
+        }
+    }
 </style>

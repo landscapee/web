@@ -5,11 +5,11 @@
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'" :key="$route.path"></router-view>
          <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="signControl">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>工单完工签署</span>
+            <div class="QCenterRight G_listOne">
+                <div class="QHead">
+                    工单完工签署
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div  @click="seeOther(null,'WorkAbnormalAdd')"> <icon iconClass="#" style="width: 0;" ></icon>纸制填报工单导入</div>
 <!--                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>-->
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" style="margin-right:0"></icon>详情</div>
@@ -17,7 +17,7 @@
                     <div @click="moreExport()"><icon iconClass="export" ></icon>批量导出</div>
                  </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="checkbox" align="center" label="选择" :width="49"   >
                         <template slot-scope="scope">
@@ -315,18 +315,6 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
-    .signControl{
-        margin-top:14px;
-        /deep/ .mainTable{
-            height:calc(100vh - 370px);
-            .el-checkbox__label{
-                display: none;
-            }
-        }
-       /deep/ .cell> div{
-            line-height: 20px!important;
-        }
-    }
+
 
 </style>

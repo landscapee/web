@@ -2,44 +2,57 @@
     <div>
         <router-view v-if="this.$router.history.current.path == '/editBusinessData'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/editBusinessSubset'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/businessData'" class="businessData">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>业务数据类型及业务数据</span>
+        <div v-if="this.$router.history.current.path == '/businessData'" class=" QCenterRight G_listTwo">
+            <div class="">
+                <div class="QHead">
+                    业务数据类型及业务数据
                 </div>
-                <div class="top-toolbar">
-                    <div class="left-toolbar">
-                        <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                        <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                        <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
 
-                    </div>
-                    <div class="right-toolbar">
-                        <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                        <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                        <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    </div>
-                </div>
             </div>
-            <div class="main-content">
-                <SearchTable class="left-main-table" refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"   :data="tableLeftData" :tableConfig="businessTableConfig"   >
-                    <el-table-column slot="radio" label="选择" :width="49" >
-                        <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                </SearchTable>
-                <SearchTable class="right-subset-table" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"   :data="tableRightData" :tableConfig="businessSubsetConfig" >
-                    <el-table-column slot="radio" label="选择" :width="49" >
-                        <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                </SearchTable>
+            <div class="QlistBody Qdisplay tableTwoBox" ref="mainContent">
+                <div class="QlistLeft">
+                    <div class=" positiondiv" >
+                        <div style="visibility: hidden">ddd</div>
+                        <div class="QheadRight">
+                            <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                            <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                            <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                            <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+
+                        </div>
+                    </div>
+                    <SearchTable class="left-main-table" refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"   :data="tableLeftData" :tableConfig="businessTableConfig"   >
+                        <el-table-column slot="radio" label="选择" :width="49" >
+                            <template slot-scope="{ row }">
+                                <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                            </template>
+                        </el-table-column>
+                    </SearchTable>
+
+
+                </div>
+                <div class="QlistRight ">
+                    <div class=" positiondiv" >
+                        <div style="visibility: hidden">ddd</div>
+                        <div class="QheadRight">
+                            <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                            <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                            <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                            <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                        </div>
+                    </div>
+                    <SearchTable class="right-subset-table" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"   :data="tableRightData" :tableConfig="businessSubsetConfig" >
+                        <el-table-column slot="radio" label="选择" :width="49" >
+                            <template slot-scope="{ row }">
+                                <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                            </template>
+                        </el-table-column>
+                    </SearchTable>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -299,57 +312,5 @@ getList(tag,scroll){
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
-.businessData{
-    .top-content{
-        .top-toolbar{
-            padding: 0px 30px 0px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .left-toolbar{
-                width:837px;
-                text-align: right;
-            }
-            .right-toolbar{
-                width:824px;
-                text-align: right;
-            }
-        }
-    }
-    .main-content{
-        padding: 0px 30px 0px 30px;
-        display: flex;
-        justify-content: space-between;
-         /deep/ .left-main-table{
-            width:837px;
-            /deep/ .el-table{
-                width:837px;
-                .el-table__body{
-                    width: 837px !important;
-                }
-            }
-        }
-        /deep/ .right-subset-table{
-            width:824px;
-            /deep/ .el-table{
-                width:824px;
-                .el-table__body{
-                    width: 824px !important;
-                }
-            }
-        }
-        /deep/ .mainTable{
-            height: 600px;
-            overflow: auto;
-            // /deep/ .el-table__body-wrapper{
-            //     /deep/ tr:last-child{
-            //         td{
-            //             border-bottom:0px;
-            //         }
-            //     }
-            // }
-        }
-    }
-}
+
 </style>

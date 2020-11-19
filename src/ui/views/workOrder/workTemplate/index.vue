@@ -3,12 +3,12 @@
 
         <router-view v-if="this.$router.history.current.path == '/WorkTemplateAdd'" :key="$route.path"></router-view>
          <router-view v-else-if="this.$router.history.current.path == '/SuserTrain'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/WorkTemplate'" :key="$route.path" class="coursewareMaintain">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>工单模板管理</span>
+         <div v-else-if="this.$router.history.current.path == '/WorkTemplate'" :key="$route.path" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    工单模板管理
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
@@ -285,11 +285,5 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
-    .coursewareMaintain{
-        margin-top:14px;
-        /deep/ .mainTable{
-            height:calc(100vh - 370px);
-        }
-    }
+
 </style>

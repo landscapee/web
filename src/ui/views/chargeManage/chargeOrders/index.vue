@@ -1,17 +1,13 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/chargeOrderAdd'" :key="$route.path"></router-view>
-        <div v-else class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>收费单</span>
+        <div v-else class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    收费单
                 </div>
-                <div class='top-right'>
-                    <div class="header">机务服务非例行工作结算清单 <span>
-                        {{approveNumber}} 单待审批｜
-                        {{sendNumber}} 单待发送</span></div>
-                </div>
-                <div class="top-toolbar">
+
+                <div class="QheadRight">
                     <div @click='sendFinanceFn'><icon iconClass="add"></icon>发送财务</div>
                     <div @click='effectiveListFn'><icon iconClass="add" ></icon>导出收费单</div>
                     <div @click='addChargeOrderFn("/chargeOrderAdd","add")'><icon iconClass="add" ></icon>新增</div>
@@ -23,7 +19,14 @@
                     <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
                 </div>
             </div>
-            <div class="main-content">
+            <div class='top-right'>
+                <div class="header">机务服务非例行工作结算清单 <span>
+                        {{approveNumber}} 单待审批｜
+                        {{sendNumber}} 单待发送</span>
+                </div>
+            </div>
+            <div class="tableOneBox">
+
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="checkbox" label="选择" :width="49" >
                         <template slot-scope="scope">
@@ -481,31 +484,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.sysParameter{
     .top-right{
-        position: absolute;
-        left: 30px;
-        top: 40px;
+
         .header{
-            font-size:24px;
+            font-size:20px;
             span{
                 margin-left:40px;
             }
         }
     }
-    .main-content{
-        /deep/ .mainTable{
-            height: 600px;
-            overflow: auto;
-            .el-checkbox__label{
-                display: none;
-            }
-        }
-    }
-}
-.dialog-footer{
-    display: flex;
-    justify-content: center;
-}
 </style>

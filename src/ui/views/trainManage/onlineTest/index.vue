@@ -2,15 +2,15 @@
     <div>
 
          <router-view v-if="this.$router.history.current.path == '/onlineTestDo'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="onlineTest">
-            <div class="top-content">
-                <div class="top-content-title">
+        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
                     <!--this.$store.state.user.userInfo.administrativeId-->
-                    <span>{{this.$store.state.user.userInfo.name}}-需参加的在线考试</span>
+                     {{this.$store.state.user.userInfo.name}}-需参加的在线考试
                 </div>
 
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
@@ -184,21 +184,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.onlineTest{
-    margin-top:14px;
-
-    .copyButton{
-        margin: 0;
-        padding:7px 10px;
-        background: black;
-        color:white;
-    }
-    .copyButton1{
-        margin-right: 3px;
-    }
-    /deep/ .mainTable{
-        height: 600px;
-    }
-}
+ 
 </style>

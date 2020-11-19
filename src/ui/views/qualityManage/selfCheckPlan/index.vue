@@ -3,30 +3,41 @@
 
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanAdd'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="businessData">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>法定自查检查计划</span>
+        <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="G_listTwo">
+            <div class="QCenterRight">
+                <div class="QHead">
+                     法定自查检查计划
                 </div>
-                <div class="top-toolbar">
+                <div class="QlistBody Qdisplay " ref="mainContent">
 
-                    <div class="headDiv headDiv1">
-                        <div style="font-weight: bold; font-size: 16px">计划</div>
-                        <div class="left-toolbar">
-                            <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                            <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                            <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                            <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
-                            <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
+                    <div class="QlistLeft">
+                        <div class="positiondiv">
+                            <div class="twoHead">计划</div>
+                            <div class="QheadRight">
+                                <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                                <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                                <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                                <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
+                                <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
+                            </div>
+
                         </div>
-
+                        <SearchTable class="left-main-table" :data="tableLeftData" :tableConfig="businessTableConfig"  refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"     >
+                            <el-table-column slot="radio" label="选择" :width="49" >
+                                <template slot-scope="{ row }">
+                                    <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                    <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                                </template>
+                            </el-table-column>
+                        </SearchTable>
 
                     </div>
-                    <div class="headDiv headDiv2" >
-                        <div style="font-weight: bold; font-size: 16px">
+                    <div class="QlistRight"  >
+                     <div class="positiondiv" >
+                        <div class="twoHead">
                             计划明细
                         </div>
-                        <div class="right-toolbar">
+                        <div class="QheadRight">
                             <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
@@ -36,27 +47,20 @@
 
 
                     </div>
+
+                       <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
+                        <el-table-column slot="radio" label="选择" :width="49"   >
+                            <template slot-scope="{ row }">
+
+                                <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                            </template>
+                        </el-table-column>
+                    </SearchTable>
+                     </div>
                 </div>
             </div>
-            <div class="main-content" ref="mainContent">
-                <SearchTable class="left-main-table" :data="tableLeftData" :tableConfig="businessTableConfig"  refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"     >
-                    <el-table-column slot="radio" label="选择" :width="49" >
-                        <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                </SearchTable>
-                <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
-                    <el-table-column slot="radio" label="选择" :width="49"   >
-                        <template slot-scope="{ row }">
 
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                </SearchTable>
-            </div>
         </div>
     </div>
 </template>
@@ -203,7 +207,7 @@ export default {
             var scrollHeight = bady.scrollHeight;
             //获取滚动元素标识
             var tag = bady.parentElement.__vue__.refTag;
-             if(scrollTop+windowHeight>=scrollHeight){
+              if(scrollTop+windowHeight>=scrollHeight){
                 if(tag=='left-table'){
                     if(this.leftParams.size!=18){
                         this.leftParams.size=18
@@ -462,65 +466,4 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
-.businessData{
-    padding-top: 14px;
-     .top-content{
-        .top-toolbar{
-            padding: 0px 30px 0px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .headDiv{
-                display: flex;justify-content: space-between;
-                align-items: center;
-                &>div:first-child{
-                    font-size: 16px;
-                }
-            }
-            .headDiv1{
-                width:562px;
-            }
-            .headDiv2{
-                width:1096px;
-            }
-            .left-toolbar{
-                 text-align: right;
-            }
-            .right-toolbar{
-                 text-align: right;
-            }
-        }
-    }
-    .main-content{
-        padding: 0px 30px 0px 30px;
-        display: flex;
-        justify-content: space-between;
-         /deep/ .left-main-table{
-            width:562px;
-            /deep/ .el-table{
-                width:562px;
-                .el-table__body{
-                    width: 562px !important;
-                }
-            }
-        }
-        /deep/ .right-subset-table{
-            width:1096px;
-            /deep/ .el-table{
-                width:1096px;
-                .el-table__body{
-                    width: 1096px !important;
-                }
-            }
-        }
-
-        /deep/ .mainTable{
-            height: 600px!important;
-            /*overflow: auto!important;*/
-         }
-
-
-    }
-}
-</style>
+ </style>

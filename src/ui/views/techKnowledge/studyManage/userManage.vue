@@ -1,25 +1,12 @@
 <template>
     <div class='index'>
         <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
-        <div class='inner'>
-            <div class='top_content'>
-                <div class='header'><span>个人管理</span></div>
-                <div class="top-toolbar">
-                    <div class="left-toolbar">
-                        <!-- <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                        <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                        <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                        <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                        <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
-                    </div>
-                    <div class="right-toolbar">
-                        <!-- <div @click="readPushFn">阅读推送</div> -->
-                        <!-- <div @click="rightMethods"><icon iconClass="reset" ></icon>导出Excel</div> -->
-                    </div>
-                </div>
+        <div class='QCenterRight G_listOne'>
+            <div  >
+                <div class='QHead'>个人管理</div>
+
             </div>
-             <div class="main-content">
+             <div class="tableOneBox">
                 <SearchTable
                     refTag="searchTable"
                     ref="searchTable"
@@ -258,83 +245,5 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
-.index{
-    .inner{
-        .top_content{
-            padding-top: 20px;
-            position: relative;
-            padding-bottom: 20px;
-            .header{
-                margin: 0 auto;
-                margin-bottom: 30px;
-                width: 290px;
-                font-family:SourceHanSansCN-Medium,SourceHanSansCN;
-                font-weight:500;
-                color:rgba(34,34,34,1);
-                height:24px;
-                line-height:24px;
-                span{
-                    font-size:24px ;
-                }
-            }
-            .top-toolbar{
-                padding: 0px 30px 0px 30px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                .left-toolbar{
-                    width:837px;
-                    text-align: right;
-                }
-                .right-toolbar{
-                    width:824px;
-                    text-align: right;
-                    div{
-                        user-select: none;
-                        cursor: pointer;
-                        display: inline-flex;
-                        justify-content: center;
-                        align-items: center;
-                        height: 32px;
-                        line-height: 32px;
-                        padding: 7px;
-                        border-radius:2px;
-                        border:1px solid rgba(208,208,208,1);
-                        margin-right: 12px;
-                        color: #3D568E;
-                        &:last-child{
-                            margin-right: 0px;
-                        }
-                        .svg-icon{
-                            height:18px;
-                            width:18px;
-                            margin-right: 4px;
-                            vertical-align: text-top;
-                            fill: #3D568E;
-                        }
-                    }
-                }
-            }
-        }
-        .main-content{
-            padding: 0px 30px 0px 30px;
-            display: flex;
-            justify-content: space-between;
-            /deep/ .mainTable{
-                height: 500px!important;
-                overflow: auto;
-                // /deep/ .el-table__body-wrapper{
-                //     /deep/ tr:last-child{
-                //         td{
-                //             border-bottom:0px;
-                //         }
-                //     }
-                // }
-            }
-        }
-    }
-
-}
-</style>
+ </style>
 
