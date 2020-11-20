@@ -34,9 +34,12 @@
                             <el-table-column slot="option" label="操作" align="center" :width="80" >
                                 <template slot-scope="{ row }" >
 
-                                    <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
-                                        <icon iconClass="copyjx"  title="复制绩效明细" ></icon>
+                                    <el-tooltip class="item" effect="dark" content="复制绩效明细" placement="top">
+                                          <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="copyjx"   ></icon>
                                     </span>
+                                    </el-tooltip>
+
 
                                 </template>
                             </el-table-column>

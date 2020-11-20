@@ -27,9 +27,12 @@
                     <el-table-column align="center" slot="fileDown" label="操作" :width="60" >
                         <template  slot-scope="scope">
                             <form action="#" method="GET" ref="formLoad"></form>
-                            <span @click="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'':fileDown(scope.row)" :class="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'rowSvg rowSvgInfo':'rowSvg'">
-                                    <icon iconClass="downloadNew" title="课件下载"></icon>
+                            <el-tooltip class="item" effect="dark" content="课件下载" placement="top">
+                             <span @click="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'':fileDown(scope.row)" :class="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'rowSvg rowSvgInfo':'rowSvg'">
+                                    <icon iconClass="downloadNew"  ></icon>
                             </span>
+                            </el-tooltip>
+
                         </template>
                     </el-table-column>
 

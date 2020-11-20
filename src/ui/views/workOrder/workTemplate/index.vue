@@ -34,15 +34,22 @@
                     <el-table-column align="center" slot="option" label="操作" :width="100">
                         <template  slot-scope="scope">
                             <div >
-                                <span @click="addOrEditOrInfo1(scope.row,'edit')" class="rowSvg" v-if="scope.row.state!==3">
-                                    <icon iconClass="revision" title="改版"></icon>
+                                <el-tooltip class="item" effect="dark" content="改版" placement="top">
+                                  <span @click="addOrEditOrInfo1(scope.row,'edit')" class="rowSvg" v-if="scope.row.state!==3">
+                                    <icon iconClass="revision"  ></icon>
                                 </span>
-                                <span  @click="enable(scope.row)" class="rowSvg" v-if="scope.row.state===0&&scope.row.history===false">
-                                    <icon iconClass="enable" title="启用"></icon>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="启用" placement="top">
+                                  <span  @click="enable(scope.row)" class="rowSvg" v-if="scope.row.state===0&&scope.row.history===false">
+                                    <icon iconClass="enable"  ></icon>
                                 </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="停用" placement="top">
                                 <span  @click="unEnable(scope.row)"  class="rowSvg" v-if="scope.row.state===1">
-                                    <icon iconClass="disable" title="停用"></icon>
+                                    <icon iconClass="disable"  ></icon>
                                 </span>
+                                </el-tooltip>
+
                             </div>
                          </template>
                     </el-table-column>

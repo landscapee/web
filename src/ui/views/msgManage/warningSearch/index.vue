@@ -20,9 +20,12 @@
                     </el-table-column>
                     <el-table-column slot="relationInfo" align='center' :width="80" >
                         <template slot-scope="{ row }" v-if="row.state==0">
-                            <span @click="clickAction(row)" class="rowSvg">
-                                <icon iconClass="finishRead" title="已读"></icon>
-                            </span>
+                            <el-tooltip class="item" effect="dark" content="已读" placement="top">
+                              <span @click="clickAction(row)" class="rowSvg">
+                                    <icon iconClass="finishRead"  ></icon>
+                                </span>
+                            </el-tooltip>
+
                         </template>
                     </el-table-column>
                 </SearchTable>

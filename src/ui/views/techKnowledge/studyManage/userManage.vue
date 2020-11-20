@@ -20,12 +20,16 @@
                 >
                 <el-table-column slot="option" align='center' label="操作" :width="100"  >
                         <template  slot-scope="{ row }"> <!---->
-                            <span @click="toDownloadFn(row)" class="rowSvg" style="margin-right: 10px">
-                                <icon iconClass="downloadNew" title="下载"></icon>
+                            <el-tooltip class="item" effect="dark" content="下载" placement="top">
+                             <span @click="toDownloadFn(row)" class="rowSvg" style="margin-right: 10px">
+                                <icon iconClass="downloadNew"  ></icon>
                             </span>
-                            <span @click="toCompleteFn(row)" class="rowSvg" :style="row.read===1?'':'visibility: hidden'">
-                                <icon iconClass="finishRead" title="完成阅读"></icon>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="完成阅读" placement="top">
+                             <span @click="toCompleteFn(row)" class="rowSvg" :style="row.read===1?'':'visibility: hidden'">
+                                <icon iconClass="finishRead"  ></icon>
                             </span>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </SearchTable>

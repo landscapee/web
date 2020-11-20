@@ -4,8 +4,8 @@
         <router-view v-else-if="this.$router.history.current.path == '/MyWorkPaperDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/MyWorkAbnormalAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/MySignControlAdd'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/myWorkOrder'" :key="$route.path" class="G_listOne">
-            <div class="QCenterRight ">
+         <div v-else-if="this.$router.history.current.path == '/myWorkOrder'" :key="$route.path" class="G_listOne QCenterRight">
+            <div class=" ">
                 <div class="QHead">
                     我的工单
                 </div>
@@ -14,11 +14,11 @@
                 <SearchTable  ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                      <el-table-column align="center" slot="option" label="操作" :width="59" >
                         <template  slot-scope="scope">
-                            <div>
-                                <span @click="abnormalChange(scope.row)" class="rowSvg">
-                                    <icon iconClass="editNew" title="异常更改"></icon>
-                                </span>
-                            </div>
+                                <el-tooltip class="item" effect="dark" content="档案" placement="top">
+                                     <span @click="abnormalChange(scope.row)" class="rowSvg">
+                                        <icon iconClass="editNew" title="异常更改"></icon>
+                                    </span>
+                                 </el-tooltip>
                          </template>
                     </el-table-column>
 

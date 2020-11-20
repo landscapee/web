@@ -4,8 +4,8 @@
          <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="signControl">
-            <div class="QCenterRight G_listOne">
+         <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="QCenterRight G_listOne">
+            <div class="">
                 <div class="QHead">
                     工单完工签署
                 </div>
@@ -27,22 +27,33 @@
                      <el-table-column align="center" slot="option" label="操作" :width="80" >
                         <template  slot-scope="scope">
                             <div >
-                                <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
-                                    <icon iconClass="downloadNew" title="下载"></icon>
-                                </span>
-                                <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
-                                    <icon iconClass="exportNew" title="导出"></icon>
-                                </span>
-                                <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
-                                      @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
-                                    <icon iconClass="unlock" title="解锁"></icon>
-                                </span>
-                                <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
-                                      @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
-                                      :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"
-                                      style="margin-left: 10px">
-                                    <icon iconClass="editNew" title="异常更改"></icon>
-                                </span>
+
+                                <el-tooltip class="item" effect="dark" :content="scope.row.offlineFile?'下载':'导出'" placement="top">
+                                  <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
+                                        <icon iconClass="downloadNew"  ></icon>
+                                    </span>
+                                    <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="exportNew"  ></icon>
+                                    </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="解锁" placement="top">
+                                     <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
+                                           @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                        <icon iconClass="unlock"  ></icon>
+                                    </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="异常更改" placement="top">
+                                     <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
+                                           @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
+                                           :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"
+                                           style="margin-left: 10px">
+                                        <icon iconClass="editNew"  ></icon>
+                                    </span>
+                                </el-tooltip>
+
+
+
+
                             </div>
                          </template>
                     </el-table-column>

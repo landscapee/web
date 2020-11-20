@@ -29,12 +29,18 @@
                 >
                     <el-table-column slot="option" align='center' label="操作" :width="150"  >
                         <template  slot-scope="{ row }"> <!--||row.state==2--> <!--row.state==1-->
-                            <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
-                                    <icon iconClass="pass" title="通过"></icon>
+                            <el-tooltip class="item" effect="dark" content="通过" placement="top">
+                                 <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
+                                        <icon iconClass="pass"  ></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="拒绝" placement="top">
+                                <span @click="torefuseFn(row)" v-show='row.state===0' class="rowSvg">
+                                    <icon iconClass="nopass"  ></icon>
                             </span>
-                            <span @click="torefuseFn(row)" v-show='row.state===0' class="rowSvg">
-                                    <icon iconClass="nopass" title="拒绝"></icon>
-                            </span>
+                            </el-tooltip>
+
+
                         </template>
                     </el-table-column>
                 </SearchTable>

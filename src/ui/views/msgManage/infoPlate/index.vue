@@ -31,21 +31,29 @@
                     <el-table-column slot="attachment" label="附件"  align="center" :width="70">
                         <template slot-scope="{ row }">
                             <span @click="(row.fileInfoList&&row.fileInfoList.length)?downloadFile(row):''" :class="(row.fileInfoList&&row.fileInfoList.length)?'rowSvg':'rowSvg rowSvgInfo'">
-                                <icon iconClass="downloadNew" title="下载"></icon>
+                                <el-tooltip class="item" effect="dark" content="下载" placement="top">
+                                    <icon iconClass="downloadNew"  ></icon>
+                                </el-tooltip>
                             </span>
                         </template>
                     </el-table-column>
                     <el-table-column slot="relationInfo" label="关联信息" :width="80" align="center" >
                         <template slot-scope="{ row }">
-                            <span @click="clickAction('release',row.id)" v-if="isActive==0 && row.state==0" class="rowSvg" >
-                                <icon iconClass="publish" title="发布"></icon>
-                            </span>
-                            <span @click="clickAction('receive',row.id)" v-if="isActive==1 && row.state==0" class="rowSvg">
-                                    <icon iconClass="receiveHandle" title="接收处理"></icon>
-                            </span>
-                            <span @click="clickAction('close',row.id)" v-if="isActive==1 && row.state==1" class="rowSvg" >
-                                <icon iconClass="nopass" title="关闭"></icon>
-                            </span>
+                            <el-tooltip class="item" effect="dark" content="发布" placement="top">
+                               <span @click="clickAction('release',row.id)" v-if="isActive==0 && row.state==0" class="rowSvg" >
+                                    <icon iconClass="publish"  ></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="接收处理" placement="top">
+                                <span @click="clickAction('receive',row.id)" v-if="isActive==1 && row.state==0" class="rowSvg">
+                                        <icon iconClass="receiveHandle"  ></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="关闭" placement="top">
+                               <span @click="clickAction('close',row.id)" v-if="isActive==1 && row.state==1" class="rowSvg" >
+                                    <icon iconClass="nopass"  ></icon>
+                                </span>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </SearchTable>

@@ -90,7 +90,7 @@
                             <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" :disabled="type=='info'" size="mini" @click="handleClear">清空</el-button></div>
                             <el-scrollbar style="height:120px ">
                                 <el-tag :key="tag.id" v-for="tag in form.modelRange" :closable="type!='info'" :disable-transitions="false" @close="  handleRemove(tag.id)">
-                                    {{ tag.models&&tag.models.length?`${tag.name}（${tag.models.join(',')}）`:`${tag.name}`}}
+                                    {{ tag.models&&tag.models.length?`${tag.iata}（${tag.models.join(',')}）`:`${tag.name}`}}
                                 </el-tag>
                             </el-scrollbar>
                         </el-card>
