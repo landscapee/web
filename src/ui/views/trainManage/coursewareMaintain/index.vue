@@ -3,8 +3,8 @@
 
          <router-view v-if="this.$router.history.current.path == '/coursewareMaintainAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/coursewareMaintain'" :key="$route.path" class="coursewareMaintain">
-            <div class="QCenterRight G_listOne">
+        <div v-else-if="this.$router.history.current.path == '/coursewareMaintain'" :key="$route.path" class="QCenterRight G_listOne">
+            <div  >
                 <div class="QHead">
                     课件维护
                 </div>

@@ -6,7 +6,7 @@
         <div   class="G_listOne" v-else>
             <div class="QCenterRight personTable">
                 <div class="QHead QHead1">
-                    <span>工作经历</span>
+                    工作经历
                 </div>
                 <div class="QheadRight">
                     <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon title="新增" iconClass="add" ></icon></div>

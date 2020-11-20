@@ -6,7 +6,7 @@
         <div   class="G_listOne" v-else>
             <div class="QCenterRight personTable">
                 <div class="QHead QHead1">
-                    <span>不安全事件及诚信记录</span>
+                    不安全事件及诚信记录
                 </div>
                 <div class="QheadRight">
                     <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  title="新增" ></icon></div>

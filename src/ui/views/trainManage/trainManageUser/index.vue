@@ -3,8 +3,8 @@
 
          <router-view v-if="this.$router.history.current.path == '/trainManageUserAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/trainManageUser'" :key="$route.path" class="sysParameter">
-            <div class="QCenterRight G_listOne">
+        <div v-else-if="this.$router.history.current.path == '/trainManageUser'" :key="$route.path" class="QCenterRight G_listOne">
+            <div >
                 <div class="QHead">
                     我的培训
                 </div>

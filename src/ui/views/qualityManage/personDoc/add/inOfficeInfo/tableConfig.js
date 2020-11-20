@@ -11,7 +11,7 @@ let timeInfo1=(row)=>{
         if(row.endTime){
          return  moment(row.endTime).format('YYYY-MM-DD')
         }else {
-                return ''
+                return '至今'
         }
 }
 export const inOfficeInfoConfig = ( obj) => {

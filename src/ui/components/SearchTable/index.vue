@@ -251,7 +251,6 @@
 			margin-top: 20px;
 		}
 		/deep/ .el-table{
-			width:1700px;
 			border:1px solid rgba(199,204,210,1);
 			margin: 0 auto;
 			/deep/ .cell{
@@ -276,6 +275,7 @@
 				}
 			}
 			/deep/ th{
+
 				border-color:#C7CCD2 ;
 			}
 			/deep/ .el-table__row{
@@ -294,6 +294,11 @@
 			}
 		}
 		.headerTable{
+			/deep/ th{
+				div,span{
+					font-weight: bold;
+				}
+			}
 			/deep/ .el-table__fixed{
 				height: 80px !important;
 			}
@@ -311,7 +316,7 @@
 			}
 			/deep/ .cell{
 				padding:0 3px;
-				line-height: 17px;
+				line-height: 1em;
 
 			}
 			/deep/ .el-input{
