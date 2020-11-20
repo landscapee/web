@@ -93,6 +93,7 @@ import Icon from '@components/Icon-svg/index';
 import { qiaozaiConfig,qinwuConfig,weixiuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
+    import {formatDate} from "../../../../../lib/tools";
 export default {
     components: {
         Icon,
@@ -291,6 +292,9 @@ export default {
 
         getList( ){
             let data={...this.form1}
+            if (data.endTime) {
+                data.endTime.setTime(data.endTime.getTime() + 24 * 60 * 60 * 1000 - 1);
+            }
             map(data,((k,l)=>{
                   if(typeof k==='string'&&!k.replace(/(^\s*)|(\s*$)/g, "") ){
                      data[l]=null

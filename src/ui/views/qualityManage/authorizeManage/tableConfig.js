@@ -28,7 +28,7 @@ export const authorizeConfig = (obj,arr) => {
             { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
             { prop: 'userNumber', label: '员工编号',sortProp:"userNumber", align: 'center',sort:true,search:{type:'input', prop:'userNumber',placeholder:"请输入"} },
             { prop: 'userName', label: '员工姓名',sortProp:"userName", align: 'center',sort:true,search:{type:'input', prop:'userName',placeholder:"请输入"} },
-            { prop: 'dept', label: '部门',sortProp:"dept", align: 'center',sort:true,search:{type:'input', prop:'dept',placeholder:"请输入"} },
+            { prop: 'dept', label: '部门/项目',sortProp:"dept", align: 'center',sort:true,search:{type:'input', prop:'dept',placeholder:"请输入"} },
             { prop: 'post', label: '岗位',sortProp:"post", align: 'center',sort:true,search:{type:'input', prop:'post',placeholder:"请输入"} },
             { prop: 'authorizationType', label: '授权类型',sortProp:"authorizationType", align: 'center',sort:true,search:{type:'select', prop:'authorizationTypeQuery',placeholder:"请选择",data:obj.roleControl,selectProp:['valData','valData']} },
             { prop: 'authorizedUnit', label: '授权单位',sortProp:"authorizedUnit", align: 'center',sort:true,search:{type:'input', prop:'authorizedUnit',placeholder:"请输入"} },

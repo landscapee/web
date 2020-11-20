@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row_tow">
-                    <el-form-item  label="部门：" prop="dept">
+                    <el-form-item  label="部门/项目：" prop="dept">
                         <span v-if="type=='info'">{{  form.dept || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.dept" placeholder="由员工名称选择带出"></el-input>
 
@@ -72,8 +72,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item  label="授权单位：" prop="authorizedUnitCode">
-                        <span v-if="type=='info'">{{  form.authorizedUnitCode || '--'}}</span>
-                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位" clearable>
+                        <span v-if="type=='info'">{{  form.authorizedUnit || '--'}}</span>
+                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnit" placeholder="请选择授权单位" clearable>
                              <!--shortName-->
                             <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.id">
                              </el-option>
@@ -354,12 +354,23 @@
                         this.form={...this.form,
                             userName:d.data.userName,
                             userId:val,
+                            deptCode:d.data.deptCode,
                             userNumber:this.userObj[val]
+                        }
+
+                        if (d.data.deptCode==='zl'){
+                            this.form.dept="质量部";
+                        }else if(d.data.deptCode==='server'){
+                            this.form.dept="勤务";
+                        }else if(d.data.deptCode==='repair'){
+                            this.form.dept="维修";
+                        }else if(d.data.deptCode==='bridgeLoad'){
+                            this.form.dept="桥载";
                         }
                         if(d.data.positionInfList&&d.data.positionInfList.length){
                             let obj=d.data.positionInfList[0]
                             this.form={...this.form,
-                                dept:obj.dept,
+
                                 post:obj.station,
                                 postLevel:obj.stationLevel,
                                 postSeri:obj.stationSequence,
