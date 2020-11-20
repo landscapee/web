@@ -19,6 +19,6 @@ export const coursewareConfig = (obj) => {
                 { prop: 'suitableUser', label: '适合对象',sortProp:"suitableUser", align: 'center' ,sort:true,search:{type:'select', prop:'suitableUser',selectProp:['valData','valData'],data:obj.applyObject ,placeholder:"请选择"}},
                 { prop: 'downloadPermission', label: '下载权限',sortProp:"downloadPermission", align: 'center',sort:true,search:{type:'select', prop:'downloadPermission',selectProp:['valData','valData'],data:obj.loadPermission ,placeholder:"请选择", } },
                 { prop: 'active',width:100, label: '是否启用', sortProp:"active", align: 'center',sort:true,search:{type:'select', prop:'active',selectProp:['valData','valData'],data:obj.isUse ,placeholder:"请选择", } },
-                { slot: 'fileDown', label: '操作',width:'60',sortProp:"description", align: 'center',sort:true,search:{type:'btn',label:'搜索',icon:"table_search"} },
+                { slot: 'fileDown', label: '操作',width:'60',sortProp:"description", align: 'center',sort:false,search:{type:'btn',label:'搜索',icon:"table_search"} },
          ]
 };

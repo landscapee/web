@@ -110,6 +110,7 @@
     import { filghtConfig,unsafeConfig,workloadConfig,workePositiveConfig,modelAnalysisConfig,taskNumConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
     import {  extend ,map} from 'lodash';
+    import {formatDate} from "../../../../../lib/tools";
     export default {
         components: {
             Icon,
@@ -323,6 +324,9 @@
                     }
                 }))
                 data.workOrderParam={...this.form1}
+                if (data.workOrderParam.endTime) {
+                    data.workOrderParam.endTime.setTime(data.workOrderParam.endTime.getTime() + 24 * 60 * 60 * 1000 - 1);
+                }
                 request({
                     url:`${this.$ip}${this.buttonObj.api}`,
                     method: 'post',
