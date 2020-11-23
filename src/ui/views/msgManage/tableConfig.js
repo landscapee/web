@@ -113,7 +113,7 @@ export const infoPlateSendTable = (infoSelect) => {
             }
         },
          align: 'center',search:{prop:'receiptPerson',type:'input',placeholder:"请输入接收人"} },
-        { prop: 'require', label: '是否接收处理',
+        { prop: 'require', label: '是否要求处理',
         formatter: (row, column, cellValue) => {
             return cellValue?'是':'否';
         },
@@ -156,7 +156,7 @@ export const infoPlateReceiveTable = (infoSelect) => {
                 return cellValue;
             },
             align: 'center',search:{prop:'content',type:'input',placeholder:"请输入发送内容"} },
-        { prop: 'require', label: '是否接收处理',
+        { prop: 'require', label: '是否要求处理',
             formatter: (row, column, cellValue) => {
                 return cellValue?'是':'否';
             },

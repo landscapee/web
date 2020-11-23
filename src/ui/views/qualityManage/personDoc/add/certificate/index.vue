@@ -3,12 +3,12 @@
 
          <router-view v-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
 
-        <div   class="sysParameter" v-else>
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>证书</span>
+        <div   class="G_listOne  " v-else>
+            <div class="QCenterRight personTable">
+                <div class="QHead QHead1 ">
+                    证书
                 </div>
-                <div class="top-toolbar ">
+                <div class="QheadRight ">
                     <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  title="新增" ></icon></div>
                     <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit"  title="编辑" ></icon></div>
                     <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove"  title="删除" ></icon></div>
@@ -16,7 +16,7 @@
                     <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable :noSearch="true" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">

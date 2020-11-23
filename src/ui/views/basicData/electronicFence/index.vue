@@ -1,12 +1,12 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addElectronicFence'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/electronicFenceConfig'" class="electronicFence">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>电子围栏误差配置</span>
+        <div v-if="this.$router.history.current.path == '/electronicFenceConfig'" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    电子围栏误差配置
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
@@ -16,7 +16,7 @@
 <!--                    <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div>-->
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">

@@ -1,16 +1,16 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/historyWarning'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/warningSearch'" class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>预警查询</span>
+        <div v-if="this.$router.history.current.path == '/warningSearch'" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    预警查询
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo()"><icon iconClass="history" ></icon>历史</div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
@@ -20,9 +20,12 @@
                     </el-table-column>
                     <el-table-column slot="relationInfo" align='center' :width="80" >
                         <template slot-scope="{ row }" v-if="row.state==0">
-                            <span @click="clickAction(row)" class="rowSvg">
-                                <icon iconClass="finishRead" title="已读"></icon>
-                            </span>
+                            <el-tooltip class="item" effect="dark" content="已读" placement="top">
+                              <span @click="clickAction(row)" class="rowSvg">
+                                    <icon iconClass="finishRead"  ></icon>
+                                </span>
+                            </el-tooltip>
+
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -167,12 +170,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.sysParameter{
-    .main-content{
-        /deep/ .mainTable{
-            height: 600px;
-        }
-    }
-}
+
 </style>

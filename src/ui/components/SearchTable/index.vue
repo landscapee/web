@@ -3,12 +3,12 @@
 		<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 			<template  v-for="(colConfig, index) in tableConfig">
 				<template v-if="colConfig.search">
-					<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
+					<el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
 						<span >
 							<div>{{colConfig.search.label}}</div>
 						</span>
 					</el-table-column>
-					<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"
+					<el-table-column :resizable="false" align="center" :fixed="colConfig.search.fixed" :index="index"
 									 :property="colConfig.sortProp" :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label" v-if="colConfig.search.type=='btn'" :key="index"
@@ -19,7 +19,7 @@
 							</span>
 						</span>
 					</el-table-column>
-					<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+					<el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
 									 :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label" v-if="colConfig.search.type=='input'" :key="index"
@@ -38,7 +38,7 @@
 							</span>
 						</span>
 					</el-table-column>
-					<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+					<el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
 									 :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label "
@@ -58,7 +58,7 @@
 								  iconClass="table_search"></icon>
 						</span>
 					</el-table-column>
-					<el-table-column  :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true">
+					<el-table-column  :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
 							<el-date-picker @change="requestTableData" class="adv_filter"  :type="colConfig.search.time||'date'" :placeholder="colConfig.search.placeholder" v-model="row[colConfig.search.prop]" ></el-date-picker>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
@@ -67,19 +67,19 @@
 				</template>
 				<template v-else>
 
-					<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
+					<el-table-column :resizable="false" :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
 					</el-table-column>
 				</template>
 			</template>
 		</el-table>
 
 		<el-table   :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
-			<template v-for="(colConfig, index) in tableConfig">
+			<template v-for="(colConfig, index) in tableConfig" >
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-				<el-table-column v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
+				<el-table-column  :resizable="false" v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
 								 :reserve-selection="true">
 				</el-table-column>
-				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
+				<el-table-column :resizable="false" v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
 								 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false"
 								 :reserve-selection="true">
 				</el-table-column>
@@ -251,7 +251,6 @@
 			margin-top: 20px;
 		}
 		/deep/ .el-table{
-			width:1700px;
 			border:1px solid rgba(199,204,210,1);
 			margin: 0 auto;
 			/deep/ .cell{
@@ -269,8 +268,14 @@
 			}
 			/deep/ td:first-child{
 				text-align: center;
+				.cell{
+					display: flex;
+					align-items: center;
+					justify-content: center
+				}
 			}
 			/deep/ th{
+
 				border-color:#C7CCD2 ;
 			}
 			/deep/ .el-table__row{
@@ -289,6 +294,11 @@
 			}
 		}
 		.headerTable{
+			/deep/ th{
+				div,span{
+					font-weight: bold;
+				}
+			}
 			/deep/ .el-table__fixed{
 				height: 80px !important;
 			}
@@ -306,6 +316,8 @@
 			}
 			/deep/ .cell{
 				padding:0 3px;
+				line-height: 1em;
+
 			}
 			/deep/ .el-input{
 				text-align: center;
@@ -388,7 +400,7 @@
 			}
 		}
 		.el-table--scrollable-x + .mainTable{
-			height: 620px ;
+			/*height: 620px ;*/
 
 		}
 		/deep/ .el-table--scrollable-x .el-table__body-wrapper{

@@ -86,7 +86,7 @@
 }
 
 .QCenterRight{
-    margin: 34px 0px 24px 0px;
+    margin: 34px 30px 24px 30px;
     position: relative;
     .QHead{
         font-size: 24px;
@@ -94,6 +94,9 @@
         font-weight: bold;
         text-align: center;
         color: #222222;
+    }
+    .QHead1{
+        font-weight: normal;
     }
     .QHead_list{
         text-align: center;
@@ -109,13 +112,13 @@
 .QheadRight{
     position: absolute;
     right:0;
-    top:0;
+    top:-2px;
     .isDisabled{
-            background: rgba(208,208,208,1);
-        color: #6A7785;
+         color: #d0d0d0;
         cursor: not-allowed;
+        border-color:#d0d0d0;
         .svg-icon{
-            fill: rgba(208,208,208,1);
+            fill: #d0d0d0;
         }
     }
     &>div{
@@ -142,21 +145,15 @@
 }
 
 .G_isDisabled{
-    background: rgba(208,208,208,1);
-    color: #6A7785;
-    cursor: not-allowed!important;
+    background: #FFF;
+     cursor: not-allowed!important;
+    border-color:#D0D0D0;
     .svg-icon{
-        fill: #8e801e;
-        color:red;
-    }
-    svg{
-        fill: #308e6e;
-        color:red;
-    }
-    use{
-        fill: #8e174b;
-        color:red;
-    }
+        fill: #D0D0D0;
+     }
+
+
+
 }
 //////////////////////////////// element///////////
 

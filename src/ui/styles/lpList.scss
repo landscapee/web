@@ -10,10 +10,20 @@
 .el-table__fixed::before{
     display: none;
 }
+//人员档案
+.personTable{
+    margin:20px 0 0 0!important;
+    svg{
+        margin: 0!important;
+    }
+}
+//人员档案结束
 .G_listOne{
-     padding: 0 30px;
+      .tableOneBox{
+          margin-top: 24px;
+      }
     /deep/ .mainTable{
-        height:calc(100vh - 240px);
+        height:calc(100vh - 340px) !important;
         overflow: auto;
     }
     .QlistBody{
@@ -28,7 +38,19 @@
 }
 
 .G_listTwo{
-     padding: 0 30px;
+     .tableTwoBox{
+        //margin-top: 24px;
+    }
+    .twoHead{
+        font-weight: bold; font-size: 16px
+    }
+    .positiondiv{
+        position: relative;
+        margin: 34px 0  14px 0;
+    }
+    .QheadRight{
+        top:-7px;
+    }
     /deep/ .mainTable{
         height:calc(100vh - 400px);
         overflow: auto;
@@ -41,7 +63,7 @@
             margin-right:30px;
         }
         .QlistRight{
-            width:calc(55% - 30px)
+            width:calc(55% - 30px  )
         }
     }
 }

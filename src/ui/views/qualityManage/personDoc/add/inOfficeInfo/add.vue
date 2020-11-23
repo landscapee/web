@@ -39,8 +39,14 @@
                         <el-date-picker  @focus="focus" :picker-options="pickerOptions" type="date" v-else v-model="form.startTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
                     <el-form-item  label="结束日期：" prop="endTime">
-                        <span v-if="type=='info'">{{ form.endTime?moment(form.endTime).format('YYYY-MM-DD'):''}}</span>
-                        <el-date-picker @focus="focus1" :picker-options="pickerOptions1" type="date" v-else v-model="form.endTime" placeholder="请选择时间"></el-date-picker>
+                        <!--@focus="focus1" :picker-options="pickerOptions1"-->
+                        <div style="position: relative;">
+                               <span v-if="type=='info'">{{ form.endTime?moment(form.endTime).format('YYYY-MM-DD'):''}}</span>
+                        <el-date-picker  type="date" v-else v-model="form.endTime"  @focus="focus1" :picker-options="pickerOptions1" placeholder="请选择时间"></el-date-picker>
+                        <span style="position: absolute;left:calc(100% + 15px);width:200px" v-if="type!='info'">不选表示 '至今'</span>
+                        </div>
+
+
                     </el-form-item>
 
                 </div>
@@ -103,7 +109,7 @@
                  rules: {
                       workType: [{ required:true,message:'请选择', trigger: "blur" }],
                      startTime: [{ required:true,message:'请选择', trigger: "blur" }],
-                     endTime: [{ required:true,message:'请选择', trigger: "blur" }],
+                     // endTime: [{ required:true,message:'请选择', trigger: "blur" }],
                      post: [{ required:true,message:'请输入职务', trigger: "blur" }],
 
                 },
@@ -176,13 +182,19 @@
                             }else {
                                 url='/positionInf/update'
                             }
+                            let obj={...this.form}
+                            if(!obj.endTime){
+                                obj.endTime=null
+                            }
                             request({
                                 url:`${this.$ip}/mms-qualification${url}`,
                                 method: 'post',
-                                data:{...this.form,userRecordId:this.$route.query.rId.split(',')[0]},
-                            }).then((data) => {
-                                this.$message.success("保存成功！");
-                                this.$router.go(-1)
+                                data:{...obj,userRecordId:this.$route.query.rId.split(',')[0]},
+                            }).then((d) => {
+                                if(d.code==200){
+                                    this.$message.success("保存成功！");
+                                    this.$router.go(-1)
+                                }
                             })
                               }
                     });
@@ -203,14 +215,14 @@
                 };
             } ,
             focus1(val){
-                let e=new Date(this.form.endTime)
+                let d=new Date()
                 let s=new Date(this.form.startTime)
                 let t=new Date()
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         // console.log(1, 8);
                         if (s) {
-                            return time.getTime() <= s.getTime() ;
+                            return time.getTime() >= d.getTime() ||time.getTime() <= s.getTime() ;
                             // return time.getTime() < s.getTime()|| time.getTime() > t.getTime() ;
                         }
                     },

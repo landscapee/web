@@ -2,15 +2,15 @@
     <div>
 
 
-        <div v-if="this.$router.history.current.path == '/queryIndex'" :key="$route.path" class="queryIndex">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>综合查询</span>
+        <div v-if="this.$router.history.current.path == '/queryIndex'" :key="$route.path" class="QCenterRight G_listOne queryIndex">
+            <div >
+                <div class="QHead">
+                    综合查询
                 </div>
 
             </div>
-            <div class="main-content">
-                <div style="padding:30px 30px 0px 30px">
+            <div class="tableOneBox">
+                <div  >
                     <el-form :model="form1" :inline="true">
 
                             <el-form-item label="航空公司：" class="firstWidth">
@@ -67,7 +67,7 @@
 
                 <div style="position: relative">
                     <ButtonList :buttonList="buttonList" @getButton="getButton"></ButtonList>
-                    <div    class="QheadRight" style="right:30px" >
+                    <div    class="QheadRight"   >
                         <div  @click="export2" >
                             <icon iconClass="export"></icon>导出
                         </div>
@@ -93,6 +93,7 @@ import Icon from '@components/Icon-svg/index';
 import { qiaozaiConfig,qinwuConfig,weixiuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
+    import {formatDate} from "../../../../../lib/tools";
 export default {
     components: {
         Icon,
@@ -291,6 +292,9 @@ export default {
 
         getList( ){
             let data={...this.form1}
+            if (data.endTime) {
+                data.endTime.setTime(data.endTime.getTime() + 24 * 60 * 60 * 1000 - 1);
+            }
             map(data,((k,l)=>{
                   if(typeof k==='string'&&!k.replace(/(^\s*)|(\s*$)/g, "") ){
                      data[l]=null
@@ -342,16 +346,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.queryIndex{
-    margin-top:14px;
+ .queryIndex{
     /deep/ .mainTable{
-        height:calc(100vh - 550px);
+        height:calc(100vh - 500px)!important;
 
     }
-    /deep/ .cell> div{
-        line-height: 20px!important;
-    }
+
     /deep/ .el-form{
         .el-input{
             width: 180px;

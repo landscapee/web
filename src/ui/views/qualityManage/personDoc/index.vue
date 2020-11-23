@@ -9,12 +9,13 @@
         <router-view v-else-if="this.$router.history.current.path == '/userQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/userAuth'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/userTrain'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/personDoc'" :key="$route.path" class="coursewareMaintain">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>人员档案</span>
+         <div v-else-if="this.$router.history.current.path == '/personDoc'" :key="$route.path"
+              class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    人员档案
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
@@ -23,8 +24,8 @@
 
                 </div>
             </div>
-            <div class="main-content">
-                <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+            <div class="tableOneBox">
+                <SearchTable v-if="tableConfig.length"    ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="筛选" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -34,17 +35,21 @@
                     <!--:show-overflow-tooltip="true"-->
                     <el-table-column align="center" slot="option" label="操作" :width="120" >
                         <template  slot-scope="scope">
-                            <div>
+                            <el-tooltip class="item" effect="dark" content="资质" placement="top">
                                 <span @click="seeOther(scope.row,'/userQuali')" class="rowSvg">
-                                    <icon iconClass="qualification" title="资质"></icon>
+                                    <icon iconClass="qualification"  ></icon>
                                 </span>
-                                <span @click="seeOther(scope.row,'/userAuth')" class="rowSvg" style="margin: 0 10px">
-                                    <icon iconClass="authorization" title="授权"></icon>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="授权" placement="top">
+                              <span @click="seeOther(scope.row,'/userAuth')" class="rowSvg" style="margin: 0 10px">
+                                    <icon iconClass="authorization"  ></icon>
                                 </span>
-                                <span @click="seeOther(scope.row,'/userTrain')" class="rowSvg">
-                                    <icon iconClass="check" title="培训考核"></icon>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="培训考核" placement="top">
+                            <span @click="seeOther(scope.row,'/userTrain')" class="rowSvg">
+                                    <icon iconClass="check"  ></icon>
                                 </span>
-                            </div>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
 
@@ -70,7 +75,7 @@
         data() {
             return {
                 tableData:{records:[]},
-                tableConfig:personDocTable({}),
+                tableConfig:[],
                 params:{
                     current: 1,
                     size: 15,
@@ -87,7 +92,6 @@
         created() {
             if(this.$router.history.current.path == '/personDoc'){
                 this.getList();
-
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
@@ -100,8 +104,10 @@
                          d.data.dept.map((k,l)=>{
                              deptObj[k.valCode]=k.valData
                         })
-                        this.tableConfig=personDocTable(obj,deptObj)
 
+                        this.tableConfig=personDocTable(obj,deptObj)
+                        // this.$set(this.tableConfig  ,3,{search:{type:'select',placeholder:"请选择", prop:'sex',data:obj.xingbie||[],selectProp:['valData','valData']}})
+                        // this.$set(this.tableConfig ,5,obj.xingbie)
                     }
 
                 });
@@ -250,12 +256,10 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
-    .coursewareMaintain{
-        margin-top:14px;
-        /deep/ .mainTable{
-            height:calc(100vh - 370px);
-        }
-    }
+     /*.coursewareMaintain{*/
+         /*/deep/ .mainTable{*/
+            /*height:calc(100vh - 370px);*/
+        /*}*/
+    /*}*/
 
 </style>

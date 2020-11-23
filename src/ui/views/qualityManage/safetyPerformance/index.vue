@@ -4,67 +4,78 @@
           <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceYear'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="businessData">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span style="font-weight: 500;color:rgba(51,51,51,1)">安全绩效</span>
+        <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="G_listTwo">
+            <div class="QCenterRight">
+                <div class="QHead">
+                     安全绩效
                 </div>
-                <div class="top-toolbar">
-                    <div class="headDiv headDiv1">
-                        <div style="font-weight: bold; " >部门月度安全绩效</div>
-                        <div class="left-toolbar">
+                <div class="QlistBody Qdisplay tableTwoBox" ref="mainContent">
+                    <div class="QlistLeft" style="width:35%">
+                        <div class=" positiondiv" >
+                            <div class="twoHead">
+                                部门月度安全绩效
+                            </div>
+                            <div class="QheadRight">
                             <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                             <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                             <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <div @click="exportExcel()">
-                                  <icon iconClass="export" ></icon>导出
-                              </div>
+                                <icon iconClass="export" ></icon>导出
+                            </div>
                         </div>
+                        </div>
+                        <SearchTable class="left-main-table" :data="tableLeftData" :tableConfig="businessTableConfig"  refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"     >
+                            <el-table-column slot="radio" label="选择" :width="49" >
+                                <template slot-scope="{ row }">
+                                    <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                    <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                                </template>
+                            </el-table-column>
+                            <el-table-column slot="option" label="操作" align="center" :width="80" >
+                                <template slot-scope="{ row }" >
+
+                                    <el-tooltip class="item" effect="dark" content="复制绩效明细" placement="top">
+                                          <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="copyjx"   ></icon>
+                                    </span>
+                                    </el-tooltip>
+
+
+                                </template>
+                            </el-table-column>
+                        </SearchTable>
+
+
                     </div>
-                    <div class="headDiv headDiv2" >
-                        <div>
-                            <span style="font-weight: bold; font-size: 16px"  >安全绩效明细</span>
-                            <span v-if="leftRow.year" style="font-weight:400;color:rgba(136,136,136,1);font-size: 16px" >&nbsp;&nbsp;{{leftRow.deptName}}&nbsp;{{leftRow.year}}年-{{leftRow.month}}月</span>
+
+                    <div class="QlistRight" style="width:calc(65% - 30px)">
+                        <div class="positiondiv" >
+                            <div>
+                                <span style="font-weight: bold; font-size: 16px"  >安全绩效明细</span>
+                                <span v-if="leftRow.year" style="font-weight:400;color:rgba(136,136,136,1);font-size: 16px" >&nbsp;&nbsp;{{leftRow.deptName}}&nbsp;{{leftRow.year}}年-{{leftRow.month}}月</span>
+                            </div>
+                            <div class="QheadRight" >
+                                <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
+                                <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                                <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                                <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                                <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                            </div>
+
+
                         </div>
-                        <div class="right-toolbar">
-                             <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
-                            <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                            <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                            <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                            <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                         </div>
-
-
+                        <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
+                            <el-table-column slot="radio" label="选择" :width="49"   >
+                                <template slot-scope="{ row }">
+                                    <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
+                                    <icon  iconClass="ky" class="tab_radio" v-else></icon>
+                                </template>
+                            </el-table-column>
+                        </SearchTable>
                     </div>
                 </div>
             </div>
-            <div class="main-content">
-                <SearchTable class="left-main-table" :data="tableLeftData" :tableConfig="businessTableConfig"  refTag="left-table" ref="left-table"  @requestTable="requestTable(arguments[0],'left','left-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="HeaderSort(arguments[0], 'left-table','left','leftSort')"     >
-                    <el-table-column slot="radio" label="选择" :width="49" >
-                        <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                    <el-table-column slot="option" label="操作" align="center" :width="80" >
-                        <template slot-scope="{ row }" >
 
-                                    <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
-                                        <icon iconClass="copyjx"  title="复制绩效明细" ></icon>
-                                    </span>
-
-                          </template>
-                    </el-table-column>
-                </SearchTable>
-                <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
-                    <el-table-column slot="radio" label="选择" :width="49"   >
-                        <template slot-scope="{ row }">
-                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
-                            <icon  iconClass="ky" class="tab_radio" v-else></icon>
-                        </template>
-                    </el-table-column>
-                </SearchTable>
-            </div>
         </div>
         <CopyDetails ref="CopyDetails" @getList="getList('left')"></CopyDetails>
 
@@ -478,82 +489,6 @@
     };
 </script>
 <style scoped lang="scss">
-	@import "@/ui/views/basicData/businessData/assets/styles/businessData.scss";
 
-	.businessData {
-		margin-top: 14px;
-		.top-content {
-			.top-toolbar {
-				padding: 0px 30px 0px 30px;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				.headDiv {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					& > div:first-child {
-						font-size: 16px;
-					}
-				}
-				.headDiv1 {
-					width: 562px;
-				}
-				.headDiv2 {
-					width: 1096px;
-				}
-				.left-toolbar {
-					text-align: right;
-				}
-				.right-toolbar {
-					text-align: right;
-				}
-			}
-		}
-		.main-content {
-			padding: 0px 30px 0px 30px;
-			display: flex;
-			justify-content: space-between;
-			/deep/ .left-main-table {
-				width: 562px;
-				/deep/ .el-table {
-					width: 562px;
-                    .el-table__body{
-                        width: 562px !important;
-                    }
-				}
-				/deep/ .el-table_2_column_14 {
-					/deep/ .cell {
-						padding: 2px !important;
-					}
-				}
-				.copyButton {
-					padding: 7px 10px;
-					background: black;
-					color: white;
-				}
-			}
-			/deep/ .right-subset-table {
-				width: 1096px;
-				/deep/ .el-table {
-					width: 1096px;
-                    .el-table__body{
-                        width: 1096px !important;
-                    }
-				}
-			}
-			/deep/ .mainTable {
-				height: 600px;
-				overflow: auto;
-				// /deep/ .el-table__body-wrapper{
-				//     /deep/ tr:last-child{
-				//         td{
-				//             border-bottom:0px;
-				//         }
-				//     }
-				// }
-			}
-		}
-	}
 </style>
 
