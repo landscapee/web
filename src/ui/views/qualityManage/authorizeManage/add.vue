@@ -357,16 +357,21 @@
                             deptCode:d.data.deptCode,
                             userNumber:this.userObj[val]
                         }
+                        request({
+                            url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                            method: 'post',
+                            params: {delete: false},
+                            data: ['dept']
+                        }).then(res => {
+                            if (res.code === 200) {
+                                res.data.dept.map((k, l) => {
+                                    if (d.data.deptCode===k.valCode){
+                                        this.form.dept=k.valData;
+                                    }
+                                })
+                            }
+                        });
 
-                        if (d.data.deptCode==='zl'){
-                            this.form.dept="质量部";
-                        }else if(d.data.deptCode==='server'){
-                            this.form.dept="勤务";
-                        }else if(d.data.deptCode==='repair'){
-                            this.form.dept="维修";
-                        }else if(d.data.deptCode==='bridgeLoad'){
-                            this.form.dept="桥载";
-                        }
                         if(d.data.positionInfList&&d.data.positionInfList.length){
                             let obj=d.data.positionInfList[0]
                             this.form={...this.form,
