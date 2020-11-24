@@ -4,7 +4,7 @@ export const warningConfigTable = () => {
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'subject', label: '预警名称', align: 'center',sort:true,sortProp:"subject",search:{prop:'subject',type:'input',placeholder:"请输入预警名称"} },
         { prop: 'contentTemplate', label: '预警模板', align: 'center',sort:true,sortProp:"contentTemplate",search:{prop:'contentTemplate',type:'input',placeholder:"请输入预警模板"} },
-        {  label: '推送对象',width:'540', align: 'left',
+        {  label: '推送对象',width:'540', align: 'center',
         formatter: (row, column, cellValue) => {
             let arr = [];
             row.recipientType.map(item=>{

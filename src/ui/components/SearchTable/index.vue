@@ -330,8 +330,6 @@
 			}
 			/deep/ .cell{
 				padding:0 3px;
-				line-height: 1em;
-
 			}
 			/deep/ .el-input{
 				text-align: center;

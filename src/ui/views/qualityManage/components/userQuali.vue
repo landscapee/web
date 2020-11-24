@@ -171,6 +171,7 @@
                     this.form={...this.form,
                         userName:d.data.userName,
                         userNumber:d.data.userNumber,
+                        dept:''
                     }
                     // dept:obj.dept,
                     //     post:obj.station,
@@ -183,6 +184,20 @@
 
                         }
                     }
+                    request({
+                        url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                        method: 'post',
+                        params: {delete: false},
+                        data: ['dept']
+                    }).then(res => {
+                        if (res.code === 200) {
+                            res.data.dept.map((k, l) => {
+                                if (d.data.deptCode===k.valCode){
+                                    this.form.dept=k.valData;
+                                }
+                            })
+                        }
+                    });
                 }
 
             })
