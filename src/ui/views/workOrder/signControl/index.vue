@@ -327,5 +327,17 @@
 </script>
 <style scoped lang="scss">
 
+    /deep/ .mainTable {
+        height: calc(100vh - 370px);
+
+        .el-checkbox__label {
+            display: none;
+        }
+    }
+
+    /deep/ .cell > div {
+        line-height: 20px !important;
+    }
+
 
 </style>

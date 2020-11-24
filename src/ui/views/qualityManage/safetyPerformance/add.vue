@@ -23,9 +23,9 @@
                         <el-date-picker @change="yearMonth" :disabled="type=='edit'"   v-else v-model="form.yearMonth" placeholder="请选择绩效年月" type="month">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="部门：" prop="deptId">
+                    <el-form-item label="部门/项目：" prop="deptId">
                         <span v-if="type=='info'">{{form.deptId}}</span>
-                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择部门">
+                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择部门/项目">
                             <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                      </el-form-item>
@@ -82,7 +82,7 @@
                                 }
                             });
                         }else {
-                            callback("选择部门后将校验");
+                            callback("选择部门/项目后将校验");
                         }
                     }
             };
