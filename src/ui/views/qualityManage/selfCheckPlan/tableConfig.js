@@ -17,11 +17,11 @@ let timeInfo1=(row)=>{
 export const selfCheckConfig = (obj) => {
         return [
                 { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
-                { prop: 'year', label: '计划年度',sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入计划年度"} },
-                { prop: 'deptName', label: '部门',sortProp:"deptName", align: 'center',sort:true,search:{type:'select', prop:'deptName',selectProp:['valData','valData'],data:obj.dept||[],placeholder:"请选择部门"} },
-                { prop: 'reviewerName', label: '审批人',sortProp:"reviewerName", align: 'center',sort:true,search:{type:'input', prop:'reviewerName',placeholder:"请输入审批人"} },
-                { prop: 'reviewerTime', label: '审批日期',formatter:timeInfo, sortProp:"reviewerTime", align: 'center',sort:true,search:{type:'date', prop:'reviewerTime',placeholder:"请选择审批日期"}},
-                { prop: 'version', width:130,label: '计划版本',sortProp:"version", align: 'center' ,sort:true,search:{type:'input', prop:'version',placeholder:"请输入计划版本",extendType:'search'}}
+                { prop: 'year', label: '计划年度',sortProp:"year", align: 'center',sort:true,search:{type:'input', prop:'year',placeholder:"请输入"} },
+                { prop: 'deptName', label: '部门/项目',sortProp:"deptName", align: 'center',sort:true,search:{type:'select', prop:'deptName',selectProp:['valData','valData'],data:obj.dept||[],placeholder:"请选择"} },
+                { prop: 'reviewerName', label: '审批人',sortProp:"reviewerName", align: 'center',sort:true,search:{type:'input', prop:'reviewerName',placeholder:"请输入"} },
+                { prop: 'reviewerTime', label: '审批日期',formatter:timeInfo, sortProp:"reviewerTime", align: 'center',sort:true,search:{type:'date', prop:'reviewerTime',placeholder:"请选择"}},
+                { prop: 'version', width:130,label: '计划版本',sortProp:"version", align: 'center' ,sort:true,search:{type:'input', prop:'version',placeholder:"请输入",extendType:'search'}}
               ]
 };
 export const selfCheckDetailsConfig = (obj) => {

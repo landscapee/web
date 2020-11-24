@@ -171,12 +171,12 @@
                 AircratS:[],
                 options: {},
                  rules: {
-                     userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
-                     name: [{ required:true,message:'请输入证书名称', trigger: "blur" }],
-                     number: [{ required:true,message:'请输入证书编号', trigger: "blur" }],
-                     endTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
-                     startTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
-                     authorizationType: [{ required:true,message:'请选择授权类型', trigger: "blur" }],
+                     userName: [{ required:true,message:'请输入员工姓名',}],
+                     name: [{ required:true,message:'请输入证书名称',}],
+                     number: [{ required:true,message:'请输入证书编号',}],
+                     endTime: [{ required:true,message:'请选择时间', }],
+                     startTime: [{ required:true,message:'请选择时间',}],
+                     authorizationType: [{ required:true,message:'请选择授权类型'}],
                 },
                 type: "add"
             };
@@ -355,7 +355,19 @@
                             userName:d.data.userName,
                             userId:val,
                             deptCode:d.data.deptCode,
-                            userNumber:this.userObj[val]
+                            userNumber:this.userObj[val],
+                            dept:''
+                        }
+
+                        if(d.data.positionInfList&&d.data.positionInfList.length){
+                            let obj=d.data.positionInfList[0]
+                            this.form={...this.form,
+
+                                post:obj.station,
+                                postLevel:obj.stationLevel,
+                                postSeri:obj.stationSequence,
+                                job:obj.post,
+                            }
                         }
                         request({
                             url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -371,17 +383,6 @@
                                 })
                             }
                         });
-
-                        if(d.data.positionInfList&&d.data.positionInfList.length){
-                            let obj=d.data.positionInfList[0]
-                            this.form={...this.form,
-
-                                post:obj.station,
-                                postLevel:obj.stationLevel,
-                                postSeri:obj.stationSequence,
-                                job:obj.post,
-                            }
-                        }
                     }
 
                 }).catch(error => {

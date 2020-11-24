@@ -92,6 +92,7 @@
     import { cloneDeep ,forEach} from 'lodash';
     import { fixPx } from '@lib/viewSize.js';
     import Icon from '@components/Icon-svg/index';
+    import sort1 from '../../assets/img/sort1.png'
     export default {
         components: {
             Icon,
@@ -103,6 +104,7 @@
                 resizeCallback:[],
                 headerData:[{}],
                  updateWidth:false,
+				sort1,
             };
         },
         computed:{
@@ -152,6 +154,48 @@
                  this.$emit('requestTable', {...this.headerData[0]});
             },
             renderHeaderRow(h,  { column, $index }){
+            	// let icon;
+            	// if (column.order=="") {
+            	// 	icon = "el-icon-burger";
+				// }else if (column.order=="desc") {
+				// 	icon = "el-icon-cherry";
+				// }else if (column.order=="asc") {
+				// 	icon = "el-icon-coffee";
+				// }
+            	// return h(
+				// 	'div',
+				// 	[
+				// 		h('span', column.label),
+				// 		h('img',{
+				// 			// class:icon,
+				// 			attrs: {
+				// 				src: sort1,
+				// 			},
+				// 			style:'width:15px;height:15px',
+				// 			on:{
+				// 				click: () => {
+				// 					console.log("click");
+				// 					column.order == "" ? column.order = 'desc' : column.order == 'desc' ? column.order = 'asc' : column.order == 'asc' ? column.order = "" : column.order = 'desc';
+				// 					this.$emit('headerSort', column);
+				// 				}
+				// 			}
+				// 		}),
+				// 		// h('icon-svg', {
+				// 		// 	props: {
+				// 		// 		iconClass:icon,
+				// 		// 	},
+				// 		// 	on: {
+				// 		// 		click: () => {
+				// 		// 			console.log('qqqq');
+				// 		// 			column.order == "" ? column.order = 'desc' : column.order == 'desc' ? column.order = 'asc' : column.order == 'asc' ? column.order = "" : column.order = 'desc';
+				// 		// 			this.$emit('headerSort', column);
+				// 		// 		}
+				// 		// 	},
+				// 		//
+				// 		// })
+				// 	],
+				// );
+
                 return (
                     <div>
                     <span>{column.label}</span>

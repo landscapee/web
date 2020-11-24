@@ -11,7 +11,7 @@
                 <div class="QHead">
                       资质管理
                 </div>
-                <div class="QheadRight"     >
+                <div class="buttons"     >
                     <div  @click="exportWord"  >
                         <icon iconClass="export"></icon>导出Excel
                     </div>
@@ -524,6 +524,40 @@
             .el-table__body{
                 width: calc(35% - 30px) !important;
             }
+        }
+    }
+    .buttons{
+        position: absolute;
+        right:0;
+        top:0;
+        .isDisabled{
+            background: rgba(208,208,208,1);
+            color: #6A7785;
+            cursor: not-allowed;
+            .svg-icon{
+                fill: rgba(208,208,208,1);
+            }
+        }
+        &>div{
+            user-select: none;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            height: 2.28571rem;
+            line-height: 2.28571rem;
+            padding: 0.5rem;
+            border-radius: 3px;
+            margin-left:10px;
+            color: #fff;
+            background-color: #3280E7;
+        }
+        .svg-icon{
+            height:18px;
+            width:18px;
+            margin-right: 4px;
+            vertical-align: text-top;
+            fill: #fff;
         }
     }
 </style>
