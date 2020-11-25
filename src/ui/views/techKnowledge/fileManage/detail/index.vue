@@ -438,6 +438,9 @@ export default {
             padding: 0px 30px 0px 30px;
             display: flex;
             justify-content: space-between;
+            .searchTableWrapper{
+                width: 100%;
+            }
             /deep/ .mainTable{
                 height: 500px;
                 overflow: auto;
