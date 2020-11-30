@@ -9,11 +9,26 @@
                     证书
                 </div>
                 <div class="QheadRight ">
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  title="新增" ></icon></div>
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit"  title="编辑" ></icon></div>
-                    <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove"  title="删除" ></icon></div>
-                    <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon iconClass="info"  title="详情" ></icon></div>
-                    <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
+                    <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" content="新增" placement="top">
+                            <icon iconClass="add"></icon>
+                        </el-tooltip>
+                    </div>
+                    <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                            <icon iconClass="edit"></icon>
+                        </el-tooltip>
+                    </div>
+                    <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                            <icon iconClass="remove"></icon>
+                        </el-tooltip>
+                    </div>
+                    <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" content="详情" placement="top">
+                            <icon iconClass="info"></icon>
+                        </el-tooltip>
+                    </div>
                 </div>
             </div>
             <div class="tableOneBox">

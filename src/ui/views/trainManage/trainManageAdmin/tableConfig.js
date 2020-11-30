@@ -25,7 +25,7 @@ export const trainManageAdminConfig = (obj) => {
                 { prop: 'personCount', label: '人数',sortProp:"personCount", align: 'center' ,sort:true,search:{type:'input', prop:'personCount', placeholder:"请输入"}},
                 { prop: 'trainingPlace', label: '地点',sortProp:"trainingPlace", align: 'center',sort:true,search:{type:'input', prop:'trainingPlace', placeholder:"请输入", } },
                 { prop: 'teacherName', label: '讲师', sortProp:"teacherName", align: 'center',sort:true,search:{type:'input', prop:'teacherName', placeholder:"请输入", } },
-                { prop: 'trainingStatus', label: '状态', sortProp:"teacherName1", align: 'center',sort:true,search:{type:'input', prop:'teacherName1', placeholder:"请输入", } },
+                { prop: 'trainingStatus', label: '状态', sortProp:"trainingStatus", align: 'center',sort:true,search:{type:'input', prop:'trainingStatus', placeholder:"请输入", } },
                 { slot: 'option', label: '操作',width:'100',  align: 'center', search:{type:'btn',label:'搜索',icon:"table_search"} },
          ]
 };
