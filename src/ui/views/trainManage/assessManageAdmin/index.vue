@@ -4,7 +4,7 @@
           <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
             <div class="QCenterRight">
                 <div class="QHead_list">
-                    <span>考核管理<span style="color:#888888">（管理员）</span></span>
+                    <span>考核管理</span>
                 </div>
                 <div class="QlistBody Qdisplay tableTwoBox">
                     <div class="QlistLeft" style="width:45%">
