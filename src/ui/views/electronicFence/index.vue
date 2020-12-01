@@ -13,7 +13,7 @@
         components: {},
         data() {
             return {
-                loading:true,
+                loading:false,
                 url1: '../../../../static/electronicFence/index2.html',
                 vueId:"myParentId"
             }
