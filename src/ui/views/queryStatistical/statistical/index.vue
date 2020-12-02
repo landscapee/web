@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div v-if="this.$router.history.current.path == '/statisticalIndex'" :key="$route.path" class="statisticalIndex">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>综合统计</span>
+        <div v-if="this.$router.history.current.path == '/statisticalIndex'" :key="$route.path" class="QCenterRight G_listOne statisticalIndex">
+            <div >
+                <div class="QHead">
+                    综合统计
                 </div>
             </div>
-            <div class="main-content">
-                <div style="padding:30px 30px 0px 30px">
+            <div class="tableOneBox">
+                <div  >
                     <el-form :model="form1" :inline="true">
 
                         <el-form-item label="航空公司：" class="firstWidth">
@@ -79,7 +79,7 @@
 
                 <div style="position: relative">
                     <ButtonList :buttonList="buttonList" @getButton="getButton"></ButtonList>
-                    <div    class="QheadRight" style="right:30px" >
+                    <div    class="QheadRight"   >
                         <div  @click="export2" >
                             <icon iconClass="export"></icon>导出
                         </div>
@@ -110,6 +110,7 @@
     import { filghtConfig,unsafeConfig,workloadConfig,workePositiveConfig,modelAnalysisConfig,taskNumConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
     import {  extend ,map} from 'lodash';
+    import {formatDate} from "../../../../../lib/tools";
     export default {
         components: {
             Icon,
@@ -323,6 +324,9 @@
                     }
                 }))
                 data.workOrderParam={...this.form1}
+                if (data.workOrderParam.endTime) {
+                    data.workOrderParam.endTime.setTime(data.workOrderParam.endTime.getTime() + 24 * 60 * 60 * 1000 - 1);
+                }
                 request({
                     url:`${this.$ip}${this.buttonObj.api}`,
                     method: 'post',
@@ -370,11 +374,11 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
+
     .statisticalIndex{
         margin-top:14px;
         /deep/ .mainTable{
-            height:calc(100vh - 625px);
+            height:calc(100vh - 550px)!important;
             overflow: auto;
 
         }

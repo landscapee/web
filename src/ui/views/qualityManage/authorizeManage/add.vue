@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row_tow">
-                    <el-form-item  label="部门：" prop="dept">
+                    <el-form-item  label="部门/项目：" prop="dept">
                         <span v-if="type=='info'">{{  form.dept || '--'}}</span>
                         <el-input :disabled="true" v-else v-model="form.dept" placeholder="由员工名称选择带出"></el-input>
 
@@ -72,8 +72,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item  label="授权单位：" prop="authorizedUnitCode">
-                        <span v-if="type=='info'">{{  form.authorizedUnitCode || '--'}}</span>
-                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnitCode" placeholder="请选择授权单位" clearable>
+                        <span v-if="type=='info'">{{  form.authorizedUnit || '--'}}</span>
+                         <el-select @change="authorizedUnitC"  filterable v-else v-model="form.authorizedUnit" placeholder="请选择授权单位" clearable>
                              <!--shortName-->
                             <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.id">
                              </el-option>
@@ -90,7 +90,7 @@
                             <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" :disabled="type=='info'" size="mini" @click="handleClear">清空</el-button></div>
                             <el-scrollbar style="height:120px ">
                                 <el-tag :key="tag.id" v-for="tag in form.modelRange" :closable="type!='info'" :disable-transitions="false" @close="  handleRemove(tag.id)">
-                                    {{ tag.models&&tag.models.length?`${tag.name}（${tag.models.join(',')}）`:`${tag.name}`}}
+                                    {{ tag.models&&tag.models.length?`${tag.iata}（${tag.models.join(',')}）`:`${tag.name}`}}
                                 </el-tag>
                             </el-scrollbar>
                         </el-card>
@@ -171,12 +171,12 @@
                 AircratS:[],
                 options: {},
                  rules: {
-                     userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
-                     name: [{ required:true,message:'请输入证书名称', trigger: "blur" }],
-                     number: [{ required:true,message:'请输入证书编号', trigger: "blur" }],
-                     endTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
-                     startTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
-                     authorizationType: [{ required:true,message:'请选择授权类型', trigger: "blur" }],
+                     userName: [{ required:true,message:'请输入员工姓名',}],
+                     name: [{ required:true,message:'请输入证书名称',}],
+                     number: [{ required:true,message:'请输入证书编号',}],
+                     endTime: [{ required:true,message:'请选择时间', }],
+                     startTime: [{ required:true,message:'请选择时间',}],
+                     authorizationType: [{ required:true,message:'请选择授权类型'}],
                 },
                 type: "add"
             };
@@ -354,18 +354,35 @@
                         this.form={...this.form,
                             userName:d.data.userName,
                             userId:val,
-                            userNumber:this.userObj[val]
+                            deptCode:d.data.deptCode,
+                            userNumber:this.userObj[val],
+                            dept:''
                         }
+
                         if(d.data.positionInfList&&d.data.positionInfList.length){
                             let obj=d.data.positionInfList[0]
                             this.form={...this.form,
-                                dept:obj.dept,
+
                                 post:obj.station,
                                 postLevel:obj.stationLevel,
                                 postSeri:obj.stationSequence,
                                 job:obj.post,
                             }
                         }
+                        request({
+                            url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                            method: 'post',
+                            params: {delete: false},
+                            data: ['dept']
+                        }).then(res => {
+                            if (res.code === 200) {
+                                res.data.dept.map((k, l) => {
+                                    if (d.data.deptCode===k.valCode){
+                                        this.form.dept=k.valData;
+                                    }
+                                })
+                            }
+                        });
                     }
 
                 }).catch(error => {

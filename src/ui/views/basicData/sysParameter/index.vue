@@ -1,19 +1,19 @@
 <template>
     <div>
         <router-view v-if="this.$router.history.current.path == '/addSysParameter'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/sysParameter'" class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>系统参数</span>
+        <div v-if="this.$router.history.current.path == '/sysParameter'" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    系统参数
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
@@ -163,13 +163,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.sysParameter{
-    .main-content{
-        /deep/ .mainTable{
-            height: 600px;
-            overflow: auto;
-        }
-    }
-}
+
 </style>

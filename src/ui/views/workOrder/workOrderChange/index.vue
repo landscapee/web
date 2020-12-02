@@ -1,31 +1,21 @@
 <template>
     <div class='index'>
         <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
-        <div class='coursewareMaintain'>
-            <div class='top-content'>
-                <div class='top-content-title'><span id='fileName'>工单变更审核</span></div>
-                <div class="top-toolbar" style="display:none">
-                    <div class="left-toolbar">
-                        <!-- <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                        <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                        <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                        <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                        <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
-                    </div>
-                    <div class="right-toolbar">
-                        <div @click="rightMethods('','download')"><icon iconClass="add" ></icon>下载</div>
-                        <div @click="rightMethods('','move')"><icon iconClass="edit" ></icon>移动到</div>
-                        <div @click="batchPushFn"><icon iconClass="remove" ></icon>批量推送</div>
-                        <div @click="rightMethods('/addFile','add')"><icon iconClass="info"></icon>新增</div>
-                        <div @click="rightMethods('/addFile','edit')"><icon iconClass="save" ></icon>编辑</div>
-                        <div @click="rightMethods('','delete')"><icon iconClass="reset" ></icon>删除</div>
-                        <div @click="rightMethods('/addFile','info')"><icon iconClass="reset" ></icon>详情</div>
-                        <!-- <div @click="rightMethods"><icon iconClass="reset" ></icon>导出Excel</div> -->
-                    </div>
+        <div class='QCenterRight G_listOne'>
+            <div  >
+                <div class='QHead'>工单变更审核</div>
+                <div class="QheadRight" style="display: none;">
+                    <div @click="rightMethods('','download')"><icon iconClass="add" ></icon>下载</div>
+                    <div @click="rightMethods('','move')"><icon iconClass="edit" ></icon>移动到</div>
+                    <div @click="batchPushFn"><icon iconClass="remove" ></icon>批量推送</div>
+                    <div @click="rightMethods('/addFile','add')"><icon iconClass="info"></icon>新增</div>
+                    <div @click="rightMethods('/addFile','edit')"><icon iconClass="save" ></icon>编辑</div>
+                    <div @click="rightMethods('','delete')"><icon iconClass="reset" ></icon>删除</div>
+                    <div @click="rightMethods('/addFile','info')"><icon iconClass="reset" ></icon>详情</div>
+                    <!-- <div @click="rightMethods"><icon iconClass="reset" ></icon>导出Excel</div> -->
                 </div>
             </div>
-             <div class="main-content">
+             <div class="tableOneBox">
                 <SearchTable
                     refTag="searchTable"
                     ref="searchTable"
@@ -39,12 +29,18 @@
                 >
                     <el-table-column slot="option" align='center' label="操作" :width="150"  >
                         <template  slot-scope="{ row }"> <!--||row.state==2--> <!--row.state==1-->
-                            <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
-                                    <icon iconClass="pass" title="通过"></icon>
+                            <el-tooltip class="item" effect="dark" content="通过" placement="top">
+                                 <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
+                                        <icon iconClass="pass"  ></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="拒绝" placement="top">
+                                <span @click="torefuseFn(row)" v-show='row.state===0' class="rowSvg">
+                                    <icon iconClass="nopass"  ></icon>
                             </span>
-                            <span @click="torefuseFn(row)" v-show='row.state===0' class="rowSvg">
-                                    <icon iconClass="nopass" title="拒绝"></icon>
-                            </span>
+                            </el-tooltip>
+
+
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -289,12 +285,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.coursewareMaintain{
-    margin-top:14px;
-    /deep/ .mainTable{
-        height:calc(100vh - 370px);
-    }
-}
+
 </style>
 

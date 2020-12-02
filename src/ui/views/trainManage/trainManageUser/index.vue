@@ -3,17 +3,17 @@
 
          <router-view v-if="this.$router.history.current.path == '/trainManageUserAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/trainManageUser'" :key="$route.path" class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>我的培训  </span>
+        <div v-else-if="this.$router.history.current.path == '/trainManageUser'" :key="$route.path" class="QCenterRight G_listOne">
+            <div >
+                <div class="QHead">
+                    我的培训
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
 
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                  </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">

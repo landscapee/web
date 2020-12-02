@@ -5,12 +5,12 @@
          <router-view v-else-if="this.$router.history.current.path == '/SuserQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/SuserDoc'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/SuserTrain'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/authorizeManage'" :key="$route.path" class="coursewareMaintain">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>授权管理</span>
+         <div v-else-if="this.$router.history.current.path == '/authorizeManage'" :key="$route.path" class="QCenterRight G_listOne">
+            <div class=" ">
+                <div class="QHead">
+                    授权管理
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
@@ -18,7 +18,7 @@
                     <div @click="exportWord('info')"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable  :tableRowClassName="tableRowClassName" scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column :width="49"  slot="radio" label="选择" >
                         <template slot="header" slot-scope="{ row }"   >
@@ -32,17 +32,21 @@
                     <!--:show-overflow-tooltip="true"-->
                     <el-table-column align="center" slot="option" label="操作" :width="120"   >
                         <template slot-scope="scope">
-                            <div>
+                                <el-tooltip class="item" effect="dark" content="档案" placement="top">
                                 <span @click="seeOther(scope.row,'/SuserDoc')" class="rowSvg">
-                                    <icon iconClass="personDoc" title="档案"></icon>
+                                    <icon iconClass="personDoc"  ></icon>
                                 </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="资质" placement="top">
                                 <span @click="seeOther(scope.row,'/SuserQuali')" class="rowSvg" style="margin: 0 10px">
-                                    <icon iconClass="qualification" title="资质"></icon>
+                                    <icon iconClass="qualification" ></icon>
                                 </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="培训考核" placement="top">
                                 <span @click="seeOther(scope.row,'/SuserTrain')" class="rowSvg">
-                                    <icon iconClass="check" title="培训考核"></icon>
+                                    <icon iconClass="check"  ></icon>
                                 </span>
-                            </div>
+                                </el-tooltip>
                         </template>
                     </el-table-column>
 
@@ -275,12 +279,6 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
-    .coursewareMaintain{
-        margin-top:14px;
-        /deep/ .mainTable{
-            height:calc(100vh - 370px);
-        }
-    }
+
 
 </style>

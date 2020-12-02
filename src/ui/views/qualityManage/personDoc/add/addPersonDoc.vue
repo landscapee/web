@@ -319,13 +319,15 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="fTd">部门</td>
+							<td class="fTd is-required1">部门/项目</td>
 							<td class="tTd">
-								<span v-if="type=='info'">{{deptObj[form.deptCode]}}</span>
-								<el-select v-else v-model="form.deptCode" placeholder="请选择" clearable>
-									<el-option v-for="(opt,index) in deptData" :key="index" :value="opt.valCode"
-											   :label="opt.valData"></el-option>
-								</el-select>
+								<el-form-item prop="deptCode">
+									<span v-if="type=='info'">{{deptObj[form.deptCode]}}</span>
+									<el-select v-else v-model="form.deptCode" placeholder="请选择" clearable>
+										<el-option v-for="(opt,index) in deptData" :key="index" :value="opt.valCode"
+												   :label="opt.valData"></el-option>
+									</el-select>
+								</el-form-item>
 							</td>
 							<td colspan="5"></td>
 						</tr>
@@ -378,7 +380,8 @@
 				userArrObj: {},
 				userArr: [],
 				rules: {
-					userName: [{required: true, message: '请选择员工姓名', trigger: "blur"}],
+					userName: [{required: true, message: '请选择员工姓名'}],
+					deptCode: [{required: true, message: '请选择部门/项目'}],
 					idCard: [
 						{
 							pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,

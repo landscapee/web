@@ -6,12 +6,12 @@
          <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
          <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/trainManageAdmin'" :key="$route.path" class="trainManageAdmin">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>培训管理  </span>
+        <div v-else-if="this.$router.history.current.path == '/trainManageAdmin'" :key="$route.path" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    培训管理
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
@@ -20,7 +20,7 @@
                     <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
@@ -30,13 +30,20 @@
                     </el-table-column>
                      <el-table-column align="center" slot="option" label="操作" :width="100" >
                         <template  slot-scope="scope">
+                            <el-tooltip class="item" effect="dark" content="推送员工" placement="top">
+                                  <span @click="pushStaff(scope.row)" class="rowSvg">
+                                        <icon iconClass="pushNew"  ></icon>
+                                    </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="培训结果" placement="top">
+                                 <span @click="trainResults(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                        <icon iconClass="trainResult"  ></icon>
+                                    </span>
+                            </el-tooltip>
                             <div>
-                                <span @click="pushStaff(scope.row)" class="rowSvg">
-                                    <icon iconClass="pushNew" title="推送员工"></icon>
-                                </span>
-                                <span @click="trainResults(scope.row)" class="rowSvg" style="margin-left: 10px">
-                                    <icon iconClass="trainResult" title="培训结果"></icon>
-                                </span>
+
+
+
                             </div>
                         </template>
                     </el-table-column>
@@ -233,12 +240,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.trainManageAdmin{
-    margin-top:14px;
-    /deep/ .mainTable{
-        height:calc(100vh - 370px);
-    }
-}
+
 
 </style>

@@ -3,12 +3,12 @@
 		<el-table    :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"  :show-header="true"   :data="headerData" ref="header_table"  :row-key="getRowKeys"     highlight-current-row      tooltip-effect="dark"  border>
 			<template  v-for="(colConfig, index) in tableConfig">
 				<template v-if="colConfig.search">
-					<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
+					<el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='text'" :key="index" :reserve-selection="true">
 						<span >
 							<div>{{colConfig.search.label}}</div>
 						</span>
 					</el-table-column>
-					<el-table-column align="center" :fixed="colConfig.search.fixed" :index="index"
+					<el-table-column :resizable="false" align="center" :fixed="colConfig.search.fixed" :index="index"
 									 :property="colConfig.sortProp" :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label" v-if="colConfig.search.type=='btn'" :key="index"
@@ -19,7 +19,7 @@
 							</span>
 						</span>
 					</el-table-column>
-					<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+					<el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
 									 :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label" v-if="colConfig.search.type=='input'" :key="index"
@@ -38,7 +38,7 @@
 							</span>
 						</span>
 					</el-table-column>
-					<el-table-column :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
+					<el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"
 									 :width="colConfig.width"
 									 :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
 									 :label="colConfig.label "
@@ -58,7 +58,7 @@
 								  iconClass="table_search"></icon>
 						</span>
 					</el-table-column>
-					<el-table-column  :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true">
+					<el-table-column  :resizable="false" :fixed="colConfig.search.fixed" :index="index" :property="colConfig.sortProp"  :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label" v-if="colConfig.search.type=='date'"   :key="index" :reserve-selection="true">
 						<span slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
 							<el-date-picker @change="requestTableData" class="adv_filter"  :type="colConfig.search.time||'date'" :placeholder="colConfig.search.placeholder" v-model="row[colConfig.search.prop]" ></el-date-picker>
 							<icon class="table_search" @click.native="requestTableData" v-if="colConfig.search.extendType && colConfig.search.extendType=='search'" iconClass="table_search"></icon>
@@ -67,19 +67,19 @@
 				</template>
 				<template v-else>
 
-					<el-table-column :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
+					<el-table-column :resizable="false" :index="index" :property="colConfig.sortProp" :width="colConfig.width" :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}" :label="colConfig.label"  :key="index" :reserve-selection="true">
 					</el-table-column>
 				</template>
 			</template>
 		</el-table>
 
 		<el-table   :span-method="spanMethod"  @scroll.passive="scroll($event)"  class="mainTable" :show-header="false"   :data="data instanceof Array ? data : data.records" ref="body_table"  :row-key="getRowKeys" @current-change="currentRowChange" highlight-current-row @row-click="checkRow" @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox" :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark" :row-class-name="tableRowClassName1" border>
-			<template v-for="(colConfig, index) in tableConfig">
+			<template v-for="(colConfig, index) in tableConfig" >
 				<slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
-				<el-table-column v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
+				<el-table-column  :resizable="false" v-else-if="colConfig.prop=='index'" type="index" v-bind="colConfig" :key="index"
 								 :reserve-selection="true">
 				</el-table-column>
-				<el-table-column v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
+				<el-table-column :resizable="false" v-else :show-overflow-tooltip="true" v-bind="colConfig" :key="index"
 								 :fixed="colConfig.search&&colConfig.search.fixed?colConfig.search.fixed:false"
 								 :reserve-selection="true">
 				</el-table-column>
@@ -152,18 +152,32 @@
                  this.$emit('requestTable', {...this.headerData[0]});
             },
             renderHeaderRow(h,  { column, $index }){
-                return (
-                    <div>
-                    <span>{column.label}</span>
-                <Icon iconClass="sort" class="tableSort" nativeOnClick={
-                () => {
-                    column.order==""? column.order = 'desc':column.order=='desc'?column.order = 'asc':column.order == 'asc'?column.order="":column.order='desc';
-                    this.$emit('headerSort', column);
-                }
-            } >
-            </Icon>
-                </div>
-            );
+            	let icon;
+            	if (column.order=="") {
+            		icon = "nomal";
+				}else if (column.order=="desc") {
+					icon = "down";
+				}else if (column.order=="asc") {
+					icon = "up";
+				}
+            	return h(
+					'div',
+					[
+						h('span', column.label),
+						h('icon-svg', {
+							props: {
+								iconClass:icon,
+							},
+							nativeOn: {
+								click: () => {
+									column.order == "" ? column.order = 'desc' : column.order == 'desc' ? column.order = 'asc' : column.order == 'asc' ? column.order = "" : column.order = 'desc';
+									this.$emit('headerSort', column);
+								}
+							},
+
+						})
+					],
+				);
             },
             // 确定唯一的key值
             getRowKeys(row) {
@@ -251,12 +265,11 @@
 			margin-top: 20px;
 		}
 		/deep/ .el-table{
-			width:1700px;
 			border:1px solid rgba(199,204,210,1);
 			margin: 0 auto;
 			/deep/ .cell{
-				padding:0px;
-				line-height:40px;
+				padding:0px 3px;
+				/*line-height:40px;*/
 			}
 			/deep/ .el-table__header{
 				height:40px;
@@ -269,8 +282,14 @@
 			}
 			/deep/ td:first-child{
 				text-align: center;
+				.cell{
+					display: flex;
+					align-items: center;
+					justify-content: center
+				}
 			}
 			/deep/ th{
+
 				border-color:#C7CCD2 ;
 			}
 			/deep/ .el-table__row{
@@ -289,6 +308,14 @@
 			}
 		}
 		.headerTable{
+			/deep/ th{
+				.cell{
+				line-height: 1em
+			}
+				div,span{
+					font-weight: bold;
+				}
+			}
 			/deep/ .el-table__fixed{
 				height: 80px !important;
 			}
@@ -301,13 +328,14 @@
 			/deep/ .el-table__row{
 				background: #EFF2F3;
 			}
+
 			/deep/ .el-input__icon {
 				height: unset;
 			}
 			/deep/ .cell{
 				padding:0 3px;
 			}
-			/deep/ .el-input{
+ 			/deep/ .el-input{
 				text-align: center;
 				width: 100%;
 				/*width:140px;*/
@@ -328,21 +356,25 @@
 				}
 			}
 			/deep/ .el-input__inner{
-
+				line-height: 30px;
 				height:30px;
 				background:rgba(255,255,255,1);
 				border-radius:2px;
 				border:1px solid rgba(216,216,216,1);
 				padding-left:10px;
 			}
+			/deep/ .el-input__icon{
+				line-height: 30px;height:30px;
+				width: 14px;
+				font-size: 15px;
+			}
 			/deep/ .el-input__prefix{
+
 				left: unset;
 				right: 13px;
-				.el-input__icon{
-					width: 14px;
-					font-size: 15px;
-				}
+
 			}
+
 			/deep/ th{
 				width: 148px;
 				height:40px;
@@ -388,7 +420,7 @@
 			}
 		}
 		.el-table--scrollable-x + .mainTable{
-			height: 620px ;
+			/*height: 620px ;*/
 
 		}
 		/deep/ .el-table--scrollable-x .el-table__body-wrapper{
@@ -424,6 +456,7 @@
 				height: 16px;
 				width: 16px;
 			}
+
 			/deep/ .cell:last-child{
 				span:first-child{
 					.action_radio{

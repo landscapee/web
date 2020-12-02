@@ -86,7 +86,7 @@
 }
 
 .QCenterRight{
-    margin: 34px 0px 24px 0px;
+    margin: 34px 30px 24px 30px;
     position: relative;
     .QHead{
         font-size: 24px;
@@ -94,6 +94,9 @@
         font-weight: bold;
         text-align: center;
         color: #222222;
+    }
+    .QHead1{
+        font-weight: normal;
     }
     .QHead_list{
         text-align: center;
@@ -109,13 +112,13 @@
 .QheadRight{
     position: absolute;
     right:0;
-    top:0;
+    top:-2px;
     .isDisabled{
-            background: rgba(208,208,208,1);
-        color: #6A7785;
+         color: #d0d0d0;
         cursor: not-allowed;
+        border-color:#d0d0d0;
         .svg-icon{
-            fill: rgba(208,208,208,1);
+            fill: #d0d0d0;
         }
     }
     &>div{
@@ -142,21 +145,15 @@
 }
 
 .G_isDisabled{
-    background: rgba(208,208,208,1);
-    color: #6A7785;
-    cursor: not-allowed!important;
+    background: #FFF;
+     cursor: not-allowed!important;
+    border-color:#D0D0D0;
     .svg-icon{
-        fill: #8e801e;
-        color:red;
-    }
-    svg{
-        fill: #308e6e;
-        color:red;
-    }
-    use{
-        fill: #8e174b;
-        color:red;
-    }
+        fill: #D0D0D0;
+     }
+
+
+
 }
 //////////////////////////////// element///////////
 
@@ -188,6 +185,7 @@
     .el-input__prefix{
         position: absolute;
         right:5px;
+        top:0;
         left:auto;
      }
     .el-input__inner{
@@ -196,20 +194,52 @@
 }
 
 
-.Wtui-checkbox:checked {
+.Wtui-radioCC:checked,.Wtui-checkbox:checked {
     background:#1673ff;
     border:solid 0px #888888;
 
 }
-.Wtui-checkbox:focus{
+/deep/ .Wtui-radioCC:checked,/deep/ .Wtui-checkbox:checked {
+    background:#1673ff;
+    border:solid 0px #888888;
+
+}
+.Wtui-radioCC:focus,.Wtui-checkbox:focus{
     -webkit-appearance:none;
     -webkit-user-select:none;
     outline: none;
 }
-.Wtui-checkbox:disabled{
+/deep/ .Wtui-radioCC:focus,/deep/ .Wtui-checkbox:focus{
+    -webkit-appearance:none;
+    -webkit-user-select:none;
+    outline: none;
+}
+.Wtui-radioCC:disabled,.Wtui-checkbox:disabled{
     background: rgba(127, 127, 127, 0.5);
 }
-.Wtui-checkbox {
+/deep/ .Wtui-radioCC:disabled,/deep/ .Wtui-checkbox:disabled{
+    background: rgba(127, 127, 127, 0.5);
+}
+.Wtui-checkbox,.Wtui-radioCC {
+    width:14px;
+    height:14px;
+    background-color:#ffffff;
+    border:solid 1px #888888;
+    -webkit-border-radius:50%;
+    border-radius:50%;
+
+    padding:0;
+    position:relative;
+    display:inline-block;
+    vertical-align:top;
+    cursor:default;
+    -webkit-appearance:none;
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-transition:background-color ease 0.1s;
+    transition:background-color ease 0.1s;
+}
+/deep/ .Wtui-checkbox,/deep/ .Wtui-radioCC {
     width:14px;
     height:14px;
     background-color:#ffffff;
@@ -244,3 +274,53 @@
     -webkit-transform:rotate(-45deg);
     transform:rotate(-45deg);
 }
+/deep/ .Wtui-checkbox:checked::after {
+    content:'';
+    top:3px;
+    left:2px;
+    position:absolute;
+    background:transparent;
+    border:#fff solid 2px;
+    border-top:none;
+    border-right:none;
+    height:3px;
+    width:8px;
+    -moz-transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+    -webkit-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+}
+ .Wtui-radioCC:checked::after {
+    content:'×';
+    left:calc(50% - 5.4px);
+    top:calc(50% - 8px);
+    font-size: 14px;
+    position:absolute;
+    color:#fff;
+    font-weight: bold;
+
+    border-top:none;
+    border-right:none;
+
+}
+/deep/ .Wtui-radioCC:checked::after {
+    content:'×';
+    left:calc(50% - 5.4px);
+    top:calc(50% - 8px);
+    font-size: 14px;
+    position:absolute;
+    color:#fff;
+    font-weight: bold;
+
+    border-top:none;
+    border-right:none;
+
+}
+  .Wtui-checkboxCC{
+      -webkit-border-radius:2px;
+      border-radius:2px;
+  }
+/deep/ .Wtui-checkboxCC{
+      -webkit-border-radius:2px;
+      border-radius:2px;
+  }

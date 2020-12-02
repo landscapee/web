@@ -4,12 +4,12 @@
          <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="signControl">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>工单完工签署</span>
+         <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="QCenterRight G_listOne">
+            <div class="">
+                <div class="QHead">
+                    工单完工签署
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div  @click="seeOther(null,'WorkAbnormalAdd')"> <icon iconClass="#" style="width: 0;" ></icon>纸制填报工单导入</div>
 <!--                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>-->
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" style="margin-right:0"></icon>详情</div>
@@ -17,7 +17,7 @@
                     <div @click="moreExport()"><icon iconClass="export" ></icon>批量导出</div>
                  </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="checkbox" align="center" label="选择" :width="49"   >
                         <template slot-scope="scope">
@@ -27,22 +27,33 @@
                      <el-table-column align="center" slot="option" label="操作" :width="80" >
                         <template  slot-scope="scope">
                             <div >
-                                <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
-                                    <icon iconClass="downloadNew" title="下载"></icon>
-                                </span>
-                                <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
-                                    <icon iconClass="exportNew" title="导出"></icon>
-                                </span>
-                                <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
-                                      @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
-                                    <icon iconClass="unlock" title="解锁"></icon>
-                                </span>
-                                <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
-                                      @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
-                                      :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"
-                                      style="margin-left: 10px">
-                                    <icon iconClass="editNew" title="异常更改"></icon>
-                                </span>
+
+                                <el-tooltip class="item" effect="dark" :content="scope.row.offlineFile?'下载':'导出'" placement="top">
+                                  <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
+                                        <icon iconClass="downloadNew"  ></icon>
+                                    </span>
+                                    <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="exportNew"  ></icon>
+                                    </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="解锁" placement="top">
+                                     <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
+                                           @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                        <icon iconClass="unlock"  ></icon>
+                                    </span>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="异常更改" placement="top">
+                                     <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
+                                           @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
+                                           :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"
+                                           style="margin-left: 10px">
+                                        <icon iconClass="editNew"  ></icon>
+                                    </span>
+                                </el-tooltip>
+
+
+
+
                             </div>
                          </template>
                     </el-table-column>
@@ -315,18 +326,18 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
-    .signControl{
-        margin-top:14px;
-        /deep/ .mainTable{
-            height:calc(100vh - 370px);
-            .el-checkbox__label{
-                display: none;
-            }
-        }
-       /deep/ .cell> div{
-            line-height: 20px!important;
+
+    /deep/ .mainTable {
+        height: calc(100vh - 370px);
+
+        .el-checkbox__label {
+            display: none;
         }
     }
+
+    /deep/ .cell > div {
+        line-height: 20px !important;
+    }
+
 
 </style>

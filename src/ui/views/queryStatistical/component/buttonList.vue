@@ -33,7 +33,7 @@
 
 <style lang="scss" scoped>
 .buttonList{
-    padding: 0 30px;
+
     margin: 15px 0 ;
 }
 </style>

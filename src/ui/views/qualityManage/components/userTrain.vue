@@ -132,6 +132,7 @@
                         ...this.form,
                         userName: d.data.userName,
                         userNumber: d.data.userNumber,
+                        dept:''
                     }
                     if (d.data.positionInfList && d.data.positionInfList.length) {
                         let obj = d.data.positionInfList[0]
@@ -139,6 +140,20 @@
                             ...this.form, ...obj,
                         }
                     }
+                    request({
+                        url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                        method: 'post',
+                        params: {delete: false},
+                        data: ['dept']
+                    }).then(res => {
+                        if (res.code === 200) {
+                            res.data.dept.map((k, l) => {
+                                if (d.data.deptCode===k.valCode){
+                                    this.form.dept=k.valData;
+                                }
+                            })
+                        }
+                    });
                 }
             })
         },

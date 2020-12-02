@@ -5,10 +5,11 @@
         <router-view v-else-if="this.$router.history.current.path == '/ZuserDoc'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserAuth'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserTrain'" :key="$route.path"></router-view>
-        <div v-else="this.$router.history.current.path == '/intelligenceManage'" class="G_listTwo">
+        <div v-else="this.$router.history.current.path == '/intelligenceManage'"
+             class="G_listTwo">
             <div class="QCenterRight">
-                <div class="QHead_list">
-                    <span> 资质管理</span>
+                <div class="QHead">
+                      资质管理
                 </div>
                 <div class="buttons"     >
                     <div  @click="exportWord"  >
@@ -17,10 +18,10 @@
                     <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>资质上传</div>
 
                 </div>
-                <div class="QlistBody Qdisplay">
-                    <div class="QlistLeft" style="width:65%" ref="mainContent">
-                        <div class="QCenterRight" >
-                            <div style="font-weight: bold; font-size: 16px">
+                <div class="QlistBody Qdisplay tableTwoBox" ref="mainContent">
+                    <div class="QlistLeft" style="width:65%" >
+                        <div class=" positiondiv" >
+                            <div class="twoHead">
                                 员工资质证书
                             </div>
                             <div class="QheadRight">
@@ -38,17 +39,22 @@
                             </el-table-column>
                             <el-table-column align="center" slot="option" label="操作" :width="120">
                                 <template slot-scope="scope">
-                                    <div>
-                                        <span @click="seeOther(scope.row,'/ZuserDoc')" class="rowSvg">
+
+                                        <el-tooltip class="item" effect="dark" content="档案" placement="top">
+                                              <span @click="seeOther(scope.row,'/ZuserDoc')" class="rowSvg">
                                             <icon iconClass="personDoc" title="档案"></icon>
                                         </span>
-                                        <span @click="seeOther(scope.row,'/ZuserAuth')" class="rowSvg" style="margin: 0 10px">
+                                        </el-tooltip>
+                                        <el-tooltip class="item" effect="dark" content="授权" placement="top">
+                                             <span @click="seeOther(scope.row,'/ZuserAuth')" class="rowSvg" style="margin: 0 10px">
                                             <icon iconClass="authorization" title="授权"></icon>
                                         </span>
+                                        </el-tooltip>
+                                        <el-tooltip class="item" effect="dark" content="培训考核" placement="top">
                                         <span @click="seeOther(scope.row,'/ZuserTrain')" class="rowSvg">
                                             <icon iconClass="check" title="培训考核"></icon>
                                         </span>
-                                    </div>
+                                        </el-tooltip>
                                 </template>
                             </el-table-column>
 
@@ -56,8 +62,8 @@
 
                     </div>
                     <div class="QlistRight " style="width:calc(35% - 30px)">
-                        <div class="QCenterRight" >
-                            <div style="font-weight: bold; font-size: 16px">
+                        <div class=" positiondiv" >
+                            <div class="twoHead">
                                 证书的资质清单
                             </div>
                             <div class="QheadRight">
@@ -505,34 +511,18 @@
     };
 </script>
 <style scoped lang="scss">
-    .G_listTwo{
-        /deep/ .mainTable{
-            /*height:calc(100vh - 400px)*/
-        }
-        /deep/ .el-checkbox__label{
-            display: none;
-        }
-        .rowinput{
-            /deep/ .el-input__inner{
-                border: 0;
-                height:30px
-            }
-            /deep/ .el-input{
-                height:30px;
+
+    /deep/.QlistLeft{
+        /deep/ .el-table {
+            .el-table__body{
+                width: 65% !important;
             }
         }
-        /deep/.QlistLeft{
-            /deep/ .el-table {
-                .el-table__body{
-                    width: 65% !important;
-                }
-            }
-        }
-        /deep/.QlistRight{
-            /deep/ .el-table {
-                .el-table__body{
-                    width: calc(35% - 30px) !important;
-                }
+    }
+    /deep/.QlistRight{
+        /deep/ .el-table {
+            .el-table__body{
+                width: calc(35% - 30px) !important;
             }
         }
     }

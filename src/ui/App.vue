@@ -4,9 +4,9 @@
     </div>
 </template>
 <script>
-export default {
+ export default {
     mounted(){
-        
+
     },
     methods: {
         

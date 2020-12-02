@@ -1,20 +1,20 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path" class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>员工考试结果</span>
+        <router-view v-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
+        <div v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path" class="QCenterRight G_listOne">
+            <div >
+                <div class="QHead">
+                    员工考试结果
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="exportExcel">
                         <icon iconClass="export" ></icon>
                         导出Excel
                     </div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
@@ -33,17 +33,21 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="150" align='center' >
                         <template  slot-scope="scope">
-
+                            <el-tooltip class="item" effect="dark" content="分数录入" placement="top">
                                 <span @click="!scope.row.employeeFileId?'':scoreEntry(scope.row)" :class="!scope.row.employeeFileId?'rowSvg rowSvgInfo':'rowSvg'">
-                                    <icon iconClass="score" title="分数录入"></icon>
+                                    <icon iconClass="score"></icon>
                                 </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="考试结果推送" placement="top">
                                 <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg" style="margin:0 10px">
-                                    <icon iconClass="push" title="考试结果推送"></icon>
+                                    <icon iconClass="push"></icon>
                                 </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="纸质试卷归档上传" placement="top">
                                 <span @click="uploadTest( scope.row)" class="rowSvg">
-                                    <icon iconClass="uploadingNew" title="纸质试卷归档上传"></icon>
+                                    <icon iconClass="uploadingNew"></icon>
                                 </span>
-
+                            </el-tooltip>
 
                         </template>
                     </el-table-column>
@@ -284,9 +288,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.sysParameter{
-    margin-top:14px;
 
-}
 </style>

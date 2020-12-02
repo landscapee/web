@@ -3,19 +3,19 @@
 
          <router-view v-if="this.$router.history.current.path == '/coursewareMaintainAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/coursewareMaintain'" :key="$route.path" class="coursewareMaintain">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>课件维护</span>
+        <div v-else-if="this.$router.history.current.path == '/coursewareMaintain'" :key="$route.path" class="QCenterRight G_listOne">
+            <div  >
+                <div class="QHead">
+                    课件维护
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                     <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                  </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
@@ -27,9 +27,12 @@
                     <el-table-column align="center" slot="fileDown" label="操作" :width="60" >
                         <template  slot-scope="scope">
                             <form action="#" method="GET" ref="formLoad"></form>
-                            <span @click="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'':fileDown(scope.row)" :class="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'rowSvg rowSvgInfo':'rowSvg'">
-                                    <icon iconClass="downloadNew" title="课件下载"></icon>
+                            <el-tooltip class="item" effect="dark" content="课件下载" placement="top">
+                             <span @click="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'':fileDown(scope.row)" :class="(!scope.row.courseFileId||scope.row.downloadPermission==='禁止下载')?'rowSvg rowSvgInfo':'rowSvg'">
+                                    <icon iconClass="downloadNew"  ></icon>
                             </span>
+                            </el-tooltip>
+
                         </template>
                     </el-table-column>
 
@@ -244,12 +247,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.coursewareMaintain{
-    margin-top:14px;
-    /deep/ .mainTable{
-        height:calc(100vh - 370px);
-    }
-}
+
 
 </style>

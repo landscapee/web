@@ -173,11 +173,11 @@
                 <el-button type="primary" @click="submit">提交</el-button>
             </div>
         </div>
-        <div>
-            <div id="kg-img-div-postil1" style="border:1px red solid;width: 200px;height:200px">
-                <img src="#" alt="">
-            </div>
-        </div>
+        <!--<div>-->
+            <!--<div id="kg-img-div-postil1" style="border:1px red solid;width: 200px;height:200px">-->
+                <!--<img src="#" alt="">-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 <script>

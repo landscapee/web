@@ -4,12 +4,12 @@
           <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
             <div class="QCenterRight">
                 <div class="QHead_list">
-                    <span>考核管理<span style="color:#888888">（管理员）</span></span>
+                    <span>考核管理</span>
                 </div>
-                <div class="QlistBody Qdisplay">
+                <div class="QlistBody Qdisplay tableTwoBox">
                     <div class="QlistLeft" style="width:45%">
-                        <div class="QCenterRight" >
-                            <div style="font-weight: bold; font-size: 16px">
+                        <div class="positiondiv" >
+                            <div class="twoHead">
                                 培训
                             </div>
                         </div>
@@ -26,53 +26,61 @@
 
                     </div>
                     <div class="QlistRight " style="width:calc(55% - 30px)">
-                        <div class="QCenterRight" >
-                            <div style="font-weight: bold; font-size: 16px">
-                                员工考核情况
-                            </div>
-                            <div class="QheadRight">
-                                <div @click="moreconclusion(1)"><icon iconClass="add" style="width:0" ></icon>批量合格</div>
-                                <div @click="moreRelative('edit')"><icon iconClass="edit" style="width:0"  ></icon>批量关联</div>
-                                <div @click="morePush"><icon iconClass="remove" style="width:0" ></icon>批量推送</div>
-                                <div @click="exportExcel()"><icon iconClass="export" ></icon>导出员工考核情况</div>
+                             <div class="positiondiv" >
+                                <div class="twoHead">
+                                    员工考核情况
+                                </div>
+                                <div class="QheadRight">
+                                    <div @click="moreconclusion(1)"><icon iconClass="add" style="width:0" ></icon>批量合格</div>
+                                    <div @click="moreRelative('edit')"><icon iconClass="edit" style="width:0"  ></icon>批量关联</div>
+                                    <div @click="morePush"><icon iconClass="remove" style="width:0" ></icon>批量推送</div>
+                                    <div @click="exportExcel()"><icon iconClass="export" ></icon>导出员工考核情况</div>
 
-                                <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
+                                    <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
+                                </div>
                             </div>
-                        </div>
-                        <SearchTable scrollHeight="400" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
-                            <!--<el-table-column slot="radio" label="选择" :width="49"  >-->
+                            <SearchTable scrollHeight="400" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')" @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"   :showHeader="false" :showPage="true" >
+                                <!--<el-table-column slot="radio" label="选择" :width="49"  >-->
                                 <!--<template slot-scope="{ row }">-->
-                                    <!--<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
-                                    <!--<icon  iconClass="ky" class="tab_radio" v-else></icon>-->
+                                <!--<icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
+                                <!--<icon  iconClass="ky" class="tab_radio" v-else></icon>-->
                                 <!--</template>-->
-                            <!--</el-table-column>-->
+                                <!--</el-table-column>-->
 
-                            <el-table-column slot="checkbox" align="center" label="选择" :width="50"   >
-                                <template slot-scope="scope">
-                                    <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row.id" value="dasdasd"> </el-checkbox>
-                                </template>
-                            </el-table-column>
-                            <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140"   >
-                                <template slot-scope="scope">
-                                    <el-input class="rowinput" v-model="scope.row.certificateNo"
-                                              @click.stop.native
-                                               @keyup.enter.native="saveNumber(scope.row)"
-                                             :placeholder="scope.row.qualifiedStatus!='合格'?'操作合格后可编辑':'可编辑'"
-                                               :disabled="scope.row.qualifiedStatus!='合格'">
-                                    </el-input>
-                                 </template>
-                            </el-table-column>
-                            <el-table-column slot="option" align="center" label="操作" :width="100"    >
-                                <template slot-scope="scope">
-                                    <span @click="conclusion(scope.row,1)" class="rowSvg" style="margin-right: 10px">
-                                        <icon iconClass="qualified" title="合格"></icon>
-                                    </span>
-                                    <span @click="conclusion(scope.row,0)" class="rowSvg">
-                                        <icon iconClass="disqualification" title="不合格"></icon>
-                                    </span>
-                                </template>
-                            </el-table-column>
-                        </SearchTable>
+                                <el-table-column slot="checkbox" align="center" label="选择" :width="50"   >
+                                    <template slot-scope="scope">
+                                        <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row.id" value="dasdasd"> </el-checkbox>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140"   >
+                                    <template slot-scope="scope">
+                                        <el-input class="rowinput" v-model="scope.row.certificateNo"
+                                                  @click.stop.native
+                                                  @keyup.enter.native="saveNumber(scope.row)"
+                                                  :placeholder="scope.row.qualifiedStatus!='合格'?'操作合格后可编辑':'可编辑'"
+                                                  :disabled="scope.row.qualifiedStatus!='合格'">
+                                        </el-input>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column slot="option" align="center" label="操作" :width="100"    >
+                                    <template slot-scope="scope">
+                                        <el-tooltip class="item" effect="dark" content="合格" placement="top">
+                                            <span @click="conclusion(scope.row,1)" class="rowSvg" style="margin-right: 10px">
+                                                <icon iconClass="qualified"  ></icon>
+                                            </span>
+                                        </el-tooltip>
+                                        <el-tooltip class="item" effect="dark" content="不合格" placement="top">
+                                               <span @click="conclusion(scope.row,0)" class="rowSvg">
+                                                 <icon iconClass="disqualification"  ></icon>
+                                               </span>
+                                        </el-tooltip>
+
+
+                                    </template>
+                                </el-table-column>
+                            </SearchTable>
+
+
                     </div>
                 </div>
             </div>
@@ -431,9 +439,7 @@ this.tableRightData.records.map((k,l)=>{
 </script>
 <style scoped lang="scss">
  .G_listTwo{
-     /deep/ .mainTable{
-         /*height:calc(100vh - 400px)*/
-     }
+
      /deep/ .el-checkbox__label{
          display: none;
      }

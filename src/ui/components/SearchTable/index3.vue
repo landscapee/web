@@ -287,7 +287,7 @@
 			/deep/ .el-table__row{
 				background: #EFF2F3;
 			}
-			/deep/ .el-input__icon {
+			/deep/
 				height: unset;
 			}
 			/deep/ .cell{

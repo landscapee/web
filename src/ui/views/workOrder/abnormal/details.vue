@@ -185,11 +185,7 @@
 				<el-button type="primary" @click="submit">提交</el-button>
 			</div>
 		</div>
-<div>
-	<div id="kg-img-div-postil1" style="border:1px red solid;width: 200px;height:200px">
-		<img src="#" alt="">
-	</div>
-</div>
+
 	</div>
 </template>
 <script>
@@ -201,7 +197,8 @@
     import {initParam} from './basicData'
 	import ElImageViewer from "element-ui/packages/image/src/image-viewer";
 	import Icon from '@components/Icon-svg/index';
-// require('../../../../../static/kinggrid/all')
+// import '../../../../../static/kinggrid/jquery-1.8.3.min.js'
+// import '../../../../../static/kinggrid/all'
     export default {
         components: {
 			ElImageViewer,Icon,
@@ -257,28 +254,25 @@
 			}
         },
         mounted() {
-            SignatureInit('0002','123456',false,1,this.type!=='info')
+            // SignatureInit('0002','123456',false,1,this.type!=='info')
             let _this = this
             //SignatureInit()
             this.init()
-            window.onload = function () {
-                Signature.bind({
-                    remove: function (fn) {//签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,
-                        console.log('获取删除的签章ID：' + this.getSignatureid());
-                        _this.deleteSignFn(this.getSignatureid(), this.getSignatureData())
-                        //key,
-                        //contentDetailId
-                        fn(true);//保存成功后必须回调fn(true/false)传入true/false分别表示保存成功和失败
+            Signature.bind({
+                remove: function (fn) {//签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,
+                    console.log('获取删除的签章ID：' + this.getSignatureid());
+                    _this.deleteSignFn(this.getSignatureid(), this.getSignatureData())
+                    //key,
+                    //contentDetailId
+                    fn(true);//保存成功后必须回调fn(true/false)传入true/false分别表示保存成功和失败
 
-                    },
-                    update: function (fn) {//签章数据有变动时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,执行后必须回调fn(true/false)，传入true/false分别表示保存成功和失败
-                        console.log('获取更新的签章ID：' + this.getSignatureid());
-                        //console.log('获取更新的签章数据：'+this.getSignatureData());
-                        fn(true);
-                    }
-                });
-
-            }
+                },
+                update: function (fn) {//签章数据有变动时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,执行后必须回调fn(true/false)，传入true/false分别表示保存成功和失败
+                    console.log('获取更新的签章ID：' + this.getSignatureid());
+                    //console.log('获取更新的签章数据：'+this.getSignatureData());
+                    fn(true);
+                }
+            });
 
 
         },
@@ -991,6 +985,7 @@
                     method: 'get',
                 })
                     .then((data) => {
+
                         if (data.code == 200) {
                             let infList = data.data.infList
                             this.workerCompleteData = data.data.infList
@@ -1020,6 +1015,7 @@
 
                             // this.deepMap = JSON.parse(JSON.stringify(map))
 							let blo =this.type=='edit'
+
                              SignatureInit('0002','123456',false,1,blo)
                             var signatureCreator = Signature.create()
                             //let signData = $(".kg-img-div")  // signatureid
@@ -1045,6 +1041,7 @@
                                     $("." + item.contentDetailId).siblings(".checkbox_group").find("#3" + item.contentDetailId).prop("checked", item.invalid).prop("disabled", item.invalid)
                                 })
                             }
+
                             if (map.length) {
                                 let signs = []
                                 map.forEach(mapItem => {
@@ -1056,10 +1053,10 @@
                                         mapItem.value.split(",").forEach(item => {
                                             if(item){
                                                 if( "undefined"===item.split('------')[1]){
-                                                    console.log('key',mapItem.key);
+                                                    console.log('key',mapItem);
                                                 }
                                                 else {
-                                                    console.log('keytrue',mapItem.key);
+                                                    console.log('keytrue',mapItem);
 												}
                                                 signs.push(
                                                     {
@@ -1087,10 +1084,10 @@
                                         }
                                     }
                                 })
-                                 Signature.loadSignatures(signs)
+                                  Signature.loadSignatures(signs)
                             }
                         } else {
-                            this.$message({type: 'error', message: '新增失败，请重试'});
+                            this.$message({type: 'error', message: '数据加载失败，请重试'});
                         }
                     })
             },
@@ -1470,7 +1467,7 @@
                 let key = $(`div[signatureid='${getSignatureid}']`).attr("elemid")
                 let contentDetailId = ''
                 let value = getSignatureid
-                request({
+                 request({
                     url:`${this.$ip}/mms-workorder/operationInf/cancelSign`,
                     method: 'post',
                     data:{
