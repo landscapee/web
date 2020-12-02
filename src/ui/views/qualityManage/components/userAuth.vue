@@ -157,8 +157,8 @@
                 this.qualifyArr=[]
                 if (d.data && d.data.length) {
                    d.data.map((k,l)=>{
-                        if(k.name){
-                            this.qualifyArr.push(k.name)
+                        if(k.number){
+                            this.qualifyArr.push(k.number)
                         }
                     })
 
