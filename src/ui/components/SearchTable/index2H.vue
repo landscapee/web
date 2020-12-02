@@ -262,7 +262,7 @@
 
 		.mainTable{
 
-			/deep/ .el-input__icon {
+			/deep/
 				height: unset;
 			}
 			/deep/ .cell{

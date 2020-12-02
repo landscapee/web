@@ -254,8 +254,8 @@
 			border:1px solid rgba(199,204,210,1);
 			margin: 0 auto;
 			/deep/ .cell{
-				padding:0px;
-				line-height:40px;
+				padding:0px 3px;
+				/*line-height:40px;*/
 			}
 			/deep/ .el-table__header{
 				height:40px;
@@ -295,6 +295,9 @@
 		}
 		.headerTable{
 			/deep/ th{
+				.cell{
+				line-height: 1em
+			}
 				div,span{
 					font-weight: bold;
 				}
@@ -311,14 +314,9 @@
 			/deep/ .el-table__row{
 				background: #EFF2F3;
 			}
-			/deep/ .el-input__icon {
-				height: unset;
-			}
-			/deep/ .cell{
-				padding:0 3px;
-				line-height: 1em;
 
-			}
+
+
 			/deep/ .el-input{
 				text-align: center;
 				width: 100%;
@@ -340,21 +338,25 @@
 				}
 			}
 			/deep/ .el-input__inner{
-
+				line-height: 30px;
 				height:30px;
 				background:rgba(255,255,255,1);
 				border-radius:2px;
 				border:1px solid rgba(216,216,216,1);
 				padding-left:10px;
 			}
+			/deep/ .el-input__icon{
+				line-height: 30px;height:30px;
+				width: 14px;
+				font-size: 15px;
+			}
 			/deep/ .el-input__prefix{
+
 				left: unset;
 				right: 13px;
-				.el-input__icon{
-					width: 14px;
-					font-size: 15px;
-				}
+
 			}
+
 			/deep/ th{
 				width: 148px;
 				height:40px;
@@ -436,6 +438,7 @@
 				height: 16px;
 				width: 16px;
 			}
+
 			/deep/ .cell:last-child{
 				span:first-child{
 					.action_radio{

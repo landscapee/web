@@ -111,7 +111,7 @@ export default {
                 this.getList('right');
             }
        });
-       window.addEventListener('scroll', this.handleScroll,true);//监听函数
+       this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
     },
     methods: {
         //监听滚动
