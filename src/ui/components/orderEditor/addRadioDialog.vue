@@ -11,6 +11,16 @@
                     <el-radio v-model="form.type" label="2">checkbox多选</el-radio>
                     <el-radio v-model="form.type" label="3">N/A</el-radio>
                 </el-form-item>
+                <el-form-item    label="样式"  prop="type" >
+                    <el-radio v-model="form.style" label="1">
+                        <input v-if="form.type==1" type="radio" class="Wtui-checkbox" disabled  label="1" checked />
+                        <input v-else type="checkbox"     disabled    label="1" checked />
+                    </el-radio>
+                    <el-radio v-model="form.style" label="2">
+                        <input  v-if="form.type==1" type="radio"   class=" Wtui-radioCC" disabled   label="1" checked />
+                        <input   v-else type="checkbox" class="Wtui-radioCC Wtui-checkboxCC"  disabled   label="1" checked />
+                    </el-radio>
+                 </el-form-item>
 
                 <el-button type="primary" @click="addRadioFn">增加选项</el-button>
             </el-form>
@@ -26,7 +36,7 @@ export default {
     data() {
         return {
             type: "",
-            form:{type:'1'},
+            form:{type:'1',style:'1'},
             dialogFormVisible: false,
             radioInputList:[
                 {
@@ -64,7 +74,7 @@ export default {
         addConfirmFn(){
             // this.radioInputList = this.radioInputList.filter(i=>i.value)
             this.radioInputList = [...this.radioInputList]
-            this.$emit('addConfirmFn', this.radioInputList, this.form.type)
+            this.$emit('addConfirmFn', this.radioInputList, this.form)
             this.dialogFormVisible = false
         },
         addRadioFn(){

@@ -405,6 +405,7 @@ export default {
     -webkit-transition:background-color ease 0.1s;
     transition:background-color ease 0.1s;
 }
+
  input[eType='radio']:checked::after {
     content:'';
     top:3px;
@@ -420,6 +421,17 @@ export default {
     -ms-transform:rotate(-45deg);
     -webkit-transform:rotate(-45deg);
     transform:rotate(-45deg);
+}
+input[eType='radioCC']:checked::after {
+    content:'×';
+    left:calc(50% - 5.4px);
+    top:calc(50% - 8px);
+    font-size: 14px;
+    position:absolute;
+    color:#fff;
+    font-weight: bold;
+    border-top:none;
+    border-right:none;
 }
 body{
   overflow-y:auto!important;
@@ -485,11 +497,32 @@ body{
     })
   },
   methods:{
-        addConfirmFn(val, type){
+        addConfirmFn(val, form){
+            let className=''
+            let type=form.type
             let obj={
                 '1':'radio',
                 '2':'checkBox',
                 '3':'NA',
+            }
+            let nameAdd=''
+            if(form.style==1){
+                 if(form.type==1){
+
+                        className='Wtui-checkbox'
+                }else{
+                    className=''
+                }
+            }else{
+
+                if(form.type==1){
+                    nameAdd="_ycha"
+                    className='Wtui-radioCC'
+                }else{
+                    nameAdd="_fcha"
+                    className='Wtui-radioCC Wtui-checkboxCC'
+                }
+
             }
             this.radioInputList = val
             let str=``
@@ -498,7 +531,10 @@ body{
                 let d=new Date()
                 let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-                return `<input type='checkbox'  eType='${obj[type]}' class='${type==1?'Wtui-checkbox':''}' v-model='${'formContent[$$$'+num+'_'+obj[type]+this.inputIndex+']'}' id='${'$$$'+num+'_'+obj[type]+this.inputIndex}' name='${'$$$'+num+'_'+obj[type]+this.inputIndex}' /> ${type==3?'N/A':i.value} `
+                return `<input type='checkbox'  eType='${obj[type]}' class='${className}'
+                    v-model='${'formContent[$$$'+num+'_'+obj[type]+this.inputIndex+']'}'
+                    id='${'$$$'+num+'_'+obj[type]+nameAdd+this.inputIndex}' name='${'$$$'+num+'_'+obj[type]
+                    +nameAdd+this.inputIndex}' /> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
