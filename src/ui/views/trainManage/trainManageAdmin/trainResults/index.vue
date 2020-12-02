@@ -2,10 +2,10 @@
     <div>
         <router-view v-if="this.$router.history.current.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
 
-        <div v-else="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path" class="G_listOne">
-            <div class="QCenterRight">
-                <div class="QHead_list">
-                    <span>员工培训结果 </span>
+        <div v-else="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path" class="QCenterRight G_listOne">
+            <div >
+                <div class="QHead">
+                    员工培训结果
                 </div>
                 <div class="QheadRight">
                     <div @click="addOrEditOrInfo('info')">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable scrollHeight="370"  ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
@@ -36,12 +36,16 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" align="center" :width="100"  >
                         <template  slot-scope="scope">
-                            <span @click="SignEvaluation(scope.row)" class="rowSvg" style="margin-right: 10px">
-                                <icon iconClass="evaluate" title="培训签到&评价"></icon>
-                            </span>
-                            <span @click="testResults(scope.row)" class="rowSvg">
-                                <icon iconClass="pushNew" title="评价推送上级"></icon>
-                            </span>
+                            <el-tooltip class="item" effect="dark" content="培训签到&评价" placement="top">
+                                <span @click="SignEvaluation(scope.row)" class="rowSvg" style="margin-right: 10px">
+                                    <icon iconClass="evaluate"></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="评价推送上级" placement="top">
+                                <span @click="testResults(scope.row)" class="rowSvg">
+                                    <icon iconClass="pushNew"></icon>
+                                </span>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
 
@@ -258,18 +262,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
- .G_listOne{
-    margin-top:14px;
-     .divInput{
-         padding: 3px;
-         /deep/ .el-input{
-             .el-input__inner{
-                 border: 0!important;
-             }
 
-         }
-     }
-
-}
 
 </style>

@@ -171,12 +171,12 @@
                 AircratS:[],
                 options: {},
                  rules: {
-                     userName: [{ required:true,message:'请输入员工姓名', trigger: "blur" }],
-                     name: [{ required:true,message:'请输入证书名称', trigger: "blur" }],
-                     number: [{ required:true,message:'请输入证书编号', trigger: "blur" }],
-                     endTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
-                     startTime: [{ required:true,message:'请选择时间', trigger: "blur" }],
-                     authorizationType: [{ required:true,message:'请选择授权类型', trigger: "blur" }],
+                     userName: [{ required:true,message:'请输入员工姓名',}],
+                     name: [{ required:true,message:'请输入证书名称',}],
+                     number: [{ required:true,message:'请输入证书编号',}],
+                     endTime: [{ required:true,message:'请选择时间', }],
+                     startTime: [{ required:true,message:'请选择时间',}],
+                     authorizationType: [{ required:true,message:'请选择授权类型'}],
                 },
                 type: "add"
             };
@@ -355,18 +355,10 @@
                             userName:d.data.userName,
                             userId:val,
                             deptCode:d.data.deptCode,
-                            userNumber:this.userObj[val]
+                            userNumber:this.userObj[val],
+                            dept:''
                         }
 
-                        if (d.data.deptCode==='zl'){
-                            this.form.dept="质量部";
-                        }else if(d.data.deptCode==='server'){
-                            this.form.dept="勤务";
-                        }else if(d.data.deptCode==='repair'){
-                            this.form.dept="维修";
-                        }else if(d.data.deptCode==='bridgeLoad'){
-                            this.form.dept="桥载";
-                        }
                         if(d.data.positionInfList&&d.data.positionInfList.length){
                             let obj=d.data.positionInfList[0]
                             this.form={...this.form,
@@ -377,6 +369,20 @@
                                 job:obj.post,
                             }
                         }
+                        request({
+                            url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                            method: 'post',
+                            params: {delete: false},
+                            data: ['dept']
+                        }).then(res => {
+                            if (res.code === 200) {
+                                res.data.dept.map((k, l) => {
+                                    if (d.data.deptCode===k.valCode){
+                                        this.form.dept=k.valData;
+                                    }
+                                })
+                            }
+                        });
                     }
 
                 }).catch(error => {

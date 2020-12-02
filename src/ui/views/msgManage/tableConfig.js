@@ -4,7 +4,7 @@ export const warningConfigTable = () => {
         { slot: 'radio' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'subject', label: '预警名称', align: 'center',sort:true,sortProp:"subject",search:{prop:'subject',type:'input',placeholder:"请输入预警名称"} },
         { prop: 'contentTemplate', label: '预警模板', align: 'center',sort:true,sortProp:"contentTemplate",search:{prop:'contentTemplate',type:'input',placeholder:"请输入预警模板"} },
-        {  label: '推送对象',width:'540', align: 'left',
+        {  label: '推送对象',width:'540', align: 'center',
         formatter: (row, column, cellValue) => {
             let arr = [];
             row.recipientType.map(item=>{
@@ -117,7 +117,7 @@ export const infoPlateSendTable = (infoSelect) => {
         formatter: (row, column, cellValue) => {
             return cellValue?'是':'否';
         },
-         align: 'center',search:{prop:'require',type:'select',data:[{label:"是",value:true},{label:"否",value:false}],placeholder:"请选择是否接收处理"} },
+         align: 'center',search:{prop:'require',type:'select',data:[{label:"是",value:true},{label:"否",value:false}],placeholder:"请选择"} },
         { prop: 'deadline', label: '要求处理时间',
         formatter: (row, column, cellValue) => {
             return formatDate(cellValue, 'YYYY-MM-DD', '--');
@@ -160,7 +160,7 @@ export const infoPlateReceiveTable = (infoSelect) => {
             formatter: (row, column, cellValue) => {
                 return cellValue?'是':'否';
             },
-            align: 'center',search:{prop:'require',type:'select',data:[{label:"是",value:true},{label:"否",value:false}],placeholder:"请选择是否接收处理"}
+            align: 'center',search:{prop:'require',type:'select',data:[{label:"是",value:true},{label:"否",value:false}],placeholder:"请选择"}
         },
         { prop: 'deadline', label: '要求处理时间',
             formatter: (row, column, cellValue) => {
@@ -189,11 +189,11 @@ export const historyPlateReceiveTable = (infoSelect) => {
         { prop: 'content', label: '发送内容', width:300,align: 'center',search:{prop:'content',type:'input',placeholder:"请输入发送内容"} },
         { prop: 'sendDepartment', label: '发送单位', align: 'center',search:{prop:'sendDepartment',type:'input',placeholder:"请输入接收单位"} },
         { prop: 'sendPerson', label: '发送人', align: 'center',search:{prop:'sendPerson',type:'input',placeholder:"请输入接收人"} },
-        { prop: 'require', label: '是否接收处理',
+        { prop: 'require', label: '是否要求处理',
             formatter: (row, column, cellValue) => {
                 return cellValue?'是':'否';
             },
-            align: 'center',search:{prop:'require',type:'select',data:[{label:"是",value:true},{label:"否",value:false}],placeholder:"请选择是否接收处理"}
+            align: 'center',search:{prop:'require',type:'select',data:[{label:"是",value:true},{label:"否",value:false}],placeholder:"请选择"}
         },
         { prop: 'deadline', label: '要求处理时间',
             formatter: (row, column, cellValue) => {

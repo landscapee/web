@@ -23,9 +23,9 @@
                         <el-date-picker @change="year1"    v-else v-model="form.year1" placeholder="请选择计划年度" type="year"></el-date-picker>
                         <!--:disabled="type=='edit'"-->
                      </el-form-item>
-                    <el-form-item label="计划部门：" prop="deptId">
+                    <el-form-item label="部门/项目：" prop="deptId">
                         <span v-if="type=='info'">{{form.deptId}}</span>
-                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择计划部门">
+                        <el-select @change="deptNameChange" clearable v-else v-model="form.deptId" placeholder="请选择部门/项目">
                             <el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                         </el-select>
                      </el-form-item>

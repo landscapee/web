@@ -40,19 +40,21 @@
                 >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
-                            <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row">.</el-checkbox>
-<!--                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
-<!--                            <icon  iconClass="ky" class="tab_radio" v-else></icon>-->
+                            <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row"></el-checkbox>
                         </template>
                     </el-table-column>
                     <el-table-column slot="option" align='center' label="操作" :width="100"  >
                         <template  slot-scope="{ row }">
-                            <span @click="toHistoryListFn(row)" class="rowSvg" style="margin-right: 10px">
-                                <icon iconClass="historyNew" title="历史版本"></icon>
-                            </span>
-                            <span @click="toReadTrackFn(row)" class="rowSvg">
-                                <icon iconClass="push" title="阅读推送"></icon>
-                            </span>
+                            <el-tooltip class="item" effect="dark" content="历史版本" placement="top">
+                                <span @click="toHistoryListFn(row)" class="rowSvg" style="margin-right: 10px">
+                                    <icon iconClass="historyNew"></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="阅读推送" placement="top">
+                                <span @click="toReadTrackFn(row)" class="rowSvg">
+                                    <icon iconClass="push"></icon>
+                                </span>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </SearchTable>
@@ -438,6 +440,9 @@ export default {
             padding: 0px 30px 0px 30px;
             display: flex;
             justify-content: space-between;
+            .searchTableWrapper{
+                width: 100%;
+            }
             /deep/ .mainTable{
                 height: 500px;
                 overflow: auto;

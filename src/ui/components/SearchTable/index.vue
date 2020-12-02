@@ -152,18 +152,32 @@
                  this.$emit('requestTable', {...this.headerData[0]});
             },
             renderHeaderRow(h,  { column, $index }){
-                return (
-                    <div>
-                    <span>{column.label}</span>
-                <Icon iconClass="sort" class="tableSort" nativeOnClick={
-                () => {
-                    column.order==""? column.order = 'desc':column.order=='desc'?column.order = 'asc':column.order == 'asc'?column.order="":column.order='desc';
-                    this.$emit('headerSort', column);
-                }
-            } >
-            </Icon>
-                </div>
-            );
+            	let icon;
+            	if (column.order=="") {
+            		icon = "nomal";
+				}else if (column.order=="desc") {
+					icon = "down";
+				}else if (column.order=="asc") {
+					icon = "up";
+				}
+            	return h(
+					'div',
+					[
+						h('span', column.label),
+						h('icon-svg', {
+							props: {
+								iconClass:icon,
+							},
+							nativeOn: {
+								click: () => {
+									column.order == "" ? column.order = 'desc' : column.order == 'desc' ? column.order = 'asc' : column.order == 'asc' ? column.order = "" : column.order = 'desc';
+									this.$emit('headerSort', column);
+								}
+							},
+
+						})
+					],
+				);
             },
             // 确定唯一的key值
             getRowKeys(row) {
@@ -315,9 +329,13 @@
 				background: #EFF2F3;
 			}
 
-
-
-			/deep/ .el-input{
+			/deep/ .el-input__icon {
+				height: unset;
+			}
+			/deep/ .cell{
+				padding:0 3px;
+			}
+ 			/deep/ .el-input{
 				text-align: center;
 				width: 100%;
 				/*width:140px;*/

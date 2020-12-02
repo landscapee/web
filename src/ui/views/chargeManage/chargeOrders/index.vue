@@ -55,7 +55,7 @@
 					<el-table-column slot="checkbox" label="选择" :width="49">
 						<template slot-scope="scope">
 							<el-checkbox :ref="scope.row.id" @click.stop.native v-model="selectIds"
-										 :label="scope.row.id" value="dasdasd">.
+										 :label="scope.row.id" value="">
 							</el-checkbox>
 							<!--                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
 							<!--                            <icon  iconClass="ky" class="tab_radio" v-else></icon>-->
@@ -537,6 +537,11 @@
 			span {
 				margin-left: 40px;
 			}
+		}
+	}
+	/deep/ .mainTable {
+		.el-checkbox__label {
+			display: none;
 		}
 	}
 </style>
