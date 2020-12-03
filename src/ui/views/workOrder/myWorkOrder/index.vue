@@ -129,6 +129,7 @@
                 if (row.offlineFile) {
                     src = '/MyWorkAbnormalAdd';
                 }
+                localStorage.setItem('refresh','true')
                 this.$router.push({path: src, query: {id: row.id, type: 'edit',needSubmit:'1'}});
             },
 
