@@ -167,7 +167,7 @@
       position: fixed;
       box-sizing: border-box;
       padding: 1em;
-      min-width: 50%;
+      min-width: 500px;
       left: 50%;
       top: 50%;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.1), 0 0 256px rgba(255, 255, 255, .3);
@@ -175,6 +175,9 @@
       border-radius: 4px;
       background: #fff;
       z-index: 50001;
+      .content{
+        margin-bottom: 0px!important;
+      }
       .icon {
         z-index: 10;
         position: absolute;

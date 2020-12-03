@@ -38,10 +38,11 @@ export function SignatureInit(keysn='0002',password='123456', isCheck=false,num,
         verifyResType : 'click touchend',//验证响应方式，默认click。避免在特殊情况下（如IOS、webview）环境下第一次点击不响应的问题
         pw_timeout:'s1800', //s：秒；h:小时；d:天
         scaleImage: num||1, //签章图片的缩放比例
+        // scaleImage:1, //签章图片的缩放比例
         showNoPW:true, // 签章时候显示密码
         signdate:{
             ischeck:!isCheck,
-            fontSize:20,
+            fontSize:16,
             position:'居中下(章内)',
         },
     });

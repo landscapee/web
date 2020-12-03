@@ -185,7 +185,9 @@
 				<el-button type="primary" @click="submit">提交</el-button>
 			</div>
 		</div>
-
+<div id="kg-img-div-postil1">
+	<img src="" alt="">
+</div>
 	</div>
 </template>
 <script>
@@ -250,7 +252,6 @@
             if(localStorage.getItem('refresh')=='true'){
                 localStorage.removeItem('refresh')
                 location.reload()
-
 			}
         },
         mounted() {
@@ -654,10 +655,10 @@
                 console.log(protectedItems)
                 // 判断签章高度 end
                 signatureCreator.handWriteDlg({
-                    image_height: "2",
-                    image_width: "4",
-                    // canvas_width: "500",
-                    // canvas_height: "200",
+                    image_height: "1.5",
+                    image_width: "3",
+                    canvas_width: "600",
+                    canvas_height: "300",
                     onBegin: function () {
                         console.log('onbegin');
                     },
