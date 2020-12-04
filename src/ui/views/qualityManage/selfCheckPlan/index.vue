@@ -150,7 +150,9 @@ export default {
 　　mounted() {
         if( this.$refs.mainContent){
             this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
+            this.$refs.mainContent.removeEventListener('scroll', this.handleScroll,true);//监听函数
         }
+
     },
 
     methods: {

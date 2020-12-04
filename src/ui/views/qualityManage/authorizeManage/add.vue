@@ -145,6 +145,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow} from '@lib/tools'
+
     import moment from "moment";
     import AircraftType from './AircraftType.vue'
     import Icon from "@components/Icon-svg/index";
@@ -229,6 +231,9 @@
                    this.getInfo()
                  }
             }
+        },
+        mounted(){
+            eleDateShow()
         },
         computed:{
 

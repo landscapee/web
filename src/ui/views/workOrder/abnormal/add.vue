@@ -126,6 +126,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow} from '@lib/tools'
+
     import moment from "moment";
      import userTree from '@components/userTree/index';
 
@@ -242,6 +244,9 @@
                 }
             }
 
+        },
+        mounted(){
+            eleDateShow()
         },
         methods: {
             showFile() {

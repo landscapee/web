@@ -235,6 +235,7 @@
 	import {sysParameterTable} from '../tableConfig.js';
 	import request from '@lib/axios.js';
 	import {extend} from 'lodash';
+    import {eleDateShow} from '@lib/tools'
 
 	export default {
 		components: {
@@ -345,6 +346,9 @@
 				}
 			}
 		},
+        mounted(){
+            eleDateShow()
+        },
 		methods: {
 			changeCode(key,type){
 				if (type !== 'number') {

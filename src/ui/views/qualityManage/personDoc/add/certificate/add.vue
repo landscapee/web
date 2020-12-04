@@ -64,6 +64,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow} from '@lib/tools'
+
     import moment from "moment";
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
@@ -74,8 +76,6 @@
         },
         name: "",
         data() {
-
-
             return {
                 pickerOptions: {},
                 pickerOptions1: {},
@@ -138,6 +138,9 @@
 
 
 
+        },
+        mounted(){
+            eleDateShow()
         },
         methods: {
 

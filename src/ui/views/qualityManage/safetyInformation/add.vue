@@ -119,6 +119,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow} from '@lib/tools'
+
     import moment from 'moment'
 
     import Icon from "@components/Icon-svg/index";
@@ -188,6 +190,9 @@
             }).then(d => {
                 this.options=d.data
             });
+        },
+        mounted(){
+            eleDateShow()
         },
         methods: {
             resetForm(){

@@ -112,6 +112,8 @@
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
+    import {eleDateShow} from '@lib/tools'
+
     export default {
         components: {
             Icon
@@ -200,6 +202,9 @@
 
 
 
+        },
+        mounted(){
+            eleDateShow()
         },
         methods: {
 
