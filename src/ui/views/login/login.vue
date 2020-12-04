@@ -123,6 +123,10 @@ export default {
 		handleLogin() {
  			this.$refs.loginForm.validate((valid) => {
  				if (valid) {
+ 				    if(!this.loginForm.username.trim()||!this.loginForm.password.trim()){
+ 				        this.$message.warning('用户名或密码不能为空')
+						return false
+					}
 					this.loading = true;
 					removeToken();
 					request({
