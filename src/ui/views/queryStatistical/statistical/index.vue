@@ -111,6 +111,8 @@
     import request from '@lib/axios.js';
     import {  extend ,map} from 'lodash';
     import {formatDate} from "../../../../../lib/tools";
+    import {eleDateShow} from '@lib/tools'
+
     export default {
         components: {
             Icon,
@@ -199,7 +201,9 @@
             }
 
         },
-
+        mounted(){
+            eleDateShow()
+        },
         methods: {
             getButton(obj){
                  this.params={

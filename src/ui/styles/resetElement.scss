@@ -8,8 +8,10 @@
         height: 100%;
     }
 }
-.el-date-editor{
-     &>span:nth-child(2){
-        //display: none;
-    }
+
+.el-date-editor:hover{
+
+     .el-icon-date{
+         //display: none;
+     }
 }

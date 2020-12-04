@@ -6,7 +6,7 @@
         <router-view v-else-if="this.$router.history.current.path == '/ZuserAuth'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserTrain'" :key="$route.path"></router-view>
         <div v-else="this.$router.history.current.path == '/intelligenceManage'"
-             class="G_listTwo">
+             class="G_listTwo" >
             <div class="QCenterRight">
                 <div class="QHead">
                       资质管理
@@ -91,6 +91,7 @@
     </div>
 </template>
 <script>
+
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
     import { rightConfig,leftConfig } from './tableConfig.js';
@@ -194,6 +195,7 @@
         },
 
         mounted() {
+
             if( this.$refs.mainContent){
                 this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
             }

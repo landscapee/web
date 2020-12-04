@@ -47,8 +47,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow} from '@lib/tools'
     import moment from "moment";
-
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -146,6 +146,9 @@ if(val){
 }
 
           }
+        },
+        mounted(){
+            eleDateShow()
         },
         methods: {
             yearMonth(val){
