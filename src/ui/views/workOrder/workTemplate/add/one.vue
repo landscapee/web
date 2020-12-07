@@ -95,6 +95,7 @@
 <script>
     import request from '@lib/axios.js';
     import { extend ,map} from "lodash";
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     export default {
         name: "one",
@@ -364,6 +365,9 @@
                 })
                 this.options=obj
             });
+        },
+        mounted(){
+            inputLength(this)
         },
     }
 </script>

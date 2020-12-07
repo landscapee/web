@@ -95,6 +95,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow,inputLength} from '@lib/tools'
+
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -194,6 +196,9 @@
 
                 }
             }
+        },
+        mounted(){
+            inputLength(this)
         },
         methods: {
             typeChange(val){

@@ -353,7 +353,7 @@
 </template>
 
 <script>
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
 
 	import moment from "moment";
 	import InOfficeInfo from './inOfficeInfo/index';
@@ -398,6 +398,7 @@
 		},
 		mounted() {
             eleDateShow()
+            inputLength(this)
 		},
 		created() {
 			if (this.$route.path == '/addPersonDoc') {

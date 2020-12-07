@@ -61,6 +61,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow,inputLength} from '@lib/tools'
+
     import userTree from '@components/userTree/index';
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
@@ -123,6 +125,9 @@
                     this.getFileInfo()
                 }
             }
+        },
+        mounted(){
+            inputLength(this)
         },
         methods: {
             getFileInfo(){

@@ -508,13 +508,11 @@ body{
             let nameAdd=''
             if(form.style==1){
                  if(form.type==1){
-
                         className='Wtui-checkbox'
                 }else{
-                    className=''
+                    className='Wtui-checkbox_zc'
                 }
             }else{
-
                 if(form.type==1){
                     nameAdd="_ycha"
                     className='Wtui-radioCC'

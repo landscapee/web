@@ -45,6 +45,7 @@
     </div>
 </template>
 <script>
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
@@ -122,6 +123,9 @@
                     })
                 }
             }
+        },
+        mounted(){
+            inputLength(this)
         },
         methods: {
 

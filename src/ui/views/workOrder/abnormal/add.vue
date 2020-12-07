@@ -126,7 +126,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     import moment from "moment";
      import userTree from '@components/userTree/index';
@@ -247,6 +247,7 @@
         },
         mounted(){
             eleDateShow()
+            inputLength(this)
         },
         methods: {
             showFile() {

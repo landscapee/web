@@ -112,7 +112,7 @@
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     export default {
         components: {
@@ -120,8 +120,6 @@
         },
         name: "",
         data() {
-
-
             return {
                 moment:moment,
                 oldForm:{},
@@ -205,6 +203,7 @@
         },
         mounted(){
             eleDateShow()
+            inputLength(this)
         },
         methods: {
 

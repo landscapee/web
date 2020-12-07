@@ -191,6 +191,8 @@
 	</div>
 </template>
 <script>
+    import {eleDateShow,inputLength} from '@lib/tools'
+
     import $ from 'jquery'
     import request from '@lib/axios.js';
     import InfoTop from './infoTop'
@@ -255,6 +257,7 @@
 			}
         },
         mounted() {
+            inputLength(this)
             // SignatureInit('0002','123456',false,1,this.type!=='info')
             let _this = this
             //SignatureInit()

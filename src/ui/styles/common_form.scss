@@ -117,6 +117,11 @@
             }
             @include common-input;
         }
+        .el-form-item:not(.is-required){
+            .el-form-item__label{
+                padding-left: 11px;
+            }
+        }
         .row_item_row{
             display: flex;
             /deep/ .el-form-item__content{

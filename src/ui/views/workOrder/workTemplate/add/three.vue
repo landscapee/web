@@ -41,7 +41,9 @@
 </template>
 
 <script>
-     import request from '@lib/axios.js';
+    import {eleDateShow,inputLength} from '@lib/tools'
+
+    import request from '@lib/axios.js';
     export default {
         name: "three",
         props:{
@@ -151,6 +153,9 @@
                      }
                 })
             }
+        },
+        mounted(){
+            inputLength(this)
         },
         created() {
             this.getInfo()
