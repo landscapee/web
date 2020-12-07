@@ -10,22 +10,22 @@
                 </div>
                 <div class="QheadRight ">
                     <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
-                        <el-tooltip class="item" effect="dark" content="新增" placement="top">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="新增" placement="top">
                             <icon iconClass="add"></icon>
                         </el-tooltip>
                     </div>
                     <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
-                        <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
                             <icon iconClass="edit"></icon>
                         </el-tooltip>
                     </div>
                     <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
-                        <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
                             <icon iconClass="remove"></icon>
                         </el-tooltip>
                     </div>
                     <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'">
-                        <el-tooltip class="item" effect="dark" content="详情" placement="top">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="详情" placement="top">
                             <icon iconClass="info"></icon>
                         </el-tooltip>
                     </div>

@@ -1,4 +1,5 @@
 <template>
+
 	<div   class="searchTableWrapper" ref="componentTable" :key="$route.path">
 		<el-table :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"
 				  :show-header="true" :data="headerData" ref="header_table" :row-key="getRowKeys" highlight-current-row

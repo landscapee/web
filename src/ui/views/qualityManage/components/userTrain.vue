@@ -21,7 +21,7 @@
                                 <td class="fTd">员工编号</td>
                                 <td class="tTd">
                                      <span>
-                                        	<el-tooltip v-if="form.userNumber" class="item" effect="dark"
+                                        	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :enterable="false"
                                                         :content="form.userNumber" placement="top-start">
 												<div>{{ form.userNumber }}</div>
 											</el-tooltip>

@@ -30,12 +30,12 @@
                     </el-table-column>
                      <el-table-column align="center" slot="option" label="操作" :width="100" >
                         <template  slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" content="推送员工" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="推送员工" placement="top">
                                   <span @click="pushStaff(scope.row)" class="rowSvg">
                                         <icon iconClass="pushNew"  ></icon>
                                     </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="培训结果" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="培训结果" placement="top">
                                  <span @click="trainResults(scope.row)" class="rowSvg" style="margin-left: 10px">
                                         <icon iconClass="trainResult"  ></icon>
                                     </span>

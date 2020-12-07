@@ -28,7 +28,7 @@
                         <template  slot-scope="scope">
                             <div >
 
-                                <el-tooltip class="item" effect="dark" :content="scope.row.offlineFile?'下载':'导出'" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" :content="scope.row.offlineFile?'下载':'导出'" placement="top">
                                   <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
                                         <icon iconClass="downloadNew"  ></icon>
                                     </span>
@@ -36,13 +36,13 @@
                                         <icon iconClass="exportNew"  ></icon>
                                     </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="解锁" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="解锁" placement="top">
                                      <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
                                            @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
                                         <icon iconClass="unlock"  ></icon>
                                     </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="异常更改" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="异常更改" placement="top">
                                      <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
                                            @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
                                            :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"

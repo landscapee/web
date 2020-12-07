@@ -33,17 +33,17 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" :width="150" align='center' >
                         <template  slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" content="分数录入" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="分数录入" placement="top">
                                 <span @click="!scope.row.employeeFileId?'':scoreEntry(scope.row)" :class="!scope.row.employeeFileId?'rowSvg rowSvgInfo':'rowSvg'">
                                     <icon iconClass="score"></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="考试结果推送" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="考试结果推送" placement="top">
                                 <span @click="testResults('/testManagePushStaff',scope.row)" class="rowSvg" style="margin:0 10px">
                                     <icon iconClass="push"></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="纸质试卷归档上传" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="纸质试卷归档上传" placement="top">
                                 <span @click="uploadTest( scope.row)" class="rowSvg">
                                     <icon iconClass="uploadingNew"></icon>
                                 </span>

@@ -36,12 +36,12 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" align="center" :width="100"  >
                         <template  slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" content="培训签到&评价" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="培训签到&评价" placement="top">
                                 <span @click="SignEvaluation(scope.row)" class="rowSvg" style="margin-right: 10px">
                                     <icon iconClass="evaluate"></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="评价推送上级" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="评价推送上级" placement="top">
                                 <span @click="testResults(scope.row)" class="rowSvg">
                                     <icon iconClass="pushNew"></icon>
                                 </span>
