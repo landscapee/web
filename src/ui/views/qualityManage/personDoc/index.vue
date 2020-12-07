@@ -32,20 +32,21 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <!--:show-overflow-tooltip="true"-->
+                    <!--&lt;!&ndash;:show-overflow-tooltip="true"&ndash;&gt;effect="dark" :enterable="false"-->
+
                     <el-table-column align="center" slot="option" label="操作" :width="120" >
                         <template  slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" content="资质" placement="top">
+                            <el-tooltip class="item"     effect="dark" content="资质" placement="top">
                                 <span @click="seeOther(scope.row,'/userQuali')" class="rowSvg">
                                     <icon iconClass="qualification"  ></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="授权" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="授权" placement="top">
                               <span @click="seeOther(scope.row,'/userAuth')" class="rowSvg" style="margin: 0 10px">
                                     <icon iconClass="authorization"  ></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="培训考核" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="培训考核" placement="top">
                             <span @click="seeOther(scope.row,'/userTrain')" class="rowSvg">
                                     <icon iconClass="check"  ></icon>
                                 </span>

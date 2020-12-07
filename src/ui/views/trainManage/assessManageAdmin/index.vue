@@ -64,12 +64,12 @@
                                 </el-table-column>
                                 <el-table-column slot="option" align="center" label="操作" :width="100"    >
                                     <template slot-scope="scope">
-                                        <el-tooltip class="item" effect="dark" content="合格" placement="top">
+                                        <el-tooltip class="item" effect="dark" :enterable="false" content="合格" placement="top">
                                             <span @click="conclusion(scope.row,1)" class="rowSvg" style="margin-right: 10px">
                                                 <icon iconClass="qualified"  ></icon>
                                             </span>
                                         </el-tooltip>
-                                        <el-tooltip class="item" effect="dark" content="不合格" placement="top">
+                                        <el-tooltip class="item" effect="dark" :enterable="false" content="不合格" placement="top">
                                                <span @click="conclusion(scope.row,0)" class="rowSvg">
                                                  <icon iconClass="disqualification"  ></icon>
                                                </span>

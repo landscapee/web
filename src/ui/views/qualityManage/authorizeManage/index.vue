@@ -32,17 +32,17 @@
                     <!--:show-overflow-tooltip="true"-->
                     <el-table-column align="center" slot="option" label="操作" :width="120"   >
                         <template slot-scope="scope">
-                                <el-tooltip class="item" effect="dark" content="档案" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="档案" placement="top">
                                 <span @click="seeOther(scope.row,'/SuserDoc')" class="rowSvg">
                                     <icon iconClass="personDoc"  ></icon>
                                 </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="资质" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="资质" placement="top">
                                 <span @click="seeOther(scope.row,'/SuserQuali')" class="rowSvg" style="margin: 0 10px">
                                     <icon iconClass="qualification" ></icon>
                                 </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="培训考核" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="培训考核" placement="top">
                                 <span @click="seeOther(scope.row,'/SuserTrain')" class="rowSvg">
                                     <icon iconClass="check"  ></icon>
                                 </span>

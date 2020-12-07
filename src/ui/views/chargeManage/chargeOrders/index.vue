@@ -64,21 +64,21 @@
 					<el-table-column slot="option" align='center' label="操作" :width="80">
 						<template slot-scope="{ row }">
                             <span @click='revokeFn(row)' v-if='row.sendFinance===1' class="rowSvg">
-              					<el-tooltip class="item" effect="dark" content="撤销" placement="top">
+              					<el-tooltip class="item" effect="dark" :enterable="false" content="撤销" placement="top">
 									<icon iconClass="resetNew"  ></icon>
 
 								</el-tooltip>
                             </span>
 							<span @click='approveFn(row,false)' v-else-if='row.sendFinance===0&&row.approveState==1'
 								  class="rowSvg">
-								<el-tooltip class="item" effect="dark" content="不通过" placement="top">
+								<el-tooltip class="item" effect="dark" :enterable="false" content="不通过" placement="top">
 									<icon iconClass="nopass"  ></icon>
 
 								</el-tooltip>
                             </span>
 							<span @click='approveFn(row,true)' v-else-if='row.sendFinance===0&&row.approveState!=1'
 								  class="rowSvg">
-								<el-tooltip class="item" effect="dark" content="通过" placement="top">
+								<el-tooltip class="item" effect="dark" :enterable="false" content="通过" placement="top">
 									<icon iconClass="pass"  ></icon>
 
 								</el-tooltip>

@@ -22,7 +22,7 @@
                             <td class="tTd">
                                 <el-form-item prop="userNumber"  >
                                     <span v-if="type=='info'"    >
-                                        	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :content="form.userNumber" placement="top-start">
+                                        	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :enterable="false" :content="form.userNumber" placement="top-start">
 												<div>{{ form.userNumber }}</div>
 											</el-tooltip>
                                         <!--{{form.userNumber}}-->
@@ -37,7 +37,7 @@
                                 <el-form-item prop="userName"  >
                                     <span v-if="type=='info'">
                                         <!--{{form.userName}}-->
-                                    <el-tooltip v-if="form.userName" class="item" effect="dark" :content="form.userName" placement="top-start">
+                                    <el-tooltip v-if="form.userName" class="item" effect="dark" :enterable="false" :content="form.userName" placement="top-start">
 												<div>{{ form.userName }}</div>
                                     </el-tooltip>
                                     </span>
@@ -49,7 +49,7 @@
                             <td class="tTd" >
                                 <span v-if="type=='info'">
                                     <!--{{form.nation}}-->
-                                 <el-tooltip v-if="form.nation" class="item" effect="dark" :content="form.nation" placement="top-start">
+                                 <el-tooltip v-if="form.nation" class="item" effect="dark" :enterable="false" :content="form.nation" placement="top-start">
 												<div>{{ form.nation }}</div>
                                     </el-tooltip>
                                 </span>
@@ -114,7 +114,7 @@
                             <td class="fTd">毕业院校</td>
                             <td class="tTd">
                                 <span v-if="type=='info'">
-                                    <el-tooltip v-if="form.university" class="item" effect="dark" :content="form.university" placement="top-start">
+                                    <el-tooltip v-if="form.university" class="item" effect="dark" :enterable="false" :content="form.university" placement="top-start">
 												<div>{{ form.university }}</div>
                                     </el-tooltip>
                                     <!--{{form.university}}-->
@@ -126,7 +126,7 @@
                             <td class="sTd"  colspan="2">
                                 <span v-if="type=='info'">
                                     <!--{{form.major}}-->
-                                <el-tooltip v-if="form.major" class="item" effect="dark" :content="form.major" placement="top-start">
+                                <el-tooltip v-if="form.major" class="item" effect="dark" :enterable="false" :content="form.major" placement="top-start">
 												<div>{{ form.major }}</div>
                                     </el-tooltip>
                                 </span>
@@ -145,7 +145,7 @@
                             <td class="tTd">
                                 <span v-if="type=='info'">
                                     <!--{{form.maintenanceEducation}}-->
-                                <el-tooltip v-if="form.maintenanceEducation" class="item" effect="dark" :content="form.maintenanceEducation" placement="top-start">
+                                <el-tooltip v-if="form.maintenanceEducation" class="item" effect="dark" :enterable="false" :content="form.maintenanceEducation" placement="top-start">
 												<div>{{ form.maintenanceEducation }}</div>
                                     </el-tooltip>
                                 </span>
@@ -155,7 +155,7 @@
                             <td class="fTd">维修毕业院校</td>
                             <td class="sTd"  colspan="2">
                                 <span v-if="type=='info'">
-                                      <el-tooltip v-if="form.maintenanceUniversity" class="item" effect="dark" :content="form.maintenanceUniversity" placement="top-start">
+                                      <el-tooltip v-if="form.maintenanceUniversity" class="item" effect="dark" :enterable="false" :content="form.maintenanceUniversity" placement="top-start">
 												<div>{{ form.maintenanceUniversity }}</div>
                                     </el-tooltip>
                                     <!--{{form.maintenanceUniversity}}-->
@@ -218,7 +218,7 @@
                             <td class="fTd">上级员工编号</td>
                             <td class="tTd">
                                 <span  v-if="type=='info'" style="">
-                                     <el-tooltip v-if="form.userSuperiorNumber" class="item" effect="dark" :content="form.userSuperiorNumber" placement="top-start">
+                                     <el-tooltip v-if="form.userSuperiorNumber" class="item" effect="dark" :enterable="false" :content="form.userSuperiorNumber" placement="top-start">
 												<div>{{ form.userSuperiorNumber }}</div>
                                     </el-tooltip>
                                     <!--{{form.userSuperiorNumber}}-->

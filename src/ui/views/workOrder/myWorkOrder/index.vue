@@ -14,7 +14,7 @@
                 <SearchTable  ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                      <el-table-column align="center" slot="option" label="操作" :width="59" >
                         <template  slot-scope="scope">
-                                <el-tooltip class="item" effect="dark" content="异常更改" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="异常更改" placement="top">
                                      <span @click="abnormalChange(scope.row)" class="rowSvg">
                                         <icon iconClass="editNew"></icon>
                                     </span>

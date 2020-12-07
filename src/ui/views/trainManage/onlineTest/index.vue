@@ -20,7 +20,7 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" align="center" :width="80"  >
                         <template  slot-scope="{ row }">
-                            <el-tooltip class="item" effect="dark" content="参加考试" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="参加考试" placement="top">
                                  <span @click="lineTest('/onlineTestDo',row)" :class="'rowSvg'">
                                         <icon iconClass="exam"  ></icon>
                                     </span>

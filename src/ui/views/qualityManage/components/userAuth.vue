@@ -15,7 +15,7 @@
                             <td class="fTd">员工编号</td>
                             <td class="tTd">
                                      <span      >
-                                        	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :content="form.userNumber" placement="top-start">
+                                        	<el-tooltip v-if="form.userNumber" class="item" effect="dark" :enterable="false" :content="form.userNumber" placement="top-start">
 												<div>{{ form.userNumber }}</div>
 											</el-tooltip>
                                     </span>
@@ -61,7 +61,7 @@
                             <td class="fTd">资质证书号</td>
                             <td class="tTd1" colspan="4" >
                                 <span  >
-                                     <el-tooltip v-if="qualifyArr.length" class="item" effect="dark" :content="qualifyArr.join(';')" placement="top-start">
+                                     <el-tooltip v-if="qualifyArr.length" class="item" effect="dark" :enterable="false" :content="qualifyArr.join(';')" placement="top-start">
                                     <span>{{qualifyArr.join(';')}} </span>
                                 </el-tooltip>
                                 </span>

@@ -207,7 +207,7 @@
                                                                 :class="operate.noBorder?'operate-icon-noBorder':'operate-icon'" :style="operateStyleExtend(operate, row)"
                                                             >
                                                                 <span class="badge-item" v-if="operate.badge && operate.badge(row)">{{operate.badge(row)}}</span>
-                                                                <el-tooltip effect="dark"  placement="right" :content="operate.tip" :disabled="!operate.tip">
+                                                                <el-tooltip effect="dark" :enterable="false"  placement="right" :content="operate.tip" :disabled="!operate.tip">
                                                                     <i :class="typeof(operate.icon) == 'function'?operate.icon(row):operate.icon"
                                                                     @click.prevent="handleButtonClick(ri, row, operate.event, $event, operate)"
                                                                     @keydown.enter="handleButtonClick(ri, row, operate.event, $event, operate)"
@@ -434,7 +434,7 @@
                                                     <div v-if="operate.type == 'icon' || typeof(operate.type) == 'function' && operate.type(row) == 'icon'"
                                                          :class="operate.noBorder?'operate-icon-noBorder':'operate-icon'" :style="operateStyleExtend(operate, row)"
                                                     >
-                                                        <el-tooltip effect="dark"  placement="right" :content="operate.tip" :disabled="!operate.tip">
+                                                        <el-tooltip effect="dark" :enterable="false"  placement="right" :content="operate.tip" :disabled="!operate.tip">
                                                             <i :class="typeof(operate.icon) == 'function'?operate.icon(row):operate.icon"
                                                                @click.prevent="handleButtonClick(ri, row, operate.event, $event, operate)"
                                                                @keydown.enter="handleButtonClick(ri, row, operate.event, $event, operate)"
@@ -542,7 +542,7 @@
                                                     @click.prevent="handleEditOperateClick(operate.event, hcell, editRowBind)"
                                                 >
                                                     <!--                                                @click.prevent="handleEditButtonClick($event, hcell)"-->
-                                                    <el-tooltip effect="dark"  placement="right" :content="operate.tip" :disabled="!operate.tip">
+                                                    <el-tooltip effect="dark" :enterable="false"  placement="right" :content="operate.tip" :disabled="!operate.tip">
                                                         <i :class="typeof(operate.icon) == 'function'?operate.icon(editRowBind):operate.icon"
                                                         :style="iconStyleExtend(editRowBind, operate)"/>
                                                     </el-tooltip>
