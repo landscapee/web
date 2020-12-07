@@ -118,6 +118,8 @@
     </div>
 </template>
 <script>
+    import {eleDateShow,inputLength} from '@lib/tools'
+
     import SearchTable from '@/ui/components/SearchTable';
     import ExportTest from './exportTest';
     import ImportExcel from './inportExcel';
@@ -216,7 +218,9 @@
 
             };
         },
-
+        mounted(){
+            inputLength(this)
+        },
 
         created() {
             if(this.$router.history.current.path == '/testMaintenanceAdd'){

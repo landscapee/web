@@ -80,7 +80,9 @@
   </div>
 </template>
 <script>
-import Icon from "@components/Icon-svg/index";
+    import {eleDateShow,inputLength} from '@lib/tools'
+
+    import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend,without } from "lodash";
 import userTree from '@components/userTree/index';
@@ -114,9 +116,9 @@ export default {
       bySubscribe:false
     };
   },
-  mounted(){
-
-  },
+    mounted(){
+        inputLength(this)
+    },
   created() {
     this.findDataDictionary();
     if (this.$route.query) {

@@ -1,10 +1,10 @@
 <template>
-    <div class="addSysParameter">
-        <div class="top-content">
-            <div class="top-content-title">
-                <span>安全信息-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
+    <div class=" ">
+        <div class="QCenterRight">
+            <div class="QHead">
+                 安全信息-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
-            <div v-if="type!='info'"  class="top-toolbar">
+            <div v-if="type!='info'"  class="QheadRight">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
                     <icon iconClass="save"></icon>保存
                 </div>
@@ -14,24 +14,24 @@
             </div>
         </div>
 
-        <div :class=" type=='info'?'main-content main-info G_formInfo':'main-content'"  >
-            <el-form  label-position="right" :model="form" :rules="rules" ref="form" >
+        <div :class=" type=='info'?'G_form G_formInfo':'G_form'"  >
+            <el-form  label-position="right" :model="form" :rules="rules" ref="form" class="demo-form-inline" :inline="true">
                 <div></div>
-                <div class="row_custom aRow_custom">
+                <div class="row_one">
                     <el-form-item label="信息编号："  :prop="type=='edit'?'':'infNumber'">
                         <span v-if="type=='info'">{{form.infNumber}}</span>
                         <el-input :disabled="type=='edit'" v-else v-model="form.infNumber" placeholder="请输入信息编号"></el-input>
                     </el-form-item>
 
                 </div>
-                <div class="row_item_row row_item">
+                <div class="row_one">
                     <el-form-item label="信息描述：" prop="infRemark">
                         <span v-if="type=='info'">{{form.infRemark}}</span>
                         <el-input v-else v-model="form.infRemark" type="textarea" :rows="3" placeholder="请输入信息描述"></el-input>
                     </el-form-item>
 
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="信息来源：" prop="infSources">
                         <span v-if="type=='info'">{{form.infSources}}</span>
                         <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
@@ -42,7 +42,7 @@
                     </el-form-item>
 
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="地点：" prop="place">
                         <span v-if="type=='info'">{{form.place}}</span>
                         <el-input v-else v-model="form.place" placeholder="请输入地点"></el-input>
@@ -52,7 +52,7 @@
                         <el-input v-else v-model="form.responsibleUnit" placeholder="请输入负责人/单位"></el-input>
                     </el-form-item>
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
                     <el-form-item label="所属系统：" prop="deptName">
                         <span v-if="type=='info'">{{form.deptName}}</span>
                         <el-input v-else v-model="form.deptName" placeholder="请输入所属系统"></el-input>
@@ -65,21 +65,21 @@
                          </el-select>
                     </el-form-item>
                 </div>
-                <div class="row_item_row row_item">
+                <div class="row_one">
 
                     <el-form-item label="原因分析：" prop="reason">
                         <span v-if="type=='info'">{{form.reason}}</span>
                         <el-input v-else v-model="form.reason" :rows="3" type="textarea"   placeholder="请输入原因分析"></el-input>
                     </el-form-item>
                 </div>
-                <div class="row_item_row row_item">
+                <div class="row_one">
 
                     <el-form-item label="整改措施：" prop="measures">
                         <span v-if="type=='info'">{{form.measures}}</span>
                         <el-input v-else v-model="form.measures" :rows="3" type="textarea" placeholder="请输入整改措施"></el-input>
                     </el-form-item>
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
 
 
                     <el-form-item label="控制状态：" prop="controlState">
@@ -91,7 +91,7 @@
                         <el-input v-else v-model="form.workLink" placeholder="请输入工作环节"></el-input>
                     </el-form-item>
                 </div>
-                <div class="row_custom">
+                <div class="row_tow">
 
                     <el-form-item label="关键词：" prop="keyWord">
                         <span v-if="type=='info'">{{form.keyWord}}</span>
@@ -106,7 +106,7 @@
                     </el-form-item>
                 </div>
 
-                <div class="row_item_row row_item">
+                <div class="row_one">
                     <el-form-item label="备注：" prop="remark">
                         <span v-if="type=='info'">{{form.remark}}</span>
                         <el-input v-else v-model="form.remark" :rows="3" type="textarea" placeholder="请输入备注"></el-input>
@@ -119,7 +119,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     import moment from 'moment'
 
@@ -193,6 +193,8 @@
         },
         mounted(){
             eleDateShow()
+              inputLength(this)
+
         },
         methods: {
             resetForm(){
@@ -248,70 +250,20 @@
     };
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_form.scss";
-    .main-content{
-        overflow-y: auto;
-        height:calc(100vh - 300px);
-        /*margin-top: 80px!important;*/
-        .aRow_custom{
-            text-align:left;
-        }
-    }
-    .main-info{
-        span{
-            /*font-weight: bold!important;*/
-            /*margin: 0!important;*/
-        }
-        /deep/ .el-form-item__label{
-            /*padding: 0!important;*/
-        }
-        .aRow_custom{
-            span{
+    /deep/ .el-form{
+        .itemLineHeight{
+            .el-form-item__label{
+                 line-height: 20px;
 
             }
         }
-    }
-    .addSysParameter {
-        margin-top: 40px;
-        .el-form {
-            width: 1000px;
-            /deep/ .el-form-item__label {
-                width: 165px;
-                padding-left: 50px;
-            }
-            /deep/ .el-form-item__content {
-                margin-left: 165px;
-            }
-            .row_item_row,.row_item{
-               /deep/ .el-input{
-                    /*width:600px!important;*/
-                }
-            }
-            .row_custom{
-                /deep/ .el-form-item__content{
-                    /*height: 40px;*/
-                    width: 332px;
-                    text-align: left;
-                }
-                @include common-input;
-                &:first-child {
-                    .el-form-item {
-                        &:last-child {
-                            margin-left: 93px;
-                        }
-                    }
-                }
-            }
-            .row_item_row{
-                .el-form-item {
-                    width: calc(100% - 165px);
-                }
-            }
+        .el-form-item__label{
+            width: 130px!important;
+
         }
-    }
-    .itemLineHeight{
-        /deep/ .el-form-item__label{
-            line-height: 20px;
+        .el-form-item__content{
+            width: calc(100% - 140px);
+            margin: 0!important;
         }
     }
 </style>

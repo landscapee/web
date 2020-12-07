@@ -109,6 +109,7 @@
 </template>
 <script>
     import moment from "moment";
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
@@ -183,6 +184,9 @@
                     this.$set(this.form,'examinationId',this.$route.query.id)
                 }
             }
+        },
+        mounted(){
+            inputLength(this)
         },
         methods: {
 

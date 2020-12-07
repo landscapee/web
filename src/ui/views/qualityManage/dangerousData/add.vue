@@ -149,7 +149,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
     import { extend } from "lodash";
@@ -231,6 +231,7 @@
         },
         mounted(){
             eleDateShow()
+            inputLength(this)
         },
         methods: {
             resetForm(){

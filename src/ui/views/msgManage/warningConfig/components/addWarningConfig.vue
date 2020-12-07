@@ -77,7 +77,9 @@
   </div>
 </template>
 <script>
-import roleTree from '@components/roleTree/index';
+    import {eleDateShow,inputLength} from '@lib/tools'
+
+    import roleTree from '@components/roleTree/index';
 import stationTree from '@components/stationTree/index';
 import deptTree from '@components/deptTree/index';
 import userTree from '@components/userTree/index';
@@ -143,6 +145,9 @@ export default {
           }
     }
   },
+    mounted(){
+        inputLength(this)
+    },
   methods: {
     findDataDictionary(){
         request({

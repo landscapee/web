@@ -42,7 +42,9 @@
   </div>
 </template>
 <script>
-import Icon from "@components/Icon-svg/index";
+    import {eleDateShow,inputLength} from '@lib/tools'
+
+    import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import { extend } from "lodash";
 export default {
@@ -88,6 +90,9 @@ export default {
           }
     }
   },
+    mounted(){
+        inputLength(this)
+    },
   methods: {
     resetForm(){
       this.form={};

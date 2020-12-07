@@ -53,7 +53,9 @@
   </div>
 </template>
 <script>
-import Icon from "@components/Icon-svg/index";
+    import {eleDateShow,inputLength} from '@lib/tools'
+
+    import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import userTree from '@components/userTree/index';
 import { extend, without} from "lodash";
@@ -135,6 +137,9 @@ export default {
           }
     }
   },
+    mounted(){
+        inputLength(this)
+    },
   methods: {
     findDataDictionary(){
         request({

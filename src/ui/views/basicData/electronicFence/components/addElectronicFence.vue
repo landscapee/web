@@ -30,7 +30,9 @@
   </div>
 </template>
 <script>
-import Icon from "@components/Icon-svg/index";
+    import {eleDateShow,inputLength} from '@lib/tools'
+
+    import Icon from "@components/Icon-svg/index";
 import request from "@lib/axios.js";
 import  { debounce } from '@lib/tools.js';
 import { extend ,cloneDeep} from "lodash";
@@ -80,6 +82,9 @@ export default {
       type: "add"
     };
   },
+    mounted(){
+        inputLength(this)
+    },
   created() {
     if (this.$route.query) {
       this.type = this.$route.query.type;

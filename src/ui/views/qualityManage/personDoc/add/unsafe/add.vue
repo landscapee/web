@@ -86,7 +86,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
     import moment from "moment";
     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
@@ -163,6 +163,7 @@
         },
         mounted(){
             eleDateShow()
+            inputLength(this)
         },
         destroyed(){
 

@@ -94,7 +94,7 @@ import { qiaozaiConfig,qinwuConfig,weixiuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
     import {formatDate} from "../../../../../lib/tools";
-    import {eleDateShow} from '@lib/tools'
+    import {eleDateShow,inputLength} from '@lib/tools'
 
     export default {
     components: {
@@ -177,6 +177,7 @@ import {  extend ,map} from 'lodash';
     },
         mounted(){
             eleDateShow()
+            inputLength(this)
         },
     watch:{
         '$route':function(val,nm){
