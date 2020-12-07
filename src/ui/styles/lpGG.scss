@@ -194,33 +194,46 @@
 }
 
 
-.Wtui-radioCC:checked,.Wtui-checkbox:checked {
+.Wtui-checkbox_zc:checked,
+.Wtui-radioCC:checked,
+.Wtui-checkbox:checked {
     background:#1673ff;
     border:solid 0px #888888;
 
 }
-/deep/ .Wtui-radioCC:checked,/deep/ .Wtui-checkbox:checked {
+/deep/ .Wtui-checkbox_zc:checked,
+/deep/ .Wtui-radioCC:checked,
+/deep/ .Wtui-checkbox:checked {
     background:#1673ff;
     border:solid 0px #888888;
 
 }
-.Wtui-radioCC:focus,.Wtui-checkbox:focus{
+.Wtui-checkbox_zc:focus,
+.Wtui-radioCC:focus,
+.Wtui-checkbox:focus{
     -webkit-appearance:none;
     -webkit-user-select:none;
     outline: none;
 }
-/deep/ .Wtui-radioCC:focus,/deep/ .Wtui-checkbox:focus{
+/deep/ .Wtui-checkbox_zc:focus,
+/deep/ .Wtui-radioCC:focus,
+/deep/ .Wtui-checkbox:focus{
     -webkit-appearance:none;
     -webkit-user-select:none;
     outline: none;
 }
-.Wtui-radioCC:disabled,.Wtui-checkbox:disabled{
+.Wtui-checkbox_zc:disabled,
+.Wtui-radioCC:disabled,
+.Wtui-checkbox:disabled{
     background: rgba(127, 127, 127, 0.5);
 }
-/deep/ .Wtui-radioCC:disabled,/deep/ .Wtui-checkbox:disabled{
+/deep/ .Wtui-checkbox_zc:disabled,
+/deep/ .Wtui-checkbox:disabled{
     background: rgba(127, 127, 127, 0.5);
 }
-.Wtui-checkbox,.Wtui-radioCC {
+.Wtui-checkbox_zc,
+.Wtui-checkbox,
+.Wtui-radioCC {
      width:13px;
     height:13px;
     background-color:#ffffff;
@@ -231,7 +244,7 @@
     padding:0;
     position:relative;
     display:inline-block;
-    vertical-align:top;
+    vertical-align:middle;
     cursor:default;
     -webkit-appearance:none;
     -webkit-user-select:none;
@@ -239,18 +252,19 @@
     -webkit-transition:background-color ease 0.1s;
     transition:background-color ease 0.1s;
 }
-/deep/ .Wtui-checkbox,/deep/ .Wtui-radioCC {
-    width:14px;
-    height:14px;
+/deep/ .Wtui-checkbox_zc,
+/deep/ .Wtui-checkbox,
+/deep/ .Wtui-radioCC {
+    width:13px;
+    height:13px;
     background-color:#ffffff;
     border:solid 1px #888888;
     -webkit-border-radius:50%;
     border-radius:50%;
-
     padding:0;
     position:relative;
     display:inline-block;
-    vertical-align:top;
+    vertical-align:middle;
     cursor:default;
     -webkit-appearance:none;
     -webkit-user-select:none;
@@ -258,6 +272,7 @@
     -webkit-transition:background-color ease 0.1s;
     transition:background-color ease 0.1s;
 }
+.Wtui-checkbox_zc:checked::after,
 .Wtui-checkbox:checked::after {
     content:'';
     top:3px;
@@ -274,6 +289,7 @@
     -webkit-transform:rotate(-45deg);
     transform:rotate(-45deg);
 }
+/deep/ .Wtui-checkbox_zc:checked::after,
 /deep/ .Wtui-checkbox:checked::after {
     content:'';
     top:3px;
@@ -283,8 +299,8 @@
     border:#fff solid 3px!important;
     border-top:none!important;
     border-right:none!important;
-    height:3px;
-    width:8px;
+    height:2px;
+    width:6px;
     -moz-transform:rotate(-45deg);
     -ms-transform:rotate(-45deg);
     -webkit-transform:rotate(-45deg);
@@ -309,9 +325,13 @@
 }
 /deep/ .Wtui-radioCC:checked::after {
     content:'×';
+    //left:50%;
     left:calc(50% - 5.4px);
-    top:calc(50% - 8px);
+    //top:50%;
+    top:calc(50% - 9px);
     font-size: 14px;
+    //transform: translate(-50%);
+    //transform: translate(-50%);
     position:absolute;
     color:#fff;
     font-weight: bold;
@@ -320,11 +340,15 @@
     border-right:none;
 
 }
-  .Wtui-checkboxCC{
+  .Wtui-checkbox_zc,.Wtui-checkboxCC{
       -webkit-border-radius:2px;
       border-radius:2px;
   }
 /deep/ .Wtui-checkboxCC{
+      -webkit-border-radius:2px;
+      border-radius:2px;
+  }
+/deep/ .Wtui-checkbox_zc{
       -webkit-border-radius:2px;
       border-radius:2px;
   }
