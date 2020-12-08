@@ -59,7 +59,7 @@
 							<td class="tTd">
 								<el-form-item prop="userName">
                                     <span v-if="type=='info'">
-                                     <el-tooltip v-if="form.userName" class="item" effect="dark" :enterable="false" :enterable="false"
+                                     <el-tooltip v-if="form.userName" class="item" effect="dark" :enterable="false"
 												 :content="form.userName" placement="top-start">
                                         <div>{{ form.userName }}</div>
                                     </el-tooltip>
