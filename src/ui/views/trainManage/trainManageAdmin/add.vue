@@ -47,7 +47,7 @@
                         </el-form-item>
                         <el-form-item  label="结束时间：" prop="endTime">
                             <span v-if="type=='info'">{{  form.endTime?this.$moment(form.endTime).format('YYYY-MM-DD HH:mm:ss'):'' }}</span>
-                            <el-date-picker @focus="focus1" @blur="blur(true)" type="datetime" v-else v-model="form.endTime" :picker-options="pickerOptions1" placeholder="请选择结束时间"></el-date-picker>
+                            <el-date-picker @focus="focus1" @blur="blur()" type="datetime" v-else v-model="form.endTime" :picker-options="pickerOptions1" placeholder="请选择结束时间"></el-date-picker>
                         </el-form-item>
                     </div>
 
@@ -318,13 +318,13 @@
                 };
             } ,
             focus1(val){
+
                 let e=this.form.endTime?new Date(this.form.endTime):''
                 let s=this.form.startTime?new Date(this.form.startTime):''
                 this.pickerOptions1 = {
                     disabledDate(time) {
-                        // console.log(1, 8);
-                        if (s) {
-                            return time.getTime() < s.getTime()  ;
+                         if (s) {
+                            return time.getTime()+8.64e7-1000< s.getTime()  ;
                         }
                     },
                 };
