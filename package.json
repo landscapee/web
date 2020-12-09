@@ -6,12 +6,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "  webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
-    "build": "webpack --config webpack.prod.js --Program jwxt.build",
+    "test": "  webpack-dev-server --config webpack.prod.js --Program jwxt.test",
+    "build": "webpack --config webpack.dev.js --Program jwxt.dev",
     "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/",
-    "tes.test": "npm run build.test && scp -r build/* root@173.101.1.130:/home/front-end/",
+    "test.deploy": "npm run build.test && scp -r build/* root@173.101.1.130:/home/front-end/",
     "build.test": "webpack --config webpack.prod.js --Program jwxt.test",
     "build.prod": "webpack --config webpack.prod.js --Program jwxt.prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.vue src"
   },
   "repository": {

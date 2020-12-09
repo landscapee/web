@@ -504,9 +504,10 @@ body{
                 '1':'radio',
                 '2':'checkBox',
                 '3':'NA',
+                '4':'ycha',
+                '5':'fcha',
             }
-            let nameAdd=''
-            if(form.style==1){
+             if(form.style==1){
                  if(form.type==1){
                         className='Wtui-checkbox'
                 }else{
@@ -514,10 +515,10 @@ body{
                 }
             }else{
                 if(form.type==1){
-                    nameAdd="_ycha"
+                    type='4'
                     className='Wtui-radioCC'
                 }else{
-                    nameAdd="_fcha"
+                   type='5'
                     className='Wtui-radioCC Wtui-checkboxCC'
                 }
 
@@ -531,8 +532,8 @@ body{
 
                 return `<input type='checkbox'  eType='${obj[type]}' class='${className}'
                     v-model='${'formContent[$$$'+num+'_'+obj[type]+this.inputIndex+']'}'
-                    id='${'$$$'+num+'_'+obj[type]+nameAdd+this.inputIndex}' name='${'$$$'+num+'_'+obj[type]
-                    +nameAdd+this.inputIndex}' /> ${type==3?'N/A':i.value} `
+                    id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' name='${'$$$'+num+'_'+obj[type]
+                     +this.inputIndex}' /> ${type==3?'N/A':i.value} `
             })
             this.editor.insertHtml(html.join(""));
         }
