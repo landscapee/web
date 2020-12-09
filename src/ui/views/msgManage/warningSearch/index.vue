@@ -138,7 +138,7 @@ export default {
             }else{
                 this.selectId = null;
             }
-            this.params.current = 1;
+            // this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
@@ -154,7 +154,6 @@ export default {
             .then((data) => {
                  this.tableData = extend({}, this.tableData, data.data);
             }).catch((error) => {
-
             });
         },
         handleSizeChange(size) {

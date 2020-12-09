@@ -45,7 +45,7 @@
                     </el-table-column>
                     <el-table-column slot="option" align='center' label="操作" :width="100"  >
                         <template  slot-scope="{ row }">
-                            <el-tooltip class="item" effect="dark" :enterable="false" :enterable="false" content="历史版本" placement="top">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="历史版本" placement="top">
                                 <span @click="toHistoryListFn(row)" class="rowSvg" style="margin-right: 10px">
                                     <icon iconClass="historyNew"></icon>
                                 </span>
