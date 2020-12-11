@@ -320,7 +320,6 @@
                 console.log(row, column, event,199);
                 this.$set(this.tableData.records,row.index,row);
             },
-
             getList( ){
                 let data={...this.form}
                 map(data,((k,l)=>{
@@ -330,8 +329,9 @@
                 }))
                 data.workOrderParam={...this.form1}
                 if (data.workOrderParam.endTime) {
-                    data.workOrderParam.endTime.setTime(data.workOrderParam.endTime.getTime() + 24 * 60 * 60 * 1000 - 1);
-                }
+                    data.workOrderParam.endTime=new Date(data.workOrderParam.endTime.getTime() + 24 * 60 * 60 * 1000 - 1)
+
+                 }
                 request({
                     url:`${this.$ip}${this.buttonObj.api}`,
                     method: 'post',
@@ -370,7 +370,7 @@
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         if (s) {
-                            return time.getTime() <= s.getTime() ;
+                            return time.getTime() <= s.getTime()-8.64e7 ;
                         }
                     },
                 };
