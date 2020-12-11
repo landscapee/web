@@ -1,7 +1,5 @@
 <template>
     <div>
-
-
         <div v-if="this.$router.history.current.path == '/queryIndex'" :key="$route.path" class="QCenterRight G_listOne queryIndex">
             <div >
                 <div class="QHead">
@@ -299,7 +297,7 @@ import {  extend ,map} from 'lodash';
         getList( ){
             let data={...this.form1}
             if (data.endTime) {
-                data.endTime.setTime(data.endTime.getTime() + 24 * 60 * 60 * 1000 - 1);
+                data.endTime=new Date(data.endTime.getTime() + 24 * 60 * 60 * 1000 - 1)
             }
             map(data,((k,l)=>{
                   if(typeof k==='string'&&!k.replace(/(^\s*)|(\s*$)/g, "") ){
@@ -343,7 +341,7 @@ import {  extend ,map} from 'lodash';
              this.pickerOptions1 = {
                 disabledDate(time) {
                      if (s) {
-                        return time.getTime() <= s.getTime() ;
+                        return time.getTime() <= s.getTime()-8.64e7 ;
                      }
                 },
             };
