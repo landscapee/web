@@ -368,7 +368,14 @@
                     for (let i = 0; i < inputNa.length; i++) {
                         map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
                     }
-
+                    let RchaArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='ycha']")
+                    for(let i=0;i<RchaArr.length;i++){
+                        map[RchaArr.eq(i).attr("name")] = RchaArr.eq(i).is(':checked')
+                    }
+                    let CchaArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='fcha']")
+                    for(let i=0;i<CchaArr.length;i++){
+                        map[CchaArr.eq(i).attr("name")] = CchaArr.eq(i).is(':checked')
+                    }
                     let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
                     for (let i = 0; i < inputText.length; i++) {
                         map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
@@ -379,7 +386,7 @@
                         map[inputRadioArr.eq(i).attr("name")] = inputRadioArr.eq(i).is(':checked')
                     }
                 }
-                 request({
+                  request({
                     url: `${this.$ip}/mms-workorder/operationInf/exceptionUpdate`,
                     method: 'post',
                     data: {
@@ -486,6 +493,7 @@
                                 this.template = data.data.template.typeVO
                                 this.labelVO = data.data.template.labelVO
                                 this.getFileByIdFn(this.template.airlineCompanyLogo)
+								let _this=this
                                 this.$nextTick(() => {
                                     //if($(".textContent button").innerText ==='签章'){
                                     $(".textContent button").on('click', function () {
@@ -493,14 +501,32 @@
                                         $(this).siblings("input").attr("pos", $(this).siblings("input").attr("id"))
                                         _this.signMsgBoxFn($(this).siblings("input").attr("id"),contentId)
                                     })
-                                    $(".textContent input[type='checkbox']").on('change', function () {
-                                        if ($(this).is(":checked")) {
+                                    $(".textContent input[type='checkbox']").on('change', function(){
+                                        if($(this).is(":checked")){
                                             $(this).val('on')
-                                        } else {
+                                        }else{
                                             $(this).val('off')
                                         }
+                                        // if(_this.editMap.find(i=>i.key==$(this).attr("id"))){
+                                        //     _this.editMap.find(i=>i.key==$(this).attr("id")).value = $(this).is(":checked").toString()
+                                        // }else{
+                                        //     _this.editMap.push({
+                                        //         key: $(this).attr("id"),
+                                        //         value: $(this).is(":checked").toString(),
+                                        //     })
+                                        // }
+                                        //$(this).attr("id") // 1_1_152114913_radio5
                                     })
-                                    //}
+                                    // $(".textContent input[type='text']").on('input', function(){
+                                    //     if(_this.editMap.find(i=>i.key==$(this).attr("id"))){
+                                    //         _this.editMap.find(i=>i.key==$(this).attr("id")).value = $(this).val()
+                                    //     }else{
+                                    //         _this.editMap.push({
+                                    //             key: $(this).attr("id"),
+                                    //             value: $(this).val(),
+                                    //         })
+                                    //     }
+                                    // })
                                 })
                                 this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
                                 resolve()
