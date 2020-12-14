@@ -80,15 +80,15 @@
 							<div>{{labelVO.itemLabel}}</div>
 							<div>{{labelVO.itemLabelEnglish}}</div>
 						</div>
-						<div :style="{width: col==3 ? '70%' : '55%'}">
+						<div :style="{width: col==3 ? '70%': col==2?'88%' : '55%'}">
 							<div>{{labelVO.contentLabel}}</div>
 							<div>{{labelVO.contentLabelEnglish}}</div>
 						</div>
-						<div :style="{width: col==3 ? '18%' : '16.5%'}">
+						<div  style="width:18%"  v-if='col==3||col==4'>
 							<div>{{labelVO.workerLabel}}</div>
 							<div>{{labelVO.workerLabelEnglish}}</div>
 						</div>
-						<div :style="{width: col==3 ? '18%' : '16.5%'}" v-if='col==4'>
+						<div style="width:16.5%" v-if='col==4'>
 							<div>{{labelVO.commanderLabel}}</div>
 							<div>{{labelVO.commanderLabelEnglish}}</div>
 						</div>
@@ -111,8 +111,8 @@
 										 :key='itemChild.key' class="flex">
 										<div class="item"
 											 style="min-height:120px;"
-											 :style="{width: col==3 ? '79.8%' : '62.5%'}">
-											<!--style="width:63.4%;"  v-if="item.reduceIndex.includes('.')" -->
+											  v-if :style="{width: col==3 ? '79.8%':col==2?'100%' : '62.5%'}">
+											<!--style="width:63.4%;"="item.reduceIndex.includes('.')" -->
 											<div class="textContent"
 												 :class="itemChild.id"
 												 :contentId="itemChild.id"
@@ -128,9 +128,10 @@
 												</el-button>
 											</div>
 										</div>
-										<div style="min-height:120px;"
+										<div style="min-height:120px;width:20.2%"
+											 v-if='col==3||col==4'
 											 :class="itemChild.workerLabel?'item itemSign':'item itemSign duijiao'"
-											 :style="{width: col==3 ? '20.2%' : '18.75%'}">
+ 											 >
 											<el-button
 												v-if="type!='info'&&itemChild.workerLabel"
 												@click="showMsgBoxFn(itemChild,'fix_sign_'+itemChild._reduceIndex, $event, 'fixedSignFn')"
@@ -146,9 +147,9 @@
 													 style="width:100%;height:30px;width:100%"></div>
 											</div>
 										</div>
-										<div style="min-height:120px;"
+										<div style="min-height:120px;width:18.75%"
 											 :class="itemChild.commanderLabel?'item itemSign':'item itemSign duijiao'"
-											 :style="{width: col==3 ? '20.2%' : '18.75%'}"
+
 											 v-if='col==4'>
 											<el-button v-if="type!='info'&&itemChild.commanderLabel"
 													   @click="showMsgBoxFn(itemChild,'travel_sign_'+itemChild._reduceIndex, $event, 'travelSignFn')"
@@ -166,14 +167,15 @@
 								</div>
 								<div v-else class='flex' style="width:88%">
 									<div class="item"
-										 :style="{width: col==3 ? '80%' : '62.5%'}">
+										 v-if :style="{width: col==3 ? '79.8%':col==2?'100%' : '62.5%'}">
 										<div class="textContent"
 											 v-html='item.name'></div>
 									</div>
 									<div class="item"
-										 :style="{width: col==3 ? '20.2%' : '18.75%'}"></div>
+										 v-if='col==3||col==4'
+										 style="width:20.2%"></div>
 									<div v-if='col==4' class="item"
-										 :style="{width: col==3 ? '20%.2' : '18.75%'}"></div>
+										 style="width:18.75%"></div>
 								</div>
 							</div>
 						</div>
@@ -293,11 +295,21 @@
                 console.log(arr, 3, 45, 6,);
                 return arr
             },
-            col: { // 列数
-                get: function () {
-                    return this.labelVO.contentLayout == "C3（三列）" ? '3' : '4'
-                }
-            }
+
+            col:{ // 列数
+                get:function(){
+                    let s = ''
+                    if(this.labelVO.contentLayout=='R2（二列）'){
+                        s='2'
+                    }else if(this.labelVO.contentLayout=='C3（三列）'){
+                        s='3'
+                    }else{
+                        s='4'
+                    }
+                    return  s
+                },
+
+            },
         },
 
         methods: {
