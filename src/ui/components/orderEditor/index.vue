@@ -6,7 +6,7 @@
 </template>
  
 <script>
- import '../../../../node_modules/kindeditor/kindeditor-all.js'
+  import '../../../../node_modules/kindeditor/kindeditor-all.js'
 import '../../../../node_modules/kindeditor/lang/zh-CN.js'
 import '../../../../node_modules/kindeditor/themes/default/default.css'
 import addRadioDialog from './addRadioDialog.vue';
@@ -20,7 +20,7 @@ export default {
     name: 'kindeditor',
     data () {
         return {
-            editor: null,
+             editor: null,
             outContent: this.content,
             radioInputList:[],
             inputIndex:0,
@@ -374,21 +374,27 @@ export default {
         useContextmenu: _this.useContextmenu,
         syncType: _this.syncType,
         indentChar: _this.indentChar,
-        cssPath: './kindeditor.css',
+        cssPath: require('./kindeditor.css'),
         cssData: `
+
+        input[eType='ycha']:checked,
+        input[eType='fcha']:checked,
         input[eType='radio']:checked {
     background:#1673ff;
     border:solid 0px #888888;
  }
-
+input[eType='ycha']:focus,
+        input[eType='fcha']:focus,
  input[eType='radio']:focus{
     -webkit-appearance:none;
     -webkit-user-select:none;
     outline: none;
 }
+input[eType='fcha'],
+input[eType='ycha'],
  input[eType='radio'] {
-    width:14px;
-    height:14;
+    width:13px;
+    height:13px;
     background-color:#ffffff;
     border:solid 1px #888888;
     -webkit-border-radius:50%;
@@ -416,22 +422,30 @@ export default {
     border-top:none;
     border-right:none;
     height:3px;
-    width:8px;
+    width:7px;
     -moz-transform:rotate(-45deg);
     -ms-transform:rotate(-45deg);
     -webkit-transform:rotate(-45deg);
     transform:rotate(-45deg);
 }
-input[eType='radioCC']:checked::after {
+input[eType='fcha'] {
+  -webkit-border-radius:2px;
+      border-radius:2px;
+}
+input[eType='fcha']:checked::after,
+input[eType='ycha']:checked::after {
     content:'×';
-    left:calc(50% - 5.4px);
-    top:calc(50% - 8px);
+    left:2px;
+    top:-1px;
     font-size: 14px;
     position:absolute;
     color:#fff;
     font-weight: bold;
     border-top:none;
     border-right:none;
+}
+input[eType='fcha']:checked::after {
+
 }
 body{
   overflow-y:auto!important;
