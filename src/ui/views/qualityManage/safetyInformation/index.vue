@@ -246,10 +246,10 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
+@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
-    
+
 }
 /deep/ .mainTable{
     height:calc(100vh - 240px);
