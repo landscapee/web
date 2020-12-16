@@ -32,39 +32,19 @@
     }
 </style>
 <script type="text/javascript" src="./jquery.min.js"></script>
- <script type="text/javascript"
-        src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>
+ <!--<script type="text/javascript"-->
+        <!--src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>-->
 
 <!--内网测试-->
 <!--<script type="text/javascript" src="http://10.35.16.13:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>-->
 <!--生产gis配置-->
-<!-- <script type="text/javascript" src="http://10.35.32.20:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script> -->
+ <script type="text/javascript" src="http://10.35.32.20:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>
 <body>
 <!--装地图容器-->
 <div id="app">
     <div id="map" class="container" style="height:calc(100vh - 10px) "></div>
     <div class="bnmap-box">
-        <div class="layui-input-inline" style="width: 600px;">
-            <input type="text" id="keyword" value="" placeholder="输入关键字查询" class="layui-input"
-                   style="float:left;height:16px;width:58%;margin-right:8px;"/>
-            <button id="search-button" data-title="搜索" data-tooltip="2"
-                    class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm"
-                    style="float:left">查询
-            </button>
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="addF();"
-                    style="float:left">添加
-            </button>
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="edit();"
-                    style="float:left">修改
-            </button>
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="deleteF();"
-                    style="float:left">删除
-            </button>
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm"
-                    onclick="clearQuery();"
-                    style="float:left">清除
-            </button>
-        </div>
+
     </div>
 </div>
 
@@ -79,8 +59,7 @@
     // 编辑标识
     var ISEdit = false,
         isadd = false;
-    var edit = null,
-        addF, deleteF;
+
     var BNGeometry;
     var layer;
     var windows;
@@ -96,8 +75,8 @@
     var layerId = propertiesMap.layerId01;
 
 
-    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys","js/BNMap", "js/BNGeometry", "js/jquery-3.2.1.min"],
-        function (BNSymbol, util, BNFactory, BNDirectorys) {
+    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory","esri/geometry/Point","esri/SpatialReference", "js/BNDirectorys","js/BNMap", "js/BNGeometry",  "js/jquery-3.2.1.min",],
+        function (BNSymbol, util, BNFactory,Point,SpatialReference, BNDirectorys) {
             bnSymbol = new BNSymbol();
             BNMap = new BNFactory(propertiesMap.mapId03, {
                 "id": "map",
@@ -108,12 +87,28 @@
                 }
             });
              BNMap.bindEvent(null, "load", function (evt) {
-                 BNMap.setPointCenter();
-                regEvent();
+                 // BNMap.setPointCenter();
+
                 initQuery();
 
                 window.parent.postMessage('success')
             });
+            BNMap.setLevel(2)
+
+             let wkt=`PROJCS["TFJC",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Berghaus_Star"],PARAMETER["False_Easting",50000.0],PARAMETER["False_Northing",50000.0],PARAMETER["Central_Meridian",105.0],PARAMETER["Latitude_Of_Origin",30.0],PARAMETER["XY_Plane_Rotation",292.000000000028],UNIT["Meter",1.0]]`
+            let obj={
+                x: 62303.593708167944,
+                y: 112811.73282551926,
+                spatialReference:{wkt}
+            }
+            BNMap.setCenter(obj)
+            // BNMap.setCenter({ x: 62303.593708167944,y: 112811.73282551926},BNMap.spatialReference)
+            BNMap.bindEvent(null,"click",function(evt){
+                console.log(1, 2, 3,evt);
+
+            });
+
+
             BNGeometry = new BNFactory("BNGeometry", BNMap);
             BNEdit = new BNFactory("BNEdit", BNMap);
             windows = new BNFactory("BNWindow");
@@ -175,49 +170,7 @@
         });
     }
 
-    addF = function () {
-        isadd = true;
-        // 启动编辑
-        BNEdit.start("add");
-        ISEdit = true;
-        // 编辑标识修改
-        BNEdit.startOperation('polygon', function (data) {
-            let attr = {
-                NAME: 'testadd'
-            };
-            var graphics = BNMap.graphic(data, bnSymbol);
-            BNEdit.endOperation(layerId, graphics, attr, function () {
-                alert("添加成功");
-                ISEdit = false;
-                BNEdit.stop();
-                isadd = false;
-            }, function () {
-                alert("添加失败");
-                ISEdit = false;
-                BNEdit.stop();
-                isadd = false;
-            });
-        }, function (data) {
-        });
 
-    };
-    edit = function () {
-        // 启动编辑
-        BNEdit.start("edit");
-        // 编辑标识修改
-        ISEdit = true;
-    };
-    deleteF = function () {
-        // 启动编辑
-        BNEdit.start("delete");
-        // 编辑标识修改
-        ISEdit = true;
-    };
-
-    function clearQuery() {
-        BNMap.clear();
-        BNMap.clearHighLight();
-    }
 
     attributeQuery = function () {
         var simpleLineSymbol = bnSymbol.simpleLineSymbol("solid", "green", 2); //线
@@ -245,21 +198,6 @@
         );
     }
 
-    function onclickLayui(text) {
-        layui.use('layer', function () {
-            layer.open({
-                type: 1
-                , offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                , id: 'layerDemo' + 'auto' //防止重复弹出
-                , content: text
-                , btnAlign: 'c' //按钮居中
-                , shade: 0 //不显示遮罩
-                , yes: function () {
-                    layer.closeAll();
-                }
-            });
-        })
-    }
 
 
     window.addEventListener(

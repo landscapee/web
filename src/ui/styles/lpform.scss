@@ -12,6 +12,11 @@
             text-align: right!important;
             padding-left: 0px!important;
         }
+        .el-form-item__content{
+            &>span:first-child{
+                word-break: break-word;
+            }
+        }
     }
 }
 
