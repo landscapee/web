@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "  webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
+    "prod": "  webpack-dev-server --config webpack.prod.js --Program jwxt.prod",
     "test": "  webpack-dev-server --config webpack.prod.js --Program jwxt.test",
     "build": "webpack --config webpack.dev.js --Program jwxt.dev",
     "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/",

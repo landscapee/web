@@ -259,7 +259,6 @@
         }
         .el-form-item__label{
             width: 130px!important;
-
         }
         .el-form-item__content{
             width: calc(100% - 140px);

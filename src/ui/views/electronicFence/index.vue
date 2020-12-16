@@ -14,7 +14,8 @@
         data() {
             return {
                 loading:false,
-                url1: '../../../../static/electronicFence/index2.html',
+                url1: '../../../../static/electronicFence/index1.html',
+                // url1: '../../../../static/electronicFence/index2.html',
                 vueId:"myParentId"
             }
         },

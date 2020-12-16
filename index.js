@@ -35,10 +35,10 @@ import "./permission";
 
 //公共ip地址和端口
  if (PROGRAM == "jwxt.dev") {  // 本地
-    // Vue.prototype.$ip = "http://173.100.1.5:8011"
-    // Vue.prototype.$workImgIp = " http://173.100.1.142/"
-    Vue.prototype.$workImgIp = " http://173.101.1.133/"
-    Vue.prototype.$ip = "http://173.101.1.30:6070"
+    Vue.prototype.$ip = "http://173.100.1.5:8011"
+    Vue.prototype.$workImgIp = " http://173.100.1.142/"
+    // Vue.prototype.$workImgIp = " http://173.101.1.133/"
+    // Vue.prototype.$ip = "http://173.101.1.30:6070"
 } else if (PROGRAM == "jwxt.test") { // 测试
     Vue.prototype.$workImgIp = " http://173.101.1.133/"
     Vue.prototype.$ip = "http://173.101.1.30:6070"
@@ -46,7 +46,7 @@ import "./permission";
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
     Vue.prototype.$ip = "http://173.100.1.5:8011"
 } else if (PROGRAM == "jwxt.prod") {
-    Vue.prototype.$workImgIp = "http://10.35.48.34:8888"
+    Vue.prototype.$workImgIp = "http://10.33.144.35/"
     Vue.prototype.$ip = "http://10.33.144.1:6076/api"
 }
 const ipSign = {

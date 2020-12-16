@@ -65,7 +65,7 @@
                                     </el-tooltip>
                                     </span>
 									<el-select @change="userNameC" :disabled="type=='edit'" filterable v-else
-											   v-model="form.userId" placeholder="请选择员工姓名">
+											   v-model="form.userName" placeholder="请选择员工姓名">
 										<el-option v-for="(opt,index) in userArr" :key="index" :label="opt.name"
 												   :value="opt.id">
 											<span>{{opt.name}}({{opt.workNumber||'[无编号]'}})</span>
