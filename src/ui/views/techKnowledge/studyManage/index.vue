@@ -1,7 +1,7 @@
 <template>
     <div class='index'>
-        <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
-        <div class='QCenterRight G_listOne'>
+         <router-view  v-if="this.$route.path == '/readTrack1'" :key="$route.path"></router-view>
+        <div v-else class='QCenterRight G_listOne'>
             <div  >
                 <div class='QHead'>学习管理</div>
                 <div class="QheadRight">
@@ -24,6 +24,16 @@
                         <template slot-scope="{ row }">
                             <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row">.</el-checkbox>
                         </template>
+                    </el-table-column>
+                    <el-table-column slot="downloadRate" label="下载率"  align="center">
+                        <span slot-scope="{ row }"  class="spanA">
+                              <a href="#" @click="tosee(row)">{{row.downloadRate?row.downloadRate+'%':'0%'}}</a>
+                        </span>
+                    </el-table-column>
+                    <el-table-column slot="readingRate" label="阅读率"  align="center" >
+                        <span slot-scope="{ row }" class="spanA">
+                            <a href="#" @click="tosee(row)">{{row.readingRate?row.readingRate+'%':'0%'}}</a>
+                         </span>
                     </el-table-column>
                 </SearchTable>
             </div>
@@ -81,6 +91,10 @@ export default {
         // }
     },
     methods:{
+        tosee(row){
+            this.$router.push({path:'/readTrack1', query: {id:row.id}})
+
+        },
         init(){
             this.getList()
         },
@@ -172,7 +186,7 @@ export default {
             this.deptList = deptList
             this.pushBatchFn()
         },
-        readPushFn(){
+        readPushFn( ){
             if(this.selectObjs.length){
                 this.$refs.userBox.open(this.users, '选择推送对象', true);
             }else{
@@ -267,6 +281,11 @@ export default {
     /deep/ .mainTable {
         .el-checkbox__label {
             display: none;
+        }
+        .spanA{
+            a{
+                text-decoration: none;
+            }
         }
     }
 </style>

@@ -5,7 +5,7 @@
   "node-version": "10.9.0",
   "main": "index.js",
   "scripts": {
-    "dev": "  webpack-dev-server --config webpack.dev.js --Program jwxt.dev",
+    "dev": "  webpack-dev-server --config webpack.dev.js --model devlepment --Program jwxt.dev",
     "prod": "  webpack-dev-server --config webpack.prod.js --Program jwxt.prod",
     "test": "  webpack-dev-server --config webpack.prod.js --Program jwxt.test",
     "build": "webpack --config webpack.dev.js --Program jwxt.dev",

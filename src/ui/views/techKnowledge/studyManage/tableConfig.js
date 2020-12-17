@@ -38,17 +38,17 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             },
             search:{prop:'pushTime',type:'date',placeholder:"请选择推送时间"}
         },
-        { prop: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",
+        { slot: 'downloadRate', label: '下载率', align: 'center',sort:true,sortProp:"downloadRate",
             search:{prop:'downloadRate',type:'input',placeholder:"请输入下载率"},
-            formatter: (row, column, cellValue) => {
-                return row.downloadRate?row.downloadRate+'%':'0%'
-            }
+            // formatter: (row, column, cellValue) => {
+            //     return row.downloadRate?row.downloadRate+'%':'0%'
+            // }
         },
-        { prop: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",
+        { slot: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",
             search:{prop:'readingRate',type:'input',placeholder:"请输入阅读率",isNumber:true},
-            formatter: (row, column, cellValue) => {
-                return row.readingRate?row.readingRate+'%':'0%'
-            }
+            // formatter: (row, column, cellValue) => {
+            //     return row.readingRate?row.readingRate+'%':'0%'
+            // }
         },
         { prop: 'averageReadingTime',width:'170', label: '平均阅读时长(分)', align: 'center',sort:true,sortProp:"averageReadingTime",
             search:{prop:'arTime',type:'input',placeholder:"请输入平均阅读时长(分)",extendType:'search',isMinute:true},
