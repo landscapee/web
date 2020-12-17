@@ -30,7 +30,7 @@
                                  <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             </div>
                         </div>
-                        <SearchTable scrollHeight="400" ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')"    >
+                        <SearchTable  ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')"    >
                             <el-table-column slot="radio" label="选择" :width="49"  >
                                 <template slot-scope="{ row }">
                                     <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -344,8 +344,9 @@
                 // 获取滚动条的总高度
                 var scrollHeight = bady.scrollHeight;
                 //获取滚动元素标识
-                 var tag = bady.parentElement.__vue__.refTag;
+                 var tag = bady.parentElement.__vue__.$parent.refTag;
                  if(scrollTop+windowHeight>=scrollHeight){
+
                     if(tag=='TableLeft'){
                         if(this.leftParams.size!=18){
                             this.leftParams.size=18
@@ -353,6 +354,7 @@
                         }else {
                             this.leftParams.current = ++this.leftParams.current ;
                         }
+                        console.log(1, 32);
                         this.getList('left','scroll');
                     }
                 }

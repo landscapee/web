@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <router-view v-if="this.$router.history.current.path == '/addAuthorizeManage'" :key="$route.path"></router-view>
          <router-view v-else-if="this.$router.history.current.path == '/SuserQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/SuserDoc'" :key="$route.path"></router-view>

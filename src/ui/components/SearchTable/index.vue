@@ -95,7 +95,7 @@
 			</template>
 		</el-table>
 
-		<el-table :span-method="spanMethod" @scroll.passive="scroll($event)" class="mainTable" :show-header="false"
+		<el-table :height="580" :span-method="spanMethod" @scroll.passive="scroll($event)" class="mainTable" :show-header="false"
 				  :data="data instanceof Array ? data : data.records" ref="body_table" :row-key="getRowKeys"
 				  @current-change="currentRowChange" highlight-current-row @row-click="checkRow"
 				  @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox"

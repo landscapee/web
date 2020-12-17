@@ -454,7 +454,15 @@ let authRoutes = [
                 path:'/studyManage',
                 component:() => import('@views/techKnowledge/studyManage/index'),
                 name:'学习管理',
-                meta: {title: '学习管理',icon: 'xxgl',roles:['R_WorkOrderManage5/studyManage'] }
+                meta: {title: '学习管理',icon: 'xxgl',roles:['R_WorkOrderManage5/studyManage'] },
+                children:[
+                    {
+                        path: '/readTrack1',
+                        component: () => import('@views/techKnowledge/fileManage/detail/readTrack'),
+                        name: '阅读推送',
+                        meta: {title: '阅读推送',icon: 'xxgl' },
+                    }
+                ]
             },
             {
                 path:'/userManage',

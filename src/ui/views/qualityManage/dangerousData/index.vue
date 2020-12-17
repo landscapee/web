@@ -28,6 +28,16 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
+                    <template  v-slot:radio1="{opt}" >
+                        <template  >
+                            11   {{opt.name}}
+                        </template>
+                    </template>
+                    <template  v-slot:radio2="{opt}" >
+                        <template  >
+                            22   {{opt.name}}
+                        </template>
+                    </template>
 
 
                 </SearchTable>
@@ -40,7 +50,7 @@
 <script>
     import UpDocInfo from '../components/uploadDocInfo'
 
-    import SearchTable from '@/ui/components/SearchTable';
+    import SearchTable from '@/ui/components/SearchTable/index';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
 import request from '@lib/axios.js';

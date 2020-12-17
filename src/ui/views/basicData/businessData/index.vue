@@ -125,7 +125,7 @@ export default {
             // 获取滚动条的总高度
             var scrollHeight = bady.scrollHeight;
             //获取滚动元素标识
-            var tag = bady.parentElement.__vue__.refTag;
+            var tag = bady.parentElement.__vue__.$parent.refTag;
             this.scroll = scrollTop;
             if(scrollTop+windowHeight>=scrollHeight){
                 if(tag=='left-table'){

@@ -198,6 +198,9 @@ watch:{
                     params:{ids:ids}
                 }).then(d => {
                     if(d.code==200){
+                        this.rightRow={}
+                        this.tableRightData={records:[]};
+
                         this.checkArr=[]
                         this.$message.success('操作成功')
                         this.getList('right');
