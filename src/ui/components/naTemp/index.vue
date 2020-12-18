@@ -1,44 +1,79 @@
 <template>
-    <div class="flex" @click="changeActiveFn">
-        <img :src="na" alt="" :style="{'display':active?'block':'none' ,'width':width+'px'}">
-        <img :src="gou_active" alt="" :style="{'display':active?'block':'none' ,'width':width+'px'}">
-        <img :src="na_active" alt="" :style="{'display':!active?'block':'none' ,'width':width+'px'}">
-        <img :src="gou" alt="" :style="{'display':!active?'block':'none' ,'width':width+'px'}">
+    <div>
+        <div v-if="item.notApplicable ">
+             <img :src="na" v-if="isActive('na')" alt="" @click="changeActiveFn('na',true,'na')" style="width:34px">
+            <img :src="na_active" v-else @click="changeActiveFn('na_active',false,'na')" alt="" style="width:34px">
+        </div>
+        <div v-if="item.cycle ">
+            <img :src="quan" v-if="isActive('cycle') " alt="" @click="changeActiveFn('quan',true,'cycle')" style="width:34px">
+            <img :src="quan_active" v-else alt="" @click="changeActiveFn('quan_active',false,'cycle')" style="width:34px">
+        </div>
+        <div v-if="item.hook ">
+            <img :src="gou" v-if="isActive('gou')" alt="" @click="changeActiveFn('gou',true,'gou')" style="width:34px">
+            <img :src="gou_active" v-else alt="" @click="changeActiveFn('gou_active',false,'gou')" style="width:34px">
+        </div>
+
     </div>
 </template>
 
 <script>
-import gou from '../../icons/svg/gou.svg'
-import gou_active from '../../icons/svg/gou_active.svg'
-import na from '../../icons/svg/na.svg'
-import na_active from '../../icons/svg/na_active.svg'
- export default {
-    props:{
-        width:{
-            type: String,
-            default:"34"
-        },
-        active:{
-            type: Boolean,
-            default:false
-        }
-    },
-	data() {
-		return {
-            gou,
-            gou_active,
-            na,
-            na_active
-		}
-	},
-	methods: {
-        changeActiveFn(){
-            this.$emit('changeActiveFn')
-        }
-    }
 
-	
-};
+     import quan from '../../assets/img/quanUncheck.svg'
+    import quan_active from '../../assets/img/quanCheck.svg'
+
+    import gou from '../../assets/img/gou.svg'
+    import gou_active from '../../assets/img/gou_active.svg'
+    import na from '../../assets/img/gou.svg'
+     import na_active from '../../assets/img/na_active.svg'
+    export default {
+        props: {
+            width: {
+                type: String,
+                default: "34"
+            },
+            item: {
+                type: Object,
+                default: {}
+            },
+            newMap: {
+                type: Array,
+            },
+            serialNumber: {
+                type: String,
+            }
+        },
+        data() {
+            return {
+                quan_active,
+                quan,
+                gou,
+                gou_active,
+                na,
+                na_active
+            }
+        },
+        computed: {
+            isActive() {
+                return (s) => {
+
+                    let b=   this.newMap.some((k,l)=>{
+                        return k.key == s + '_' + this.serialNumber && k.value === 'true'
+                    })
+                     return !b
+                }
+            }
+        },
+        methods: {
+            changeActiveFn(s, v, kn) {
+                this.$emit('changeActiveFn', {name: s, value: v, key: kn})
+            }
+        },
+        created(){
+            console.log(this.item);
+         }
+
+
+    };
 </script>
 
 <style scoped lang="less">
