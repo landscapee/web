@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div v-if="item.notApplicable " :class="type=='info'?'info':'cursor'">
+    <div :class="type=='info'?'info':'cursor1'">
+        <div v-if="item.notApplicable " >
             <img :src="na" v-if="isActive('na')" alt="" @click="changeActiveFn('na',true,'na')" style="width:34px">
             <img :src="na_active" v-else @click="changeActiveFn('na_active',false,'na')" alt="" style="width:34px">
         </div>
@@ -25,7 +25,7 @@
 
     import gou from '../../assets/img/gou.svg'
     import gou_active from '../../assets/img/gou_active.svg'
-    import na from '../../assets/img/gou.svg'
+    import na from '../../assets/img/na.svg'
     import na_active from '../../assets/img/na_active.svg'
 
     export default {
@@ -77,15 +77,15 @@
             }
         },
         created() {
-            console.log(this.item);
-        }
+         }
 
 
     };
 </script>
 
 <style scoped lang="scss">
-    .cursor:hover {
-        cursor: pointer;
+
+    .cursor1:hover {
+         cursor: pointer;
     }
 </style>
