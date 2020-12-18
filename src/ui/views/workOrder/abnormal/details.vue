@@ -104,7 +104,7 @@
                                      style="min-height:120px;width:12%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
 
                                     {{item.reduceIndex}}
-                                    <NaTemp :serialNumber="item.serialNumber" :newMap="newMap" :item='item'
+                                    <NaTemp :type="type" :serialNumber="item.serialNumber" :newMap="newMap" :item='item'
                                             @changeActiveFn='changeActiveFn($event,item)'></NaTemp>
 
                                 </div>

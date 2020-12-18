@@ -1,12 +1,14 @@
 <template>
     <div>
-        <div v-if="item.notApplicable ">
-             <img :src="na" v-if="isActive('na')" alt="" @click="changeActiveFn('na',true,'na')" style="width:34px">
+        <div v-if="item.notApplicable " :class="type=='info'?'info':'cursor'">
+            <img :src="na" v-if="isActive('na')" alt="" @click="changeActiveFn('na',true,'na')" style="width:34px">
             <img :src="na_active" v-else @click="changeActiveFn('na_active',false,'na')" alt="" style="width:34px">
         </div>
         <div v-if="item.cycle ">
-            <img :src="quan" v-if="isActive('cycle') " alt="" @click="changeActiveFn('quan',true,'cycle')" style="width:34px">
-            <img :src="quan_active" v-else alt="" @click="changeActiveFn('quan_active',false,'cycle')" style="width:34px">
+            <img :src="quan" v-if="isActive('cycle') " alt="" @click="changeActiveFn('quan',true,'cycle')"
+                 style="width:34px">
+            <img :src="quan_active" v-else alt="" @click="changeActiveFn('quan_active',false,'cycle')"
+                 style="width:34px">
         </div>
         <div v-if="item.hook ">
             <img :src="gou" v-if="isActive('gou')" alt="" @click="changeActiveFn('gou',true,'gou')" style="width:34px">
@@ -18,13 +20,14 @@
 
 <script>
 
-     import quan from '../../assets/img/quanUncheck.svg'
+    import quan from '../../assets/img/quanUncheck.svg'
     import quan_active from '../../assets/img/quanCheck.svg'
 
     import gou from '../../assets/img/gou.svg'
     import gou_active from '../../assets/img/gou_active.svg'
     import na from '../../assets/img/gou.svg'
-     import na_active from '../../assets/img/na_active.svg'
+    import na_active from '../../assets/img/na_active.svg'
+
     export default {
         props: {
             width: {
@@ -37,6 +40,9 @@
             },
             newMap: {
                 type: Array,
+            },
+            type: {
+                type: String,
             },
             serialNumber: {
                 type: String,
@@ -55,27 +61,31 @@
         computed: {
             isActive() {
                 return (s) => {
-
-                    let b=   this.newMap.some((k,l)=>{
+                    let b = this.newMap.some((k, l) => {
                         return k.key == s + '_' + this.serialNumber && k.value === 'true'
                     })
-                     return !b
+                    return !b
                 }
             }
         },
         methods: {
             changeActiveFn(s, v, kn) {
+                if (this.type == 'info') {
+                    return false
+                }
                 this.$emit('changeActiveFn', {name: s, value: v, key: kn})
             }
         },
-        created(){
+        created() {
             console.log(this.item);
-         }
+        }
 
 
     };
 </script>
 
 <style scoped lang="less">
-
+    .cursor:hover {
+        cursor: pointer;
+    }
 </style>
