@@ -84,7 +84,7 @@
     };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
     .cursor:hover {
         cursor: pointer;
     }

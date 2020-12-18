@@ -117,7 +117,10 @@
         },
         created() {
             if (this.$route.query) {
-                this.$router.currentRoute.matched[2].meta.paramsId={id:this.$route.query.rId.split(',')[0],type:this.$route.query.rId.split(',')[1]}
+                this.$router.currentRoute.matched[2].meta.paramsId={
+                    id:this.$route.query.rId.split(',')[0],
+                    userId:this.$route.query.rId.split(',')[2],
+                    type:this.$route.query.rId.split(',')[1]}
                  this.$router.currentRoute.matched[2].meta.title=
                      this.$route.query.rId.split(',')[1] == "add"
                     ? "人员档案新增"
