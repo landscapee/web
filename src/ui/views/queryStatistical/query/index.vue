@@ -91,8 +91,7 @@ import Icon from '@components/Icon-svg/index';
 import { qiaozaiConfig,qinwuConfig,weixiuConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
-    import {formatDate} from "../../../../../lib/tools";
-    import {eleDateShow,inputLength} from '@lib/tools'
+     import {eleDateShow,inputLength} from '@lib/tools'
 
     export default {
     components: {
@@ -174,7 +173,7 @@ import {  extend ,map} from 'lodash';
 
     },
         mounted(){
-            eleDateShow()
+            eleDateShow('el-input__prefix')
             inputLength(this)
         },
     watch:{
@@ -350,6 +349,7 @@ import {  extend ,map} from 'lodash';
 };
 </script>
 <style scoped lang="scss">
+
  .queryIndex{
     /deep/ .mainTable{
         height:calc(100vh - 500px)!important;
