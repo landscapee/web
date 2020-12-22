@@ -28,17 +28,6 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <template  v-slot:radio1="{opt}" >
-                        <template  >
-                            11   {{opt.name}}
-                        </template>
-                    </template>
-                    <template  v-slot:radio2="{opt}" >
-                        <template  >
-                            22   {{opt.name}}
-                        </template>
-                    </template>
-
 
                 </SearchTable>
             </div>
