@@ -21,7 +21,7 @@ export const sysParameterTable = (issueDeptArr, positionArr) => {
         },
         { prop: 'userName', label: '上传人', align: 'center',sort:true,sortProp:"userName",search:{prop:'userName',type:'input',placeholder:"请输入上传人"} },
         {
-            prop: 'createTime', label: '上传时间', align: 'center',sort:true,sortProp:"createTime",
+            prop: 'createTime', label: '上传时间', align: 'center',sort:true,sortProp:"createTimeQuery",
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD HH:mm', '--');
             },

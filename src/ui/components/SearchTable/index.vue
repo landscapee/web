@@ -168,7 +168,7 @@
         },
         methods: {
             resizeOption(){
-                console.log(this.$refs.body_table.clientHeight, this.data.length||this.data.records&&this.data.records.length);
+                // console.log(this.$refs.body_table.clientHeight, this.data.length||this.data.records&&this.data.records.length);
             },
             mousemoveDate(t,e){
                 console.log(1,t,e.target);
