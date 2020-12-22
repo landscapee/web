@@ -1,7 +1,12 @@
 /deep/ .el-scrollbar__wrap {
     overflow-x: hidden;
 }
-
+/deep/ .el-input__prefix[class1='displayNone']{
+    display: none;
+}
+.el-input__prefix[class1='displayNone']{
+    display: none;
+}
 //// 滚动条 /////
 ::-webkit-scrollbar {
     width: 8px; /* 纵向滚动条*/

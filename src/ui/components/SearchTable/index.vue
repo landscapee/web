@@ -144,6 +144,7 @@
                     return ss
                 }
             },
+
         },
         watch: {
 
@@ -161,9 +162,14 @@
 
         },
         mounted() {
+            window.addEventListener('resize', this.resizeOption, true)
+
             window.addEventListener('scroll', this.scroll, true);
         },
         methods: {
+            resizeOption(){
+                // console.log(this.$refs.body_table.clientHeight, this.data.length||this.data.records&&this.data.records.length);
+            },
             mousemoveDate(t,e){
                 console.log(1,t,e.target);
                 if(e.target.getElementsByClassName('el-input__inner')[0].value){
