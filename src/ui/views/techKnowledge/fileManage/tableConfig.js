@@ -21,11 +21,11 @@ export const sysParameterTable = (issueDeptArr, positionArr) => {
         },
         { prop: 'userName', label: '上传人', align: 'center',sort:true,sortProp:"userName",search:{prop:'userName',type:'input',placeholder:"请输入上传人"} },
         {
-            prop: 'createTime', label: '上传时间', align: 'center',sort:true,sortProp:"createTimeQuery",
+            prop: 'createTime', label: '上传时间', align: 'center',sort:true,sortProp:"createTime",
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD HH:mm', '--');
             },
-            search:{prop:'createTime',type:'date',placeholder:"请选择上传时间"}
+            search:{prop:'createTimeQuery',type:'date',placeholder:"请选择上传时间"}
         },
         { prop: 'formats', label: '格式', align: 'center',search:{prop:'formats',type:'input',placeholder:"请输入格式"}},
         { prop: 'version', label: '最新版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入最新版本"} },

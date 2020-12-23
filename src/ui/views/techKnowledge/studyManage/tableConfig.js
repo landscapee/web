@@ -45,7 +45,7 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             // }
         },
         { slot: 'readingRate', label: '阅读率', align: 'center',sort:true,sortProp:"readingRate",
-            search:{prop:'readingRate',type:'input',isNumber:true,placeholder:"请输入阅读率",isNumber:true},
+            search:{prop:'readingRate',type:'input',isNumber:true,placeholder:"请输入阅读率", },
             // formatter: (row, column, cellValue) => {
             //     return row.readingRate?row.readingRate+'%':'0%'
             // }

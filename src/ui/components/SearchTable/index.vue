@@ -151,6 +151,8 @@
             data: function (newVal, oldVal) {
                 // this.data = newVal;
                 // 重新计算element表格组件布局
+                let a=this.$refs.body_table
+                console.log(2,2,a.bodyHeight.height,a.height);
                 setTimeout(() => {
                     if (this.$refs.body_table.doLayout) {
                         this.$refs.body_table.doLayout();
@@ -168,6 +170,9 @@
         },
         methods: {
             resizeOption(){
+                let a=this.$refs.body_table
+				let ah=a.$el.getElementsByClassName('el-table__row')
+                console.log(1,1,ah,a.bodyHeight.height,a.height);
                 // console.log(this.$refs.body_table.clientHeight, this.data.length||this.data.records&&this.data.records.length);
             },
             mousemoveDate(t,e){
@@ -187,6 +192,7 @@
             //计算滚动位置
             scroll($event) {
                 if (this.$refs.body_table) {
+
                     var scrollL = this.$refs.body_table.bodyWrapper.scrollLeft;
                     this.$refs.header_table.bodyWrapper.scrollLeft = scrollL;
                 }
