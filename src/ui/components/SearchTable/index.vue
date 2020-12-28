@@ -1,8 +1,9 @@
 <template>
 
 	<div   class="searchTableWrapper" ref="componentTable" :key="$route.path">
-		<el-table :class="noSearch?'noSearchTable headerTable':'headerTable'" @header-dragend="headerDragend"
-				  :show-header="true" :data="headerData" ref="header_table" :row-key="getRowKeys" highlight-current-row
+		<el-table :height="82" :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
+				  @header-dragend="headerDragend"
+				  :show-header="true" :data="headerData"   ref="header_table" :row-key="getRowKeys" highlight-current-row
 				  tooltip-effect="dark" border>
 			<template v-for="(colConfig, index) in tableConfig">
 				<template v-if="colConfig.search">
@@ -96,7 +97,7 @@
 		</el-table>
 
 		<el-table :height="580" :span-method="spanMethod" @scroll.passive="scroll($event)" class="mainTable" :show-header="false"
-				  :data="data instanceof Array ? data : data.records" ref="body_table" :row-key="getRowKeys"
+				  :data="data instanceof Array ? data : data.records" :class="'body_table'+refTag||''" ref="body_table" :row-key="getRowKeys"
 				  @current-change="currentRowChange" highlight-current-row @row-click="checkRow"
 				  @selection-change="handleSelectionChange" @select="selectCheckBox" @select-all="selectAllCheckBox"
 				  :header-row-class-name="tableheaderRowClassName" tooltip-effect="dark"
@@ -148,32 +149,75 @@
         },
         watch: {
 
-            data: function (newVal, oldVal) {
+            data: {
+                handler(n){
+
+                     setTimeout(() => {
+                        if (this.$refs.body_table.doLayout) {
+                            this.$refs.body_table.doLayout();
+                        }
+                    }, 100);
+				},
+				immediate:true,
                 // this.data = newVal;
                 // 重新计算element表格组件布局
-                let a=this.$refs.body_table
-                console.log(2,2,a.bodyHeight.height,a.height);
-                setTimeout(() => {
-                    if (this.$refs.body_table.doLayout) {
-                        this.$refs.body_table.doLayout();
-                    }
-                }, 100);
+
             },
         },
         created() {
 
         },
         mounted() {
+
             window.addEventListener('resize', this.resizeOption, true)
 
             window.addEventListener('scroll', this.scroll, true);
+            this.resizeOption1()
         },
         methods: {
             resizeOption(){
-                let a=this.$refs.body_table
-				let ah=a.$el.getElementsByClassName('el-table__row')
-                console.log(1,1,ah,a.bodyHeight.height,a.height);
-                // console.log(this.$refs.body_table.clientHeight, this.data.length||this.data.records&&this.data.records.length);
+                let len =this.data.length||this.data.length||this.data.records&&this.data.records.length
+                let bs='body_table'+this.refTag||''
+                let hs='header_table'+this.refTag||''
+                let body_table=document.getElementsByClassName(bs)[0]
+                let header_table=document.getElementsByClassName(hs)[0]
+
+                 if(!this.$refs.body_table){
+                    return false
+				}
+
+ 				let tr=body_table.getElementsByClassName('el-table__row')[0]
+                console.log(1,len,header_table.clientHeight, );
+                 if(tr&&tr.clientHeight*len>parseFloat(body_table.clientHeight)){
+                     // header_table.style.cssText='height:81px;overflow-y:hidden;'
+                }else{
+                     // header_table.style.cssText='height:82px;overflow-y:hidden;'
+				 }
+            },
+			resizeOption1(){
+                let len =this.data.length||this.data.length||this.data.records&&this.data.records.length
+                let bs='body_table'+this.refTag||''
+                let hs='header_table'+this.refTag||''
+                let body_table=document.getElementsByClassName(bs)[0]
+                let body_table1=document.getElementsByClassName(bs)
+                let header_table=document.getElementsByClassName(hs)[0]
+                console.log(5,6,body_table1);
+                if(!this.$refs.body_table){
+                    return false
+				}
+
+                this.$nextTick(()=>{
+                    let tr=header_table.getElementsByClassName('el-table__row')[0]
+                    // let tr=body_table.children[1].children[0].children[1].children[0]
+                    // let tr1=body_table.children[1].children[0].children[1].children
+                    console.log(1,len,header_table.clientHeight, );
+                    if(tr&&tr.clientHeight*len>parseFloat(body_table.clientHeight)){
+                        // header_table.style.cssText='height:81px;overflow-y:hidden;'
+                    }else{
+                        // header_table.style.cssText='height:82px;overflow-y:hidden;'
+                    }
+				})
+
             },
             mousemoveDate(t,e){
                 console.log(1,t,e.target);
