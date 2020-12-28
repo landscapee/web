@@ -204,14 +204,14 @@
                 }
             },
             focus(val){
-                let e=new Date(this.form.endTime)
+                let e=new Date(this.form.endTime||new Date())
                 let s=new Date(this.form.startTime)
                 let t=new Date()
 
                 this.pickerOptions = {
                     disabledDate(time) {
                         if (e) {
-                            return time.getTime() >= e.getTime();
+                            return time.getTime() >= e.getTime() ;
                             // return time.getTime() > e.getTime()||time.getTime() > t.getTime();
                         }
                     },

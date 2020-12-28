@@ -1,7 +1,8 @@
 <template>
 
 	<div   class="searchTableWrapper" ref="componentTable" :key="$route.path">
-		<el-table :height="82" :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
+		<!--:height="height"-->
+		<el-table   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
 				  @header-dragend="headerDragend"
 				  :show-header="true" :data="headerData"   ref="header_table" :row-key="getRowKeys" highlight-current-row
 				  tooltip-effect="dark" border>
@@ -133,6 +134,7 @@
         props: ['tableConfig', 'tableRowClassName', 'data', 'offsetTop', 'page', 'noSearch', 'refTag', 'spanMethod'],
         data() {
             return {
+                height:100,
                 resizeCallback: [],
                 headerData: [{}],
                 updateWidth: false,
@@ -169,10 +171,10 @@
         },
         mounted() {
 
-            window.addEventListener('resize', this.resizeOption, true)
+            // window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
-            this.resizeOption1()
+            // this.resizeOption1()
         },
         methods: {
             resizeOption(){
@@ -199,23 +201,31 @@
                 let bs='body_table'+this.refTag||''
                 let hs='header_table'+this.refTag||''
                 let body_table=document.getElementsByClassName(bs)[0]
-                let body_table1=document.getElementsByClassName(bs)
-                let header_table=document.getElementsByClassName(hs)[0]
-                console.log(5,6,body_table1);
-                if(!this.$refs.body_table){
+                 let header_table=document.getElementsByClassName(hs)[0]
+                 if(!this.$refs.body_table){
                     return false
 				}
-
+				let _this = this
                 this.$nextTick(()=>{
                     let tr=header_table.getElementsByClassName('el-table__row')[0]
-                    // let tr=body_table.children[1].children[0].children[1].children[0]
-                    // let tr1=body_table.children[1].children[0].children[1].children
-                    console.log(1,len,header_table.clientHeight, );
-                    if(tr&&tr.clientHeight*len>parseFloat(body_table.clientHeight)){
-                        // header_table.style.cssText='height:81px;overflow-y:hidden;'
-                    }else{
-                        // header_table.style.cssText='height:82px;overflow-y:hidden;'
-                    }
+                    let mainTable=header_table.getElementsByClassName('mainTable')[0]
+					let hHeight=header_table.clientHeight+1
+                     console.log(1,tr.clientHeight,header_table.clientHeight, );
+
+                    if(tr){
+                        _this.height=tr.clientHeight*len + 20
+                        // console.log(tr.clientHeight * len + 20);
+                        if(mainTable){
+                            // mainTable.style.cssText=`marginTop:${header_table.clientHeight-tr.clientHeight*len}`
+
+                        }
+                        if( tr.clientHeight*len>parseFloat(body_table.clientHeight)){
+                            // header_table.style.cssText=`height:${hHeight}px;overflow-y:hidden;`
+                        }else{
+                            // header_table.style.cssText='height:82px;overflow-y:hidden;'
+                        }
+					}
+
 				})
 
             },
@@ -347,10 +357,42 @@
 </script>
 
 <style lang="scss" scoped>
-	/deep/ .mainTable {
-		/* .el-table__body{*/
-		/*	width:1697px!important;*/
-		/*}*/
+	.mainTable {
+		// height: 600px;
+		/*margin-top: -20px!important;*/
+		overflow-y: auto;
+		border-top: 0px;
+		/deep/ .current-row > td {
+			background-color: #A0CBF6;
+		}
+		/deep/ .el-table__fixed {
+			/*height: 620px !important;*/
+		}
+		/deep/ .el-table__fixed-right {
+			/*height: 620px !important;*/
+		}
+		/deep/ .el-table__row:nth-child(even) {
+			background: #EFF2F3;
+		}
+		/deep/ .el-table__row:nth-child(odd) {
+			background: #FFFFFF;
+		}
+		/deep/ .tab_radio {
+			height: 16px;
+			width: 16px;
+		}
+		/deep/ .action_radio {
+			height: 16px;
+			width: 16px;
+		}
+
+		/deep/ .cell:last-child {
+			span:first-child {
+				.action_radio {
+					margin-right: 20px;
+				}
+			}
+		}
 	}
 
 	.searchTableWrapper {
@@ -530,42 +572,7 @@
 		/deep/ .is-scrolling-left {
 			height: 100%;
 		}
-		.mainTable {
-			// height: 600px;
-			overflow-y: auto;
-			border-top: 0px;
-			/deep/ .current-row > td {
-				background-color: #A0CBF6;
-			}
-			/deep/ .el-table__fixed {
-				/*height: 620px !important;*/
-			}
-			/deep/ .el-table__fixed-right {
-				/*height: 620px !important;*/
-			}
-			/deep/ .el-table__row:nth-child(even) {
-				background: #EFF2F3;
-			}
-			/deep/ .el-table__row:nth-child(odd) {
-				background: #FFFFFF;
-			}
-			/deep/ .tab_radio {
-				height: 16px;
-				width: 16px;
-			}
-			/deep/ .action_radio {
-				height: 16px;
-				width: 16px;
-			}
 
-			/deep/ .cell:last-child {
-				span:first-child {
-					.action_radio {
-						margin-right: 20px;
-					}
-				}
-			}
-		}
 	}
 
 
