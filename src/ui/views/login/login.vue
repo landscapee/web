@@ -35,6 +35,7 @@
 </template>
 
 <script>
+    import {encryptedData} from '@/ui/lib/des-coder.js';
 
 import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';
@@ -130,9 +131,12 @@ export default {
 					this.loading = true;
 					removeToken();
 					request({
-						url:`${this.$ip}/sso/login/login`,
+						url:`${this.$ip}/sso/login/loginWithRsa`,
 						method: 'post',
-						data:this.loginForm,
+ 						data:{
+                            username:encryptedData(this.loginForm.username),
+                            password:encryptedData(this.loginForm.password),
+						},
 						headers: {
 							'Authorization':'' ,
 							'Accept': 'application/json',
@@ -180,7 +184,7 @@ export default {
 			});
 		},
 		openDialog(){
-			this.$refs['pwd'].open();
+			this.$refs['pwd'].open('',null);
 		},
 	},
 };

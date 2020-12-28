@@ -8,6 +8,7 @@
 					 label-position="left"
 					 style="text-align: center">
 				<el-form-item label="用户名" prop="name">
+
 					<el-input :disabled="user" v-model="pwdForm.name" key="12" placeholder="请输入用户名" type="text"
 							  auto-complete="off"></el-input>
 				</el-form-item>
@@ -40,6 +41,7 @@
 
 <script>
 	import request from '@lib/axios.js';
+    import {encryptedData} from '@/ui/lib/des-coder.js';
 
 	export default {
 		name: "updatePwd",
@@ -127,9 +129,9 @@
 							this.editPwd(this.user);
 						} else {
 							request({
-								url: `${this.$ip}/sso/login/login`,
+								url: `${this.$ip}/sso/login/loginWithRsa`,
 								method: 'post',
-								data: {username: this.pwdForm.name, password: this.pwdForm.oldPwd},
+								data: {username: encryptedData(this.pwdForm.name), password: encryptedData(this.pwdForm.oldPwd)},
 								headers: {
 									'Authorization': '',
 									'Accept': 'application/json',
@@ -156,8 +158,8 @@
 					method: 'post',
 					data: {
 						id: user.id,
-						oldPwd: this.pwdForm.oldPwd,
-						newPwd: this.pwdForm.newPwd
+ 						oldPwd: encryptedData(this.pwdForm.oldPwd),
+						newPwd: encryptedData(this.pwdForm.newPwd)
 					},
 					headers: {
 						'Authorization': user.token,
