@@ -134,19 +134,23 @@ import request from '@lib/axios.js';
 			this.$eventBus.$emit('infoPlate', 'receive');
 		},
 		logout(){
-		    let sessionId= localStorage.getItem('socketId');
-			this.$store.commit('user/SET_TOKEN','');
-			this.$store.commit('user/SET_ROLES',null);
-			this.$store.commit('user/SET_USER_INFO','');
-			removeToken();
-			removeUserInfo();
-            resetRouter();
-			this.$router.push({ path: '/' });
-			if(window.SOCKET){
-				window.SOCKET.close()
-				//清空socket对象
-				window.SOCKET = null
-			}
+			this.$confirm('是否确定退出？')
+				.then(()=>{
+					let sessionId= localStorage.getItem('socketId');
+					this.$store.commit('user/SET_TOKEN','');
+					this.$store.commit('user/SET_ROLES',null);
+					this.$store.commit('user/SET_USER_INFO','');
+					removeToken();
+					removeUserInfo();
+					resetRouter();
+					this.$router.push({ path: '/' });
+					if(window.SOCKET){
+						window.SOCKET.close()
+						//清空socket对象
+						window.SOCKET = null
+					}
+				});
+
 		},
 		onSpread(){
 			this.isOpen = !this.isOpen;
