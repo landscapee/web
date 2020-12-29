@@ -176,12 +176,12 @@
         },
         mounted() {
 
-            // window.addEventListener('resize', this.resizeOption1, true)
+            window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
-           // this.timer= setInterval(()=>{
-           //      this.resizeOption1()
-			// },50)
+           this.timer= setInterval(()=>{
+                this.resizeOption1()
+			},50)
         },
         methods: {
 
@@ -441,6 +441,21 @@
 			}
 		}
 		.headerTable {
+			::-webkit-scrollbar-thumb {
+				border-radius: 4px;
+				-webkit-box-shadow: inset 0 0 6px #fff;
+				background-color: #fff;
+
+			}
+			::-webkit-scrollbar-track {
+				border-radius: 4px;
+				-webkit-box-shadow: inset 0 0 6px #fff;
+				background-color: #fff;
+
+			}
+			::-webkit-scrollbar {
+				background-color: #fff;
+ 			}
 			/deep/ th {
 				.cell {
 					line-height: 1em
