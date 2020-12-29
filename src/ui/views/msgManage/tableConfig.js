@@ -29,7 +29,26 @@ export const warningSearchTable = () => {
         },align: 'center',sort:true,sortProp:"sendDate",search:{prop:'sendDate',type:'date',placeholder:"请选择日期"} },
         { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"source",search:{prop:'source',type:'input',placeholder:"请输入来源"} },
         { prop: 'content', label: '内容', align: 'center',search:{prop:'content',type:'input',placeholder:"请输入内容"} },
-        { slot: 'relationInfo', label: '操作' ,width:'80',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
+        { prop: 'state', label: '状态',width:'100', align: 'center',formatter: (row) => {
+                let str = '未确认';
+                switch (row.state) {
+                    case 0:
+                        str = '已关闭';
+                        break;
+                    case 1:
+                        str = '未确认';
+                        break;
+                    case 2:
+                        str = '已确认';
+                        break;
+                    case 3:
+                        str = '已处理';
+                        break;
+                }
+                return str;
+
+            },search:{prop:'state',type:'select',data:[{label:"未确认",value:'1'},{label:"已确认",value:'2'},{label:"已处理",value:'3'}],placeholder:"请选择"} },
+        { slot: 'relationInfo', label: '操作' ,width:'100',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
 export const warningSearchHistoryTable = () => {
@@ -41,6 +60,9 @@ export const warningSearchHistoryTable = () => {
         },align: 'center',sort:true,sortProp:"sendDate",search:{prop:'sendDate',type:'date',placeholder:"请选择日期"} },
         { prop: 'source', label: '来源', align: 'center',sort:true,sortProp:"source",search:{prop:'source',type:'input',placeholder:"请输入来源"} },
         { prop: 'content', label: '内容', align: 'center',search:{prop:'content',type:'input',placeholder:"请输入内容"} },
+        { prop: 'state', label: '状态', align: 'center',formatter: (row, column, cellValue) => {
+                return '已关闭';
+            }},
         { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 };
