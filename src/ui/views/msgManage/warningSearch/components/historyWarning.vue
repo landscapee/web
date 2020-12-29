@@ -1,12 +1,12 @@
 <template>
-        <div  class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>预警历史</span>
+        <div  class="QCenterRight G_listOne">
+            <div >
+                <div class="QHead">
+                    预警历史
                 </div>
-                <div class="top-toolbar"></div>
+
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"  :data="tableData" :tableConfig="tableConfig"  :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" >
                         <template slot-scope="{ row }">
@@ -39,7 +39,7 @@ export default {
 				current: 1,
 				size: 15,
             },
-            form:{state:1},
+            form:{stateList:[0]},
             sort:{},
             selectId:null
         };
@@ -81,22 +81,6 @@ export default {
             this.$refs.searchTable.$refs.body_table.setCurrentRow();
             this.params.current = 1;
             this.getList();
-        },
-        listenToCheckedChange(row, column, event){
-            let select = row.selected;
-            this.tableData.records.map(r =>{
-                if(r.selected){
-                    r.selected = false;
-                }
-            })
-            row.selected  = !select;
-            if(row.selected){
-                this.selectId = row.id;
-            }else{
-                this.selectId = null;
-            }
-            this.params.current = 1;
-            this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
             if(tag=='add'){
