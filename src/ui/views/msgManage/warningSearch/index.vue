@@ -18,11 +18,23 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" align='center' :width="80" >
-                        <template slot-scope="{ row }" v-if="row.state==0">
-                            <el-tooltip class="item" effect="dark" :enterable="false" content="已读" placement="top">
-                              <span @click="clickAction(row)" class="rowSvg">
-                                    <icon iconClass="finishRead"  ></icon>
+                    <el-table-column slot="relationInfo" align='center' :width="100" >
+                        <template slot-scope="{ row }">
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="确认" placement="top">
+                              <span @click="row.state===1?clickConfirm(row):''"
+                                    :class="row.state===1?'rowSvg':'rowSvg rowSvgInfo'">
+                                    <icon iconClass="finishRead"></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="处理" placement="top">
+                              <span @click="row.state===1||row.state===2 ?clickHandle(row):''"
+                                    :class="row.state===1||row.state===2 ?'rowSvg':'rowSvg rowSvgInfo'">
+                                    <icon iconClass="pass"></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="关闭" placement="top">
+                              <span @click="clickClose(row)" class="rowSvg">
+                                    <icon iconClass="nopass"></icon>
                                 </span>
                             </el-tooltip>
 
@@ -54,7 +66,7 @@ export default {
 				current: 1,
 				size: 15,
             },
-            form:{state:0},
+            form:{stateList:[1,2,3]},
             sort:{},
             selectId:null
         };
@@ -86,22 +98,52 @@ export default {
 
 			});
 		},
-        clickAction(row){
+        clickConfirm(row){
             request({
-                url:`${this.$ip}/mms-warning/warning/read/${row.id}`,
+                url:`${this.$ip}/mms-warning/warning/confirm/${row.id}`,
                 method: 'get',
             })
             .then((data) => {
-                this.$message.success("已读成功！");
+                this.$message.success("确认成功！");
                 this.findUnread();
                 this.getList();
             }).catch((error) => {
 
             });
         },
+        clickHandle(row){
+            request({
+                url:`${this.$ip}/mms-warning/warning/handle/${row.id}`,
+                method: 'get',
+            })
+                    .then((data) => {
+                        this.$message.success("处理成功！");
+                        this.findUnread();
+                        this.getList();
+                    }).catch((error) => {
+
+            });
+        },
+        clickClose(row){
+            request({
+                url:`${this.$ip}/mms-warning/warning/close/${row.id}`,
+                method: 'get',
+            })
+                    .then((data) => {
+                        this.$message.success("关闭成功！");
+                        this.findUnread();
+                        this.getList();
+                    }).catch((error) => {
+
+            });
+        },
         requestTable(searchData){
             this.form = searchData;
-            this.form.state = 0;
+             if (this.form.state){
+                 this.form.stateList=[this.form.state];
+             } else {
+                 this.form.stateList=[1,2,3];
+             }
             this.selectId=null;
             this.tableData={records:[]};
             this.params.current = 1;
@@ -138,7 +180,6 @@ export default {
             }else{
                 this.selectId = null;
             }
-            // this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
