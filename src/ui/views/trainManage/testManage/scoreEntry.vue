@@ -3,7 +3,7 @@
         <el-dialog title="分数录入"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
            <div style=" padding: 32px 61px 28px 61px; ">
                <el-form :model="form" ref="form" :rules="rules">
-                   <div style="margin-bottom: 20px;color:#000000;font-size: 16px">李梅 &nbsp;&nbsp;{{row.examName}}   &nbsp;&nbsp; 考分：</div>
+                   <div style="margin-bottom: 20px;color:#000000;font-size: 16px">{{row.employeeName}} &nbsp;&nbsp;{{row.examName}}   &nbsp;&nbsp; 考分：</div>
                    <el-form-item label="" prop="score">
                        <el-input v-model="form.score" type="number"></el-input>
                    </el-form-item>
