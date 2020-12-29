@@ -127,7 +127,7 @@ export default {
             //获取滚动元素标识
             var tag = bady.parentElement.__vue__.$parent.refTag;
             this.scroll = scrollTop;
-            if(scrollTop+windowHeight>=scrollHeight){
+            if(scrollTop+windowHeight+1>=scrollHeight){
                 if(tag=='left-table'){
                     this.leftParams.current = ++this.leftParams.current ;
                     this.getList('left','scroll');
