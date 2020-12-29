@@ -112,7 +112,7 @@
                 this.user = user;
 				if(user){
                     this.msg = msg;
-                   
+
                     this.pwdForm.name = user.userName;
 				}
 

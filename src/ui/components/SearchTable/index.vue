@@ -176,12 +176,12 @@
         },
         mounted() {
 
-            window.addEventListener('resize', this.resizeOption1, true)
+            // window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
-           this.timer= setInterval(()=>{
-                this.resizeOption1()
-			},50)
+           // this.timer= setInterval(()=>{
+           //      this.resizeOption1()
+			// },50)
         },
         methods: {
 
