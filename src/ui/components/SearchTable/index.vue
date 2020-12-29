@@ -198,7 +198,7 @@
                 let hs='header_table'+this.refTag||''
                 let body_table=document.getElementsByClassName(bs)[0]
                  let header_table=document.getElementsByClassName(hs)[0]
-                 if(!this.$refs.body_table){
+                 if(!this.$refs.body_table || !header_table){
                     return false
 				}
                 console.log(1, 1, 1);
