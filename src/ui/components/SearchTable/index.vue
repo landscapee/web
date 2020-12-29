@@ -1,8 +1,8 @@
 <template>
 
 	<div   class="searchTableWrapper" ref="componentTable" :key="$route.path">
-		<!--:height="noSearch?42:82"-->
-		<el-table  :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
+
+		<el-table :height="noSearch?42:82" :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
 				  @header-dragend="headerDragend"
 				  :show-header="true" :data="headerData"   ref="header_table" :row-key="getRowKeys" highlight-current-row
 				  tooltip-effect="dark" border>
@@ -176,12 +176,12 @@
         },
         mounted() {
 
-            // window.addEventListener('resize', this.resizeOption1, true)
+            window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
-           // this.timer= setInterval(()=>{
-           //      this.resizeOption1()
-			// },100)
+           this.timer= setInterval(()=>{
+                this.resizeOption1()
+			},50)
         },
         methods: {
 

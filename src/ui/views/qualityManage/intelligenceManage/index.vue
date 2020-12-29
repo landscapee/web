@@ -337,6 +337,9 @@
             handleScroll($event){
                 // 获取滚动条的dom
                 var bady = $event.target;
+                // if(bady.parentElement.getAttribute('class').includes('headerTable')){
+                //     return false
+                // }
                 // 获取距离顶部的距离
                 var scrollTop = bady.scrollTop;
                 // 获取可视区的高度

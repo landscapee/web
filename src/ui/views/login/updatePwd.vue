@@ -9,7 +9,7 @@
 					 style="text-align: center">
 				<el-form-item label="用户名" prop="name">
 
-					<el-input :disabled="user" v-model="pwdForm.name" key="12" placeholder="请输入用户名" type="text"
+					<el-input :disabled="isDis" v-model="pwdForm.name" key="12" placeholder="请输入用户名" type="text"
 							  auto-complete="off"></el-input>
 				</el-form-item>
 				<div>
@@ -50,16 +50,17 @@
 				if (value === '' || value === undefined) {
 					callback(new Error('请输入新密码'));
 				} else {
-					const reg = /^(?![\d]+$)(?![a-zA-Z]+$)(?![&*!,./@_]+$)[\da-zA-Z&*!,./@_]{6,16}$/;
+					const reg =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\da-zA-Z&*!./@]{8,16}$/ ;
+					// const reg = /^(?![\d]+$)(?![a-zA-Z]+$)(?![&*!./@]+$)[\da-zA-Z&*!./@]{8,16}$/;
 					console.log("正则-----" + reg.test(value));
 					if (reg.test(value)) {
 						callback();
 					} else {
-						this.$message({
-							type:'warning',
-							message: '密码必须由6-16位数字、字母和特殊字符（只包括&*!,./@_）至少两种组成',
-							duration: 5000
-						});
+						// this.$message({
+						// 	type:'warning',
+						// 	message: '密码必须由8-16位数字、大小写字母组成，可以包含特殊字符（&*!./@）',
+						// 	duration: 5000
+						// });
 						callback(new Error(' '));
 					}
 				}
@@ -73,6 +74,7 @@
 			};
 			return {
 				loading: false,
+				isDis: false,
 				showDialog: false,
 				pwdForm: {
 					name: '',
@@ -95,7 +97,7 @@
 						{required: true, message: '请输入旧密码', trigger: 'blur'},
 					],
 					newPwd: [
-						{required: true, validator: validatePass, trigger: 'blur'}
+						{required: true, validator: validatePass, trigger: 'change'}
 					],
 					confirmPwd: [
 						{required: true, validator: validatePass2, trigger: 'blur'}
@@ -106,9 +108,13 @@
 		methods: {
 			open(msg, user) {
 				this.showDialog = true;
-				this.msg = msg;
-				this.user = user;
-				this.pwdForm.name = user.userName;
+				this.isDis = user?true :false;
+				if(user){
+                    this.msg = msg;
+                    this.user = user;
+                    this.pwdForm.name = user.userName;
+				}
+
 			},
 			close() {
 				this.loading = false;
