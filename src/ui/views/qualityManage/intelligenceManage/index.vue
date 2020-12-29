@@ -348,7 +348,7 @@
                 var scrollHeight = bady.scrollHeight;
                 //获取滚动元素标识
                  var tag = bady.parentElement.__vue__.$parent.refTag;
-                 if(scrollTop+windowHeight>=scrollHeight){
+                 if(scrollTop+windowHeight+1>=scrollHeight){
 
                     if(tag=='TableLeft'){
                         if(this.leftParams.size!=18){
