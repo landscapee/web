@@ -13,11 +13,11 @@
 					<div><icon iconClass="remove" ></icon>删除</div>
 					<div><icon iconClass="info" ></icon>详情</div>
 					<div><icon iconClass="info" ></icon>导出Excel</div> -->
-					<div @click="type!='info'?submitForm('ruleForm'):()=>{}" :class="type=='info'?'isDisabled':''">
+					<div @click="type!='info'?submitForm('ruleForm'):()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
 						<icon iconClass="save"></icon>
 						保存
 					</div>
-					<div @click="type!='info'?resetForm('ruleForm'):()=>{}" :class="type=='info'?'isDisabled':''">
+					<div @click="type!='info'?resetForm('ruleForm'):()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
 						<icon iconClass="reset"></icon>
 						重置
 					</div>
