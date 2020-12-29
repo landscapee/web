@@ -338,12 +338,14 @@
 			},
 			fileUploadSuccessFn(response, file, fileList) {
 				if (response.code == 200) {
-					// this.$set(this.form,'fileName', response.data.fileName)
-					this.form.fileName = response.data.fileName
-					this.form.formats = response.data.fileSuffix
-					//this.form.folderId = response.data.id
-					this.form.fileUrl = response.data.filePath
-					this.form.size = file.size
+				
+					this.form={
+						...this.form,
+                        fileName:response.data.fileName,
+                        formats:response.data.fileSuffix,
+                        fileUrl:response.data.filePath,
+                        size:file.size,
+					}
 				} else {
 					this.$message({
 						showClose: true,

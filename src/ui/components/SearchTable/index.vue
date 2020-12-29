@@ -1,8 +1,8 @@
 <template>
 
 	<div   class="searchTableWrapper" ref="componentTable" :key="$route.path">
-		<!--:height="height"-->
-		<el-table   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
+		<!--:height="noSearch?42:82"-->
+		<el-table  :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
 				  @header-dragend="headerDragend"
 				  :show-header="true" :data="headerData"   ref="header_table" :row-key="getRowKeys" highlight-current-row
 				  tooltip-effect="dark" border>
@@ -115,10 +115,14 @@
 				</el-table-column>
 			</template>
 		</el-table>
-		<el-pagination v-if="data.current" background @size-change="handleSizeChange"
-					   @current-change="handleCurrentChange" :current-page="data.current"
-					   :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size"
-					   layout="total, sizes, prev, pager, next, jumper" :total="data.total"></el-pagination>
+		<div class="tablepage">
+			<el-pagination v-if="data.current" background @size-change="handleSizeChange"
+						   @current-change="handleCurrentChange" :current-page="data.current"
+						   :page-sizes="[1, 15, 20, 50, 100]" :page-size="data.size"
+						   layout="total, sizes, prev, pager, next, jumper" :total="data.total"></el-pagination>
+
+		</div>
+
 	</div>
 </template>
 <script>
@@ -134,8 +138,9 @@
         props: ['tableConfig', 'tableRowClassName', 'data', 'offsetTop', 'page', 'noSearch', 'refTag', 'spanMethod'],
         data() {
             return {
-                height:100,
-                resizeCallback: [],
+                  timer:null,
+                  timer1:null,
+                 resizeCallback: [],
                 headerData: [{}],
                 updateWidth: false,
             };
@@ -174,30 +179,21 @@
             // window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
-            // this.resizeOption1()
+           // this.timer= setInterval(()=>{
+           //      this.resizeOption1()
+			// },100)
         },
         methods: {
-            resizeOption(){
-                let len =this.data.length||this.data.length||this.data.records&&this.data.records.length
-                let bs='body_table'+this.refTag||''
-                let hs='header_table'+this.refTag||''
-                let body_table=document.getElementsByClassName(bs)[0]
-                let header_table=document.getElementsByClassName(hs)[0]
 
-                 if(!this.$refs.body_table){
-                    return false
-				}
-
- 				let tr=body_table.getElementsByClassName('el-table__row')[0]
-                console.log(1,len,header_table.clientHeight, );
-                 if(tr&&tr.clientHeight*len>parseFloat(body_table.clientHeight)){
-                     // header_table.style.cssText='height:81px;overflow-y:hidden;'
-                }else{
-                     // header_table.style.cssText='height:82px;overflow-y:hidden;'
-				 }
-            },
 			resizeOption1(){
                 let len =this.data.length||this.data.length||this.data.records&&this.data.records.length
+               if(!len){
+ 				   return false
+			   }
+			   if(this.timer){
+                   clearInterval(this.timer)
+				   this.timer=null
+			   }
                 let bs='body_table'+this.refTag||''
                 let hs='header_table'+this.refTag||''
                 let body_table=document.getElementsByClassName(bs)[0]
@@ -205,24 +201,19 @@
                  if(!this.$refs.body_table){
                     return false
 				}
-				let _this = this
-                this.$nextTick(()=>{
+                console.log(1, 1, 1);
+                  this.$nextTick(()=>{
                     let tr=header_table.getElementsByClassName('el-table__row')[0]
-                    let mainTable=header_table.getElementsByClassName('mainTable')[0]
-					let hHeight=header_table.clientHeight+1
-                     console.log(1,tr.clientHeight,header_table.clientHeight, );
-
-                    if(tr){
-                        _this.height=tr.clientHeight*len + 20
-                        // console.log(tr.clientHeight * len + 20);
-                        if(mainTable){
-                            // mainTable.style.cssText=`marginTop:${header_table.clientHeight-tr.clientHeight*len}`
-
-                        }
-                        if( tr.clientHeight*len>parseFloat(body_table.clientHeight)){
-                            // header_table.style.cssText=`height:${hHeight}px;overflow-y:hidden;`
+                       console.log(1,tr.clientHeight,header_table.clientHeight, );
+                    let num= this.noSearch?1:2
+					let hHeight= tr.clientHeight*num +2
+					let thHeight= tr.clientHeight*num +1
+                     if(tr){
+                         if( tr.clientHeight*len>parseFloat(body_table.clientHeight)){
+                             header_table.style.cssText=`height:${thHeight}px;overflow-y:hidden;`
+                            this.$refs.body_table.doLayout();
                         }else{
-                            // header_table.style.cssText='height:82px;overflow-y:hidden;'
+                            header_table.style.cssText=`height:${hHeight}px;overflow-y:hidden`
                         }
 					}
 
@@ -358,8 +349,6 @@
 
 <style lang="scss" scoped>
 	.mainTable {
-		// height: 600px;
-		/*margin-top: -20px!important;*/
 		overflow-y: auto;
 		border-top: 0px;
 		/deep/ .current-row > td {
@@ -396,12 +385,14 @@
 	}
 
 	.searchTableWrapper {
+
 		/deep/ .tableSort {
 			fill: #222;
 		}
 		/deep/ .tableSort:hover {
 			fill: #eee;
 		}
+
 		/deep/ .el-pagination {
 			text-align: center;
 			margin-top: 20px;
@@ -460,11 +451,24 @@
 			}
 			/deep/ .el-table__fixed {
 				height: 80px !important;
+				background: #EFF2F3;
+				border-right: 1px #C7CCD2 solid;
+				td{
+					border-bottom: 0;
+				}
 			}
 			/deep/ .el-table__fixed-right {
 				height: 80px !important;
+				background: #EFF2F3;
+				border-right: 1px #C7CCD2 solid!important;
+			}
+			/deep/ .el-table__fixed-body-wrapper{
+				height: 40px!important;
 			}
 			/deep/ .el-table__body-wrapper {
+				td{
+					border-bottom: 0;
+				}
 				overflow-x: hidden;
 			}
 			/deep/ .el-table__row {

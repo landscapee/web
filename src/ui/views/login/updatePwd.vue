@@ -114,8 +114,7 @@
 				this.loading = false;
 				this.showDialog = false;
 				this.pwdForm = {};
-				this.pwdRules = {};
-			},
+ 			},
 			handleUpdatePwd() {
 				this.$refs.pwdForm.validate(valid => {
 					if (valid) {
@@ -124,6 +123,7 @@
 							return;
 						}
 						this.loading = true;
+						let obj={...this.pwdForm}
 						if (this.user) {
 							//登录后返回长时间未修改密码跳转过来的
 							this.editPwd(this.user);
@@ -131,7 +131,7 @@
 							request({
 								url: `${this.$ip}/sso/login/loginWithRsa`,
 								method: 'post',
-								data: {username: encryptedData(this.pwdForm.name), password: encryptedData(this.pwdForm.oldPwd)},
+								data: {username: encryptedData(obj.name), password: encryptedData(obj.oldPwd)},
 								headers: {
 									'Authorization': '',
 									'Accept': 'application/json',
@@ -153,13 +153,14 @@
 				})
 			},
 			editPwd(user) {
+                let obj={...this.pwdForm}
 				request({
 					url: `${this.$ip}/sys/user/changeUserPwd`,
 					method: 'post',
 					data: {
 						id: user.id,
- 						oldPwd: encryptedData(this.pwdForm.oldPwd),
-						newPwd: encryptedData(this.pwdForm.newPwd)
+ 						oldPwd: encryptedData(obj.oldPwd),
+						newPwd: encryptedData(obj.newPwd)
 					},
 					headers: {
 						'Authorization': user.token,

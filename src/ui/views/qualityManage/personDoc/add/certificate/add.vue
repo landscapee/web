@@ -175,7 +175,7 @@
                 }
             },
             focus(val){
-                let e=new Date(this.form.endTime)
+                let e=new Date(this.form.endTime ||new Date())
                 let s=new Date(this.form.startTime)
                 let t=new Date()
 
@@ -189,7 +189,7 @@
                 };
             } ,
             focus1(val){
-                let e=new Date(this.form.endTime)
+                let e=new Date(this.form.endTime )
                 let s=new Date(this.form.startTime)
                 let t=new Date()
                 this.pickerOptions1 = {
