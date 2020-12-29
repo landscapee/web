@@ -56,12 +56,12 @@
 					if (reg.test(value)) {
 						callback();
 					} else {
-						// this.$message({
-						// 	type:'warning',
-						// 	message: '密码必须由8-16位数字、大小写字母组成，可以包含特殊字符（&*!./@）',
-						// 	duration: 5000
-						// });
-						callback(new Error(' '));
+						this.$message({
+							type:'warning',
+							message: '密码必须由8-16位数字、大小写字母组成，可以包含特殊字符（&*!./@）',
+							duration: 5000
+						});
+						callback(new Error(' 密码不符合要求'));
 					}
 				}
 			};
@@ -97,7 +97,7 @@
 						{required: true, message: '请输入旧密码', trigger: 'blur'},
 					],
 					newPwd: [
-						{required: true, validator: validatePass, trigger: 'change'}
+						{required: true, validator: validatePass, trigger: 'blur'}
 					],
 					confirmPwd: [
 						{required: true, validator: validatePass2, trigger: 'blur'}
@@ -109,9 +109,10 @@
 			open(msg, user) {
 				this.showDialog = true;
 				this.isDis = user?true :false;
+                this.user = user;
 				if(user){
                     this.msg = msg;
-                    this.user = user;
+                   
                     this.pwdForm.name = user.userName;
 				}
 
