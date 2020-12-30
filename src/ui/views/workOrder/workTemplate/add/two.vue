@@ -271,7 +271,7 @@
     /*@import "@/ui/styles/common_list.scss";*/
 
     /deep/ .mainTable{
-        height: calc(100vh - 380px);
+        height: calc(100vh - 380px)!important;
         overflow: auto;
          .current-row > td {
             background-color: inherit!important;
