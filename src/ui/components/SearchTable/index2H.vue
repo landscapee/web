@@ -356,7 +356,7 @@
 			border-top: 0px;
 
 			/deep/ .current-row > td {
-				background-color: #A0CBF6;
+				background-color: #A0CBF6!important;
 			}
 			/deep/ .el-table__row{
 				background: #EFF2F3;

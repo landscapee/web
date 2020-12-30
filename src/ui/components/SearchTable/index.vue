@@ -196,13 +196,17 @@
             window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
+            if (this.timer) {
+                clearInterval(this.timer)
+                this.timer = null
+            }
             this.timer = setInterval(() => {
                 this.resizeOption1()
             }, 50)
             setTimeout(()=>{
                 clearInterval(this.timer)
                 this.timer = null
-            },10*1000)
+            },3000)
         },
         methods: {
 

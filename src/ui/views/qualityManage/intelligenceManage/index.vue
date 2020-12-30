@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div  :key="key">
         <router-view v-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/addQualificationsDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserDoc'" :key="$route.path"></router-view>
@@ -107,7 +107,7 @@
         name: '',
         data() {
             return {
-
+                key:true,
                 getGet:get,
                 tableLeftData:{records:[ ], },
                 tableRightData:{records:[] },
@@ -145,16 +145,19 @@
             '$route':function(val,nm){
                  console.log(1,val,nm);
                 if(val.path=='/intelligenceManage'&&nm.path=='/addQualifications'){
+                    this.key=!this.key
                     this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
                 }else if(val.path=='/intelligenceManage'&&nm.path=='/addQualificationsDetails'){
+                    this.key=!this.key
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
                     this.getList('right');
                     // this.toFrom=nm.query.type
                 }else if(val.path=='/intelligenceManage'){
-                    this.leftParams.size=18
+                    this.key=!this.key
+                     this.leftParams.size=18
                     this.leftParams.current=1
                     this.rightParams.current = 1
                     this.leftRow={}
@@ -170,6 +173,7 @@
             }
         },
         created() {
+            console.log(1);
             if(this.$router.history.current.path == '/intelligenceManage'){
                 this.leftParams.current = 1;
                 this.getList('left');
@@ -427,7 +431,7 @@
 
                     if(row.selected){
                         this.leftSelectId = row.id;
-                        this.leftRow={...row}
+                        this.leftRow=row
                         this.rightSelectId = null;
 
                     }else{
@@ -441,7 +445,7 @@
 
                     if(row.selected){
                         this.rightSelectId = row.id;
-                        this.rightRow={...row}
+                        this.rightRow=row
                     }else{
                         this.rightSelectId = null;
                     }
@@ -464,10 +468,10 @@
                         params:{...this.leftParams}
                     })
                         .then((d) => {
-                            if(d.data&& d.data.records){
+                             if(d.data&& d.data.records){
                                 d.data.records.map((k,l)=>{
                                     if(k.id==this.leftSelectId){
-                                        k.selected=true
+                                         k.selected=true
                                         this.leftRow=k
                                     }
                                 })
@@ -480,7 +484,9 @@
                                     this.leftParams.current = --this.leftParams.current;
                                 }
                             }
-
+                            if( this.leftRow){
+                                this.$refs.TableLeft.$refs.body_table.setCurrentRow( this.leftRow)
+                            }
 
                         })
                 }else{
@@ -507,6 +513,13 @@
 
                                 }
                                 this.tableRightData.records = d.data
+                                if( this.leftRow){
+                                    this.$refs.TableLeft.$refs.body_table.setCurrentRow( this.leftRow)
+                                }
+                                if( this.rightRow){
+                                    this.$refs.TableRight.$refs.body_table.setCurrentRow( this.rightRow)
+                                }
+
                             })
                     }
                 }

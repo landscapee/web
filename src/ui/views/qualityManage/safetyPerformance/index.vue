@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div :key="key">
           <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceYear'" :key="$route.path"></router-view>
@@ -98,6 +98,7 @@
         name: '',
         data() {
             return {
+                key:true,
                 tableLeftData:{records:[]},
                 tableRightData:{records:[]},
                 businessTableConfig:safetyConfig({}),
@@ -124,14 +125,17 @@
             '$route':function(val,nm){
                  console.log(1,val.path,nm.path);
                 if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceAdd'){
+                    this.key=!this.key
                      this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
                 }else if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceDetailsAdd'){
+                    this.key=!this.key
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
                     this.getList('right');
                 }else if(val.path=='/safetyPerformance'){
+                    this.key=!this.key
                     this.leftParams.size=18;
                     this.leftParams.current=1;
                     this.rightParams.current = 1;
@@ -308,7 +312,7 @@
                         this.leftSelectId = row.id;
                         this.rightSelectId = null;
 
-                        this.leftRow={...row}
+                        this.leftRow=row
                     }else{
 
                         this.leftRow={}
@@ -321,7 +325,7 @@
                 }else{
                     if(row.selected){
                         this.rightSelectId = row.id;
-                        this.rightRow={...row}
+                        this.rightRow=row
                     }else{
                         this.rightSelectId = null;
                     }
@@ -446,7 +450,9 @@
                             if(scroll && data.data.records.length==0){
                                 this.leftParams.current = this.leftParams.current-1;
                             }
-
+                            if( this.leftRow){
+                                this.$refs['left-table'].$refs.body_table.setCurrentRow( this.leftRow)
+                            }
                         }).catch((error) => {
 
                     });
@@ -478,7 +484,12 @@
                                     this.rightParams.current = --this.rightParams.current;
                                 }
                             // this.rightParams.current=data.data.current
-
+                            if( this.leftRow){
+                                this.$refs['left-table'].$refs.body_table.setCurrentRow( this.leftRow)
+                            }
+                            if( this.rightRow){
+                                this.$refs['right-table'].$refs.body_table.setCurrentRow( this.rightRow)
+                            }
                         }).catch((error) => {
 
                         });
