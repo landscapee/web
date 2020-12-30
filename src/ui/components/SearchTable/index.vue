@@ -382,6 +382,9 @@
         /deep/ .current-row > td {
             background-color: #A0CBF6;
         }
+		/deep/ .current-row:hover > td {
+            background-color: #A0CBF6;
+        }
         /deep/ .el-table__fixed {
             /*height: 620px !important;*/
         }
