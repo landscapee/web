@@ -5,10 +5,10 @@
         <span>系统参数值-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
