@@ -247,15 +247,14 @@
                         }else{
                             this.$message.info('请添加数据')
                         }
-
                     })
-
                 },
 
             getInfo( ){
                 request({
                     url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
                     method: 'get',
+
                 }).then((d) => {
                     if(d.code==200){
                         this.tableData=d.data.baseItemVOList
