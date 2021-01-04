@@ -50,11 +50,20 @@ let authRoutes = [
                                 meta: {	title: '证书新增',	icon: ''	},
                                 hidden:true,
 
-                            },{
+                            },
+                            {
                                 path: '/unsafeAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
                                 name: '不安全事件及诚信记录新增',
                                 meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
+                                hidden:true,
+
+                            },
+                            {
+                                path: '/workStyle',
+                                component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
+                                name: '作风建设量化考核记录新增',
+                                meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
                                 hidden:true,
 
                             },
@@ -106,7 +115,8 @@ let authRoutes = [
 					},
                     {
                         path: '/ZuserDoc',
-                        component: () => import('@views/qualityManage/components/userDoc/index'),
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
+                        // component: () => import('@views/qualityManage/components/userDoc/index'),
                         name: '员工档案',
                         meta: {	title: '员工档案',	icon: ''	},
                         hidden:true
@@ -149,7 +159,8 @@ let authRoutes = [
                     },
                     {
                         path: '/SuserDoc',
-                        component: () => import('@views/qualityManage/components/userDoc/index'),
+                        component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
+                        // component: () => import('@views/qualityManage/components/userDoc/index'),
                         name: '员工档案',
                         meta: {	title: '员工档案',	icon: ''	},
                         hidden:true

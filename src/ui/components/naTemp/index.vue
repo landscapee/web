@@ -84,7 +84,8 @@
 </script>
 
 <style scoped lang="scss">
+
     .cursor1:hover {
-        cursor: pointer;
+         cursor: pointer;
     }
 </style>

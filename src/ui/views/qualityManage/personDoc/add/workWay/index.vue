@@ -1,18 +1,37 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/workStyle'" :key="$route.path"></router-view>
 
-        <div   class="sysParameter" v-else>
-            <div class="top-content">
-                <div class="top-content-title">
-                    <span>证书</span>
+        <div   class="G_listOne  " v-else>
+            <div class="QCenterRight personTable">
+                <div class="QHead QHead1 ">
+                    作风建设量化考核记录
                 </div>
-                <div class="top-toolbar ">
-                        <!--<div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"><icon iconClass="info" ></icon></div>-->
-                 </div>
+                <div class="QheadRight ">
+                    <div v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="新增" placement="top">
+                            <icon iconClass="add"></icon>
+                        </el-tooltip>
+                    </div>
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
+                            <icon iconClass="edit"></icon>
+                        </el-tooltip>
+                    </div>
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
+                            <icon iconClass="remove"></icon>
+                        </el-tooltip>
+                    </div>
+                    <div  @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'">
+                        <el-tooltip class="item" effect="dark" :enterable="false" content="详情" placement="top">
+                            <icon iconClass="info"></icon>
+                        </el-tooltip>
+                    </div>
+                </div>
             </div>
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable :noSearch="true" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49"  >
                         <template slot-scope="{ row }">
@@ -29,7 +48,7 @@
 <script>
 import SearchTable from '@/ui/components/SearchTable';
  import Icon from '@components/Icon-svg/index';
-import { inOfficeInfoConfig } from './tableConfig.js';
+import { workWayConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend ,map} from 'lodash';
 export default {
@@ -38,10 +57,10 @@ export default {
         SearchTable
 	},
     name: '',
-    props:['type','id','tableData'],
+    props:['type','id','tableData','userId'],
     data() {
         return {
-             tableConfig:inOfficeInfoConfig({},{}),
+             tableConfig:workWayConfig({},{}),
             params:{
 				current: 1,
 				size: 15,
@@ -106,12 +125,12 @@ export default {
         },
         addOrEditOrInfo(tag){
              if(tag=='add'){
-                this.$router.push({path:'/certificateAdd',query:{type:'add',rId:this.id+','+this.type}});
+                this.$router.push({path:'/workStyle',query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/certificateAdd',query:{type:tag,rId:this.id+','+this.type,id:this.selectId}});
+                     this.$router.push({path:'/workStyle',query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
                 }
             }
         },
@@ -126,15 +145,15 @@ export default {
                 })
                     .then(() => {
                         request({
-                             url:`${this.$ip}/mms-qualification/certificateInf/delete/`+this.selectId,
+                             url:`${this.$ip}/mms-qualification/styleInf/delete/`+this.selectId,
                             method: 'delete',
                          })
                             .then((data) => {
-                              if(data.code==200){
-                                  this.$emit('getInfo')
-                                  this.selectId   = null;
-                                  this.$message({type: 'success',message: '删除成功'});
-                              }
+                             if(data.code==200){
+                                 this.$emit('getInfo')
+                                 this.selectId   = null;
+                                 this.$message({type: 'success',message: '删除成功'});
+                             }
                             })
                     })
                     .catch(() => {
@@ -182,37 +201,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss"; 
-.sysParameter{
-    margin-top:14px;
-.top-toolbar{
-    margin-top: 10px;
-    .G_isDisabled{
-        &>svg{
-            margin: 0;
-        }
+    .tableOneBox /deep/ .mainTable{
+        height:300px !important;
+        overflow: auto;
     }
-   &>div{
-       font-size: 20px;
-       border: 0;
-       margin: 0 0 0 12px;
-   }
-    &>div:last-child{
-       margin: 0 0 0 12px;
-   }
-}
-    .copyButton{
-        margin: 0;
-        padding:7px 10px;
-        background: black;
-        color:white;
-    }
-    .copyButton1{
-        margin-right: 3px;
-    }
-}
-/deep/ .mainTable{
-    height: 300px;
-    overflow: auto;
-}
 </style>

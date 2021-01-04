@@ -9,6 +9,7 @@
         <router-view v-else-if="this.$router.history.current.path == '/userQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/userAuth'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/userTrain'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/workStyle'" :key="$route.path"></router-view>
          <div v-else-if="this.$router.history.current.path == '/personDoc'" :key="$route.path"
               class="QCenterRight G_listOne">
             <div  >
@@ -189,7 +190,7 @@
                     if(this.selectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
-                        this.$router.push({path:'/addPersonDoc',query:{type:tag,id:this.row.id}});
+                        this.$router.push({path:'/addPersonDoc',query:{type:tag,id:this.row.id,userId:this.row.userId}});
                     }
                 }
             },

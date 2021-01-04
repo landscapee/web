@@ -255,7 +255,7 @@
 
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row.userId}});
+                this.$router.push({path:path,query:{ userId:row.userId,type:'info'}});
 
             },
             //左侧表格新增编辑
