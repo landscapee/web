@@ -65,7 +65,6 @@ let authRoutes = [
                                 name: '作风建设量化考核记录新增',
                                 meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
                                 hidden:true,
-
                             },
 
                         ]

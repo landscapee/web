@@ -284,7 +284,8 @@ export default {
         }
         .spanA{
             a{
-                text-decoration: none;
+                color:#3888ff;
+                 text-decoration: none;
             }
         }
     }

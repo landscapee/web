@@ -96,7 +96,7 @@
                 this.$router.currentRoute.matched[2].meta.paramsId = {
                     id: arr[0],
                     type: arr[1],
-                    userId: arr(',')[2]
+                    userId: arr[2]
                 }
                  this.$router.currentRoute.matched[2].meta.title =
                     this.$route.query.rId.split(',')[1] == "add"
