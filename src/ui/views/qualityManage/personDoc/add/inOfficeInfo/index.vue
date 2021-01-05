@@ -125,13 +125,20 @@ export default {
             this.$set(this.tableData,row.index,row);
         },
         addOrEditOrInfo(tag){
+            let s='/'
+            if(this.$route.path=='/ZuserDoc'){
+                s='/Z'
+            }else if(this.$route.path=='/SuserDoc'){
+                s='/S'
+            }
+            let p=s+'inOfficeInfoAdd'
              if(tag=='add'){
-                this.$router.push({path:'/inOfficeInfoAdd',query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
+                this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/inOfficeInfoAdd',query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
+                     this.$router.push({path:p,query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
                 }
             }
         },

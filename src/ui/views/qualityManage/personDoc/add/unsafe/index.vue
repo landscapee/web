@@ -1,7 +1,7 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/unsafeAdd'" :key="$route.path"></router-view>
 
         <div   class="G_listOne" v-else>
             <div class="QCenterRight personTable">
@@ -143,13 +143,20 @@ export default {
             this.$set(this.tableData,row.index,row);
         },
         addOrEditOrInfo(tag){
+            let s='/'
+            if(this.$route.path=='/ZuserDoc'){
+                s='/Z'
+            }else if(this.$route.path=='/SuserDoc'){
+                s='/S'
+            }
+            let p=s+'unsafeAdd'
              if(tag=='add'){
-                this.$router.push({path:'/unsafeAdd',query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
+                this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/unsafeAdd',query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
+                     this.$router.push({path:p,query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
                 }
             }
         },

@@ -206,7 +206,7 @@
             setTimeout(()=>{
                 clearInterval(this.timer)
                 this.timer = null
-            },3000)
+            },2000)
         },
         methods: {
 

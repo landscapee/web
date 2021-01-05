@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<router-view v-if="this.$router.history.current.path == '/inOfficeInfoAdd'" :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'"
+  		<router-view v-if="this.$route.path ==getUrl('inOfficeInfoAdd')" :key="$route.path"></router-view>
+		<router-view v-else-if="this.$route.path == getUrl('workExperienceAdd')"
 					 :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/certificateAdd'"
+		<router-view v-else-if="this.$route.path == getUrl('certificateAdd')"
 					 :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/workStyle'" :key="$route.path"></router-view>
+		<router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
+		<router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
 		<div class="addPersonDoc" ref="export" style="width: 100%;" v-else>
 			<div class="QCenterRight" style="margin-right: 30px">
 				<div class="QHead">
@@ -400,10 +400,24 @@
 				sexOptions: [{value: "男", label: "男"}, {value: "女", label: "女"}]
 			};
 		},
+		computed:{
+		  getUrl(){
+              return (p)=>{
+                  let s='/'
+                  if(this.$route.path.startsWith('/Z')){
+                      s='/Z'
+                  }else if(this.$route.path.startsWith('/S')){
+                      s='/S'
+                  }
+                  return s+p
+			  }
+		  },
+		},
 		mounted() {
             eleDateShow()
             inputLength(this)
-		},
+            console.log(2,1,2,3,this.$route.path , this.getUrl('inOfficeInfoAdd'));
+        },
 		created() {
             if (this.$route.path == '/addPersonDoc'||this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'){
                 this.initPage()

@@ -1,6 +1,12 @@
 <template>
     <div  :key="key">
-        <router-view v-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path ==getUrl('inOfficeInfoAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('workExperienceAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('certificateAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
+
+        <router-view v-else-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/addQualificationsDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserDoc'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserAuth'" :key="$route.path"></router-view>
@@ -105,6 +111,15 @@
             SearchTable,UpDocInfo
         },
         name: '',
+        computed:{
+            getUrl(){
+                return (p)=>{
+                    let s='/Z'
+
+                    return s+p
+                }
+            },
+        },
         data() {
             return {
                 key:true,
