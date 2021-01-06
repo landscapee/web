@@ -1,6 +1,6 @@
 <template>
 	<div class="seeConfig">
-		<div class="seeTitle">
+ 		<div class="seeTitle">
 			实时预览：
 			<div v-if="!show" @click="showZ">显示占位符</div>
 			<div v-else @click="showZ">隐藏占位符</div>
@@ -224,6 +224,7 @@
 
 <script>
     import request from '@lib/axios.js';
+    import {debounce} from '@lib/tools.js';
     import {extend, map, get, filter} from "lodash";
 
     export default {
@@ -389,14 +390,54 @@
                     })
                     this.contentVOList = [...arr]
                 }
+                this.$nextTick(()=>{
+                    let arr=document.querySelectorAll("input[inputtype]")
+					for(let i=0;i<arr.length;i++){
+                        let type=arr[i].getAttribute('inputtype')
+                        arr[i].addEventListener('input',($event)=>{this.inputTypeC( type,$event)})
+                        arr[i].addEventListener('blur',($event)=>{this.inputTypeBlur( type,$event)})
+                    }
+                })
+            },
+            inputTypeBlur(type,e){
+                if(e.target.value===''){
+                    return false
+                }
+                let value= e.target.value
+                let reg=/^((-\d+)|(\d+))(\.?\d+)?$/g
+                let blo=reg.test(e.target.value)
+				if(!blo){
+                     e.target.value= value.split('.')[0]
+                    this.$message.warning('以为您自动过滤尾部‘.’')
+                }
+
+            },
+            inputTypeC(type,e){
+                if(e.target.value===''){
+                    return false
+				}
+				let value= e.target.value
+                let reg = /([^(\d|\-)])?(-)?(\d{1,})?([^(\.|\d)]+)?(\.)?([^(\.|\d)]+)?(\d{0,})?([^\d]{0,})?/g;
+
+                let reg1=/^(-|\d)(\d{0,})(\.?)?(\d+)?$/g
+                let blo=reg1.test(e.target.value)
+                e.target.value= value.replace(reg,'$2$3$5$7')
+
+                if(!blo){
+                        debounce(()=>{
+                        this.$message.warning('只能输入数字')
+                    },300)()
+                }
             },
         },
+		mounted(){
+
+		},
         created() {
             if (this.$route.query.id) {
                 this.getInfo()
             }
             console.log(this.form);
-
         },
     }
 </script>

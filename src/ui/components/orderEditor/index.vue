@@ -312,7 +312,7 @@ export default {
             let d=new Date()
             let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-            editor.insertHtml('<input type="text"   v-model="formContent[$$$'+num+'input'+ _this.inputIndex +']" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
+            editor.insertHtml('<input type="text"   inputtype="num" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
         })
     })
 
@@ -511,6 +511,9 @@ body{
     })
   },
   methods:{
+        addInput(){
+
+        },
         addConfirmFn(val, form){
             let className=''
             let type=form.type
@@ -544,8 +547,8 @@ body{
                 let d=new Date()
                 let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
 
-                return `<input type='checkbox'  eType='${obj[type]}' class='${className}'
-                    v-model='${'formContent[$$$'+num+'_'+obj[type]+this.inputIndex+']'}'
+                return `<input type='checkbox' inputType="number" eType='${obj[type]}' class='${className}'
+
                     id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' name='${'$$$'+num+'_'+obj[type]
                      +this.inputIndex}' /> ${type==3?'N/A':i.value} `
             })

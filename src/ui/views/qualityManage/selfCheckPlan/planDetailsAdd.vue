@@ -19,7 +19,11 @@
                 <div></div>
 
                 <div class="row_custom">
-                    <el-form-item label="序号：" :prop="type=='add'?'number':''">
+                    <el-form-item v-if="type=='add'" class="infoItem" label="序号：" prop="number">
+                        <span v-if="type=='info'">{{form.number}}</span>
+                        <el-input v-else :disabled="type=='edit'" v-model="form.number" placeholder="请输入序号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="序号：" v-else>
                         <span v-if="type=='info'">{{form.number}}</span>
                         <el-input v-else :disabled="type=='edit'" v-model="form.number" placeholder="请输入序号"></el-input>
                     </el-form-item>
@@ -136,7 +140,7 @@
                         if (!response.data) {
                             callback();
                         } else {
-                            callback("该序号已存");
+                            callback("该序号已存在");
                         }
                     });
                 }
@@ -145,7 +149,7 @@
                 moment:moment,
                 form: {checkMethod:[]},
                 rules: {
-                    number: [{validator:infNumberIs, trigger: "blur" }],
+                    number: [{validator:infNumberIs,required:true, trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
                  },
                 options:{},
@@ -302,6 +306,11 @@
                     width: calc(100% - 165px);
                 }
             }
+        }
+    }
+    .infoItem{
+        /deep/ .el-form-item__label{
+            padding-left: 58px!important;
         }
     }
 </style>
