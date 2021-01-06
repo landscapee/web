@@ -1,6 +1,7 @@
 <template>
   <div class="kindeditor">
     <textarea :id="id" name="content" v-model="outContent"></textarea>
+    <AddInput ref='AddInput' @addConfirmFn='AddInput'></AddInput>
     <add-radio-dialog ref='addRadioDialog' @addConfirmFn='addConfirmFn'></add-radio-dialog>
   </div>
 </template>
@@ -10,12 +11,13 @@
 import '../../../../node_modules/kindeditor/lang/zh-CN.js'
 import '../../../../node_modules/kindeditor/themes/default/default.css'
 import addRadioDialog from './addRadioDialog.vue';
+import AddInput from './addInput.vue';
 function newSignFn(){
     alert("333")
 }
 export default {
     components:{
-        addRadioDialog
+        addRadioDialog,AddInput
     },
     name: 'kindeditor',
     data () {
@@ -308,12 +310,8 @@ export default {
     KindEditor.plugin('inpt', function(K) {
         var editor = this, name = 'inpt';
         editor.clickToolbar(name, function() {
-            _this.inputIndex+=1
-            let d=new Date()
-            let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
-
-            editor.insertHtml('<input type="text"   inputtype="num" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
-        })
+            _this.$refs.AddInput.open('input')
+            })
     })
 
     // 多选
@@ -511,9 +509,15 @@ body{
     })
   },
   methods:{
-        addInput(){
 
-        },
+      AddInput(type){
+          let _this=this
+          _this.inputIndex+=1
+          let d=new Date()
+          let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
+          this.editor.insertHtml('<input type="text"   inputtype="'+type+'" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
+
+         },
         addConfirmFn(val, form){
             let className=''
             let type=form.type
