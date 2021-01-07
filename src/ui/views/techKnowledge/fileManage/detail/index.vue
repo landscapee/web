@@ -274,11 +274,17 @@ export default {
         },
         headerSort(column){
             this.sort = {}
-            console.log(column)
-            this.sort = {
-                order:`${column['property']},${column.order==='desc'?'0':'1'}`
+            let num =null
+            if(column.order=='desc'){
+                num=0
+            }else if(column.order=='asc'){
+                num=1
+            }else{
+                num=2
             }
-            //this.sort[column.property] = column.order
+            if(num!=2){
+                this.sort['order'] = column.property+','+num;
+            }
             this.$refs.searchTable.$refs.body_table.setCurrentRow()
             this.params.current = 1
             this.getList()
