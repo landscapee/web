@@ -1,11 +1,12 @@
 <template>
 	<div>
-		<router-view v-if="this.$router.history.current.path == '/inOfficeInfoAdd'" :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'"
+  		<router-view v-if="this.$route.path ==getUrl('inOfficeInfoAdd')" :key="$route.path"></router-view>
+		<router-view v-else-if="this.$route.path == getUrl('workExperienceAdd')"
 					 :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/certificateAdd'"
+		<router-view v-else-if="this.$route.path == getUrl('certificateAdd')"
 					 :key="$route.path"></router-view>
-		<router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
+		<router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
+		<router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
 		<div class="addPersonDoc" ref="export" style="width: 100%;" v-else>
 			<div class="QCenterRight" style="margin-right: 30px">
 				<div class="QHead">
@@ -333,14 +334,16 @@
 						</tr>
 					</table>
 					<div style="width:1160px">
-						<InOfficeInfo @getInfo="getInfo" :type="type" :tableData="form.positionInfList||[]"
+						<InOfficeInfo @getInfo="getInfo" :type="type" :userId="this.form.userId" :tableData="form.positionInfList||[]"
 									  :id="this.$route.query.id"></InOfficeInfo>
-						<WorkExperience @getInfo="getInfo" :type="type" :tableData="form.workInfList||[]"
+						<WorkExperience @getInfo="getInfo" :type="type" :userId="this.form.userId" :tableData="form.workInfList||[]"
 										:id="this.$route.query.id"></WorkExperience>
-						<Certificate @getInfo="getInfo" :type="type" :tableData="form.certificateInfList||[]"
+						<Certificate @getInfo="getInfo" :type="type" :userId="this.form.userId" :tableData="form.certificateInfList||[]"
 									 :id="this.$route.query.id"></Certificate>
-						<Unsafe @getInfo="getInfo" :type="type" :tableData="form.sincerityInfList||[]"
+						<Unsafe @getInfo="getInfo" :type="type" :userId="this.form.userId" :tableData="form.sincerityInfList||[]"
 								:id="this.$route.query.id"></Unsafe>
+						<WorkWay @getInfo="getInfo" :type="type" :tableData="form.styleInfList||[]"
+								:id="this.$route.query.id" :userId="this.form.userId"></WorkWay>
 
 					</div>
 				</el-form>
@@ -360,13 +363,14 @@
 	import WorkExperience from './workExperience/index';
 	import Certificate from './certificate/index';
 	import Unsafe from './unsafe/index';
+	import WorkWay from './workWay/index';
 	import Icon from "@components/Icon-svg/index";
 	import request from "@lib/axios.js";
 	import {extend, map, clone} from "lodash";
 
 	export default {
 		components: {
-			Icon, InOfficeInfo, WorkExperience, Certificate, Unsafe
+			Icon, WorkWay,InOfficeInfo, WorkExperience, Certificate, Unsafe
 		},
 		name: "",
 		data() {
@@ -396,13 +400,30 @@
 				sexOptions: [{value: "男", label: "男"}, {value: "女", label: "女"}]
 			};
 		},
+		computed:{
+		  getUrl(){
+              return (p)=>{
+                  let s='/'
+                  if(this.$route.path.startsWith('/Z')){
+                      s='/Z'
+                  }else if(this.$route.path.startsWith('/S')){
+                      s='/S'
+                  }
+                  return s+p
+			  }
+		  },
+		},
 		mounted() {
             eleDateShow()
             inputLength(this)
-		},
+            console.log(2,1,2,3,this.$route.path , this.getUrl('inOfficeInfoAdd'));
+        },
 		created() {
-			if (this.$route.path == '/addPersonDoc') {
-				this.initPage()
+            if (this.$route.path == '/addPersonDoc'||this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'){
+                this.initPage()
+			}
+                if (this.$route.path == '/addPersonDoc') {
+
 				request({
 					url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
 					method: 'post',
@@ -554,7 +575,9 @@
 			},
 			getInfo() {
 				request({
-					url: `${this.$ip}/mms-qualification/userRecord/getById/${this.$route.query.id}`,
+                    url:`${this.$ip}/mms-qualification/userRecord/getByUserNumber/${this.$route.query.userId}`,
+
+                    // url: `${this.$ip}/mms-qualification/userRecord/getById/${this.$route.query.id}`,
 					method: "get",
 				}).then(d => {
 					this.form = {...d.data}
@@ -590,10 +613,10 @@
 				})
 			},
 			initPage() {
-				if (this.$route.query && this.$router.history.current.path == '/addPersonDoc') {
+				if (this.$route.query  ) {
 					this.type = this.$route.query.type;
-					if (this.$route.query.id) {
-						this.$route.meta.paramsId = {id: this.$route.query.id, type: this.$route.query.type}
+					if (this.$route.query.userId) {
+						this.$route.meta.paramsId = {id: this.$route.query.id,userId:this.$route.query.userId, type: this.$route.query.type}
 					}
 					this.$route.meta.title =
 						this.type == "add"
@@ -650,7 +673,7 @@
 								if (d.code == 200) {
 									this.$message.success("保存成功！");
 									if (this.type == "add") {
-										this.$router.push({path: '/addPersonDoc', query: {type: "edit", id: d.data.id}})
+										this.$router.push({path: '/addPersonDoc', query: {type: "edit", id: d.data.id ,userId: d.data.userId}})
 										this.$set(this.form, 'id', d.data.id)
 										this.initPage()
 									}

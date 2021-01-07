@@ -197,7 +197,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow, inputLength} from '@lib/tools'
+    import {eleDateShow,bindInputFn, inputLength} from '@lib/tools'
 
     import $ from 'jquery'
     import request from '@lib/axios.js';
@@ -499,7 +499,9 @@
                                 this.labelVO = data.data.template.labelVO
                                 this.getFileByIdFn(this.template.airlineCompanyLogo)
                                 let _this = this
+
                                 this.$nextTick(() => {
+                                    bindInputFn(this)
                                     //if($(".textContent button").innerText ==='签章'){
                                     $(".textContent button").on('click', function () {
                                         let contentId = $(this).parents(".textContent").attr("contentId")
@@ -540,6 +542,44 @@
                             }
                         })
                 })
+            },
+            inputTypeBlur(type,e){
+                if(e.target.value===''){
+                    return false
+                }
+                let value= e.target.value
+                let reg=/^((-\d+)|(\d+))(\.?\d+)?$/g
+                let blo=reg.test(e.target.value)
+                if(!blo){
+
+                }
+                if(value.split('.').length>1&&value.split('.')[1]===''){
+                    e.target.value= value.split('.')[0]
+                    this.$message.warning('以为您自动过滤尾部‘.’')
+                }
+                if(value.split('-').length>1&&value.split('-')[1]===''){
+                    e.target.value= null
+                    this.$message.warning('请输入正确的数字')
+                }
+
+
+            },
+            inputTypeC(type,e){
+                if(e.target.value===''){
+                    return false
+                }
+                let value= e.target.value
+                let reg = /([^(\d|\-)])?(-)?([^\d])?(\d{0,})?([^(\.|\d)]+)?(\.)?([^(\.|\d)]+)?(\d{0,})?([^\d]{0,})?/g;
+                // let reg = /([^(\d)])?(\-\d+|\-\d+\.|\d+|\d+\.)?([^\d])?(\d)?([^\d])?/g;
+                console.log(reg.test(value));
+                let reg1=/^(-|\d)(\d{0,})(\.?)?(\d+)?$/g
+                let blo=reg1.test( value)
+                e.target.value= value.replace(reg,'$2$4$6$8')
+                if(!blo){
+                    debounce(()=>{
+                        this.$message.warning('只能输入数字')
+                    },300)()
+                }
             },
             findByUserFn(user = {}) {
                 console.log(user)

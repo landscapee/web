@@ -1,6 +1,12 @@
 <template>
-    <div>
-        <router-view v-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
+    <div  :key="key">
+        <router-view v-if="this.$route.path ==getUrl('inOfficeInfoAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('workExperienceAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('certificateAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
+
+        <router-view v-else-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/addQualificationsDetails'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserDoc'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/ZuserAuth'" :key="$route.path"></router-view>
@@ -105,9 +111,18 @@
             SearchTable,UpDocInfo
         },
         name: '',
+        computed:{
+            getUrl(){
+                return (p)=>{
+                    let s='/Z'
+
+                    return s+p
+                }
+            },
+        },
         data() {
             return {
-
+                key:true,
                 getGet:get,
                 tableLeftData:{records:[ ], },
                 tableRightData:{records:[] },
@@ -145,16 +160,19 @@
             '$route':function(val,nm){
                  console.log(1,val,nm);
                 if(val.path=='/intelligenceManage'&&nm.path=='/addQualifications'){
+                    this.key=!this.key
                     this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
                 }else if(val.path=='/intelligenceManage'&&nm.path=='/addQualificationsDetails'){
+                    this.key=!this.key
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
                     this.getList('right');
                     // this.toFrom=nm.query.type
                 }else if(val.path=='/intelligenceManage'){
-                    this.leftParams.size=18
+                    this.key=!this.key
+                     this.leftParams.size=18
                     this.leftParams.current=1
                     this.rightParams.current = 1
                     this.leftRow={}
@@ -170,6 +188,7 @@
             }
         },
         created() {
+            console.log(1);
             if(this.$router.history.current.path == '/intelligenceManage'){
                 this.leftParams.current = 1;
                 this.getList('left');
@@ -251,7 +270,7 @@
 
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row.userId}});
+                this.$router.push({path:path,query:{ id:row.userId,userId:row.userId,type:'info'}});
 
             },
             //左侧表格新增编辑
@@ -348,7 +367,7 @@
                 var scrollHeight = bady.scrollHeight;
                 //获取滚动元素标识
                  var tag = bady.parentElement.__vue__.$parent.refTag;
-                 if(scrollTop+windowHeight>=scrollHeight){
+                 if(scrollTop+windowHeight+1>=scrollHeight){
 
                     if(tag=='TableLeft'){
                         if(this.leftParams.size!=18){
@@ -427,7 +446,7 @@
 
                     if(row.selected){
                         this.leftSelectId = row.id;
-                        this.leftRow={...row}
+                        this.leftRow=row
                         this.rightSelectId = null;
 
                     }else{
@@ -441,7 +460,7 @@
 
                     if(row.selected){
                         this.rightSelectId = row.id;
-                        this.rightRow={...row}
+                        this.rightRow=row
                     }else{
                         this.rightSelectId = null;
                     }
@@ -464,10 +483,10 @@
                         params:{...this.leftParams}
                     })
                         .then((d) => {
-                            if(d.data&& d.data.records){
+                             if(d.data&& d.data.records){
                                 d.data.records.map((k,l)=>{
                                     if(k.id==this.leftSelectId){
-                                        k.selected=true
+                                         k.selected=true
                                         this.leftRow=k
                                     }
                                 })
@@ -480,7 +499,9 @@
                                     this.leftParams.current = --this.leftParams.current;
                                 }
                             }
-
+                            if( this.leftRow){
+                                this.$refs.TableLeft.$refs.body_table.setCurrentRow( this.leftRow)
+                            }
 
                         })
                 }else{
@@ -507,6 +528,13 @@
 
                                 }
                                 this.tableRightData.records = d.data
+                                if( this.leftRow){
+                                    this.$refs.TableLeft.$refs.body_table.setCurrentRow( this.leftRow)
+                                }
+                                if( this.rightRow){
+                                    this.$refs.TableRight.$refs.body_table.setCurrentRow( this.rightRow)
+                                }
+
                             })
                     }
                 }

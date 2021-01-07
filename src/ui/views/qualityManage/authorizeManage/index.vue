@@ -1,6 +1,11 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/addAuthorizeManage'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path ==getUrl('inOfficeInfoAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('workExperienceAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('certificateAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/addAuthorizeManage'" :key="$route.path"></router-view>
          <router-view v-else-if="this.$router.history.current.path == '/SuserQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/SuserDoc'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/SuserTrain'" :key="$route.path"></router-view>
@@ -90,6 +95,15 @@
                 overdue:-1
             };
         },
+        computed:{
+            getUrl(){
+                return (p)=>{
+                    let s='/S'
+
+                    return s+p
+                }
+            },
+        },
         created() {
              if(this.$router.history.current.path == '/authorizeManage'){
                 this.getList();
@@ -151,7 +165,7 @@
                 });
             },
             seeOther(row,path){
-                this.$router.push({path:path,query:{ id:row.userId}});
+                this.$router.push({path:path,query:{id:row.userId, userId:row.userId,type:'info'}});
 
             },
             requestTable(searchData){

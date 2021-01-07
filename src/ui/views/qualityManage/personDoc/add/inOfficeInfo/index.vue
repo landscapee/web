@@ -9,22 +9,22 @@
                     任职信息
                 </div>
                 <div class="QheadRight " >
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="新增" placement="top">
                             <icon iconClass="add"></icon>
                         </el-tooltip>
                     </div>
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
                             <icon iconClass="edit"></icon>
                         </el-tooltip>
                     </div>
-                    <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
                             <icon iconClass="remove"></icon>
                         </el-tooltip>
                     </div>
-                    <div @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"  >
+                    <div  @click="()=>type!='add'?addOrEditOrInfo('info'):''" :class="type=='edit'||type=='info'?'':'G_isDisabled'"  >
                         <el-tooltip class="item" effect="dark" :enterable="false" content="详情" placement="top">
                             <icon iconClass="info"></icon>
                         </el-tooltip>
@@ -58,7 +58,7 @@ export default {
         SearchTable
 	},
     name: '',
-    props:['type','id','tableData'],
+    props:['type','id','tableData','userId'],
     data() {
         return {
              tableConfig:inOfficeInfoConfig({},{}),
@@ -125,13 +125,20 @@ export default {
             this.$set(this.tableData,row.index,row);
         },
         addOrEditOrInfo(tag){
+            let s='/'
+            if(this.$route.path=='/ZuserDoc'){
+                s='/Z'
+            }else if(this.$route.path=='/SuserDoc'){
+                s='/S'
+            }
+            let p=s+'inOfficeInfoAdd'
              if(tag=='add'){
-                this.$router.push({path:'/inOfficeInfoAdd',query:{type:'add',rId:this.id+','+this.type}});
+                this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/inOfficeInfoAdd',query:{type:tag,rId:this.id+','+this.type,id:this.selectId}});
+                     this.$router.push({path:p,query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
                 }
             }
         },
@@ -202,11 +209,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-  /deep/ .mainTable{
-    height: 300px;
-    overflow: auto;
-    .el-table__body{
-        width: 1160px !important;
+    .tableOneBox /deep/ .mainTable{
+        height:300px !important;
+        overflow: auto;
     }
-}
 </style>

@@ -1,110 +1,111 @@
 <template lang="html">
-	<el-dialog :close-on-click-modal="false" class="users-dialog" :title="title" center append-to-body
-		   :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
-		<el-row>
-			<el-col :span="12">
-				<div>
-					<el-card class="box-card" shadow="never" border-radius="2px">
-						<div style="height:300px" v-loading="!data.length">
-							<Tree :data="data" ref="tree" @handleSelect="getListById"
-							      :expand-on-click-node="false" :isShow="isShow"
-							      :defaultUnCheck="true"></Tree>
-						</div>
-					</el-card>
-				</div>
-			</el-col>
-			<el-col :span="12">
-				<div>
-					<el-card class="box-card" shadow="never" border-radius="2px">
-						<el-scrollbar style="height:310px">
-							<div class="elinput" style="width: 100%">
-								<el-input class="input" ref="input"
-									  placeholder="输入关键字进行搜索" @input="filterTextC"
-									  v-model="filterText"></el-input>
-							</div>
-							<div class="tishiDiv" v-show="personList.length == 0">{{tishi}}</div>
+  <el-dialog :close-on-click-modal="false" class="users-dialog" :title="title" center append-to-body
+             :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
+    <el-row>
+      <el-col :span="12">
+        <div>
+          <el-card class="box-card" shadow="never" border-radius="2px">
+            <div style="height:344px;margin-top:0px" v-loading="!data.length">
+              <Tree :data="data" ref="tree" @handleSelect="getListById" :expand-on-click-node="false" :isShow="isShow"
+                    :defaultUnCheck="true"></Tree>
+            </div>
+          </el-card>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div style="height:344px ">
+          <el-card class="box-card" shadow="never" border-radius="2px">
+            <div class="elinput" style="width: 100%">
+              <el-input class="input" placeholder="输入关键字进行搜索" @input="seachUser"
+                        v-model="filterText"></el-input>
+            </div>
+            <div class="userScroll" ref="userScroll">
+              <el-scrollbar style="height:310px">
 
-							<el-checkbox v-show="personList.length > 0" v-model="selectAll"
-								     @change="handleSelectAll">全选
-							</el-checkbox>
-							<div class="item" v-for="(item, index) in personList"
-							     :key="item.id">
-								<div class="item-time">
-									<el-checkbox v-model="userSelect"
-										     @change="userSelectC"
-										     :label="item">{{item.name}}
-									</el-checkbox>
-								</div>
-							</div>
-						</el-scrollbar>
-					</el-card>
-				</div>
-			</el-col
-			>
-		</el-row>
-		<el-row>
-			<el-col :span="24">
-				<div>
-					<el-card class="box-card" shadow="never" border-radius="2px">
-						<div>已选择({{ userSelect.length }})：
-							<el-button style="float:right" size="mini" @click="handleClear">
-								清空
-							</el-button>
-						</div>
-						<el-scrollbar style="height:120px ">
-							<el-tag :key="tag.id" v-for="(tag,index) in userSelect" closable
-								:disable-transitions="false"
-								@close="handleRemove(tag.id,index)">
-								{{ tag.name }}
-							</el-tag>
-						</el-scrollbar>
-					</el-card>
-				</div>
-			</el-col>
-		</el-row>
-		<el-row>
-			<el-col :span="24"></el-col>
-		</el-row>
-		<div class="Qfooter" style="margin-top: 15px">
-			<el-button @click="handleClose">取消</el-button>
-			<el-button type="primary" @click="handleSave">确定</el-button>
-		</div>
-	</el-dialog>
+                <div v-show="personList.length == 0" style="padding: 100px 0;text-align: center;color:#888888">该部门暂无人员
+                </div>
+
+                <el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选
+                </el-checkbox>
+                <div class="item" v-for="(item, index) in personList" :key="item.id">
+                  <div class="item-time">
+                    <el-checkbox v-model="userSelectIdS" @change="userSelectC($event,item)" :label="item.id">
+                      {{item.name}}
+                    </el-checkbox>
+                  </div>
+                </div>
+              </el-scrollbar>
+            </div>
+
+          </el-card>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <div>
+          <el-card class="box-card" shadow="never" border-radius="2px">
+            <div>已选择({{ userSelect.length }})：
+              <el-button style="float:right;margin-top: -10px" size="mini" @click="handleClear">清空</el-button>
+            </div>
+            <el-scrollbar style="height:100px ">
+              <el-tag :key="tag.id" v-for="(tag,index) in userSelect" closable :disable-transitions="false"
+                      @close="handleRemove(tag.id,index)">
+                {{ tag.name }}
+              </el-tag>
+            </el-scrollbar>
+          </el-card>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24"></el-col>
+    </el-row>
+    <div class="Qfooter" style="margin-top: 15px">
+      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="handleSave">确定</el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
     import request from '@lib/axios.js';
-    import Tree from '@components/Tree/index';
+    import Tree from '@/ui/components/Tree/index';
     import {formatTreeData} from '@lib/tools.js';
+    import {getUserInfo} from '@lib/auth.js';
     import {extend, get, cloneDeep, filter, some, flow, concat, map} from 'lodash';
 
     export default {
         name: 'Users',
         data() {
             return {
-                tishi: '该部门暂无人员',
+                timer: null,
+                timer1: null,
                 filterText: '',
-                personNodeIdObj: {},
+                listPageNum: 1,
+                personNodeIdObj: {},//节点ID 对应的该节点下的人员 的对象
                 userSelect: [],
+                userSelectIdS: [],
                 title: '选择人员',
                 isShow: {input: true},
                 first: true,
                 selectAll: false,
                 dialogVisible: false,
-                personList: [],
+                personList: [],// 当前节点下或者条件筛选 的人
                 deptList: [],
                 data: [],
-                selectId: null,
-                selectNode: {},
+                selectNode: {},// 当前被选中的节点对象
                 type: "",
-                OrgUser: [],
-                OrgUserObj: {},
                 orgObj: {
                     ORG: 'orgId',
                     DEPT: 'deptId',
                     GROUP: 'groupId',
-                }
+                },
+                param: {pageNum: 1, pageSize: 10},
             };
+        },
+        components: {
+            Tree,
         },
         props: {
             dataRequire: {
@@ -112,22 +113,85 @@
                 default: false
             }
         },
-        watch: {},
         methods: {
-            filterTextC(val) {
+            seachUser() {
+                if (this.timer1) {
+                    clearTimeout(this.timer1)
+                }
+                this.timer1 = setTimeout(() => {
+                    this.fuzzyUser()
+                }, 300)
+            },
+            // 模糊搜索人员
+            fuzzyUser() {
+                let val = this.filterText;
                 if (!val) {
-                    this.tishi='该部门暂无人员'
                     this.personList = this.personNodeIdObj[this.selectNode.id]
+                    this.selectAll = this.isAllSelect();
                     return false
                 }
-                this.personList = []
-                this.personNodeIdObj[this.selectNode.id].map((k, l) => {
-                    k.name.indexOf(val) !== -1 ? this.personList.push(k) : ''
+                let obj = {
+                    name: val,
+                }
+                if (this.type == 'ORG') {
+                    obj.orgId = this.selectNode.id;
+                } else {
+                    obj.deptId = this.selectNode.id;
+                }
+                return request({
+                    headers: {'Content-Type': 'text/plain'},
+                    url: this.$ip + '/sys/user/getUsersByDeptIdOrOrgIdAndLikeName',
+                    method: 'get',
+                    params: obj,
+                }).then((d) => {
+                    if (d.responseCode == 1000) {
+                        this.selectAll = false
+                        this.personList = []
+                        if (d.data) {
+                            let obj = {}
+                            let arr = [...this.personNodeIdObj[this.selectNode.id]]
+                            d.data.map((k, l) => {
+                                // let s= arr.findIndex((q,w)=>{
+                                //    return k.id===q.id
+                                //  })
+                                // if(s<0){
+                                //   // this.personNodeIdObj[this.selectNode.id].push(k)
+                                // }
+                                if (!obj[k.id]) {
+                                    this.personList.push(k)
+                                    obj[k.id] = 1
+                                } else {
+                                    obj[k.id] = 1
+                                }
+                            })
+                            this.selectAll = this.isAllSelect();
+                        }
+                    }
+
                 })
- 		if(!this.personList.length){
-                    this.tishi='该部门暂无该人员'
+            },
+            handleScroll($event) {
+                if (this.filterText) {
+                    return false
+                }
+                var e = $event.target; // 获取滚动条的dom
+                var scrollTop = e.scrollTop;//  获得滚动的像素数
+                var windowHeight = e.clientHeight; // 获取可视区的高度
+                var scrollHeight = e.scrollHeight;  // 获取滚动条的总高度
+                var tag = e.parentElement.__vue__.refTag; //获取滚动元素标识
+                if (scrollTop + windowHeight + 1 >= scrollHeight) {
+                    if(this.listPageNum<this.param.pageNum){
+                        return false
+                    }
+                    if (this.timer) {
+                        clearTimeout(this.timer)
+                    }
+                    this.timer = setTimeout(() => {
+                        this.getAllUserByOrgId('scroll')
+                    }, 20)
                 }
             },
+
             isAllSelect() {
                 let flag = true
                 this.personList.map((k, l) => {
@@ -138,54 +202,96 @@
                 })
                 return flag
             },
-            userSelectC() {
+            userSelectC(e, item) {
+                console.log(e, item);
+                if (e) {
+                    this.personList.map((k, l) => {
+                        if (k.id == item.id) {
+                            this.userSelect.push(k)
+                        }
+                    })
+
+                } else {
+                    let index = this.userSelect.findIndex((d) => d.id === item.id)
+                    console.log(index, 1);
+                    this.userSelect.splice(index, 1)
+                }
+
                 this.selectAll = this.isAllSelect();
             },
             handleClear() {
+                this.userSelectIdS = [];
                 this.userSelect = [];
                 this.selectAll = false;
 
             },
             handleRemove(id, index) {
                 this.userSelect.splice(index, 1)
+
                 this.selectAll = this.isAllSelect();
             },
 
-            getAllUserByOrgId(param, arr) {
+            // 查询人员
+            getAllUserByOrgId(ss) {
+                if(ss=='scroll'){
+                    this.param.pageNum = ++this.param.pageNum;
+
+                }
                 let url = ''
+                let param = {...this.param}
                 if (this.type == 'ORG') {
-                    url = '/sys/user/getAllUserByOrgId'
-                    param.orgId = this.selectId;
+                    url = '/sys/user/getAllUserByOrgIdByPage' //分頁
+                    param.orgId = this.selectNode.id;
                 } else {
-                    url = '/sys/user/getUsersByDeptId'
-                    param.deptId = this.selectId;
+                    url = '/sys/user/getUsersByDeptIdAndPage' //分頁
+                    param.deptId = this.selectNode.id;
                 }
                 return request({
                     headers: {'Content-Type': 'text/plain'},
-                    url: url,
+                    url: this.$ip + url,
                     method: 'get',
                     params: param,
                 }).then((d) => {
-                    if (this.first === true) {
-                        this.OrgUser = d.data
-                        this.first = 1
-                        let arr = [...this.userSelect]
-                        this.userSelect = []
-                        d.data.map((k, l) => {
-                            const idx = arr.findIndex((op) => op.id === k.id);
-                            if (idx > -1) {
-                                arr.splice(idx, 1)
-                                this.userSelect.push(k)
+                    if (d.responseCode === 1000) {
+                        if (ss == 'scroll') {
+                            if (d.data && d.data.list && d.data.list.length) {
+                                if(d.data.pageNum){
+                                    this.listPageNum=d.data.pageNum
+                                }
+                                if(this.param.pageNum!==d.data.pageNum){
+                                    return false
+                                }
+                                this.personNodeIdObj[this.selectNode.id].push(...d.data.list)
+                                this.personList = this.personNodeIdObj[this.selectNode.id]
+                                this.selectAll = false
                             }
-                        })
+                        } else {
+                            return Promise.resolve(d, null);
+                        }
                     } else {
-                        this.first = 2
+                        this.$message.error(d.responseMessage)
                     }
-
-                    return Promise.resolve(d, null);
-
                 });
+            },
+            getListById(node) {
+                this.listPageNum=1
+                this.param = {pageNum: 1, pageSize: 10};
+                this.filterText = ''
+                if (node && node.id) {
+                    this.selectNode = node;
+                    this.type = node.type;
+                }
+                // if (this.personNodeIdObj[this.selectNode.id]) {
+                //   this.personList = this.personNodeIdObj[this.selectNode.id]
+                //   return false
+                // }
+                this.getAllUserByOrgId().then((d) => {
+                    let arr = d.data.list
 
+                    this.personNodeIdObj[node.id] = arr
+                    this.personList = this.personNodeIdObj[node.id]
+                    this.selectAll = this.isAllSelect();
+                });
             },
             dealData(d, arr, node) {
                 if (node.user && node.user.length) {
@@ -197,8 +303,6 @@
                         }
                     })
                 }
-
-
             },
             handleSelectAll(val) {
                 this.personList.map((k, l) => {
@@ -212,51 +316,22 @@
                             this.userSelect.splice(idx, 1)
                         }
                     }
+                    this.userSelectIdS = this.userSelect.map((k, l) => {
+                        return k.id
+                    })
                 })
             },
-            getListById(node) {
-                this.tishi='该部门暂无人员'
-                this.filterText = ''
-                if (node && node.id) {
-                    this.selectId = node.id;
-                    this.selectNode = node;
-                    this.type = node.type;
-                }
-                if (this.personNodeIdObj[node.id]) {
-                    this.personList = this.personNodeIdObj[node.id]
-                    return false
-                }
-                let param = {pageNum: 1, pageSize: 99999};
-                this.getAllUserByOrgId(param).then((d) => {
-                    let arr = d.data
-
-                    if (this.first === 2) {  //非第一次
-                        arr = d.data.map((k, l) => {
-                            let index = this.OrgUser.findIndex((k1) => k1.id == k.id)
-                            return this.OrgUser[index]
-                        })
-                    }
-                    this.personNodeIdObj[node.id] = arr
-                    this.personList = this.personNodeIdObj[node.id]
-                    this.selectAll = this.isAllSelect();
-                });
-            },
-
 
             getTree() {
-                let userInfo = this.$store.getters.userInfo
-                console.log(userInfo, 5, 6);
-                let orgId = userInfo.orgId;
-                // let deptId = userInfo.deptId;
-                // let administrativeId = userInfo.administrativeId;
+                let orgId = getUserInfo().orgId//this.$store.getters.userInfo.orgId;
                 request({
-                    url: 'sys/org/getOrgById',
+                    url: this.$ip + '/sys/org/getOrgById',
                     method: 'get',
                     params: {id: orgId},
                 }).then((d1) => {
                     if (d1.responseCode == 1000) {
                         request({
-                            url: 'sys/department/getAllDepartmentByOrgId',
+                            url: this.$ip + '/sys/department/getAllDepartmentByOrgId',
                             method: 'get',
                             params: {orgId: orgId},
                         }).then((d) => {
@@ -272,31 +347,24 @@
                     }
                 });
             },
-            findCurrentDept(dept, deptId) {
-                if (dept.data.id == deptId) {
-                    this.data = formatTreeData([dept]);
-                    return;
-                }
-                if (dept.children && dept.children.length > 0) {
-                    for (let i = 0; i < dept.children.length; i++) {
-                        let child = dept.children[i];
-                        this.findCurrentDept(dept.children[i], deptId);
-                    }
-                }
-            },
             handleClose() {
                 this.type = 'ORG'
                 this.personList = []
                 this.data = []
-                this.OrgUser = []
-                this.first = true
-                this.selectId = null
+                this.param = {pageNum: 1, pageSize: 10}
+                this.userSelectIdS = []
                 this.selectNode = {}
                 this.personNodeIdObj = {}
                 this.dialogVisible = false;
+                this.$nextTick(() => {
+                    if (this.$refs.userScroll) {
+                        this.$refs.userScroll.removeEventListener('scroll', this.handleScroll, true);//监听函数
+                    }
+                })
+
             },
             handleSave() {
-                if (this.dataRequire && !this.userSelect.length) {
+                if (!this.userSelect.length) {
                     this.$message({
                         message: '请选择需要推送的对象',
                         type: 'warning'
@@ -307,72 +375,80 @@
                 this.handleClose();
             },
             open(inputList, title, currentDept) {
-                this.getTree(inputList || []);
+                this.dialogVisible = true;
+                this.$nextTick(() => {
+                    if (this.$refs.userScroll) {
+                        this.$refs.userScroll.addEventListener('scroll', this.handleScroll, true);//监听函数
+                    }
+                })
+
+                this.getTree();
                 this.selectAll = false;
                 this.title = title || '选择人员';
                 this.userSelect = inputList || [];
-                this.dialogVisible = true;
+                this.userSelectIdS = inputList.map((k, l) => {
+                    return k.id
+                })
             },
         },
-        created() {
-            // this.getTree()
-        },
-        components: {
-            Tree,
-        },
+
     };
 </script>
 
 <style scoped lang="scss">
-	.users-dialog {
-		.el-tag {
-			margin: 5px;
-		}
-	}
+  .Qfooter {
+    text-align: center;
+  }
 
-	.el-scrollbar__wrap {
-		overflow-x: hidden;
-	}
+  /deep/ .el-tree-node__expand-icon {
+    display: none;
+  }
 
-	.el-card__body {
-		padding: 10px;
-		.item {
-			margin: 20px 0;
-		}
-		.el-checkbox__label {
-			padding-left: 15px;
-		}
-		.el-scrollbar__wrap {
-			overflow-x: hidden;
-		}
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
 
-	}
+  .el-card__body {
+    padding: 10px;
+    .item {
+      margin: 20px 0;
+    }
+    .el-checkbox__label {
+      padding-left: 15px;
+    }
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
 
-	/deep/ .el-scrollbar {
-		margin-top: 0px !important;
+  }
 
-	}
+  /deep/ .el-scrollbar {
+    margin-top: 0px !important;
 
-	.el-card__body > div:first-child {
-		padding: 0px;
-		margin-top: 5px;
-		line-height: 15px;
-	}
+  }
 
-	/deep/ .elinput {
-		margin: 10px 0;
-		height: 30px;
-		// width: 100%;
-	}
+  .el-card__body > div:first-child {
+    padding: 0px;
+    margin-top: 5px;
+    line-height: 15px;
+  }
 
-	/deep/ .el-input__inner {
-		height: 30px;
-		width: calc(100% - 2px);
-	}
-	.tishiDiv{
-		text-align: center;
-		height:200px;
-		line-height: 200px;
-		color:#979797;
-	}
+  /deep/ .elinput {
+    margin: 10px 0;
+    height: 30px;
+    // width: 100%;
+  }
+
+  /deep/ .el-input__inner {
+    height: 30px;
+    width: calc(100% - 2px);
+  }
+
+  /deep/ .el-tag {
+    margin: 5px;
+  }
+
+  /deep/ .el-tag:first-child {
+    margin-left: 0px;
+  }
 </style>

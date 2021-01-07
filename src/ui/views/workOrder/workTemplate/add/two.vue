@@ -247,15 +247,14 @@
                         }else{
                             this.$message.info('请添加数据')
                         }
-
                     })
-
                 },
 
             getInfo( ){
                 request({
                     url:`${this.$ip}/mms-workorder/template/getById/${this.$route.query.id}`,
                     method: 'get',
+
                 }).then((d) => {
                     if(d.code==200){
                         this.tableData=d.data.baseItemVOList
@@ -271,7 +270,7 @@
     /*@import "@/ui/styles/common_list.scss";*/
 
     /deep/ .mainTable{
-        height: calc(100vh - 380px);
+        height: calc(100vh - 380px)!important;
         overflow: auto;
          .current-row > td {
             background-color: inherit!important;

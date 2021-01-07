@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div :key="key">
 
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanDetails'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/selfCheckPlanAdd'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="G_listTwo">
+        <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="G_listTwo" >
             <div class="QCenterRight">
                 <div class="QHead">
                      法定自查检查计划
@@ -78,6 +78,7 @@ export default {
     name: '',
     data() {
         return {
+            key:true,
             tableLeftData:{records:[]},
             tableRightData:{records:[]},
             businessTableConfig:selfCheckConfig({}),
@@ -106,15 +107,18 @@ export default {
         '$route':function(val,nm){
             console.log(1,val,nm);
             if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
+                this.key=!this.key
                 this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                 this.leftParams.current=1
                 this.getList('left');
             }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
+                this.key=!this.key
                 this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                 this.rightParams.current = 1
                 this.getList('right');
                 // this.toFrom=nm.query.type
             }else if(val.path=='/selfCheckPlan'){
+                this.key=!this.key
                 this.leftParams.size=18
                 this.leftParams.current=1
                 this.rightParams.current = 1
@@ -150,7 +154,7 @@ export default {
 　　mounted() {
         if( this.$refs.mainContent){
             this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
-            this.$refs.mainContent.removeEventListener('scroll', this.handleScroll,true);//监听函数
+            // this.$refs.mainContent.removeEventListener('scroll', this.handleScroll,true);//监听函数
         }
 
     },
@@ -209,7 +213,7 @@ export default {
             var scrollHeight = bady.scrollHeight;
             //获取滚动元素标识
             var tag = bady.parentElement.__vue__.$parent.refTag;
-               if(scrollTop+windowHeight>=scrollHeight){
+               if(scrollTop+windowHeight+1>=scrollHeight){
                 if(tag=='left-table'){
                      if(this.leftParams.size!=18){
                         this.leftParams.size=18
@@ -294,7 +298,7 @@ export default {
 
                 if(row.selected){
                     this.leftSelectId = row.id;
-                    this.leftRow={...row}
+                    this.leftRow=row
                     this.rightSelectId = null;
 
                 }else{
@@ -308,7 +312,7 @@ export default {
 
                  if(row.selected){
                      this.rightSelectId = row.id;
-                    this.rightRow={...row}
+                    this.rightRow=row
                 }else{
                      this.rightSelectId = null;
                 }
@@ -425,7 +429,9 @@ export default {
                         if(scroll && data.data.records.length==0){
                             this.leftParams.current = --this.leftParams.current;
                         }
-
+                        if( this.leftRow){
+                            this.$refs['left-table'].$refs.body_table.setCurrentRow( this.leftRow)
+                        }
                     }).catch((error) => {
 
                 });
@@ -457,7 +463,12 @@ export default {
                         if(scroll && data.data.records.length==0){
                             this.rightParams.current = --this.rightParams.current;
                         }
-
+                        if( this.leftRow){
+                            this.$refs['left-table'].$refs.body_table.setCurrentRow( this.leftRow)
+                        }
+                        if( this.rightRow){
+                            this.$refs['right-table'].$refs.body_table.setCurrentRow( this.rightRow)
+                        }
                     }).catch((error) => {
 
                     });

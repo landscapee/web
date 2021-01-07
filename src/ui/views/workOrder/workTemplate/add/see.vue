@@ -1,6 +1,6 @@
 <template>
 	<div class="seeConfig">
-		<div class="seeTitle">
+ 		<div class="seeTitle">
 			实时预览：
 			<div v-if="!show" @click="showZ">显示占位符</div>
 			<div v-else @click="showZ">隐藏占位符</div>
@@ -224,6 +224,7 @@
 
 <script>
     import request from '@lib/axios.js';
+    import {debounce,bindInputFn, } from '@lib/tools.js';
     import {extend, map, get, filter} from "lodash";
 
     export default {
@@ -389,14 +390,20 @@
                     })
                     this.contentVOList = [...arr]
                 }
+                this.$nextTick(()=>{
+                    bindInputFn(this)
+                })
             },
+
         },
+		mounted(){
+
+		},
         created() {
             if (this.$route.query.id) {
                 this.getInfo()
             }
             console.log(this.form);
-
         },
     }
 </script>

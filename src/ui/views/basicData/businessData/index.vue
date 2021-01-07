@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :key="key">
         <router-view v-if="this.$router.history.current.path == '/editBusinessData'" :key="$route.path"></router-view>
         <router-view v-if="this.$router.history.current.path == '/editBusinessSubset'" :key="$route.path"></router-view>
         <div v-if="this.$router.history.current.path == '/businessData'" class=" QCenterRight G_listTwo">
@@ -71,6 +71,7 @@ export default {
     name: '',
     data() {
         return {
+            key:true,
             tableLeftData:{records:[]},
             tableRightData:{records:[]},
             businessTableConfig:businessDataTable(),
@@ -95,13 +96,44 @@ export default {
     },
     watch:{
 
+        '$route':function(val,nm){
+            console.log(1,val,nm);
+            if(val.path=='/businessData'&&nm.path=='/editBusinessData'){
+                this.key=!this.key
+                this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
+                this.leftParams.current=1
+                this.getList('left','right-table');
+            }else if(val.path=='/businessData'&&nm.path=='/editBusinessSubset'){
+                this.key=!this.key
+                this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
+                this.rightParams.current = 1
+                this.getList('right','right-table');
+                // this.toFrom=nm.query.type
+            }else if(val.path=='/businessData'){
+
+                this.key=!this.key
+                this.leftParams.size=18
+                this.leftParams.current=1
+                this.rightParams.current = 1
+                this.leftRow={}
+                this.rightRow={}
+                this.leftForm={}
+                this.rightForm={}
+                this.leftSelectId=null
+                this.rightSelectId=null
+                this.tableRightData.records=[]
+                this.tableLeftData.records=[]
+                this.getList('left');
+            }
+        }
     },
     created() {
         this.leftParams.current = 1;
         this.getList('left');
     },
 　　mounted() {
-       this.$eventBus.$on('updatedata', msg => {
+      console.log(1);
+      this.$eventBus.$on('updatedata', msg => {
             if(msg == 'left'){
 
                  this.leftParams.current = 1;
@@ -111,7 +143,10 @@ export default {
                 this.getList('right');
             }
        });
-       this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
+      if(this.$refs.mainContent){
+          this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
+
+      }
     },
     methods: {
         //监听滚动
@@ -127,7 +162,8 @@ export default {
             //获取滚动元素标识
             var tag = bady.parentElement.__vue__.$parent.refTag;
             this.scroll = scrollTop;
-            if(scrollTop+windowHeight>=scrollHeight){
+            console.log(scrollTop + windowHeight + 1 ,scrollHeight);
+            if(scrollTop+windowHeight+1>=scrollHeight){
                 if(tag=='left-table'){
                     this.leftParams.current = ++this.leftParams.current ;
                     this.getList('left','scroll');
@@ -178,6 +214,7 @@ export default {
             row.selected  = !select;
             if(tag=="left"){
                 if(row.selected){
+                    this.leftRow=row
                     this.leftSelectId = row.id;
                     this.rightSelectId = null;
                 }else{
@@ -191,6 +228,7 @@ export default {
             }else{
                 if(row.selected){
                     this.rightSelectId = row.id;
+                    this.rightRow=row
                 }else{
                     this.rightSelectId = null;
                 }
@@ -274,14 +312,26 @@ getList(tag,scroll){
                     method: 'post',
                     data:{...this.leftForm,...this.leftSort,...this.leftParams}
                 })
-                .then((data) => {
-                    if(this.leftParams.current==1){
-                        this.tableLeftData.records = data.data.items;
-                    }else{
-                        this.tableLeftData.records.push.apply(this.tableLeftData.records,data.data.items);
-                    }
-                    if(scroll && data.data.items.length==0){
-                       this.leftParams.current = --this.leftParams.current;
+                .then((d) => {
+
+                    if(d.data&& d.data.items){
+                        d.data.items.map((k,l)=>{
+                            if(k.id==this.leftSelectId){
+                                k.selected=true
+                                this.leftRow=k
+                            }
+                        })
+                        if(this.leftParams.current==1){
+                            this.tableLeftData.records = d.data.items;
+                        }else{
+                            this.tableLeftData.records.push.apply(this.tableLeftData.records,d.data.items);
+                        }
+                        if(scroll && d.data.items.length==0){
+                            this.leftParams.current = --this.leftParams.current;
+                        }
+                        if( this.leftRow){
+                            this.$refs['left-table'].$refs.body_table.setCurrentRow( this.leftRow)
+                        }
                     }
                 }).catch((error) => {
 
@@ -294,6 +344,12 @@ getList(tag,scroll){
                         data:{...this.rightForm,dicId:this.leftSelectId,...this.rightSort,...this.rightParams}
                     })
                     .then((data) => {
+                        data.data.items.map((k,l)=>{
+                            if(k.id==this.rightSelectId){
+                                k.selected=true
+                                this.rightRow=k
+                            }
+                        })
                         if(this.rightParams.current==1){
                             this.tableRightData.records = data.data.items;
                         }else{
@@ -302,6 +358,14 @@ getList(tag,scroll){
                         if(scroll && data.data.items.length==0){
                             this.rightParams.current = --this.rightParams.current;
                         }
+                        if( this.leftRow){
+                            this.$refs['left-table'].$refs.body_table.setCurrentRow( this.leftRow)
+                        }
+                        if( this.rightRow){
+                            this.$refs['right-table'].$refs.body_table.setCurrentRow( this.rightRow)
+                        }
+
+
                     }).catch((error) => {
 
                     });

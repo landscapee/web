@@ -12,7 +12,7 @@ const argv = require('yargs').argv;
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
 
-let port = 8000;
+let port = 8089;
 
 if (argv.Program === 'jwxt.dev') {
     port = 8089;

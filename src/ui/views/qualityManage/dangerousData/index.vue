@@ -20,7 +20,7 @@
 
                 </div>
             </div>
-            <div class="tableOneBox">
+            <div class="tableOneBox " ref="mainContent">
                 <SearchTable ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="选择" :width="49" fixed="left">
                         <template slot-scope="{ row }">
@@ -78,10 +78,31 @@ export default {
            this.tableConfig=dangerousConfig(obj)
        });
     },
-    watch:{
-
+    mounted(){
+        if( this.$refs.mainContent){
+            this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
+        }
     },
+
     methods: {
+        handleScroll($event){
+            // 获取滚动条的dom
+            var bady = $event.target;
+            // 获取距离顶部的距离
+            var scrollTop = bady.scrollTop;
+            // 获取可视区的高度
+            var windowHeight = bady.clientHeight;
+            // 获取滚动条的总高度
+            var scrollHeight = bady.scrollHeight;
+            //获取滚动元素标识
+            var tag = bady.parentElement.__vue__.$parent.refTag;
+            console.log(scrollTop + windowHeight,scrollHeight);
+            if(scrollTop+windowHeight>=scrollHeight){
+
+
+            }
+        },
+
         getList1(){
             this.row={}
             this.selectId=null

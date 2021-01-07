@@ -98,7 +98,7 @@ export default {
     },
   methods: {
     resetForm(){
-      this.form={deleted:false};
+      this.form={deleted:false,id:this.form.id};
     },
     saveQualifications() {
       if (this.type == "add" || this.type == "edit") {

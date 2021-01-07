@@ -189,7 +189,7 @@ export default {
       this.userList = users.map((item) => ({ id: item.id, name: item.name }));
 		},
     resetForm(){
-      this.form={};
+      this.form={subject:this.form.subject };
     },
     saveQualifications() {
       if (this.type == "add" || this.type == "edit") {

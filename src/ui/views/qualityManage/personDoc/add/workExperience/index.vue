@@ -1,7 +1,7 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/workExperienceAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/workExperienceAdd'" :key="$route.path"></router-view>
 
         <div   class="G_listOne" v-else>
             <div class="QCenterRight personTable">
@@ -9,17 +9,17 @@
                     工作经历
                 </div>
                 <div class="QheadRight">
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="新增" placement="top">
                             <icon iconClass="add" ></icon>
                         </el-tooltip>
                     </div>
-                    <div @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
                             <icon iconClass="edit" ></icon>
                         </el-tooltip>
                     </div>
-                    <div @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
                             <icon iconClass="remove" ></icon>
                         </el-tooltip>
@@ -57,7 +57,7 @@ export default {
         SearchTable
 	},
     name: '',
-    props:['type','id','tableData'],
+    props:['type','id','tableData','userId'],
     data() {
         return {
              tableConfig:inOfficeInfoConfig({},{}),
@@ -124,13 +124,20 @@ export default {
             this.$set(this.tableData,row.index,row);
         },
         addOrEditOrInfo(tag){
+            let s='/'
+            if(this.$route.path=='/ZuserDoc'){
+                s='/Z'
+            }else if(this.$route.path=='/SuserDoc'){
+                s='/S'
+            }
+            let p=s+'workExperienceAdd'
              if(tag=='add'){
-                this.$router.push({path:'/workExperienceAdd',query:{type:'add',rId:this.id+','+this.type}});
+                this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/workExperienceAdd',query:{type:tag,rId:this.id+','+this.type,id:this.selectId}});
+                     this.$router.push({path:p,query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
                 }
             }
         },
@@ -201,40 +208,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
-.sysParameter{
-    margin-top:14px;
-.top-toolbar{
-    margin-top: 10px;
-    .G_isDisabled{
-        &>svg{
-            margin: 0;
-        }
+
+    .tableOneBox /deep/ .mainTable{
+        height:300px !important;
+        overflow: auto;
     }
-   &>div{
-       font-size: 20px;
-       border: 0;
-       margin: 0 0 0 12px;
-   }
-    &>div:last-child{
-       margin: 0 0 0 12px;
-   }
-}
-    .copyButton{
-        margin: 0;
-        padding:7px 10px;
-        background: black;
-        color:white;
-    }
-    .copyButton1{
-        margin-right: 3px;
-    }
-}
-/deep/ .mainTable{
-    height: 300px;
-    overflow: auto;
-    .el-table__body{
-        width: 1160px !important;
-    }
-}
 </style>

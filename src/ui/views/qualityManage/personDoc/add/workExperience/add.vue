@@ -2,7 +2,7 @@
     <div class="indexAdd">
         <div class="QCenterRight">
             <div class="QHead">
-                工作经验-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
+                工作经历-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
             <div v-if="type!='info'"  class="QheadRight">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
@@ -107,7 +107,10 @@
         },
         created() {
             if (this.$route.query) {
-                this.$router.currentRoute.matched[2].meta.paramsId={id:this.$route.query.rId.split(',')[0],type:this.$route.query.rId.split(',')[1]}
+                this.$router.currentRoute.matched[2].meta.paramsId={
+                    id:this.$route.query.rId.split(',')[0],
+                    userId:this.$route.query.rId.split(',')[2],
+                    type:this.$route.query.rId.split(',')[1]}
                 this.$router.currentRoute.matched[2].meta.title=
                     this.$route.query.rId.split(',')[1] == "add"
                         ? "人员档案新增"
@@ -129,18 +132,17 @@
                 });
                 this.$route.meta.title =
                     this.type == "add"
-                        ? "工作经验新增"
+                        ? "工作经历新增"
                         : this.type == "edit"
-                        ? "工作经验编辑"
+                        ? "工作经历编辑"
                         : this.type == "info"
-                            ? "工作经验详情":''
+                            ? "工作经历详情":''
 
                  if(this.type!='add'){
                      request({
                          url:`${this.$ip}/mms-qualification/workInf/getById/${this.$route.query.id}`,
                          method: "get",
                      }).then(d => {
-
                          this.form={...d.data }
                      }).catch(error => {
                              this.$message.error(error);
