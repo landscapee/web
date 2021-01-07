@@ -169,7 +169,7 @@
 
             data: {
                 handler(n) {
-
+                    this.resizeOption1()
                     setTimeout(() => {
                         if (this.$refs.body_table.doLayout) {
                             this.$refs.body_table.doLayout();
@@ -192,8 +192,7 @@
             }
         },
         mounted() {
-            console.log(2, 2);
-            window.addEventListener('resize', this.resizeOption1, true)
+             window.addEventListener('resize', this.resizeOption1, true)
 
             window.addEventListener('scroll', this.scroll, true);
             if (this.timer) {
@@ -202,7 +201,7 @@
             }
             this.timer = setInterval(() => {
                 this.resizeOption1()
-            }, 50)
+            }, 100)
             setTimeout(()=>{
                 clearInterval(this.timer)
                 this.timer = null
@@ -213,8 +212,7 @@
             resizeOption1() {
                 this.$nextTick(() => {
                     let len = this.data.length || this.data.length || this.data.records && this.data.records.length
-                    console.log(4, 5, 6,this.len, this.data, len);
-                    if (!len) {
+                     if (!len) {
                         return false
                     }
                     if (this.timer) {
@@ -229,10 +227,8 @@
                         console.log(2, 2, len);
                         return false
                     }
-                    console.log(1, 1, 1);
-                    let tr = header_table.getElementsByClassName('el-table__row')[0]
-                    console.log(1, tr.clientHeight, header_table.clientHeight,);
-                    let num = this.noSearch ? 1 : 2
+                     let tr = header_table.getElementsByClassName('el-table__row')[0]
+                     let num = this.noSearch ? 1 : 2
                     let hHeight = tr.clientHeight * num + 2
                     let thHeight = tr.clientHeight * num + 1
                     if (tr) {

@@ -20,6 +20,8 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportWord('info')"><icon iconClass="export" ></icon>导出</div>
+                    <div @click="upFile('info')"><icon iconClass="upload" ></icon>上传授权信息</div>
+
                 </div>
             </div>
             <div class="tableOneBox">
@@ -57,9 +59,13 @@
                 </SearchTable>
             </div>
         </div>
+        <UpFile ref="UpFile" @getTableData="getList1"></UpFile>
+
     </div>
 </template>
 <script>
+    import UpFile from '../components/uploadDocInfo'
+
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
     import { authorizeConfig } from './tableConfig.js';
@@ -68,7 +74,7 @@
     export default {
         components: {
             Icon,
-            SearchTable
+            SearchTable,UpFile
         },
         name: 'authorizeManage',
         data() {
@@ -132,6 +138,15 @@
         },
 
         methods: {
+            upFile(){
+                this.$refs.UpFile.open({api:'mms-qualification/authorization/uploadExcel',title:'人员档案上传'})
+            },
+            getList1(){
+                this.row={}
+                this.selectId=null
+                this.form={}
+                this.getList()
+            },
             exportWord(){
                 request({
                     header:{
