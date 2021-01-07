@@ -117,7 +117,6 @@ export default {
             }else{
                 this.selectId = null;
             }
-            this.params.current = 1;
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){

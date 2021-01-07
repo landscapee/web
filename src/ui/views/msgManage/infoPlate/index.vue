@@ -189,6 +189,7 @@ export default {
                 this.tableConfig = infoPlateReceiveTable(this.infoSelect);
             }
             this.tableData = {records:[]};
+            this.params.current = 1;
             this.getList();
         },
         requestTable(searchData){
