@@ -13,8 +13,8 @@
         components: {},
         data() {
             return {
-                loading:false,
-                url1: '../../../../static/electronicFence/index1.html',
+                loading:true,
+                url1: '../../../../static/electronicFence/index2.html',
                 // url1: '../../../../static/electronicFence/index2.html',
                 vueId:"myParentId"
             }
@@ -53,6 +53,7 @@
                  },
                  false,
              );
+
          },
     }
 </script>

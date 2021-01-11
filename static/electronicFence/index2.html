@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>vue模板</title>
+    <title>电子围栏展示</title>
     <script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -42,7 +42,7 @@
 <body>
 <!--装地图容器-->
 <div id="app">
-    <div id="map" class="container" style="height:calc(100vh - 10px) "></div>
+    <div id="map" class="container" style="height:calc(100vh - 16px) "></div>
     <div class="bnmap-box">
 
     </div>
@@ -67,7 +67,6 @@
     var propertiesMap = {
         // "mapId03": "2576", //底图图层id
         "mapId03": "3280", //底图图层id 内网
-
          "layerId01": "33723", //电子围栏图层id
          // "layerId01":'42967' , //电子围栏图层id 内网
         // ['42967','40027','40033']
@@ -88,14 +87,11 @@
             });
              BNMap.bindEvent(null, "load", function (evt) {
                  // BNMap.setPointCenter();
-
                 initQuery();
-
                 window.parent.postMessage('success')
             });
             BNMap.setLevel(2)
-
-             let wkt=`PROJCS["TFJC",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Berghaus_Star"],PARAMETER["False_Easting",50000.0],PARAMETER["False_Northing",50000.0],PARAMETER["Central_Meridian",105.0],PARAMETER["Latitude_Of_Origin",30.0],PARAMETER["XY_Plane_Rotation",292.000000000028],UNIT["Meter",1.0]]`
+            let wkt=`PROJCS["TFJC",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Berghaus_Star"],PARAMETER["False_Easting",50000.0],PARAMETER["False_Northing",50000.0],PARAMETER["Central_Meridian",105.0],PARAMETER["Latitude_Of_Origin",30.0],PARAMETER["XY_Plane_Rotation",292.000000000028],UNIT["Meter",1.0]]`
             let obj={
                 x: 62303.593708167944,
                 y: 112811.73282551926,
@@ -107,8 +103,6 @@
                 console.log(1, 2, 3,evt);
 
             });
-
-
             BNGeometry = new BNFactory("BNGeometry", BNMap);
             BNEdit = new BNFactory("BNEdit", BNMap);
             windows = new BNFactory("BNWindow");

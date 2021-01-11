@@ -1,102 +1,216 @@
 <!DOCTYPE html>
-<html>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title> - </title>
+<html lang="en">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>vue模板</title>
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.min.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
 <style type="text/css">
-	html,body{margin:0px;height:100%;width:100%}
-	/*装地图容器*/
-	.container{width:100%;height:100%}
-	/*地图按钮最外层容器*/
-	.bnmap-box{position:fixed;top:10px;right:10px}
-</style>
-<script type="text/javascript" src="/examples/lib/jquery.min.js"></script>
-<script type="text/javascript" src="/examples/lib/common.js"></script>
-<link rel="stylesheet" href="/examples/layui/css/layui.css">
-<script type="text/javascript" src="/examples/layui/layui.js"></script>
-<script id='apiScript' type="text/javascript">
-    pz();
-    if(window.location.pathname.split("cn/")[1].split("/")[0]=="2.0"){
-        document.write("<script type=\"text/javascript\" src=\'"+propertiesMap.apiUrl2+"'><\/script>");
-    }else{
-        document.write("<script type=\"text/javascript\" src=\'"+propertiesMap.apiUrl+"'><\/script>");
-    }
-</script>
-<body>
+	html,
+	body #div{
+		margin: 0px;
+		height: 100%;
+		width: 100%
+	}
 
-<html>
-<head></head>
+	/*地图容器*/
+	.container {
+		width: 100%;
+		height: 100%
+	}
+
+	/*地图按钮最外层容器*/
+	.bnmap-box {
+		position: fixed;
+		top: 10px;
+		right: 10px
+	}
+</style>
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript"
+		src="http://129.28.155.253:8080/api/init.js?v=1.0&appSecret=f6ee85b0f7ddea1983a22e9fcec60ff0&appKey=28a28e46d69df459a9cdec9a9c213afd"></script>
+
+<!--内网测试-->
+<!--<script type="text/javascript" src="http://10.35.16.13:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>-->
+<!--生产gis配置-->
+<!--<script type="text/javascript" src="http://10.35.32.20:8080/api/init.js?v=1.0&appSecret=757341d512ecd5e13b65d1ee6218fd12&appKey=5cc0216d817efd1b24c9b025c1ed3701"></script>-->
 <body>
 <!--装地图容器-->
-<div id="map" class="container"></div>
-<div class="bnmap-box">
-	<button type="button" class="layui-btn layui-btn-normal layui-btn-radius layui-btn-sm" onclick="addArea();">添加面</button>
-</div>
-</body>
-</html>
+<div id="app">
+	<div id="map" class="container" style="height:calc(100vh - 10px) "></div>
+	<div class="bnmap-box">
 
+	</div>
+</div>
 
 <script>
+    // 临时图形存放
+
+
+    var temporaryGraphic = null;
+    var BNEdit = null;
     var BNMap = null;
-    var bnSymbol=null;
-    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory", "js/BNDirectorys", "js/jquery-3.2.1.min"],
-        function(BNSymbol, util, BNFactory, BNDirectorys) {
-            var mapId = propertiesMap.mapId01;
-            // 获取面坐标
-            var addArea01 = propertiesMap.x;
-            var addArea02 = propertiesMap.y;
-            var addArea03 = propertiesMap.x+1000;
-            var addArea04 = propertiesMap.y;
-            var addArea05 = propertiesMap.x;
-            var addArea06 = propertiesMap.y+1000;
-            // 创建符号
-            bnSymbol=new BNSymbol();
-            // 创建Geometry
-            var BNGeometry = new BNFactory("BNGeometry",BNMap);
-            // 初始化地图
-            BNMap = new BNFactory(mapId, {
+    var bnSymbol = null;
+    // 编辑标识
+    var ISEdit = false,
+        isadd = false;
+
+    var BNGeometry;
+    var layer;
+    var windows;
+    var attributeQuery;
+    var propertiesMap = {
+        // "mapId03": "2576", //底图图层id
+        "mapId03": "3280", //底图图层id 内网
+
+        // "layerId01": "33723", //电子围栏图层id
+        "layerId01":'42967' , //电子围栏图层id 内网
+        // ['42967','40027','40033']
+    };
+    var layerId = propertiesMap.layerId01;
+
+
+    require(["js/BNSymbol", "js/BNUtil", "js/BNFactory","esri/geometry/Point","esri/SpatialReference", "js/BNDirectorys","js/BNMap", "js/BNGeometry",  "js/jquery-3.2.1.min",],
+        function (BNSymbol, util, BNFactory,Point,SpatialReference, BNDirectorys) {
+            bnSymbol = new BNSymbol();
+            BNMap = new BNFactory(propertiesMap.mapId03, {
                 "id": "map",
                 "options": {
                     logo: false,
                     slider: false,
-                    minZoom: 1,
-                    maxZoom: 8
+                    showLabels:true
                 }
             });
-            BNMap.bindEvent(null,"load",function(evt){
-                BNMap.setPointCenter();
+            BNMap.bindEvent(null, "load", function (evt) {
+                // BNMap.setPointCenter();
+
+                initQuery();
+
+                window.parent.postMessage('success')
             });
-            var graphicsLayer=BNMap.creatGraphicsLayer({id:"demo"});
-            BNMap.addGraphicsLayer(graphicsLayer);
-            addArea = function() {
-                //面 使用坐标新增
-                var polygonJson  = {
-                    "rings":[[
-                        [addArea01,addArea02],
-                        [addArea03,addArea04],
-                        [addArea05,addArea06],
-                        [addArea01,addArea02]
-                    ]],
-                    "spatialReference":BNMap.spatialReference
-                };
-                polygon=BNGeometry.createPolygon(polygonJson);
-                // 线
-                var simpleLineSymbol= bnSymbol.simpleLineSymbol("solid","red",2);
-                var polygonSymbol=bnSymbol.polygonSymbol(
-                    // 面的样式  实线
-                    "solid",
-                    // 边框样式
-                    simpleLineSymbol,
-                    // 面的填充颜色
-                    "blue"
-                );
-                var graphics=BNMap.graphic(polygon,polygonSymbol);
-                graphicsLayer.add(graphics);
-                BNMap.setCenter(BNGeometry.createPoint(addArea01,addArea02, BNMap.spatialReference));
-            };
+            BNMap.setLevel(2)
+
+            let wkt=`PROJCS["TFJC",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Berghaus_Star"],PARAMETER["False_Easting",50000.0],PARAMETER["False_Northing",50000.0],PARAMETER["Central_Meridian",105.0],PARAMETER["Latitude_Of_Origin",30.0],PARAMETER["XY_Plane_Rotation",292.000000000028],UNIT["Meter",1.0]]`
+            let obj={
+                x: 62303.593708167944,
+                y: 112811.73282551926,
+                spatialReference:{wkt}
+            }
+            // BNMap.setCenter(obj)
+            // BNMap.setCenter({ x: 62303.593708167944,y: 112811.73282551926},BNMap.spatialReference)
+            BNMap.bindEvent(null,"click",function(evt){
+                console.log(1, 2, 3,evt);
+
+            });
+
+
+            BNGeometry = new BNFactory("BNGeometry", BNMap);
+            BNEdit = new BNFactory("BNEdit", BNMap);
+            windows = new BNFactory("BNWindow");
+            layer = BNMap.getLayer(layerId);
         });
 
+    function regEvent() {
+        //初始化地图编辑功能
+        // 40027 dian
+        // ['42967','40027','40033']
+        BNMap.bindEvent(layerId, "click", function (event) {
+            if (ISEdit) {
+                var html = `<div class="editTuc">
+                                <p>名称：<input type="text" name="name" value="${event.graphic.attributes.NAME}"/></p>
+                                <p>OBJECTID：<input type="text" name="OBJECTID" value="${event.graphic.attributes.OBJECTID}"/></p>
+                            </div>`
+                windows.setTitle("基本信息");
+                windows.setContent(html);
+                windows.show(event);
+            } else {
+                var html = `<div class="seeTuc">
+                                <p>名称：${event.graphic.attributes.NAME}</p>
+                                <p>OBJECTID：${event.graphic.attributes.OBJECTID}</p>
+                            </div>`
+                windows.setTitle("基本信息");
+                windows.setContent(html);
+                windows.show(event);
+            }
+        });
+
+        BNMap.InnerMap.on("click", function () {
+            if (ISEdit && !isadd && temporaryGraphic) {
+                let val = $('#keyword').val();
+                let attr = temporaryGraphic.graphic.attributes;
+                attr.NAME = val ? val : 'testadd';
+                BNEdit.endOperation(layerId, temporaryGraphic.graphic, attr, function () {
+                    ISEdit = false;
+                    BNEdit.stop();
+                }, function () {
+                    ISEdit = false;
+                    BNEdit.stop();
+                });
+            }
+        });
+        // 面图层绑定事件
+        layer.on("click", function (event) {
+            // 每次拿到最新的图形
+            temporaryGraphic = event;
+            if (ISEdit && !isadd) {
+                BNEdit.startOperation(event, function (data) {
+                }); //
+            }
+        });
+    }
+
+    function initQuery() {
+        $("#search-button").bind("click", function () {
+            attributeQuery();
+        });
+    }
+
+
+
+    attributeQuery = function () {
+        var simpleLineSymbol = bnSymbol.simpleLineSymbol("solid", "green", 2); //线
+        var polygonSymbol = bnSymbol.polygonSymbol(
+            "solid", //面的样式  实线
+            simpleLineSymbol, //边框样式
+            "rgba(255, 0, 255, 0.5)" //面的填充颜色
+        );
+        BNMap.mapQuery(
+            layerId, {
+                "fields": ["NAME"], //要查询的字段
+                "where": "NAME like '%" + $("#keyword").val() + "%'", //查询参数
+                // "where": "NAME = " + $("#keyword").val() + "%'", //查询参数
+                "Symbol": {
+                    "polygon": polygonSymbol
+                }
+            },
+            true, //是否高亮
+            true, //是否定位
+            function (data) { //查询 ，data是查询结果集
+                // clearQuery()
+            },
+            function (data) { //查询报错后的异常回调
+            }
+        );
+    }
+
+
+
+    window.addEventListener(
+        'message',
+        function (data) {
+            if (data) {
+            }
+        },
+        false,
+    );
+
 </script>
+
 
 </body>
 </html>

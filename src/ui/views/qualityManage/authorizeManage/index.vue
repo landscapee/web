@@ -139,7 +139,7 @@
 
         methods: {
             upFile(){
-                this.$refs.UpFile.open({api:'mms-qualification/authorization/uploadExcel',title:'人员档案上传'})
+                this.$refs.UpFile.open({api:'mms-qualification/authorization/uploadExcel',title:'授权信息上传'})
             },
             getList1(){
                 this.row={}
