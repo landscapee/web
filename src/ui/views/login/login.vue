@@ -41,7 +41,7 @@ import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';
 import request from '@lib/axios.js';
 import {filterAsyncRoutes} from '@store/modules/permission.js';
-import { asyncRoutes, constantRoutes } from '@/ui/router';
+import { asyncRoutes, constantRoutes,resetRouter } from '@/ui/router';
 
 import logo from './assets/img/login-logo.png';
 import userimg from './assets/img/login-username.png';
@@ -164,6 +164,7 @@ export default {
                                     this.loading = false;
 									return false
 								}
+                                resetRouter()
 								router.addRoutes(accessedRoutes);
   							    // let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
 								// let path=index>-1?'/qualityManage':accessedRoutes[0].children[0].path

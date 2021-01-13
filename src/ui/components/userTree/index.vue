@@ -386,7 +386,7 @@
                 this.selectAll = false;
                 this.title = title || '选择人员';
                 this.userSelect = inputList || [];
-                this.userSelectIdS = inputList.map((k, l) => {
+                this.userSelectIdS = inputList&&inputList.map((k, l) => {
                     return k.id
                 })
             },

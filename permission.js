@@ -1,4 +1,4 @@
-import router from './src/ui/router';
+import router,{resetRouter} from './src/ui/router';
 import store from './src/ui/store';
 import { Message } from 'element-ui';
 import { getToken } from './lib/auth'; // get token from cookie
@@ -20,6 +20,9 @@ router.beforeEach(async (to, from, next) => {
 					// get user info
 					let userInfo = await store.dispatch('user/getInfo');
  					let accessRoutes = await store.dispatch('permission/generateRoutes', userInfo.menus);
+                    console.log("router", router)
+
+                    resetRouter()
                      router.addRoutes(accessRoutes);
 
                      next({ ...to ,replace:true});
@@ -50,6 +53,7 @@ router.onReady(() => {
        if (hasToken) {
 		store.dispatch('user/getInfo').then((userInfo) => {
 			store.dispatch('permission/generateRoutes', userInfo.menus).then((accessRoutes) => {
+                resetRouter()
 				router.addRoutes(accessRoutes);
  			});
 		});

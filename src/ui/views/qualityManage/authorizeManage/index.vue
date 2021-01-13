@@ -60,11 +60,13 @@
             </div>
         </div>
         <UpFile ref="UpFile" @getTableData="getList1"></UpFile>
+        <unPrompt ref="unPrompt"  ></unPrompt>
 
     </div>
 </template>
 <script>
     import UpFile from '../components/uploadDocInfo'
+    import unPrompt from './upPrompt'
 
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
@@ -74,7 +76,7 @@
     export default {
         components: {
             Icon,
-            SearchTable,UpFile
+            SearchTable,UpFile,unPrompt
         },
         name: 'authorizeManage',
         data() {
@@ -141,7 +143,11 @@
             upFile(){
                 this.$refs.UpFile.open({api:'mms-qualification/authorization/uploadExcel',title:'授权信息上传'})
             },
-            getList1(){
+            getList1(d){
+                 if(d.data.errorMessage){
+                    this.$refs.unPrompt.open(d.data.errorMessage)
+                    return false
+                }
                 this.row={}
                 this.selectId=null
                 this.form={}

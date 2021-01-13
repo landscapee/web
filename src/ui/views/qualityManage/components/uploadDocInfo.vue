@@ -110,7 +110,10 @@
                 }).then((d) => {
                     if(d.code==200){
                         this.close();
-                        this.$emit('getTableData')
+                        this.$emit('getTableData',d)
+                        if(d.data&&d.data.errorMessage){
+                            return false
+                        }
                         this.$message({
                             message: '上传成功',
                             type: 'success',

@@ -25,28 +25,28 @@ let authRoutes = [
                     {
                         path: '/addPersonDoc',
                         component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
-                        name: '新增',
+                        name: 'D新增',
                         meta: {	title: '新增',	icon: '',paramsId:''	},
                         hidden:true,
                         children:[
                             {
                                 path: '/inOfficeInfoAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
-                                name: '任职信息新增',
+                                name: 'D任职信息新增',
                                 meta: {	title: '任职信息新增',	icon: ''	},
                                 hidden:true,
 
                             },  {
                                 path: '/workExperienceAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
-                                name: '工作经验新增',
+                                name: 'D工作经验新增',
                                 meta: {	title: '工作经验新增',	icon: ''	},
                                 hidden:true,
 
                             }, {
                                 path: '/certificateAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
-                                name: '证书新增',
+                                name: 'D证书新增',
                                 meta: {	title: '证书新增',	icon: ''	},
                                 hidden:true,
 
@@ -54,7 +54,7 @@ let authRoutes = [
                             {
                                 path: '/unsafeAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
-                                name: '不安全事件及诚信记录新增',
+                                name: 'D不安全事件及诚信记录新增',
                                 meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
                                 hidden:true,
 
@@ -62,7 +62,7 @@ let authRoutes = [
                             {
                                 path: '/workStyle',
                                 component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
-                                name: '作风建设量化考核记录新增',
+                                name: 'D作风建设量化考核记录新增',
                                 meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
                                 hidden:true,
                             },
@@ -72,21 +72,21 @@ let authRoutes = [
                     {
                         path: '/userQuali',
                         component: () => import('@views/qualityManage/components/userQuali'),
-                        name: '员工资质',
+                        name: 'D员工资质',
                         meta: {	title: '员工资质',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/userAuth',
                         component: () => import('@views/qualityManage/components/userAuth'),
-                        name: '员工授权',
+                        name: 'D员工授权',
                         meta: {	title: '员工授权',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/userTrain',
                         component: () => import('@views/qualityManage/components/userTrain.vue'),
-                        name: '培训考核',
+                        name: 'D培训考核',
                         meta: {	title: '培训考核',	icon: ''	},
                         hidden:true
                     }
@@ -101,14 +101,14 @@ let authRoutes = [
 					{
 						path: '/addQualifications',
 						component: () => import('@views/qualityManage/intelligenceManage/add'),
-						name: '新增',
+						name: 'ZL新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
 					{
 						path: '/addQualificationsDetails',
 						component: () => import('@views/qualityManage/intelligenceManage/addDetails'),
-						name: '新增',
+						name: 'ZR新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
@@ -116,28 +116,28 @@ let authRoutes = [
                         path: '/ZuserDoc',
                         component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
                         // component: () => import('@views/qualityManage/components/userDoc/index'),
-                        name: '员工档案',
+                        name: 'Z员工档案',
                         meta: {	title: '员工档案',	icon: ''	},
                         hidden:true,
                         children:[
                             {
                                 path: '/ZinOfficeInfoAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
-                                name: '任职信息新增',
+                                name: 'Z任职信息新增',
                                 meta: {	title: '任职信息新增',	icon: ''	},
                                 hidden:true,
 
                             },  {
                                 path: '/ZworkExperienceAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
-                                name: '工作经验新增',
+                                name: 'Z工作经验新增',
                                 meta: {	title: '工作经验新增',	icon: ''	},
                                 hidden:true,
 
                             }, {
                                 path: '/ZcertificateAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
-                                name: '证书新增',
+                                name: 'Z证书新增',
                                 meta: {	title: '证书新增',	icon: ''	},
                                 hidden:true,
 
@@ -145,7 +145,7 @@ let authRoutes = [
                             {
                                 path: '/ZunsafeAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
-                                name: '不安全事件及诚信记录新增',
+                                name: 'Z不安全事件及诚信记录新增',
                                 meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
                                 hidden:true,
 
@@ -153,7 +153,7 @@ let authRoutes = [
                             {
                                 path: '/ZworkStyle',
                                 component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
-                                name: '作风建设量化考核记录新增',
+                                name: 'Z作风建设量化考核记录新增',
                                 meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
                                 hidden:true,
                             },
@@ -163,14 +163,14 @@ let authRoutes = [
                     {
                         path: '/ZuserAuth',
                         component: () => import('@views/qualityManage/components/userAuth'),
-                        name: '员工授权',
+                        name: 'Z员工授权',
                         meta: {	title: '员工授权',	icon: ''	},
                         hidden:true
                     },
                     {
                         path: '/ZuserTrain',
                         component: () => import('@views/qualityManage/components/userTrain.vue'),
-                        name: '培训考核',
+                        name: 'Z培训考核',
                         meta: {	title: '培训考核',	icon: ''	},
                         hidden:true
                     }
@@ -185,14 +185,14 @@ let authRoutes = [
 					{
 						path: '/addAuthorizeManage',
 						component: () => import('@views/qualityManage/authorizeManage/add'),
-						name: '新增',
+						name: '授权管理新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
                     {
                         path: '/SuserQuali',
                         component: () => import('@views/qualityManage/components/userQuali'),
-                        name: '员工资质',
+                        name: '授权管理员工资质',
                         meta: {	title: '员工资质',	icon: ''	},
                         hidden:true
                     },
@@ -200,28 +200,28 @@ let authRoutes = [
                         path: '/SuserDoc',
                         component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
                         // component: () => import('@views/qualityManage/components/userDoc/index'),
-                        name: '员工档案',
+                        name: '授权管理员工档案',
                         meta: {	title: '员工档案',	icon: ''	},
                         hidden:true,
                         children:[
                             {
                                 path: '/SinOfficeInfoAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
-                                name: '任职信息新增',
+                                name: '授权管理任职信息新增',
                                 meta: {	title: '任职信息新增',	icon: ''	},
                                 hidden:true,
 
                             },  {
                                 path: '/SworkExperienceAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
-                                name: '工作经验新增',
+                                name: '授权管理工作经验新增',
                                 meta: {	title: '工作经验新增',	icon: ''	},
                                 hidden:true,
 
                             }, {
                                 path: '/ScertificateAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
-                                name: '证书新增',
+                                name: '授权管理证书新增',
                                 meta: {	title: '证书新增',	icon: ''	},
                                 hidden:true,
 
@@ -229,7 +229,7 @@ let authRoutes = [
                             {
                                 path: '/SunsafeAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
-                                name: '不安全事件及诚信记录新增',
+                                name: '授权管理不安全事件及诚信记录新增',
                                 meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
                                 hidden:true,
 
@@ -237,7 +237,7 @@ let authRoutes = [
                             {
                                 path: '/SworkStyle',
                                 component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
-                                name: '作风建设量化考核记录新增',
+                                name: '授权管理作风建设量化考核记录新增',
                                 meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
                                 hidden:true,
                             },
@@ -247,7 +247,7 @@ let authRoutes = [
                     {
                         path: '/SuserTrain',
                         component: () => import('@views/qualityManage/components/userTrain.vue'),
-                        name: '培训考核',
+                        name: '授权管理质量培训考核',
                         meta: {	title: '培训考核',	icon: ''	},
                         hidden:true
                     }
@@ -366,20 +366,20 @@ let authRoutes = [
                     {
                         path: '/WorkAbnormalDetails',
                         component: () => import('@views/workOrder/abnormal/details'),
-                        name: '异常更改',
+                        name: '完工签署异常更改',
                         meta: {title: '异常更改',icon: 'xxgl' },
                     },
 
                     {
                         path: '/WorkPaperDetails',
                         component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
-                        name: '异常更改',
+                        name: '纸质异常更改',
                         meta: {title: '异常更改',icon: 'xxgl' },
                     },
                     {
                         path: '/WorkAbnormalAdd',
                         component: () => import('@views/workOrder/abnormal/add'),
-                        name: '纸制填报工单导入',
+                        name: '完工签署纸制填报工单导入',
                         meta: {title: '纸制填报工单导入',icon: 'xxgl' },
                     },
                 ]
@@ -432,13 +432,13 @@ let authRoutes = [
 					{
 						path: '/MyWorkAbnormalDetails',
 						component: () => import('@views/workOrder/abnormal/details'),
-						name: '异常更改',
+						name: '我的工单异常更改',
 						meta: {title: '异常更改',icon: 'xxgl' },
 					},
 					{
 						path: '/MyWorkPaperDetails',
 						component: () => import('@views/workOrder/abnormal/detailsPaper.vue'),
-						name: '异常更改',
+						name: '我的工单纸质异常更改',
 						meta: {title: '异常更改',icon: 'xxgl' },
 					},
 					{
@@ -467,7 +467,7 @@ let authRoutes = [
                     {
                         path: '/templateAdd',
                         component: () => import('@views/chargeManage/templateManage/templateAdd'),
-                        name: '新增',
+                        name: '模板管理新增',
                         meta: {title: '新增',icon: 'xxgl' }
                     },
                     {
@@ -487,7 +487,7 @@ let authRoutes = [
                     {
                         path: '/chargeOrderAdd',
                         component: () => import('@views/chargeManage/chargeOrders/chargeOrderAdd'),
-                        name: '新增',
+                        name: '收费单新增',
                         meta: {title: '新增',icon: 'xxgl' }
                     }
                 ]
@@ -523,7 +523,7 @@ let authRoutes = [
                     {
                         path: '/batchPush',
                         component: () => import('@views/techKnowledge/fileManage/detail/batchPush'),
-                        name: '批量推送',
+                        name: '文件管理批量推送',
                         meta: {title: '批量推送',icon: 'xxgl' },
                     },
                     {
@@ -549,7 +549,7 @@ let authRoutes = [
                     {
                         path: '/readTrack1',
                         component: () => import('@views/techKnowledge/fileManage/detail/readTrack'),
-                        name: '阅读推送',
+                        name: '学习管理阅读推送',
                         meta: {title: '阅读推送',icon: 'xxgl' },
                     }
                 ]
@@ -645,8 +645,8 @@ let authRoutes = [
                             {
                                 path: '/trainManageAdminResultsAdd',
                                 component: () => import('@views/trainManage/trainManageAdmin/trainResults/add'),
-                                name: '培训管理新增',
-                                meta: {title: '培训管理新增',icon: 'xxgl' },
+                                name: '培训结果新增',
+                                meta: {title: '培训结果新增',icon: 'xxgl' },
                             },
                         ]
                     },
@@ -708,7 +708,7 @@ let authRoutes = [
                 children:[
 					{   path: '/onlineTestDo',
                         component: () => import('@views/trainManage/onlineTest/add.vue'),
-                        name: '在线考试',
+                        name: '参加在线考试',
                         meta: {title: '在线考试',icon: 'xxgl' },
 					},
 				]
@@ -763,7 +763,7 @@ let authRoutes = [
 					{
 						path: '/addWarningConfig',
 						component: () => import('@views/msgManage/warningConfig/components/addWarningConfig'),
-						name: '新增',
+						name: '预警配置新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					}
@@ -777,7 +777,7 @@ let authRoutes = [
 					{
 						path: '/historyWarning',
 						component: () => import('@views/msgManage/warningSearch/components/historyWarning'),
-						name: '历史',
+						name: '预警查询历史',
 						meta: {	title: '历史',	icon: ''	},
 						hidden:true
 					}
@@ -791,7 +791,7 @@ let authRoutes = [
 					{
 						path: '/addSubscribeConfig',
 						component: () => import('@views/msgManage/subscribeConfig/components/addSubscribeConfig'),
-						name: '新增',
+						name: '订阅配置新增',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					}
@@ -805,14 +805,14 @@ let authRoutes = [
 					{
 						path: '/addInfoPlate',
 						component: () => import('@views/msgManage/infoPlate/components/addInfoPlate'),
-						name: '新增',
+						name: 'addInfoPlate',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
 					{
 						path: '/infoPlateDetails',
 						component: () => import('@views/msgManage/infoPlate/components/infoPlateDetails'),
-						name: '详情',
+						name: 'infoPlateDetails',
 						meta: {	title: '详情',	icon: ''	},
 						hidden:true
 					},
@@ -843,14 +843,14 @@ let authRoutes = [
 					{
 						path: '/editBusinessData',
 						component: () => import('@views/basicData/businessData/components/editBusinessData'),
-						name: '新增',
+						name: 'editBusinessData',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
 					{
 						path: '/editBusinessSubset',
 						component: () => import('@views/basicData/businessData/components/editBusinessSubset'),
-						name: '新增',
+						name: 'editBusinessSubset',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
@@ -865,7 +865,7 @@ let authRoutes = [
 					{
 						path: '/addSysParameter',
 						component: () => import('@views/basicData/sysParameter/components/addSysParameter'),
-						name: '新增',
+						name: 'addSysParameter',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
@@ -880,7 +880,7 @@ let authRoutes = [
 					{
 						path: '/tailInfoAdd',
 						component: () => import('@views/basicData/AirInfo/add'),
-						name: '新增',
+						name: 'tailInfoAdd',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
@@ -895,7 +895,7 @@ let authRoutes = [
 					{
 						path: '/addElectronicFence',
 						component: () => import('@views/basicData/electronicFence/components/addElectronicFence'),
-						name: '新增',
+						name: 'addElectronicFence',
 						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
@@ -924,7 +924,7 @@ let defaultRoutes = [
 export const constantRoutes = defaultRoutes;
 //带权限
 export const asyncRoutes = authRoutes;
-const createRouter = () =>
+export const createRouter = () =>
 	new Router({
 		scrollBehavior: () => ({x: 0, y: 0 }),
 		// routes: constantRoutes,

@@ -17,7 +17,6 @@ import {initWebsocket} from "./initSocket.js";
 // import WorkerRegist from "./workerRegist.js";  // 引入webworker注册文件
 import router from "./src/ui/router";
 
-console.log("router", router)
 import store from "./src/ui/store";
 import "./src/ui/icons";
 import Logger from "./lib/logger";
