@@ -1,7 +1,7 @@
 <template>
     <el-dialog class="AddVehiclVeiw" title="上传失败提示" :close-on-click-modal="false" center append-to-body :visible.sync="dialogVisible" :before-close="close">
         <div class="diaDiv"  >
-            <p>{{content}}</p>
+            <p v-html="content"> </p>
         </div>
 
       </el-dialog>
@@ -13,7 +13,7 @@
         data() {
             return {
                 content: '',
-                 dialogVisible: false,
+                dialogVisible: false,
             };
         },
         methods: {

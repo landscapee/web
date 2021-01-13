@@ -2,7 +2,7 @@
     <div>
         <el-dialog :title="objConfig.title||'人员档案上传'"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
             <el-form :inline="true" :model="form" ref="form" :rules="rules">
-                <el-form-item>
+                 <el-form-item>
                     <el-input style="width:300px" type="text" v-model="form.filename"  placeholder="仅支持Excel导入"></el-input>
                     <div v-show="tit" style="color:red;text-align: left;position: absolute">请选择文件</div>
                 </el-form-item>
@@ -44,7 +44,7 @@
         components: {},
         data() {
             return {
-                fileList: [],
+                 fileList: [],
                 form:{ filename:'',},
                 rules:{},
                 id:'',
