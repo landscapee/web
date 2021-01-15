@@ -89,7 +89,7 @@
                         <el-card class="box-card" shadow="never" border-radius="2px">
                             <div>已选择({{ form.modelRange.length }})：<el-button style="float:right" :disabled="type=='info'" size="mini" @click="handleClear">清空</el-button></div>
                             <el-scrollbar style="height:120px ">
-                                <el-tag :key="tag.id" v-for="tag in form.modelRange" :closable="type!='info'" :disable-transitions="false" @close="  handleRemove(tag.id)">
+                                <el-tag :key="tag.id" v-for="tag in form.modelRange||[]" :closable="type!='info'" :disable-transitions="false" @close="  handleRemove(tag.id)">
                                     {{ tag.models&&tag.models.length?`${tag.iata}（${tag.models.join(',')}）`:`${tag.name}`}}
                                 </el-tag>
                             </el-scrollbar>
@@ -245,6 +245,7 @@
                 for(let i=0;i<len;i++){
                     if(this.Airline[i].id==val){
                         this.$set(this.form,'authorizedUnit',this.Airline[i].fullname)
+                        this.$set(this.form,'authorizedUnitCode',this.Airline[i].iata)
                         console.log(this.form.authorizedUnit);
                         break
                     }
@@ -325,7 +326,9 @@
                                    id: RegExp.$4,
                                }
                            })
-                        }
+                        }else{
+                           obj.modelRange=[]
+                       }
 
                        if( obj.state===0){
                            obj.state= '未授权'
