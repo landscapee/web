@@ -1,8 +1,7 @@
 <template>
-    <div>
-         <div  class="sysParameter">
-            <div class="top-content">
-                <div class="top-content-title">
+    <div  class="QCenterRight G_listOne">
+            <div class=" ">
+                <div class="QHead">
 
                     <span class="dept">
                          <el-select  @change="deptFouce" ref="dept"  v-model="form.deptId" filterable >
@@ -17,7 +16,7 @@
                     </span>
 
                 </div>
-                <div class="top-toolbar">
+                <div class="QheadRight">
                      <div @click="exportExcel()">
                         <icon iconClass="export" ></icon>导出
                     </div>
@@ -25,13 +24,12 @@
                 </div>
             </div>
 
-            <div class="main-content">
+            <div class="tableOneBox">
                 <SearchTable :noSearch="true" :spanMethod="objectSpanMethod" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable"       :showHeader="false" :showPage="true" >
                 </SearchTable>
             </div>
 
         </div>
-    </div>
 </template>
 <script>
     import SearchTable from '@/ui/components/SearchTable';
@@ -201,7 +199,7 @@
         margin-top:14px;
 
     }
-    .top-content-title{
+    .QHead{
         height:38px!important;
         /deep/ .el-select{
             .el-input__inner{
@@ -218,7 +216,7 @@
         content:'\e78f';
     }
     /deep/ .mainTable{
-        height:calc(100vh - 300px);
+        height:calc(100vh - 240px);
         overflow: auto;
     }
 

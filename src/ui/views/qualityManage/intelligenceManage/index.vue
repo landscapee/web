@@ -104,6 +104,7 @@
     import request from '@lib/axios.js';
     import {  extend,map,get } from 'lodash';
     import UpDocInfo from '../components/uploadDocInfo'
+    import {debounce} from '@lib/tools';
 
     export default {
         components: {
@@ -352,7 +353,6 @@
                 }
 
             },
-            //查询表头数据
             handleScroll($event){
                 // 获取滚动条的dom
                 var bady = $event.target;
@@ -368,17 +368,17 @@
                 //获取滚动元素标识
                  var tag = bady.parentElement.__vue__.$parent.refTag;
                  if(scrollTop+windowHeight+1>=scrollHeight){
-
                     if(tag=='TableLeft'){
-                        if(this.leftParams.size!=18){
-                            this.leftParams.size=18
-                            this.leftParams.current = 1
-                        }else {
-                            this.leftParams.current = ++this.leftParams.current ;
-                        }
-                        console.log(1, 32);
-                        this.getList('left','scroll');
-                    }
+                         debounce(()=>{
+                             if(this.leftParams.size!=18){
+                                 this.leftParams.size=18
+                                 this.leftParams.current = 1
+                             }else {
+                                 this.leftParams.current = ++this.leftParams.current ;
+                             }
+                            this.getList('left','scroll')
+                        },100)()
+                     }
                 }
             },
             requestTable(searchData,tag,tableTag){

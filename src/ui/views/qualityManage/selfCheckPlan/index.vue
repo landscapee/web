@@ -70,6 +70,8 @@ import Icon from '@components/Icon-svg/index';
 import { selfCheckConfig,selfCheckDetailsConfig } from './tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend,map } from 'lodash';
+import {debounce} from '@lib/tools';
+
 export default {
     components: {
         Icon,
@@ -215,21 +217,27 @@ export default {
             var tag = bady.parentElement.__vue__.$parent.refTag;
                if(scrollTop+windowHeight+1>=scrollHeight){
                 if(tag=='left-table'){
-                     if(this.leftParams.size!=18){
+
+                    debounce(()=>{
+                        if(this.leftParams.size!=18){
                         this.leftParams.size=18
                         this.leftParams.current = 1
                     }else {
                         this.leftParams.current = ++this.leftParams.current ;
                     }
-                    this.getList('left','scroll');
-                }else{
-                    if(this.rightParams.size!=18){
-                        this.rightParams.size=18
-                        this.rightParams.current = 1
-                    }else {
-                        this.rightParams.current = ++this.rightParams.current ;
-                    }
-                    this.getList('right','scroll');
+
+                        this.getList('left','scroll')
+                    },100)()
+                 }else{
+                    debounce(()=>{
+                        if(this.rightParams.size!=18){
+                            this.rightParams.size=18
+                            this.rightParams.current = 1
+                        }else {
+                            this.rightParams.current = ++this.rightParams.current ;
+                        }
+                        this.getList('right','scroll');
+                    },100)()
                 }
             }
         },

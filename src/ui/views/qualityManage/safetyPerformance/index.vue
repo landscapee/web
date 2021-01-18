@@ -88,6 +88,7 @@
     import Icon from '@components/Icon-svg/index';
     import { safetyConfig,safetyDetailsConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
+    import {debounce} from '@lib/tools';
     import {  extend,map } from 'lodash';
     export default {
         components: {
@@ -180,7 +181,6 @@
                 this.businessSubsetConfig=safetyDetailsConfig(obj)
 
             });
-
         },
         mounted() {
             window.addEventListener('scroll', this.handleScroll,true);//监听函数
@@ -240,22 +240,29 @@
                 var tag = bady.parentElement.__vue__.$parent.refTag;
                 if(scrollTop+windowHeight+1>=scrollHeight){
                     if(tag=='left-table'){
-                        if(this.leftParams.size!=18){
-                            this.leftParams.size=18
-                            this.leftParams.current = 1
-                        }else {
-                            this.leftParams.current = ++this.leftParams.current ;
-                        }
-                        this.getList('left','scroll');
+
+                         debounce(()=>{
+                             if(this.leftParams.size!=18){
+                                 this.leftParams.size=18
+                                 this.leftParams.current = 1
+                             }else {
+                                 this.leftParams.current = ++this.leftParams.current ;
+                             }
+                            this.getList('left','scroll')
+                        },100)()
                     }else{
-                        if(this.rightParams.size!=18){
-                            this.rightParams.size=18
-                            this.rightParams.current = 1
-                        }else {
-                            this.rightParams.current = ++this.rightParams.current ;
-                        }
-                         this.getList('right','scroll');
-                    }
+
+                        debounce(()=>{
+                            if(this.rightParams.size!=18){
+                                this.rightParams.size=18
+                                this.rightParams.current = 1
+                            }else {
+                                this.rightParams.current = ++this.rightParams.current ;
+                            }
+                            this.getList('right','scroll')
+                        },100)()
+
+                     }
                 }
             },
             //查询表头数据
@@ -436,6 +443,10 @@
                         params:{...this.leftParams}
                     })
                         .then((data) => {
+                            if(! data.data){
+                                this.leftParams.current--
+                               return false
+                            }
                             data.data.records.map((k,l)=>{
                                 if(k.id==this.leftSelectId){
                                     k.selected=true

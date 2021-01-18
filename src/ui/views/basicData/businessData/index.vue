@@ -63,6 +63,8 @@ import Icon from '@components/Icon-svg/index';
 import { businessDataTable,businessSubsetTable } from '../tableConfig.js';
 import request from '@lib/axios.js';
 import {  extend } from 'lodash';
+import {debounce} from '@lib/tools';
+
 export default {
     components: {
         Icon,
@@ -165,11 +167,17 @@ export default {
             console.log(scrollTop + windowHeight + 1 ,scrollHeight);
             if(scrollTop+windowHeight+1>=scrollHeight){
                 if(tag=='left-table'){
-                    this.leftParams.current = ++this.leftParams.current ;
-                    this.getList('left','scroll');
+                    debounce(()=>{
+                        this.leftParams.current = ++this.leftParams.current ;
+                        this.getList('left','scroll');
+                    },100)()
+
                 }else{
-                    this.rightParams.current = ++this.rightParams.current ;
-                    this.getList('right','scroll');
+                    debounce(()=>{
+                        this.rightParams.current = ++this.rightParams.current ;
+                        this.getList('right','scroll');
+                    },100)()
+
                 }
             }
         },

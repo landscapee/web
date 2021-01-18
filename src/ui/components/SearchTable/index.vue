@@ -374,7 +374,7 @@
 <style lang="scss" scoped>
     .mainTable {
         overflow-y: auto;
-        border-top: 0px;
+        border-top: 0px!important;
         /deep/ .current-row > td {
             background-color: #A0CBF6;
         }
