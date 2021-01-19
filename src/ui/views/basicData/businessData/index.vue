@@ -137,8 +137,7 @@ export default {
       console.log(1);
       this.$eventBus.$on('updatedata', msg => {
             if(msg == 'left'){
-
-                 this.leftParams.current = 1;
+                this.leftParams.current = 1;
                 this.getList('left');
             }else if(msg == 'right'){
                 this.rightParams.current = 1;
@@ -147,7 +146,6 @@ export default {
        });
       if(this.$refs.mainContent){
           this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数
-
       }
     },
     methods: {
@@ -177,7 +175,6 @@ export default {
                         this.rightParams.current = ++this.rightParams.current ;
                         this.getList('right','scroll');
                     },100)()
-
                 }
             }
         },

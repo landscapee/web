@@ -8,12 +8,12 @@
                             <el-option v-for="item in deptData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                          </el-select>
                     </span>
-                    <span>
+
                          <el-select @change="getList" style="width:100px"   ref="year"  v-model="form.year" filterable >
                             <el-option v-for="item in yearS" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                         年度-安全绩效
-                    </span>
+
 
                 </div>
                 <div class="QheadRight">
@@ -194,8 +194,7 @@
     }
 </script>
 <style scoped lang="scss">
-    @import "@/ui/styles/common_list.scss";
-    .sysParameter{
+     .sysParameter{
         margin-top:14px;
 
     }
@@ -208,7 +207,7 @@
                 border: 0!important;
             }
         }
-
+        font-weight: normal!important;
     }
     /deep/ .el-icon-arrow-up:before{
         color: black;
