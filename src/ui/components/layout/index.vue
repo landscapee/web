@@ -47,7 +47,6 @@
  import postal from 'postal';
  import { mapGetters } from 'vuex';
  import { resetRouter,asyncRoutes } from '@router';
-
 import logo from './assets/img/logo.png';
 import bell from './assets/img/ic_bell.png';
 import esc from './assets/img/ic_esc.png';

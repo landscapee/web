@@ -16,10 +16,20 @@
 						<icon iconClass="add"></icon>
 						导出收费单
 					</div>
-					<div @click='addChargeOrderFn("/chargeOrderAdd","add")'>
+					<div class="xiala" >
 						<icon iconClass="add"></icon>
 						新增
+						<el-dropdown   @command="toAdd">
+							<el-button type="primary">
+								新增<i class="el-icon-arrow-down el-icon--right"></i>
+							</el-button>
+							<el-dropdown-menu  slot="dropdown">
+								<el-dropdown-item :command="0">国内</el-dropdown-item>
+								<el-dropdown-item :command="1">国际</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
 					</div>
+
 					<div @click='addChargeOrderFn("/chargeOrderAdd","edit")'>
 						<icon iconClass="edit"></icon>
 						编辑
@@ -150,6 +160,10 @@
             }
         },
         methods: {
+            toAdd(inOrOut){
+
+                this.addChargeOrderFn("/chargeOrderAdd","add",inOrOut)
+			},
             getNumberFn() {
                 this.approveNumber = 0
                 this.sendNumber = 0
@@ -229,10 +243,11 @@
                         this.selectIds = []
                     })
             },
-            addChargeOrderFn(type, query) {
+            addChargeOrderFn(type, query,inOrOut) {
                 var pushPath = {
                     path: type,
-                    query: {type: query}
+                    query: {type: query,  inOrOut:inOrOut||null},
+
                 }
                 if (query != 'add') {
                     if (this.selectIds.length === 0) {
@@ -537,6 +552,18 @@
 			span {
 				margin-left: 40px;
 			}
+		}
+	}
+	.xiala{
+		position: relative;
+	}
+	/deep/ .el-dropdown{
+		position: absolute;
+		top:0;
+		.el-button{
+			 opacity: 0;
+			width: 69px;
+			height: 31px;
 		}
 	}
 	/deep/ .mainTable {

@@ -204,6 +204,7 @@
             .el-input__inner{
                 font-size: 24px;
                 color:black;
+                padding-left: 0;
                 border: 0!important;
             }
         }

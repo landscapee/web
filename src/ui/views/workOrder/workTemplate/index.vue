@@ -27,7 +27,7 @@
                     </el-table-column>
                     <el-table-column slot="check" label="最新版本标识" :width="120" align="center" >
                         <template slot-scope="{ row }">
-                                  <el-checkbox :value="!row.history" :label="false" v-if="!row.history" ></el-checkbox>
+                                  <el-checkbox class="nocurser" :value="!row.history" :label="false" v-if="!row.history" ></el-checkbox>
                          </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
@@ -260,7 +260,7 @@
             getList(){
                 let data={...this.form}
                 map(data,((k,l)=>{
-                    if(!k){
+                    if(!k&&k!==0){
                         data[l]=null
                     }
                     if(l=='state'&&k){
@@ -292,5 +292,12 @@
     };
 </script>
 <style scoped lang="scss">
+.nocurser{
+    /*cursor: unset;*/
+    cursor: text;
+    /deep/ .el-checkbox__input{
+        cursor: url("../../../assets/img/bus.png");
+    }
 
+}
 </style>
