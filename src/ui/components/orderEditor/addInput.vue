@@ -4,7 +4,7 @@
             <el-form :model="form" :rules="rules">
 
                  <el-form-item  class="leftMargin"   label="预览"    >
-                     <input type="text" v-model="text" :inputtype="form.type">
+                     <input type="text" v-model="text":style="form.widthType=='adjust'?{width}:{}" :inputtype="form.type">
                      <span v-if="form.type=='string'">可以输入任何字符</span>
                      <span v-else>只能输入数字</span>
                  </el-form-item>
@@ -12,6 +12,12 @@
                     <el-radio v-model="form.type" label="string">字符串</el-radio>
                     <el-radio v-model="form.type" label="num">数字</el-radio>
                  </el-form-item>
+                <el-form-item    label="宽度"  prop="type" >
+                    <el-radio v-model="form.widthType" label="def" @change="widthTypeC">默认</el-radio>
+                    <el-radio v-model="form.widthType" label="adjust" @change="widthTypeC">手动调整</el-radio>
+                    <el-slider  v-if="form.widthType=='adjust'" v-model="form.width" :min="40" :max="140" @change="widthC"></el-slider>
+
+                </el-form-item>
 
             </el-form>
             <div slot="footer" class="Qfooter">
@@ -23,13 +29,15 @@
 </template>
 <script>
     import { bindInputFn, } from '@lib/tools.js';
+    import {debounce} from '@lib/tools';
 
     export default {
         data() {
             return {
+                width:'40px',
                 type: "",
                 text: "",
-                form:{type:'string', },
+                form:{type:'string',widthType:'def' },
                 dialogFormVisible: false,
 
                 rules:{
@@ -46,7 +54,20 @@
 
         },
         methods:{
-
+            widthTypeC(val){
+                if(val=='def'){
+                    this.width='40px'
+                     this.$set(this.form,'width',null)
+                }
+            },
+            widthC(val){
+                debounce(()=>{
+                    this.width=val+'px'
+                },50)()
+            },
+            formatTooltip(val) {
+                return val * 4;
+            },
             open(type){
                  this.dialogFormVisible = true;
                 this.$nextTick(()=>{
@@ -57,7 +78,7 @@
                 this.dialogFormVisible = false
             },
             addConfirmFn(){
-                 this.$emit('addConfirmFn',  this.form.type)
+                 this.$emit('addConfirmFn',  this.form.type,this.form.width)
                 this.dialogFormVisible = false
             },
 
@@ -90,7 +111,9 @@
                     width:100%!important;
                 }
             }
-
+            .el-slider{
+                width:60%;
+            }
         }
 
     }

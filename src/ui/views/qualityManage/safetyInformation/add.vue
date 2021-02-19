@@ -36,11 +36,54 @@
                         <span v-if="type=='info'">{{form.infSources}}</span>
                         <el-input v-else v-model="form.infSources" placeholder="请输入信息来源"></el-input>
                     </el-form-item>
-                    <el-form-item label="时间：" prop="infTime">
-                        <span v-if="type=='info'">{{  form.infTime? moment(form.infTime).format('YYYY-MM-DD'):''}}</span>
-                        <el-date-picker  v-else v-model="form.infTime" placeholder="请选择时间"></el-date-picker>
+
+                    <el-form-item label="日期：" prop="infDate">
+                        <span v-if="type=='info'">{{  form.infDate? moment(form.infDate).format('YYYY-MM-DD'):''}}</span>
+                        <el-date-picker  v-else v-model="form.infDate" placeholder="请选择日期"></el-date-picker>
                     </el-form-item>
 
+                </div>
+                <div class="row_tow">
+                    <el-form-item label="班组名称：" prop="teamName">
+                        <span v-if="type=='info'">{{form.teamName}}</span>
+                        <el-input v-else v-model="form.teamName" placeholder="请输入班组名称"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="时间：" prop="infTime">
+                        <span v-if="type=='info'">{{  form.infTime? moment(form.infTime).format('HH:mm:ss'):''}}</span>
+                        <el-time-picker
+                                v-else v-model="form.infTime"
+                                placeholder="请选择时间">
+                        </el-time-picker>
+                     </el-form-item>
+
+                </div>
+                <div class="row_tow">
+                    <el-form-item label="机位号：" prop="seat">
+                        <span v-if="type=='info'">{{form.seat}}</span>
+                        <el-input v-else v-model="form.seat" placeholder="请输入机位"></el-input>
+                    </el-form-item>
+                    <el-form-item label="原因分类：" prop="reasonType">
+                        <span v-if="type=='info'">{{form.reasonType}}</span>
+                        <el-input v-else v-model="form.reasonType" placeholder="请输入原因分类"></el-input>
+                    </el-form-item>
+
+                </div>
+                <div class="row_tow">
+                    <el-form-item label="是否重复违规：" prop="repeatedViolations">
+                        <span v-if="type=='info'">{{form.repeatedViolations?'是':'否'}}</span>
+                        <el-select clearable v-else v-model="form.repeatedViolations" placeholder="请选择">
+                            <el-option label="是" :value="true"></el-option>
+                            <el-option label="否" :value="false"></el-option>
+                        </el-select>
+                     </el-form-item>
+                    <el-form-item label="是否核心风险：" prop="coreRisk">
+                        <span v-if="type=='info'">{{form.coreRisk?'是':'否'}}</span>
+                        <el-select clearable v-else v-model="form.coreRisk" placeholder="请选择">
+                            <el-option label="是" :value="true"></el-option>
+                            <el-option label="否" :value="false"></el-option>
+                        </el-select>
+                     </el-form-item>
                 </div>
                 <div class="row_tow">
                     <el-form-item label="地点：" prop="place">
@@ -258,7 +301,7 @@
             }
         }
         .el-form-item__label{
-            width: 130px!important;
+            width: 140px!important;
         }
         .el-form-item__content{
             width: calc(100% - 140px);

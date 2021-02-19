@@ -78,10 +78,21 @@
                                      :reserve-selection="true">
 						<span @mouseenter="mousemoveDate(this,$event)" @mouseleave="mouseleaveDate(this,$event)"
                               slot-scope="{ row }" :class="colConfig.search.extendType==='search'?'searchClass':''">
-							<el-date-picker @change="requestTableData" class="adv_filter"
+
+
+                             <el-time-picker
+                                     v-if="colConfig.search.time=='time'"
+                                     @change="requestTableData" class="adv_filter"
+                                     :placeholder="colConfig.search.placeholder"
+                                     v-model="row[colConfig.search.prop]">
+                            </el-time-picker>
+
+                            <el-date-picker v-else @change="requestTableData" class="adv_filter"
                                             :type="colConfig.search.time||'date'"
                                             :placeholder="colConfig.search.placeholder"
-                                            v-model="row[colConfig.search.prop]"></el-date-picker>
+                                            v-model="row[colConfig.search.prop]">
+
+                            </el-date-picker>
 							<icon class="table_search" @click.native="requestTableData"
                                   v-if="colConfig.search.extendType && colConfig.search.extendType=='search'"
                                   iconClass="table_search"></icon>

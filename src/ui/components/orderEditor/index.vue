@@ -510,12 +510,12 @@ body{
   },
   methods:{
 
-      AddInput(type){
+      AddInput(type,width){
           let _this=this
           _this.inputIndex+=1
           let d=new Date()
           let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
-          this.editor.insertHtml('<input type="text"   inputtype="'+type+'" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
+          this.editor.insertHtml('<input type="text"  style="width:'+width+'px"  inputtype="'+type+'" id="$$$'+num+'input' + _this.inputIndex +'" name="$$$'+num+'input' + _this.inputIndex +'"/>')
 
          },
         addConfirmFn(val, form){
