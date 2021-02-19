@@ -6,13 +6,7 @@
 					<span>收费单（{{ruleForm.inOrOut?'国内':'国际'}}）-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
 				</div>
 				<div class="top-toolbar">
-					<!-- <div @click='sendFinanceFn'><icon iconClass="add"></icon>发送财务</div>
-					<div><icon iconClass="add" ></icon>导出收费单</div>
-					<div><icon iconClass="add" ></icon>新增</div>
-					<div><icon iconClass="edit" ></icon>编辑</div>
-					<div><icon iconClass="remove" ></icon>删除</div>
-					<div><icon iconClass="info" ></icon>详情</div>
-					<div><icon iconClass="info" ></icon>导出Excel</div> -->
+
 					<div @click="type!='info'?submitForm('ruleForm'):()=>{}" :class="type=='info'?'isDisabled':''" v-if="type!=='info'">
 						<icon iconClass="save"></icon>
 						保存
@@ -318,41 +312,41 @@
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:280px;'>{{ruleForm.mop}}</span>
 									<el-input v-else v-model="ruleForm.mop" style='width:280px;'></el-input>
+									<span class='form_inlne_val1'>次</span>
+
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
-								<el-form-item label="其他" prop="others" :label-width='labelWidth'>
+							<el-form-item label="上传纸质收费单" :label-width='labelWidth'>
+								<el-upload
+										v-if="type!='info'"
+										style='display:flex'
+										class="upload_demo"
+										ref="upload"
+										:limit='1'
+										accept='.jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP'
+										:on-success='fileUploadSuccessFn'
+										:on-exceed="handleExceedFn"
+										:on-remove='fileRemoveFn'
+										:action='$ip+"/mms-file/upload2"'
+										:file-list="fileList"
+								>
+									<el-button size="small" type="primary" class="rowSvg"><icon iconClass="upload" ></icon>{{type=='edit'?'重新上传':'上传'}}</el-button>
+								</el-upload>
+								<span v-if="type=='info'" class='hoverSpanFile'  @click="preImg">{{fileList.map(i=>i.name).toString()}}</span>
+							</el-form-item>
+						</el-col>
+							<el-col :span="24" class="other">
+								<el-form-item label="其他"   prop="others" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
-									  style='width:280px;'>{{ruleForm.others}}</span>
-									<el-input v-else v-model="ruleForm.others" style='width:280px;'></el-input>
+									   >{{ruleForm.others}}</span>
+									<el-input v-else v-model="ruleForm.others" type="textarea" ></el-input>
 								</el-form-item>
 							</el-col>
 						</el-row>
 
 
-						<el-row>
-							<el-col :span="12">
-								<el-form-item label="上传纸质收费单" :label-width='labelWidth'>
-									<el-upload
-											v-if="type!='info'"
-											style='display:flex'
-											class="upload_demo"
-											ref="upload"
-											:limit='1'
-											accept='.jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP'
-											:on-success='fileUploadSuccessFn'
-											:on-exceed="handleExceedFn"
-											:on-remove='fileRemoveFn'
-											:action='$ip+"/mms-file/upload2"'
-											:file-list="fileList"
-									>
-										<el-button size="small" type="primary" class="rowSvg"><icon iconClass="upload" ></icon>{{type=='edit'?'重新上传':'上传'}}</el-button>
-									</el-upload>
-									<span v-if="type=='info'" class='hoverSpanFile'  @click="preImg">{{fileList.map(i=>i.name).toString()}}</span>
-								</el-form-item>
-							</el-col>
-							<el-col :span="12"></el-col>
-						</el-row>
+
 						<div v-if="type=='info'">
 							<!--/Worker Signature-->
 							<el-form-item label="工作者签字" :label-width='labelWidth'>
@@ -434,7 +428,7 @@
 				}
 			}
 		},
-		name: '',
+		name: 'chargeAdd',
 		data() {
 
 			return {
@@ -626,6 +620,14 @@
 </script>
 <style scoped lang="scss">
 	@import "@/ui/styles/common_list.scss";
+	.other{
+		/deep/ .el-form-item{
+			width: 100%;
+		}
+		/deep/ .el-form-item__content{
+			width: calc(100% - 361px);
+		}
+	}
 .rowSvg{
 	.svg-icon{
 		fill:#fff;

@@ -8,6 +8,13 @@ export const sysParameterTable = () => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--')
             }
         },
+        {   prop: 'inOrOut', label: '收费单类型',width:110, align: 'center',sort:false,sortProp:"inOrOut",
+            formatter:(row, column, cellValue) => {
+                return row.inOrOut?'国内':'国际'
+            },
+            search:{type:'select',placeholder:"请输入",
+                selectProp:["labelData", "valData"], data: [{valData:true,labelData:'国内'},{valData:false,labelData:'国际'}],
+            prop:'inOrOut'} },
         {   prop: 'airLine', label: '航空公司', align: 'center',sort:true,sortProp:"airLine",
             search:{type:'input',placeholder:"请输入航空公司",
             prop:'airLine'} },

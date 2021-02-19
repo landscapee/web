@@ -247,7 +247,6 @@
                 var pushPath = {
                     path: type,
                     query: {type: query,  inOrOut:inOrOut||null},
-
                 }
                 if (query != 'add') {
                     if (this.selectIds.length === 0) {
