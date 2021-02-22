@@ -212,11 +212,10 @@ export default {
                 if(!k){
                     data[l]=null
                 }else {
-                    if(l=='infTime'){
-                        data.infTimeStr=data.infTime.getFullYear()
+                    if(l=='infDateStr'){
+                        data.infDateStr=data.infDateStr.getFullYear()+''
                     }
-                    delete data.infTime
-                }
+                 }
             }))
            request({
                 url:`${this.$ip}/mms-qualification/securityInformation/list`,

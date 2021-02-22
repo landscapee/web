@@ -25,7 +25,7 @@ export const sadetyInfoConfig = (obj) => {
                 { prop: 'infNumber', label: '信息编号', width:'148',sortProp:"infNumber", align: 'center',sort:true,search:{type:'input', prop:'infNumber',placeholder:"请输入"} },
                 { prop: 'infRemark', label: '信息描述',width:'148',sortProp:"infRemark", align: 'center',sort:true,search:{type:'input', prop:'infRemark',placeholder:"请输入"} },
                 { prop: 'infSources', label: '信息来源',width:'148',sortProp:"infSources", align: 'center',sort:true,search:{type:'input', prop:'infSources',placeholder:"请输入"} },
-                { prop: 'infDate', label: '日期',formatter:dateInfo,width:'110',sortProp:"infDate", align: 'center',sort:true,search:{type:'date',time:'year', prop:'infDate',placeholder:"请选择"}},
+                { prop: 'infDate', label: '日期',formatter:dateInfo,width:'110',sortProp:"infDate", align: 'center',sort:true,search:{type:'date',time:'year', prop:'infDateStr',placeholder:"请选择"}},
                 { prop: 'infTime', label: '时间',formatter:timeInfo,width:'100',sortProp:"infTime", align: 'center',sort:false,},
                 { prop: 'place', label: '地点',width:'148',sortProp:"place", align: 'center' ,sort:true,search:{type:'input', prop:'place',placeholder:"请输入"}},
                 { prop: 'seat', label: '机位号',sortProp:"seat", align: 'center' ,sort:true,search:{type:'input', prop:'seat',placeholder:"请输入"}},
