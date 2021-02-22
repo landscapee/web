@@ -311,7 +311,7 @@
 								<el-form-item label="拖把" prop="mop" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:280px;'>{{ruleForm.mop}}</span>
-									<el-input v-else v-model="ruleForm.mop" style='width:280px;'></el-input>
+									<el-input v-else v-model="ruleForm.mop" @input="changeCode('mop','number')" style='width:280px;'></el-input>
 									<span class='form_inlne_val1'>次</span>
 
 								</el-form-item>
