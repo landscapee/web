@@ -209,7 +209,7 @@ export default {
         getList(){
             let data={...this.form}
             map(data,((k,l)=>{
-                if(!k){
+                if(!k&&k!==false){
                     data[l]=null
                 }else {
                     if(l=='infDateStr'){
