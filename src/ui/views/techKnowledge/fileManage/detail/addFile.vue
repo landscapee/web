@@ -40,7 +40,21 @@
 								  placeholder="自动获取上传文件的名称，同文件夹下不可重复"></el-input>
 					</el-form-item>
 				</div>
-
+				<div class="row_one">
+					<el-form-item label="文档编号：" prop="number">
+						<span v-if="type=='info'">{{form.number}}</span>
+						<el-input :disabled="type=='edit'" v-else v-model="form.number" placeholder="请输入文档编号"></el-input>
+					</el-form-item>
+				</div>
+				<div class="row_one">
+					<el-form-item label="是否公开：" prop="open">
+						<span v-if="type=='info'">{{form.open?'公开':'不公开'}}</span>
+						<el-radio-group v-model="form.open" @change="openC">
+							<el-radio :label="false">不公开</el-radio>
+							<el-radio :label="true">公开</el-radio>
+						</el-radio-group>
+					</el-form-item>
+				</div>
 				<div class="row_one">
 					<el-form-item label="发行单位：" prop="issueDeptId">
 						<span v-if="type=='info'">{{form.issueDept}}</span>
@@ -81,7 +95,7 @@
 				</div>
 				<div class="row_tow" v-if='type=="add"'>
 					<el-form-item label=" ">
-						<el-button type="primary" @click="choiceSelectFn">对象选择({{selectedPersonList.length}})
+						<el-button :disabled="form.open" type="primary" @click="choiceSelectFn">对象选择({{selectedPersonList.length}})
 						</el-button>
 					</el-form-item>
 				</div>
@@ -118,9 +132,33 @@
 		},
 		name: "",
 		data() {
+            const checkNumber = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('文档编号不能为空'));
+                } else {
+                    request({
+                        url:`${this.$ip}/mms-knowledge/file/numberExists`,
+                        method: 'post',
+						data:{
+                            fileName:this.form.fileName,
+                            issueDeptId:this.form.issueDeptId,
+                            number:this.form.number,
+                            folderId:this.$route.query.folderId,
+						}
+                    }).then(response => {
+                        console.log(response,10);
+                        if (!response.data) {
+                            callback();
+                        } else {
+                            callback("该文档编号已存在");
+                        }
+                    });
+                }
+            };
 			return {
 				oldForm: {},
 				form: {
+				    open:false,
 					fileName: '',
 					description: '',
 					issueDept: '',
@@ -137,7 +175,8 @@
 				issueDeptArr: [],
 				positionArr: [],
 				rules: {  // 维修部 - 维修- 放行     勤务部 -> 勤务
-					issueDeptId: [{required: true, message: '请选择发行单位', trigger: "change"}],
+                    number: [{ validator:checkNumber, trigger: "blur",required:true }],
+                    issueDeptId: [{required: true, message: '请选择发行单位', trigger: "change"}],
 					position: [{required: true, message: '请输入所属岗位', trigger: "change"}],
 					fileName: [{required: true, message: '请上传文件名称', trigger: "change"}],
 					time: [{required: true, message: '请选择时间', trigger: "change"}],
@@ -181,6 +220,10 @@
 			})
 		},
 		methods: {
+            openC(val){
+                this.selectedPersonList = []
+				this.$set(this.form,'description','')
+             },
 			getFileInfo() {
 				request({
 					url: `${this.$ip}/mms-knowledge/file/getById/${this.$route.query.id}`,
@@ -190,17 +233,7 @@
 					if (d.code == 200) {
 						let data = d.data
 						this.form = {
-							fileName: data.fileName,
-							description: '',
-							issueDept: data.issueDept,
-							position: data.position,
-							folderId: data.folderId,
-							fileUrl: data.fileUrl,
-							issueDeptId: data.issueDeptId,
-							startTime: data.startTime,
-							endTime: data.endTime,
-							formats: data.formats,
-							size: data.size,
+							...data,
 							time: [data.startTime, data.endTime]
 						}
 					} else {
@@ -226,83 +259,103 @@
 			},
 			resetForm() {
 				if (this.form.id) {
-					this.form = {id: this.form.id};
+					this.form = {id: this.form.id,time: [],open:false,number:this.form.number};
 				} else {
-					this.form = {};
+					this.form = {open:false,time: []};
 				}
 			},
-			saveForm(form) {
-				if (this.type == "add" || this.type == "edit") {
-					this.$refs[form].validate(valid => {
+            fileExists(){
+               return new Promise((resolve,reject)=>{
+                    request({
+                        url: `${this.$ip}/mms-knowledge/file/fileExists`,
+                        method: 'post',
+                        data: {
+                            fileName:this.form.fileName,
+                            issueDeptId:this.form.issueDeptId,
+                            number:this.form.number,
+                            folderId:this.$route.query.folderId,
+                        },
+                    }).then((d)=>{
+                        resolve(d.data)
+                    })
+				})
+
+			},
+				saveRequest(){
+                    let url
+                    let data
+                    if (this.type == 'add') {
+                        url = '/file/save'
+                        let select = this.selectedPersonList.map(item => {
+                            return {
+                                userId: item.id,
+                                userName: item.name
+                            }
+                        })
+                        this.form.startTime = this.form.time[0]
+                        this.form.endTime = this.form.time[1]
+                        this.form.issueDept = this.issueDeptArr.find(item => item.valCode == this.form.issueDeptId).valData
+                        data = {
+                            fileParam: {
+                                ...this.form,
+                                folderId: this.$route.query.folderId,
+                            },
+                            userVOList: select
+                        }
+                    } else {
+                        url = '/file/update'
+                        this.form.startTime = this.form.time[0]
+                        this.form.endTime = this.form.time[1]
+                        this.form.issueDept = this.issueDeptArr.find(item => item.valCode == this.form.issueDeptId).valData
+                        data = {
+                            id: this.$route.query.id,
+                            ...this.form,
+
+                        }
+                    }
+                    delete data.time
+                    request({
+                        url: `${this.$ip}/mms-knowledge${url}`,
+                        method: 'post',
+                        data: data,
+                    }).then((data) => {
+                        if (data.code == 200) {
+                            this.$message.success("保存成功！");
+                            this.$router.go(-1)
+                        } else {
+                            this.$message({
+                                showClose: true,
+                                message: '文件保存失败',
+                                type: 'error'
+                            });
+                            return
+                        }
+                    })
+				},
+			  saveForm(form) {
+				  this.$refs[form].validate(valid => {
 						if (valid) {
-							let url
-							let data
-							if (this.type == 'add') {
-								url = '/file/save'
-								let select = this.selectedPersonList.map(item => {
-									return {
-										userId: item.id,
-										userName: item.name
-									}
-								})
-								this.form.startTime = this.form.time[0]
-								this.form.endTime = this.form.time[1]
-								this.form.issueDept = this.issueDeptArr.find(item => item.valCode == this.form.issueDeptId).valData
-								data = {
-									fileParam: {
-										fileName: this.form.fileName,
-										issueDept: this.form.issueDept,
-										position: this.form.position,
-										folderId: this.$route.query.folderId,
-										fileUrl: this.form.fileUrl,
-										issueDeptId: this.form.issueDeptId,
-										startTime: this.form.startTime,
-										endTime: this.form.endTime,
-										formats: this.form.formats,
-										size: this.form.size
-									},
-									userVOList: select
-								}
-							} else {
-								url = '/file/update'
-								this.form.startTime = this.form.time[0]
-								this.form.endTime = this.form.time[1]
-								this.form.issueDept = this.issueDeptArr.find(item => item.valCode == this.form.issueDeptId).valData
-								data = {
-									//fileParam: {
-									fileName: this.form.fileName,
-									issueDept: this.form.issueDept,
-									position: this.form.position,
-									id: this.$route.query.id,
-									fileUrl: this.form.fileUrl,
-									issueDeptId: this.form.issueDeptId,
-									startTime: this.form.startTime,
-									endTime: this.form.endTime,
-									formats: this.form.formats,
-									size: this.form.size
-									//}
-								}
+						    if(this.type=='edit'){
+                                this.saveRequest()
+							}else if(this.type=='add'){
+                                this.fileExists().then((d)=>{
+                                    if(d){
+                                        this.$confirm('该文件重复，是否把该文件设为新版本？', '提示', {
+                                            confirmButtonText: '确定',
+                                            cancelButtonText: '取消',
+                                            type: 'warning',
+                                        }).then((d)=>{
+                                            this.saveRequest()
+                                        }).catch((d)=>{
+                                        })
+                                    }else{
+                                        this.saveRequest()
+                                    }
+                                })
 							}
-							request({
-								url: `${this.$ip}/mms-knowledge${url}`,
-								method: 'post',
-								data: data,
-							}).then((data) => {
-								if (data.code == 200) {
-									this.$message.success("保存成功！");
-									this.$router.go(-1)
-								} else {
-									this.$message({
-										showClose: true,
-										message: '文件保存失败',
-										type: 'error'
-									});
-									return
-								}
-							})
+
 						}
 					});
-				}
 			},
 			fileExistsFn(fileName) {
 				return new Promise((resolve, reject) => {
@@ -362,7 +415,7 @@
 				this.form.size = ''
 			},
 			async beforeUploadFn(file) {
-				await this.fileExistsFn(file.name)
+				// await this.fileExistsFn(file.name)
 			}
 		}
 	};
@@ -373,28 +426,8 @@
 	.main-content {
 		overflow-y: auto;
 		margin-top: 30px !important;
-
 		.aRow_custom {
 			text-align: left;
-
-
-		}
-	}
-
-	.main-info {
-		span {
-			//font-weight: bold!important;
-			/*margin: 0!important;*/
-		}
-
-		/deep/ .el-form-item__label {
-			/*padding: 0!important;*/
-		}
-
-		.aRow_custom {
-			span {
-
-			}
 		}
 	}
 
@@ -407,10 +440,8 @@
 			width: 600px;
 			text-align: center;
 			margin: 15px auto;
-
 			.upload_demo {
-				/*width:300px;*/
-				margin: 0 auto;
+ 				margin: 0 auto;
 				text-align: center;
 			}
 		}
@@ -433,7 +464,9 @@
 				width: 110px !important;
 			}
 			.el-form-item__content {
+				text-align: left;
 				width: calc(100% - 110px) !important;
+
 			}
 		}
 	}

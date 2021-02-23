@@ -187,7 +187,7 @@
 
 							<el-col :span="12" v-if="ruleForm.inOrOut">
 								<!--/High/Low pressure Nitrogen-->
-								<el-form-item label="高/低压氮气" prop="pressureNitrogen"
+								<el-form-item label="轮胎充气(高/低压氮气)" prop="pressureNitrogen"
 											  :label-width='labelWidth'>
 									<span v-if="isInfo" class='form_inlne_val' style='width:280px;'>{{ruleForm.pressureNitrogen}}</span>
 									<el-input v-else v-model="ruleForm.pressureNitrogen" @input="changeCode('pressureNitrogen','number')"
@@ -206,10 +206,10 @@
 									</el-form-item>
 								</el-col>
 								<el-col :span="12">
- 									<el-form-item label="充氮、冷气（轮胎）" prop="tyreTimes"
+ 									<el-form-item label="轮胎充气(高/低压氮气)" prop="tyreTimes"
 												  :label-width='labelWidth'>
-										<span v-if="isInfo" class='form_inlne_val' style='width:280px;'>{{ruleForm.tyreTimes}}</span>
-										<el-input v-else v-model="ruleForm.tyreTimes" @input="changeCode('tyreTimes','number')"
+										<span v-if="isInfo" class='form_inlne_val' style='width:280px;'>{{ruleForm.pressureNitrogen}}</span>
+										<el-input v-else v-model="ruleForm.pressureNitrogen" @input="changeCode('pressureNitrogen','number')"
 												  style='width:280px;'></el-input>
  										<span class='form_inlne_val1'>每轮胎/每次</span>
 									</el-form-item>

@@ -41,7 +41,7 @@
                            <UploadFile   accept=".jpg,.png,.gif,.jpeg,.pcd,.pdf,image/png,image/jpg,image/jpeg" :ref="'UploadFile'+$index" @getFile="getFile($event,row,$index)"></UploadFile>
                        </div>
                    </div>
-                    <div v-else-if="row.type==6" style="text-align: center">
+                    <div v-else-if="row.type==6||row.type==8" style="text-align: center">
                         <!--签章-->
                     </div>
                     <div v-else-if="row.type==1" style="text-align: center"  >
@@ -128,7 +128,7 @@
                     str='img'+(new Date().getTime())
                 }else if(row.type==5){
                     str='radio'+(new Date().getTime())
-                }else if(row.type==6){
+                }else if(row.type==6||row.type==8){
                     str='sign'+(new Date().getTime())
                 }else if(row.type==7){
                     str='date'+(new Date().getTime())

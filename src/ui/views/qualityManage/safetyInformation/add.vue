@@ -188,7 +188,7 @@
 
                             callback();
                         } else {
-                            callback("该信息编号已存");
+                            callback("该信息编号已存在");
                         }
                     });
                 }

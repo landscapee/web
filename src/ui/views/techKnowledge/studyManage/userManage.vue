@@ -6,6 +6,9 @@
                 <div class='QHead'>个人管理</div>
 
             </div>
+            <div class="top-left-toolbar">
+                <span :class="isActive==index?'isActive':''" @click="switchTable(index)" v-for="(name,index) in ['推送文件','公开文件']" :key="index">{{name}}</span>
+            </div>
              <div class="tableOneBox">
                 <SearchTable
                     refTag="searchTable"
@@ -49,6 +52,7 @@ export default {
 	},
     data() {
         return {
+            isActive:0,
             businessTableConfig: userParameterTable(),
             params:{
 				current: 1,
@@ -74,6 +78,12 @@ export default {
         })
     },
     methods:{
+        switchTable(index){
+            this.isActive = index;
+            this.tableData = {records:[]};
+            this.params.current = 1;
+            this.getList();
+        },
         init(){
             this.getList()
         },
@@ -82,6 +92,7 @@ export default {
                 url:`${this.$ip}/mms-knowledge/fileStudy/userStudyList?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{
+                    open: !!this.isActive,
                     //...this.params,
                     ...this.sort,
                     ...this.form
@@ -249,5 +260,36 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+    .G_listOne{
+        /deep/ .mainTable{
+            height:calc(100vh - 370px) !important;
+        }
+    }
+
+
+    .top-left-toolbar{
+        .isActive{
+            color: #fff;
+            background-color: #3280e7;
+        }
+        span{
+            display: inline-block;
+            padding: 0px 10px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            color: #3280e7;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        span:first-child{
+            border-radius: 3px 0 0 3px;
+            border: solid 1px #3280e7;
+        }
+        span:last-child{
+            border-radius: 0 3px 3px 0;
+            border: solid 1px #3280e7;
+        }
+    }
  </style>
 

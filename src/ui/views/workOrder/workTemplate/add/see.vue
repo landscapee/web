@@ -70,7 +70,8 @@
 								</div>
 								<div></div>
 							</div>
-							<div v-else-if="opt1.type==6" style="width: 99%">
+							<div v-else-if="opt1.type==6||opt1.type==8" style="width: 99%">
+								<el-button size="mini" type="primary">签章</el-button>
 								<div v-if="show" style="width: 99%"> {{ '${'+opt1.placeholder+'}'}}</div>
 
 							</div>
