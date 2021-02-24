@@ -49,11 +49,11 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div v-if='item.type==6' class="value6  value"
+                        <div v-if='item.type==6||item.type==8' class="value6  value"
                              style="position:relative">
                             <!-- <el-button type='primary' @click='signOthFn("sign_"+index)'>签章</el-button> -->
                             <el-button v-if="type!='info'"
-                                       @click="signOthMsgBoxFn(item.placeholder,$event)"
+                                       @click="signOthMsgBoxFn(item.placeholder,$event,item.type)"
                                        type="primary"
                                        style="padding: 7px 15px">签字
                             </el-button>
@@ -1180,44 +1180,103 @@
                     })
             },
 
-            async signOthMsgBoxFn(type, $event) {
+            async signOthMsgBoxFn(type, $event,qr) {
 
                 let _this = this
-                let original = await _this.jitGWRandomFn()
-                let result = await this.doDataProcess(initParam, original)
-                if (result.code == 200) {
-                    let user = result.data['_saml_pki_cert_subject']
-                    if (user) {
-                        user = user.split(",").filter(i => i.startsWith("T="))[0].split("=")[1]
+
+                if(qr==6){
+                    let original = await _this.jitGWRandomFn()
+                    let result = await this.doDataProcess(initParam, original)
+                    if (result.code == 200) {
+                        let user = result.data['_saml_pki_cert_subject']
+                        if (user) {
+                            user = user.split(",").filter(i => i.startsWith("T="))[0].split("=")[1]
+                        }
+                        this.$msgBox.showMsgBox({
+                            isShowPsd: true
+                        }).then(async (data) => {
+                            if (data.psd) {
+                                let judegUser = await this.findByUserFn({userName: user, password: data.psd})
+                                if (judegUser == '1') {
+                                    _this.signOthFn(type, $event, user)
+                                } else {
+                                    this.$message({type: 'error', message: '密码错误，请重新输入'});
+                                }
+                            }
+                        }).catch(() => {
+                            // ...
+                        });
                     }
+                }else if(qr==8){
                     this.$msgBox.showMsgBox({
+                        isShowInput: true,
                         isShowPsd: true
                     }).then(async (data) => {
-                        if (data.psd) {
-                            let judegUser = await this.findByUserFn({userName: user, password: data.psd})
+                        if (data.val && data.psd) {
+                            let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
                             if (judegUser == '1') {
-                                _this.signOthFn(type, $event, user)
+                                this.signOthFnR(type, $event, data.val)
                             } else {
-                                this.$message({type: 'error', message: '密码错误，请重新输入'});
+                                _this.$message({type: 'error', message: judegUser});
                             }
                         }
-                    }).catch(() => {
-                        // ...
-                    });
+                    })
+
                 }
 
 
-                // let _this = this
-                // this.$msgBox.showMsgBox({
-                //     isShowInput: true,
-                //     isShowPsd:true
-                // }).then(async (data) => {
-                //     if(data.val && data.psd){
-                //         _this.signOthFn(type,$event, data.val, data.psd)
-                //     }
-                // }).catch(() => {
-                //     // ...
-                // });
+            },
+            signOthFnR(type, $event, val, psd) {
+                SignatureInit(val, undefined, this.labelVO.noSignTime)
+                var signatureCreator = Signature.create()
+                var that = this
+                signatureCreator.handWriteDlg({
+                    image_height: "1",
+                    image_width: "3",
+                    canvas_width: "100",
+                    canvas_height: "50",
+                    onBegin: function () {
+                        console.log('onbegin');
+                    },
+                    onEnd: function () {
+                        console.log('onEnd');
+                    }
+                }, function (param) {
+                    let offsetX = 1
+                    $('.kg-img-div-' + type).each((ind, ele) => {
+                        offsetX += $(ele).width() + 10
+                    })
+                    signatureCreator.runHW(param, {
+                        offsetX: offsetX,
+                        // offsetX:1,
+                        offsetY: 1,
+                        position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                        okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
+                            // console.log("盖章ID："+this.getSignatureid());
+                            // console.log("盖章数据："+this.getSignatureData());
+                            let _this = this
+                            that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
+                            fn(true)
+                            signatureCreator.getBase64Image(
+                                this.getSignatureid(),
+                                this.getSignatureData(),
+                                type,
+                                // $($event.target).parents('.item').find(".sign_box").attr("pos"),
+                                function (fn1, imgdata, signid, sdata) {
+                                    that.signBasicFn({
+                                        key: type,
+                                        value: _this.getSignatureid().toString() + '------' + _this.getSignatureData() + '------' +
+                                            imgdata[1]
+                                    })
+                                }
+                            )
+                        },
+                        cancelCall: function () {//点击取消后的回调方法
+                            console.log("取消！")
+                        }
+                    })
+                })
+
             },
             signOthFn(type, $event, val, psd) {
                 if (!this.signBasicActiveFn()) {

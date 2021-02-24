@@ -1,16 +1,17 @@
 <template>
     <div>
 
-        <router-view v-if="this.$router.history.current.path == '/addPersonDoc'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/inOfficeInfoAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/workExperienceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/certificateAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/unsafeAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/userQuali'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/userAuth'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/userTrain'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/workStyle'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/personDoc'" :key="$route.path"
+        <router-view v-if="this.$route.path == '/addPersonDoc'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/inOfficeInfoAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/workExperienceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/certificateAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/unsafeAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/userQuali'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/userAuth'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/userTrain'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/workStyle'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/studyLog'" :key="$route.path"></router-view>
+         <div v-else-if="this.$route.path == '/personDoc'" :key="$route.path"
               class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
@@ -22,7 +23,6 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>上传档案</div>
-
                 </div>
             </div>
             <div class="tableOneBox">
@@ -50,6 +50,11 @@
                             <el-tooltip class="item" effect="dark" :enterable="false" content="培训考核" placement="top">
                             <span @click="seeOther(scope.row,'/userTrain')" class="rowSvg">
                                     <icon iconClass="check"  ></icon>
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" :enterable="false" content="学习记录" placement="top">
+                            <span @click="seeOther(scope.row,'/studyLog')" class="rowSvg">
+                                    <icon iconClass="studyLog"  ></icon>
                                 </span>
                             </el-tooltip>
                         </template>
@@ -92,7 +97,7 @@
             };
         },
         created() {
-            if(this.$router.history.current.path == '/personDoc'){
+            if(this.$route.path == '/personDoc'){
                 this.getList();
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,

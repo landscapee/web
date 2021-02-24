@@ -30,7 +30,7 @@
                     </el-form-item>
                     <el-form-item  label="结束时间：" prop="endTime">
                         <span v-if="type=='info'">{{  form.endTime?this.$moment(form.endTime).format('YYYY-MM-DD HH:mm:ss'):'' }}</span>
-                        <el-date-picker @focus="focus1" @blur="blur(true)" type="datetime" v-else v-model="form.endTime" :picker-options="pickerOptions1" placeholder="请选择结束时间"></el-date-picker>
+                        <el-date-picker @focus="focus" @blur="blur(true)" type="datetime" v-else v-model="form.endTime" :picker-options="pickerOptions1" placeholder="请选择结束时间"></el-date-picker>
                     </el-form-item>
                 </div>
 

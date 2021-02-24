@@ -85,6 +85,25 @@
                     </el-select>
                 </el-form-item>
             </div>
+            <div class="row_three" v-if="type=='edit'">
+
+                <el-form-item  label="预改版："    >
+                     <el-checkbox @change="isPreVersionC" v-model="form.isPreVersion" :label="true">预改版</el-checkbox>
+                </el-form-item>
+
+
+                <el-form-item  label="生效日期：" prop="preEnableTime" :rules=" form.isPreVersion?rules.preEnableTime:[{required:false}]">
+                     <el-date-picker :disabled="!form.isPreVersion" @blur="blur(true)"  @focus="focus" :picker-options="pickerOptions" type="datetime"   v-model="form.preEnableTime" placeholder="请选择时间"></el-date-picker>
+                </el-form-item>
+                <el-form-item  label="失效日期：" prop="preInvalidTime" :rules=" form.isPreVersion?rules.preInvalidTime:[{required:false}]">
+                    <div style="position:relative;">
+                         <el-date-picker :disabled="!form.isPreVersion" @blur="blur( )" @focus="focus1" :picker-options="pickerOptions1"  type="datetime"   v-model="form.preInvalidTime" placeholder="请选择时间"></el-date-picker>
+                        <!--<span style="position: absolute;left:calc(100% + 15px);width:200px" v-if="type!='info'">不选表示 '至今'</span>-->
+
+                    </div>
+
+                </el-form-item>
+            </div>
 
         </el-form>
 
@@ -167,7 +186,9 @@
                 }
             };
             return {
-                form:{},
+                form:{isPreVersion:false},
+                pickerOptions: {},
+                pickerOptions1: {},
                 options:{},
                 AirlineObj:{},
                 airplaneObj:{},
@@ -182,6 +203,8 @@
                     airlineCompanyLogo:[{required:true,message:'请上传图片',trigger:'blur'}],
                     airplane:[{required:true,message:'请选择机型',trigger:'blur'}],
                     airlineType:[{required:true,message:'请选择航班类型',trigger:'blur'}],
+                    preInvalidTime:[{required:true,message:'请选择时间',trigger:'blur'}],
+                    preEnableTime:[{required:true,message:'请选择时间',trigger:'blur'}],
                 }
             }
         },
@@ -206,7 +229,12 @@
 
         },
         methods: {
-
+            isPreVersionC(val){
+              if(!val){
+                  delete this.form.preEnableTime
+                  delete this.form.preInvalidTime
+              }
+            },
             codeChange(val){
                if(val&&this.form.title){
                    this.$refs.form.validateField('title')
@@ -320,6 +348,45 @@
                         });
                     }
                 })
+            },
+
+            focus(val){
+                let e=new Date(this.form.preInvalidTime )
+                let s=new Date(this.form.preEnableTime)
+                let t=new Date()
+
+                this.pickerOptions = {
+                    disabledDate(time) {
+                        if (e) {
+                            return time.getTime() >= e.getTime()-8.64e7;
+                            // return time.getTime() > e.getTime()||time.getTime() > t.getTime();
+                        }
+                    },
+                };
+            } ,
+            focus1(val){
+                let d=new Date()
+                let s=new Date(this.form.preEnableTime)
+                let t=new Date()
+                this.pickerOptions1 = {
+                    disabledDate(time) {
+                        if (s) {
+                            return time.getTime() <= s.getTime()-8.64e7 ;
+                        }
+                    },
+                };
+            },
+            blur(blo){
+                let e=new Date(this.form.preInvalidTime )
+                let s=new Date(this.form.preEnableTime)
+                let t=new Date()
+                let str=blo?'生效时间应该小于失效时间':'失效时间应该大于失效时间'
+                if(s>=e){
+                    let name=blo?'preInvalidTime':'preEnableTime'
+                    this.$set(this.form,name,null)
+                    this.$message.warning(str)
+                }
+
             }
         },
         created() {
@@ -380,10 +447,12 @@
             width: 100%;
             height:340px;
             padding: 20px 0px 5px 0px;
-
+            .el-form-item__content{
+                width:200px;
+            }
             .row_three{
                 .el-form-item:nth-child(2) {
-                    margin: 0 25px;
+                    margin: 0 20px;
                 }
                 .el-form-item:nth-child(1) ,.el-form-item:nth-child(3) {
                     margin-right: 0;
