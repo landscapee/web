@@ -35,7 +35,7 @@
                     </el-table-column>
                     <!--&lt;!&ndash;:show-overflow-tooltip="true"&ndash;&gt;effect="dark" :enterable="false"-->
 
-                    <el-table-column align="center" slot="option" label="操作" :width="120" >
+                    <el-table-column align="center" slot="option" label="操作" :width="140" >
                         <template  slot-scope="scope">
                             <el-tooltip class="item"     effect="dark" content="资质" placement="top">
                                 <span @click="seeOther(scope.row,'/userQuali')" class="rowSvg">
@@ -53,7 +53,7 @@
                                 </span>
                             </el-tooltip>
                             <el-tooltip class="item" effect="dark" :enterable="false" content="学习记录" placement="top">
-                            <span @click="seeOther(scope.row,'/studyLog')" class="rowSvg">
+                            <span @click="seeOther(scope.row,'/studyLog')" style="margin-left: 10px" class="rowSvg">
                                     <icon iconClass="studyLog"  ></icon>
                                 </span>
                             </el-tooltip>

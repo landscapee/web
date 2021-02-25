@@ -225,7 +225,7 @@
                   }
                 },
               immediate:true
-          } ,
+          },
 
         },
         methods: {
@@ -328,7 +328,8 @@
                     method: 'get',
                     // params:{id:id||this.$route.query.id}
                 }).then((data) => {
-                    this.form = extend({}, {...data.data.typeVO});
+                    this.form = extend({}, {...data.data.typeVO,isPreVersion:data.data.typeVO.isPreVersion||false});
+                  
                     if(this.form.airplane){
                         this.form.airplane=this.form.airplane.map((k,l)=>{
                             return k.id

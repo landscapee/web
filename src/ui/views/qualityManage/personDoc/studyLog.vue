@@ -9,6 +9,9 @@
                     <!--<div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>-->
                 </div>
             </div>
+          <div class="top-left-toolbar">
+              <span :class="isActive==index?'isActive':''" @click="switchTable(index)" v-for="(name,index) in ['推送文件','公开文件']" :key="index">{{name}}</span>
+          </div>
             <div class="tableOneBox">
                 <SearchTable :noSearch="true"      ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="筛选" :width="49"  >
@@ -36,13 +39,13 @@
         name: 'personDoc',
         data() {
             return {
-                tableData:{records:[{}]},
+                tableData:{records:[]},
                 tableConfig:studyLogConfig(),
                 params:{
                     current: 1,
                     size: 15,
                 },
-
+                isActive:0,
                 form:{},
                 row:{},
                 sort:{},
@@ -50,13 +53,17 @@
             };
         },
         created() {
-            if(this.$route.path == '/studyLog'){
-                // this.getList();
-            }
 
+            this.getList();
         },
 
         methods: {
+            switchTable(index){
+                this.isActive = index;
+                this.tableData = {records:[]};
+                this.params.current = 1;
+                this.getList();
+            },
             requestTable(searchData){
                 this.form = searchData;
                 this.selectId=null;
@@ -104,20 +111,21 @@
                 this.$set(this.tableData.records,row.index,row);
             },
             getList(){
-                let data={...this.form}
-                map(data,((k,l)=>{
-                    if(!k){
-                        data[l]=null
-                    }
-                }))
                 request({
-                    url:`${this.$ip}/mms-qualification/userRecord/list`,
+                    url:`${this.$ip}/mms-knowledge/fileStudy/userStudyList?current=${this.params.current}&size=${this.params.size}`,
                     method: 'post',
-                    data:{...this.sort,...data},
-                    params:{...this.params,}
+                    data:{
+                        open: !!this.isActive,
+                         ...this.sort,
+                        ...this.form,
+                        userId:this.$route.query.id
+                    }
                 })
                     .then((data) => {
-                        this.tableData = extend({}, {...data.data});
+
+                        this.selectObjs=[]
+                        this.tableData = {...data.data}
+
                     })
             },
             handleSizeChange(size) {
@@ -136,5 +144,38 @@
 </script>
 <style scoped lang="scss">
 
+    .G_listOne{
+        /deep/ .mainTable{
+            height:calc(100vh - 370px) !important;
+        }
+    }
 
+
+    .top-left-toolbar{
+        .isActive{
+            color: #fff;
+            background-color: #3280e7;
+        }
+        span{
+            display: inline-block;
+            padding: 0px 10px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            color: #3280e7;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        span:first-child{
+            border-radius: 3px 0 0 3px;
+            border: solid 1px #3280e7;
+        }
+        span:last-child{
+            border-radius: 0 3px 3px 0;
+            border: solid 1px #3280e7;
+        }
+    }
 </style>
+
+
+
