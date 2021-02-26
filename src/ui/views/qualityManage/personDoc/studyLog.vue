@@ -14,6 +14,7 @@
           </div>
             <div class="tableOneBox">
                 <SearchTable :tableRowClassName="tableRowClassName" :noSearch="true"      ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+
                     <el-table-column slot="radio" label="筛选" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -26,7 +27,7 @@
      </div>
 </template>
 <script>
-     import SearchTable from '@/ui/components/SearchTable/table';
+     import SearchTable from '@/ui/components/SearchTable/index';
     import Icon from '@components/Icon-svg/index';
     import { studyLogConfig } from './tableConfig.js';
     import request from '@lib/axios.js';

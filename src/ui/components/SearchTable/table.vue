@@ -20,7 +20,6 @@
                <tr v-for="(opt,id) in data.records||data" :key="id" >
                    <td  :width="con.width" v-for="(con,index) in tableConfig" :key="index" v-bind="con">
                        <!--<slot    name="radio1"  ></slot>-->
-                       <slot   name="radio1"  :opt="opt" ></slot>
 
                        <slot v-if="con.slot" :name="con.slot"  :opt="opt" ></slot>
                        <span v-else class="cell">{{opt[con.prop]}}</span>
