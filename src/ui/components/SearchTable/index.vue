@@ -2,7 +2,7 @@
 
     <div class="searchTableWrapper" ref="componentTable" :key="$route.path">
 
-        <el-table :height="noSearch?42:82"
+        <el-table :height="tHeight"
                   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
                   @header-dragend="headerDragend"
                   :show-header="true" :data="headerData" ref="header_table" :row-key="getRowKeys" highlight-current-row
@@ -153,6 +153,7 @@
         props: ['tableConfig', 'tableRowClassName', 'data', 'offsetTop', 'page', 'noSearch', 'refTag', 'spanMethod'],
         data() {
             return {
+                tHeight:41,
                 timer: null,
                 timer1: null,
                 resizeCallback: [],
@@ -169,7 +170,7 @@
             },
             len(){
                 if(this.data){
-                    return this.data.length || this.data.length || this.data.records && this.data.records.length
+                    return  this.data.length || this.data.records && this.data.records.length
                 }else{
                     return 0
                 }
@@ -197,36 +198,27 @@
 
         },
         beforeDestroy() {
-            if (this.timer) {
+            if (this.timer1) {
                 clearInterval(this.timer)
-                this.timer = null
             }
         },
         mounted() {
+            let _this=this
              window.addEventListener('resize', this.resizeOption1, true)
-
             window.addEventListener('scroll', this.scroll, true);
-            if (this.timer) {
-                clearInterval(this.timer)
-                this.timer = null
-            }
-            this.timer = setInterval(() => {
-                this.resizeOption1()
-            }, 100)
+            this.timer1=  setInterval( ()=> {
+                console.log('qwwwww');
+              this.resizeOption1( )
+            },100)
             setTimeout(()=>{
-                clearInterval(this.timer)
-                this.timer = null
+                clearInterval(this.timer1)
             },2000)
         },
         methods: {
 
-            resizeOption1() {
-                this.$nextTick(() => {
-                    let len = this.data.length || this.data.length || this.data.records && this.data.records.length
-                     if (!len) {
-                        return false
-                    }
-                    if (this.timer) {
+            resizeOption1( ) {
+                // this.$nextTick(() => {
+                 if (this.timer) {
                         clearInterval(this.timer)
                         this.timer = null
                     }
@@ -235,25 +227,34 @@
                     let body_table = document.getElementsByClassName(bs)[0]
                     let header_table = document.getElementsByClassName(hs)[0]
                     if (!this.$refs.body_table || !header_table) {
-                        console.log(2, 2, len);
+                         return false
+                    }
+
+                    let tr = header_table.getElementsByClassName('el-table__row')[0]
+                     let trheight=parseFloat(window.getComputedStyle(tr).height)
+                    let num = this.noSearch ? 1 : 2
+                    this.tHeight=trheight* num+2
+                    this.$refs.body_table.doLayout();
+                     let hHeight = trheight* num + 2
+                    let thHeight = trheight * num + 1
+                    console.log(1);
+                    let len = this.data.length || this.data.records && this.data.records.length
+                    console.log(this.data,this.data.records,len,'len');
+                    if (!len) {
+                        console.log(this.data,this.data.records,len,'len');
                         return false
                     }
-                     let tr = header_table.getElementsByClassName('el-table__row')[0]
-                     let num = this.noSearch ? 1 : 2
-                    let hHeight = tr.clientHeight * num + 2
-                    let thHeight = tr.clientHeight * num + 1
-                    if (tr) {
-                        console.log(tr.clientHeight * len, parseFloat(body_table.clientHeight));
-                        if (tr.clientHeight * len > parseFloat(body_table.clientHeight)) {
+                    console.log(1213);
+                     if (tr) {
+                         if (trheight * len > parseFloat(body_table.clientHeight)) {
                             header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
                             this.$refs.body_table.doLayout();
                         } else {
                             header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
                         }
-                    }
-
-                })
-
+                         console.log(12134);
+                     }
+                // })
             },
             mousemoveDate(t, e) {
                 console.log(1, t, e.target);
@@ -475,10 +476,18 @@
         }
         .noSearchTable {
             /deep/ .el-table__body-wrapper {
-                /*display: none;*/
+                display: none;
+
             }
+            /deep/ .el-table__header-wrapper{
+                th{
+                    border-bottom: 0px!important;
+                }
+            }
+
         }
         .headerTable {
+            /*border-bottom: 0px red solid;*/
             ::-webkit-scrollbar-thumb {
                 border-radius: 4px;
                 -webkit-box-shadow: inset 0 0 6px #fff;
@@ -526,6 +535,9 @@
             }
             /deep/ .el-table__row {
                 background: #EFF2F3;
+                td:last-child{
+                    border-right: 0!important;
+                }
             }
 
             /deep/ .el-input__icon {

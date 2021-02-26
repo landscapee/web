@@ -13,7 +13,7 @@
               <span :class="isActive==index?'isActive':''" @click="switchTable(index)" v-for="(name,index) in ['推送文件','公开文件']" :key="index">{{name}}</span>
           </div>
             <div class="tableOneBox">
-                <SearchTable :noSearch="true"      ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
+                <SearchTable :tableRowClassName="tableRowClassName" :noSearch="true"      ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
                     <el-table-column slot="radio" label="筛选" :width="49"  >
                         <template slot-scope="{ row }">
                             <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>
@@ -26,7 +26,7 @@
      </div>
 </template>
 <script>
-     import SearchTable from '@/ui/components/SearchTable/index';
+     import SearchTable from '@/ui/components/SearchTable/table';
     import Icon from '@components/Icon-svg/index';
     import { studyLogConfig } from './tableConfig.js';
     import request from '@lib/axios.js';
@@ -49,7 +49,14 @@
                 form:{},
                 row:{},
                 sort:{},
-                selectId:null
+                selectId:null,
+                tableRowClassName: (rowIndex, row) => {
+
+                    if (row.read===0) {
+                        return 'warning-row';
+                    }
+                    return 'tab-row';
+                },
             };
         },
         created() {
