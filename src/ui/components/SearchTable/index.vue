@@ -207,8 +207,7 @@
              window.addEventListener('resize', this.resizeOption1, true)
             window.addEventListener('scroll', this.scroll, true);
             this.timer1=  setInterval( ()=> {
-                console.log('qwwwww');
-              this.resizeOption1( )
+               this.resizeOption1( )
             },100)
             setTimeout(()=>{
                 clearInterval(this.timer1)
@@ -237,14 +236,10 @@
                     this.$refs.body_table.doLayout();
                      let hHeight = trheight* num + 2
                     let thHeight = trheight * num + 1
-                    console.log(1);
                     let len = this.data.length || this.data.records && this.data.records.length
-                    console.log(this.data,this.data.records,len,'len');
                     if (!len) {
-                        console.log(this.data,this.data.records,len,'len');
                         return false
                     }
-                    console.log(1213);
                      if (tr) {
                          if (trheight * len > parseFloat(body_table.clientHeight)) {
                             header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
@@ -252,7 +247,6 @@
                         } else {
                             header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
                         }
-                         console.log(12134);
                      }
                 // })
             },

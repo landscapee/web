@@ -92,7 +92,6 @@ let authRoutes = [
                     },
                     {
                         path: '/studyLog',
-
                         component: () => import('@views/qualityManage/personDoc/studyLog.vue'),
                         name: 'D学习记录',
                         meta: {	title: '学习记录',	icon: ''	},

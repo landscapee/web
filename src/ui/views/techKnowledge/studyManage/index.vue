@@ -6,6 +6,8 @@
                 <div class='QHead'>学习管理</div>
                 <div class="QheadRight">
                     <div @click="readPushFn"><icon iconClass="pushNew" ></icon>阅读推送</div>
+                    <div  @click="exportZip"  ><icon iconClass="export"></icon>完成情况</div>
+                    <div  @click="exportWord"  ><icon iconClass="export"></icon>学习记录</div>
                 </div>
             </div>
              <div class="tableOneBox">
@@ -38,6 +40,7 @@
                 </SearchTable>
             </div>
         </div>
+        <StudyLog ref="StudyLog"></StudyLog>
         <userTree ref="userBox" @onSelected="handleUserSelected" :dataRequire='true'></userTree>
     </div>
 </template>
@@ -47,10 +50,11 @@ import Icon from '@components/Icon-svg/index';
 import { sysParameterTable } from './tableConfig.js';
 import SearchTable from '@/ui/components/SearchTable';
 import userTree from '@components/userTree/index';
+import StudyLog from './exportStudyLog'
 export default {
     components: {
        Icon,
-       SearchTable,
+       SearchTable,StudyLog,
        userTree
 	},
     data() {
@@ -73,22 +77,13 @@ export default {
         };
     },
     mounted(){
-        // if(!this.$route.query.folderId){
-        //     this.$router.push({path:'/fileManage'});
-        // }
+
         this.init()
         Promise.all([this.listByCodesFn(),this.getFileList()]).then(res=>{
             console.log(res)
             this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
         })
-        // try{
-        //     await this.listByCodesFn()
-        //     await this.getFileList()
-        //     console.log(this.fileList)
-        //     this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
-        // }catch(err){
-        //     throw new Error(err)
-        // }
+
     },
     methods:{
         tosee(row){
@@ -98,6 +93,7 @@ export default {
         init(){
             this.getList()
         },
+
         getList(){
            request({
                 url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`,
@@ -122,6 +118,50 @@ export default {
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
                 }
             })
+        },
+        exportZip(){
+            let obj={
+                qualifyId:this.leftSelectId||null,
+                userNumber:this.leftForm.userNumber||null,
+                userName:this.leftForm.userName||null,
+                certificateType:this.leftForm.certificateTypeQuery||null,
+                applicableBusiness:this.rightForm.applicableBusiness||null,
+            }
+
+            request({
+                header:{
+                    'Content-Type':'multipart/form-data'
+                },
+                url:`${this.$ip}/mms-qualification/download/qualify`,
+                method: 'get',
+                params:obj,
+                responseType: 'blob'
+            }).then(d => {
+                let arr=[]
+                if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
+                    arr=d.headers['content-disposition'].split('=')[1].split('.')
+                }
+                let content = d;
+                let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                const fileName = `${decodeURI(arr[0])}`
+                if ('download' in document.createElement('a')) { // 非IE下载
+                    const elink = document.createElement('a')
+                    elink.download = fileName
+                    elink.style.display = 'none'
+                    elink.href = URL.createObjectURL(blob)
+                    document.body.appendChild(elink)
+                    elink.click()
+                    URL.revokeObjectURL(elink.href) // 释放URL 对象
+                    document.body.removeChild(elink)
+                }else { // IE10+下载
+                    navigator.msSaveBlob(blob, fileName)
+                }
+            });
+
+        },
+        exportWord(){
+            this.$refs.StudyLog.open()
+
         },
         requestTable(searchData){
             this.form = searchData
