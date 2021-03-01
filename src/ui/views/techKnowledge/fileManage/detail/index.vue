@@ -50,7 +50,7 @@
                                     <icon iconClass="historyNew"></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip class="item" effect="dark" :enterable="false" content="阅读推送" placement="top">
+                            <el-tooltip  v-if="!row.open" class="item" effect="dark" :enterable="false" content="阅读推送" placement="top">
                                 <span @click="toReadTrackFn(row)" class="rowSvg">
                                     <icon iconClass="push"></icon>
                                 </span>

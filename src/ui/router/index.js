@@ -536,14 +536,14 @@ let authRoutes = [
                     {
                         path: '/fileHistory',
                         component: () => import('@views/techKnowledge/fileManage/detail/fileHistory'),
-                        name: '工单历史版本',
-                        meta: {title: '工单历史版本',icon: 'xxgl' },
+                        name: '文件历史版本',
+                        meta: {title: '文件历史版本',icon: 'xxgl' },
                     },
                     {
                         path: '/readTrack',
                         component: () => import('@views/techKnowledge/fileManage/detail/readTrack'),
-                        name: '工单阅读推送',
-                        meta: {title: '工单阅读推送',icon: 'xxgl' },
+                        name: '文件阅读推送',
+                        meta: {title: '文件阅读推送',icon: 'xxgl' },
                     }
                 ]
             },

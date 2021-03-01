@@ -15,24 +15,27 @@
 				</div>
 			</div>
 		</div>
-		<div class="upload_box" v-if="type!='info'">
-			<el-upload
-					class="upload_demo"
-					ref="upload"
-					:on-success='fileUploadSuccessFn'
-					:on-remove='fileRemoveFn'
-					:before-upload='beforeUploadFn'
-					drag
-					:action='$ip+"/mms-file/upload2"'
-			>
-				<i class="el-icon-upload"></i>
-				<div class="el-upload__text">点击或将文件拖拽到这里上传</div>
-				<div class="el-upload__tip" slot="tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg...</div>
-			</el-upload>
-		</div>
+
 
 		<div :class=" type=='info'?'G_form G_formInfo':'G_form'">
+
 			<el-form label-position="right" :model="form" :rules="rules" ref="form" :inline="true">
+				<div class="upload_box" :class="type=='edit'?'editorFileBox':''" v-if="type!='info'">
+					<el-upload
+							:disabled="type=='edit'"
+							class="upload_demo"
+							ref="upload"
+							:on-success='fileUploadSuccessFn'
+							:on-remove='fileRemoveFn'
+							:before-upload='beforeUploadFn'
+							drag
+							:action='$ip+"/mms-file/upload2"'
+					>
+						<i class="el-icon-upload"></i>
+						<div class="el-upload__text">点击或将文件拖拽到这里上传</div>
+						<div class="el-upload__tip" slot="tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg...</div>
+					</el-upload>
+				</div>
 				<div class="row_one">
 					<el-form-item label="文档名称：" prop="fileName">
 						<span v-if="type=='info'">{{form.fileName}}</span>
@@ -49,7 +52,7 @@
 				<div class="row_one">
 					<el-form-item label="是否公开：" prop="open">
 						<span v-if="type=='info'">{{form.open?'公开':'不公开'}}</span>
-						<el-radio-group v-model="form.open" @change="openC">
+						<el-radio-group v-else v-model="form.open" @change="openC">
 							<el-radio :label="false">不公开</el-radio>
 							<el-radio :label="true">公开</el-radio>
 						</el-radio-group>
@@ -58,7 +61,7 @@
 				<div class="row_one">
 					<el-form-item label="发行单位：" prop="issueDeptId">
 						<span v-if="type=='info'">{{form.issueDept}}</span>
-						<el-select v-else clearable v-model="form.issueDeptId" placeholder="请选择发行单位">
+						<el-select :disabled="type=='edit'" v-else clearable v-model="form.issueDeptId" placeholder="请选择发行单位">
 							<el-option v-for='item in issueDeptArr' :key='item.valCode' :label="item.valData"
 									   :value="item.valCode"></el-option>
 						</el-select>
@@ -454,8 +457,11 @@
 
 	/deep/ .G_form {
 		margin-top: 20px;
+		height:calc(100vh - 250px);
+		overflow-y: auto;
 		.el-form {
 			width: 600px;
+
 			padding: 0;
 			.el-form-item__label{
 				padding: 0 ;
@@ -468,6 +474,12 @@
 				width: calc(100% - 110px) !important;
 
 			}
+		}
+	}
+	.editorFileBox{
+ 		user-select: none;
+		/deep/ .el-upload-dragger{
+			cursor: not-allowed;
 		}
 	}
 </style>

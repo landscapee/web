@@ -359,7 +359,7 @@
                 this.pickerOptions = {
                     disabledDate(time) {
                         if (e) {
-                            return time.getTime() >= e.getTime()-8.64e7;
+                            return time.getTime() > e.getTime()||time.getTime()<=t.getTime()-8.64e7;
                             // return time.getTime() > e.getTime()||time.getTime() > t.getTime();
                         }
                     },
@@ -372,7 +372,7 @@
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         if (s) {
-                            return time.getTime() <= s.getTime()-8.64e7 ;
+                            return time.getTime() < s.getTime() ;
                         }
                     },
                 };
@@ -383,9 +383,15 @@
                 let t=new Date()
                 let str=blo?'生效时间应该小于失效时间':'失效时间应该大于失效时间'
                 if(s>=e){
-                    let name=blo?'preInvalidTime':'preEnableTime'
+                    let name=blo?'preEnableTime':'preInvalidTime'
                     this.$set(this.form,name,null)
                     this.$message.warning(str)
+                }
+                if(s.getTime()<t.getTime()){
+                    if(blo){
+                        this.$set(this.form,'preEnableTime',null)
+                        this.$message.warning('生效时间不能小于当前时间')
+                    }
                 }
 
             }

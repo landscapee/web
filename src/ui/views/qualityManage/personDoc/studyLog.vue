@@ -81,22 +81,14 @@
                 this.getList();
             },
             headerSort(column){
-                this.sort={}
-                let num =null
-                if(column.order=='desc'){
-                    num=0
-                }else if(column.order=='asc'){
-                    num=1
-                }else{
-                    num=2
-                }
-                if(num!=2){
-                    this.sort['order'] = column.property+','+num;
+                this.sort = {}
+                 this.sort = {
+                    order:`${column['property']}`,
+                    orderBy:`${column.order}`
                 }
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
-                // console.log(column.property,column.order, this.sort,11);
-                this.getList();
+                 this.getList();
             },
             listenToCheckedChange(row, column, event){
                 let select = row.selected;
