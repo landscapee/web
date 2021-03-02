@@ -120,19 +120,22 @@ export default {
             })
         },
         exportZip(){
+            if(!this.selectObjs.length){
+                this.$message.warning('请至少选中一行数据')
+                return
+            }
+            let ids=this.selectObjs.map((k,l)=>{
+                return k.id
+            })
             let obj={
-                qualifyId:this.leftSelectId||null,
-                userNumber:this.leftForm.userNumber||null,
-                userName:this.leftForm.userName||null,
-                certificateType:this.leftForm.certificateTypeQuery||null,
-                applicableBusiness:this.rightForm.applicableBusiness||null,
+                 ids:ids.join(',')
             }
 
             request({
                 header:{
                     'Content-Type':'multipart/form-data'
                 },
-                url:`${this.$ip}/mms-qualification/download/qualify`,
+                url:`${this.$ip}/mms-knowledge/fileStudy/completeExport`,
                 method: 'get',
                 params:obj,
                 responseType: 'blob'
@@ -142,8 +145,13 @@ export default {
                     arr=d.headers['content-disposition'].split('=')[1].split('.')
                 }
                 let content = d;
-                let blob = new Blob([content],{type:'application/vnd.ms-excel'})
-                const fileName = `${decodeURI(arr[0])}`
+                let geshi=this.selectObjs.length>1?'application/zip':'application/vnd.ms-excel'
+                let blob = new Blob([content],{type:geshi})
+                let filenames=arr.length>2?arr[0]+arr[1]:arr[0]
+                if(this.selectObjs.length>1){
+                    filenames='学习完成情况'
+                }
+                const fileName = `${decodeURI(filenames)}`
                 if ('download' in document.createElement('a')) { // 非IE下载
                     const elink = document.createElement('a')
                     elink.download = fileName

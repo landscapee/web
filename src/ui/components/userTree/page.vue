@@ -44,11 +44,11 @@
               <el-col :span="24">
                   <div>
                       <el-card class="box-card" shadow="never" border-radius="2px">
-                          <div>已选择({{ userSelect.length }})：
+                          <div>已选择({{ idArr.length }})：
                               <el-button style="float:right;margin-top: -10px" size="mini" @click="handleClear">清空</el-button>
                           </div>
                           <el-scrollbar style="height:100px ">
-                              <el-tag :key="tag.id" v-for="(tag,index) in userSelect" closable :disable-transitions="false"
+                              <el-tag :key="tag.id" v-for="(tag,index) in idArr" closable :disable-transitions="false"
                                       @close="handleRemove(tag.id,index)">
                                   {{ tag.name }}
                               </el-tag>
@@ -78,6 +78,7 @@
                 filterText: '',
                 listPageNum: 1,
                 personNodeIdObj: {},//节点ID 对应的该节点下的人员 的对象
+                // idArr: [],
                 userSelect: [],
                 userSelectIdS: [],
                 title: '选择人员',
@@ -102,14 +103,14 @@
             Tree,
         },
         props: {
-            dataRequire: {
-                type: Boolean,
-                default: false
+            idArr: {
+                type: Array,
+                default: []
             },
         },
         created(){
             this.open()
-        },
+         },
         methods: {
             open(inputList=[], title, currentDept) {
                 this.dialogVisible = true;
@@ -122,20 +123,20 @@
                 this.getTree();
                 this.selectAll = false;
                 this.title = title || '选择人员';
-                this.userSelect = inputList || [];
+                this.idArr.push(...(inputList || []));
                 this.userSelectIdS = inputList&&inputList.map((k, l) => {
                     return k.id
                 })
             },
             handleSave() {
-                if (!this.userSelect.length) {
+                if (!this.idArr.length) {
                     this.$message({
                         message: '请选择需要推送的对象',
                         type: 'warning'
                     })
                     return
                 }
-                this.$emit('onSelected', this.userSelect, this.deptList);
+                this.$emit('onSelected', this.idArr, this.deptList);
                 this.handleClose();
             },
             seachUser() {
@@ -219,7 +220,7 @@
             isAllSelect() {
                 let flag = true
                 this.personList.map((k, l) => {
-                    const idx = this.userSelect.findIndex((d) => d.id === k.id);
+                    const idx = this.idArr.findIndex((d) => d.id === k.id);
                     if (idx == -1) {
                         flag = false
                     }
@@ -231,27 +232,28 @@
                 if (e) {
                     this.personList.map((k, l) => {
                         if (k.id == item.id) {
-                            this.userSelect.push(k)
+                            this.idArr.push(k)
                         }
                     })
 
                 } else {
-                    let index = this.userSelect.findIndex((d) => d.id === item.id)
+                    let index = this.idArr.findIndex((d) => d.id === item.id)
                     console.log(index, 1);
-                    this.userSelect.splice(index, 1)
+                    this.idArr.splice(index, 1)
                 }
 
                 this.selectAll = this.isAllSelect();
             },
             handleClear() {
                 this.userSelectIdS = [];
-                this.userSelect = [];
+                this.idArr.splice(0,this.idArr.length)
                 this.selectAll = false;
 
             },
             handleRemove(id, index) {
-                this.userSelect.splice(index, 1)
-
+                this.idArr.splice(index, 1)
+                let indexItem= this.userSelectIdS.indexOf(id)
+                this.userSelectIdS.splice(indexItem, 1)
                 this.selectAll = this.isAllSelect();
             },
 
@@ -330,17 +332,17 @@
             },
             handleSelectAll(val) {
                 this.personList.map((k, l) => {
-                    const idx = this.userSelect.findIndex((d) => d.id === k.id);
+                    const idx = this.idArr.findIndex((d) => d.id === k.id);
                     if (this.selectAll) {
                         if (idx == -1) {
-                            this.userSelect.push(k)
+                            this.idArr.push(k)
                         }
                     } else {
                         if (idx > -1) {
-                            this.userSelect.splice(idx, 1)
+                            this.idArr.splice(idx, 1)
                         }
                     }
-                    this.userSelectIdS = this.userSelect.map((k, l) => {
+                    this.userSelectIdS = this.idArr.map((k, l) => {
                         return k.id
                     })
                 })

@@ -227,7 +227,8 @@
             },
             handleRemove(id, index) {
                 this.userSelect.splice(index, 1)
-
+                let indexItem= this.userSelectIdS.indexOf(id)
+                this.userSelectIdS.splice(indexItem, 1)
                 this.selectAll = this.isAllSelect();
             },
 

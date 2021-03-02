@@ -4,11 +4,11 @@
             <el-form :model="form1" ref="form" :rules="rules">
 
                   <el-form-item label="开始时间：" :prop="form1.end?'start':'start1'">
-                      <el-date-picker @change="start"  v-model="form1.start" type="year" placeholder="选择年"></el-date-picker>
+                      <el-date-picker @change="start"  v-model="form1.start" type="date" placeholder="选择年"></el-date-picker>
 
                 </el-form-item>
                 <el-form-item label="结束时间：" :prop="form1.start?'end':'end1'">
-                       <el-date-picker @change="end"  v-model="form1.end" type="year" placeholder="选择年"></el-date-picker>
+                       <el-date-picker @change="end"  v-model="form1.end" type="date" placeholder="选择年"></el-date-picker>
                 </el-form-item>
             </el-form>
             <div class="Qfooter">
@@ -57,7 +57,8 @@
                 }else{
                     this.$set(this.form,'startTime',val.getFullYear()+'')
                 }
-            }, end(val){
+            },
+            end(val){
                 if (!val) {
                     this.$set(this.form,'endTime',null);
                     return
