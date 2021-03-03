@@ -178,8 +178,9 @@
 						this.$message.success("修改密码成功！");
 						this.showDialog = false;
 						if (this.user) {
-							this.$router.push({path: '/qualityManage'});
-						}
+                            this.$emit('login',this.pwdForm)
+
+                        }
 					} else {
 						this.$message.error(data.responseMessage || '修改密码失败！');
 					}

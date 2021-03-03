@@ -352,8 +352,7 @@
             },
 
             focus(val){
-                let e=new Date(this.form.preInvalidTime )
-                let s=new Date(this.form.preEnableTime)
+                let e=this.form.preInvalidTime?new Date(this.form.preInvalidTime ):''
                 let t=new Date()
 
                 this.pickerOptions = {
@@ -361,36 +360,48 @@
                         if (e) {
                             return time.getTime() > e.getTime()||time.getTime()<=t.getTime()-8.64e7;
                             // return time.getTime() > e.getTime()||time.getTime() > t.getTime();
+                        }else{
+                            return time.getTime()<=t.getTime()-8.64e7
                         }
                     },
                 };
             } ,
             focus1(val){
                 let d=new Date()
-                let s=new Date(this.form.preEnableTime)
+                let s=this.form.preEnableTime ?new Date(this.form.preEnableTime):''
                 let t=new Date()
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         if (s) {
-                            return time.getTime() < s.getTime() ;
+                            return time.getTime() < s.getTime()-8.64e7+1 ;
+                        }else{
+                            return time.getTime()<=t.getTime()-8.64e7
                         }
                     },
                 };
             },
             blur(blo){
-                let e=new Date(this.form.preInvalidTime )
-                let s=new Date(this.form.preEnableTime)
+                let s=this.form.preEnableTime ?new Date(this.form.preEnableTime):''
+                let e=this.form.preInvalidTime?new Date(this.form.preInvalidTime ):''
+
+
                 let t=new Date()
                 let str=blo?'生效时间应该小于失效时间':'失效时间应该大于失效时间'
-                if(s>=e){
+                if(s&&e&&s>=e){
                     let name=blo?'preEnableTime':'preInvalidTime'
                     this.$set(this.form,name,null)
                     this.$message.warning(str)
                 }
-                if(s.getTime()<t.getTime()){
+                if(s&&s.getTime()<t.getTime()){
                     if(blo){
                         this.$set(this.form,'preEnableTime',null)
                         this.$message.warning('生效时间不能小于当前时间')
+                    }
+                }
+                if(e&&e.getTime()<t.getTime()){
+                    if(!blo){
+                        this.$set(this.form,'preInvalidTime',null)
+                        this.$message.warning('失效时间不能小于当前时间')
                     }
                 }
 

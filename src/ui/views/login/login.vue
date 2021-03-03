@@ -29,7 +29,7 @@
 				</el-row>
 			</div>
 		</div>
-		<UpdatePwd ref="pwd"></UpdatePwd>
+		<UpdatePwd @login="EAlogin" ref="pwd"></UpdatePwd>
 	</div>
 
 </template>
@@ -96,6 +96,13 @@ export default {
 	},
 	mounted() {},
 	methods: {
+        EAlogin(data){
+            this.loginForm={
+                username:data.name,
+                password:data.newPwd,
+			}
+           this.handleLogin('form')
+		},
 		showPwd() {
 			if (this.passwordType === 'password') {
 				this.passwordType = '';
@@ -121,6 +128,38 @@ export default {
 
 			});
 		},
+		loginAfter(data){
+            if (data.responseCode === 1000||data.responseCode === 30003||data.responseCode === 30002||data.responseCode === 30010) {
+                setToken(data.data.token);
+                setUserInfo(data.data);
+                this.$store.commit('user/SET_TOKEN',data.data.token);
+                this.$store.commit('user/SET_USER_INFO',data.data);
+                initWebsocket(this);
+                this.findUnread();
+                //跳转到修改密码页面
+                if(data.responseCode === 30010){
+                    this.$message.warning(data.responseMessage)
+                }
+                if(data.responseCode === 30003||data.responseCode === 30002){
+                    this.$refs['pwd'].open(data.responseMessage,data.data);
+                }else {
+                    let accessedRoutes = filterAsyncRoutes(asyncRoutes, data.data.menus||[])
+                    if(accessedRoutes[0].path=='*'){
+                        this.$message.warning('您没有此系统任何菜单权限，请联系管理员配置相应权限。')
+                        this.loading = false;
+                        return false
+                    }
+                    resetRouter()
+                    router.addRoutes(accessedRoutes);
+                    // let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
+                    // let path=index>-1?'/qualityManage':accessedRoutes[0].children[0].path
+                    let path=accessedRoutes[0].children[0].path
+                    this.$router.push({ path: path,replace:true});
+                }
+            }else{
+                this.$message.error( data.responseMessage);
+            }
+		},
 		handleLogin() {
  			this.$refs.loginForm.validate((valid) => {
  				if (valid) {
@@ -144,36 +183,7 @@ export default {
 					})
 					.then((data) => {
 						console.log(data.data,'login');
-						if (data.responseCode === 1000||data.responseCode === 30003||data.responseCode === 30002||data.responseCode === 30010) {
-							setToken(data.data.token);
-							setUserInfo(data.data);
-							this.$store.commit('user/SET_TOKEN',data.data.token);
-							this.$store.commit('user/SET_USER_INFO',data.data);
-							initWebsocket(this);
-							this.findUnread();
-							//跳转到修改密码页面
-							if(data.responseCode === 30010){
-							    this.$message.warning(data.responseMessage)
-							}
- 							if(data.responseCode === 30003||data.responseCode === 30002){
-								this.$refs['pwd'].open(data.responseMessage,data.data);
-							}else {
-							    let accessedRoutes = filterAsyncRoutes(asyncRoutes, data.data.menus||[])
- 							    if(accessedRoutes[0].path=='*'){
-							        this.$message.warning('您没有此系统任何菜单权限，请联系管理员配置相应权限。')
-                                    this.loading = false;
-									return false
-								}
-                                resetRouter()
-								router.addRoutes(accessedRoutes);
-  							    // let index=data.data.menus.findIndex((i)=>i.component=='R_qualityManage')
-								// let path=index>-1?'/qualityManage':accessedRoutes[0].children[0].path
-								let path=accessedRoutes[0].children[0].path
-								this.$router.push({ path: path,replace:true});
-							}
-                         }else{
-							this.$message.error( data.responseMessage);
-                         }
+						this.loginAfter(data)
                     this.loading = false;
 					}).catch((error) => {
 						 this.loading = false;
