@@ -8,10 +8,10 @@
 				</div>
 
 				<div class="QheadRight">
-					<div @click='sendFinanceFn'>
-						<icon iconClass="add"></icon>
-						发送财务
-					</div>
+					<!--<div @click='sendFinanceFn'>-->
+						<!--<icon iconClass="add"></icon>-->
+						<!--发送财务-->
+					<!--</div>-->
 					<div @click='effectiveListFn'>
 						<icon iconClass="add"></icon>
 						导出收费单

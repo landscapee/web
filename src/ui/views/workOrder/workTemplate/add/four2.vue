@@ -69,7 +69,7 @@
                         </el-form-item>
                     </div>
                      <div class="row_one" v-if="formItem.itemType==3&&(formOne.type=='QWSJGD'||formOne.type=='QWJJGD')">
-                        <el-form-item  label="工序：" prop="">
+                        <el-form-item  label="工序：" prop="pickAirType">
                             <el-select      v-model="formItem.pickAirType" placeholder="请选择工序">
                                 <el-option v-for="(opt,index) in options[formOne.type=='QWSJGD'?'W_sjType':'W_PickUpType']" :key="index" :label="opt.valData" :value="Number(opt.valSummary)"> </el-option>
                             </el-select>
@@ -213,7 +213,9 @@
                 showFileItem:{},
                 visible:false,
                 styleObj:{left:1,top:1},
-                rules:{},
+                rules:{
+                    pickAirType:[{required:true,message:'请选择',trigger:'blur'}]
+                },
                 idEditor:0,
             }
         },

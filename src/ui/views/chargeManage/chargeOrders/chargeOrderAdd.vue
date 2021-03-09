@@ -22,20 +22,14 @@
 				<el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px"
 						 class="demo-ruleForm" style=" width:1280px;">
 					<el-row>
-						<el-col :span="12">
-							<!--/Flight No-->
-							<el-form-item label="航班号" prop="flightNo" :label-width='labelWidth'>
-								<span v-if="isInfo" class='form_inlne_val'
-									  style='width:320px;'>{{ruleForm.flightNo}}</span>
-								<el-input v-else v-model="ruleForm.flightNo" style='width:320px;'></el-input>
-							</el-form-item>
-						</el-col>
+
 						<el-col :span="12">
 							<!--/Date-->
 							<el-form-item label="日期" prop="workDate" :label-width='labelWidth'>
 								<!-- <el-input v-model="ruleForm.workDate"  style='width:320px;'></el-input> -->
 								<span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.workDate | formatDate}}</span>
 								<el-date-picker
+										@change="clearFlightInfo"
 										v-else
 										v-model="ruleForm.workDate"
 										type="date"
@@ -43,22 +37,32 @@
 										placeholder="选择日期">
 								</el-date-picker>
 							</el-form-item>
+
 						</el-col>
+						<el-col :span="12">
+						<!--/Flight No-->
+						<el-form-item label="航班号" prop="flightNo" :label-width='labelWidth'>
+								<span v-if="isInfo" class='form_inlne_val'
+									  style='width:320px;'>{{ruleForm.flightNo}}</span>
+							<el-input  @input="clearFlightInfo" v-else v-model="ruleForm.flightNo" style='width:244px;'></el-input>
+							<el-button class="" type="primary" @click="queryFlightInfo">查询</el-button>
+						</el-form-item>
+					</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span="12">
-							<!--/Subsidiary-->
-							<el-form-item label="分(子)公司" prop="subsidiary" :label-width='labelWidth'>
+							<!--/Airline-->
+							<el-form-item label="航空公司" prop="airLine" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
-									  style='width:320px;'>{{ruleForm.subsidiary}}</span>
-								<el-input v-else v-model="ruleForm.subsidiary" style='width:320px;'></el-input>
+									  style='width:320px;'>{{ruleForm.airLine}}</span>
+								<el-input :disabled="true" v-else v-model="ruleForm.airLine" style='width:320px;' placeholder="点击查询按钮获取"></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
 							<!--/Aircraft Type-->
 							<el-form-item label="飞机型号" prop="aircraftType" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val' style='width:320px;'>{{ruleForm.aircraftType}}</span>
-								<el-input v-else v-model="ruleForm.aircraftType" style='width:320px;'></el-input>
+								<el-input :disabled="true" v-else v-model="ruleForm.aircraftType" style='width:320px;' placeholder="点击查询按钮获取"></el-input>
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -68,15 +72,16 @@
 							<el-form-item label="机号" prop="aircraftReg" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:320px;'>{{ruleForm.aircraftReg}}</span>
-								<el-input v-else v-model="ruleForm.aircraftReg" style='width:320px;'></el-input>
+								<el-input :disabled="true" v-else v-model="ruleForm.aircraftReg" style='width:320px;' placeholder="点击查询按钮获取"></el-input>
 							</el-form-item>
 						</el-col>
+
 						<el-col :span="12">
-							<!--/Airline-->
-							<el-form-item label="航空公司" prop="airLine" :label-width='labelWidth'>
+							<!--/Subsidiary-->
+							<el-form-item label="分(子)公司" prop="subsidiary" :label-width='labelWidth'>
 								<span v-if="isInfo" class='form_inlne_val'
-									  style='width:320px;'>{{ruleForm.airLine}}</span>
-								<el-input v-else v-model="ruleForm.airLine" style='width:320px;'></el-input>
+									  style='width:320px;'>{{ruleForm.subsidiary}}</span>
+								<el-input v-else v-model="ruleForm.subsidiary" style='width:320px;'></el-input>
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -377,21 +382,25 @@
 			</div>
 		</div>
 		<SeeImg ref="SeeImg"></SeeImg>
+		<SelectFilghtInfo ref="SelectFilghtInfo" @getFlightINfo="getFlightInfo"></SelectFilghtInfo>
 	</div>
 </template>
 <script>
 	import moment from 'moment'
-	import SearchTable from '@/ui/components/SearchTable';
+    import { getToken} from '@lib/auth';
+
+    import SearchTable from '@/ui/components/SearchTable';
 	import Icon from '@components/Icon-svg/index';
-	import {sysParameterTable} from '../tableConfig.js';
-	import request from '@lib/axios.js';
+ 	import request from '@lib/axios.js';
 	import {extend} from 'lodash';
     import {eleDateShow} from '@lib/tools'
+    import SelectFilghtInfo from "./selectFlightInfo"
 
 	export default {
 		components: {
 			Icon,
-			SearchTable
+			SearchTable,
+			SelectFilghtInfo
 		},
 		filters: {
 			formatDate(val, format = 'YYYY-MM-DD') {
@@ -472,6 +481,77 @@
             eleDateShow()
         },
 		methods: {
+            clearFlightInfo( ){
+                this.ruleForm={
+                    ...this.ruleForm,
+                    airLine:null,
+                    aircraftType:null,
+                    aircraftReg:null ,
+                    flightId:null,
+                }
+            },
+            getFlightInfo(data){
+                this.ruleForm={
+                    ...this.ruleForm,
+                    airLine:data.airline,
+                    aircraftType:data.aircraftType,
+                    aircraftReg:data.aircraftNo,
+                    flightId:data.flightId,
+                    flightNo:data.flightNo,
+                }
+                this.$message.success('已为您填充查询到的航班信息')
+            },
+            queryFlightInfo(){
+                let params ={
+                    flightNo:this.ruleForm.flightNo,
+                    // flightNo:'MU5843',
+                }
+                request({
+                    headers:{
+                        // token:getToken()
+                        token:`eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1NDIwNjM1MTVmY2I5NDczYzgxYTJkZWNkNzAyMTI3YWIiLCJ1c2VySWQiOiJ1NDIwNjM1MTVmY2I5NDczYzgxYTJkZWNkNzAyMTI3YWIiLCJkZXB0SWQiOiJNYWludGVuYW5jZUxvYWRCcmlkZ2UiLCJkZXB0Q29kZSI6Ik1haW50ZW5hbmNlTG9hZEJyaWRnZSIsImlhdCI6MTYxNTI1NTc0MywiZXhwIjoxNjE1MzQyMTQzfQ.OmQn3Qvd-JfX-RiNJgc6SfVbvJuBWEUnXWP6470ONr0`
+                    },
+                    url: `${this.$ip}/omms-tf-boardbridge-web/flight/getFlightInfoByDate`,
+                    method: 'get',
+                    params
+                }).then((d)=>{
+                    console.log(d);
+                     if(d.data&&d.data.length>0){
+                        if(d.data.length>1){
+                            this.$refs.SelectFilghtInfo.open(d.data)
+                        }else{
+                            this.getFlightInfo(d.data[0])
+                        }
+                    }else{
+                         this.$message.warning('未查询到该航班号的航班信息')
+
+                     }
+
+                })
+                if(this.ruleForm.workDate&&this.ruleForm.flightNo){
+                    let params ={
+                        flightNo:this.ruleForm.flightNo,
+                    }
+                    request({
+                        headers:{
+                            token:getToken()
+                        },
+                        url: `${this.$ip}/omms-tf-boardbridge-web/flight/getFlightInfoByDate`,
+                        method: 'get',
+                        params
+                    }).then((d)=>{
+                        if(d.data){
+                            if(d.data.length>1){
+                                this.$refs.SelectFilghtInfo.open(d.data)
+                            }else{
+                                this.getFlightInfo(d.data[0])
+                            }
+                        }
+                    })
+                }else{
+                    this.$message.warning('日期和航班号不能为空')
+                }
+            },
 			changeCode(key,type){
 				if (type !== 'number') {
 					// 先把非数字的都替换掉(空)，除了数字和.
@@ -515,6 +595,10 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
+					    if(!this.ruleForm.flightId){
+					        this.$message.warning('请先点击查询按钮获取航班信息')
+							return
+						}
 						let typeObj = {
 							'add': this.chargeSaveFn,
 							'edit': this.chargeUpdateFn

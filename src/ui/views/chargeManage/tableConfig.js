@@ -54,7 +54,7 @@ export const sysParameterTable = () => {
                 return a[row.approveState]
             }
         },
-        { prop: 'sendFinance', label: '是否发送财务', width:'110', align: 'center',sort:true,
+        { prop: 'sendFinance', label: '发送数据中心', width:'110', align: 'center',sort:true,
             sortProp:"sendFinance",
             search:{
                 type:'select',placeholder:"请选择",prop:'sendFinance',
