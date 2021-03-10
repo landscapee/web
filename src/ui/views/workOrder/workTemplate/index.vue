@@ -35,19 +35,19 @@
                         <template  slot-scope="scope">
                             <div >
                                 <el-tooltip class="item" effect="dark" :enterable="false" content="改版" placement="top">
-                                  <span @click="addOrEditOrInfo1(scope.row,'edit')" class="rowSvg" v-if="scope.row.state!==3">
-                                    <icon iconClass="revision"  ></icon>
-                                </span>
+                                    <span @click="addOrEditOrInfo1(scope.row,'edit')" class="rowSvg" v-if="scope.row.canCopy">
+                                        <icon iconClass="revision"  ></icon>
+                                    </span>
                                 </el-tooltip>
                                 <el-tooltip class="item" effect="dark" :enterable="false" content="启用" placement="top">
-                                  <span  @click="enable(scope.row)" class="rowSvg" v-if="scope.row.state===0&&scope.row.history===false">
-                                    <icon iconClass="enable"  ></icon>
-                                </span>
+                                    <span  @click="enable(scope.row)" class="rowSvg" v-if="scope.row.canEnable">
+                                        <icon iconClass="enable"  ></icon>
+                                    </span>
                                 </el-tooltip>
                                 <el-tooltip class="item" effect="dark" :enterable="false" content="停用" placement="top">
-                                <span  @click="unEnable(scope.row)"  class="rowSvg" v-if="scope.row.state===1">
-                                    <icon iconClass="disable"  ></icon>
-                                </span>
+                                    <span  @click="unEnable(scope.row)"  class="rowSvg" v-if="scope.row.canInvalid">
+                                        <icon iconClass="disable"  ></icon>
+                                    </span>
                                 </el-tooltip>
 
                             </div>

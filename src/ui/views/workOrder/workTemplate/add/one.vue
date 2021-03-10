@@ -68,8 +68,8 @@
 
                 <el-form-item  label="作业类型：" :prop=" form.type=='WXGD'?'jobType':''"  >
                     <span v-if="type=='info'">{{  form.jobType }}</span>
-                    <el-select    v-else clearable v-model="form.jobType" placeholder="请选择作业类型">
-                        <el-option v-for="(opt,index) in options[form.type=='QZGD'?'QZ_workType':'W_workType']" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
+                    <el-select v-else clearable v-model="form.jobType" placeholder="请选择作业类型">
+                        <el-option v-for="(opt,index) in options[form.type=='QZGD'?'QZ_workType':'W_workType']" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item  label="作业员类型：" :prop=" form.type=='WXGD'?'personType':''"  >
