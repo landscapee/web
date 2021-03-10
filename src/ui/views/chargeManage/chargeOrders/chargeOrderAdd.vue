@@ -509,7 +509,7 @@
                         date: moment(this.ruleForm.workDate).format('YYYY-MM-DD'),
                     }
                     request({
-                        url: `${this.$ip}/omms-tf-comm-web/oflight/getFlightByFlightNoAndDate`,
+                        url: `${this.$OMSip}/omms-tf-comm-web/oflight/getFlightByFlightNoAndDate`,
                         method: 'get',
                         params
                     }).then((d) => {
