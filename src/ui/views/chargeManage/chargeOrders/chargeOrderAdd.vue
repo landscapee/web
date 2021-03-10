@@ -45,7 +45,7 @@
 								<span v-if="isInfo" class='form_inlne_val'
 									  style='width:320px;'>{{ruleForm.flightNo}}</span>
 							<el-input  @input="clearFlightInfo" v-else v-model="ruleForm.flightNo" style='width:244px;'></el-input>
-							<el-button class="" type="primary" @click="queryFlightInfo">查询</el-button>
+							<el-button v-if="!isInfo" class="" type="primary" @click="queryFlightInfo">查询</el-button>
 						</el-form-item>
 					</el-col>
 					</el-row>
@@ -499,58 +499,35 @@
                     flightId:data.flightId,
                     flightNo:data.flightNo,
                 }
-                this.$message.success('已为您填充查询到的航班信息')
-            },
-            queryFlightInfo(){
-                let params ={
-                    flightNo:this.ruleForm.flightNo,
-                    // flightNo:'MU5843',
-                }
-                request({
-                    headers:{
-                        // token:getToken()
-                        token:`eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1NDIwNjM1MTVmY2I5NDczYzgxYTJkZWNkNzAyMTI3YWIiLCJ1c2VySWQiOiJ1NDIwNjM1MTVmY2I5NDczYzgxYTJkZWNkNzAyMTI3YWIiLCJkZXB0SWQiOiJNYWludGVuYW5jZUxvYWRCcmlkZ2UiLCJkZXB0Q29kZSI6Ik1haW50ZW5hbmNlTG9hZEJyaWRnZSIsImlhdCI6MTYxNTI1NTc0MywiZXhwIjoxNjE1MzQyMTQzfQ.OmQn3Qvd-JfX-RiNJgc6SfVbvJuBWEUnXWP6470ONr0`
-                    },
-                    url: `${this.$ip}/omms-tf-boardbridge-web/flight/getFlightInfoByDate`,
-                    method: 'get',
-                    params
-                }).then((d)=>{
-                    console.log(d);
-                     if(d.data&&d.data.length>0){
-                        if(d.data.length>1){
-                            this.$refs.SelectFilghtInfo.open(d.data)
-                        }else{
-                            this.getFlightInfo(d.data[0])
-                        }
-                    }else{
-                         this.$message.warning('未查询到该航班号的航班信息')
+                this.$message({message: '已为您填充查询到的航班信息',type:'success',duration:1000})
 
-                     }
-
-                })
-                if(this.ruleForm.workDate&&this.ruleForm.flightNo){
-                    let params ={
-                        flightNo:this.ruleForm.flightNo,
+             },
+            queryFlightInfo() {
+                if (this.ruleForm.workDate && this.ruleForm.flightNo) {
+                    let params = {
+                        flightNo: this.ruleForm.flightNo,
+                        date: moment(this.ruleForm.workDate).format('YYYY-MM-DD'),
                     }
                     request({
-                        headers:{
-                            token:getToken()
-                        },
-                        url: `${this.$ip}/omms-tf-boardbridge-web/flight/getFlightInfoByDate`,
+                        url: `${this.$ip}/omms-tf-comm-web/oflight/getFlightByFlightNoAndDate`,
                         method: 'get',
                         params
-                    }).then((d)=>{
-                        if(d.data){
-                            if(d.data.length>1){
+                    }).then((d) => {
+                        if (d.data&&d.data.length>0) {
+                            if (d.data.length > 1) {
                                 this.$refs.SelectFilghtInfo.open(d.data)
-                            }else{
+                            } else {
                                 this.getFlightInfo(d.data[0])
                             }
+                        }else{
+                            this.$message.warning('未查询到航班信息')
+
                         }
                     })
-                }else{
+                } else {
                     this.$message.warning('日期和航班号不能为空')
                 }
+
             },
 			changeCode(key,type){
 				if (type !== 'number') {
