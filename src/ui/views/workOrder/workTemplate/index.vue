@@ -14,6 +14,7 @@
                     <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="upTemplate()"><icon iconClass="upload" ></icon>上传模板</div>
+                    <div @click="exportTemplate()"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
 
@@ -58,9 +59,11 @@
             </div>
         </div>
         <UploadModule ref="UploadModule"  @getList="getList"></UploadModule>
+        <SelectAirline ref="SelectAirline"   ></SelectAirline>
     </div>
 </template>
 <script>
+    import SelectAirline from './selecAlrline'
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
     import { workOrderConfig } from './tableConfig.js';
@@ -70,7 +73,7 @@
     export default {
         components: {
             Icon,
-            SearchTable,
+            SearchTable,SelectAirline,
             UploadModule
         },
         name: 'authorizeManage',
@@ -105,6 +108,9 @@
         },
 
         methods: {
+            exportTemplate(){
+                this.$refs.SelectAirline.open()
+            },
             upTemplate(){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');

@@ -5,9 +5,13 @@
           <el-radio-group v-model="form.info">
             <div  class="item" v-for="(opt,index) in radioList" :key="index">
               <el-radio :label="opt">
-                  <span class=" ">航空公司：{{opt.airline}} </span>
+
+                  <span class="  ">航空公司：{{opt.airline||AirlineObj[opt.airlineCode]}} </span>
                  <span class="ITone">机型：{{opt.aircraftType}} </span>
-                 <span class="ITone">机号：{{opt.aircraftNo}} </span>
+                  <br/>
+                  <span class=" ITone ITone1">计划时间：{{moment(opt.scheduleTime).format('YYYY-MM-DD HH:mm')}} </span>
+                  <span class="ITone ">机号：{{opt.aircraftNo}} </span>
+
               </el-radio>
             </div>
           </el-radio-group>
@@ -20,13 +24,16 @@
 </template>
 <script>
     import {getUserInfo} from '@lib/auth.js';
+    import moment from 'moment'
       export default {
 
     data() {
         return {
+            moment:moment,
           radioList:[],
           dialogTableVisible: false,
           form:{ },
+            AirlineObj:{ },
 
          }
     },
@@ -35,7 +42,8 @@
      },
 
     methods:{
-        open(data){
+        open(data,obj){
+            this.AirlineObj=obj
              this.radioList=[...data ]
             this.dialogTableVisible = true
 
@@ -52,11 +60,7 @@
           }else{
             this.$message.warning('请选择一条信息')
           }
-          // this.$refs[form].validate(valid => {
-          //   if (valid) {
-          //
-          //   }
-          // });
+
 
         },
 
@@ -75,6 +79,9 @@
         margin: 15px ;
         .ITone{
           margin: 0 10px;
+        }
+          .ITone1{
+          margin-left: 24px;
         }
       }
       /deep/ .el-dialog__footer{
