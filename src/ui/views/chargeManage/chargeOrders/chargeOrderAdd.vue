@@ -444,6 +444,8 @@
 				ruleForm: {
 					arrivalAirport: 'TFU',  // 起降机场
 				},
+                airlineStatus:'',
+                AirlineObj:{},
 				labelWidth: '200px',
 				rules: {
 					flightNo: [
@@ -475,14 +477,38 @@
 				}else{
 				    this.$set(this.ruleForm,'inOrOut',!this.$route.query.inOrOut)
 				}
-			}
+                this.airlineStatus=this.getAirline()
+
+             }
+
 		},
         mounted(){
             eleDateShow()
         },
 		methods: {
+		    getAirline(){
+		      return new Promise((resolve,reject)=>{
+                  request({
+                      url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                      method: 'get',
+                  }).then(d => {
+                      if( d.data&&d.data.length){
+                          d.data.map((k,l)=>{
+                              if(!k.parentCode){
+                                  this.AirlineObj[k.iata]=k.fullname
+                              }
+                          })
+                          resolve()
+                      }else{
+                          reject()
+                      }
+                  }).catch(()=>{
+                      reject()
+                  });
+              })
+            },
             clearFlightInfo( ){
-                this.ruleForm={
+                 this.ruleForm={
                     ...this.ruleForm,
                     airLine:null,
                     aircraftType:null,
@@ -490,20 +516,42 @@
                     flightId:null,
                 }
             },
-            getFlightInfo(data){
+            setFlightInfo(data){
                 this.ruleForm={
                     ...this.ruleForm,
-                    airLine:data.airline,
+                    airLine:data.airline||this.AirlineObj[data.airlineCode],
                     aircraftType:data.aircraftType,
                     aircraftReg:data.aircraftNo,
                     flightId:data.flightId,
-                    flightNo:data.flightNo,
+                    // flightNo:data.flightNo,
                 }
                 this.$message({message: '已为您填充查询到的航班信息',type:'success',duration:1000})
 
+            },
+            getFlightInfo(data){
+		        if(data.airline){
+                    this.setFlightInfo(data)
+                    return
+                }
+                this.airlineStatus.then((d)=>{
+                     this.setFlightInfo(data)
+                }).catch(()=>{
+                    // this.$confirm('未获取到航司列表信息，将不能为您匹配航空公司项，是否重新获取', '提示', {
+                    //     confirmButtonText: '确定',
+                    //     cancelButtonText: '取消',
+                    //     type: 'warning',
+                    // }).then((d)=>{
+                    //     this.getAirline().then(()=>{
+                    //         this.setFlightInfo()
+                    //     })
+                    // }).catch(()=>{
+                    //
+                    // })
+                })
+
              },
             queryFlightInfo() {
-                if (this.ruleForm.workDate && this.ruleForm.flightNo) {
+                 if (this.ruleForm.workDate && this.ruleForm.flightNo) {
                     let params = {
                         flightNo: this.ruleForm.flightNo,
                         date: moment(this.ruleForm.workDate).format('YYYY-MM-DD'),
@@ -515,13 +563,12 @@
                     }).then((d) => {
                         if (d.data&&d.data.length>0) {
                             if (d.data.length > 1) {
-                                this.$refs.SelectFilghtInfo.open(d.data)
+                                this.$refs.SelectFilghtInfo.open(d.data,this.AirlineObj)
                             } else {
                                 this.getFlightInfo(d.data[0])
                             }
                         }else{
                             this.$message.warning('未查询到航班信息')
-
                         }
                     })
                 } else {
