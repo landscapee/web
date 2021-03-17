@@ -228,6 +228,11 @@ import request from '@lib/axios.js';
 			height: 16px;
 			vertical-align: middle;
 		}
+		.svg-icon {
+			width: 16px;
+			height: 16px;
+			vertical-align: middle;
+		}
 	}
 	/deep/ .el-menu--inline{
 		/deep/ .is-active{

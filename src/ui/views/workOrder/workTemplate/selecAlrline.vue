@@ -74,7 +74,7 @@ export default {
                                 arr=d.headers['content-disposition'].split('=')[1].split('.')
                             }
                             let blob=new Blob([d],{type:'application/vnd.ms-excel'})
-                            const fileName = `${decodeURI(arr[0])}`
+                            const fileName = `${decodeURI(arr[0])}` + '.xlsx'
                             if ('download' in document.createElement('a')) { // 非IE下载
                                 const elink = document.createElement('a')
                                 elink.download = fileName
