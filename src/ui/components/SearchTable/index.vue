@@ -598,6 +598,11 @@
                     margin-left: 6px;
                 }
             }
+            /deep/ .svg-icon {
+                    width: 14px;
+                    height: 14px;
+                    margin-left: 6px;
+            }
             /deep/ .search-button {
                 width: 80px;
                 height: 30px;
