@@ -112,10 +112,10 @@
 						<tr>
 							<td class="fTd">身份证号</td>
 							<td class="tTd">
-								<span v-if="type=='info'">{{form.idCard}}</span>
-								<el-form-item v-else prop="idCard">
-									<el-input v-model="form.idCard" placeholder="请输入身份证号"></el-input>
-								</el-form-item>
+								<span >{{form.idCard}}</span>
+								<!--<el-form-item v-else prop="idCard">-->
+									<!--<el-input v-model="form.idCard" placeholder="请输入身份证号"></el-input>-->
+								<!--</el-form-item>-->
 							</td>
 							<td class="fTd">性别</td>
 							<td class="tTd">
@@ -356,6 +356,8 @@
 </template>
 
 <script>
+    import {encryptedData,decrypt} from '@/ui/lib/des-coder.js';
+
     import {eleDateShow,inputLength} from '@lib/tools'
 
 	import moment from "moment";
@@ -489,13 +491,13 @@
 					userNumber: this.userArrObj[val].workNumber,
 					userId: val,
 					userName: this.userArrObj[val].name,
-					contactInformation: this.userArrObj[val].phone || null,
+					contactInformation:decrypt(this.userArrObj[val].phone)  || null,
 				}
 				if (data) {
 					this.form = {
 						...this.form,
 						nation: data.nationId || null,
-						idCard: data.idCard,
+						idCard: decrypt(data.idCard),
 						sex: data.gender == 1 ? '男' : '女',
 						entryTime: data.entryDate ? this.$moment(data.entryDate).format('YYYY-MM-DD') : null,
 						politicalOrientation: data.facePoliticsId || null,
@@ -663,7 +665,10 @@
 							} else {
 								url = '/userRecord/update'
 							}
-							let obj = {...this.form}
+							let obj = {
+							    ...this.form,
+
+							}
 
 							request({
 								url: `${this.$ip}/mms-qualification${url}`,
@@ -729,6 +734,12 @@
 				.fTd {
 					width: 140px;
 					text-align: center;
+				}
+				.tTd {
+					span{
+						vertical-align: middle;
+						font-size: 16px;
+					}
 				}
 
 				td {

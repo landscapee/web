@@ -13,8 +13,22 @@ let publicKey = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANWnvOm0wS9hsY9xiAs2G09Ah88zaJH
 
 
 
+
+//对称加密(获取数据后用该方法解密)
+export function decAdd(data){ //未测试
+    let keyHex = CryptoJS.enc.Base64.parse(key);
+    let encrypted = CryptoJS.DES.encrypt(data, keyHex, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return encrypted.toString(CryptoJS.enc.Utf8);
+}
+
 //对称解密(获取数据后用该方法解密)
 export function decrypt(data) {
+    if(!data){
+        return null
+    }
   const keyHex = CryptoJS.enc.Utf8.parse(key);
   const decrypted = CryptoJS.DES.decrypt({
     ciphertext: CryptoJS.enc.Hex.parse(data)

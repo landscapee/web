@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    import {encryptedData} from '@/ui/lib/des-coder.js';
+    import {encryptedData,decrypt} from '@/ui/lib/des-coder.js';
 
 import { initWebsocket } from '../../../../initSocket.js';
 import {setUserInfo,setToken,removeToken} from '@lib/auth';

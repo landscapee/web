@@ -164,7 +164,7 @@
                                                  v-if="itemChild.commanderLabel">
                                                 <div class="sign_box" :id="'travel_sign_'+itemChild._reduceIndex"
                                                      :pos='"travel_sign_"+itemChild._reduceIndex'
-                                                     style="width:100%;height:30px;width:100%"></div>
+                                                     style="width:100%;height:30px;"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1666,6 +1666,16 @@
                 }
             },
             submit() {
+                let allSignBol = Array.from($(".itemSign")).every(item => {
+                     return $(item).find('.kg-img-div').length
+                })
+                // if (this.workorder.type == 'WXGD') {
+                //
+                // }
+                if (!allSignBol) {
+                    this.$message({type: 'warning', message: '请检查签章是否完成'})
+                    return
+                }
                 request({
                     url: `${this.$ip}/mms-workorder/workorder/submit/${this.id}`,
                     method: 'get',
