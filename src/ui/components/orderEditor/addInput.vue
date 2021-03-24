@@ -4,7 +4,7 @@
             <el-form :model="form" :rules="rules">
 
                  <el-form-item  class="leftMargin"   label="预览"    >
-                     <input type="text" v-model="text":style="form.widthType=='adjust'?{width}:{}" :inputtype="form.type">
+                     <input type="text" v-model="text" :style="form.widthType=='adjust'?{width}:{}" :inputtype="form.type">
                      <span v-if="form.type=='string'">可以输入任何字符</span>
                      <span v-else>只能输入数字</span>
                  </el-form-item>

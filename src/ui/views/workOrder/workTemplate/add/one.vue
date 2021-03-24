@@ -95,13 +95,20 @@
                 <el-form-item  label="生效日期：" prop="preEnableTime" :rules=" form.isPreVersion?rules.preEnableTime:[{required:false}]">
                      <el-date-picker :disabled="!form.isPreVersion" @blur="blur(true)"  @focus="focus" :picker-options="pickerOptions" type="datetime"   v-model="form.preEnableTime" placeholder="请选择时间"></el-date-picker>
                 </el-form-item>
-                <el-form-item  label="失效日期：" prop="preInvalidTime" :rules=" form.isPreVersion?rules.preInvalidTime:[{required:false}]">
+                <!--:rules=" form.isPreVersion?rules.preInvalidTime:[{required:false}]"-->
+                <el-form-item  label="失效日期：" prop=" " >
                     <div style="position:relative;">
                          <el-date-picker :disabled="!form.isPreVersion" @blur="blur( )" @focus="focus1" :picker-options="pickerOptions1"  type="datetime"   v-model="form.preInvalidTime" placeholder="请选择时间"></el-date-picker>
                         <!--<span style="position: absolute;left:calc(100% + 15px);width:200px" v-if="type!='info'">不选表示 '至今'</span>-->
-
                     </div>
 
+                </el-form-item>
+            </div>
+            <div class="row_three widthA"  v-if="form.type=='WXGD'" >
+                <el-form-item  label="最少作业时间："    >
+                    <!--style="width:165px;margin-right: 4px;"-->
+                    <span v-if="type=='info'">{{form.leastMinutes}}分钟</span>
+                    <el-input v-zzs="2"  v-else v-model="form.leastMinutes"  placeholder="请输入最少作业时间"></el-input>分钟
                 </el-form-item>
             </div>
 
@@ -186,7 +193,7 @@
                 }
             };
             return {
-                form:{isPreVersion:false},
+                form:{isPreVersion:false,leastMinutes:null},
                 pickerOptions: {},
                 pickerOptions1: {},
                 options:{},
@@ -297,6 +304,10 @@
                         if (valid) {
                             let url=this.geturl()
                             let obj={...this.form}
+                            if(obj.leastMinutes ){
+                                obj.leastMinutes=Number(obj.leastMinutes)
+                            }
+
                            if(obj.airplane ) {
                                obj.airplane =  obj.airplane.map((k,l)=>{
                                    return this.airplaneObj[k]
@@ -331,10 +342,8 @@
                 request({
                     url:`${this.$ip}/mms-workorder/template/getById/${id||this.$route.query.id}`,
                     method: 'get',
-                    // params:{id:id||this.$route.query.id}
-                }).then((data) => {
+                 }).then((data) => {
                     this.form = extend({}, {...data.data.typeVO,isPreVersion:data.data.typeVO.isPreVersion||false});
-                  
                     if(this.form.airplane){
                         this.form.airplane=this.form.airplane.map((k,l)=>{
                             return k.id
@@ -364,8 +373,7 @@
                     disabledDate(time) {
                         if (e) {
                             return time.getTime() > e.getTime()||time.getTime()<=t.getTime()-8.64e7;
-                            // return time.getTime() > e.getTime()||time.getTime() > t.getTime();
-                        }else{
+                         }else{
                             return time.getTime()<=t.getTime()-8.64e7
                         }
                     },
@@ -472,6 +480,14 @@
             padding: 20px 0px 5px 0px;
             .el-form-item__content{
                 width:200px;
+            }
+            .widthA{
+                .el-form-item__content{
+                    width:240px;
+                }
+                .el-input{
+                    margin-right: 4px;
+                }
             }
             .row_three{
                 .el-form-item:nth-child(2) {

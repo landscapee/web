@@ -15,6 +15,7 @@ import App from "./src/ui/App.vue";
 import {initWebsocket} from "./initSocket.js";
 // import WorkerRegist from "./workerRegist.js";  // 引入webworker注册文件
 import router from "./src/ui/router";
+import  "./src/ui/lib/directive.js";
 
 import store from "./src/ui/store";
 import "./src/ui/icons";

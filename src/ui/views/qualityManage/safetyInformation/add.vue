@@ -86,13 +86,14 @@
                      </el-form-item>
                 </div>
                 <div class="row_tow">
-                    <el-form-item label="地点：" prop="place">
-                        <span v-if="type=='info'">{{form.place}}</span>
-                        <el-input v-else v-model="form.place" placeholder="请输入地点"></el-input>
-                    </el-form-item>
-                    <el-form-item label="负责人/单位：" prop="responsibleUnit">
+
+                    <el-form-item label="负责人：" prop="responsibleUnit">
                         <span v-if="type=='info'">{{form.responsibleUnit}}</span>
-                        <el-input v-else v-model="form.responsibleUnit" placeholder="请输入负责人/单位"></el-input>
+                        <el-input v-else v-model="form.responsibleUnit" placeholder="请输入负责人"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单位：" prop="unit">
+                        <span v-if="type=='info'">{{form.unit}}</span>
+                        <el-input v-else v-model="form.unit" placeholder="请输入单位"></el-input>
                     </el-form-item>
                 </div>
                 <div class="row_tow">
@@ -109,7 +110,12 @@
                     </el-form-item>
                 </div>
                 <div class="row_one">
-
+                    <el-form-item label="地点：" prop="place">
+                        <span v-if="type=='info'">{{form.place}}</span>
+                        <el-input v-else v-model="form.place" placeholder="请输入地点"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="row_one">
                     <el-form-item label="原因分析：" prop="reason">
                         <span v-if="type=='info'">{{form.reason}}</span>
                         <el-input v-else v-model="form.reason" :rows="3" type="textarea"   placeholder="请输入原因分析"></el-input>

@@ -1,9 +1,13 @@
 import { formatDate } from '@lib/tools.js';
+let tranTime=(row, column, cellValue)=>{
+
+    return row.sendFinance=='1'? cellValue&&formatDate(cellValue, 'YYYY-MM-DD', '--'):''
+}
 export const sysParameterTable = () => {
     return [
         { slot: 'checkbox' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'workDate',width:'100', label: '日期', align: 'center',sort:true,sortProp:"workDate",
-            search:{type:'date',placeholder:"请选择时间",prop:'workDateQuery'},
+            search:{type:'date',placeholder:"请选择",prop:'workDateQuery'},
             formatter: (row, column, cellValue) => {
                 return formatDate(cellValue, 'YYYY-MM-DD', '--')
             }
@@ -16,22 +20,20 @@ export const sysParameterTable = () => {
                 selectProp:["labelData", "valData"], data: [{valData:true,labelData:'国内'},{valData:false,labelData:'国际'}],
             prop:'inOrOut'} },
         {   prop: 'airLine', label: '航空公司', align: 'center',sort:true,sortProp:"airLine",
-            search:{type:'input',placeholder:"请输入航空公司",
+            search:{type:'input',placeholder:"请输入",
             prop:'airLine'} },
-        { prop: 'subsidiary', label: '分(子)公司', align: 'center',sort:true,
-            sortProp:"subsidiary",
-            search:{type:'input',placeholder:"请输入分(子)公司",prop:'subsidiary'} },
+
         { prop: 'aircraftType', label: '飞机型号', align: 'center',sort:true,
-            sortProp:"aircraftType",search:{type:'input',placeholder:"请输入飞机型号",
+            sortProp:"aircraftType",search:{type:'input',placeholder:"请输入",
             prop:'aircraftTypeQuery'}},
         { prop: 'aircraftReg', label: '机号', align: 'center',sort:true,sortProp:"aircraftReg",
-        search:{type:'input',placeholder:"请输入机号",prop:'aircraftReg'} },
+        search:{type:'input',placeholder:"请输入",prop:'aircraftReg'} },
         { prop: 'flightNo', label: '航班号', align: 'center',sort:true,sortProp:"flightNo",
-        search:{type:'input',placeholder:"请输入航班号",prop:'flightNo'} },
+        search:{type:'input',placeholder:"请输入",prop:'flightNo'} },
         { prop: 'arrivalAirport', label: '起降机场', align: 'center',sort:true,sortProp:"arrivalAirport",
-        search:{type:'input',placeholder:"请输入起降机场",prop:'arrivalAirport'} },
+        search:{type:'input',placeholder:"请输入",prop:'arrivalAirport'} },
         { prop: 'approveUserName', label: '审核人', align: 'center',sort:true,
-        sortProp:"approveUserName",search:{type:'input',placeholder:"请输入审核人",prop:'approveUserName'} },
+        sortProp:"approveUserName",search:{type:'input',placeholder:"请输入",prop:'approveUserName'} },
         { prop: 'approveTime',width:'140', label: '审核日期', align: 'center',sort:true,
             sortProp:"approveTime",search:{type:'date',placeholder:"请选择审核日期",prop:'approveTimeQuery'},
             formatter: (row, column, cellValue) => {
@@ -41,7 +43,7 @@ export const sysParameterTable = () => {
         { prop: 'approveState', label: '审核状态', align: 'center',sort:true,
             sortProp:"approveState",
             search:{
-                type:'select',placeholder:"请选择审核状态",prop:'approveState',
+                type:'select',placeholder:"请选择",prop:'approveState',
                 selectProp:["labelData", "valData"],
                 data: [{valData:"0",labelData:'未审核'},{valData:"1",labelData:'审核成功'},{valData:"2",labelData:'审核失败'}],
             },
@@ -68,6 +70,8 @@ export const sysParameterTable = () => {
                 return a[row.sendFinance]
             }
         },
+        { prop: 'sendTime', label: '发送时间', formatter:tranTime, align: 'center',sort:true,
+            sortProp:"sendTime",search:{type:'date',placeholder:"请选择",prop:'sendTime'} },
         { slot: 'option', label: '操作',width:'80', search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
     ]
 }
