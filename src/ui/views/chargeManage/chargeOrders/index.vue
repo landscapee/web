@@ -58,13 +58,13 @@
 			</div>
 			<div class="tableOneBox">
 
-				<SearchTable ref="searchTable" refTag="searchTable" @requestTable="requestTable(arguments[0])"
+				<SearchTable ref="searchTable" refTag="searchTable" @selectCheckBox="selectCheckBox" @requestTable="requestTable(arguments[0])"
 							 @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort"
 							 @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"
 							 :data="tableData" :tableConfig="tableConfig" :showHeader="false" :showPage="true">
 					<el-table-column slot="checkbox" label="选择" :width="49">
 						<template slot-scope="scope">
-							<el-checkbox :ref="scope.row.id" @click.stop.native v-model="selectIds"
+							<el-checkbox :ref="scope.row.id" @click.stop.native v-model="checkArr"
 										 :label="scope.row.id" value="">
 							</el-checkbox>
 							<!--                            <icon iconClass="sy" class="tab_radio" v-if="row.selected"></icon>-->
@@ -141,7 +141,8 @@
                 },
                 sort: {},
                 selectId: null,
-                selectIds: [],
+                checkArr: [],
+                ids: [],
                 approveNumber: 0,
                 sendNumber: 0,
                 dialogTemplateVisible: false,
@@ -214,15 +215,14 @@
                     })
             },
             sendFinanceFn() {
-                if (this.selectIds.length === 0) {
+                if (this.checkArr.length === 0) {
                     this.$message({type: 'warning', message: '请选择一条发送财务'})
                     return
-                } else if (this.selectIds.length > 1) {
+                } else if (this.checkArr.length > 1) {
                     this.$message({type: 'warning', message: '同时只能选择一条发送财务'})
                     return
                 }
-                let selectObj = this.tableData.records.find(item => item.id === this.selectIds[0])
-                if (selectObj.approveState != 1) {
+                  if (this.checkArr[0].approveState != 1) {
                     this.$message({type: 'warning', message: '审核未通过，不能发送财务'})
                     return
                 }
@@ -230,7 +230,7 @@
                     url: `${this.$ip}/mms-charge/chargeBillFlxgz/send`,
                     method: 'post',
                     data: {
-                        id: this.selectIds[0],
+                        id: this.checkArr[0].id,
                     }
                 })
                     .then((data) => {
@@ -240,7 +240,7 @@
                             this.$message({type: 'error', message: '发送失败，请重试'});
                         }
                         this.getList();
-                        this.selectIds = []
+                        this.checkArr = []
                     })
             },
             addChargeOrderFn(type, query,inOrOut) {
@@ -249,31 +249,26 @@
                     query: {type: query,  inOrOut:inOrOut||null},
                 }
                 if (query != 'add') {
-                    if (this.selectIds.length === 0) {
+                    if (this.checkArr.length === 0) {
                         this.$message({type: 'warning', message: '必须选择一项操作'});
                         return
-                    } else if (this.selectIds.length > 1) {
+                    } else if (this.checkArr.length > 1) {
                         this.$message({type: 'warning', message: '同时只能选择一条进行操作'})
                         return
                     }
                     if (query === 'edit') {
-                        let selectObj = this.tableData.records.find(i => i.id === this.selectIds[0])
-                        if (selectObj.approveState === 1) {
+                         if (this.checkArr[0].approveState != 1) {
                             this.$message({type: 'warning', message: '已通过状态不能编辑'})
                             return
                         }
                     }
-                    Object.assign(pushPath.query, {id: this.selectIds[0]})
+                    Object.assign(pushPath.query, {id: this.checkArr[0].id})
                 }
                 this.$router.push(pushPath)
-                //{
-                //path: type,query: {type:query, id: this.selectObjs[0].id, folderId: this.$route.query.folderId}
-                //path: type,
-                //query: {type:query, id: this.selectId}
-                //}
+
             },
             exportChargeOthFn(type) {
-                if (this.selectIds.length === 0) {
+                if (this.checkArr.length === 0) {
                     this.$message({type: 'warning', message: '必须选择内容才能导出'});
                     return
                 }
@@ -289,13 +284,12 @@
                 }
                 if (!this.form.fileUrl) {
                     this.dialogTemplateVisible = false
-                    reutrn
+                    return
                 }
+                let ids=this.checkArr.map((k,l)=>k.id)
                 request({
-                    // headers: {
-                    //     //'Content-Type': 'application/vnd.ms-excel',
-                    // },
-                    url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.selectIds.join(',')}&fileUrl=${this.form.fileUrl}`,
+
+                    url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${ids.join(',')}&fileUrl=${this.form.fileUrl}`,
                     method: 'get',
                     responseType: 'blob',
                 }).then((d) => {
@@ -316,7 +310,7 @@
                 })
             },
             exportChargeFn(type) {
-                if (this.selectIds.length === 0) {
+                if (this.checkArr.length === 0) {
                     this.$message({type: 'warning', message: '必须选择内容才能导出'});
                     return
                 }
@@ -334,7 +328,7 @@
                     // headers: {
                     //     //'Content-Type': 'application/vnd.ms-excel',
                     // },
-                    url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.selectIds.join(',')}`,
+                    url: `${this.$ip}/mms-charge${urlObj[type]['name']}?ids=${this.ids.join(',')}`,
                     method: 'get',
                     responseType: 'blob',
                 }).then((d) => {
@@ -355,18 +349,17 @@
             },
             requestTable(searchData) {
                 this.form = searchData;
-                this.selectIds = [],
-                    this.tableData = {records: []};
+                     this.tableData = {records: []};
                 this.params.current = 1;
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.getList();
             },
             removeOrderFn() {
 
-                if (this.selectIds.length === 0) {
+                if (this.checkArr.length === 0) {
                     this.$message({type: 'warning', message: '请选择内容'});
                     return
-                } else if (this.selectIds.length > 1) {
+                } else if (this.checkArr.length > 1) {
                     this.$message({type: 'warning', message: '同时只能选择一条进行删除'})
                     return
                 }
@@ -376,7 +369,7 @@
                     type: 'warning'
                 }).then(() => {
                     request({
-                        url: `${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.selectIds[0]}`,
+                        url: `${this.$ip}/mms-charge/chargeBillFlxgz/delete/${this.checkArr[0].id}`,
                         method: 'delete',
                     })
                         .then((data) => {
@@ -386,7 +379,7 @@
                                 this.$message({type: 'error', message: '删除失败，请重试'});
                             }
                             this.getList();
-                            this.selectIds = []
+                            this.checkArr = []
                         })
                 }).catch(() => {
 
@@ -413,27 +406,24 @@
                 this.params.current = 1;
                 this.getList();
             },
-            listenToCheckedChange(row, column, event) {
-                let select = row.selected;
-                // this.tableData.records.map(r =>{
-                //     if(r.selected){
-                //         r.selected = false;
-                //     }
-                // })
-                row.selected = !select;
-                if (row.selected) {
-                    //this.selectId = row.id;
-                    this.selectIds.push(row.id)  //row.id
-                } else {
-                    //this.selectId = null;
-                    this.selectIds = this.arrRemEleFn(this.selectIds, row.id)
-                    // this.selectIds = this.selectIds.filter(item=>{
-                    //     return arr.includes(item.id)
-                    // })
-                }
-                //this.params.current = 1;
-                this.$set(this.tableData.records, row.index, row);
+             selectCheckBox(list) {
+                this.checkArr = list
+				 this.ids=list.map((k,l)=>k.id)
             },
+            listenToCheckedChange(row, list) {
+
+                this.checkArr = list
+                this.ids=list.map((k,l)=>k.id)
+
+                // if (row.selected) {
+                //     this.row = row;
+                //     this.selectId = row.id;
+                // } else {
+                //     this.selectId = null;
+                //     this.row = null;
+                // }
+            },
+
             arrRemEleFn(arr, val) {
                 var index = arr.indexOf(val);
                 if (index > -1) {
@@ -445,19 +435,19 @@
                 if (tag == 'add') {
                     this.$router.push({path: '/addSysParameter', query: {type: 'add'}});
                 } else if (tag == 'edit' || tag == 'info') {
-                    if (this.selectIds.length === 0) {
+                    if (this.checkArr.length === 0) {
                         this.$message.error('请先选中一行数据');
                         return
-                    } else if (this.selectIds.length > 1) {
+                    } else if (this.checkArr.length > 1) {
                         this.$message({type: 'warning', message: '该操作只能选择一条数据'})
                         return
                     } else {
-                        this.$router.push({path: '/addSysParameter', query: {type: tag, id: this.selectIds[0]}});
+                        this.$router.push({path: '/addSysParameter', query: {type: tag, id: this.checkArr[0].id}});
                     }
                 }
             },
             delData() {
-                if (this.selectIds.length === 1) {
+                if (this.checkArr.length === 1) {
                     this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -467,12 +457,12 @@
                             request({
                                 url: `${this.$ip}/mms-parameter/rest-api/sysParam/del`,
                                 method: 'post',
-                                data: {id: this.selectIds[0]}
+                                data: {id: this.checkArr[0].id}
                             })
                                 .then((data) => {
                                     this.$message({type: 'success', message: '删除成功'});
                                     this.getList();
-                                    this.selectIds = [];
+                                    this.checkArr = [];
                                 })
                         })
                         .catch(() => {
@@ -502,10 +492,9 @@
                         } else {
                             this.tableData = {records: data.data.records, ...this.params, total: data.data.total}
                         }
-                        this.selectIds = []
+                        this.checkArr = []
                         this.getNumberFn()
-                        console.log(this.tableData)
-                    }).catch((error) => {
+                     }).catch((error) => {
 
                 });
             },
@@ -521,14 +510,18 @@
             handleSelectionChange() {
             },
             effectiveListFn() {
-                if (this.selectIds.length === 0) {
+                if (this.checkArr.length === 0) {
                     this.$message({type: 'warning', message: '必须选择内容才能导出'});
                     return
                 }
+                let ids=this.checkArr.map((k,l)=>{
+                    return k.id
+				})
                 this.dialogTemplateVisible = true;
                 request({
                     url: `${this.$ip}/mms-charge/chargeTemplate/effectiveList`,
                     method: 'post',
+					data:{ids:ids.join(',')}
                 })
                     .then((data) => {
                         if (data.code == 200) {

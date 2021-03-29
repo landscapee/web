@@ -1,7 +1,6 @@
 <template>
 
     <div class="searchTableWrapper" ref="componentTable" :key="$route.path">
-
         <el-table :height="tHeight"
                   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
                   @header-dragend="headerDragend"
@@ -18,6 +17,19 @@
 							<div>{{colConfig.search.label}}</div>
 						</span>
                     </el-table-column>
+                    <el-table-column :resizable="false" :fixed="colConfig.search.fixed" :index="index"
+                                     :width="colConfig.width"
+                                     :label="colConfig.label" v-else-if="colConfig.search.type=='allSelected'"
+                                     :key="index"
+                                     :reserve-selection="true">
+						<span>
+                                    <input type="checkbox" class="inputBox" @change="allSelectChange"/>
+
+                            <!--<input type="checkbox" ref="allSelect"/>-->
+                            <!--<el-checkbox :indeterminate="true" class="inputBox" @change="allSelectChange($event)"></el-checkbox>-->
+ 						</span>
+                    </el-table-column>
+
                     <el-table-column :resizable="false" align="center" :fixed="colConfig.search.fixed" :index="index"
                                      :property="colConfig.sortProp" :width="colConfig.width"
                                      :render-header="colConfig.sort?renderHeaderRow:()=>{return colConfig.label}"
@@ -141,7 +153,7 @@
     </div>
 </template>
 <script>
-    import {cloneDeep, forEach} from 'lodash';
+    import {cloneDeep, forEach,map} from 'lodash';
     import {fixPx} from '@lib/viewSize.js';
     import Icon from '@components/Icon-svg/index';
 
@@ -153,12 +165,15 @@
         props: ['tableConfig', 'tableRowClassName', 'data', 'offsetTop', 'page', 'noSearch', 'refTag', 'spanMethod'],
         data() {
             return {
-                tHeight:41,
+                tHeight: 41,
                 timer: null,
                 timer1: null,
                 resizeCallback: [],
                 headerData: [{}],
                 updateWidth: false,
+                 selectedList: [],
+                selectedRow: {},
+                checkbox: '',
             };
         },
         computed: {
@@ -168,10 +183,14 @@
                     return ss
                 }
             },
-            len(){
-                if(this.data){
-                    return  this.data.length || this.data.records && this.data.records.length
-                }else{
+            len() {
+
+                if (this.data) {
+                    if(this.data instanceof Array){
+                        return this.data.length
+                    }
+                    return   this.data.records && this.data.records.length||0
+                } else {
                     return 0
                 }
             },
@@ -181,6 +200,7 @@
 
             data: {
                 handler(n) {
+                    this.resetSelect()
                     this.resizeOption1()
                     setTimeout(() => {
                         if (this.$refs.body_table.doLayout) {
@@ -203,62 +223,178 @@
             }
         },
         mounted() {
-            let _this=this
-             window.addEventListener('resize', this.resizeOption1, true)
+            let _this = this
+            window.addEventListener('resize', this.resizeOption1, true)
             window.addEventListener('scroll', this.scroll, true);
-            this.timer1=  setInterval( ()=> {
-               this.resizeOption1( )
-            },100)
-            setTimeout(()=>{
+            this.timer1 = setInterval(() => {
+                this.resizeOption1()
+            }, 100)
+            setTimeout(() => {
                 clearInterval(this.timer1)
-            },2000)
+            }, 2000)
+            this.$nextTick(() => {
+                if(this.refTag=='TableRight'){
+                    let bodyTable= this.$parent.$refs[this.refTag].$refs.header_table.$el
+
+                    this.checkbox=bodyTable.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
+                 }else{
+                    this.checkbox = document.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
+
+                }
+            })
         },
         methods: {
+            resetSelect(){
+                this.selectedList=[]
+                this.selectedRow={}
+                if(this.checkbox){
+                    this.checkbox.indeterminate = false
+                    this.checkbox.checked = false
+                    this.$refs.body_table.clearSelection()
+                }
+                this.$emit('selectCheckBox', cloneDeep(this.selectedList),null);
 
-            resizeOption1( ) {
+            },
+            isAllSelect() {
+
+                if (this.selectedList.length) {
+                    let len = this.data instanceof Array ? this.data.length : this.data.records.length || 0
+                    console.log(len, this.selectedList.length);
+                    if (this.selectedList.length == len) {
+                        this.checkbox.indeterminate = false
+                        this.checkbox.checked = true
+                    } else {
+                        this.checkbox.indeterminate = true
+                        this.checkbox.checked = false
+                    }
+                } else {
+                    this.checkbox.indeterminate = false
+                    this.checkbox.checked = false
+                }
+            },
+            selectCheckBox(select, row) {
+                console.log(select);
+                row.selected = !row.selected
+                this.selectedList = select
+                this.selectedRow = row
+                this.isAllSelect()
+
+                this.$emit('selectCheckBox', cloneDeep(this.selectedList), cloneDeep(row));
+            },
+            allDataSelectOptions(val){
+                let blo=this.data instanceof Array;
+
+                (blo?this.data:this.data.records).map((k,l)=>{
+                    this.$set(k,'selected',val)
+                })
+
+                if(val){
+                    this.selectedList=[...(blo?this.data:this.data.records)]
+                }else{
+                    this.selectedList=[]
+                }
+             },
+            allSelectChange(value) {
+                let val=value.target.checked
+                 this.checkbox.indeterminate = false
+                if (val) {
+                    this.$refs.body_table.toggleAllSelection()
+                } else {
+                    this.$refs.body_table.clearSelection()
+                }
+                this.allDataSelectOptions(val)
+                console.log('all',val,this.selectedList);
+                this.$emit('selectCheckBox', cloneDeep(this.selectedList),{});
+
+            },
+            getIndex(row) {
+                let index = -1
+                for (let i = 0; i < this.selectedList.length; i++) {
+                    if (this.selectedList[i].id == row.id) {
+                        index = i
+                        break
+                    }
+                }
+                return index
+            },
+            checkRow(d, column, event) {
+                let select = !d.selected;
+                // 多选表格
+                 if (this.checkbox) {
+                    this.$set(d, 'selected', select)
+                    this.$refs.body_table.toggleRowSelection(d, select)
+                    if (select) {
+                        this.selectedList.push(d)
+                    }else{
+                        let index = this.getIndex(d)
+                        index > -1 ? this.selectedList.splice(index, 1) : ''
+                    }
+                    this.isAllSelect()
+
+                }
+                if (!select) {
+                    if (this.refTag) {
+                        this.$parent.$refs[this.refTag].$refs.body_table.setCurrentRow();
+                    } else {
+                        this.$refs.body_table.setCurrentRow();
+                    }
+                } else {
+                    if (this.refTag) {
+                        this.$parent.$refs[this.refTag].$refs.body_table.setCurrentRow(d);
+                    } else {
+                        this.$refs.body_table.setCurrentRow(d);
+                    }
+                }
+                 this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(this.selectedList), cloneDeep(event));
+            },
+            handleSelectionChange(list, c, v) {
+                this.$emit('listenToSelectionChange', list);
+            },
+            resizeOption1() {
                 // this.$nextTick(() => {
-                 if (this.timer) {
-                        clearInterval(this.timer)
-                        this.timer = null
-                    }
-                    let bs = 'body_table' + this.refTag || ''
-                    let hs = 'header_table' + this.refTag || ''
-                    let body_table = document.getElementsByClassName(bs)[0]
-                    let header_table = document.getElementsByClassName(hs)[0]
-                    if (!this.$refs.body_table || !header_table) {
-                         return false
-                    }
+                if (this.timer) {
+                    clearInterval(this.timer)
+                    this.timer = null
+                }
+                let bs = 'body_table' + this.refTag || ''
+                let hs = 'header_table' + this.refTag || ''
+                let body_table = document.getElementsByClassName(bs)[0]
+                let header_table = document.getElementsByClassName(hs)[0]
+                if (!this.$refs.body_table || !header_table) {
+                    return false
+                }
 
-                    let tr = header_table.getElementsByClassName('el-table__row')[0]
-                     let trheight=parseFloat(window.getComputedStyle(tr).height)
-                    let num = this.noSearch ? 1 : 2
-                    this.tHeight=trheight* num+2
-                    this.$refs.body_table.doLayout();
-                     let hHeight = trheight* num + 2
-                    let thHeight = trheight * num + 1
-                    let len = this.data.length || this.data.records && this.data.records.length
-                    if (!len) {
-                        return false
+                let tr = header_table.getElementsByClassName('el-table__row')[0]
+                let trheight = parseFloat(window.getComputedStyle(tr).height)
+                let num = this.noSearch ? 1 : 2
+                this.tHeight = trheight * num + 2
+                this.$refs.body_table.doLayout();
+                let hHeight = trheight * num + 2
+                let thHeight = trheight * num + 1
+                let len = this.data.length || this.data.records && this.data.records.length
+                if (!len) {
+                    return false
+                }
+                if (tr) {
+                    if (trheight * len > parseFloat(body_table.clientHeight)) {
+                        header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
+                        this.$refs.body_table.doLayout();
+                    } else {
+                        header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
                     }
-                     if (tr) {
-                         if (trheight * len > parseFloat(body_table.clientHeight)) {
-                            header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
-                            this.$refs.body_table.doLayout();
-                        } else {
-                            header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
-                        }
-                     }
+                }
                 // })
             },
             mousemoveDate(t, e) {
-                console.log(1, t, e.target);
+                console.log(1, t, e.target,  e.target.getElementsByClassName('el-input__prefix'));
                 if (e.target.getElementsByClassName('el-input__inner')[0].value) {
-                    e.target.getElementsByClassName('el-icon-date')[0].style = "display:none"
+                    // e.target.getElementsByClassName('el-input__prefix')[0].style = "display:none"
+                    e.target.getElementsByClassName('el-input__prefix')[0].setAttribute("class1","displayNone")
                 }
             },
             mouseleaveDate(t, e) {
                 if (e.target.getElementsByClassName('el-input__inner')[0].value) {
-                    e.target.getElementsByClassName('el-icon-date')[0].style = "display:black"
+                    e.target.getElementsByClassName('el-input__prefix')[0].removeAttribute ("class1")
                 }
             },
             doLayout() {
@@ -332,33 +468,12 @@
             currentRowChange(row, oldRow) {
                 this.$emit('currentRowChange', row, oldRow);
             },
-            selectCheckBox(select, row) {
-                this.$emit('selectCheckBox', cloneDeep(select), cloneDeep(row));
-            },
+
             selectAllCheckBox(select) {
                 this.$emit('selectAllCheckBox', cloneDeep(select));
             },
-            checkRow(d, column, event) {
-                let select = d.selected;
-                if (select) {
-                    if (this.refTag) {
-                        this.$parent.$refs[this.refTag].$refs.body_table.setCurrentRow();
-                    } else {
-                        this.$refs.body_table.setCurrentRow();
-                    }
-                } else {
-                    if (this.refTag) {
-                        this.$parent.$refs[this.refTag].$refs.body_table.setCurrentRow(d);
-                    } else {
-                        this.$refs.body_table.setCurrentRow(d);
-                    }
-                }
-                this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(column), cloneDeep(event));
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-                this.$emit('listenToSelectionChange', val);
-            },
+
+
             filterNumber(value, row, prop, search) {
                 if (search.isNumber) {
                     row[prop] = value.replace(/[^\d]/g, '');
@@ -378,13 +493,78 @@
 </script>
 
 <style lang="scss" scoped>
+    .inputBox {
+        width: 14px;
+        height: 14px;
+        background-color: #ffffff;
+        border: solid 1px #DCDFE6;
+        padding: 0;
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        cursor: default;
+        -webkit-appearance: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-transition: background-color ease 0.1s;
+        transition: background-color ease 0.1s;
+        border-radius: 2px;
+    }
+
+    .inputBox:focus {
+        -webkit-appearance: none;
+        -webkit-user-select: none;
+        outline: none;
+    }
+
+    .inputBox:checked {
+        background: #1673ff;
+        border: solid 0px #1673ff;
+
+    }
+
+    .inputBox:checked:after {
+        box-sizing: content-box;
+        content: "";
+        border: 1px solid #fff;
+        border-left: 0;
+        border-top: 0;
+        width: 3px;
+        height: 7px;
+        position: absolute;
+        left: 5px;
+        top: 2px;
+        transform: rotate(45deg) scaleY(1);
+        transition: transform 0s ease-in 0s;
+        transform-origin: center;
+
+    }
+
+    .inputBox:indeterminate {
+        background: #1673ff;
+        border: solid 1px #1673ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .inputBox:indeterminate:after {
+        box-sizing: content-box;
+        content: '';
+        background: transparent;
+        border: #fff solid 1px;
+        border-top: none;
+        border-right: none;
+        width: 5px;
+    }
+
     .mainTable {
         overflow-y: auto;
-        border-top: 0px!important;
+        border-top: 0px !important;
         /deep/ .current-row > td {
             background-color: #A0CBF6;
         }
-		/deep/ .current-row:hover > td {
+        /deep/ .current-row:hover > td {
             background-color: #A0CBF6;
         }
         /deep/ .el-table__fixed {
@@ -473,14 +653,15 @@
                 display: none;
 
             }
-            /deep/ .el-table__header-wrapper{
-                th{
-                    border-bottom: 0px!important;
+            /deep/ .el-table__header-wrapper {
+                th {
+                    border-bottom: 0px !important;
                 }
             }
 
         }
         .headerTable {
+
             /*border-bottom: 0px red solid;*/
             ::-webkit-scrollbar-thumb {
                 border-radius: 4px;
@@ -529,8 +710,8 @@
             }
             /deep/ .el-table__row {
                 background: #EFF2F3;
-                td:last-child{
-                    border-right: 0!important;
+                td:last-child {
+                    border-right: 0 !important;
                 }
             }
 
@@ -599,9 +780,9 @@
                 }
             }
             /deep/ .svg-icon {
-                    width: 14px;
-                    height: 14px;
-                    margin-left: 6px;
+                width: 14px;
+                height: 14px;
+                margin-left: 6px;
             }
             /deep/ .search-button {
                 width: 80px;

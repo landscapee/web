@@ -1,61 +1,84 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
-         <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path" class="QCenterRight G_listOne">
+        <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'"
+                     :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'"
+                     :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'"
+                     :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'"
+                     :key="$route.path"></router-view>
+        <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path"
+             class="QCenterRight G_listOne">
             <div class="">
                 <div class="QHead">
                     工单完工签署
                 </div>
                 <div class="QheadRight">
-                    <div  @click="seeOther(null,'WorkAbnormalAdd')"> <icon iconClass="#" style="width: 0;" ></icon>纸制填报工单导入</div>
-<!--                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>-->
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" style="margin-right:0"></icon>详情</div>
-                    <div @click="Export()"><icon iconClass="export" ></icon>导出Excel</div>
-                    <div @click="moreExport()"><icon iconClass="export" ></icon>批量导出</div>
-                 </div>
+                    <div @click="seeOther(null,'WorkAbnormalAdd')">
+                        <icon iconClass="#" style="width: 0;"></icon>
+                        纸制填报工单导入
+                    </div>
+                    <!--                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>-->
+                    <div @click="addOrEditOrInfo('info')">
+                        <icon iconClass="info" style="margin-right:0"></icon>
+                        详情
+                    </div>
+                    <div @click="Export()">
+                        <icon iconClass="export"></icon>
+                        导出Excel
+                    </div>
+                    <div @click="moreExport()">
+                        <icon iconClass="export"></icon>
+                        批量导出
+                    </div>
+                </div>
             </div>
             <div class="tableOneBox">
-                <SearchTable  scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"  refTag="searchTable" @requestTable="requestTable(arguments[0])"   @listenToCheckedChange="listenToCheckedChange" @headerSort="headerSort" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange"   :showHeader="false" :showPage="true" >
-                    <el-table-column slot="checkbox" align="center" label="选择" :width="49"   >
+                <SearchTable scrollHeight="370" ref="searchTable" :data="tableData" :tableConfig="tableConfig"
+                             refTag="searchTable" @selectCheckBox="selectCheckBox"
+                             @requestTable="requestTable(arguments[0])" @listenToCheckedChange="listenToCheckedChange"
+                             @headerSort="headerSort" @handleSizeChange="handleSizeChange"
+                             @handleCurrentChange="handleCurrentChange" :showHeader="false" :showPage="true">
+                    <el-table-column slot="checkbox" align="center" label="选择" :width="49">
                         <template slot-scope="scope">
-                            <el-checkbox :ref="scope.row.id" @click.stop.native  v-model="checkArr" :label="scope.row" value="dasdasd"> </el-checkbox>
+                            <el-checkbox :ref="scope.row.id" @click.stop v-model="checkArr" :label="scope.row"
+                                         value="dasdasd"></el-checkbox>
                         </template>
                     </el-table-column>
-                     <el-table-column align="center" slot="option" label="操作" :width="80" >
-                        <template  slot-scope="scope">
-                            <div >
+                    <el-table-column align="center" slot="option" label="操作" :width="80">
+                        <template slot-scope="scope">
+                            <div>
 
-                                <el-tooltip class="item" effect="dark" :enterable="false" :content="scope.row.offlineFile?'下载':'导出'" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false"
+                                            :content="scope.row.offlineFile?'下载':'导出'" placement="top">
                                   <span v-if="scope.row.offlineFile" @click="Download(scope.row)" class="rowSvg">
-                                        <icon iconClass="downloadNew"  ></icon>
+                                        <icon iconClass="downloadNew"></icon>
                                     </span>
-                                    <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)" :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
-                                        <icon iconClass="exportNew"  ></icon>
+                                    <span v-else @click="scope.row.state!==3?'':exportRow(scope.row)"
+                                          :class="scope.row.state!==3?'rowSvg rowSvgInfo':'rowSvg'">
+                                        <icon iconClass="exportNew"></icon>
                                     </span>
                                 </el-tooltip>
                                 <el-tooltip class="item" effect="dark" :enterable="false" content="解锁" placement="top">
                                      <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
                                            @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
-                                        <icon iconClass="unlock"  ></icon>
+                                        <icon iconClass="unlock"></icon>
                                     </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" :enterable="false" content="异常更改" placement="top">
+                                <el-tooltip class="item" effect="dark" :enterable="false" content="异常更改"
+                                            placement="top">
                                      <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
                                            @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
                                            :class="isLineWX(scope) ? 'rowSvg rowSvgInfo':'rowSvg'"
                                            style="margin-left: 10px">
-                                        <icon iconClass="editNew"  ></icon>
+                                        <icon iconClass="editNew"></icon>
                                     </span>
                                 </el-tooltip>
 
 
-
-
                             </div>
-                         </template>
+                        </template>
                     </el-table-column>
 
                 </SearchTable>
@@ -69,98 +92,99 @@
 <script>
     import SearchTable from '@/ui/components/SearchTable';
     import Icon from '@components/Icon-svg/index';
-    import { Config } from './tableConfig.js';
+    import {Config} from './tableConfig.js';
     import Export from './export';
     import MoreExport from './moreExport';
     import request from '@lib/axios.js';
-    import {  extend ,map} from 'lodash';
+    import {extend, map} from 'lodash';
+
     export default {
         components: {
             Icon,
-            SearchTable,MoreExport,Export
+            SearchTable, MoreExport, Export
         },
         name: 'authorizeManage',
-        computed:{
-          isLineWX(){
-              return (scope)=>{
-                  return scope.row.state!==3 && scope.row.template.type!=='WXGD' &&scope.row.isOffline==='线上'
-              }
-          }
+        computed: {
+            isLineWX() {
+                return (scope) => {
+                    return scope.row.state !== 3 && scope.row.template.type !== 'WXGD' && scope.row.isOffline === '线上'
+                }
+            }
         },
         data() {
             return {
-                tableData:{records:[]},
-                tableConfig:Config({}),
-                params:{
+                tableData: {records: []},
+                tableConfig: Config({}),
+                params: {
                     current: 1,
                     size: 15,
                 },
 
-                checkArr:[],
-                form:{},
-                row:{},
-                sort:{},
-                selectId:null
+                checkArr: [],
+                form: {},
+                row: {},
+                sort: {},
+                selectId: null
             };
         },
         created() {
-             if(this.$router.history.current.path == '/signControl'){
+            if (this.$router.history.current.path == '/signControl') {
                 this.getList();
                 request({
-                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
-                    params:{delete:false},
-                    data:["worldorderType",'W_flightType','W_workType','applyETOP','workUserType',]
+                    params: {delete: false},
+                    data: ["worldorderType", 'W_flightType', 'W_workType', 'applyETOP', 'workUserType',]
                 }).then(d => {
-                    let obj=d.data
-                    this.tableConfig=Config(obj,[],[],[],[])
+                    let obj = d.data
+                    this.tableConfig = Config(obj, [], [], [], [])
                 });
-               }
+            }
         },
 
         methods: {
-            Download(row){
+            Download(row) {
                 request({
-                    'Content-Type':'application/x-www-form-urlencoded',
-                    url:`${this.$ip}/mms-file/get-files-by-ids/`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    url: `${this.$ip}/mms-file/get-files-by-ids/`,
                     method: 'post',
-                     params:{fileIds:row.offlineFile}
+                    params: {fileIds: row.offlineFile}
                 }).then(d => {
-                    if(d.code==200){
+                    if (d.code == 200) {
                         this.$refs.Download.open(d.data)
                     }
                 });
             },
-            moreExport(){
-                if(this.checkArr.length){
-                    let arr=this.checkArr.filter((k,l)=>{
-                        return !k.offlineFile&&k.state==3
+            moreExport() {
+                if (this.checkArr.length) {
+                    let arr = this.checkArr.filter((k, l) => {
+                        return !k.offlineFile && k.state == 3
                     })
-                    if(arr.length){
+                    if (arr.length) {
                         this.$refs.MoreExport.open(arr)
-                    }else{
+                    } else {
                         this.$message.error('请选中至少一行已完成的线上工单');
                     }
-                }else {
+                } else {
                     this.$message.error('请先选中一行或多行数据');
                 }
             },
-            Export(){
+            Export() {
                 request({
-                    header:{
-                        'Content-Type':'multipart/form-data'
+                    header: {
+                        'Content-Type': 'multipart/form-data'
                     },
-                    url:`${this.$ip}/mms-workorder/workorder/exportExcel`,
+                    url: `${this.$ip}/mms-workorder/workorder/exportExcel`,
                     method: 'post',
-                    data:{},
+                    data: {},
                     responseType: 'blob'
                 }).then(d => {
-                     let arr=['工单','xlsx']
-                    if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
-                        arr=d.headers['content-disposition'].split('=')[1].split('.')
+                    let arr = ['工单', 'xlsx']
+                    if (d.headers['content-disposition'] && d.headers['content-disposition'].split('=')) {
+                        arr = d.headers['content-disposition'].split('=')[1].split('.')
                     }
-                     let content = d;
-                     let blob = new Blob([content],{type:'application/vnd.ms-excel'})
+                    let content = d;
+                    let blob = new Blob([content], {type: 'application/vnd.ms-excel'})
                     // let blob = new Blob([content],{type:'application/msword'})
                     const fileName = `${decodeURI(arr[0])}` + '.' + arr[1]
                     if ('download' in document.createElement('a')) { // 非IE下载
@@ -172,35 +196,35 @@
                         elink.click()
                         URL.revokeObjectURL(elink.href) // 释放URL 对象
                         document.body.removeChild(elink)
-                    }else { // IE10+下载
+                    } else { // IE10+下载
                         navigator.msSaveBlob(blob, fileName)
                     }
                 });
             },
-            exportRow(row){
+            exportRow(row) {
 
                 this.$refs.Export.open(row)
             },
-            seeOther(row,path){
-                let src=path
-                let data=row&&row.id
-                if(row&&row.offlineFile){
-                    src='/WorkPaperDetails'
-                    data=row.offlineFile
+            seeOther(row, path) {
+                let src = path
+                let data = row && row.id
+                if (row && row.offlineFile) {
+                    src = '/WorkPaperDetails'
+                    data = row.offlineFile
                 }
-                this.$router.push({path:src,query:{type:'add', id:data}});
+                this.$router.push({path: src, query: {type: 'add', id: data}});
 
             },
-            requestTable(searchData){
+            requestTable(searchData) {
                 this.form = searchData;
-                this.selectId=null;
-                this.tableData={records:[]};
+                this.selectId = null;
+                this.tableData = {records: []};
                 this.params.current = 1;
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
-                this.checkArr=[]
+                this.checkArr = []
                 this.getList();
             },
-            headerSort(column){
+            headerSort(column) {
                 this.sort = {}
                 let num = null
                 if (column.order == 'desc') {
@@ -213,51 +237,41 @@
                 if (num != 2) {
                     this.sort['order'] = column.property + ',' + num;
                 }
-                this.checkArr=[]
+                this.checkArr = []
                 this.$refs.searchTable.$refs.body_table.setCurrentRow();
                 this.params.current = 1;
                 // console.log(column.property,column.order, this.sort,11);
                 this.getList();
             },
-            listenToCheckedChange(row, column, event){
-                let select = row.selected;
-                this.tableData.records.map(r =>{
-                    if(r.selected){
-                        r.selected = false;
-                    }
-                })
-                row.selected  = !select;
-                let numIndex =this.checkArr.findIndex((k,l)=>k.id==row.id)
-                if(numIndex>-1){
-                    this.checkArr.splice(numIndex,1)
-                }else{
-                    this.checkArr.push(row)
-                }
-                if(row.selected ){
+            selectCheckBox(list) {
+                this.checkArr = list
+            },
+            listenToCheckedChange(row, list) {
+
+                this.checkArr = list
+                if (row.selected) {
                     this.row = row;
                     this.selectId = row.id;
-                }else {
-                    this.selectId   = null;
+                } else {
+                    this.selectId = null;
                     this.row = null;
-
                 }
-                  this.$set(this.tableData.records,row.index,row);
             },
-            addOrEditOrInfo(tag){
-                if(this.checkArr.length!=1){
-                    let s= this.checkArr.length>0?'只能选中一行数据':'请先选中一行数据'
+            addOrEditOrInfo(tag) {
+                if (this.checkArr.length != 1) {
+                    let s = this.checkArr.length > 0 ? '只能选中一行数据' : '请先选中一行数据'
                     this.$message.error(s);
-                }else{
-                    let src='/WorkAbnormalDetails'
+                } else {
+                    let src = '/WorkAbnormalDetails'
 
-                    let data=this.checkArr[0].id
-                    if(this.checkArr[0]&&this.checkArr[0].offlineFile){
-                        src='/WorkAbnormalAdd'
+                    let data = this.checkArr[0].id
+                    if (this.checkArr[0] && this.checkArr[0].offlineFile) {
+                        src = '/WorkAbnormalAdd'
                     }
-                    this.$router.push({path:src,query:{ id:data,type:'info'}});
-                 }
+                    this.$router.push({path: src, query: {id: data, type: 'info'}});
+                }
             },
-            unlock(row){
+            unlock(row) {
                 this.$confirm('是否确认将此维修工单异常更改解锁?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -266,7 +280,7 @@
                     request({
                         url: `${this.$ip}/mms-workorder/workorder/unlock`,
                         method: 'get',
-                        params:{id:row.id}
+                        params: {id: row.id}
                     }).then((d) => {
                         if (d.code === 200) {
                             this.getList();
@@ -275,37 +289,36 @@
                     })
                 });
             },
-            abnormalChange(row){
-                if(row.state===3){
-                    let src='/WorkAbnormalDetails';
-                    let data=row.id;
-                    if(row.offlineFile){
-                        src='/WorkAbnormalAdd'
+            abnormalChange(row) {
+                if (row.state === 3) {
+                    let src = '/WorkAbnormalDetails';
+                    let data = row.id;
+                    if (row.offlineFile) {
+                        src = '/WorkAbnormalAdd'
                     }
-                    localStorage.setItem('refresh','true')
-                    this.$router.push({path:src,query:{ id:data,type:'edit'}});
+                    localStorage.setItem('refresh', 'true')
+                    this.$router.push({path: src, query: {id: data, type: 'edit'}});
 
-                }else{
+                } else {
                     this.$message.error('请先完成工单');
                 }
             },
 
-            getList(){
-                this.checkArr=[]
-                let data={...this.form}
-                map(data,((k,l)=>{
-                    if(k!==0 && !k){
-                        data[l]=null
+            getList() {
+                let data = {...this.form}
+                map(data, ((k, l) => {
+                    if (k !== 0 && !k) {
+                        data[l] = null
                     }
-                    if(l=='state'&&k){
-                        data[l]= Number(k)
-                     }
+                    if (l == 'state' && k) {
+                        data[l] = Number(k)
+                    }
                 }))
                 request({
-                    url:`${this.$ip}/mms-workorder/workorder/list`,
+                    url: `${this.$ip}/mms-workorder/workorder/list`,
                     method: 'post',
-                    data:{...this.sort,...data},
-                    params:{...this.params,}
+                    data: {...this.sort, ...data},
+                    params: {...this.params,}
                 })
                     .then((data) => {
                         this.tableData = extend({}, {...data.data});
@@ -320,8 +333,10 @@
                 this.params.current = current;
                 this.getList();
             },
-            handleCheckedChange() {},
-            handleSelectionChange() {},
+            handleCheckedChange() {
+            },
+            handleSelectionChange() {
+            },
         },
     };
 </script>

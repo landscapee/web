@@ -83,16 +83,14 @@
                             </el-form-item>
                         </el-col>
 
-                        <el-col :span="12">
-                            <!--/Subsidiary-->
-                            <el-form-item label="分(子)公司" prop="subsidiary" :label-width='labelWidth'>
-								<span v-if="isInfo" class='form_inlne_val'
-                                      style='width:320px;'>{{ruleForm.subsidiary}}</span>
-                                <el-input v-else v-model="ruleForm.subsidiary" style='width:320px;'></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
+                        <!--<el-col :span="12">-->
+                            <!--&lt;!&ndash;/Subsidiary&ndash;&gt;-->
+                            <!--&lt;!&ndash;<el-form-item label="分(子)公司" prop="subsidiary" :label-width='labelWidth'>&ndash;&gt;-->
+								<!--&lt;!&ndash;<span v-if="isInfo" class='form_inlne_val'&ndash;&gt;-->
+                                      <!--&lt;!&ndash;style='width:320px;'>{{ruleForm.subsidiary}}</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<el-input v-else v-model="ruleForm.subsidiary" style='width:320px;'></el-input>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</el-form-item>&ndash;&gt;-->
+                        <!--</el-col>-->
                         <el-col :span="12">
                             <!--/Departure/Arrival Airport-->
                             <el-form-item label="起降机场" prop="arrivalAirport"
@@ -101,7 +99,10 @@
                                 <el-input v-else v-model="ruleForm.arrivalAirport" style='width:320px;'></el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="12">
+                    </el-row>
+                    <el-row>
+
+                        <el-col :span="24">
                             <!--/Nonroutine Work-->
                             <el-form-item label="非例行工作内容" prop="nonroutineWork"
                                           :label-width='labelWidth'>

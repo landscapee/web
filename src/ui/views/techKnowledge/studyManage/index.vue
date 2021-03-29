@@ -14,19 +14,16 @@
                 <SearchTable
                     refTag="searchTable"
                     ref="searchTable"
+                    @selectCheckBox="selectCheckBox"
                     @requestTable="requestTable(arguments[0])"
-                    @listenToCheckedChange="listenToCheckedChange(arguments[0])"
+                    @listenToCheckedChange="listenToCheckedChange"
                     @headerSort="headerSort(arguments[0])"
                     :data="tableData"
                     :tableConfig="businessTableConfig"
                     @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange"
                 >
-                    <el-table-column slot="radio" label="选择" :width="49" >
-                        <template slot-scope="{ row }">
-                            <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row">.</el-checkbox>
-                        </template>
-                    </el-table-column>
+
                     <el-table-column slot="downloadRate" label="下载率"  align="center">
                         <span slot-scope="{ row }"  class="spanA">
                               <a href="#" @click="tosee(row)">{{row.downloadRate?row.downloadRate+'%':'0%'}}</a>
@@ -67,7 +64,7 @@ export default {
             form:{},
             sort:{},
             tableData:{records:[]},
-            selectObjs:[],
+            checkArr:[],
             selectedPersonList:[],
             deptList:[],
             users:[],
@@ -95,7 +92,7 @@ export default {
         },
 
         getList(){
-           request({
+            request({
                 url:`${this.$ip}/mms-knowledge/file/list?current=${this.params.current}&size=${this.params.size}`,
                 method: 'post',
                 data:{
@@ -111,8 +108,7 @@ export default {
                 // this.sort = {
                 //     order:`${number},${data.order==='desc'?'0':'1'}`
                 // }
-                this.selectObjs=[]
-                if(this.params.current==1){
+                 if(this.params.current==1){
                     this.tableData = {records: data.data.records,current:1,size:this.params.size,total:data.data.total}
                 }else{
                     this.tableData = {records: data.data.records,...this.params,total:data.data.total}
@@ -120,11 +116,11 @@ export default {
             })
         },
         exportZip(){
-            if(!this.selectObjs.length){
+            if(!this.checkArr.length){
                 this.$message.warning('请至少选中一行数据')
                 return
             }
-            let ids=this.selectObjs.map((k,l)=>{
+            let ids=this.checkArr.map((k,l)=>{
                 return k.id
             })
             let obj={
@@ -145,10 +141,10 @@ export default {
                     arr=d.headers['content-disposition'].split('=')[1].split('.')
                 }
                 let content = d;
-                let geshi=this.selectObjs.length>1?'application/zip':'application/vnd.ms-excel'
+                let geshi=this.checkArr.length>1?'application/zip':'application/vnd.ms-excel'
                 let blob = new Blob([content],{type:geshi})
                 let filenames=arr.length>2?arr[0]+arr[1]:arr[0]
-                if(this.selectObjs.length>1){
+                if(this.checkArr.length>1){
                     filenames='学习完成情况'
                 }
                 const fileName = `${decodeURI(filenames)}`
@@ -173,8 +169,7 @@ export default {
         },
         requestTable(searchData){
             this.form = searchData
-            this.selectObjs=[]
-            this.tableData={records:[]}
+             this.tableData={records:[]}
             this.params.current = 1
             this.$refs.searchTable.$refs.body_table.setCurrentRow()
             this.getList()
@@ -197,28 +192,15 @@ export default {
             this.getList()
         },
         //表格选中事件
-        listenToCheckedChange(row,tag,tableTag){
-            // console.log(row)
-            // console.log(tag)
-            // console.log(tableTag)
-            let select = row.selected
-            // this.tableData.records.map(r =>{
-            //     if(r.selected){
-            //         r.selected = false
-            //     }
-            // })
-            row.selected  = !select
-            if(row.selected){
-                this.selectObjs.push(row)  //row.id
-            }else{
-                let arr = this.arrRemEleFn(this.selectObjs.map(i=>i.id), row.id)
-                this.selectObjs = this.selectObjs.filter(item=>{
-                    return arr.includes(item.id)
-                })
-                //this.selectObjs = null
-            }
-            this.params.current = 1
-            this.$set(this.tableData.records,row.index,row)
+
+        selectCheckBox(list=[]) {
+            this.checkArr = list
+            console.log('se',this.checkArr,list);
+        },
+        listenToCheckedChange(row, list=[]) {
+             this.checkArr = list
+            console.log('s',this.checkArr,list);
+
         },
         arrRemEleFn(arr, val){
             var index = arr.indexOf(val);
@@ -242,7 +224,8 @@ export default {
             this.pushBatchFn()
         },
         readPushFn( ){
-            if(this.selectObjs.length){
+            console.log(this.checkArr);
+            if(this.checkArr.length){
                 this.$refs.userBox.open(this.users, '选择推送对象', true);
             }else{
                 this.$message({
@@ -262,7 +245,7 @@ export default {
                 }
             })
             data = {
-                ids: this.selectObjs.map(i=>i.id),
+                ids: this.checkArr.map(i=>i.id),
                 userVOList: select
             }
             request({
@@ -327,8 +310,7 @@ export default {
             })
         },
     },
-    watch: {
-    },
+
 
 }
 </script>

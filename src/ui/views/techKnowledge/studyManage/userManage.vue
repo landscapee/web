@@ -22,7 +22,7 @@
                     @handleCurrentChange="handleCurrentChange"
                 >
                 <el-table-column slot="option" align='center' label="操作" :width="100"  >
-                        <template  slot-scope="{ row }"> <!---->
+                        <template  slot-scope="{ row }">
                             <el-tooltip class="item" effect="dark" :enterable="false" content="下载" placement="top">
                              <span @click="toDownloadFn(row)" class="rowSvg" style="margin-right: 10px">
                                 <icon iconClass="downloadNew"  ></icon>

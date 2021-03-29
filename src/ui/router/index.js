@@ -424,7 +424,8 @@ let authRoutes = [
                 name: '变更审核',
                 meta: {title: '变更审核',icon: 'xxgl',roles:['R_WorkOrderManage/workOrderChange'] },
                 children:[]
-            }, {
+            },
+            {
 				path: '/myWorkOrder',
 				component: () => import('@views/workOrder/myWorkOrder/index'),
 				name: '我的工单',
@@ -456,6 +457,20 @@ let authRoutes = [
 					},
 				]
 			},
+            {
+                path: '/workCardVrify',
+                component: () => import('@views/workOrder/workCardVrify/index'),
+                name: '工卡核对',
+                meta: {title: '工卡核对',icon: 'xxgl',roles:['R_WorkOrderManage/workCardVrify'] },
+                children:[
+                    {
+                        path: '/workCardVrifyAdd',
+                        component: () => import('@views/workOrder/workCardVrify/add'),
+                        name: '新增工卡核对',
+                        meta: {title: '新增工卡核对',icon: 'xxgl' },
+                    }
+                ]
+            },
         ],
 	},
 	{

@@ -28,10 +28,17 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
+                    <el-table-column slot="securityNumber" label="选择" :show-overflow-tooltip="true" :width="148"  >
+                        <template slot-scope="{ row }">
+                            <div class="G_cursor" @click="safetyList(row.securityNumber)">{{row.securityNumber}}</div>
+
+                        </template>
+                    </el-table-column>
 
                 </SearchTable>
             </div>
         </div>
+        <SafetyInfoList ref="SafetyInfoList"></SafetyInfoList>
         <UpDocInfo ref="UpDocInfo" @getTableData="getList1"></UpDocInfo>
 
     </div>
@@ -42,13 +49,14 @@
     import SearchTable from '@/ui/components/SearchTable/index';
 import Icon from '@components/Icon-svg/index';
 import { dangerousConfig } from './tableConfig.js';
+import SafetyInfoList  from './safetyInfoList';
 import request from '@lib/axios.js';
 import {  extend,map } from 'lodash';
 export default {
     components: {
         Icon,
         UpDocInfo,
-        SearchTable
+        SearchTable,SafetyInfoList
 	},
     name: '',
     data() {
@@ -67,16 +75,19 @@ export default {
         };
     },
    created() {
-       this.getList();
-       request({
-           url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-           method: 'post',
-           params:{delete:false},
-           data:["commentResults", "controlState",]
-       }).then(d => {
-           let obj=d.data
-           this.tableConfig=dangerousConfig(obj)
-       });
+        if(this.$route.path== '/dangerousDataIndex'){
+            this.getList();
+            request({
+                url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params:{delete:false},
+                data:["commentResults", "controlState",]
+            }).then(d => {
+                let obj=d.data
+                this.tableConfig=dangerousConfig(obj)
+            });
+        }
+
     },
     mounted(){
         if( this.$refs.mainContent){
@@ -85,6 +96,10 @@ export default {
     },
 
     methods: {
+        safetyList(data){
+
+            this.$refs.SafetyInfoList.open(data)
+        },
         handleScroll($event){
             // 获取滚动条的dom
             var bady = $event.target;
@@ -264,5 +279,6 @@ export default {
         height:calc(100vh - 370px);
     }
 }
+
 
 </style>

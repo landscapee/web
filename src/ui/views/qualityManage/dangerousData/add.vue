@@ -69,7 +69,9 @@
 
                     <el-form-item label="安全信息编号：" prop="securityNumber">
                         <span v-if="type=='info'">{{form.securityNumber}}</span>
-                        <el-input v-else v-model="form.securityNumber" placeholder="请输入安全信息编号"></el-input>
+                         <el-select v-else v-model="form.securityNumber1" filterable  multiple placeholder="请选择安全信息编号" clearable>
+                            <el-option v-for="(opt,index) in securityNumber" :key="index" :label="opt.infNumber" :value="opt.infNumber"> </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="可能产生后果：" prop="consequence">
                         <span v-if="type=='info'">{{form.consequence}}</span>
@@ -187,8 +189,9 @@
 
             };
             return {
+                securityNumber:[],
                 options:{},
-                form: {},
+                form: {securityNumber1:[]},
                 rules: {
                     number: [{ validator:checkNumber,trigger: "blur" }],
                     // system: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -213,14 +216,28 @@
                         url:`${this.$ip}/mms-qualification/dangerData/getById/${this.$route.query.id}`,
                         method: "get",
                     }).then(d => {
-
-                        this.form={...d.data }
+                        let arr=[]
+                        if(d.data.securityNumber){
+                            arr=d.data.securityNumber.split(',')
+                        }else{
+                            arr=[]
+                        }
+                        this.form={...d.data,securityNumber1:arr }
                     })
                         .catch(error => {
                             this.$message.error(error);
                         });
                 }
             }
+            request({
+                url:`${this.$ip}/mms-qualification/securityInformation/list`,
+                method: "post",
+                params:{size:10000,current:1},
+                data:{}
+            }).then(d => {
+
+                this.securityNumber=d.data.records||[]
+            })
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                 method: 'post',
@@ -246,8 +263,10 @@
                             }
                         }
                     }
+                    this.form={...this.form,securityNumber1:[]};
+
                 }else {
-                    this.form={};
+                    this.form={securityNumber1:[]};
                 }
 
             },
@@ -261,10 +280,14 @@
                              }else {
                                  url=`${this.$ip}/mms-qualification/dangerData/update`
                             }
+                            let obj={
+                                 ...this.form,
+                                securityNumber:this.form.securityNumber1?this.form.securityNumber1.join(','):''
+                            }
                             request({
                                 url,
                                 method: "post",
-                                data: this.form
+                                data: obj
                             })
                                 .then(data => {
                                     this.$message.success("保存成功！");
