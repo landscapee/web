@@ -45,8 +45,8 @@
                             <el-tooltip class="item" effect="dark" :enterable="false" content="附件下载" placement="top">
                                 <span @click="row.enclosure?downloadFile(row):''"
                                       :class="!row.enclosure?'rowSvg rowSvgInfo':'rowSvg'">
-                                        <icon iconClass="download"></icon>
-                                    </span>
+                                        <icon iconClass="downloadNew"></icon>
+                                </span>
                             </el-tooltip>
                         </template>
                     </el-table-column>

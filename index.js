@@ -38,11 +38,11 @@ import "./permission";
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
     // Vue.prototype.$workImgIp = " http://173.101.1.133/"
     // Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$OMSip = "http://173.101.1.30:6074"
+    Vue.prototype.$OMSip = "http://173.101.4.3:6010"
 } else if (PROGRAM == "jwxt.test") { // 测试
     Vue.prototype.$workImgIp = " http://173.101.1.133/"
     Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$OMSip = "http://173.101.1.30:6074"
+    Vue.prototype.$OMSip = "http://173.101.4.3:6010"
 } else if (PROGRAM == "jwxt.build") { // 开发
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
     Vue.prototype.$ip = "http://173.100.1.5:8011"

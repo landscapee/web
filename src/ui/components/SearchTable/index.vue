@@ -386,10 +386,8 @@
                 // })
             },
             mousemoveDate(t, e) {
-                console.log(1, t, e.target,  e.target.getElementsByClassName('el-input__prefix'));
-                if (e.target.getElementsByClassName('el-input__inner')[0].value) {
-                    // e.target.getElementsByClassName('el-input__prefix')[0].style = "display:none"
-                    e.target.getElementsByClassName('el-input__prefix')[0].setAttribute("class1","displayNone")
+                 if (e.target.getElementsByClassName('el-input__inner')[0].value) {
+                     e.target.getElementsByClassName('el-input__prefix')[0].setAttribute("class1","displayNone")
                 }
             },
             mouseleaveDate(t, e) {
