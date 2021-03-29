@@ -38,15 +38,15 @@ import "./permission";
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
     // Vue.prototype.$workImgIp = " http://173.101.1.133/"
     // Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$OMSip = "http://173.101.1.30:6070"
+    Vue.prototype.$OMSip = "http://173.101.1.30:6074"
 } else if (PROGRAM == "jwxt.test") { // 测试
     Vue.prototype.$workImgIp = " http://173.101.1.133/"
     Vue.prototype.$ip = "http://173.101.1.30:6070"
-    Vue.prototype.$OMSip = "http://173.101.1.30:6070"
+    Vue.prototype.$OMSip = "http://173.101.1.30:6074"
 } else if (PROGRAM == "jwxt.build") { // 开发
     Vue.prototype.$workImgIp = " http://173.100.1.142/"
     Vue.prototype.$ip = "http://173.100.1.5:8011"
-} else if (PROGRAM == "jwxt.prod") {
+ } else if (PROGRAM == "jwxt.prod") {
     Vue.prototype.$workImgIp = "http://10.33.144.35/"
     Vue.prototype.$ip = "http://10.33.144.1:6076/api"
     Vue.prototype.$OMSip = "http://10.33.48.1:6070"

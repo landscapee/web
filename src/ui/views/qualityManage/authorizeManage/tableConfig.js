@@ -25,7 +25,9 @@ let modelRange=(row)=>{
 }
 export const authorizeConfig = (obj,arr) => {
          return [
-            { slot: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
+             { type: 'selection' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
+
+             // { type: 'radio' , label: '选择',width:49,search:{type:'text',label:'过滤'}},
             { prop: 'userNumber', label: '员工编号',sortProp:"userNumber", align: 'center',sort:true,search:{type:'input', prop:'userNumber',placeholder:"请输入"} },
             { prop: 'userName', label: '员工姓名',sortProp:"userName", align: 'center',sort:true,search:{type:'input', prop:'userName',placeholder:"请输入"} },
             { prop: 'dept', label: '部门/项目',sortProp:"dept", align: 'center',sort:true,search:{type:'input', prop:'dept',placeholder:"请输入"} },

@@ -535,7 +535,9 @@
                                     //     }
                                     // })
                                 })
-                                this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
+                                this.$nextTick(()=>{
+                                    this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
+                                })
                                 resolve()
                             } else {
                                 this.$message({type: 'error', message: '新增失败，请重试'});

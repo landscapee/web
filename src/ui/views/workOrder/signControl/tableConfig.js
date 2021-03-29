@@ -57,7 +57,8 @@ export const  Config = (obj,arr,arr1,arr2,arr3) => {
         }
     }
     return [
-        { slot: 'checkbox' , label: '选择',width:'50',search:{type:'text',label:'过滤'}},
+        // { slot: 'checkbox' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
+        { type: 'selection' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
         { prop: 'workTime',width:'120', label: '任务日期',formatter:timeInfo1, sortProp:"workTime", align: 'center',sort:true ,search:{type:'date', prop:'workTime',placeholder:"请选择"} },
         { prop: 'isOffline',width:'90', label: '线上/线下', sortProp:"isOffline", align: 'center',sort:true,search:{type:'select', prop:'isOffline',data:[{label:"线上",value:"线上"},{label:"线下",value:"线下"}],placeholder:"请选择"}},
         { prop: 'serialNo', label: '工单流水号',sortProp:"serialNo", align: 'center',sort:true,search:{type:'input', prop:'serialNo',placeholder:"请输入"} },

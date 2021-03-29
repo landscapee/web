@@ -80,8 +80,8 @@
                                 'Content-Type':'multipart/form-data'
                             },
                             url:`${this.$ip}/mms-knowledge/fileStudy/studyExport`,
-                            method: 'get',
-                            params:obj,
+                            method: 'post',
+                            data:obj,
                             responseType: 'blob'
                         }).then(d => {
                             let arr=[]

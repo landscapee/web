@@ -5,7 +5,8 @@ let tranTime=(row, column, cellValue)=>{
 }
 export const sysParameterTable = () => {
     return [
-        { slot: 'checkbox' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
+        { type: 'selection' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
+        // { slot: 'checkbox' , label: '选择',width:'49',search:{type:'text',label:'筛选'}},
         { prop: 'workDate',width:'100', label: '日期', align: 'center',sort:true,sortProp:"workDate",
             search:{type:'date',placeholder:"请选择",prop:'workDateQuery'},
             formatter: (row, column, cellValue) => {

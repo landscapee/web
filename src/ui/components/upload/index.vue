@@ -8,8 +8,10 @@
                 :on-change="handleChange"
                 :accept="accept||''"
                 action=""
+                 :on-exceed="handleExceed"
+                :limit="limit"
                 :file-list="fileList"
-                 :before-remove="beforeRemove"
+                :before-remove="beforeRemove"
                 :before-upload="beforeAvatarUpload"
                 :auto-upload="true">
             <el-button slot="trigger" ref="buttonClick" size="small" type="primary">文件上传</el-button>
@@ -26,7 +28,7 @@
         // isUpload == false    是否上传文件；true 不上传，返回文件；false 上传，返回文件Id ；条件listNone=false
         // isPrompt == false    是否提示上传成功，false提示，true不提示
 
-        props:['accept','isUpload','isPrompt','listNone'],
+        props:['accept','isUpload','limit','isPrompt','listNone'],
         components: {},
         data() {
             return {
@@ -57,9 +59,27 @@
                         type: 'warning',
                     })
                         .then(() => {
-                             resolve(true);
+                            resolve(true);
                             this.fileMap[file.uid] = null;
                             this.emit();
+                            // request.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+                            // request({
+                            //     header:{
+                            //         'Content-Type':'multipart/form-data'
+                            //     },
+                            //     url:`${this.$ip}/mms-file/upload2`,
+                            //     method:'post',
+                            //     data:data,
+                            // }).then((d)=>{
+                            //     if(d.code==200){
+                            //         resolve(true);
+                            //         this.fileMap[file.uid] = null;
+                            //         this.emit();
+                            //     }else{
+                            //         this.$message.warning('删除失败')
+                            //     }
+                            // })
+
                         })
                         .catch(() => {
                             reject(false);
@@ -70,7 +90,9 @@
                         });
                 });
             },
-
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
             importFile(file){
 
                 this.filename=file.target.value

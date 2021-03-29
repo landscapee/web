@@ -4,7 +4,9 @@ const open=(row)=>{
 }
 export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
     return [
-        { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
+        { type: 'selection' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
+
+        // { slot: 'radio' , label: '选择',width:'49',search:{type:'text',fixed:"left",label:'筛选'}},
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
         { prop: 'number', label: '文档编号', align: 'center',sort:true,sortProp:"number",search:{prop:'number',type:'input',placeholder:"请输入"} },
         { prop: 'open', label: '是否公开',formatter:open, align: 'center',sort:true,sortProp:"open",search:{prop:'open',type:'select',placeholder:"请选择",selectProp:["label","value"], data: [{label:'公开',value:true},{label:'不公开',value:false}]} },

@@ -25,7 +25,8 @@ export const leftConfig = (obj) => {
 };
 export const rightConfig = (obj) => {
     return [
-        { slot: 'checkbox' , label: '选择',width:'50',search:{ type:'text',label:'过滤'}},
+        // { slot: 'checkbox' , label: '选择',width:'50',search:{ type:'text',label:'过滤'}},
+        { type: 'selection' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
 
         { prop: 'employeeName', label: '员工姓名',sortProp:"employeeName", align: 'center',sort:true,search:{type:'input', prop:'employeeName',placeholder:"请输入", } },
         { prop: 'employeeNo', label: '员工编号',sortProp:"employeeNo", align: 'center',sort:true,search:{type:'input', prop:'employeeNo',placeholder:"请输入", } },
