@@ -149,7 +149,6 @@ export default {
                 if(!k){
                     data[l]=null
                 }
-
             }))
             request({
                 url:`${this.$ip}/mms-training/examLine/list`,
@@ -158,6 +157,7 @@ export default {
                params:{...this.params,}
             })
             .then((data) => {
+                console.log(data);
                 if(data.code==200){
                     data.data.records.map((k,l)=>{
                         k.id=l+1
