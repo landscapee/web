@@ -636,6 +636,7 @@
             },
             // sign
             async showMsgBoxFn(item, type, $event, fnName) {
+                console.log(item, type, $event, fnName);
                 let _this = this
                 // 判断是否是强身份认证还是弱身份认证
                 if (this.workorder.type.startsWith("WX")) {
@@ -668,7 +669,7 @@
                     // 弱身份
                     this.promiseOptions.then((d)=>{
                         if(d.userIsVerify==='false'){
-                            _this['_' + fnName](item, type, $event, d.workUser, data.psd)
+                            _this['_' + fnName](item, type, $event, d.workUser, null)
                         }else if(d.userIsVerify==='true'){
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,
