@@ -197,7 +197,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow,bindInputFn, inputLength} from '@lib/tools'
+    import {eleDateShow,bindInputFn, bindInputFn,inputLength} from '@lib/tools'
 
     import $ from 'jquery'
     import request from '@lib/axios.js';
@@ -1214,6 +1214,8 @@
                                         }
                                     }
                                 })
+                                defaultValue( $(".textContent").find('input[inputtype="num"]'))
+
                                 Signature.loadSignatures(signs)
                             }
                         } else {
