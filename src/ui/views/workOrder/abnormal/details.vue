@@ -197,7 +197,7 @@
     </div>
 </template>
 <script>
-    import {eleDateShow,bindInputFn, bindInputFn,inputLength} from '@lib/tools'
+    import {eleDateShow,defaultValue, bindInputFn,inputLength} from '@lib/tools'
 
     import $ from 'jquery'
     import request from '@lib/axios.js';
