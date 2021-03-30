@@ -216,6 +216,8 @@
         },
         data() {
             return {
+                promiseOptions: {},// promise 返回 基础数据 是否验证用户 userIsVerify 和 默认用户名 workUser
+
                 type: '',
                 newMap: [],
                 contentVOListMap: [],
@@ -257,6 +259,26 @@
                         ? "工单详情"
                         : "";
                 this.needSubmit = this.$route.query.needSubmit;
+                this.promiseOptions= new Promise((resolve,reject)=>{
+                    request({
+                        url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                        method: 'post',
+                        params: {delete: false, valStatus: 1},
+                        data: ["userIsVerify", "workUser"]
+                    }).then(d => {
+                        if (d.code == 200) {
+                            let options = {
+                                workUser: d.data.workUser[0] && d.data.workUser[0].valCode,
+                                userIsVerify: d.data.userIsVerify[0] && d.data.userIsVerify[0].valCode,
+                            }
+                            resolve(options)
+                        }else{
+                            reject()
+                        }
+                    }).catch(()=>{
+                        reject()
+                    });
+                })
             }
             if (localStorage.getItem('refresh') == 'true') {
                 localStorage.removeItem('refresh')
@@ -644,21 +666,29 @@
                     }
                 } else {
                     // 弱身份
-                    this.$msgBox.showMsgBox({
-                        isShowInput: true,
-                        isShowPsd: true
-                    }).then(async (data) => {
-                        if (data.val && data.psd) {
-                            let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
-                            if (judegUser == '1') {
-                                _this['_' + fnName](item, type, $event, data.val, data.psd)
-                            } else {
-                                _this.$message({type: 'error', message: '密码错误，请重新输入'});
-                            }
+                    this.promiseOptions.then((d)=>{
+                        if(d.userIsVerify==='false'){
+                            _this['_' + fnName](item, type, $event, d.workUser, data.psd)
+                        }else if(d.userIsVerify==='true'){
+                            this.$msgBox.showMsgBox({
+                                isShowInput: true,
+                                isShowPsd: true
+                            }).then(async (data) => {
+                                if (data.val && data.psd) {
+                                    let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
+                                    if (judegUser == '1') {
+                                        _this['_' + fnName](item, type, $event, data.val, data.psd)
+                                    } else {
+                                        _this.$message({type: 'error', message: judegUser});
+                                    }
+                                }
+                            })
+                        }else{
+                            this.$message.error('参数“基础数据 编号userIsVerify”配置错误，请重新配置')
                         }
-                    }).catch(() => {
-                        // ...
-                    });
+                    }).catch(()=>{
+
+                    })
                 }
             },
             // 3sign
@@ -1003,19 +1033,29 @@
 
             signMsgBoxFn(type, id) {
                 let _this = this
-                this.$msgBox.showMsgBox({
-                    isShowInput: true,
-                    isShowPsd: true
-                }).then(async (data) => {
-                    if (data.val && data.psd) {
-                        let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
-                        if (judegUser == '1') {
-                            _this.signFn(type, data.val, data.psd, id)
 
-                        } else {
-                            _this.$message({type: 'error', message: judegUser});
-                        }
+                this.promiseOptions.then((d)=>{
+                    if(d.userIsVerify==='false'){
+                        _this.signFn(type,d.workUser, null, id)
+                     }else if(d.userIsVerify==='true'){
+                        this.$msgBox.showMsgBox({
+                            isShowInput: true,
+                            isShowPsd: true
+                        }).then(async (data) => {
+                            if (data.val && data.psd) {
+                                let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
+                                if (judegUser == '1') {
+                                    _this.signFn(type, data.val, data.psd, id)
+                                } else {
+                                    _this.$message({type: 'error', message: judegUser});
+                                }
+                            }
+                        })
+                    }else{
+                        this.$message.error('参数“基础数据 编号userIsVerify”配置错误，请重新配置')
                     }
+                }).catch(()=>{
+
                 })
             },
             // 内容签章
@@ -1210,23 +1250,31 @@
                         });
                     }
                 }else if(qr==8){
-                    this.$msgBox.showMsgBox({
-                        isShowInput: true,
-                        isShowPsd: true
-                    }).then(async (data) => {
-                        if (data.val && data.psd) {
-                            let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
-                            if (judegUser == '1') {
-                                this.signOthFnR(type, $event, data.val)
-                            } else {
-                                _this.$message({type: 'error', message: judegUser});
-                            }
+
+                    this.promiseOptions.then((d)=>{
+                        if(d.userIsVerify==='false'){
+                             this.signOthFnR(type, $event, d.workUser)
+                        }else if(d.userIsVerify==='true'){
+                            this.$msgBox.showMsgBox({
+                                isShowInput: true,
+                                isShowPsd: true
+                            }).then(async (data) => {
+                                if (data.val && data.psd) {
+                                    let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
+                                    if (judegUser == '1') {
+                                         this.signOthFnR(type, $event, data.val)
+                                    } else {
+                                        _this.$message({type: 'error', message: judegUser});
+                                    }
+                                }
+                            })
+                        }else{
+                            this.$message.error('参数“基础数据 编号userIsVerify”配置错误，请重新配置')
                         }
+                    }).catch(()=>{
+
                     })
-
                 }
-
-
             },
             signOthFnR(type, $event, val, psd) {
                 SignatureInit(val, undefined, this.labelVO.noSignTime)
