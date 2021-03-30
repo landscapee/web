@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 let time = (row, v, key) => {
-    return row.checkTime ? moment(row.checkTime).format('YYYY-MM-DD HH:mm') : ''
+    return row.checkTime ? moment(row.checkTime).format('YYYY-MM-DD') : ''
 }
 export const workCardConfig = (obj, arr) => {
     return [
@@ -38,7 +38,7 @@ export const workCardConfig = (obj, arr) => {
             sortProp: "checkTime",
             align: 'center',
             sort: true,
-            search: {type: 'date', time: 'datetime', prop: 'checkTime', placeholder: "请选择",}
+            search: {type: 'date',  prop: 'checkTime', placeholder: "请选择",}
         },
         {slot: 'enclosure',width:90, label: '附件',   align: 'center',  },
         {

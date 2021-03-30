@@ -30,7 +30,7 @@
                     </el-table-column>
                     <el-table-column slot="securityNumber" label="选择" :show-overflow-tooltip="true" :width="148"  >
                         <template slot-scope="{ row }">
-                            <div class="G_cursor" @click="safetyList(row.securityNumber)">{{row.securityNumber}}</div>
+                            <div  class="divColor G_cursor" @click="safetyList(row.securityNumber)">{{row.securityNumber}}</div>
 
                         </template>
                     </el-table-column>
@@ -279,6 +279,9 @@ export default {
         height:calc(100vh - 370px);
     }
 }
+.divColor{
+    color:#3888ff;
 
+}
 
 </style>
