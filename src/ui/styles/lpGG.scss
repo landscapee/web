@@ -1,6 +1,9 @@
 /deep/ .el-scrollbar__wrap {
     overflow-x: hidden;
 }
+input:checked{
+    outline: none;
+}
 /deep/ .el-input__prefix[class1='displayNone']{
     display: none;
 }
