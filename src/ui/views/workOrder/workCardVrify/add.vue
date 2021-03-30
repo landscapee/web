@@ -18,10 +18,15 @@
             <el-form  label-position="left" :model="form" :rules="rules" :inline="true" ref="form" >
 
                 <div class="row_tow">
-                    <el-form-item  label="发行单位：" prop="issuingUnit">
-                        <span v-if="type=='info'">{{  form.issuingUnit || '--'}}</span>
-                        <el-input   v-else v-model="form.issuingUnit" placeholder="请输入发行单位"></el-input>
 
+                    <el-form-item  label="发行单位："  prop="issuingUnitCode"   >
+
+                        <span v-if="type=='info'">{{  form.issuingUnit||'--' }}</span>
+                        <el-select  @change="unitChange"   v-else filterable v-model="form.issuingUnitCode" clearable placeholder="请选择发行单位">
+                            <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.iata">
+                                <span>{{opt.iata}}-{{opt.fullname}}</span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="审核内容：" prop="checkContent">
                         <span v-if="type=='info'">{{form.checkContent || '--'}}</span>
@@ -31,13 +36,13 @@
                 <div class="row_tow">
                     <el-form-item  label="核对形式：" prop="checkMode">
                         <span v-if="type=='info'">{{  form.checkMode || '--'}}</span>
-                        <el-input   v-else v-model="form.checkMode" placeholder="请输入"></el-input>
+                        <el-input   v-else v-model="form.checkMode" placeholder="请输入核对形式"></el-input>
 
                     </el-form-item>
 
-                    <el-form-item  label="核对时间：" prop="checkTime">
-                        <span v-if="type=='info'">{{ form.checkTime?moment(form.checkTime).format('YYYY-MM-DD HH:mm'):'--'}}</span>
-                        <el-date-picker    type="datetime" v-else v-model="form.checkTime" placeholder="请选择时间"></el-date-picker>
+                    <el-form-item  label="核对日期：" prop="checkTime">
+                        <span v-if="type=='info'">{{ form.checkTime?moment(form.checkTime).format('YYYY-MM-DD'):'--'}}</span>
+                        <el-date-picker    type="date" v-else v-model="form.checkTime" placeholder="请选择时间"></el-date-picker>
                     </el-form-item>
                 </div>
                 <div class="row_tow">
@@ -52,7 +57,7 @@
                     </el-form-item>
                     <el-form-item  label="备注："  >
                         <span v-if="type=='info'">{{  form.remark }}</span>
-                        <el-input   v-else v-model="form.remark" placeholder=" 请输入授权状态"></el-input>
+                        <el-input   v-else v-model="form.remark" placeholder=" 请输入备注"></el-input>
                     </el-form-item>
 
                 </div>
@@ -78,9 +83,11 @@
             return {
                 moment:moment,
                 form: {},
+                Airline:[],
+                AirlineObj:{},
                 fileList:[],
                  rules: {
-                     issuingUnit: [{ required:true,message:'请输入发行单位',}],
+                     issuingUnitCode: [{ required:true,message:'请选择发行单位',}],
                      checkContent: [{ required:true,message:'请输入审核内容',}],
                      checkMode: [{ required:true,message:'请输入核对形式',}],
                      checkTime: [{ required:true,message:'请选择核对时间', }],
@@ -103,6 +110,23 @@
                    this.getInfo()
                  }
             }
+            if(this.type!='info'){
+                request({
+                    url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                    method: 'get',
+                }).then(d => {
+                    if( d.data&&d.data.length){
+                        this.Airline=[]
+                        d.data.map((k,l)=>{
+                            if(!k.parentCode){
+                                this.AirlineObj[k.iata]=k.fullname
+                                this.Airline.push(k)
+                            }
+                        })
+                    }
+                });
+            }
+
         },
         mounted(){
             inputLength(this)
@@ -110,6 +134,9 @@
         },
 
         methods: {
+            unitChange(val){
+                this.$set(this.form,'issuingUnit',val?this.AirlineObj[val]:null)
+            },
             showFile() {
                 if (this.fileList.length) {
                     this.$refs.file.getFileList(this.fileList);
@@ -119,7 +146,7 @@
                 request({
                     url:`${this.$ip}/mms-file/get-files-by-ids/`,
                     method: "post",
-                    data:{
+                    params:{
                         fileIds,
                     }
                 }).then(d => {

@@ -211,7 +211,11 @@
                                 method:'post',
                                 data:{...this.params,employeeAnswer,questionId:this.testData[this.numIndex].id}
                             }).then((d)=>{
-                                this.$message.success('保存成功')
+                                if(d.code==200){
+                                    this.$message.success('保存成功')
+                                }else{
+                                    this.$message.warning('保存失败')
+                                }
                             })
                         }
                     });
