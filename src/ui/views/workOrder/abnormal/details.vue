@@ -368,15 +368,28 @@
             closeViewer() {
                 this.showViewer = false
             },
+            inputVerify(textArr){
+                // let textArr = $(".base_i_inner").find("input[type='text']");
+                let res=true
+                textArr.each((index, ele) => {
+                    if(!$(ele).val()){
+                        this.$message.warning('有输入框为空，请检查')
+                        res= false
+                    }
+                })
+                return res
+            },
             editContent($event, item) {
+                let textContentele=$($event.target).parents('.checkbox_group').siblings('.textContent')
+
                 if (!item.editState) {
                     $($event.target).text('保存')
                     // item.buttonName='保存'
                     item.editState = true
                     // let reg=/(<input\s{0,}|<button\s{0,})disabled(.+?)(\/>|\/button>)/g
                     // item.content=item.content.replace(reg,"$1$2$3" )
-                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
-                    let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
+                    let inputText = textContentele.find("input")
+                    let button = textContentele.find("button")
                     for (let i = 0; i < inputText.length; i++) {
                         inputText.eq(i).removeAttr("disabled")
                     }
@@ -385,30 +398,33 @@
                     }
                     return false
                 }
+                if(!this.inputVerify(textContentele.find("input[name*='input']"))){
+                    return
+                }
                 let map = {}
-                if ($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")) {
-                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
+                if (textContentele.find("input")) {
+                    let inputArr = textContentele.find("input[name*='checkBox']")
                     for (let i = 0; i < inputArr.length; i++) {
                         map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
                     }
-                    let inputNa = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='NA']")
+                    let inputNa = textContentele.find("input[name*='NA']")
                     for (let i = 0; i < inputNa.length; i++) {
                         map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
                     }
-                    let RchaArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='ycha']")
+                    let RchaArr = textContentele.find("input[name*='ycha']")
                     for (let i = 0; i < RchaArr.length; i++) {
                         map[RchaArr.eq(i).attr("name")] = RchaArr.eq(i).is(':checked')
                     }
-                    let CchaArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='fcha']")
+                    let CchaArr = textContentele.find("input[name*='fcha']")
                     for (let i = 0; i < CchaArr.length; i++) {
                         map[CchaArr.eq(i).attr("name")] = CchaArr.eq(i).is(':checked')
                     }
-                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
+                    let inputText = textContentele.find("input[name*='input']")
                     for (let i = 0; i < inputText.length; i++) {
                         map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
                     }
 
-                    let inputRadioArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='radio']")
+                    let inputRadioArr = textContentele.find("input[name*='radio']")
                     for (let i = 0; i < inputRadioArr.length; i++) {
                         map[inputRadioArr.eq(i).attr("name")] = inputRadioArr.eq(i).is(':checked')
                     }
@@ -425,9 +441,9 @@
                     .then((data) => {
                         if (data.code == 200) {
                             $($event.target).text('更正')
-                            if ($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")) {
-                                let inputButton = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input")
-                                let button = $($event.target).parents('.checkbox_group').siblings('.textContent').find("button")
+                            if (textContentele.find("input")) {
+                                let inputButton = textContentele.find("input")
+                                let button = textContentele.find("button")
                                 for (let i = 0; i < inputButton.length; i++) {
                                     inputButton.eq(i).attr("disabled", '')
                                 }
