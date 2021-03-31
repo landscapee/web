@@ -413,7 +413,7 @@
                     }
                     let RchaArr = textContentele.find("input[name*='ycha']")
                     for (let i = 0; i < RchaArr.length; i++) {
-                        map[RchaArr.eq(i).attr("name")] = RchaArr.eq(i).is(':checked')
+                        map[RchaArr.eq(i).attr("id")] = RchaArr.eq(i).is(':checked')
                     }
                     let CchaArr = textContentele.find("input[name*='fcha']")
                     for (let i = 0; i < CchaArr.length; i++) {
@@ -426,7 +426,7 @@
 
                     let inputRadioArr = textContentele.find("input[name*='radio']")
                     for (let i = 0; i < inputRadioArr.length; i++) {
-                        map[inputRadioArr.eq(i).attr("name")] = inputRadioArr.eq(i).is(':checked')
+                        map[inputRadioArr.eq(i).attr("id")] = inputRadioArr.eq(i).is(':checked')
                     }
                 }
                 request({
@@ -546,32 +546,22 @@
                                         $(this).siblings("input").attr("pos", $(this).siblings("input").attr("id"))
                                         _this.signMsgBoxFn($(this).siblings("input").attr("id"), contentId)
                                     })
+                                    $(".textContent input[type='radio']").on('change', function () {
+                                        if ($(this).is(":checked")) {
+                                            $(this).val('on')
+                                        } else {
+                                            $(this).val('off')
+                                        }
+
+                                    })
                                     $(".textContent input[type='checkbox']").on('change', function () {
                                         if ($(this).is(":checked")) {
                                             $(this).val('on')
                                         } else {
                                             $(this).val('off')
                                         }
-                                        // if(_this.editMap.find(i=>i.key==$(this).attr("id"))){
-                                        //     _this.editMap.find(i=>i.key==$(this).attr("id")).value = $(this).is(":checked").toString()
-                                        // }else{
-                                        //     _this.editMap.push({
-                                        //         key: $(this).attr("id"),
-                                        //         value: $(this).is(":checked").toString(),
-                                        //     })
-                                        // }
-                                        //$(this).attr("id") // 1_1_152114913_radio5
                                     })
-                                    // $(".textContent input[type='text']").on('input', function(){
-                                    //     if(_this.editMap.find(i=>i.key==$(this).attr("id"))){
-                                    //         _this.editMap.find(i=>i.key==$(this).attr("id")).value = $(this).val()
-                                    //     }else{
-                                    //         _this.editMap.push({
-                                    //             key: $(this).attr("id"),
-                                    //             value: $(this).val(),
-                                    //         })
-                                    //     }
-                                    // })
+
                                 })
                                 this.$nextTick(()=>{
                                     this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
@@ -1147,27 +1137,17 @@
                                     var aDom = $(".itemSign .kg-img-div")
                                 }
                                 aDom.each((ind, ele) => {
-                                    //if(!Reflect.has(map, $(ele).attr("elemid"))){
-                                    $(ele)[0].remove()
-                                    //}
-                                    //signatureCreator.removeSignature('KG2016093001333', $(ele).attr('signatureid'))
-                                })
+                                     $(ele)[0].remove()
+                                       })
                             })
 
-                            // for(let i in this.deepMap){
-                            //     if((!Reflect.has(map, i))&& Reflect.get(this.deepMap, i)&& Reflect.get(this.deepMap, i).includes('------')){
-                            //         this.removeSignatureFn(Reflect.get(this.deepMap, i).split('------')[0])
-                            //     }
-                            // }
 
-                            // this.deepMap = JSON.parse(JSON.stringify(map))
-                            let blo = this.type == 'edit'
+
+                             let blo = this.type == 'edit'
 
                             SignatureInit('0002', '123456', false, 1, blo)
                             var signatureCreator = Signature.create()
-                            //let signData = $(".kg-img-div")  // signatureid
 
-                            //var that = this
                             if (BasicUpdateLimit) {
 
                             } else {
@@ -1175,6 +1155,9 @@
                                     $(ele).prop("checked", false).prop("disabled", false)
                                 })
                                 $(".textContent").find('input[type="checkbox"]').each((ite, ele) => {
+                                    $(ele).prop("checked", false)
+                                })
+                                $(".textContent").find('input[type="radio"]').each((it, ele) => {
                                     $(ele).prop("checked", false)
                                 })
                                 $(".textContent").find('input[type="text"]').each((ite, ele) => {
@@ -1222,7 +1205,13 @@
                                         } else {
                                             $("input[name='" + mapItem.key + "']").val(mapItem.value)
                                         }
-                                    } else {
+                                    }else if(mapItem.key.includes("ycha") || mapItem.key.includes("radio")){
+                                        $("input[id='" + mapItem.key + "']").prop('checked', mapItem.value== 'true' ? true : false)
+                                        if (BasicUpdateLimit) {
+                                            this['isActiveReset'] = true
+                                        }
+                                    }
+                                    else {
                                         if (BasicUpdateLimit) {
                                             $(".base_item input[name='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                             this['isActiveReset'] = true
@@ -1407,57 +1396,7 @@
                         }
                     })
             },
-            fixCompleteFn(item, $event) {
-                let map = {}
-                if ($($event.target).parents('.checkbox_group').siblings('.textContent').find("input")) {
-                    let inputArr = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='checkBox']")
-                    console.log(inputArr)
-                    for (let i = 0; i < inputArr.length; i++) {
-                        map[inputArr.eq(i).attr("name")] = inputArr.eq(i).is(':checked')
-                    }
-                    let inputNa = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='NA']")
-                    for (let i = 0; i < inputNa.length; i++) {
-                        map[inputNa.eq(i).attr("name")] = inputNa.eq(i).is(':checked')
-                    }
 
-
-                    let inputSign = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='sign']")
-                    console.log(inputSign)
-                    for (let i = 0; i < inputSign.length; i++) {
-                        console.log(inputSign.eq(i))
-                        if ($("div[elemid=" + inputSign.eq(i).attr("id") + "]")) {
-                            let signatureid = $("div[elemid=" + inputSign.eq(i).attr("id") + "]").attr("signatureid")
-                            if (signatureid) {
-                                map[inputSign.eq(i).attr("name")] = signatureid + '------' + this.templateSignObj[signatureid] + '------' +
-                                    document.querySelector('#kg-img-' + signatureid).src.split("base64,")[1]
-                            }
-                        }
-                    }
-                    let inputText = $($event.target).parents('.checkbox_group').siblings('.textContent').find("input[name*='input']")
-                    for (let i = 0; i < inputText.length; i++) {
-                        map[inputText.eq(i).attr("name")] = inputText.eq(i).val()
-                    }
-                }
-                request({
-                    url: `${this.$ip}/mms-workorder/operationInf/workerComplete`,
-                    method: 'post',
-                    data: {
-                        contentDetailId: item.id, //内容id
-                        serialNo: this.workorder.serialNo, // 工单流水号
-                        signingTime: '', //签章时间
-                        map
-                    }
-                })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '提交成功'})
-                            //this.workerCompleteData = data.data
-                        } else {
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
             commanderCompleteFn(item, $event) {
                 let inObj = this.workerCompleteData.find(i => i.contentDetailId === item.id)
                 if (!inObj) {
@@ -1616,6 +1555,10 @@
                     checkBoxArr.each((index, ele) => {
                         map[$(ele).attr("name")] = $(ele).is(':checked')
                     })
+                    let radioBoxArr = $(".base_i_inner").find("input[type='radio']")
+                    radioBoxArr.each((index, ele) => {
+                        map[$(ele).attr("id")] = $(ele).is(':checked')
+                    })
                     let dateArr = $(".base_i_inner").find("input[type='date']")
                     dateArr.each((index, ele) => {
                         map[$(ele).attr("name")] = $(ele).val()
@@ -1626,6 +1569,10 @@
                     })
                     console.log(map)
                 } else {
+                    let radioBoxArr = $(".base_i_inner").find("input[type='radio']")
+                    radioBoxArr.each((index, ele) => {
+                        map[$(ele).attr("id")] = false
+                    })
                     let textArr = $(".base_i_inner").find("input[type='text']");
                     textArr.each((index, ele) => {
                         $(ele).val('')

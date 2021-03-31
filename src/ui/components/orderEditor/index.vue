@@ -552,7 +552,12 @@ body{
                 this.inputIndex++
                 let d=new Date()
                 let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
+                if(type=='1'||type=='4'){
+                    return `<input type='radio' inputType="number" eType='${obj[type]}' class='${className}'
 
+                    id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' value='${'$$$'+num+'_'+obj[type] +this.inputIndex}'
+                     name='${'$$$'+num+'_'+obj[type]}' /> ${type==3?'N/A':i.value} `
+                }
                 return `<input type='checkbox' inputType="number" eType='${obj[type]}' class='${className}'
 
                     id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' name='${'$$$'+num+'_'+obj[type]

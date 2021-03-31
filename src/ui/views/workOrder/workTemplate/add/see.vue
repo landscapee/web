@@ -352,7 +352,7 @@
                                         name: `工作内容${p + 1}`
                                     }
                                     if (this.show && obj.content) {
-                                        let reg = /(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                                        let reg = /(id\s{0,}=\s{0,}\")(.+?)(\"\s{0,}.+?\/>)/g
                                         obj.content = o.content.replace(reg, "$1$2$3${$2}")
                                     }
                                     arr.push(obj)
@@ -377,7 +377,7 @@
                                                 name: `工作内容${p1 + 1}`
                                             }
                                             if (this.show && obj1.content) {
-                                                let reg = /(name\s{0,}=\s{0,}\")(.+?)(\"\s{0,}\/>)/g
+                                                let reg = /(id\s{0,}=\s{0,}\")(.+?)(\"\s{0,}.+?\/>)/g
                                                 obj1.content = o1.content.replace(reg, "$1$2$3${$2}")
                                             }
                                             arr.push(obj1)
