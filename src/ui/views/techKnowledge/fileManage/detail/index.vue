@@ -129,7 +129,7 @@ export default {
     },
     methods:{
         getOptions(){
-            let position=new Promise((resolve,reject)=>{
+             let position=new Promise((resolve,reject)=>{
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
@@ -165,6 +165,8 @@ export default {
             }))
             Promise.all([airline,position]).then((d)=>{
                 this.businessTableConfig = sysParameterTable(d[0],d[1])
+            }).catch(()=>{
+                this.businessTableConfig = sysParameterTable([],[])
             })
         },
         init(){

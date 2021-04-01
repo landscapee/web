@@ -132,6 +132,27 @@ export default {
             }
 
         }
+         .el-dialog{
+            width:600px;
+            .el-dialog__header{
+                text-align: center;
+            }
+            .el-dialog__body{
+                padding: 20px ;
+            }
+
+            .el-form-item__label{
+                width:100px!important;
+            }
+            .el-form-item__content{
+                width:calc(100% - 100px)!important;
+                margin: 0!important;
+                .el-input{
+                    width:100%!important;
+                }
+            }
+
+        }
 
     }
 </style>

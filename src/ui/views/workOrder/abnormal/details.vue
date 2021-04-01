@@ -548,9 +548,9 @@
                                     })
                                     $(".textContent input[type='radio']").on('change', function () {
                                         if ($(this).is(":checked")) {
-                                            $(this).val('on')
+                                            // $(this).val('on')
                                         } else {
-                                            $(this).val('off')
+                                            // $(this).val('off')
                                         }
 
                                     })
@@ -1140,9 +1140,6 @@
                                      $(ele)[0].remove()
                                        })
                             })
-
-
-
                              let blo = this.type == 'edit'
 
                             SignatureInit('0002', '123456', false, 1, blo)
@@ -1206,9 +1203,12 @@
                                             $("input[name='" + mapItem.key + "']").val(mapItem.value)
                                         }
                                     }else if(mapItem.key.includes("ycha") || mapItem.key.includes("radio")){
-                                        $("input[id='" + mapItem.key + "']").prop('checked', mapItem.value== 'true' ? true : false)
+
                                         if (BasicUpdateLimit) {
+                                            $(".base_item input[id='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                             this['isActiveReset'] = true
+                                        } else {
+                                            $("input[id='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                         }
                                     }
                                     else {

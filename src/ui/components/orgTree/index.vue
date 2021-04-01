@@ -245,9 +245,55 @@ export default {
 /deep/ .height {
 	height: 600px !important;
 }
+ .height {
+	height: 600px !important;
+}
 .treeTitle {
 	background: #0a76a4;
 }
+ .showBtn {
+	visibility: hidden;
+	margin-left: 20px;
+	.el-button {
+		margin: 0;
+	}
+}
+ .el-tree-node__content:hover {
+	.showBtn {
+		visibility: visible !important;
+		// background-color: #fff;
+	}
+}
+ .el-button + .el-button {
+	margin-left: 0 !important;
+}
+
+ .el-tree {
+	height: calc(100vh - 241px);
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+ .adduser {
+	height: calc(100vh - 220px);
+	width: 100%;
+	overflow-y: initial;
+	overflow-x: initial;
+}
+ .el-tree-node > .el-tree-node__children {
+	overflow: visible !important;
+}
+
+ .elinput {
+	margin: 10px;
+	height: 30px;
+	// width: 100%;
+}
+ .el-input__inner {
+	height: 30px;
+	width: 90%;
+}
+
 /deep/ .showBtn {
 	visibility: hidden;
 	margin-left: 20px;

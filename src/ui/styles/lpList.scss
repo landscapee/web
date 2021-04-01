@@ -22,6 +22,10 @@
       .tableOneBox{
           margin-top: 24px;
       }
+      .mainTable{
+        height:calc(100vh - 340px) !important;
+        overflow: auto;
+    }
     /deep/ .mainTable{
         height:calc(100vh - 340px) !important;
         overflow: auto;
@@ -50,6 +54,10 @@
     }
     .QheadRight{
         top:-7px;
+    }
+      .mainTable{
+        height:calc(100vh - 400px);
+        overflow: auto;
     }
     /deep/ .mainTable{
         height:calc(100vh - 400px);

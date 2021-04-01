@@ -7,6 +7,47 @@
             font-family:SourceHanSansCN-Regular,SourceHanSansCN;
             font-weight:400;
         }
+         .el-input,
+         .el-select,
+         .el-cascader {
+            width: 100% ;
+        }
+
+        .el-form-item__label{
+            text-align: left;
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:rgba(34,34,34,1);
+        }
+          .el-textarea__inner,
+         .el-input__inner{
+              border-radius:2px;
+              border:1px solid rgba(151,151,151,1);
+              font-size:16px;
+              padding-left: 16px;
+          }
+         input::-webkit-input-placeholder {
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:rgba(136,136,136,1);
+        }
+         textarea::-webkit-input-placeholder {
+            font-size:16px;
+            font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+            font-weight:400;
+            color:rgba(136,136,136,1);
+        }
+         .el-input__prefix{
+            left: unset;
+                right: 13px;
+            .el-input__icon{
+                width: 14px;
+                font-size: 15px;
+            }
+        }
+
         /deep/ .el-input,
         /deep/ .el-select,
         /deep/ .el-cascader {
@@ -20,18 +61,20 @@
             font-weight:400;
             color:rgba(34,34,34,1);
         }
-        /deep/  .el-textarea__inner,/deep/ .el-input__inner{
-              border-radius:2px;
-              border:1px solid rgba(151,151,151,1);
-              font-size:16px;
-              padding-left: 16px;
-          }
+        /deep/  .el-textarea__inner,
+        /deep/ .el-input__inner{
+            border-radius:2px;
+            border:1px solid rgba(151,151,151,1);
+            font-size:16px;
+            padding-left: 16px;
+        }
         /deep/ input::-webkit-input-placeholder {
             font-size:16px;
             font-family:SourceHanSansCN-Regular,SourceHanSansCN;
             font-weight:400;
             color:rgba(136,136,136,1);
-        } /deep/ textarea::-webkit-input-placeholder {
+        }
+        /deep/ textarea::-webkit-input-placeholder {
             font-size:16px;
             font-family:SourceHanSansCN-Regular,SourceHanSansCN;
             font-weight:400;
@@ -39,7 +82,7 @@
         }
         /deep/ .el-input__prefix{
             left: unset;
-                right: 13px;
+            right: 13px;
             .el-input__icon{
                 width: 14px;
                 font-size: 15px;
@@ -110,6 +153,11 @@
     .el-form{
         margin: 0 auto;
         .row_item{
+             .el-form-item__content{
+                //height: 40px;
+                width: 240px;
+                text-align: left;
+            }
             /deep/ .el-form-item__content{
                 //height: 40px;
                 width: 240px;
@@ -124,6 +172,10 @@
         }
         .row_item_row{
             display: flex;
+              .el-form-item__content{
+                width: 100% !important;
+                text-align: left !important;
+            }
             /deep/ .el-form-item__content{
                 width: 100% !important;
                 text-align: left !important;

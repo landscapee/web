@@ -555,7 +555,7 @@ body{
                 if(type=='1'||type=='4'){
                     return `<input type='radio' inputType="number" eType='${obj[type]}' class='${className}'
 
-                    id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' value='${'$$$'+num+'_'+obj[type] +this.inputIndex}'
+                    id='${'$$$'+num+'_'+obj[type] +this.inputIndex}'
                      name='${'$$$'+num+'_'+obj[type]}' /> ${type==3?'N/A':i.value} `
                 }
                 return `<input type='checkbox' inputType="number" eType='${obj[type]}' class='${className}'
@@ -571,6 +571,31 @@ body{
  
 <style   lang="scss">
 .kindeditor{
+    .ke-icon-inpt {
+    background-image: url(./assets/img/add.svg);
+    width: 22px;
+    height: 22px;
+  }
+    .ke-icon-checkbox{
+    background-image: url(./assets/img/edit.svg);
+    width: 22px;
+    height: 22px;
+  }
+    .ke-icon-na{
+    background-image: url(./assets/img/info.svg);
+    width: 22px;
+    height: 22px;
+  }
+    .ke-icon-checkradio{
+    background-image: url(./assets/img/kh.svg);
+    width: 22px;
+    height: 22px;
+  }
+    .ke-icon-sign{
+    background-image: url(./assets/img/sign.svg);
+    width: 22px;
+    height: 22px;
+  }
   /deep/ .ke-icon-inpt {
     background-image: url(./assets/img/add.svg);
     width: 22px;

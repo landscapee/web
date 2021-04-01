@@ -88,8 +88,34 @@
 <style lang="scss" scoped>
     .index{
         .leftMargin{
+              .el-form-item__label{
+                padding-left: 12px;
+            }
             /deep/ .el-form-item__label{
                 padding-left: 12px;
+            }
+        }
+          .el-dialog{
+            width:600px;
+            .el-dialog__header{
+                text-align: center;
+            }
+            .el-dialog__body{
+                padding: 20px ;
+            }
+
+            .el-form-item__label{
+                width:100px!important;
+            }
+            .el-form-item__content{
+                width:calc(100% - 100px)!important;
+                margin: 0!important;
+                .el-input{
+                    width:100%!important;
+                }
+            }
+            .el-slider{
+                width:60%;
             }
         }
         /deep/ .el-dialog{

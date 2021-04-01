@@ -154,6 +154,10 @@
 		}
 
 	}
+	  .el-scrollbar{
+		margin-top: 0px!important;
+
+	}
 	/deep/ .el-scrollbar{
 		margin-top: 0px!important;
 
@@ -163,15 +167,27 @@
 		margin-top: 5px;
 		line-height: 15px;
 	}
+	  .elinput {
+		margin: 10px 0;
+		height: 30px;
+		// width: 100%;
+	}
 	/deep/ .elinput {
 		margin: 10px 0;
 		height: 30px;
 		// width: 100%;
 	}
 	.box-card{
+		  .el-button{
+			margin-top: -10px;
+		}
 		/deep/ .el-button{
 			margin-top: -10px;
 		}
+	}
+	  .el-input__inner {
+		height: 30px;
+		width: 100%;
 	}
 	/deep/ .el-input__inner {
 		height: 30px;

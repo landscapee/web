@@ -234,6 +234,46 @@ import request from '@lib/axios.js';
 			vertical-align: middle;
 		}
 	}
+	.el-menu{
+		border:0px;
+		background: unset;
+
+		.el-menu-item{
+			background: #162C41;
+			color: #fff;
+			cursor: pointer;
+		}
+		.el-menu-item::before{
+			content: ' ';
+            position: absolute;
+			right: 169px;
+            top: 24px;
+            width:4px;
+			height:4px;
+			background:rgba(255,255,255,1);
+			border-radius: 2px;
+		}
+		.el-submenu__title{
+			color: #fff;
+		}
+		.el-submenu__title:hover{
+			background: unset;
+		}
+		.el-submenu__icon-arrow{
+			display: none;
+		}
+
+		.svg-icon {
+			width: 16px;
+			height: 16px;
+			vertical-align: middle;
+		}
+	}
+	  .el-menu--inline{
+		 .is-active{
+			background: #3280E7;
+		}
+	}
 	/deep/ .el-menu--inline{
 		/deep/ .is-active{
 			background: #3280E7;
@@ -295,6 +335,15 @@ import request from '@lib/axios.js';
 			background: #265FE2;
 		}
 	}
+	  .spread-icon{
+		position: absolute;
+		left: 150px;
+		top: 50%;
+		width: 8px;
+		height:45px;
+		cursor: pointer;
+		z-index: 9999999999;
+	}
 	/deep/ .spread-icon{
 		position: absolute;
 		left: 150px;
@@ -303,6 +352,10 @@ import request from '@lib/axios.js';
 		height:45px;
 		cursor: pointer;
 		z-index: 9999999999;
+	}
+	  .open-spread-icon{
+		left: 0px;
+		transform:rotate(180deg);
 	}
 	/deep/ .open-spread-icon{
 		left: 0px;

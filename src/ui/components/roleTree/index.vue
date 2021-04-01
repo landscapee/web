@@ -318,6 +318,10 @@
 		}
 
 	}
+	  .el-scrollbar{
+		margin-top: 0px!important;
+
+	}
 	/deep/ .el-scrollbar{
 		margin-top: 0px!important;
 
@@ -326,6 +330,15 @@
 		padding: 0px;
 		margin-top: 5px;
 		line-height: 15px;
+	}
+	  .elinput {
+		margin: 10px 0;
+		height: 30px;
+		// width: 100%;
+	}
+	  .el-input__inner {
+		height: 30px;
+		width: calc(100% - 1px);
 	}
 	/deep/ .elinput {
 		margin: 10px 0;

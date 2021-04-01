@@ -1,8 +1,14 @@
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+}
 /deep/ .el-scrollbar__wrap {
     overflow-x: hidden;
 }
 input:checked{
     outline: none;
+}
+ .el-input__prefix[class1='displayNone']{
+    display: none;
 }
 /deep/ .el-input__prefix[class1='displayNone']{
     display: none;
@@ -36,6 +42,9 @@ input:checked{
     float: right;
 }
 ///////// 标题 /////////
+ .el-scrollbar__wrap{
+    overflow: hidden!important;
+}
 /deep/ .el-scrollbar__wrap{
     overflow: hidden!important;
 }
@@ -67,6 +76,17 @@ input:checked{
   }
 .Qfooter{
     text-align:center;
+      .el-button{
+        width: 140px;
+        height: 36px;
+        border: 1px solid #b9b9b9;
+         border-radius: 5px;
+    }
+      .el-button:last-child{
+        border: 0;
+        //color:white;
+        //background: #3280e7;
+    }
     /deep/ .el-button{
         width: 140px;
         height: 36px;

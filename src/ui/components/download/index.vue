@@ -71,4 +71,30 @@ export default {
 		}
 	}
 }
+.el-dialog {
+	width: 650px;
+	.el-dialog__body{
+		max-height: 600px;
+		overflow-y: auto;
+	}
+	.diaDiv {
+		padding: 40px 20px;
+		& > div {
+			border-bottom: 1px #e0e0e0 solid;
+			padding: 20px 0;
+			font-size: 14px;
+			& > span:nth-child(2) {
+				color: #23bbd2;
+				margin-right: 30px;
+			}
+			& > span:nth-child(3) {
+				.el-button {
+					color: white;
+					padding: 10px 17px;
+					background: #4993fd;
+				}
+			}
+		}
+	}
+}
 </style>

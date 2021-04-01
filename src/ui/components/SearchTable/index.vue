@@ -559,6 +559,42 @@
     .mainTable {
         overflow-y: auto;
         border-top: 0px !important;
+         .current-row > td {
+            background-color: #A0CBF6;
+        }
+         .current-row:hover > td {
+            background-color: #A0CBF6;
+        }
+         .el-table__fixed {
+            /*height: 620px !important;*/
+        }
+         .el-table__fixed-right {
+            /*height: 620px !important;*/
+        }
+         .el-table__row:nth-child(even) {
+            background: #EFF2F3;
+        }
+         .el-table__row:nth-child(odd) {
+            background: #FFFFFF;
+        }
+         .tab_radio {
+            height: 16px;
+            width: 16px;
+        }
+         .action_radio {
+            height: 16px;
+            width: 16px;
+        }
+
+         .cell:last-child {
+            span:first-child {
+                .action_radio {
+                    margin-right: 20px;
+                }
+            }
+        }
+
+
         /deep/ .current-row > td {
             background-color: #A0CBF6;
         }
@@ -603,8 +639,18 @@
         /deep/ .tableSort:hover {
             fill: #eee;
         }
-
         /deep/ .el-pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+         .tableSort {
+            fill: #222;
+        }
+         .tableSort:hover {
+            fill: #eee;
+        }
+          .el-pagination {
             text-align: center;
             margin-top: 20px;
         }
@@ -646,7 +692,54 @@
                 top: 2px;
             }
         }
+         .el-table {
+            border: 1px solid rgba(199, 204, 210, 1);
+            margin: 0 auto;
+              .cell {
+                padding: 0px 3px;
+                /*line-height:40px;*/
+            }
+              .el-table__header {
+                height: 40px;
+            }
+              td {
+                width: 148px;
+                height: 40px;
+                padding: 0;
+                border-color: #C7CCD2;
+            }
+              td:first-child {
+                text-align: center;
+                .cell {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center
+                }
+            }
+              th {
+
+                border-color: #C7CCD2;
+            }
+              .el-table__row {
+                height: 40px;
+            }
+              .table_search {
+                height: 22px;
+                width: 22px;
+                position: relative;
+                top: 2px;
+            }
+        }
         .noSearchTable {
+             .el-table__body-wrapper {
+                display: none;
+
+            }
+              .el-table__header-wrapper {
+                th {
+                    border-bottom: 0px !important;
+                }
+            }
             /deep/ .el-table__body-wrapper {
                 display: none;
 
@@ -676,6 +769,61 @@
             ::-webkit-scrollbar {
                 background-color: #fff;
             }
+             th {
+                .cell {
+                    line-height: 1em
+                }
+                div, span {
+                    font-weight: bold;
+                }
+            }
+             .el-table__fixed {
+                height: 80px !important;
+                background: #EFF2F3;
+                border-right: 1px #C7CCD2 solid;
+                td {
+                    border-bottom: 0;
+                }
+            }
+             .el-table__fixed-right {
+                height: 80px !important;
+                background: #EFF2F3;
+                border-right: 1px #C7CCD2 solid !important;
+            }
+             .el-table__fixed-body-wrapper {
+                height: 40px !important;
+            }
+             .el-table__body-wrapper {
+                td {
+                    border-bottom: 0;
+                }
+                overflow-x: hidden;
+            }
+             .el-table__row {
+                background: #EFF2F3;
+                td:last-child {
+                    border-right: 0 !important;
+                }
+            }
+             .el-input__icon {
+                height: unset;
+            }
+             .cell {
+                padding: 0 3px;
+            }
+             .el-input {
+                text-align: center;
+                width: 100%;
+                /*width:140px;*/
+                height: 30px;
+            }
+             .el-select {
+                text-align: center;
+                width: 100%;
+                /*width:140px;*/
+                height: 30px;
+            }
+
             /deep/ th {
                 .cell {
                     line-height: 1em
@@ -712,7 +860,6 @@
                     border-right: 0 !important;
                 }
             }
-
             /deep/ .el-input__icon {
                 height: unset;
             }
@@ -738,7 +885,82 @@
                 /deep/ .el-select {
                     width: calc(100% - 30px);
                 }
+                & > .el-input {
+                    width: calc(100% - 30px);
+                }
+                  .el-select {
+                    width: calc(100% - 30px);
+                }
             }
+             .el-input__inner {
+                line-height: 30px;
+                height: 30px;
+                background: rgba(255, 255, 255, 1);
+                border-radius: 2px;
+                border: 1px solid rgba(216, 216, 216, 1);
+                padding-left: 10px;
+            }
+             .el-input__icon {
+                line-height: 30px;
+                height: 30px;
+                width: 14px;
+                font-size: 15px;
+            }
+             .el-input__prefix {
+
+                left: unset;
+                right: 13px;
+
+            }
+             th {
+                width: 148px;
+                height: 40px;
+                background: #CFD4DC;
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: rgba(34, 34, 34, 1);
+                text-align: center;
+                border-right: solid 1px #C7CCD2;
+                padding: 0px;
+                 .svg-icon {
+                    width: 11px;
+                    height: 14px;
+                    margin-left: 6px;
+                }
+            }
+             .svg-icon {
+                width: 14px;
+                height: 14px;
+                margin-left: 6px;
+            }
+             .search-button {
+                width: 80px;
+                height: 30px;
+                display: inline-flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 1);
+                border-radius: 2px;
+                border: 1px solid rgba(208, 208, 208, 1);
+                font-size: 14px;
+                font-family: SourceHanSansCN-Regular, SourceHanSansCN;
+                font-weight: 400;
+                color: rgba(61, 86, 142, 1);
+                padding: 0;
+                 span {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                }
+                .table_search {
+                    width: 14px;
+                    height: 16px;
+                    margin-right: 4px;
+                }
+            }
+
             /deep/ .el-input__inner {
                 line-height: 30px;
                 height: 30px;
@@ -759,7 +981,6 @@
                 right: 13px;
 
             }
-
             /deep/ th {
                 width: 148px;
                 height: 40px;
@@ -809,9 +1030,12 @@
                 }
             }
         }
-        .el-table--scrollable-x + .mainTable {
-            /*height: 620px ;*/
 
+          .el-table--scrollable-x .el-table__body-wrapper {
+            height: 100%;
+        }
+         .is-scrolling-left {
+            height: 100%;
         }
         /deep/ .el-table--scrollable-x .el-table__body-wrapper {
             height: 100%;
