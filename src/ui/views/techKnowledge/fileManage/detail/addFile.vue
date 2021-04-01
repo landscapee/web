@@ -161,10 +161,11 @@
                 }
             };
 			return {
+			    Airline:[],
+                AirlineObj:{},
 				oldForm: {},
 				form: {
-                    Airline:[],
-                    // AirlineObj:{},
+
 				    open:false,
 					fileName: '',
 					description: '',
@@ -235,6 +236,7 @@
                         if(!k.parentCode){
                             this.AirlineObj[k.iata]=k.fullname
                             this.Airline.push(k)
+
                         }
                     })
                 }
