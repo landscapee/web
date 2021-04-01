@@ -8,7 +8,7 @@ export const sysParameterTable = (issueDeptArr, positionArr) => {
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入"} },
         { prop: 'number', label: '文档编号', align: 'center',sort:true,sortProp:"number",search:{prop:'number',type:'input',placeholder:"请输入"} },
         { prop: 'open', label: '是否公开',formatter:open, align: 'center',sort:true,sortProp:"open",search:{prop:'open',type:'select',placeholder:"请选择",selectProp:["label","value"], data: [{label:'公开',value:true},{label:'不公开',value:false}]} },
-        { prop: 'issueDept', label: '发行单位', align: 'center',sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr, placeholder:"请选择"} },
+        { prop: 'issueDept', label: '发行单位', align: 'center',sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["fullname","fullname"], data: issueDeptArr, placeholder:"请选择"} },
         { prop: 'position', label: '所属岗位', align: 'center',sort:true,sortProp:"position",search:{prop:'position', type:'select',selectProp:["valData","valData"], data: positionArr, placeholder:"请选择"} },
         {
             prop: 'startTime', label: '生效日期', align: 'center',

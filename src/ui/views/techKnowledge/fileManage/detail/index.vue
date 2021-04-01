@@ -118,20 +118,7 @@ export default {
                 }
             })
         })
-        request({
-            url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-            method: 'post',
-            data:["issueDept", "position",]
-        }).then(d => {
-            if(d.code == 200){
-                this.issueDeptArr = d.data.issueDept
-                this.positionArr = d.data.position
-            }else{
-                this.issueDeptArr = []
-                this.positionArr = []
-            }
-            this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
-        })
+        this.getOptions()
         request({
             url:`${this.$ip}/mms-parameter/rest-api/sysParam/query`,
             method: 'post',
@@ -141,6 +128,45 @@ export default {
         });
     },
     methods:{
+        getOptions(){
+            let position=new Promise((resolve,reject)=>{
+                request({
+                    url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    data:[ "position",]
+                }).then(d => {
+                    if(d.code == 200){
+                         this.positionArr = d.data.position
+                        resolve(this.positionArr)
+                    }
+                    reject()
+                }).catch(()=>{
+                    reject()
+                })
+            })
+            let airline=new Promise(((resolve,reject) => {
+                request({
+                    url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                    method: 'get',
+                }).then(d => {
+                    let Airline=[]
+                    if( d.data&&d.data.length){
+                        d.data.map((k,l)=>{
+                            if(!k.parentCode){
+                                 Airline.push(k)
+                            }
+                        })
+                        resolve(Airline)
+                    }
+                    reject()
+                }).catch(()=>{
+                    reject()
+                });
+            }))
+            Promise.all([airline,position]).then((d)=>{
+                this.businessTableConfig = sysParameterTable(d[0],d[1])
+            })
+        },
         init(){
             this.getList()
         },
