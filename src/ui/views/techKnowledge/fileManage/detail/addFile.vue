@@ -61,9 +61,11 @@
 				<div class="row_one">
 					<el-form-item label="发行单位：" prop="issueDeptId">
 						<span v-if="type=='info'">{{form.issueDept}}</span>
-						<el-select :disabled="type=='edit'" v-else clearable v-model="form.issueDeptId" placeholder="请选择发行单位">
-							<el-option v-for='item in issueDeptArr' :key='item.valCode' :label="item.valData"
-									   :value="item.valCode"></el-option>
+
+						<el-select  :disabled="type=='edit'"  v-else filterable   v-model="form.issueDeptId" clearable placeholder="请选择发行单位">
+							<el-option v-for="(opt,index) in Airline" :key="index" :label="opt.fullname" :value="opt.iata">
+								<span>{{opt.fullname}}-{{opt.iata}}</span>
+							</el-option>
 						</el-select>
 					</el-form-item>
 				</div>
@@ -161,6 +163,8 @@
 			return {
 				oldForm: {},
 				form: {
+                    Airline:[],
+                    // AirlineObj:{},
 				    open:false,
 					fileName: '',
 					description: '',
@@ -175,7 +179,7 @@
 					size: '',
 					time: []
 				},
-				issueDeptArr: [],
+				// issueDeptArr: [],
 				positionArr: [],
 				rules: {  // 维修部 - 维修- 放行     勤务部 -> 勤务
                     number: [{ validator:checkNumber, trigger: "blur",required:true }],
@@ -211,16 +215,30 @@
 			request({
 				url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
 				method: 'post',
-				data: ["issueDept", "position",]
+				data: [ "position",]
 			}).then(d => {
 				if (d.code == 200) {
-					this.issueDeptArr = d.data.issueDept
+					// this.issueDeptArr = d.data.issueDept
 					this.positionArr = d.data.position
 				} else {
-					this.issueDeptArr = []
+					// this.issueDeptArr = []
 					this.positionArr = []
 				}
 			})
+            request({
+                url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                method: 'get',
+            }).then(d => {
+                if( d.data&&d.data.length){
+                    this.Airline=[]
+                    d.data.map((k,l)=>{
+                        if(!k.parentCode){
+                            this.AirlineObj[k.iata]=k.fullname
+                            this.Airline.push(k)
+                        }
+                    })
+                }
+            });
 		},
 		methods: {
             openC(val){
@@ -297,7 +315,7 @@
                         })
                         this.form.startTime = this.form.time[0]
                         this.form.endTime = this.form.time[1]
-                        this.form.issueDept = this.issueDeptArr.find(item => item.valCode == this.form.issueDeptId).valData
+                        this.form.issueDept = this.AirlineObj[this.form.issueDeptId]
                         data = {
                             fileParam: {
                                 ...this.form,
@@ -309,7 +327,7 @@
                         url = '/file/update'
                         this.form.startTime = this.form.time[0]
                         this.form.endTime = this.form.time[1]
-                        this.form.issueDept = this.issueDeptArr.find(item => item.valCode == this.form.issueDeptId).valData
+                        this.form.issueDept = this.AirlineObj[this.form.issueDeptId]
                         data = {
                             id: this.$route.query.id,
                             ...this.form,
