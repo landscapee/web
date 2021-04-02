@@ -404,6 +404,9 @@
   /deep/ .el-tree-node__expand-icon {
     display: none;
   }
+   .el-tree-node__expand-icon {
+    display: none;
+  }
 
   .el-scrollbar__wrap {
     overflow-x: hidden;
@@ -424,6 +427,10 @@
   }
 
   /deep/ .el-scrollbar {
+    margin-top: 0px !important;
+
+  }
+   .el-scrollbar {
     margin-top: 0px !important;
 
   }
@@ -450,6 +457,25 @@
   }
 
   /deep/ .el-tag:first-child {
+    margin-left: 0px;
+  }
+
+    .elinput {
+    margin: 10px 0;
+    height: 30px;
+    // width: 100%;
+  }
+
+    .el-input__inner {
+    height: 30px;
+    width: calc(100% - 2px);
+  }
+
+    .el-tag {
+    margin: 5px;
+  }
+
+    .el-tag:first-child {
     margin-left: 0px;
   }
 </style>

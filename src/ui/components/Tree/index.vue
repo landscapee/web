@@ -225,11 +225,12 @@ export default {
 		padding: 10px 0;
 	}
 }
-/deep/ .height {
-	height: 600px !important;
-}
+
 .treeTitle {
 	background: #0a76a4;
+}
+/deep/ .height {
+	height: 600px !important;
 }
 /deep/ .showBtn {
 	visibility: hidden;
@@ -254,22 +255,55 @@ export default {
 	overflow-y: auto;
 	overflow-x: auto;
 }
-/*/deep/ .adduser {*/
-	/*height: calc(100vh - 220px);*/
-	/*width: 100%;*/
-	/*overflow-y: initial;*/
-	/*overflow-x: initial;*/
-/*}*/
-/deep/ .el-tree-node > .el-tree-node__children {
+ /deep/ .el-tree-node > .el-tree-node__children {
 	overflow: visible !important;
 }
 
-/deep/ .elinput {
+  .elinput {
 	margin: 10px 0;
 	height: 30px;
 	// width: 100%;
 }
-/deep/ .el-input__inner {
+  .el-input__inner {
+	height: 30px;
+	width: 100%;
+}
+ .height {
+	height: 600px !important;
+}
+  .showBtn {
+	visibility: hidden;
+	margin-left: 20px;
+	.el-button {
+		margin: 0;
+	}
+}
+  .el-tree-node__content:hover {
+	.showBtn {
+		visibility: visible !important;
+		// background-color: #fff;
+	}
+}
+  .el-button + .el-button {
+	margin-left: 0 !important;
+}
+
+  .el-tree {
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+  .el-tree-node > .el-tree-node__children {
+	overflow: visible !important;
+}
+
+  .elinput {
+	margin: 10px 0;
+	height: 30px;
+	// width: 100%;
+}
+  .el-input__inner {
 	height: 30px;
 	width: 100%;
 }

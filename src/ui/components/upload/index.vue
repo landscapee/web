@@ -189,12 +189,29 @@
     /deep/ .el-icon-circle-check:before {
         content: "\e720";
     }
+      .el-upload{
+        padding:0;
+        /*position: relative;*/
+        /*<!--top:-2px;-->*/
+        border-radius: 4px;
+        .el-button{
+            height:40px;
+        }
+
+    }
+    .el-icon-upload-success:before,
+      .el-icon-circle-check:before {
+        content: "\e720";
+    }
     .el-icon-upload-success:before,
       .el-icon-circle-check:before {
         content: "\e720";
     }
     .listNone{
         /deep/ .el-upload-list   {
+            display: none;
+        }
+          .el-upload-list   {
             display: none;
         }
     }
