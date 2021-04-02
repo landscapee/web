@@ -551,9 +551,9 @@
                                         let radios= $(this).parents('.textContent').find("input[type='radio']")
                                          radios.each((i,ele)=>{
                                             if ($(ele).is(":checked")) {
-                                                $(ele).val('on')
+                                                $(ele).val('checked')
                                             } else {
-                                                $(ele).val('off')
+                                                $(ele).val('on')
                                             }
                                             // console.log('val',$(ele).val());
                                         })
@@ -561,9 +561,9 @@
                                     })
                                     $(".textContent input[type='checkbox']").on('change', function () {
                                         if ($(this).is(":checked")) {
-                                            $(this).val('on')
+                                            $(this).val('checked')
                                         } else {
-                                            $(this).val('off')
+                                            $(this).val('on')
                                         }
                                     })
 
