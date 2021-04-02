@@ -42,6 +42,7 @@
                             <div v-for="(k,l) in item.value.split(';')" :key="l"
                                  class="flex align_center">
                                 <input type="checkbox" :disabled="type=='info'"
+                                       :id="item.placeholder.split(';')[l]"
                                        :name="item.placeholder.split(';')[l]"
                                        class="Wtui-checkbox">{{k}}&nbsp;
                                 <!-- <div style="width: 100%" >
@@ -547,11 +548,15 @@
                                         _this.signMsgBoxFn($(this).siblings("input").attr("id"), contentId)
                                     })
                                     $(".textContent input[type='radio']").on('change', function () {
-                                        if ($(this).is(":checked")) {
-                                            // $(this).val('on')
-                                        } else {
-                                            // $(this).val('off')
-                                        }
+                                        let radios= $(this).parents('.textContent').find("input[type='radio']")
+                                         radios.each((i,ele)=>{
+                                            if ($(ele).is(":checked")) {
+                                                $(ele).val('on')
+                                            } else {
+                                                $(ele).val('off')
+                                            }
+                                            // console.log('val',$(ele).val());
+                                        })
 
                                     })
                                     $(".textContent input[type='checkbox']").on('change', function () {
@@ -700,10 +705,6 @@
             },
             // 3sign
             fixedSignFn(item, type, $event, val, psd) {
-                // if(!$('#1'+item.id).is(':checked')){
-                //     this.$message({type: 'warning', message: '请先点击维修已完成'})
-                //     return
-                // }
 
                 SignatureInit(val, psd, this.labelVO.noSignTime, 1.5)
 
@@ -718,7 +719,7 @@
                     }
                 })
                 protectedItems = protectedItems.filter(i => i)
-
+                console.log(11111,protectedItems);
                 // 判断签章高度 start
                 let offsetY = 1
                 $('.kg-img-div-' + type).each((ind, ele) => {

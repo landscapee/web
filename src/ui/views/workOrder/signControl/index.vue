@@ -134,10 +134,27 @@
                     url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params: {delete: false},
-                    data: ["worldorderType", 'W_flightType', 'W_workType', 'applyETOP', 'workUserType',]
+                    data: ["worldorderType", 'W_flightType', 'QZ_workType','W_workType', 'applyETOP', 'workUserType',]
                 }).then(d => {
-                    let obj = d.data
-                    this.tableConfig = Config(obj, [], [], [], [])
+                    if(d.code==200){
+                        let  obj={
+                            ...d.data,
+                            W_workType:[...d.data.QZ_workType,...d.data.W_workType,]
+                        }
+                        console.log('obj',obj);
+                        this.tableConfig = Config(obj )
+                    }else{
+                        let obj={
+                            worldorderType:[],
+                            W_flightType:[],
+                            QZ_workType:[],
+                            W_workType:[],
+                            applyETOP:[],
+                            workUserType:[],
+                        }
+                        this.tableConfig = Config(obj )
+                    }
+
                 });
             }
         },
