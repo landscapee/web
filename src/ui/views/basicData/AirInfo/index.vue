@@ -194,10 +194,10 @@ export default {
 @import "@/ui/styles/common_list.scss"; 
 .sysParameter{
     margin-top:14px;
-    
 }
 /deep/ .mainTable{
     height:calc(100vh - 370px);
     overflow: auto;
 }
+
 </style>

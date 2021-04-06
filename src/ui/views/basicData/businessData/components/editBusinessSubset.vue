@@ -140,8 +140,19 @@ export default {
       /deep/ .el-form-item__content {
         margin-left: 140px;
       }
+      .el-form-item__label {
+        width: 140px;
+      }
+       .el-form-item__content {
+        margin-left: 140px;
+      }
       .row_custom{
         /deep/ .el-form-item__content{
+            height: 40px;
+            width: 310px;
+            text-align: left;
+        }
+        .el-form-item__content{
             height: 40px;
             width: 310px;
             text-align: left;

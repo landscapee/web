@@ -176,6 +176,18 @@
             width: calc(100% - 50px)!important;
         }
     }
+     .el-form{
+        .el-form-item__label{
+            width: 110px!important;
+
+        }
+        .el-form-item__content{
+            width: calc(100% - 110px) !important;
+        }
+        .el-input{
+            width: calc(100% - 50px)!important;
+        }
+    }
     .hint{
         color: red;
         font-size: 14px;

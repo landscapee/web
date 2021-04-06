@@ -183,6 +183,10 @@ export default {
             height: 600px;
             overflow: auto;
         }
+          .mainTable{
+            height: 600px;
+            overflow: auto;
+        }
     }
 }
 </style>

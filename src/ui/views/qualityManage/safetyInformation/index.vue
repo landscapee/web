@@ -245,13 +245,16 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import "@/ui/styles/common_list.scss";
 .sysParameter{
     margin-top:14px;
 
 }
-/deep/ .mainTable{
-    height:calc(100vh - 240px);
-    /*overflow: auto;*/
+.G_listOne{
+    /deep/ .mainTable{
+        height:calc(100vh - 320px)!important;
+        /*overflow: auto;*/
+    }
+
 }
+
 </style>

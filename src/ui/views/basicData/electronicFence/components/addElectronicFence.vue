@@ -196,8 +196,20 @@ export default {
       /deep/ .el-form-item__content {
         margin-left: 155px;
       }
+       .el-form-item__label {
+        width: 155px;
+        text-align: right !important;
+      }
+        .el-form-item__content {
+        margin-left: 155px;
+      }
       .row_custom{
         /deep/ .el-form-item__content{
+            height: 40px;
+            width: 336px;
+            text-align: left;
+        }
+          .el-form-item__content{
             height: 40px;
             width: 336px;
             text-align: left;
@@ -205,6 +217,11 @@ export default {
         @include common-input;
 
         /deep/ .el-form-item {
+            &:last-child {
+              margin-left:10px;
+            }
+        }
+         .el-form-item {
             &:last-child {
               margin-left:10px;
             }

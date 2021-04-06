@@ -1211,6 +1211,7 @@
                                         } else {
                                             $("input[id='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                         }
+                                        $("input[id='" + mapItem.key + "']").val( mapItem.value == 'true' ? 'checked' : 'on')
                                     }
                                     else {
                                         if (BasicUpdateLimit) {
@@ -1219,6 +1220,8 @@
                                         } else {
                                             $("input[name='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                         }
+                                        $("input[name='" + mapItem.key + "']").val( mapItem.value == 'true' ? 'checked' : 'on')
+
                                     }
                                 })
                                 defaultValue( $(".textContent").find('input[inputtype="num"]'))

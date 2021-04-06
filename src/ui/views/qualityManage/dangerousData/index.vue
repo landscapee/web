@@ -275,12 +275,17 @@ export default {
 @import "@/ui/styles/common_list.scss";
 .coursewareMaintain{
     margin-top:14px;
-    /deep/ .mainTable{
-        height:calc(100vh - 370px);
-    }
+    
 }
 .divColor{
     color:#3888ff;
+
+}
+.G_listOne{
+    /deep/ .mainTable{
+        height:calc(100vh - 320px)!important;
+        /*overflow: auto;*/
+    }
 
 }
 
