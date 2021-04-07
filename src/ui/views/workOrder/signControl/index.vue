@@ -1,14 +1,15 @@
 <template>
-    <div>
-        <router-view v-if="this.$router.history.current.path == '/WorkAbnormalDetails'"
-                     :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/WorkPaperDetails'"
-                     :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/WorkAbnormalAdd'"
-                     :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/signControlAdd'"
-                     :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/signControl'" :key="$route.path"
+    <div v-loading="loading"
+            class="signboxdiv"
+            element-loading-text="文件下载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)">
+         <router-view v-if="this.$route.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/signControlAdd'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/signControl'"
+             :key="$route.path"
              class="QCenterRight G_listOne">
             <div class="">
                 <div class="QHead">
@@ -46,7 +47,7 @@
                                          value="dasdasd"></el-checkbox>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" slot="option" label="操作" :width="80">
+                    <el-table-column align="center" slot="option" label="操作" :width="90">
                         <template slot-scope="scope">
                             <div>
 
@@ -85,6 +86,7 @@
                 <Download ref="Download"></Download>
                 <MoreExport ref="MoreExport"></MoreExport>
                 <Export ref="Export"></Export>
+                <exportTopExcel ref="exportTopExcel" @isCLick="isCLick"></exportTopExcel>
             </div>
         </div>
     </div>
@@ -94,6 +96,7 @@
     import Icon from '@components/Icon-svg/index';
     import {Config} from './tableConfig.js';
     import Export from './export';
+    import exportTopExcel from './exportTopExcel';
     import MoreExport from './moreExport';
     import request from '@lib/axios.js';
     import {extend, map} from 'lodash';
@@ -101,7 +104,7 @@
     export default {
         components: {
             Icon,
-            SearchTable, MoreExport, Export
+            SearchTable, MoreExport, Export, exportTopExcel
         },
         name: 'authorizeManage',
         computed: {
@@ -119,7 +122,7 @@
                     current: 1,
                     size: 15,
                 },
-
+                loading: false,
                 checkArr: [],
                 form: {},
                 row: {},
@@ -134,25 +137,25 @@
                     url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
                     params: {delete: false},
-                    data: ["worldorderType", 'W_flightType', 'QZ_workType','W_workType', 'applyETOP', 'workUserType',]
+                    data: ["worldorderType", 'W_flightType', 'QZ_workType', 'W_workType', 'applyETOP', 'workUserType',]
                 }).then(d => {
-                    if(d.code==200){
-                        let  obj={
+                    if (d.code == 200) {
+                        let obj = {
                             ...d.data,
-                            W_workType:[...d.data.QZ_workType,...d.data.W_workType,]
+                            W_workType: [...d.data.QZ_workType, ...d.data.W_workType,]
                         }
-                        console.log('obj',obj);
-                        this.tableConfig = Config(obj )
-                    }else{
-                        let obj={
-                            worldorderType:[],
-                            W_flightType:[],
-                            QZ_workType:[],
-                            W_workType:[],
-                            applyETOP:[],
-                            workUserType:[],
+                        console.log('obj', obj);
+                        this.tableConfig = Config(obj)
+                    } else {
+                        let obj = {
+                            worldorderType: [],
+                            W_flightType: [],
+                            QZ_workType: [],
+                            W_workType: [],
+                            applyETOP: [],
+                            workUserType: [],
                         }
-                        this.tableConfig = Config(obj )
+                        this.tableConfig = Config(obj)
                     }
 
                 });
@@ -160,6 +163,9 @@
         },
 
         methods: {
+            isCLick(val) {
+                this.loading = val
+            },
             Download(row) {
                 request({
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -187,36 +193,8 @@
                 }
             },
             Export() {
-                request({
-                    header: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    url: `${this.$ip}/mms-workorder/workorder/exportExcel`,
-                    method: 'post',
-                    data: {},
-                    responseType: 'blob'
-                }).then(d => {
-                    let arr = ['工单', 'xlsx']
-                    if (d.headers['content-disposition'] && d.headers['content-disposition'].split('=')) {
-                        arr = d.headers['content-disposition'].split('=')[1].split('.')
-                    }
-                    let content = d;
-                    let blob = new Blob([content], {type: 'application/vnd.ms-excel'})
-                    // let blob = new Blob([content],{type:'application/msword'})
-                    const fileName = `${decodeURI(arr[0])}` + '.' + arr[1]
-                    if ('download' in document.createElement('a')) { // 非IE下载
-                        const elink = document.createElement('a')
-                        elink.download = fileName
-                        elink.style.display = 'none'
-                        elink.href = URL.createObjectURL(blob)
-                        document.body.appendChild(elink)
-                        elink.click()
-                        URL.revokeObjectURL(elink.href) // 释放URL 对象
-                        document.body.removeChild(elink)
-                    } else { // IE10+下载
-                        navigator.msSaveBlob(blob, fileName)
-                    }
-                });
+                this.$refs.exportTopExcel.open()
+
             },
             exportRow(row) {
 
@@ -358,7 +336,12 @@
     };
 </script>
 <style scoped lang="scss">
-
+        .signboxdiv{
+            padding:34px 30px 24px 30px;
+            .QCenterRight{
+                margin: 0;
+            }
+        }
     /deep/ .mainTable {
         height: calc(100vh - 370px);
 
