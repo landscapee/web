@@ -6,9 +6,10 @@
             <div class="reason">
                 <span>工单填报未上传黄页原因：{{reason||'--'}}</span>
             </div>
-            <div class="imgbox">
+            <div class="imgbox"  :class="type=='info'?'info':''">
 
                 <el-upload action="#" ref="upFile"
+
                            list-type="picture-card"
                            :http-request="handleSubmit"
                            :before-upload="beforeAvatarUpload"
@@ -52,6 +53,7 @@
             },
 
             open(row, type) {
+                this.type=type
                 this.dialogFormVisible = true
                 this.workId = row.id
                 this.reason = row.reason
@@ -193,6 +195,18 @@
 
     }
 
+    .info{
+
+        /deep/ .el-upload-list__item-actions:hover{
+
+            .el-upload-list__item-delete{
+                display: none;
+            }
+        }
+        /deep/ .el-upload   {
+             display: none;
+        }
+    }
     /deep/ .el-upload-list__item {
         img {
             height: auto !important;
