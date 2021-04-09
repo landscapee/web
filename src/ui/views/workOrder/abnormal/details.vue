@@ -8,7 +8,7 @@
                     黄页预览
                 </div>
             </div>
-            <el-image-viewer v-if="showViewer" :url-list="urlList" :on-close="closeViewer"></el-image-viewer>
+            <!--<el-image-viewer v-if="showViewer" :url-list="urlList" :on-close="closeViewer"></el-image-viewer>-->
             <InfoTop ref="InfoTop" :form="orderModule" :workorder="workorder"></InfoTop>
         </div>
         <div style="width: 60%;">
@@ -192,28 +192,26 @@
                 <el-button type="primary" @click="submit">提交</el-button>
             </div>
         </div>
-        <!--<div id="kg-img-div-postil1">-->
-        <!--<img src="" alt="">-->
-        <!--</div>-->
+        <HYPZ ref="HYPZ" @init="init"></HYPZ>
     </div>
 </template>
 <script>
-    import {eleDateShow,defaultValue, bindInputFn,inputLength} from '@lib/tools'
+    import {eleDateShow, defaultValue, bindInputFn, inputLength} from '@lib/tools'
 
     import $ from 'jquery'
     import request from '@lib/axios.js';
+    import HYPZ from './HYPZ.vue'
     import InfoTop from './infoTop'
     import NaTemp from '@/ui/components/naTemp'
     import {SignatureInit} from '@/ui/lib/Signature.js'
     import {initParam} from './basicData'
     import ElImageViewer from "element-ui/packages/image/src/image-viewer";
     import Icon from '@components/Icon-svg/index';
-    // import '../../../../../static/kinggrid/jquery-1.8.3.min.js'
-    // import '../../../../../static/kinggrid/all'
+
     export default {
         components: {
             ElImageViewer, Icon,
-            NaTemp, InfoTop
+            NaTemp, InfoTop, HYPZ
         },
         data() {
             return {
@@ -260,7 +258,7 @@
                         ? "工单详情"
                         : "";
                 this.needSubmit = this.$route.query.needSubmit;
-                this.promiseOptions= new Promise((resolve,reject)=>{
+                this.promiseOptions = new Promise((resolve, reject) => {
                     request({
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
@@ -273,10 +271,10 @@
                                 userIsVerify: d.data.userIsVerify[0] && d.data.userIsVerify[0].valCode,
                             }
                             resolve(options)
-                        }else{
+                        } else {
                             reject()
                         }
-                    }).catch(()=>{
+                    }).catch(() => {
                         reject()
                     });
                 })
@@ -341,47 +339,68 @@
         },
 
         methods: {
-            onPreview() {
+            getFileList() {
+                return request({
+                    url: `${this.$ip}/mms-file/get-files-by-ids/`,
+                    method: 'post',
+                    params: {
+                        fileIds: this.workorder.pageFile,
+                    }
+                })
+            },
+            async onPreview() {
                 if (!this.workorder.pageFile) {
-                    this.$message.info("该工单暂无黄页图片")
+                    if (this.workorder.type.startsWith("QZ")) {
+                        this.$refs.HYPZ.open({
+                            id: this.workorder.id,
+                            reason: this.workorder.reason,
+                            fileList: [],
+                        }, this.type)
+                    } else {
+                        this.$message.info("该工单暂无黄页图片")
+                    }
                 } else {
-                    this.showViewer = true;
-                    request({
-                        url: `${this.$ip}/mms-file/get-files-by-ids/`,
-                        method: 'post',
-                        params: {
-                            fileIds: this.workorder.pageFile,
-                        }
-                    }).then((data) => {
-                        if (data.code === 200) {
-                            for (let i = 0; i < data.data.length; i++) {
-                                this.urlList.push(data.data[i].filePath);
+                    let data = await this.getFileList()
+                    if (data && data.code == 200) {
+                        let arr = data.data || []
+                        let obj={}
+                        arr = arr.map((k, l) => {
+                            obj[k.id]=k.id
+                            return {
+                                name: k.fileName,
+                                id:k.id,
+                                status: 'success',
+                                uid: k.id,
+                                url:  k.filePath,
                             }
-                        } else {
-                            this.$message.error(data.message);
-                        }
-                    }).catch((error) => {
-                        this.$message.error(error);
-                    });
+                        })
+                        this.$refs.HYPZ.open({
+                            id: this.workorder.id,
+                            fileList: arr,
+                            fileMap:obj,
+                        }, this.type)
+                    } else {
+                        this.$message.error('请求文件失败')
+                    }
                 }
             },
             // 关闭查看器
             closeViewer() {
                 this.showViewer = false
             },
-            inputVerify(textArr){
+            inputVerify(textArr) {
                 // let textArr = $(".base_i_inner").find("input[type='text']");
-                let res=true
+                let res = true
                 textArr.each((index, ele) => {
-                    if(!$(ele).val()){
+                    if (!$(ele).val()) {
                         this.$message.warning('有输入框为空，请检查')
-                        res= false
+                        res = false
                     }
                 })
                 return res
             },
             editContent($event, item) {
-                let textContentele=$($event.target).parents('.checkbox_group').siblings('.textContent')
+                let textContentele = $($event.target).parents('.checkbox_group').siblings('.textContent')
 
                 if (!item.editState) {
                     $($event.target).text('保存')
@@ -399,7 +418,7 @@
                     }
                     return false
                 }
-                if(!this.inputVerify(textContentele.find("input[name*='input']"))){
+                if (!this.inputVerify(textContentele.find("input[name*='input']"))) {
                     return
                 }
                 let map = {}
@@ -548,8 +567,8 @@
                                         _this.signMsgBoxFn($(this).siblings("input").attr("id"), contentId)
                                     })
                                     $(".textContent input[type='radio']").on('change', function () {
-                                        let radios= $(this).parents('.textContent').find("input[type='radio']")
-                                         radios.each((i,ele)=>{
+                                        let radios = $(this).parents('.textContent').find("input[type='radio']")
+                                        radios.each((i, ele) => {
                                             if ($(ele).is(":checked")) {
                                                 $(ele).val('checked')
                                             } else {
@@ -568,52 +587,50 @@
                                     })
 
                                 })
-                                this.$nextTick(()=>{
+                                this.$nextTick(() => {
                                     this.$refs["InfoTop"].getimg(this.template.airlineCompanyLogo);
                                 })
                                 resolve()
-                            } else {
-                                this.$message({type: 'error', message: '新增失败，请重试'});
                             }
                         })
                 })
             },
-            inputTypeBlur(type,e){
-                if(e.target.value===''){
+            inputTypeBlur(type, e) {
+                if (e.target.value === '') {
                     return false
                 }
-                let value= e.target.value
-                let reg=/^((-\d+)|(\d+))(\.?\d+)?$/g
-                let blo=reg.test(e.target.value)
-                if(!blo){
+                let value = e.target.value
+                let reg = /^((-\d+)|(\d+))(\.?\d+)?$/g
+                let blo = reg.test(e.target.value)
+                if (!blo) {
 
                 }
-                if(value.split('.').length>1&&value.split('.')[1]===''){
-                    e.target.value= value.split('.')[0]
+                if (value.split('.').length > 1 && value.split('.')[1] === '') {
+                    e.target.value = value.split('.')[0]
                     this.$message.warning('以为您自动过滤尾部‘.’')
                 }
-                if(value.split('-').length>1&&value.split('-')[1]===''){
-                    e.target.value= null
+                if (value.split('-').length > 1 && value.split('-')[1] === '') {
+                    e.target.value = null
                     this.$message.warning('请输入正确的数字')
                 }
 
 
             },
-            inputTypeC(type,e){
-                if(e.target.value===''){
+            inputTypeC(type, e) {
+                if (e.target.value === '') {
                     return false
                 }
-                let value= e.target.value
+                let value = e.target.value
                 let reg = /([^(\d|\-)])?(-)?([^\d])?(\d{0,})?([^(\.|\d)]+)?(\.)?([^(\.|\d)]+)?(\d{0,})?([^\d]{0,})?/g;
                 // let reg = /([^(\d)])?(\-\d+|\-\d+\.|\d+|\d+\.)?([^\d])?(\d)?([^\d])?/g;
                 console.log(reg.test(value));
-                let reg1=/^(-|\d)(\d{0,})(\.?)?(\d+)?$/g
-                let blo=reg1.test( value)
-                e.target.value= value.replace(reg,'$2$4$6$8')
-                if(!blo){
-                    debounce(()=>{
+                let reg1 = /^(-|\d)(\d{0,})(\.?)?(\d+)?$/g
+                let blo = reg1.test(value)
+                e.target.value = value.replace(reg, '$2$4$6$8')
+                if (!blo) {
+                    debounce(() => {
                         this.$message.warning('只能输入数字')
-                    },300)()
+                    }, 300)()
                 }
             },
             findByUserFn(user = {}) {
@@ -678,10 +695,10 @@
                     }
                 } else {
                     // 弱身份
-                    this.promiseOptions.then((d)=>{
-                        if(d.userIsVerify==='false'){
+                    this.promiseOptions.then((d) => {
+                        if (d.userIsVerify === 'false') {
                             _this['_' + fnName](item, type, $event, d.workUser, null)
-                        }else if(d.userIsVerify==='true'){
+                        } else if (d.userIsVerify === 'true') {
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,
                                 isShowPsd: true
@@ -695,10 +712,10 @@
                                     }
                                 }
                             })
-                        }else{
+                        } else {
                             this.$message.error('参数“基础数据 编号userIsVerify”配置错误，请重新配置')
                         }
-                    }).catch(()=>{
+                    }).catch(() => {
 
                     })
                 }
@@ -719,7 +736,7 @@
                     }
                 })
                 protectedItems = protectedItems.filter(i => i)
-                console.log(11111,protectedItems);
+                console.log(11111, protectedItems);
                 // 判断签章高度 start
                 let offsetY = 1
                 $('.kg-img-div-' + type).each((ind, ele) => {
@@ -1042,10 +1059,10 @@
             signMsgBoxFn(type, id) {
                 let _this = this
 
-                this.promiseOptions.then((d)=>{
-                    if(d.userIsVerify==='false'){
-                        _this.signFn(type,d.workUser, null, id)
-                     }else if(d.userIsVerify==='true'){
+                this.promiseOptions.then((d) => {
+                    if (d.userIsVerify === 'false') {
+                        _this.signFn(type, d.workUser, null, id)
+                    } else if (d.userIsVerify === 'true') {
                         this.$msgBox.showMsgBox({
                             isShowInput: true,
                             isShowPsd: true
@@ -1059,10 +1076,10 @@
                                 }
                             }
                         })
-                    }else{
+                    } else {
                         this.$message.error('参数“基础数据 编号userIsVerify”配置错误，请重新配置')
                     }
-                }).catch(()=>{
+                }).catch(() => {
 
                 })
             },
@@ -1127,7 +1144,7 @@
                             let infList = data.data.infList
                             this.workerCompleteData = data.data.infList
                             let map = data.data.dataList
-                           this.newMap = data.data.dataList
+                            this.newMap = data.data.dataList
 
 
                             // 删除签章
@@ -1138,10 +1155,10 @@
                                     var aDom = $(".itemSign .kg-img-div")
                                 }
                                 aDom.each((ind, ele) => {
-                                     $(ele)[0].remove()
-                                       })
+                                    $(ele)[0].remove()
+                                })
                             })
-                             let blo = this.type == 'edit'
+                            let blo = this.type == 'edit'
 
                             SignatureInit('0002', '123456', false, 1, blo)
                             var signatureCreator = Signature.create()
@@ -1203,7 +1220,7 @@
                                         } else {
                                             $("input[name='" + mapItem.key + "']").val(mapItem.value)
                                         }
-                                    }else if(mapItem.key.includes("ycha") || mapItem.key.includes("radio")){
+                                    } else if (mapItem.key.includes("ycha") || mapItem.key.includes("radio")) {
 
                                         if (BasicUpdateLimit) {
                                             $(".base_item input[id='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
@@ -1211,7 +1228,7 @@
                                         } else {
                                             $("input[id='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                         }
-                                        $("input[id='" + mapItem.key + "']").val( mapItem.value == 'true' ? 'checked' : 'on')
+                                        $("input[id='" + mapItem.key + "']").val(mapItem.value == 'true' ? 'checked' : 'on')
                                     }
                                     else {
                                         if (BasicUpdateLimit) {
@@ -1220,12 +1237,11 @@
                                         } else {
                                             $("input[name='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                         }
-                                        $("input[name='" + mapItem.key + "']").val( mapItem.value == 'true' ? 'checked' : 'on')
+                                        $("input[name='" + mapItem.key + "']").val(mapItem.value == 'true' ? 'checked' : 'on')
 
                                     }
                                 })
-                                defaultValue( $(".textContent").find('input[inputtype="num"]'))
-
+                                defaultValue($(".textContent").find('input[inputtype="num"]'))
                                 Signature.loadSignatures(signs)
                             }
                         } else {
@@ -1234,11 +1250,11 @@
                     })
             },
 
-            async signOthMsgBoxFn(type, $event,qr) {
+            async signOthMsgBoxFn(type, $event, qr) {
 
                 let _this = this
 
-                if(qr==6){
+                if (qr == 6) {
                     let original = await _this.jitGWRandomFn()
                     let result = await this.doDataProcess(initParam, original)
                     if (result.code == 200) {
@@ -1261,12 +1277,12 @@
                             // ...
                         });
                     }
-                }else if(qr==8){
+                } else if (qr == 8) {
 
-                    this.promiseOptions.then((d)=>{
-                        if(d.userIsVerify==='false'){
-                             this.signOthFnR(type, $event, d.workUser)
-                        }else if(d.userIsVerify==='true'){
+                    this.promiseOptions.then((d) => {
+                        if (d.userIsVerify === 'false') {
+                            this.signOthFnR(type, $event, d.workUser)
+                        } else if (d.userIsVerify === 'true') {
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,
                                 isShowPsd: true
@@ -1274,16 +1290,16 @@
                                 if (data.val && data.psd) {
                                     let judegUser = await this.findByUserFn({userName: data.val, password: data.psd})
                                     if (judegUser == '1') {
-                                         this.signOthFnR(type, $event, data.val)
+                                        this.signOthFnR(type, $event, data.val)
                                     } else {
                                         _this.$message({type: 'error', message: judegUser});
                                     }
                                 }
                             })
-                        }else{
+                        } else {
                             this.$message.error('参数“基础数据 编号userIsVerify”配置错误，请重新配置')
                         }
-                    }).catch(()=>{
+                    }).catch(() => {
 
                     })
                 }
@@ -1502,27 +1518,27 @@
             routerPushFn(path, query = {}) {
                 this.$router.push({path, query})
             },
-            changeActiveFn(e,item){
-                let obj={}
+            changeActiveFn(e, item) {
+                let obj = {}
                 // contentDetailId 项次ID
-                obj={
-                    contentDetailId:item.id,
-                    serialNo:this.workorder.serialNo,
-                    value:e.value.toString(),
-                    key:e.key+'_'+item.serialNumber,
+                obj = {
+                    contentDetailId: item.id,
+                    serialNo: this.workorder.serialNo,
+                    value: e.value.toString(),
+                    key: e.key + '_' + item.serialNumber,
                 }
                 request({
-                    url:`${this.$ip}/mms-workorder/operationInf/active`,
+                    url: `${this.$ip}/mms-workorder/operationInf/active`,
                     method: 'post',
-                    data:{
+                    data: {
                         ...obj
                     }
                 })
                     .then((data) => {
-                        if(data.code == 200){
+                        if (data.code == 200) {
                             this.$message({type: 'success', message: '修改成功'})
                             this.getBySerialNoFn('clean')
-                        }else{
+                        } else {
                             this.$message({type: 'error', message: data.message})
                         }
                     })
@@ -1687,7 +1703,7 @@
             },
             submit() {
                 let allSignBol = Array.from($(".itemSign")).every(item => {
-                     return $(item).find('.kg-img-div').length
+                    return $(item).find('.kg-img-div').length
                 })
                 // if (this.workorder.type == 'WXGD') {
                 //

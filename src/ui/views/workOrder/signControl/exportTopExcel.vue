@@ -54,7 +54,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$emit('isCLick',true)
-                        this.dialogFormVisible = false
+                        this.close()
                         request({
                             timeout: 15000,
                             header: {
@@ -65,7 +65,7 @@
                             data: {...this.form},
                             responseType: 'blob'
                         }).then(d => {
-                            this.$emit('isCLick',false)
+
                             let arr = ['工单', 'xlsx']
                             if (d.headers['content-disposition'] && d.headers['content-disposition'].split('=')) {
                                 arr = d.headers['content-disposition'].split('=')[1].split('.')
@@ -86,6 +86,7 @@
                             } else { // IE10+下载
                                 navigator.msSaveBlob(blob, fileName)
                             }
+                            this.$emit('isCLick',false)
                         }).catch(()=>{
                             this.$message.error('请求错误')
                             this.$emit('isCLick',false)
