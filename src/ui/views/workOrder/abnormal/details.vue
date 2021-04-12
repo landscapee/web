@@ -263,11 +263,18 @@
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
                         params: {delete: false, valStatus: 1},
-                        data: ["userIsVerify", "workUser"]
+                        data: ["userIsVerify", "QW_Signature_workUser",'FCB_Signature_workUser','QZ_Signature_workUser']
                     }).then(d => {
                         if (d.code == 200) {
                             let options = {
-                                workUser: d.data.workUser[0] && d.data.workUser[0].valCode,
+                                workUser: {
+                                    QWJJGD:d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
+                                    QWSJGD:d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
+                                    CBGZJLD:d.data.FCB_Signature_workUser[0] && d.data.FCB_Signature_workUser[0].valCode,
+                                    QZGD:d.data.QZ_Signature_workUser[0] && d.data.QZ_Signature_workUser[0].valCode,
+
+                                },
+                                // workUser: d.data.workUser[0] && d.data.workUser[0].valCode,
                                 userIsVerify: d.data.userIsVerify[0] && d.data.userIsVerify[0].valCode,
                             }
                             resolve(options)
@@ -397,6 +404,7 @@
                     if (!$(ele).val()) {
                         this.$message.warning('有输入框为空，请检查')
                         res = false
+                        return false
                     }
                 })
                 return res
@@ -699,7 +707,7 @@
                     // 弱身份
                     this.promiseOptions.then((d) => {
                         if (d.userIsVerify === 'false') {
-                            _this['_' + fnName](item, type, $event, d.workUser, null)
+                            _this['_' + fnName](item, type, $event, d.workUser[this.workorder.type], null)
                         } else if (d.userIsVerify === 'true') {
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,
@@ -1063,7 +1071,7 @@
 
                 this.promiseOptions.then((d) => {
                     if (d.userIsVerify === 'false') {
-                        _this.signFn(type, d.workUser, null, id)
+                        _this.signFn(type, d.workUser[this.workorder.type], null, id)
                     } else if (d.userIsVerify === 'true') {
                         this.$msgBox.showMsgBox({
                             isShowInput: true,
@@ -1283,7 +1291,7 @@
 
                     this.promiseOptions.then((d) => {
                         if (d.userIsVerify === 'false') {
-                            this.signOthFnR(type, $event, d.workUser)
+                            this.signOthFnR(type, $event, d.workUser[this.workorder.type])
                         } else if (d.userIsVerify === 'true') {
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,
