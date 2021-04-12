@@ -354,6 +354,7 @@
                         this.$refs.HYPZ.open({
                             id: this.workorder.id,
                             reason: this.workorder.reason,
+                            fileMap:{},
                             fileList: [],
                         }, this.type)
                     } else {
@@ -377,6 +378,7 @@
                         this.$refs.HYPZ.open({
                             id: this.workorder.id,
                             fileList: arr,
+                            reason: this.workorder.reason,
                             fileMap:obj,
                         }, this.type)
                     } else {

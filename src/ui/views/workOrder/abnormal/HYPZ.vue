@@ -57,7 +57,7 @@
                 this.dialogFormVisible = true
                 this.workId = row.id
                 this.reason = row.reason
-                this.fileMap = row.fileMap
+                this.fileMap = row.fileMap||{}
                 this.fileList = [...row.fileList]
             },
             save() {
