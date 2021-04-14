@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog title="黄页拍照信息" :close-on-click-modal="false" center
+        <el-dialog :title="title" :close-on-click-modal="false" center
                    :visible.sync="dialogFormVisible"
                    :before-close="close">
             <div class="reason">
@@ -36,6 +36,7 @@
         components: {},
         data() {
             return {
+                title:'',
                 type: '',
                 workId: '',
                 reason: '',
@@ -52,7 +53,8 @@
                 this.$emit('init')
             },
 
-            open(row, type) {
+            open(row, type,title) {
+                this.title=title
                 this.type=type
                 this.dialogFormVisible = true
                 this.workId = row.id

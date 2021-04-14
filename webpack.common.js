@@ -45,6 +45,8 @@ module.exports = {
         chunkFilename: '[name].[hash].chunk.js',
         publicPath: '/',
         globalObject: 'this',
+
+
     },
     module: {
         rules: [

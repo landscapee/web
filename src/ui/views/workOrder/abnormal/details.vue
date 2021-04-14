@@ -5,7 +5,7 @@
             <div class="top-toolbar">
                 <div @click="onPreview()">
                     <icon iconClass="imgPre"></icon>
-                    黄页预览
+                    {{getbutonName}}
                 </div>
             </div>
             <!--<el-image-viewer v-if="showViewer" :url-list="urlList" :on-close="closeViewer"></el-image-viewer>-->
@@ -316,6 +316,9 @@
 
         },
         computed: {
+            getbutonName(){
+                return this.workorder&&this.workorder.type&&this.workorder.type.startsWith("WX")?'黄页拍照信息':'拍照信息'
+            },
             getbaseItemVOList() {
                 let l = this.baseItemVOList.length % 3
                 let obj = {
@@ -356,6 +359,7 @@
                 })
             },
             async onPreview() {
+                let s=this.getbutonName
                 if (!this.workorder.pageFile) {
                     if (this.workorder.type.startsWith("QZ")) {
                         this.$refs.HYPZ.open({
@@ -363,7 +367,7 @@
                             reason: this.workorder.reason,
                             fileMap:{},
                             fileList: [],
-                        }, this.type)
+                        }, this.type,s)
                     } else {
                         this.$message.info("该工单暂无黄页图片")
                     }
@@ -387,7 +391,7 @@
                             fileList: arr,
                             reason: this.workorder.reason,
                             fileMap:obj,
-                        }, this.type)
+                        }, this.type,s)
                     } else {
                         this.$message.error('请求文件失败')
                     }
