@@ -134,6 +134,12 @@ export default {
                 this.tableLeftData.records=[]
                 this.getList('left');
             }
+            if (val.path == '/selfCheckPlan'){
+                this.$nextTick(()=>{
+                    this.$refs.mainContent.addEventListener('scroll', this.handleScroll, true);//监听函数
+
+                })
+            }
         }
     },
     created() {
@@ -152,7 +158,10 @@ export default {
 
         });
     },
-
+    beforeRouteLeave(to,from,next){
+        this.$refs.mainContent&&this.$refs.mainContent.removeEventListener('scroll', this.handleScroll);
+        next()
+    },
 　　mounted() {
         if( this.$refs.mainContent){
             this.$refs.mainContent.addEventListener('scroll', this.handleScroll,true);//监听函数

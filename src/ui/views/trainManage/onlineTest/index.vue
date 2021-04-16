@@ -1,12 +1,16 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/onlineTestDo'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/onlineTestIndex'" :key="$route.path" class="QCenterRight G_listOne">
+         <router-view v-if="this.$route.path == '/onlineTestDo'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/historyTestLog'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/onlineTestIndex'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     <!--this.$store.state.user.userInfo.administrativeId-->
                      {{this.$store.state.user.userInfo.name}}-需参加的在线考试
+                </div>
+                <div class="QheadRight">
+                    <div @click="historyLog"><icon iconClass="history" ></icon>历史考试记录</div>
                 </div>
 
             </div>
@@ -80,6 +84,12 @@ export default {
         }
     },
     methods: {
+        historyLog(){
+            this.$router.push({
+                path:'/historyTestLog',
+
+            })
+        },
         lineTest(path,row){
             // console.log(row.examTime,new Date().getTime()- 8.64e7);
 

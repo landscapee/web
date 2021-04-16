@@ -733,6 +733,11 @@ let authRoutes = [
                         name: '参加在线考试',
                         meta: {title: '在线考试',icon: 'xxgl' },
 					},
+                    {   path: '/historyTestLog',
+                        component: () => import('@views/trainManage/onlineTest/history.vue'),
+                        name: '历史考试记录',
+                        meta: {title: '历史考试记录',icon: 'xxgl' },
+					},
 				]
 			},
 			{

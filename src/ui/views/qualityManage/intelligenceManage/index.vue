@@ -186,6 +186,12 @@
                     this.tableLeftData.records=[]
                       this.getList('left');
                 }
+                if(val.path=='/intelligenceManage'){
+                    this.$nextTick(()=>{
+                        this.$refs.mainContent.addEventListener('scroll', this.handleScroll, true);//监听函数
+
+                    })
+                }
             }
         },
         created() {
@@ -213,7 +219,10 @@
                 this.overdue = d.data.items[0].sysParamValue;
             });
         },
-
+        beforeRouteLeave(to,from,next){
+            this.$refs.mainContent&&this.$refs.mainContent.removeEventListener('scroll', this.handleScroll);
+            next()
+        },
         mounted() {
 
             if( this.$refs.mainContent){

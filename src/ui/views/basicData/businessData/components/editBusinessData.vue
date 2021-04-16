@@ -115,7 +115,6 @@ export default {
             .then(data => {
               this.$message.success("保存成功！");
               this.$router.go(-1);
-               this.$eventBus.$emit('updatedata', 'left');
             })
             .catch(error => {
               this.$message.success(error);

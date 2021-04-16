@@ -54,7 +54,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$emit('isCLick',true)
-                        this.close()
+
                         request({
                             timeout: 15000,
                             header: {
@@ -91,6 +91,7 @@
                             this.$message.error('请求错误')
                             this.$emit('isCLick',false)
                         });
+                        this.close()
                     }
                 });
             },

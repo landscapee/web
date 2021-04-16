@@ -23,3 +23,16 @@ export const lineTestConfig = (obj) => {
                 { slot: 'option', label: '操作',width:'80', align: 'center', search:{type:'btn',label:'搜索',icon:"table_search" } },
          ]
 };
+export const historyTest = (obj) => {
+        return [
+                { slot: 'radio' , label: '选择',width:'49',search:{fixed:"left",type:'text',label:'过滤'}},
+                { prop: 'examName', label: '考试名称',   align: 'center', search:{type:'input', prop:'examName',placeholder:"请输入"} },
+                 { prop: 'examTime', label: '截止时间',formatter:timeInfo,   },
+                { prop: 'totalTime', label: '时长(分)',  align: 'center',  },
+                 { prop: 'examType', label: '类型', align: 'center' , search:{type:'select', prop:'examType',placeholder:"请选择",selectProp:['valData','valData'],data:obj.testCategory1}},
+                { prop: 'qualificationType', label: '资质类型', align: 'center',   },
+                { prop: 'businessType', label: '业务类型',  align: 'center',   },
+                 { prop: 'description', label: '简介',  align: 'center',   },
+                 { prop: 'score', label: '分数', align: 'center',   },
+          ]
+};
