@@ -201,10 +201,11 @@
             };
         },
         created() {
-            if(this.$router.history.current.path == '/trainManageAdminAdd'){
-                if (this.$route.query) {
-                    this.type = this.$route.query.type;
+            let num=  this.$route.path.substring(1,4)=='add'?4:5;
+            this.type = this.$route.path.substring(1,num);
 
+            if(this.$route.path.match(/.*?trainManageAdminAdd/)){
+                if (this.$route.query) {
                     request({
                         url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',

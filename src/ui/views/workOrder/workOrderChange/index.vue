@@ -4,16 +4,7 @@
         <div class='QCenterRight G_listOne'>
             <div  >
                 <div class='QHead'>工单变更审核</div>
-                <div class="QheadRight" style="display: none;">
-                    <div @click="rightMethods('','download')"><icon iconClass="add" ></icon>下载</div>
-                    <div @click="rightMethods('','move')"><icon iconClass="edit" ></icon>移动到</div>
-                    <div @click="batchPushFn"><icon iconClass="remove" ></icon>批量推送</div>
-                    <div @click="rightMethods('/addFile','add')"><icon iconClass="info"></icon>新增</div>
-                    <div @click="rightMethods('/addFile','edit')"><icon iconClass="save" ></icon>编辑</div>
-                    <div @click="rightMethods('','delete')"><icon iconClass="reset" ></icon>删除</div>
-                    <div @click="rightMethods('/addFile','info')"><icon iconClass="reset" ></icon>详情</div>
-                    <!-- <div @click="rightMethods"><icon iconClass="reset" ></icon>导出Excel</div> -->
-                </div>
+
             </div>
              <div class="tableOneBox">
                 <SearchTable
@@ -27,7 +18,7 @@
                     @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange"
                 >
-                    <el-table-column slot="option" align='center' label="操作" :width="150"  >
+                    <el-table-column v-if="isZDRole" slot="option" align='center' label="操作" :width="150"  >
                         <template  slot-scope="{ row }"> <!--||row.state==2--> <!--row.state==1-->
                             <el-tooltip class="item" effect="dark" :enterable="false" content="通过" placement="top">
                                  <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
@@ -73,10 +64,18 @@ export default {
             positionArr:[]
         };
     },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('GDGLZDGLY')
+        },
+    },
     mounted(){
-        // if(!this.$route.query.folderId){
-        //     this.$router.push({path:'/fileManage'});
-        // }
+
+        if(!this.isZDRole){
+            let arr=sysParameterTable()
+            arr.splice(arr.length-1,1)
+            this.businessTableConfig=arr
+        }
         this.init()
     },
     methods:{

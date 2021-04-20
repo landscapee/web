@@ -1,22 +1,24 @@
 <template>
     <div>
 
-         <router-view v-if="this.$route.path== '/dangerousDataAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path== '/adddangerousDataAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path== '/editdangerousDataAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path== '/infodangerousDataAdd'" :key="$route.path"></router-view>
         <div v-else-if="this.$route.path== '/dangerousDataIndex'" :key="$route.path"  class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     危险数据
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div  v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div  v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel"><icon iconClass="export" ></icon>
                         <!--<a ref="a" :href="`${this.$ip}/mms-qualification/download/dangerData`"></a>-->
                         导出
                     </div>
-                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>危险数据上传</div>
+                    <div  v-if="isZDRole" @click="upDocInfo('info')"><icon iconClass="upload" ></icon>危险数据上传</div>
 
                 </div>
             </div>
@@ -73,6 +75,12 @@ export default {
             sort:{},
             selectId:null
         };
+    },
+    computed:{
+
+        isZDRole(){
+            return !this.$store.getters.isZDRole('ZLGLZDGLY')
+        },
     },
    created() {
         if(this.$route.path== '/dangerousDataIndex'){
@@ -197,12 +205,13 @@ export default {
             console.log(this.$route.path);
             let data=JSON.stringify(this.row)
             if(tag=='add'){
-                this.$router.push({path:'/dangerousDataAdd',query:{type:'add'}});
+                this.$router.push({path:'/adddangerousDataAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                let p='/'+tag+'dangerousDataAdd'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/dangerousDataAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:p,query:{type:tag,id:this.row.id}});
                 }
             }
         },

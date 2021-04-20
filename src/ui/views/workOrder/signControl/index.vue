@@ -4,24 +4,25 @@
             element-loading-text="文件下载中"
             element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.8)">
-         <router-view v-if="this.$route.path == '/WorkAbnormalDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/WorkPaperDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/WorkAbnormalAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/signControlAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$route.path == '/signControl'"
+         <router-view v-if="this.$route.path == '/editWorkAbnormalDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoWorkAbnormalDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/addWorkAbnormalAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editWorkAbnormalAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoWorkAbnormalAdd'" :key="$route.path"></router-view>
+         <div v-else-if="this.$route.path == '/signControl'"
              :key="$route.path"
              class="QCenterRight G_listOne">
             <div class="">
                 <div class="QHead">
                     工单完工签署
                 </div>
-                <div class="QheadRight">
-                    <div @click="seeOther(null,'WorkAbnormalAdd')">
+                <div  class="QheadRight">
+                    <div v-if="isZDRole" @click="seeOther(null,'WorkAbnormalAdd')">
                         <icon iconClass="#" style="width: 0;"></icon>
                         纸制填报工单导入
                     </div>
                     <!--                    <div @click="abnormalChange( )"><icon iconClass="edit" ></icon>异常更改</div>-->
-                    <div @click="addOrEditOrInfo('info')">
+                    <div  @click="addOrEditOrInfo('info')">
                         <icon iconClass="info" style="margin-right:0"></icon>
                         详情
                     </div>
@@ -61,13 +62,13 @@
                                         <icon iconClass="exportNew"></icon>
                                     </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" :enterable="false" content="解锁" placement="top">
+                                <el-tooltip  class="item" effect="dark" :enterable="false" content="解锁" placement="top">
                                      <span v-if="scope.row.state===3 && scope.row.isOffline==='线上' && scope.row.template.type==='WXGD'"
                                            @click="unlock(scope.row)" class="rowSvg" style="margin-left: 10px">
                                         <icon iconClass="unlock"></icon>
                                     </span>
                                 </el-tooltip>
-                                <el-tooltip class="item" effect="dark" :enterable="false" content="异常更改"
+                                <el-tooltip v-if="isZDRole" class="item" effect="dark" :enterable="false" content="异常更改"
                                             placement="top">
                                      <span v-if="(scope.row.template.type!=='WXGD') || (scope.row.isOffline==='线下')"
                                            @click="isLineWX(scope)  ? '':abnormalChange(scope.row)"
@@ -108,6 +109,9 @@
         },
         name: 'authorizeManage',
         computed: {
+            isZDRole(){
+                return !this.$store.getters.isZDRole('GDGLZDGLY')
+            },
             isLineWX() {
                 return (scope) => {
                     return scope.row.state !== 3 && scope.row.template.type !== 'WXGD' && scope.row.isOffline === '线上'
@@ -130,6 +134,7 @@
                 selectId: null
             };
         },
+
         created() {
             if (this.$router.history.current.path == '/signControl') {
                 this.getList();
@@ -200,14 +205,11 @@
 
                 this.$refs.Export.open(row)
             },
-            seeOther(row, path) {
-                let src = path
+            seeOther(row) {
+
                 let data = row && row.id
-                if (row && row.offlineFile) {
-                    src = '/WorkPaperDetails'
-                    data = row.offlineFile
-                }
-                this.$router.push({path: src, query: {type: 'add', id: data}});
+
+                this.$router.push({path: '/addWorkAbnormalAdd', query: {  id: data}});
 
             },
             requestTable(searchData) {
@@ -257,13 +259,13 @@
                     let s = this.checkArr.length > 0 ? '只能选中一行数据' : '请先选中一行数据'
                     this.$message.error(s);
                 } else {
-                    let src = '/WorkAbnormalDetails'
+                    let src = '/infoWorkAbnormalDetails'
 
                     let data = this.checkArr[0].id
                     if (this.checkArr[0] && this.checkArr[0].offlineFile) {
-                        src = '/WorkAbnormalAdd'
+                        src = '/infoWorkAbnormalAdd'
                     }
-                    this.$router.push({path: src, query: {id: data, type: 'info'}});
+                    this.$router.push({path: src, query: {id: data }});
                 }
             },
             unlock(row) {
@@ -286,13 +288,13 @@
             },
             abnormalChange(row) {
                 if (row.state === 3) {
-                    let src = '/WorkAbnormalDetails';
+                    let src = '/editWorkAbnormalDetails';
                     let data = row.id;
                     if (row.offlineFile) {
-                        src = '/WorkAbnormalAdd'
+                        src = '/editWorkAbnormalAdd'
                     }
                     localStorage.setItem('refresh', 'true')
-                    this.$router.push({path: src, query: {id: data, type: 'edit'}});
+                    this.$router.push({path: src, query: {id: data }});
 
                 } else {
                     this.$message.error('请先完成工单');

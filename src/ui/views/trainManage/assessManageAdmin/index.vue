@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <div v-if="this.$router.history.current.path == '/assessManageAdmin'" class="G_listTwo">
+        <div v-if="this.$route.path == '/assessManageAdmin'" class="G_listTwo">
             <div class="QCenterRight">
                 <div class="QHead_list">
                     <span>考核管理</span>
@@ -37,15 +37,15 @@
                                 员工考核情况
                             </div>
                             <div class="QheadRight">
-                                <div @click="moreconclusion(1)">
+                                <div v-if="isZDRole" @click="moreconclusion(1)">
                                     <icon iconClass="add" style="width:0"></icon>
                                     批量合格
                                 </div>
-                                <div @click="moreRelative('edit')">
+                                <div v-if="isZDRole" @click="moreRelative('edit')">
                                     <icon iconClass="edit" style="width:0"></icon>
                                     批量关联
                                 </div>
-                                <div @click="morePush">
+                                <div v-if="isZDRole" @click="morePush">
                                     <icon iconClass="remove" style="width:0"></icon>
                                     批量推送
                                 </div>
@@ -66,17 +66,20 @@
                                      @handleSizeChange="handleSizeChange1" @handleCurrentChange="handleCurrentChange1"
                                      :showHeader="false" :showPage="true">
 
-                            <el-table-column slot="certificateNumber" align="center" label="证书编号" :width="140">
+                            <el-table-column   slot="certificateNumber" align="center" label="证书编号" :width="140">
                                 <template slot-scope="scope">
-                                    <el-input class="rowinput" v-model="scope.row.certificateNo"
+                                    <span v-if="!isZDRole ">
+                                        {{scope.row.certificateNo||'--'}}
+                                    </span>
+                                    <el-input v-else class="rowinput" v-model="scope.row.certificateNo"
                                               @click.stop.native
                                               @keyup.enter.native="saveNumber(scope.row)"
                                               :placeholder="scope.row.qualifiedStatus!='合格'?'操作合格后可编辑':'可编辑'"
-                                              :disabled="scope.row.qualifiedStatus!='合格'">
+                                              :disabled=" scope.row.qualifiedStatus!='合格'">
                                     </el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column slot="option" align="center" label="操作" :width="100">
+                            <el-table-column v-if="isZDRole"  slot="option" align="center" label="操作" :width="100">
                                 <template slot-scope="scope">
                                     <el-tooltip class="item" effect="dark" :enterable="false" content="合格"
                                                 placement="top">
@@ -145,7 +148,11 @@
                 rightSort: {}
             };
         },
-        watch: {},
+        computed:{
+            isZDRole(){
+                return !this.$store.getters.isZDRole('PXKHZDGLY')
+            },
+        },
         created() {
             this.leftParams.current = 1;
             this.getList('left');
@@ -156,8 +163,12 @@
                 data: ["trainSign", "trainType", 'assessConclusion']
             }).then(d => {
                 let obj = d.data
-                this.rightTableConfig = rightConfig(obj)
                 this.leftTableConfig = leftConfig(obj)
+                let arr= rightConfig(obj)
+                    if(!this.isZDRole){
+                        arr.splice(arr.length-1,1)
+                    }
+                this.rightTableConfig =arr
 
             });
         },

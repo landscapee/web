@@ -1,23 +1,25 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/trainManageAdminAdd'" :key="$route.path"></router-view>
-         <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminPush'" :key="$route.path"></router-view>
-         <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
-         <router-view v-else-if="this.$router.history.current.path == '/trainManageAdminResults'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/addtrainManageAdminAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/edittrainManageAdminAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/infotrainManageAdminAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/trainManageAdminPush'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/trainManageAdminResultsAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/trainManageAdminResults'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/trainManageAdmin'" :key="$route.path" class="QCenterRight G_listOne">
+        <div v-else-if="this.$route.path == '/trainManageAdmin'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     培训管理
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
-                    <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div   @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <!--<a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>-->
-                    <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
+                    <div   @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
             <div class="tableOneBox">
@@ -30,7 +32,7 @@
                     </el-table-column>
                      <el-table-column align="center" slot="option" label="操作" :width="100" >
                         <template  slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" :enterable="false" content="推送员工" placement="top">
+                            <el-tooltip v-if="isZDRole" class="item" effect="dark" :enterable="false" content="推送员工" placement="top">
                                   <span @click="pushStaff(scope.row)" class="rowSvg">
                                         <icon iconClass="pushNew"  ></icon>
                                     </span>
@@ -83,7 +85,7 @@ export default {
         };
     },
    created() {
-        if(this.$router.history.current.path == '/trainManageAdmin'){
+        if(this.$route.path == '/trainManageAdmin'){
             this.getList();
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -101,6 +103,11 @@ export default {
             console.log(1,val,nm);
 
         }
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
     },
     methods: {
         open1() {
@@ -168,12 +175,13 @@ export default {
         },
         addOrEditOrInfo(tag){
              if(tag=='add'){
-                this.$router.push({path:'/trainManageAdminAdd',query:{type:'add'}});
+                this.$router.push({path:'/addtrainManageAdminAdd',query:{ }});
             }else if(tag == 'edit' || tag == 'info'){
+                 let p='/'+tag+'trainManageAdminAdd'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/trainManageAdminAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:p,query:{ id:this.row.id}});
                 }
             }
         },

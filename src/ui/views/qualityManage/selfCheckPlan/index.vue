@@ -1,9 +1,13 @@
 <template>
     <div :key="key">
 
-        <router-view v-if="this.$router.history.current.path == '/selfCheckPlanDetails'" :key="$route.path"></router-view>
-        <router-view v-if="this.$router.history.current.path == '/selfCheckPlanAdd'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/selfCheckPlan'" class="G_listTwo" >
+        <router-view v-if="this.$router.history.current.path == '/addselfCheckPlanDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/editselfCheckPlanDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/infoselfCheckPlanDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/addselfCheckPlanAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/editselfCheckPlanAdd'" :key="$route.path"></router-view>
+        <!--<router-view v-else-if="this.$router.history.current.path == '/infoselfCheckPlanAdd'" :key="$route.path"></router-view>-->
+        <div v-else-if="this.$router.history.current.path == '/selfCheckPlan'" class="G_listTwo" >
             <div class="QCenterRight">
                 <div class="QHead">
                      法定自查检查计划
@@ -14,9 +18,9 @@
                         <div class="positiondiv">
                             <div class="twoHead">计划</div>
                             <div class="QheadRight">
-                                <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                                <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                                <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                                <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                                <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                                <div v-if="isZDRole" @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                                 <!--<div class="isDisabled" @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>-->
                                 <div @click="exportExcel"><icon iconClass="export" ></icon>导出</div>
                             </div>
@@ -38,16 +42,13 @@
                             计划明细
                         </div>
                         <div class="QheadRight">
-                            <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                            <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                            <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                            <div v-if="isZDRole" @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                            <div v-if="isZDRole" @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                            <div v-if="isZDRole" @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                             <!--<div><icon iconClass="export" ></icon>导出Excel</div>-->
                         </div>
-
-
                     </div>
-
                        <SearchTable class="right-subset-table" :data="tableRightData" :tableConfig="businessSubsetConfig" refTag="right-table" ref="right-table"   @requestTable="requestTable(arguments[0],'right','right-table')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="HeaderSort(arguments[0], 'right-table','right','rightSort')"    >
                         <el-table-column slot="radio" label="选择" :width="49"   >
                             <template slot-scope="{ row }">
@@ -105,15 +106,20 @@ export default {
             rightSort:{}
         };
     },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('ZLGLZDGLY')
+        },
+    },
     watch:{
         '$route':function(val,nm){
             console.log(1,val,nm);
-            if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanAdd'){
+            if(val.path=='/selfCheckPlan'&&(nm.path=='/addselfCheckPlanAdd'||nm.path=='/editselfCheckPlanAdd'||nm.path=='/infoselfCheckPlanAdd')){
                 this.key=!this.key
                 this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                 this.leftParams.current=1
                 this.getList('left');
-            }else if(val.path=='/selfCheckPlan'&&nm.path=='/selfCheckPlanDetails'){
+            }else if(val.path=='/selfCheckPlan'&&(nm.path=='/addselfCheckPlanDetails'||nm.path=='/editselfCheckPlanDetails'||nm.path=='/infoselfCheckPlanDetails')){
                 this.key=!this.key
                 this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                 this.rightParams.current = 1
@@ -339,14 +345,14 @@ export default {
         //左侧表格新增编辑
         addOrEditOrInfo(tag){
             if(tag=='add'){
-                this.$router.push({path:'/selfCheckPlanAdd',query:{type:'add'}});
+                this.$router.push({path:'/addselfCheckPlanAdd',query:{ }});
             }else if(tag == 'edit' || tag=='info'){
-
+                let p='/'+tag+'selfCheckPlanAdd'
                 if(this.leftSelectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
                     let data=JSON.stringify(this.leftRow)
-                    this.$router.push({path:'/selfCheckPlanAdd',query:{type:tag, id:this.leftSelectId}});
+                    this.$router.push({path:p,query:{  id:this.leftSelectId}});
                 }
             }
         },
@@ -357,16 +363,17 @@ export default {
                    this.$message.error('请先选中左侧列表一行数据');
                 }else{
 
-                        this.$router.push({path:'/selfCheckPlanDetails',query:{type:'add',id:this.leftSelectId}});
+                        this.$router.push({path:'/addselfCheckPlanDetails',query:{type:'add',id:this.leftSelectId}});
 
                 }
             }else if(tag == 'edit' || tag=='info'){
+                let p='/'+tag+'selfCheckPlanDetails'
                 if(this.rightSelectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
                     let data=JSON.stringify(this.rightRow)
 
-                    this.$router.push({path:'/selfCheckPlanDetails',query:{type:tag, id:this.rightSelectId}});
+                    this.$router.push({path:p,query:{ id:this.rightSelectId}});
                 }
             }
         },

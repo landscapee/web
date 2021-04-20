@@ -1,10 +1,12 @@
 <template>
     <div class='index'>
-        <router-view v-if="this.$router.history.current.path == '/detail'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/batchPush'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/fileHistory'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/readTrack'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path == '/detail'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/addFile'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editFile'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoFile'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/batchPush'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/fileHistory'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/readTrack'" :key="$route.path"></router-view>
         <div class='inner' v-else>
             <div class='top_content'>
                 <div class='header'><span>文件管理</span></div>
@@ -24,12 +26,12 @@
             </div>
         </div>
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li @click='contextmenuOpenFileFn'>打开</li>
-            <li @click='contextmenuEditNameFn'>重命名</li>
-            <li @click='contextmenuDeleteFn'>删除</li>
+            <li  @click='contextmenuOpenFileFn'>打开</li>
+            <li v-if="isZDRole" @click='contextmenuEditNameFn'>重命名</li>
+            <li v-if="isZDRole" @click='contextmenuDeleteFn'>删除</li>
         </ul>
         <ul v-show="mainVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li @click="createFileFn">新建文件夹</li>
+            <li v-if="isZDRole" @click="createFileFn">新建文件夹</li>
             <li @click="updateFn">刷新</li>
         </ul>
     </div>
@@ -64,6 +66,11 @@ export default {
             mainVisible:false,
             activeItem: {}
         }
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('JSZLZDGLY')
+        },
     },
     mounted(){
         this.init()

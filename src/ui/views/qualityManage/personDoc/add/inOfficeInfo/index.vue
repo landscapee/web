@@ -1,25 +1,24 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/inOfficeInfoAdd'" :key="$route.path"></router-view>
 
-        <div   class="G_listOne" v-else>
+        <div   class="G_listOne"  >
             <div class="QCenterRight personTable">
                 <div class=" QHead QHead1 ">
                     任职信息
                 </div>
                 <div class="QheadRight " >
-                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="showButton" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="新增" placement="top">
                             <icon iconClass="add"></icon>
                         </el-tooltip>
                     </div>
-                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="showButton" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
                             <icon iconClass="edit"></icon>
                         </el-tooltip>
                     </div>
-                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="showButton" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
                             <icon iconClass="remove"></icon>
                         </el-tooltip>
@@ -76,7 +75,15 @@ export default {
    created() {
 
     },
-
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('ZLGLZDGLY')
+        },
+        showButton(){
+            console.log(this.isZDRole, this.type == 'edit');
+            return this.isZDRole&&this.type=='edit'
+        }  ,
+    },
     methods: {
         requestTable(searchData){
             this.form = searchData;
@@ -125,14 +132,16 @@ export default {
             this.$set(this.tableData,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let s='/'
-            if(this.$route.path=='/ZuserDoc'){
-                s='/Z'
-            }else if(this.$route.path=='/SuserDoc'){
-                s='/S'
+            let p='/inOfficeInfoAdd/'+tag
+            if(tag=='info'){
+                p='/infoinOfficeInfoAdd'
             }
-            let p=s+'inOfficeInfoAdd'
-             if(tag=='add'){
+            if(this.$route.path=='/ZuserDoc'){
+                p='/ZinOfficeInfoAdd'
+            }else if(this.$route.path=='/SuserDoc'){
+                p='/SinOfficeInfoAdd'
+            }
+              if(tag=='add'){
                 this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){

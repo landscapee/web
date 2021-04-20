@@ -1,19 +1,21 @@
 <template>
     <div>
 
-        <router-view v-if="this.$router.history.current.path == '/WorkTemplateAdd'" :key="$route.path"></router-view>
-         <router-view v-else-if="this.$router.history.current.path == '/SuserTrain'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/WorkTemplate'" :key="$route.path" class="QCenterRight G_listOne">
+        <router-view v-if="this.$route.path == '/addWorkTemplateAdd'" :key="$route.path"></router-view>
+         <!--<router-view v-else-if="this.$router.history.current.path == '/SuserTrain'" :key="$route.path"></router-view>-->
+         <router-view v-else-if="this.$route.path == '/editWorkTemplateAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/infoWorkTemplateAdd'" :key="$route.path"></router-view>
+         <div v-else-if="this.$route.path == '/WorkTemplate'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     工单模板管理
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div  v-if="isZDRole"  @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div  v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="upTemplate()"><icon iconClass="upload" ></icon>上传模板</div>
+                    <div  v-if="isZDRole" @click="upTemplate()"><icon iconClass="upload" ></icon>上传模板</div>
                     <div @click="exportTemplate()"><icon iconClass="export" ></icon>导出</div>
                 </div>
             </div>
@@ -32,7 +34,7 @@
                          </template>
                     </el-table-column>
                     <!--:show-overflow-tooltip="true"-->
-                    <el-table-column align="center" slot="option" label="操作" :width="100">
+                    <el-table-column   v-if="isZDRole" align="center" slot="option" label="操作" :width="100">
                         <template  slot-scope="scope">
                             <div >
                                 <el-tooltip class="item" effect="dark" :enterable="false" content="改版" placement="top">
@@ -102,11 +104,19 @@
                     data:[ 'W_versionState' ]
                 }).then(d => {
                     let obj=d.data||{}
-                    this.tableConfig=workOrderConfig(obj )
+                    let arr=workOrderConfig(obj )||[]
+                    if(!this.isZDRole){
+                        arr.splice(arr.length-1,1)
+                    }
+                    this.tableConfig=arr
                 });
                }
         },
-
+        computed:{
+            isZDRole(){
+                return !this.$store.getters.isZDRole('GDGLZDGLY')
+            },
+        },
         methods: {
             exportTemplate(){
                 this.$refs.SelectAirline.open()
@@ -124,7 +134,7 @@
                 this.optionsPrompt('启用',url,row)
 
             },
-            addOrEditOrInfo1(row,tag){
+            addOrEditOrInfo1(row){
                 this.optionsPrompt('改版',()=>{
                     request({
                         url:`${this.$ip}/mms-workorder/template/copyByVersion`,
@@ -136,7 +146,7 @@
                         }
                     }).then(d => {
                         if( d.code==200){
-                            this.$router.push({path:'/WorkTemplateAdd',query:{type:tag,id:d.data.typeVO.id}});
+                            this.$router.push({path:'/editWorkTemplateAdd',query:{ id:d.data.typeVO.id}});
                         }
                     });
                 })
@@ -220,12 +230,13 @@
             },
             addOrEditOrInfo(tag){
                 if(tag=='add'){
-                    this.$router.push({path:'/WorkTemplateAdd',query:{type:'add'}});
+                    this.$router.push({path:'/addWorkTemplateAdd',query:{ }});
                 }else if(tag == 'edit' || tag == 'info'){
+                    let p='/'+tag+'WorkTemplateAdd'
                     if(this.selectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
-                        this.$router.push({path:'/WorkTemplateAdd',query:{type:tag,id:this.row.id}});
+                        this.$router.push({path:p,query:{type:tag,id:this.row.id}});
                     }
                 }
             },

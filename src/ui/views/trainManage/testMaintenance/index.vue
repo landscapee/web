@@ -1,19 +1,23 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testMaintenanceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceAddAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testMaintenanceSee'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/addtestMaintenanceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/edittestMaintenanceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infotestMaintenanceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/addtestMaintenanceAddAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/edittestMaintenanceAddAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infotestMaintenanceAddAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/testMaintenanceSee'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/testMaintenance'" :key="$route.path" class="QCenterRight G_listOne">
+        <div v-else-if="this.$route.path == '/testMaintenance'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     试卷维护
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole"  @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div  v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出</div>-->
                 </div>
@@ -26,11 +30,6 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <!--<el-table-column :show-overflow-tooltip="true" slot="remark" label="备注" :width="190" fixed="right">-->
-                        <!--<template  slot-scope="{ row }">-->
-                            <!--<span>{{row.remark}}</span>-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
 
                 </SearchTable>
             </div>
@@ -64,7 +63,7 @@ export default {
         };
     },
    created() {
-        if(this.$router.history.current.path == '/testMaintenance'){
+        if(this.$route.path == '/testMaintenance'){
             this.getList();
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -80,11 +79,11 @@ export default {
         }
 
     },
-    watch:{
-        '$route':function(val,nm){
-            console.log(1,val,nm);
 
-        }
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
     },
     methods: {
         exportExcel(){
@@ -138,12 +137,13 @@ export default {
         },
         addOrEditOrInfo(tag){
              if(tag=='add'){
-                this.$router.push({path:'/testMaintenanceAdd',query:{type:'add'}});
+                this.$router.push({path:'/addtestMaintenanceAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                 let p='/'+tag+'testMaintenanceAdd'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testMaintenanceAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:p,query:{type:tag,id:this.row.id}});
                 }
             }
         },

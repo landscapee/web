@@ -1,12 +1,10 @@
 <template>
 	<div>
-  		<router-view v-if="this.$route.path ==getUrl('inOfficeInfoAdd')" :key="$route.path"></router-view>
-		<router-view v-else-if="this.$route.path == getUrl('workExperienceAdd')"
-					 :key="$route.path"></router-view>
-		<router-view v-else-if="this.$route.path == getUrl('certificateAdd')"
-					 :key="$route.path"></router-view>
-		<router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
-		<router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
+  		<router-view v-if="getUrlBlo('inOfficeInfoAdd')" :key="$route.path"></router-view>
+  		<router-view v-else-if="getUrlBlo('workExperienceAdd')" :key="$route.path"></router-view>
+  		<router-view v-else-if="getUrlBlo('certificateAdd')" :key="$route.path"></router-view>
+		<router-view v-else-if="getUrlBlo('unsafeAdd')" :key="$route.path"></router-view>
+		<router-view v-else-if="getUrlBlo('workStyle')" :key="$route.path"></router-view>
 		<div class="addPersonDoc" ref="export" style="width: 100%;" v-else>
 			<div class="QCenterRight" style="margin-right: 30px">
 				<div class="QHead">
@@ -396,50 +394,45 @@
 							trigger: 'blur'
 						}
 					]
-					// userNumber: [{ required:true,message:'请选择', trigger: "blur" }],
-				},
+ 				},
 				type: "add",
 				sexOptions: [{value: "男", label: "男"}, {value: "女", label: "女"}]
 			};
 		},
 		computed:{
-		  getUrl(){
-              return (p)=>{
-                  let s='/'
-                  if(this.$route.path.startsWith('/Z')){
-                      s='/Z'
-                  }else if(this.$route.path.startsWith('/S')){
-                      s='/S'
-                  }
-                  return s+p
-			  }
-		  },
+		    getType(){
+				return this.type
+			},
+
+            getUrlBlo(){
+                return (p)=>{
+                    let blo= this.$route.path=='/Z'+p|| this.$route.path=='/S'+p|| this.$route.path=='/'+p+'/add'|| this.$route.path=='/'+p+'/edit'|| this.$route.path=='/info'+p
+                    return blo
+                }
+            },
 		},
 		mounted() {
             eleDateShow()
             inputLength(this)
-            console.log(2,1,2,3,this.$route.path , this.getUrl('inOfficeInfoAdd'));
-        },
+         },
 		created() {
-            if (this.$route.path == '/addPersonDoc'||this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'){
+            if (this.$route.path.match(/\/.*?addPersonDoc\/?.*/)||this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'){
                 this.initPage()
+                request({
+                    url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params: {delete: false},
+                    data: ['dept']
+                }).then(d => {
+                    if (d.code == 200) {
+                        this.deptData = d.data.dept
+                        d.data.dept.map((k, l) => {
+                            this.$set(this.deptObj,k.valCode,k.valData);
+                        })
+                    }
+                });
 			}
-                if (this.$route.path == '/addPersonDoc') {
 
-				request({
-					url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
-					method: 'post',
-					params: {delete: false},
-					data: ['dept']
-				}).then(d => {
-					if (d.code == 200) {
-						this.deptData = d.data.dept
-						d.data.dept.map((k, l) => {
-							this.$set(this.deptObj,k.valCode,k.valData);
-						})
-					}
-				});
-			}
 		},
 
 		methods: {
@@ -616,9 +609,15 @@
 			},
 			initPage() {
 				if (this.$route.query  ) {
-					this.type = this.$route.query.type;
-					if (this.$route.query.userId) {
-						this.$route.meta.paramsId = {id: this.$route.query.id,userId:this.$route.query.userId, type: this.$route.query.type}
+					let arr = this.$route.path.split('/');
+                    this.type = arr[arr.length-1];
+                    console.log(111111111,this.$route.path.substring(1, 5) );
+                    if(this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'||this.$route.path.substring(1,5)=='info'){
+					    this.type='info'
+					}
+
+                     if (this.$route.query.userId) {
+ 						this.$route.meta.paramsId = {id: this.$route.query.id,userId:this.$route.query.userId, type: this.$route.query.type}
 					}
 					this.$route.meta.title =
 						this.type == "add"
@@ -641,7 +640,8 @@
 						}
 					}).then((d) => {
 						if (d.responseCode === 1000 && d.data) {
-							this.userArr = [...d.data]
+
+                            this.userArr = [...d.data]
 							d.data.map((k, l) => {
 								this.userArrObj[k.id] = k
 							})

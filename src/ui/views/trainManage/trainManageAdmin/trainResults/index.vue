@@ -34,7 +34,7 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" align="center" :width="100"  >
+                    <el-table-column v-if="isZDRole"  slot="option" label="操作" align="center" :width="100"  >
                         <template  slot-scope="scope">
                             <el-tooltip class="item" effect="dark" :enterable="false" content="培训签到&评价" placement="top">
                                 <span @click="SignEvaluation(scope.row)" class="rowSvg" style="margin-right: 10px">
@@ -82,6 +82,11 @@ export default {
             selectId:null,
         };
     },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
+    },
    created() {
         if(this.$router.history.current.path == '/trainManageAdminResults'){
             this.$route.meta.paramsId={id:this.$route.query.id}
@@ -93,7 +98,11 @@ export default {
                 data:['trainType']
             }).then(d => {
                 let obj=d.data
-                this.tableConfig =trainAdminResultsConfig( obj)
+               let arr =trainAdminResultsConfig( obj)
+                if(!this.isZDRole){
+                   arr.splice(arr.length-1,1)
+                }
+                this.tableConfig=arr
             });
             this.getList();
         }

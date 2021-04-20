@@ -1,19 +1,21 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/testManageAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/addtestManageAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/edittestManageAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infotestManageAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/testManagePushStaff'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/testManageResults'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/testManage'" :key="$route.path" class="QCenterRight G_listOne">
+        <div v-else-if="this.$route.path == '/testManage'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     考试管理
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole"  @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole"  @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div v-if="isZDRole"  @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <!--<div @click="exportExcel"><icon iconClass="export" ></icon><a ref="a" :href="`${this.$ip}/mms-training/download/securityInformation`"></a>导出Excel</div>-->
                 </div>
@@ -28,7 +30,7 @@
                     </el-table-column>
                     <el-table-column   slot="option" label="操作" align="center" :width="100"  >
                         <template  slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" :enterable="false" content="考试推送员工" placement="top">
+                            <el-tooltip v-if="isZDRole" class="item" effect="dark" :enterable="false" content="考试推送员工" placement="top">
                                 <span @click="pushStaff('/testManagePushStaff',scope.row)" class="rowSvg">
                                         <icon iconClass="pushNew"  ></icon>
                                     </span>
@@ -73,8 +75,13 @@ export default {
             selectId:null
         };
     },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
+    },
    created() {
-        if(this.$router.history.current.path == '/testManage'){
+        if(this.$route.path == '/testManage'){
             this.getList();
             request({
                 url:`${this.$ip}/mms-training/paperInfo/list`,
@@ -161,14 +168,14 @@ export default {
             this.$set(this.tableData.records,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let data=JSON.stringify(this.row)
-            if(tag=='add'){
-                this.$router.push({path:'/testManageAdd',query:{type:'add'}});
+             if(tag=='add'){
+                this.$router.push({path:'/addtestManageAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                 let p='/'+tag+'testManageAdd'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/testManageAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:p,query:{type:tag,id:this.row.id}});
                 }
             }
         },

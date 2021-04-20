@@ -6,12 +6,14 @@
         <router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
 
-        <router-view v-else-if="this.$router.history.current.path == '/addQualifications'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/addQualificationsDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/ZuserDoc'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/ZuserAuth'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/ZuserTrain'" :key="$route.path"></router-view>
-        <div v-else="this.$router.history.current.path == '/intelligenceManage'"
+        <router-view v-else-if="this.$route.path == '/addQualifications'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editQualifications'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/addQualificationsDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editQualificationsDetails'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/ZuserDoc'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/ZuserAuth'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/ZuserTrain'" :key="$route.path"></router-view>
+        <div v-else="this.$route.path == '/intelligenceManage'"
              class="G_listTwo" >
             <div class="QCenterRight">
                 <div class="QHead">
@@ -21,7 +23,7 @@
                     <div  @click="exportWord"  >
                         <icon iconClass="export"></icon>导出Excel
                     </div>
-                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>资质上传</div>
+                    <div v-if="isZDRole" @click="upDocInfo('info')"><icon iconClass="upload" ></icon>资质上传</div>
 
                 </div>
                 <div class="QlistBody Qdisplay tableTwoBox" ref="mainContent">
@@ -31,9 +33,9 @@
                                 员工资质证书
                             </div>
                             <div class="QheadRight">
-                                <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                                <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                                 <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                                <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                                <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                                 <div v-if="isZDRole" @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             </div>
                         </div>
                         <SearchTable  ref="TableLeft" :data="tableLeftData" :tableConfig="leftTableConfig"  refTag="TableLeft" @requestTable="requestTable(arguments[0],'left','TableLeft')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'left','tableLeftData')" @headerSort="headerSort(arguments[0],'TableLeft','left','leftSort')"    >
@@ -73,9 +75,9 @@
                                 证书的资质清单
                             </div>
                             <div class="QheadRight">
-                                <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                                <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                                <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                                <div v-if="isZDRole" @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                                <div v-if="isZDRole" @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                                <div v-if="isZDRole" @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             </div>
                         </div>
                         <SearchTable  :tableRowClassName="tableRowClassName"  scrollHeight="400" ref="TableRight" :data="tableRightData" :tableConfig="rightTableConfig"  refTag="TableRight" @requestTable="requestTable(arguments[0],'right','TableRight')"   @listenToCheckedChange="listenToCheckedChange(arguments[0],'right','tableRightData')" @headerSort="headerSort(arguments[0],'TableRight','right','rightSort')"   >
@@ -116,9 +118,11 @@
             getUrl(){
                 return (p)=>{
                     let s='/Z'
-
                     return s+p
                 }
+            },
+            isZDRole(){
+                return !this.$store.getters.isZDRole('ZLGLZDGLY')
             },
         },
         data() {
@@ -160,12 +164,12 @@
         watch:{
             '$route':function(val,nm){
                  console.log(1,val,nm);
-                if(val.path=='/intelligenceManage'&&nm.path=='/addQualifications'){
+                if(val.path=='/intelligenceManage'&&(nm.path=='/addQualifications'||nm.path=='/editQualifications'||nm.path=='/infoQualifications')){
                     this.key=!this.key
                     this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
-                }else if(val.path=='/intelligenceManage'&&nm.path=='/addQualificationsDetails'){
+                }else if(val.path=='/intelligenceManage'&&(nm.path=='/addQualificationsDetails'||nm.path=='/editQualificationsDetails'||nm.path=='/infoQualificationsDetails')){
                     this.key=!this.key
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
@@ -196,7 +200,7 @@
         },
         created() {
             console.log(1);
-            if(this.$router.history.current.path == '/intelligenceManage'){
+            if(this.$route.path == '/intelligenceManage'){
                 this.leftParams.current = 1;
                 this.getList('left');
                 request({
@@ -286,14 +290,14 @@
             //左侧表格新增编辑
             addOrEditOrInfo(tag){
                 if(tag=='add'){
-                    this.$router.push({path:'/addQualifications',query:{type:'add'}});
+                    this.$router.push({path:'/addQualifications',query:{ }});
                 }else if(tag == 'edit' || tag=='info'){
 
                     if(this.leftSelectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
                         let data=JSON.stringify(this.leftRow)
-                        this.$router.push({path:'/addQualifications',query:{type:tag, id:this.leftSelectId}});
+                        this.$router.push({path:'/editQualifications',query:{  id:this.leftSelectId}});
                     }
                 }
             },

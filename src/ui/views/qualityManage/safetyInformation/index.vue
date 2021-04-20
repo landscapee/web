@@ -1,18 +1,20 @@
 <template>
     <div>
-         <router-view v-if="this.$router.history.current.path == '/safetyInformationAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/safetyInformationIndex'" :key="$route.path" class="QCenterRight G_listOne">
+         <router-view v-if="this.$route.path == '/addsafetyInformationAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/editsafetyInformationAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/infosafetyInformationAdd'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/safetyInformationIndex'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     安全信息
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel"><icon iconClass="export" ></icon> 导出</div>
-                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>安全信息上传</div>
+                    <div v-if="isZDRole" @click="upDocInfo('info')"><icon iconClass="upload" ></icon>安全信息上传</div>
 
                 </div>
             </div>
@@ -81,6 +83,12 @@ export default {
     },
     watch:{
 
+    },
+    computed:{
+
+        isZDRole(){
+            return !this.$store.getters.isZDRole('ZLGLZDGLY')
+        },
     },
     methods: {
         upDocInfo(){
@@ -166,12 +174,13 @@ export default {
         addOrEditOrInfo(tag){
             let data=JSON.stringify(this.row)
             if(tag=='add'){
-                this.$router.push({path:'/safetyInformationAdd',query:{type:'add'}});
+                this.$router.push({path:'/addsafetyInformationAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                let p='/'+tag+'safetyInformationAdd'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/safetyInformationAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:p,query:{type:tag,id:this.row.id}});
                 }
             }
         },

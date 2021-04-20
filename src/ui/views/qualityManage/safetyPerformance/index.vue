@@ -1,8 +1,12 @@
 <template>
 
     <div :key="key">
-          <router-view v-if="this.$router.history.current.path == '/safetyPerformanceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
+          <router-view v-if="this.$router.history.current.path == '/addsafetyPerformanceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/editsafetyPerformanceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/infosafetyPerformanceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/addsafetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/editsafetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$router.history.current.path == '/infosafetyPerformanceDetailsAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$router.history.current.path == '/safetyPerformanceYear'" :key="$route.path"></router-view>
         <div v-else-if="this.$router.history.current.path == '/safetyPerformance'" class="G_listTwo">
             <div class="QCenterRight">
@@ -16,9 +20,9 @@
                                 部门月度安全绩效
                             </div>
                             <div class="QheadRight">
-                            <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                            <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                            <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                            <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                            <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                            <div v-if="isZDRole" @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
                             <div @click="exportExcel()">
                                 <icon iconClass="export" ></icon>导出
                             </div>
@@ -31,16 +35,14 @@
                                     <icon  iconClass="ky" class="tab_radio" v-else></icon>
                                 </template>
                             </el-table-column>
-                            <el-table-column slot="option" label="操作" align="center" :width="80" >
-                                <template slot-scope="{ row }" >
+                            <el-table-column v-if="isZDRole" slot="option" label="操作" align="center" :width="80" >
+                                <template slot-scope="{ row }"  >
 
                                     <el-tooltip class="item" effect="dark" :enterable="false" content="复制绩效明细" placement="top">
                                           <span  @click="row.copy?'':copyDetails(row)" :class="row.copy?'rowSvg rowSvgInfo':'rowSvg'">
                                         <icon iconClass="copyjx"   ></icon>
                                     </span>
                                     </el-tooltip>
-
-
                                 </template>
                             </el-table-column>
                         </SearchTable>
@@ -56,9 +58,9 @@
                             </div>
                             <div class="QheadRight" >
                                 <div @click="rightyear('add')"><icon  style="width: 0!important;" iconClass=""></icon>部门年度安全绩效</div>
-                                <div @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                                <div @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                                <div @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
+                                <div v-if="isZDRole" @click="rightAddOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                                <div v-if="isZDRole" @click="rightAddOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                                <div v-if="isZDRole" @click="delData('right','rightSelectId')"><icon iconClass="remove" ></icon>删除</div>
                                 <div @click="rightAddOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                             </div>
 
@@ -122,15 +124,20 @@
                 rightSort:{}
             };
         },
+        computed:{
+            isZDRole(){
+                return !this.$store.getters.isZDRole('ZLGLZDGLY')
+            },
+        },
         watch:{
             '$route':function(val,nm){
                  console.log(1,val.path,nm.path);
-                if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceAdd'){
+                if(val.path=='/safetyPerformance'&&(nm.path=='/addsafetyPerformanceAdd'||nm.path=='/editsafetyPerformanceAdd'||nm.path=='/infosafetyPerformanceAdd')){
                     this.key=!this.key
                      this.leftParams.size=this.tableLeftData.records.length>18?this.tableLeftData.records.length:18
                     this.leftParams.current=1
                     this.getList('left');
-                }else if(val.path=='/safetyPerformance'&&nm.path=='/safetyPerformanceDetailsAdd'){
+                }else if(val.path=='/safetyPerformance'&&(nm.path=='/addsafetyPerformanceDetailsAdd'||nm.path=='/editsafetyPerformanceDetailsAdd'||nm.path=='/infosafetyPerformanceDetailsAdd')){
                     this.key=!this.key
                     this.rightParams.size=this.tableRightData.records.length>18?this.tableRightData.records.length:18
                     this.rightParams.current = 1
@@ -178,8 +185,11 @@
                 data:["dept",]
             }).then(d => {
                 let obj=d.data
-                this.businessTableConfig=safetyConfig(obj)
-
+                let arr=safetyConfig(obj )||[]
+                if(!this.isZDRole){
+                    arr.splice(arr.length-1,1)
+                }
+                this.businessTableConfig=arr
             });
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -352,14 +362,14 @@
             //左侧表格新增编辑
             addOrEditOrInfo(tag){
                 if(tag=='add'){
-                    this.$router.push({path:'/safetyPerformanceAdd',query:{type:'add'}});
+                    this.$router.push({path:'/addsafetyPerformanceAdd',query:{type:'add'}});
                 }else if(tag == 'edit' || tag=='info'){
-
+                    let p='/'+tag+'safetyPerformanceAdd'
                     if(this.leftSelectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
                         let data=JSON.stringify(this.leftRow)
-                        this.$router.push({path:'/safetyPerformanceAdd',query:{type:tag, id:this.leftSelectId}});
+                        this.$router.push({path:p,query:{type:tag, id:this.leftSelectId}});
                     }
                 }
             },
@@ -372,15 +382,16 @@
                     if(this.leftSelectId==null){
                         this.$message.error('请先选中左侧列表一行数据');
                     }else{
-                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:'add',securityMeritsId:this.leftSelectId}});
+                        this.$router.push({path:'/addsafetyPerformanceDetailsAdd',query:{ securityMeritsId:this.leftSelectId}});
                     }
                 }else if(tag == 'edit' || tag=='info'){
+                    let p='/'+tag+'safetyPerformanceDetailsAdd'
                     if(this.rightSelectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
                         let data=JSON.stringify(this.rightRow)
 
-                        this.$router.push({path:'/safetyPerformanceDetailsAdd',query:{type:tag,securityMeritsId:this.leftSelectId,id:this.rightSelectId}});
+                        this.$router.push({path:p,query:{ securityMeritsId:this.leftSelectId,id:this.rightSelectId}});
                     }
                 }
             },

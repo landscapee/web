@@ -1,8 +1,8 @@
 <template>
     <div>
 
-        <router-view v-if="this.$router.history.current.path == '/testManagePushStaff'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/testManageResults'" :key="$route.path" class="QCenterRight G_listOne">
+        <router-view v-if="this.$route.path == '/testManagePushStaff'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/testManageResults'" :key="$route.path" class="QCenterRight G_listOne">
             <div >
                 <div class="QHead">
                     员工考试结果
@@ -31,7 +31,7 @@
 
                         </template>
                     </el-table-column>
-                    <el-table-column   slot="option" label="操作" :width="150" align='center' >
+                    <el-table-column  v-if="isZDRole" slot="option" label="操作" :width="150" align='center' >
                         <template  slot-scope="scope">
                             <el-tooltip class="item" effect="dark" :enterable="false" content="分数录入" placement="top">
                                 <span @click="!scope.row.employeeFileId?'':scoreEntry(scope.row)" :class="!scope.row.employeeFileId?'rowSvg rowSvgInfo':'rowSvg'">
@@ -88,6 +88,11 @@ export default {
             selectId:null,
         };
     },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
+    },
    created() {
        request({
            url:`${this.$ip}/mms-training/paperInfo/list`,
@@ -102,19 +107,17 @@ export default {
                data:["testType", "testCategory1","zizhiType",'businessType','testState' ]
            }).then(d => {
                let obj=d.data
-               this.tableConfig =testRuConfig(data.data.records||[],obj)
-
+               let arr=testRuConfig(data.data.records||[],obj)
+               if(!this.isZDRole){
+                  arr.splice(arr.length-1,1)
+               }
+               this.tableConfig =arr
            });
        })
 
        this.getList();
     },
-    watch:{
-        '$route':function(val,nm){
-            console.log(1,val,nm);
 
-        }
-    },
     methods: {
         upload(row){
             if(row.employeeFileId){

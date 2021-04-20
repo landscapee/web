@@ -102,7 +102,7 @@
                 console.log(this.form,1,3);
             },
             update(data){
-                  this.$router.push({path:'/WorkTemplateAdd',query:{type:'edit',id:data.typeVO.id}})
+                  this.$router.push({path:'/editWorkTemplateAdd',query:{type:'edit',id:data.typeVO.id}})
             },
             radioClick(val){
                  if(val==this.radio){
@@ -162,7 +162,7 @@
 
             upState(id){
                 if(this.type=='add'&&this.radio==1){
-                    this.$router.push({path:'/WorkTemplateAdd',query:{type:'edit',id:this.$route.query.id||id}})
+                    this.$router.push({path:'/editWorkTemplateAdd',query:{type:'edit',id:this.$route.query.id||id}})
                     this.init()
                 }
             },
@@ -204,7 +204,9 @@
 
             },
             init(){
-                this.type=this.$route.query.type
+                let num=  this.$route.path.substring(1,4)=='add'?4:5;
+                this.type = this.$route.path.substring(1,num);
+
                 this.title =
                     this.type == "add"
                         ?  "新增工单模板配置"

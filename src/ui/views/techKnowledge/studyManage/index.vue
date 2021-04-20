@@ -5,7 +5,8 @@
             <div  >
                 <div class='QHead'>学习管理</div>
                 <div class="QheadRight">
-                    <div @click="readPushFn"><icon iconClass="pushNew" ></icon>阅读推送</div>
+
+                    <div v-if="isZDRole" @click="readPushFn"><icon iconClass="pushNew" ></icon>阅读推送</div>
                     <div  @click="exportZip"  ><icon iconClass="export"></icon>完成情况</div>
                     <div  @click="exportWord"  ><icon iconClass="export"></icon>学习记录</div>
                 </div>
@@ -72,6 +73,11 @@ export default {
             issueDeptArr:[],
             positionArr:[]
         };
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('JSZLZDGLY')
+        },
     },
     mounted(){
 

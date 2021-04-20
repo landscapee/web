@@ -1,28 +1,19 @@
 <template>
     <div class='index'>
-        <!-- <router-view v-else v-if="this.$router.history.current.path == '/addFile'" :key="$route.path"></router-view> -->
-        <div class='inner'>
+         <div class='inner'>
             <div class='top_content'>
                 <div class='header'><span id='fileName'>工单</span></div>
                 <div class="top-toolbar">
-                    <div class="left-toolbar">
-                        <!-- <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                        <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="delData('left','leftSelectId')"><icon iconClass="remove" ></icon>删除</div>
-                        <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                        <div class="isDisabled"><icon iconClass="save" ></icon>保存</div>
-                        <div class="isDisabled"><icon iconClass="reset" ></icon>重置</div> -->
-                    </div>
+                        <div></div>
                     <div class="right-toolbar">
                         <div @click="rightMethods('','download')"><icon iconClass="download3"></icon>下载</div>
-                        <div @click="rightMethods('','move')"><icon iconClass="yidong" ></icon>移动到</div>
-                        <div @click="batchPushFn"><icon iconClass="push" ></icon>批量推送</div>
-                        <div @click="rightMethods('/addFile','add')"><icon iconClass="add"></icon>新增</div>
-                        <div @click="rightMethods('/addFile','edit')"><icon iconClass="edit" ></icon>编辑</div>
-                        <div @click="rightMethods('','delete')"><icon iconClass="remove" ></icon>删除</div>
-                        <div @click="rightMethods('/addFile','info')"><icon iconClass="info" ></icon>详情</div>
-                        <!-- <div @click="rightMethods"><icon iconClass="reset" ></icon>导出Excel</div> -->
-                    </div>
+                        <div v-if="isZDRole" @click="rightMethods('','move')"><icon iconClass="yidong" ></icon>移动到</div>
+                        <div v-if="isZDRole" @click="batchPushFn"><icon iconClass="push" ></icon>批量推送</div>
+                        <div v-if="isZDRole" @click="rightMethods('/addFile','add')"><icon iconClass="add"></icon>新增</div>
+                        <div v-if="isZDRole" @click="rightMethods('/editFile','edit')"><icon iconClass="edit" ></icon>编辑</div>
+                        <div v-if="isZDRole" @click="rightMethods('','delete')"><icon iconClass="remove" ></icon>删除</div>
+                        <div @click="rightMethods('/infoFile','info')"><icon iconClass="info" ></icon>详情</div>
+                     </div>
                 </div>
             </div>
              <div class="main-content">
@@ -43,14 +34,14 @@
                             <el-checkbox :ref="row.id" @click.stop.native  v-model="selectObjs" :label="row"></el-checkbox>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="option" align='center' label="操作" :width="100"  >
+                    <el-table-column  slot="option" align='center' label="操作" :width="100"  >
                         <template  slot-scope="{ row }">
                             <el-tooltip class="item" effect="dark" :enterable="false" content="历史版本" placement="top">
                                 <span @click="toHistoryListFn(row)" class="rowSvg" style="margin-right: 10px">
                                     <icon iconClass="historyNew"></icon>
                                 </span>
                             </el-tooltip>
-                            <el-tooltip   class="item" effect="dark" :enterable="false" content="阅读推送" placement="top">
+                            <el-tooltip  v-if="isZDRole" class="item" effect="dark" :enterable="false" content="阅读推送" placement="top">
                                 <span @click="row.open?'':toReadTrackFn(row)"   :class="row.open?'rowSvg rowSvgInfo':'rowSvg'">
                                     <icon iconClass="pushNew"></icon>
                                 </span>
@@ -100,6 +91,11 @@ export default {
             },
             overdue:-1
         };
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('JSZLZDGLY')
+        },
     },
     mounted(){
         // if(!this.$route.query.folderId){
@@ -181,9 +177,8 @@ export default {
                         this.fileMoveFn()
                     }else if(query==='download'){
                         this.fileDownloadFn()
-                    }
-                    else{
-                        this.$router.push({path: type,query: {type:query, id: this.selectObjs[0].id, folderId: this.$route.query.folderId}})
+                    } else{
+                        this.$router.push({path: type,query: { id: this.selectObjs[0].id, folderId: this.$route.query.folderId}})
                     }
                 }else if(this.selectObjs.length>1){
                     this.$message({
@@ -201,7 +196,7 @@ export default {
                     return
                 }
             }else{
-                this.$router.push({path:type,query:{type:query, folderId: this.$route.query.folderId}})
+                this.$router.push({path:type,query:{  folderId: this.$route.query.folderId}})
             }
         },
         deleteConfirmFn(){

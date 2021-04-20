@@ -1,6 +1,8 @@
 <template>
     <div>
-        <router-view v-if="this.$route.path == '/workCardVrifyAdd'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path == '/addworkCardVrifyAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editworkCardVrifyAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoworkCardVrifyAdd'" :key="$route.path"></router-view>
         <div v-else-if="this.$route.path == '/workCardVrify'" :key="$route.path"
              class="QCenterRight G_listOne">
             <div class=" ">
@@ -8,11 +10,11 @@
                     工卡核对
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')">
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')">
                         <icon iconClass="add"></icon>
                         新增
                     </div>
-                    <div @click="addOrEditOrInfo('edit')">
+                    <div  v-if="isZDRole" @click="addOrEditOrInfo('edit')">
                         <icon iconClass="edit"></icon>
                         编辑
                     </div>
@@ -91,7 +93,11 @@
                 this.getList();
             }
         },
-
+        computed:{
+            isZDRole(){
+                return !this.$store.getters.isZDRole('GDGLZDGLY')
+            },
+        },
         methods: {
             downloadFile(row){
                 if(row.enclosure){
@@ -182,14 +188,15 @@
             },
             addOrEditOrInfo(tag) {
                 if (tag == 'add') {
-                    this.$router.push({path: '/workCardVrifyAdd', query: {type: 'add'}});
+                    this.$router.push({path: '/addworkCardVrifyAdd', query: { }});
                 } else if (tag == 'edit' || tag == 'info') {
+                    let p='/'+tag+'workCardVrifyAdd'
                     if (this.checkArr.length != 1) {
                         let s = this.checkArr.length > 0 ? '只能选中一行数据' : '请先选中一行数据'
                         this.$message.error(s);
                     } else {
                         let data = this.checkArr[0].id
-                        this.$router.push({path: '/workCardVrifyAdd', query: {id: data, type: tag}});
+                        this.$router.push({path: p, query: {id: data }});
                     }
                 }
             },

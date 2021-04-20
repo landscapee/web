@@ -1,10 +1,8 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/MyWorkAbnormalDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/MyWorkPaperDetails'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/MyWorkAbnormalAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/MySignControlAdd'" :key="$route.path"></router-view>
-         <div v-else-if="this.$router.history.current.path == '/myWorkOrder'" :key="$route.path" class="G_listOne QCenterRight">
+        <router-view v-if="this.$route.path == '/editMyWorkAbnormalDetails'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editMyWorkAbnormalAdd'" :key="$route.path"></router-view>
+          <div v-else-if="this.$route.path == '/myWorkOrder'" :key="$route.path" class="G_listOne QCenterRight">
             <div class=" ">
                 <div class="QHead">
                     我的工单
@@ -125,12 +123,12 @@
                   this.$set(this.tableData.records,row.index,row);
             },
             abnormalChange(row){
-                let src = '/MyWorkAbnormalDetails';
+                let src = '/editMyWorkAbnormalDetails';
                 if (row.offlineFile) {
-                    src = '/MyWorkAbnormalAdd';
+                    src = '/editMyWorkAbnormalAdd';
                 }
                 localStorage.setItem('refresh','true')
-                this.$router.push({path: src, query: {id: row.id, type: 'edit',needSubmit:'1'}});
+                this.$router.push({path: src, query: {id: row.id,needSubmit:'1'}});
             },
 
             getList(){

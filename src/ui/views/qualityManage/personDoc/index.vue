@@ -1,15 +1,27 @@
 <template>
     <div>
 
-        <router-view v-if="this.$route.path == '/addPersonDoc'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/inOfficeInfoAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/workExperienceAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/certificateAdd'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/unsafeAdd'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path == '/addPersonDoc/add'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/addPersonDoc/edit'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoaddPersonDoc'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/inOfficeInfoAdd/add'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/inOfficeInfoAdd/edit'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoinOfficeInfoAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/workExperienceAdd/add'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/workExperienceAdd/edit'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoworkExperienceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/certificateAdd/add'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/certificateAdd/edit'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infocertificateAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/unsafeAdd/add'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/unsafeAdd/edit'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infounsafeAdd'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/userQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/userAuth'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/userTrain'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$route.path == '/workStyle'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/workStyle/add'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/workStyle/edit'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoworkStyle'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/studyLog'" :key="$route.path"></router-view>
          <div v-else-if="this.$route.path == '/personDoc'" :key="$route.path"
               class="QCenterRight G_listOne">
@@ -18,11 +30,11 @@
                     人员档案
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole"  @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div v-if="isZDRole"  @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
-                    <div @click="upDocInfo('info')"><icon iconClass="upload" ></icon>上传档案</div>
+                    <div v-if="isZDRole"  @click="upDocInfo('info')"><icon iconClass="upload" ></icon>上传档案</div>
                 </div>
             </div>
             <div class="tableOneBox">
@@ -95,6 +107,12 @@
                 sort:{},
                 selectId:null
             };
+        },
+        computed:{
+
+            isZDRole(){
+                return !this.$store.getters.isZDRole('ZLGLZDGLY')
+            },
         },
         created() {
             if(this.$route.path == '/personDoc'){
@@ -182,7 +200,6 @@
                 }else {
                     this.selectId   = null;
                     this.row = null;
-
                 }
 
                 this.params.current = 1;
@@ -190,12 +207,18 @@
             },
             addOrEditOrInfo(tag){
                 if(tag=='add'){
-                    this.$router.push({path:'/addPersonDoc',query:{type:'add'}});
-                }else if(tag == 'edit' || tag == 'info'){
+                    this.$router.push({path:'/addPersonDoc/add',query:{ }});
+                }else if(tag == 'edit'  ){
                     if(this.selectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
-                        this.$router.push({path:'/addPersonDoc',query:{type:tag,id:this.row.id,userId:this.row.userId}});
+                        this.$router.push({path:'/addPersonDoc/'+tag,query:{ id:this.row.id,userId:this.row.userId}});
+                    }
+                }else if(  tag == 'info'){
+                    if(this.selectId==null){
+                        this.$message.error('请先选中一行数据');
+                    }else{
+                        this.$router.push({path:'/infoaddPersonDoc',query:{ id:this.row.id,userId:this.row.userId}});
                     }
                 }
             },

@@ -3,10 +3,8 @@
         <div class="QCenterRight">
             <div class="QHead">
                 {{this.$route.path == '/testManagePushStaff'?'考试推送员工':'培训推送员工'}}
-
             </div>
             <div  class="QheadRight">
-
                 <div @click="handleClear"  >
                     <icon  iconClass="reset "></icon>重置
                 </div>

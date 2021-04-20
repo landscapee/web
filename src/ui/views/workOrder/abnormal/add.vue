@@ -206,9 +206,11 @@
                     })
                 }
             });
+            let num=  this.$route.path.substring(1,4)=='add'?4:5;
+            this.type = this.$route.path.substring(1,num);
+
             if (this.$route.query) {
-                this.type = this.$route.query.type;
-                this.$route.meta.title =
+                 this.$route.meta.title =
                     this.type == "add"
                         ? "纸质工单新增"
                         : this.type == "edit"

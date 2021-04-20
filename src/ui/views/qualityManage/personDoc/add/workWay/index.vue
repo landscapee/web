@@ -1,25 +1,27 @@
 <template>
     <div>
 
-         <router-view v-if="this.$route.path == '/workStyle'" :key="$route.path"></router-view>
+         <!--<router-view v-if="this.$route.path == '/workStyle/add'" :key="$route.path"></router-view>-->
+         <!--<router-view v-else-if="this.$route.path == '/workStyle/edit'" :key="$route.path"></router-view>-->
+         <!--<router-view v-else-if="this.$route.path == '/workStyle/info'" :key="$route.path"></router-view>-->
 
-        <div   class="G_listOne  " v-else>
+        <div   class="G_listOne  " >
             <div class="QCenterRight personTable">
                 <div class="QHead QHead1 ">
                     作风建设量化考核记录
                 </div>
                 <div class="QheadRight ">
-                    <div v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
+                     <div v-if="showButton" @click="()=>type=='edit'?addOrEditOrInfo('add'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="新增" placement="top">
                             <icon iconClass="add"></icon>
                         </el-tooltip>
                     </div>
-                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="showButton" @click="()=>type=='edit'?addOrEditOrInfo('edit'):''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
                             <icon iconClass="edit"></icon>
                         </el-tooltip>
                     </div>
-                    <div  v-if="this.$route.path == '/addPersonDoc'" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
+                    <div  v-if="showButton" @click="()=>type=='edit'?delData():''" :class="type=='edit'?'':'G_isDisabled'">
                         <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
                             <icon iconClass="remove"></icon>
                         </el-tooltip>
@@ -71,6 +73,15 @@ export default {
 
             selectId:null
         };
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('ZLGLZDGLY')
+        },
+      showButton(){
+          console.log(this.isZDRole, this.type == 'edit');
+          return this.isZDRole&&this.type=='edit'
+      }  ,
     },
    created() {
 
@@ -124,14 +135,16 @@ export default {
             this.$set(this.tableData,row.index,row);
         },
         addOrEditOrInfo(tag){
-            let s='/'
-            if(this.$route.path=='/ZuserDoc'){
-                s='/Z'
-            }else if(this.$route.path=='/SuserDoc'){
-                s='/S'
+            let p='/workStyle/'+tag
+            if(tag=='info'){
+                p='/infoworkStyle'
             }
-            let p=s+'workStyle'
-             if(tag=='add'){
+            if(this.$route.path=='/ZuserDoc'){
+                p='/ZworkStyle'
+            }else if(this.$route.path=='/SuserDoc'){
+                p='/SworkStyle'
+            }
+              if(tag=='add'){
                 this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){

@@ -2,7 +2,7 @@
     <div class="indexAdd">
         <div class="QCenterRight">
             <div class="QHead">
-                授权管理-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
+                授权管理-{{type=='addA'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}
             </div>
             <div v-if="type!='info'"  class="QheadRight">
                 <div @click="type!='info'?saveForm('form'):()=>{}" :class="type=='info'?'isDisabled':''">
@@ -137,7 +137,7 @@
             </el-form>
         </div>
         <div style="text-align: center" class="footerB" >
-            <el-button type="primary" @click="fabu" v-if="(type==='edit'&&form.state!=='已授权')||type==='add'">授权发布</el-button>
+            <el-button type="primary" @click="fabu" v-if="(type==='edit'&&form.state!=='已授权')||type==='addA'">授权发布</el-button>
             <el-button type="primary" v-if="type==='edit' && form.state==='已授权'" @click="quxiao" style="margin: 0 15px " >授权取消</el-button>
             <el-button type="primary"   @click="yanqi" v-if="type==='edit' && form.state==='已授权'"> 授权延期</el-button>
         </div>
@@ -180,13 +180,14 @@
                      startTime: [{ required:true,message:'请选择时间',}],
                      authorizationType: [{ required:true,message:'请选择授权类型'}],
                 },
-                type: "add"
+                type: "addA"
             };
         },
         created() {
             if (this.$route.query) {
 
-                this.type = this.$route.query.type;
+                this.type = this.$route.path.substring(1,5);
+                console.log(this.type);
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
@@ -219,15 +220,9 @@
                         })
                     }
                     })
-                this.$route.meta.title =
-                    this.type == "add"
-                        ? "授权管理新增"
-                        : this.type == "edit"
-                        ? "授权管理编辑"
-                        : this.type == "info"
-                            ? "授权管理详情":''
 
-                 if(this.type!='add'){
+
+                 if(this.type!='addA'){
                    this.getInfo()
                  }
             }
@@ -265,7 +260,7 @@
                         id:this.form.id,
                         endTime:this.form.endTime||null
                     }
-                    if(this.type=='add'){
+                    if(this.type=='addA'){
                         obj={
                             id:d.id,
                             endTime:d.endTime?this.moment(d.endTime).format('YYYY-MM-DD'):null
@@ -413,11 +408,11 @@
             },
              saveForm(form,num) {
                  return new Promise((resolve, reject)=>{
-                     if (this.type == "add" || this.type == "edit") {
+                     if (this.type == "addA" || this.type == "edit") {
                          this.$refs[form].validate(valid => {
                              if (valid) {
                                  let url
-                                 if(this.type=='add'){
+                                 if(this.type=='addA'){
                                      url='/authorization/save'
                                  }else {
                                      url='/authorization/update'

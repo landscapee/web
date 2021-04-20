@@ -121,7 +121,9 @@
                     id:this.$route.query.rId.split(',')[0],
                     userId:this.$route.query.rId.split(',')[2],
                     type:this.$route.query.rId.split(',')[1]}
-                 this.$router.currentRoute.matched[2].meta.title=
+                this.$router.currentRoute.matched[2].path='/addPersonDoc/'+this.$route.query.rId.split(',')[1]
+
+                this.$router.currentRoute.matched[2].meta.title=
                      this.$route.query.rId.split(',')[1] == "add"
                     ? "人员档案新增"
                     :  this.$route.query.rId.split(',')[1]== "edit"
@@ -129,7 +131,11 @@
                         :  this.$route.query.rId.split(',')[1] == "info"
                             ? "人员档案详情"
                             : "";
-                this.type = this.$route.query.type;
+                let arrpath=this.$route.path.split('/')
+                this.type = arrpath[arrpath.length-1];
+                if(this.$route.path.substring(1,5)=='info'){
+                    this.type='info'
+                }
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',

@@ -60,7 +60,7 @@
 
         <div class="Qfooter" v-if="testData.length" >
             <el-button @click="last" :disabled="numIndex<=0">上一题</el-button>
-            <el-button @click="saveForm('form')">保存</el-button>
+            <el-button @click="saveForm('form')">确定</el-button>
             <el-button type="primary" @click="next" :disabled="numIndex>=testData.length-1">下一题</el-button>
         </div>
     </div>

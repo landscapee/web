@@ -5,39 +5,40 @@
         <router-view v-else-if="this.$route.path == getUrl('certificateAdd')" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == getUrl('unsafeAdd')" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == getUrl('workStyle')" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/addAuthorizeManage'"
-                     :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/SuserQuali'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/SuserDoc'" :key="$route.path"></router-view>
-        <router-view v-else-if="this.$router.history.current.path == '/SuserTrain'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/authorizeManage'" :key="$route.path"
+        <router-view v-else-if="this.$route.path == '/addAuthorizeManage'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editAuthorizeManage'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoAuthorizeManage'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/SuserQuali'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/SuserDoc'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/SuserTrain'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/authorizeManage'" :key="$route.path"
              class="QCenterRight G_listOne">
             <div class=" ">
                 <div class="QHead">
                     授权管理
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')">
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')">
                         <icon iconClass="add"></icon>
                         新增
                     </div>
-                    <div @click="addOrEditOrInfo('edit')">
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('/editAuthorizeManage')">
                         <icon iconClass="edit"></icon>
                         编辑
                     </div>
-                    <div @click="delData()">
+                    <div v-if="isZDRole" @click="delData()">
                         <icon iconClass="remove"></icon>
                         删除
                     </div>
-                    <div @click="addOrEditOrInfo('info')">
+                    <div @click="addOrEditOrInfo('/infoAuthorizeManage')">
                         <icon iconClass="info"></icon>
                         详情
                     </div>
-                    <div @click="exportWord('info')">
+                    <div   @click="exportWord('info')">
                         <icon iconClass="export"></icon>
                         导出
                     </div>
-                    <div @click="upFile('info')">
+                    <div v-if="isZDRole" @click="upFile('info')">
                         <icon iconClass="upload"></icon>
                         上传授权信息
                     </div>
@@ -130,10 +131,12 @@
             };
         },
         computed: {
+            isZDRole(){
+                 return !this.$store.getters.isZDRole('ZLGLZDGLY')
+            },
             getUrl() {
-                return (p) => {
+                 return (p) => {
                     let s = '/S'
-
                     return s + p
                 }
             },
@@ -264,14 +267,14 @@
             },
             addOrEditOrInfo(tag) {
                 if (tag == 'add') {
-                    this.$router.push({path: '/addAuthorizeManage', query: {type: 'add'}});
-                } else if (tag == 'edit' || tag == 'info') {
+                    this.$router.push({path: '/addAuthorizeManage', query: { }});
+                } else   {
                     if (this.checkArr.length != 1) {
                         let s = this.checkArr.length > 0 ? '只能选中一行数据' : '请先选中一行数据'
                         this.$message.error(s);
                     } else {
                         let data = this.checkArr[0].id
-                        this.$router.push({path: '/addAuthorizeManage', query: {id: data, type: tag}});
+                        this.$router.push({path: tag, query: {id: data }});
                     }
                 }
 

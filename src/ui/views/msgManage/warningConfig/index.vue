@@ -1,7 +1,9 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/addWarningConfig'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/warningConfig'" class="QCenterRight G_listOne">
+        <router-view v-if="this.$route.path == '/addWarningConfig'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editWarningConfig'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoWarningConfig'" :key="$route.path"></router-view>
+        <div v-if="this.$route.path == '/warningConfig'" class="QCenterRight G_listOne">
             <div >
                 <div class="QHead">
                     预警推送配置
@@ -53,6 +55,11 @@ export default {
     },
    created() {
        this.getList();
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
     },
     watch:{
         params:{
@@ -107,10 +114,11 @@ export default {
             if(tag=='add'){
                 this.$router.push({path:'/addWarningConfig',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                let p='/'+tag+'WarningConfig'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/addWarningConfig',query:{type:tag,id:this.selectId}});
+                     this.$router.push({path:p,query:{type:tag,id:this.selectId}});
                 }
             }
         },

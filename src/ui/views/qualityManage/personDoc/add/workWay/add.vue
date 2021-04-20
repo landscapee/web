@@ -93,11 +93,13 @@
         created() {
              if (this.$route.query) {
                 let arr=this.$route.query.rId.split(',')
-                this.$router.currentRoute.matched[2].meta.paramsId = {
+                 console.log('sdfsd',this.$router.currentRoute.matched[2]);
+                 this.$router.currentRoute.matched[2].meta.paramsId = {
                     id: arr[0],
                     type: arr[1],
                     userId: arr[2]
                 }
+                 this.$router.currentRoute.matched[2].path='/addPersonDoc/'+arr[1]
                  this.$router.currentRoute.matched[2].meta.title =
                     this.$route.query.rId.split(',')[1] == "add"
                         ? "人员档案新增"
@@ -106,7 +108,11 @@
                         : this.$route.query.rId.split(',')[1] == "info"
                             ? "人员档案详情"
                             : "";
-                this.type = this.$route.query.type;
+                 let arrpath=this.$route.path.split('/')
+                this.type = arrpath[arrpath.length-1];
+                 if(this.$route.path.substring(1,5)=='info'){
+                     this.type='info'
+                 }
                 request({
                     url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',

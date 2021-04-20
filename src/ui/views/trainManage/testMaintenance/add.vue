@@ -89,10 +89,10 @@
         <div class="headDiv1">
             <div  > <span style="font-size: 18px;font-weight: bold">所含试题</span>  <span style="color:#7F7F7F;font-size: 18px">（数量{{arrTable.records&&arrTable.records.length}}）</span></div>
             <div class="topToolbar">
-                <div @click="type=='info'?'':importExcel() " :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  ></icon>导入</div>
-                <div @click="type=='info'?'':addOrEditOrInfo('add') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add" ></icon>新增</div>
-                <div @click="type=='info'?'':addOrEditOrInfo('edit') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit" ></icon>编辑</div>
-                <div @click="type=='info'?'':delData('left','leftSelectId') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove" ></icon>删除</div>
+                <div v-if="isZDRole" @click="type=='info'?'':importExcel() " :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add"  ></icon>导入</div>
+                <div v-if="isZDRole"  @click="type=='info'?'':addOrEditOrInfo('add') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="add" ></icon>新增</div>
+                <div v-if="isZDRole"  @click="type=='info'?'':addOrEditOrInfo('edit') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="edit" ></icon>编辑</div>
+                <div v-if="isZDRole"  @click="type=='info'?'':delData('left','leftSelectId') "   :class="type=='edit'?'':'G_isDisabled'"><icon iconClass="remove" ></icon>删除</div>
                 <div @click="addOrEditOrInfo('info')"  ><icon iconClass="info" ></icon>详情</div>
                 <!--<div @click="exportExcel()">-->
                     <!--<icon iconClass="export" ></icon>导出-->
@@ -221,9 +221,16 @@
         mounted(){
             inputLength(this)
         },
-
+        computed:{
+            isZDRole(){
+                return !this.$store.getters.isZDRole('PXKHZDGLY')
+            },
+        },
         created() {
-            if(this.$router.history.current.path == '/testMaintenanceAdd'){
+            let num=  this.$route.path.substring(1,4)=='add'?4:5;
+            this.type = this.$route.path.substring(1,num);
+
+             if(this.$route.path.match(/.*?testMaintenanceAdd/)){
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
@@ -241,8 +248,7 @@
         methods: {
             initPage(){
                 if (this.$route.query ) {
-                    console.log(1,1,this.$router);
-                    this.type = this.$route.query.type;
+
 
                     this.$route.meta.title =
                         this.type == "add"
@@ -399,20 +405,16 @@
                 }
             },
             addOrEditOrInfo(tag){
-                //  let row
-                // if(this.row){
-                //       row=JSON.stringify(this.row)
-                // }else {
-                //     row=''
-                // }
+
                 if(this.form.id){
                     if(tag=='add'){
-                        this.$router.push({path:'/testMaintenanceAddAdd',query:{type:'add',id:this.form.id, }});
+                        this.$router.push({path:'/addtestMaintenanceAddAdd',query:{ id:this.form.id, }});
                     }else if(tag == 'edit' || tag == 'info'){
+                        let p='/'+tag+'testMaintenanceAddAdd'
                         if(this.row==null){
                             this.$message.error('请先选中一行数据');
                         }else{
-                            this.$router.push({path:'/testMaintenanceAddAdd',query:{type:tag,id:this.form.id ,sId:this.row.id}});
+                            this.$router.push({path:p,query:{ id:this.form.id ,sId:this.row.id}});
                         }
                     }
                 }else {

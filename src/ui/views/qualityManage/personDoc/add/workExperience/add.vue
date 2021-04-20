@@ -107,19 +107,27 @@
         },
         created() {
             if (this.$route.query) {
+                let arr=this.$route.query.rId.split(',')
                 this.$router.currentRoute.matched[2].meta.paramsId={
-                    id:this.$route.query.rId.split(',')[0],
-                    userId:this.$route.query.rId.split(',')[2],
-                    type:this.$route.query.rId.split(',')[1]}
+                    id:arr[0],
+                    userId:arr[2],
+                    type:arr[1]
+                }
+                this.$router.currentRoute.matched[2].path='/addPersonDoc/'+arr[1]
+
                 this.$router.currentRoute.matched[2].meta.title=
-                    this.$route.query.rId.split(',')[1] == "add"
+                    arr[1] == "add"
                         ? "人员档案新增"
-                        :  this.$route.query.rId.split(',')[1]== "edit"
+                        :  arr[1]== "edit"
                         ? "人员档案编辑"
-                        :  this.$route.query.rId.split(',')[1] == "info"
+                        :  arr[1] == "info"
                             ? "人员档案详情"
                             : "";
-                this.type = this.$route.query.type;
+                let arrpath=this.$route.path.split('/')
+                this.type = arrpath[arrpath.length-1];
+                if(this.$route.path.substring(1,5)=='info'){
+                    this.type='info'
+                }
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',

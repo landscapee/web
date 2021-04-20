@@ -1,17 +1,19 @@
 <template>
     <div>
 
-         <router-view v-if="this.$router.history.current.path == '/coursewareMaintainAdd'" :key="$route.path"></router-view>
+         <router-view v-if="this.$route.path == '/addcoursewareMaintainAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/editcoursewareMaintainAdd'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/infocoursewareMaintainAdd'" :key="$route.path"></router-view>
 
-        <div v-else-if="this.$router.history.current.path == '/coursewareMaintain'" :key="$route.path" class="QCenterRight G_listOne">
+        <div v-else-if="this.$route.path == '/coursewareMaintain'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     课件维护
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div v-if="isZDRole"  @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                  </div>
             </div>
@@ -69,7 +71,7 @@ export default {
         };
     },
    created() {
-        if(this.$router.history.current.path == '/coursewareMaintain'){
+        if(this.$route.path == '/coursewareMaintain'){
             this.getList();
             request({
                 url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
@@ -79,17 +81,14 @@ export default {
             }).then(d => {
                 let obj=d.data
                 this.tableConfig=coursewareConfig(obj)
-
             });
-
         }
-
     },
-    watch:{
-        '$route':function(val,nm){
-            console.log(1,val,nm);
 
-        }
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('PXKHZDGLY')
+        },
     },
     methods: {
         fileDown(row){
@@ -175,12 +174,13 @@ export default {
         },
         addOrEditOrInfo(tag){
              if(tag=='add'){
-                this.$router.push({path:'/coursewareMaintainAdd',query:{type:'add'}});
+                this.$router.push({path:'/addcoursewareMaintainAdd',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                 let p='/'+tag+'coursewareMaintainAdd'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/coursewareMaintainAdd',query:{type:tag,id:this.row.id}});
+                     this.$router.push({path:p,query:{type:tag,id:this.row.id}});
                 }
             }
         },
