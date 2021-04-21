@@ -133,6 +133,9 @@ export default {
             if(tag=='info'){
                 p='/infoworkExperienceAdd'
             }
+            if(this.$route.path=='/infoaddPersonDoc'){
+                p='/infoworkExperienceAdd1'
+            }
             if(this.$route.path=='/ZuserDoc'){
                 p='/ZworkExperienceAdd'
             }else if(this.$route.path=='/SuserDoc'){

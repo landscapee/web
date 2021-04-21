@@ -5,10 +5,10 @@
         <span>信息订阅配置-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div v-if="type!='info'"  @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div v-if="type!='info'"  @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>
@@ -110,9 +110,11 @@ export default {
   },
   created() {
      this.findDataDictionary();
-    if (this.$route.query) {
-      this.type = this.$route.query.type;
-      this.$route.meta.title =
+      let num=  this.$route.path.substring(1,4)=='add'?4:5;
+      this.type = this.$route.path.substring(1,num);
+
+      if (this.$route.query) {
+       this.$route.meta.title =
         this.type == "add"
           ? "新增"
           : this.type == "edit"

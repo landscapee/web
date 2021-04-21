@@ -1,9 +1,4 @@
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
-}
-/deep/ .el-scrollbar__wrap {
-    overflow-x: hidden;
-}
+
 input:checked{
     outline: none;
 }
@@ -42,13 +37,10 @@ input:checked{
     float: right;
 }
 ///////// 标题 /////////
- .el-scrollbar__wrap{
-    overflow: hidden!important;
+.el-scrollbar__wrap{
+    overflow-x: hidden!important;
 }
 /deep/ .el-scrollbar__wrap{
-    overflow: hidden!important;
-}
-.el-scrollbar__wrap{
     overflow-x: hidden!important;
 }
 .is-required1:before{

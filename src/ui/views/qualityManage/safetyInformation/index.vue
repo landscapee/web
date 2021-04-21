@@ -9,7 +9,7 @@
                     安全信息
                 </div>
                 <div class="QheadRight">
-                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                     <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
                     <div v-if="isZDRole" @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
                     <div v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
@@ -100,6 +100,7 @@ export default {
             this.form={}
             this.getList()
         },
+
         exportExcel(){
             request({
                 'Content-Type':'application/vnd.ms-excel',

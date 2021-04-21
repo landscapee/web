@@ -406,7 +406,7 @@
 
             getUrlBlo(){
                 return (p)=>{
-                    let blo= this.$route.path=='/Z'+p|| this.$route.path=='/S'+p|| this.$route.path=='/'+p+'/add'|| this.$route.path=='/'+p+'/edit'|| this.$route.path=='/info'+p
+                    let blo= this.$route.path=='/Z'+p|| this.$route.path=='/S'+p|| this.$route.path=='/'+p+'/add'|| this.$route.path=='/'+p+'/edit'|| this.$route.path=='/info'+p|| this.$route.path=='/info'+p+'1'
                     return blo
                 }
             },
@@ -612,7 +612,7 @@
 					let arr = this.$route.path.split('/');
                     this.type = arr[arr.length-1];
                     console.log(111111111,this.$route.path.substring(1, 5) );
-                    if(this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'||this.$route.path.substring(1,5)=='info'){
+                    if(this.$route.path == '/SuserDoc'||this.$route.path == '/ZuserDoc'||this.$route.path.substring(1,5)==='info'){
 					    this.type='info'
 					}
 

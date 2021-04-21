@@ -97,7 +97,8 @@
         methods: {
             getOneInfo(info){
                     this.form.one=info
-            }, getThreeInfo(info){
+            },
+            getThreeInfo(info){
                     this.form.three=info
                 console.log(this.form,1,3);
             },

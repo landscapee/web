@@ -408,9 +408,7 @@
     display: none;
   }
 
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
-  }
+
 
   .el-card__body {
     padding: 10px;
@@ -478,4 +476,8 @@
     .el-tag:first-child {
     margin-left: 0px;
   }
+
+
+
+
 </style>

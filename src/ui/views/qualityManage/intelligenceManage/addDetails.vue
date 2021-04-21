@@ -78,10 +78,10 @@
             };
         },
         created() {
-            if (this.$route.query) {
+            let num=  this.$route.path.substring(1,4)=='add'?4:5;
+            this.type = this.$route.path.substring(1,num);
 
-                this.type = this.$route.query.type;
-               
+            if (this.$route.query) {
                 this.$route.meta.title =
                     this.type == "add"
                         ? "资质证书清单新增"

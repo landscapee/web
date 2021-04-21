@@ -79,8 +79,7 @@ export default {
             return !this.$store.getters.isZDRole('ZLGLZDGLY')
         },
       showButton(){
-          console.log(this.isZDRole, this.type == 'edit');
-          return this.isZDRole&&this.type=='edit'
+           return this.isZDRole&&this.type=='edit'
       }  ,
     },
    created() {
@@ -138,6 +137,9 @@ export default {
             let p='/workStyle/'+tag
             if(tag=='info'){
                 p='/infoworkStyle'
+            }
+            if(this.$route.path=='/infoaddPersonDoc'){
+                p='/infoworkStyle1'
             }
             if(this.$route.path=='/ZuserDoc'){
                 p='/ZworkStyle'

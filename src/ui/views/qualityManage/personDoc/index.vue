@@ -4,24 +4,30 @@
         <router-view v-if="this.$route.path == '/addPersonDoc/add'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/addPersonDoc/edit'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/infoaddPersonDoc'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoaddPersonDoc1'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/inOfficeInfoAdd/add'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/inOfficeInfoAdd/edit'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/infoinOfficeInfoAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoinOfficeInfoAdd1'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/workExperienceAdd/add'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/workExperienceAdd/edit'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/infoworkExperienceAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoworkExperienceAdd1'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/certificateAdd/add'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/certificateAdd/edit'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/infocertificateAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infocertificateAdd1'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/unsafeAdd/add'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/unsafeAdd/edit'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/infounsafeAdd'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infounsafeAdd1'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/userQuali'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/userAuth'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/userTrain'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/workStyle/add'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/workStyle/edit'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/infoworkStyle'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoworkStyle1'" :key="$route.path"></router-view>
         <router-view v-else-if="this.$route.path == '/studyLog'" :key="$route.path"></router-view>
          <div v-else-if="this.$route.path == '/personDoc'" :key="$route.path"
               class="QCenterRight G_listOne">

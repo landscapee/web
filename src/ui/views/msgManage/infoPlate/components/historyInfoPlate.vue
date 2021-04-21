@@ -157,6 +157,7 @@ export default {
 <style scoped lang="scss">
 @import "@/ui/styles/common_list.scss";
 .historyInfoPlate{
+    padding: 0px 30px;
     .main-content{
         /deep/ .mainTable{
             height: 600px;

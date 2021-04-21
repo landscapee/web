@@ -1,9 +1,10 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/addInfoPlate'" :key="$route.path"></router-view>
-        <router-view v-if="this.$router.history.current.path == '/infoPlateDetails'" :key="$route.path"></router-view>
-        <router-view v-if="this.$router.history.current.path == '/historyInfoPlate'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/infoPlate'" class="QCenterRight G_listOne">
+        <router-view v-if="this.$route.path == '/addInfoPlate'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path == '/editInfoPlate'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path == '/infoPlateDetails'" :key="$route.path"></router-view>
+        <router-view v-if="this.$route.path == '/historyInfoPlate'" :key="$route.path"></router-view>
+        <div v-if="this.$route.path == '/infoPlate'" class="QCenterRight G_listOne">
             <div  >
 
                 <div class="QHead">
@@ -11,9 +12,9 @@
                 </div>
                 <div class="QheadRight">
                     <div :class="isActive==0?'isDisabled':''" @click="isActive==0?()=>{}:addOrEditOrInfo('history')"><icon iconClass="history" ></icon>历史</div>
-                    <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
-                    <div :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('add'):()=>{}"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole" :class="isActive!=0?'isDisabled':''" @click="isActive==0?addOrEditOrInfo('edit'):()=>{}"><icon iconClass="edit" ></icon>编辑</div>
+                    <div v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                 </div>
             </div>
@@ -28,7 +29,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="attachment" label="附件"  align="center" :width="70">
+                    <el-table-column   slot="attachment" label="附件"  align="center" :width="70">
                         <template slot-scope="{ row }">
                             <span @click="(row.fileInfoList&&row.fileInfoList.length)?downloadFile(row):''" :class="(row.fileInfoList&&row.fileInfoList.length)?'rowSvg':'rowSvg rowSvgInfo'">
                                 <el-tooltip class="item" effect="dark" :enterable="false" content="下载" placement="top">
@@ -37,7 +38,7 @@
                             </span>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" label="关联信息" :width="80" align="center" >
+                    <el-table-column v-if="isZDRole" slot="relationInfo" label="关联信息" :width="80" align="center" >
                         <template slot-scope="{ row }">
                             <el-tooltip class="item" effect="dark" :enterable="false" content="发布" placement="top">
                                <span @click="clickAction('release',row.id)" v-if="isActive==0 && row.state==0" class="rowSvg" >
@@ -97,6 +98,11 @@ export default {
        this.findDataDictionary();
 
     },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('XXGLZDGLY')
+        },
+    },
     mounted(){
         this.$eventBus.$on('infoPlate', msg => {
             if(msg == 'receive'){
@@ -113,6 +119,13 @@ export default {
         }
     },
     methods: {
+        getconfig(fn,p=null){
+            let arr=fn(p)
+            if(!this.isZDRole){
+                arr.splice(arr.length-1,1)
+            }
+            this.tableConfig=arr
+        },
         downloadFile(row){
             if(row.fileInfoList){
                 this.$refs.downloadFile.open(row.fileInfoList);
@@ -129,7 +142,8 @@ export default {
             })
             .then(data => {
               this.infoSelect = data.data["infoType"];
-              this.tableConfig = infoPlateSendTable(this.infoSelect);
+                this.getconfig(infoPlateSendTable,this.infoSelect)
+
                if(this.$route.query && this.$route.query.type=='receive'){
                     this.switchTable(1);
                 }else{
@@ -186,8 +200,8 @@ export default {
             if(index==0){
                 this.tableConfig = infoPlateSendTable(this.infoSelect);
             }else{
-                this.tableConfig = infoPlateReceiveTable(this.infoSelect);
-            }
+                this.getconfig(infoPlateReceiveTable,this.infoSelect)
+             }
             this.tableData = {records:[]};
             this.params.current = 1;
             this.getList();

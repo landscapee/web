@@ -136,6 +136,9 @@ export default {
             if(tag=='info'){
                 p='/infoinOfficeInfoAdd'
             }
+            if(this.$route.path=='/infoaddPersonDoc'){
+                p='/infoinOfficeInfoAdd1'
+            }
             if(this.$route.path=='/ZuserDoc'){
                 p='/ZinOfficeInfoAdd'
             }else if(this.$route.path=='/SuserDoc'){

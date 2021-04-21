@@ -153,6 +153,9 @@ export default {
             if(tag=='info'){
                 p='/infounsafeAdd'
             }
+            if(this.$route.path=='/infoaddPersonDoc'){
+                p='/infounsafeAdd1'
+            }
             if(this.$route.path=='/ZuserDoc'){
                 p='/ZunsafeAdd'
             }else if(this.$route.path=='/SuserDoc'){

@@ -1,8 +1,8 @@
 <template>
     <div :key="key">
-        <router-view v-if="this.$router.history.current.path == '/editBusinessData'" :key="$route.path"></router-view>
-        <router-view v-if="this.$router.history.current.path == '/editBusinessSubset'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/businessData'" class=" QCenterRight G_listTwo">
+        <router-view v-if="this.$route.path == '/editBusinessData'" :key="$route.path"></router-view>
+         <router-view v-else-if="this.$route.path == '/editBusinessSubset'" :key="$route.path"></router-view>
+         <div v-if="this.$route.path == '/businessData'" class=" QCenterRight G_listTwo">
             <div class="">
                 <div class="QHead">
                     业务数据类型及业务数据
@@ -14,15 +14,15 @@
                      <div class=" positiondiv">
                         <div style="visibility: hidden">ddd</div>
                         <div class="QheadRight">
-                            <div @click="addOrEditOrInfo('add')">
+                            <div   @click="addOrEditOrInfo('add')">
                                 <icon iconClass="add"></icon>
                                 新增
                             </div>
-                            <div @click="addOrEditOrInfo('edit')">
+                            <div  @click="addOrEditOrInfo('edit')">
                                 <icon iconClass="edit"></icon>
                                 编辑
                             </div>
-                            <div @click="delData('left','leftSelectId')">
+                            <div  @click="delData('left','leftSelectId')">
                                 <icon iconClass="remove"></icon>
                                 删除
                             </div>
@@ -52,15 +52,15 @@
                     <div class=" positiondiv">
                         <div style="visibility: hidden">ddd</div>
                         <div class="QheadRight">
-                            <div @click="rightAddOrEditOrInfo('add')">
+                            <div  @click="rightAddOrEditOrInfo('add')">
                                 <icon iconClass="add"></icon>
                                 新增
                             </div>
-                            <div @click="rightAddOrEditOrInfo('edit')">
+                            <div  @click="rightAddOrEditOrInfo('edit')">
                                 <icon iconClass="edit"></icon>
                                 编辑
                             </div>
-                            <div @click="delData('right','rightSelectId')">
+                            <div  @click="delData('right','rightSelectId')">
                                 <icon iconClass="remove"></icon>
                                 删除
                             </div>
@@ -127,11 +127,11 @@
                 scroll: 0
             };
         },
+
         watch: {
 
             '$route': function (val, nm) {
-                console.log(1, val.path, nm.path,val.path == '/businessData' && nm.path == '/editBusinessData');
-                if (val.path == '/businessData' && nm.path == '/editBusinessData') {
+                 if (val.path == '/businessData' && nm.path == '/editBusinessData') {
                     this.key = !this.key
                     console.log('one',this.leftForm);
                     this.leftParams.size = this.tableLeftData.records.length > 18 ? this.tableLeftData.records.length : 18
@@ -291,12 +291,12 @@
             //左侧表格新增编辑
             addOrEditOrInfo(tag) {
                 if (tag == 'add') {
-                    this.$router.push({path: '/editBusinessData', query: {type: 'add'}});
+                    this.$router.push({path: '/editBusinessData', query: {}});
                 } else if (tag == 'edit' || tag == 'info') {
-                    if (this.leftSelectId == null) {
+                     if (this.leftSelectId == null) {
                         this.$message.error('请先选中一行数据');
                     } else {
-                        this.$router.push({path: '/editBusinessData', query: {type: tag, id: this.leftSelectId}});
+                        this.$router.push({path: '/editBusinessData', query: { id: this.leftSelectId}});
                     }
                 }
             },
@@ -311,15 +311,15 @@
                         } else {
                             this.$router.push({
                                 path: '/editBusinessSubset',
-                                query: {type: 'add', id: this.leftSelectId}
+                                query: {  id: this.leftSelectId}
                             });
                         }
                     }
                 } else if (tag == 'edit' || tag == 'info') {
-                    if (this.rightSelectId == null) {
+                     if (this.rightSelectId == null) {
                         this.$message.error('请先选中一行数据');
                     } else {
-                        this.$router.push({path: '/editBusinessSubset', query: {type: tag, id: this.rightSelectId}});
+                        this.$router.push({path: '/editBusinessSubset', query: { id: this.rightSelectId}});
                     }
                 }
             },

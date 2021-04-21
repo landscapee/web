@@ -17,16 +17,15 @@
             </div>
 
             <div class="row_three">
-                <el-form-item  label="工单类型：" prop="type">
+                 <el-form-item  label="工单类型：" prop="type">
                     <span v-if="type=='info'">{{  form.type }}</span>
                     <el-select  @change="typeChange"   v-else clearable v-model="form.type" placeholder="请选择工单类型">
                         <el-option v-for="(opt,index) in options.worldorderType" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item  label="所属航司代码："  prop="airlineCompanyCode" :rules=" form.type=='WXGD'?rules.airlineCompanyCode:[{required:false}]" >
-
                     <span v-if="type=='info'">{{  form.airlineCompanyCode }}</span>
-                    <el-select  @change="iataChange"   v-else filterable v-model="form.airlineCompanyCode" clearable placeholder="请选择所属航司代码">
+                    <el-select :popper-append-to-body="false"  @change="iataChange"   v-else filterable v-model="form.airlineCompanyCode" clearable placeholder="请选择所属航司代码">
                         <el-option v-for="(opt,index) in Airline" :key="index" :label="opt.iata" :value="opt.iata">
                             <span>{{opt.iata}}-{{opt.fullname}}</span>
                         </el-option>
@@ -81,7 +80,7 @@
                 <el-form-item  label="适用ETOPS运行：" :prop=" form.type=='WXGD'?'etopEnable':''"  >
                     <span v-if="type=='info'">{{  form.etopEnable?'适用':'不适用' }}</span>
                     <el-select    v-else clearable v-model="form.etopEnable" placeholder="请选择">
-                        <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode==='false'?false:true"> </el-option>
+                        <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode "> </el-option>
                     </el-select>
                 </el-form-item>
             </div>
@@ -307,7 +306,11 @@
                             if(obj.leastMinutes ){
                                 obj.leastMinutes=Number(obj.leastMinutes)
                             }
-
+                            if(obj.etopEnable==='true'){
+                                obj.etopEnable=true
+                            }else if(obj.etopEnable==='false'){
+                                obj.etopEnable=false
+                            }
                            if(obj.airplane ) {
                                obj.airplane =  obj.airplane.map((k,l)=>{
                                    return this.airplaneObj[k]
@@ -344,6 +347,11 @@
                     method: 'get',
                  }).then((data) => {
                     this.form = extend({}, {...data.data.typeVO,isPreVersion:data.data.typeVO.isPreVersion||false});
+                    if(data.data.typeVO.etopEnable!==undefined){
+                        console.log(2222);
+                        this.$set(this.form,'etopEnable',data.data.typeVO.etopEnable+'')
+
+                    }
                     if(this.form.airplane){
                         this.form.airplane=this.form.airplane.map((k,l)=>{
                             return k.id

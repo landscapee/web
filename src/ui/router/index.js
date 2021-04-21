@@ -33,14 +33,14 @@ let authRoutes = [
                                 path: '/inOfficeInfoAdd/:id',
                                 component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
                                 name: 'D任职信息新增',
-                                meta: {	title: '任职信息新增',	icon: '',roles: ['R_qualityManage/inOfficeInfoAdd']	},
+                                meta: {	title: '任职信息新增',	icon: '' },
                                 hidden:true,
 
                             },{
                                 path: '/infoinOfficeInfoAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
-                                name: 'D任职信息新增',
-                                meta: {	title: '任职信息新增',	icon: ''	},
+                                name: 'D任职信息详情',
+                                meta: {	title: '任职信息详情',	icon: ''	},
                                 hidden:true,
 
                             },
@@ -48,14 +48,14 @@ let authRoutes = [
                                 path: '/workExperienceAdd/:id',
                                 component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
                                 name: 'D工作经验新增',
-                                meta: {	title: '工作经验新增',	icon: ''	,roles: ['R_qualityManage/workExperienceAdd']},
+                                meta: {	title: '工作经验新增',	icon: ''	 },
                                 hidden:true,
 
                             },{
                                 path: '/infoworkExperienceAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
-                                name: 'D工作经验新增',
-                                meta: {	title: '工作经验新增',	icon: ''	},
+                                name: 'D工作经验详情',
+                                meta: {	title: '工作经验详情',	icon: ''	},
                                 hidden:true,
 
                             },
@@ -63,14 +63,14 @@ let authRoutes = [
                                 path: '/certificateAdd/:id',
                                 component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
                                 name: 'D证书新增',
-                                meta: {	title: '证书新增',	icon: '',roles: ['R_qualityManage/certificateAdd']	},
+                                meta: {	title: '证书新增',	icon: ''	},
                                 hidden:true,
 
                             },{
                                 path: '/infocertificateAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
-                                name: 'D证书新增',
-                                meta: {	title: '证书新增',	icon: ''	},
+                                name: 'D证书详情',
+                                meta: {	title: '证书详情',	icon: ''	},
                                 hidden:true,
 
                             },
@@ -78,14 +78,14 @@ let authRoutes = [
                                 path: '/unsafeAdd/:id',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
                                 name: 'D不安全事件及诚信记录新增',
-                                meta: {	title: '不安全事件及诚信记录新增',	icon: '',roles: ['R_qualityManage/unsafeAdd']	},
+                                meta: {	title: '不安全事件及诚信记录新增',	icon: '' 	},
                                 hidden:true,
 
                             },{
                                 path: '/infounsafeAdd',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
-                                name: 'D不安全事件及诚信记录新增',
-                                meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
+                                name: 'D不安全事件及诚信记录详情',
+                                meta: {	title: '不安全事件及诚信记录详情',	icon: ''	},
                                 hidden:true,
 
                             },
@@ -93,13 +93,13 @@ let authRoutes = [
                                 path: '/workStyle/:id',
                                 component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
                                 name: 'D作风建设量化考核记录新增',
-                                meta: {	title: '作风建设量化考核记录新增',	icon: ''	,roles: ['R_qualityManage/workStyle']},
+                                meta: {	title: '作风建设量化考核记录新增',	icon: ''	 },
                                 hidden:true,
                             },{
                                 path: '/infoworkStyle',
                                 component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
-                                name: 'D作风建设量化考核记录新增',
-                                meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
+                                name: 'D作风建设量化考核记录详情',
+                                meta: {	title: '作风建设量化考核记录详情',	icon: ''	},
                                 hidden:true,
                             },
 
@@ -108,46 +108,46 @@ let authRoutes = [
                     {
                         path: '/infoaddPersonDoc',
                         component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
-                        name: 'D详情',
-                        meta: {	title: '新增',	icon: '',paramsId:'',roles: ['R_qualityManage/infoaddPersonDoc']	},
+                        name: '人员档案详情',
+                        meta: {	title: '详情',	icon: '',paramsId:'',roles: ['R_qualityManage/infoaddPersonDoc']	},
                         hidden:true,
                         children:[
                              {
-                                path: '/infoinOfficeInfoAdd',
+                                path: '/infoinOfficeInfoAdd1',
                                 component: () => import('@views/qualityManage/personDoc/add/inOfficeInfo/add'),
-                                name: 'D任职信息新增',
-                                meta: {	title: '任职信息新增',	icon: ''	},
+                                name: 'x任职信息详情',
+                                meta: {	title: '任职信息详情',	icon: ''	},
                                 hidden:true,
                             },
                             {
-                                path: '/infoworkExperienceAdd',
+                                path: '/infoworkExperienceAdd1',
                                 component: () => import('@views/qualityManage/personDoc/add/workExperience/add'),
-                                name: 'D工作经验新增',
-                                meta: {	title: '工作经验新增',	icon: ''	},
+                                name: 'x工作经验详情',
+                                meta: {	title: '工作经验详情',	icon: ''	},
                                 hidden:true,
 
                             },
                             {
-                                path: '/infocertificateAdd',
+                                path: '/infocertificateAdd1',
                                 component: () => import('@views/qualityManage/personDoc/add/certificate/add'),
-                                name: 'D证书新增',
-                                meta: {	title: '证书新增',	icon: ''	},
+                                name: 'x证书详情',
+                                meta: {	title: '证书详情',	icon: ''	},
                                 hidden:true,
 
                             },
                             {
-                                path: '/infounsafeAdd',
+                                path: '/infounsafeAdd1',
                                 component: () => import('@views/qualityManage/personDoc/add/unsafe/add'),
-                                name: 'D不安全事件及诚信记录新增',
-                                meta: {	title: '不安全事件及诚信记录新增',	icon: ''	},
+                                name: 'x不安全事件及诚信记录详情',
+                                meta: {	title: '不安全事件及诚信记录详情',	icon: ''	},
                                 hidden:true,
 
                             },
                              {
-                                path: '/infoworkStyle',
+                                path: '/infoworkStyle1',
                                 component: () => import('@views/qualityManage/personDoc/add/workWay/add'),
-                                name: 'D作风建设量化考核记录新增',
-                                meta: {	title: '作风建设量化考核记录新增',	icon: ''	},
+                                name: 'x作风建设量化考核记录详情',
+                                meta: {	title: '作风建设量化考核记录详情',	icon: ''	},
                                 hidden:true,
                             },
 
@@ -219,8 +219,7 @@ let authRoutes = [
 						name: '资质证书清单-编辑',
 						meta: {	title: '新增',	icon: '',roles: ['R_qualityManage/addQualificationsDetails']	},
 						hidden:true
-					},
-
+					} ,
                     {
                         path: '/ZuserDoc',
                         component: () => import('@views/qualityManage/personDoc/add/addPersonDoc'),
@@ -390,8 +389,8 @@ let authRoutes = [
                     }, {
                         path: '/editselfCheckPlanAdd',
                         component: () => import('@views/qualityManage/selfCheckPlan/add'),
-                        name: '法定自查检查计划',
-                        meta: {title: '法定自查检查计划新增',icon: '',roles: ['R_qualityManage/addselfCheckPlanAdd']},
+                        name: '法定自查检查计划编辑',
+                        meta: {title: '法定自查检查计划编辑',icon: '',roles: ['R_qualityManage/addselfCheckPlanAdd']},
                     },
                     // {
                     //     path: '/infoselfCheckPlanAdd',
@@ -408,14 +407,14 @@ let authRoutes = [
                     {
                         path: '/editselfCheckPlanDetails',
                         component: () => import('@views/qualityManage/selfCheckPlan/planDetailsAdd.vue'),
-                        name: '法定自查检查计划明细新增',
-                        meta: {title: '法定自查检查计划明细新增',icon: '',roles: ['R_qualityManage/addselfCheckPlanDetails']},
+                        name: '法定自查检查计划明细编辑',
+                        meta: {title: '法定自查检查计划明细编辑',icon: '',roles: ['R_qualityManage/addselfCheckPlanDetails']},
                     },
                     {
                         path: '/infoselfCheckPlanDetails',
                         component: () => import('@views/qualityManage/selfCheckPlan/planDetailsAdd.vue'),
-                        name: '法定自查检查计划明细新增',
-                        meta: {title: '法定自查检查计划明细新增',icon: '',roles: ['R_qualityManage/infoselfCheckPlanDetails']},
+                        name: '法定自查检查计划明细详情',
+                        meta: {title: '法定自查检查计划明细详情',icon: '',roles: ['R_qualityManage/infoselfCheckPlanDetails']},
                     },
 				]
 			},
@@ -430,32 +429,35 @@ let authRoutes = [
                         component: () => import('@views/qualityManage/safetyPerformance/add'),
                         name: '部门月度安全绩效新增',
                         meta: {title: '部门月度安全绩效新增',icon: '',roles: ['R_qualityManage/addsafetyPerformanceAdd']},
-                    }, {
+                    },
+                    {
                         path: '/editsafetyPerformanceAdd',
                         component: () => import('@views/qualityManage/safetyPerformance/add'),
-                        name: '部门月度安全绩效新增',
-                        meta: {title: '部门月度安全绩效新增',icon: '',roles: ['R_qualityManage/addsafetyPerformanceAdd']},
-                    }, {
+                        name: '部门月度安全绩效编辑',
+                        meta: {title: '部门月度安全绩效编辑',icon: '',roles: ['R_qualityManage/addsafetyPerformanceAdd']},
+                    },
+                    {
                         path: '/infosafetyPerformanceAdd',
                         component: () => import('@views/qualityManage/safetyPerformance/add'),
-                        name: '部门月度安全绩效新增',
-                        meta: {title: '部门月度安全绩效新增',icon: '',roles: ['R_qualityManage/infosafetyPerformanceAdd']},
+                        name: '部门月度安全绩效详情',
+                        meta: {title: '部门月度安全绩效详情',icon: '',roles: ['R_qualityManage/infosafetyPerformanceAdd']},
                     },
 					{
                         path: '/addsafetyPerformanceDetailsAdd',
                         component: () => import('@views/qualityManage/safetyPerformance/detailsAdd'),
                         name: '安全绩效明细新增',
                         meta: {title: '安全绩效明细新增',icon: '',roles: ['R_qualityManage/addsafetyPerformanceDetailsAdd']},
-                    },{
+                    },
+                    {
                         path: '/editsafetyPerformanceDetailsAdd',
                         component: () => import('@views/qualityManage/safetyPerformance/detailsAdd'),
-                        name: '安全绩效明细新增',
-                        meta: {title: '安全绩效明细新增',icon: '',roles: ['R_qualityManage/addsafetyPerformanceDetailsAdd']},
+                        name: '安全绩效明细编辑',
+                        meta: {title: '安全绩效明细编辑',icon: '',roles: ['R_qualityManage/addsafetyPerformanceDetailsAdd']},
                     },{
                         path: '/infosafetyPerformanceDetailsAdd',
                         component: () => import('@views/qualityManage/safetyPerformance/detailsAdd'),
-                        name: '安全绩效明细',
-                        meta: {title: '安全绩效明细',icon: '' ,roles: ['R_qualityManage/infosafetyPerformanceDetailsAdd']},
+                        name: '安全绩效明细详情',
+                        meta: {title: '安全绩效明细详情',icon: '' ,roles: ['R_qualityManage/infosafetyPerformanceDetailsAdd']},
                     },
                     {
                         path: '/safetyPerformanceYear',
@@ -479,13 +481,13 @@ let authRoutes = [
                     },{
                         path: '/editsafetyInformationAdd',
                         component: () => import('@views/qualityManage/safetyInformation/add'),
-                        name: '安全信息',
-                        meta: {title: '安全信息',icon: '',roles: ['R_qualityManage/addsafetyInformationAdd']},
+                        name: '安全信息编辑',
+                        meta: {title: '安全信息编辑',icon: '',roles: ['R_qualityManage/addsafetyInformationAdd']},
                     },{
                         path: '/infosafetyInformationAdd',
                         component: () => import('@views/qualityManage/safetyInformation/add'),
-                        name: '安全信息',
-                        meta: {title: '安全信息',icon: '',roles: ['R_qualityManage/infosafetyInformationAdd']},
+                        name: '安全信息详情',
+                        meta: {title: '安全信息详情',icon: '',roles: ['R_qualityManage/infosafetyInformationAdd']},
                     },
 				]
 			},
@@ -504,14 +506,14 @@ let authRoutes = [
 {
                         path: '/editdangerousDataAdd',
                         component: () => import('@views/qualityManage/dangerousData/add'),
-                        name: '危险数据',
-                        meta: {title: '危险数据',icon: '', roles: ['R_qualityManage/adddangerousDataAdd']},
+                        name: '危险数据编辑',
+                        meta: {title: '危险数据编辑',icon: '', roles: ['R_qualityManage/adddangerousDataAdd']},
 					},
 {
                         path: '/infodangerousDataAdd',
                         component: () => import('@views/qualityManage/dangerousData/add'),
-                        name: '危险数据',
-                        meta: {title: '危险数据',icon: '', roles: ['R_qualityManage/infodangerousDataAdd']},
+                        name: '危险数据详情',
+                        meta: {title: '危险数据详情',icon: '', roles: ['R_qualityManage/infodangerousDataAdd']},
 					},
 
 				]
@@ -528,7 +530,7 @@ let authRoutes = [
             {
                 path: '/WorkTemplate',
                 component: () => import('@views/workOrder/workTemplate/index'),
-                name: '模板管理',
+                name: '工单模板管理',
                 meta: {title: '模板管理',icon: 'xxgl',roles:['R_WorkOrderManage/WorkTemplate'] },
                 children:[
                     {
@@ -539,8 +541,8 @@ let authRoutes = [
                     }, {
                         path: '/editWorkTemplateAdd',
                         component: () => import('@views/workOrder/workTemplate/add/index'),
-                        name: '新增工单模板配置',
-                        meta: {title: '新增工单模板配置',icon: 'xxgl',roles:['R_WorkOrderManage/addWorkTemplateAdd'] },
+                        name: '编辑工单模板配置',
+                        meta: {title: '编辑工单模板配置',icon: 'xxgl',roles:['R_WorkOrderManage/addWorkTemplateAdd'] },
                     }, {
                         path: '/infoWorkTemplateAdd',
                         component: () => import('@views/workOrder/workTemplate/add/index'),
@@ -579,13 +581,13 @@ let authRoutes = [
                     {
                         path: '/editWorkAbnormalAdd',
                         component: () => import('@views/workOrder/abnormal/add'),
-                        name: '完工签署纸制填报工单导入',
-                        meta: {title: '纸制填报工单导入',icon: 'xxgl',roles:['R_WorkOrderManage/addWorkAbnormalAdd'] },
+                        name: '完工签署纸制填报工单导入编辑',
+                        meta: {title: '纸制填报工单导入编辑',icon: 'xxgl',roles:['R_WorkOrderManage/addWorkAbnormalAdd'] },
                     },{
                         path: '/infoWorkAbnormalAdd',
                         component: () => import('@views/workOrder/abnormal/add'),
-                        name: '完工签署纸制填报工单导入',
-                        meta: {title: '纸制填报工单导入',icon: 'xxgl',roles:['R_WorkOrderManage/infoWorkAbnormalAdd'] },
+                        name: '完工签署纸制填报工单导入详情',
+                        meta: {title: '纸制填报工单导入详情',icon: 'xxgl',roles:['R_WorkOrderManage/infoWorkAbnormalAdd'] },
                     },
                 ]
             },
@@ -614,8 +616,8 @@ let authRoutes = [
 					{
 						path: '/editMyWorkAbnormalAdd',
 						component: () => import('@views/workOrder/abnormal/add'),
-						name: '纸制填报工单导入',
-						meta: {title: '纸制填报工单导入',icon: 'xxgl' ,roles:['R_myWorkOrder/addMyWorkAbnormalAdd']},
+						name: '我的纸制填报工单导入',
+						meta: {title: '我的纸制填报工单导入',icon: 'xxgl' ,roles:['R_myWorkOrder/addMyWorkAbnormalAdd']},
 					},
 				]
 			},
@@ -633,13 +635,13 @@ let authRoutes = [
                     }  ,{
                         path: '/editworkCardVrifyAdd',
                         component: () => import('@views/workOrder/workCardVrify/add'),
-                        name: '新增工卡核对',
-                        meta: {title: '新增工卡核对',icon: 'xxgl',roles:['R_WorkOrderManage/addworkCardVrifyAdd'] },
+                        name: '编辑工卡核对',
+                        meta: {title: '编辑工卡核对',icon: 'xxgl',roles:['R_WorkOrderManage/addworkCardVrifyAdd'] },
                     }  ,{
                         path: '/infoworkCardVrifyAdd',
                         component: () => import('@views/workOrder/workCardVrify/add'),
-                        name: '新增工卡核对',
-                        meta: {title: '新增工卡核对',icon: 'xxgl' ,roles:['R_WorkOrderManage/infoworkCardVrifyAdd']},
+                        name: '详情工卡核对',
+                        meta: {title: '详情工卡核对',icon: 'xxgl' ,roles:['R_WorkOrderManage/infoworkCardVrifyAdd']},
                     }
                 ]
             },
@@ -716,8 +718,8 @@ let authRoutes = [
                     },{
                         path: '/editFile',
                         component: () => import('@views/techKnowledge/fileManage/detail/addFile'),
-                        name: '新增文件',
-                        meta: {title: '新增文件',icon: 'xxgl',roles:['R_WorkOrderManage5/addFile']  },
+                        name: '编辑文件',
+                        meta: {title: '编辑文件',icon: 'xxgl',roles:['R_WorkOrderManage5/addFile']  },
                     },{
                         path: '/infoFile',
                         component: () => import('@views/techKnowledge/fileManage/detail/addFile'),
@@ -788,12 +790,12 @@ let authRoutes = [
                         path: '/editcoursewareMaintainAdd',
                         component: () => import('@views/trainManage/coursewareMaintain/add'),
                         name: '课件维护编辑',
-                        meta: {title: '课件维护',icon: 'xxgl' ,roles:['R_peixunKaohe/addcoursewareMaintainAdd'] },
+                        meta: {title: '课件维护编辑',icon: 'xxgl' ,roles:['R_peixunKaohe/addcoursewareMaintainAdd'] },
                     }, {
                         path: '/infocoursewareMaintainAdd',
                         component: () => import('@views/trainManage/coursewareMaintain/add'),
                         name: '课件维护详情',
-                        meta: {title: '课件维护新增',icon: 'xxgl' ,roles:['R_peixunKaohe/infocoursewareMaintainAdd'] },
+                        meta: {title: '课件维护详情',icon: 'xxgl' ,roles:['R_peixunKaohe/infocoursewareMaintainAdd'] },
                     },
                 ]
 			},
@@ -812,34 +814,34 @@ let authRoutes = [
 					},{
                         path: '/edittestMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
-                        name: '试卷新增',
-                        meta: {title: '试卷新增',icon: 'xxgl' ,roles:['R_peixunKaohe/addtestMaintenanceAdd']},
+                        name: '试卷编辑',
+                        meta: {title: '试卷编辑',icon: 'xxgl' ,roles:['R_peixunKaohe/addtestMaintenanceAdd']},
 
 					},
                     {
                         path: '/infotestMaintenanceAdd',
                         component: () => import('@views/trainManage/testMaintenance/add'),
-                        name: '试卷新增',
-                        meta: {title: '试卷新增',icon: 'xxgl' ,roles:['R_peixunKaohe/infotestMaintenanceAdd']},
+                        name: '试卷详情',
+                        meta: {title: '试卷详情',icon: 'xxgl' ,roles:['R_peixunKaohe/infotestMaintenanceAdd']},
 
 					},
 					{
                         path: '/addtestMaintenanceAddAdd',
                         component: () => import('@views/trainManage/testMaintenance/addAdd'),
-                        name: '试题维护',
+                        name: '试题维护新增',
                         meta: {title: '试题维护',icon: 'xxgl' ,roles:['R_peixunKaohe/addtestMaintenanceAddAdd'] },
 
 					},{
                         path: '/edittestMaintenanceAddAdd',
                         component: () => import('@views/trainManage/testMaintenance/addAdd'),
-                        name: '试题维护',
-                        meta: {title: '试题维护',icon: 'xxgl' ,roles:['R_peixunKaohe/addtestMaintenanceAddAdd'] },
+                        name: '试题维护编辑',
+                        meta: {title: '试题维护编辑',icon: 'xxgl' ,roles:['R_peixunKaohe/addtestMaintenanceAddAdd'] },
 
 					},{
                         path: '/infotestMaintenanceAddAdd',
                         component: () => import('@views/trainManage/testMaintenance/addAdd'),
-                        name: '试题维护',
-                        meta: {title: '试题维护',icon: 'xxgl' },
+                        name: '试题维护详情',
+                        meta: {title: '试题维护详情',icon: 'xxgl' },
 					},
                     {
                         path: '/testMaintenanceSee',
@@ -863,13 +865,13 @@ let authRoutes = [
                     }, {
                         path: '/edittrainManageAdminAdd',
                         component: () => import('@views/trainManage/trainManageAdmin/add'),
-                        name: '培训管理新增',
-                        meta: {title: '培训管理新增',icon: 'xxgl' ,roles:['R_peixunKaohe/addtrainManageAdminAdd'] },
+                        name: '培训管理编辑',
+                        meta: {title: '培训管理编辑',icon: 'xxgl' ,roles:['R_peixunKaohe/addtrainManageAdminAdd'] },
                     }, {
                         path: '/infotrainManageAdminAdd',
                         component: () => import('@views/trainManage/trainManageAdmin/add'),
-                        name: '培训管理新增',
-                        meta: {title: '培训管理新增',icon: 'xxgl' ,roles:['R_peixunKaohe/infotrainManageAdminAdd'] },
+                        name: '培训管理详情',
+                        meta: {title: '培训管理详情',icon: 'xxgl' ,roles:['R_peixunKaohe/infotrainManageAdminAdd'] },
                     },
 					{
                         path: '/trainManageAdminPush',
@@ -921,13 +923,13 @@ let authRoutes = [
                     }, {
                         path: '/edittestManageAdd',
                         component: () => import('@views/trainManage/testManage/add'),
-                        name: '考试管理-新增',
-                        meta: {title: '考试管理-新增',icon: 'xxgl',roles:['R_peixunKaohe/addtestManageAdd'] },
+                        name: '考试管理-编辑',
+                        meta: {title: '考试管理-编辑',icon: 'xxgl',roles:['R_peixunKaohe/addtestManageAdd'] },
                     }, {
                         path: '/infotestManageAdd',
                         component: () => import('@views/trainManage/testManage/add'),
-                        name: '考试管理-新增',
-                        meta: {title: '考试管理-新增',icon: 'xxgl' ,roles:['R_peixunKaohe/infotestManageAdd']},
+                        name: '考试管理-详情',
+                        meta: {title: '考试管理-详情',icon: 'xxgl' ,roles:['R_peixunKaohe/infotestManageAdd']},
                     },
                     {
                         path: '/testManagePushStaff',
@@ -1056,16 +1058,16 @@ let authRoutes = [
 						meta: {	title: '新增',	icon: '',roles:['R_msgManage/addSubscribeConfig']	},
 						hidden:true
 					},{
-						path: '/infoSubscribeConfig',
+						path: '/editSubscribeConfig',
 						component: () => import('@views/msgManage/subscribeConfig/components/addSubscribeConfig'),
-						name: '订阅配置新增',
-						meta: {	title: '新增',	icon: '',roles:['R_msgManage/addSubscribeConfig']	},
+						name: '订阅配置编辑',
+						meta: {	title: '编辑',	icon: '',roles:['R_msgManage/addSubscribeConfig']	},
 						hidden:true
 					},{
 						path: '/infoSubscribeConfig',
 						component: () => import('@views/msgManage/subscribeConfig/components/addSubscribeConfig'),
-						name: '订阅配置新增',
-						meta: {	title: '新增',	icon: '',roles:['R_msgManage/infoSubscribeConfig']	},
+						name: '订阅配置详情',
+						meta: {	title: '详情',	icon: '',roles:['R_msgManage/infoSubscribeConfig']	},
 						hidden:true
 					}
 				]
@@ -1085,7 +1087,7 @@ let authRoutes = [
 					},{
 						path: '/editInfoPlate',
 						component: () => import('@views/msgManage/infoPlate/components/addInfoPlate'),
-						name: 'addInfoPlate',
+						name: 'editInfoPlate',
 						meta: {	title: 'bj',	icon: '',roles:['R_msgManage/addInfoPlate']	},
 						hidden:true
 					},
@@ -1124,22 +1126,16 @@ let authRoutes = [
 						path: '/editBusinessData',
 						component: () => import('@views/basicData/businessData/components/editBusinessData'),
 						name: 'editBusinessData',
-						meta: {	title: '新增',	icon: ''	,roles:['R_basicData/addBusinessSubset']},
+						meta: {	title: '新增',	icon: ''	},
 						hidden:true
 					},
-					{
-						path: '/addBusinessSubset',
+					 {
+						path: '/editBusinessSubset',
 						component: () => import('@views/basicData/businessData/components/editBusinessSubset'),
 						name: 'editBusinessSubset',
-						meta: {	title: '新增',	icon: '',roles:['R_basicData/addBusinessSubset']	},
+						meta: {	title: '新增',	icon: ''	},
 						hidden:true
-					},{
-						path: '/infoBusinessSubset',
-						component: () => import('@views/basicData/businessData/components/editBusinessSubset'),
-						name: 'editBusinessSubset',
-						meta: {	title: 'xq',	icon: ''	,roles:['R_basicData/infoBusinessSubset']},
-						hidden:true
-					},
+					}
 				]
 			},
 			{
@@ -1152,21 +1148,9 @@ let authRoutes = [
 						path: '/addSysParameter',
 						component: () => import('@views/basicData/sysParameter/components/addSysParameter'),
 						name: 'addSysParameter',
-						meta: {	title: '新增',	icon: '',roles:['R_basicData/addSysParameter'] 	},
+						meta: {	title: '新增',	icon: '' },
 						hidden:true
-					},{
-						path: '/editSysParameter',
-						component: () => import('@views/basicData/sysParameter/components/addSysParameter'),
-						name: 'addSysParameter',
-						meta: {	title: '新增',	icon: '',roles:['R_basicData/addSysParameter'] 	},
-						hidden:true
-					},{
-						path: '/infoSysParameter',
-						component: () => import('@views/basicData/sysParameter/components/addSysParameter'),
-						name: 'addSysParameter',
-						meta: {	title: '新增',	icon: '',roles:['R_basicData/infoSysParameter'] 	},
-						hidden:true
-					},
+					}
 				]
 			},
 			{
@@ -1176,24 +1160,12 @@ let authRoutes = [
 				meta: {title: '机尾号信息',icon: '' ,roles:['R_basicData/tailInfo'] },
 				children:[
 					{
-						path: '/addtailInfoAdd',
+						path: '/tailInfoAdd',
 						component: () => import('@views/basicData/AirInfo/add'),
 						name: 'tailInfoAdd',
-						meta: {	title: '新增',	icon: ''	,roles:['R_basicData/addtailInfoAdd'] },
+						meta: {	title: '新增',	icon: ''	  },
 						hidden:true
-					},{
-						path: '/edittailInfoAdd',
-						component: () => import('@views/basicData/AirInfo/add'),
-						name: 'tailInfoAdd',
-						meta: {	title: '新增',	icon: '',roles:['R_basicData/addtailInfoAdd'] 	},
-						hidden:true
-					},{
-						path: '/infotailInfoAdd',
-						component: () => import('@views/basicData/AirInfo/add'),
-						name: 'tailInfoAdd',
-						meta: {	title: '新增',	icon: '',roles:['R_basicData/infotailInfoAdd'] 	},
-						hidden:true
-					},
+					}
 				]
 			},
 			{
@@ -1206,21 +1178,9 @@ let authRoutes = [
 						path: '/addElectronicFence',
 						component: () => import('@views/basicData/electronicFence/components/addElectronicFence'),
 						name: 'addElectronicFence',
-						meta: {	title: '新增',	icon: ''	 ,roles:['R_basicData/addElectronicFence']},
+						meta: {	title: '新增',	icon: ''	 },
 						hidden:true
-					},{
-						path: '/editElectronicFence',
-						component: () => import('@views/basicData/electronicFence/components/addElectronicFence'),
-						name: 'addElectronicFence',
-						meta: {	title: '新增',	icon: ''	 ,roles:['R_basicData/addElectronicFence']},
-						hidden:true
-					},{
-						path: '/infoElectronicFence',
-						component: () => import('@views/basicData/electronicFence/components/addElectronicFence'),
-						name: 'addElectronicFence',
-						meta: {	title: '新增',	icon: ''	 ,roles:['R_basicData/infoElectronicFence']},
-						hidden:true
-					},
+					}
 				]
 			},
 			{

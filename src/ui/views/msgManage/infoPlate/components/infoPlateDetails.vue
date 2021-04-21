@@ -5,12 +5,7 @@
         <span>信息平台-详情</span>
       </div>
       <div class="top-toolbar">
-        <div  class="isDisabled">
-          <icon iconClass="save"></icon>保存
-        </div>
-        <div  class="isDisabled">
-          <icon iconClass="reset"></icon>重置
-        </div>
+
       </div>
     </div>
     <div class="main-content">
@@ -100,7 +95,7 @@ export default {
         }else{
             this.parentType = 'receive';
         }
-      this.type = this.$route.query.type;
+      this.type = 'info';
       this.$route.meta.title ="详情";
       let url= this.parentType == 'send'?'notificationPublish/getById':'notificationRecipient/getById'
         request({

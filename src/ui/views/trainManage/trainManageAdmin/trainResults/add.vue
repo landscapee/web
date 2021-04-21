@@ -163,7 +163,7 @@
         created() {
              if(this.$router.history.current.path == '/trainManageAdminResultsAdd'){
                 if (this.$route.query) {
-                    this.type = this.$route.query.type;
+                    this.type = 'info';
                     this.$route.meta.title =
                         this.type == "add"
                             ? "员工培训结果新增"

@@ -132,18 +132,22 @@ export default {
             if(tag=='info'){
                 p='/infocertificateAdd'
             }
+            if(this.$route.path=='/infoaddPersonDoc'){
+                p='/infocertificateAdd1'
+            }
             if(this.$route.path=='/ZuserDoc'){
                 p='/ZcertificateAdd'
             }else if(this.$route.path=='/SuserDoc'){
                 p='/ScertificateAdd'
             }
-              if(tag=='add'){
-                this.$router.push({path:p,query:{type:'add',rId:this.id+','+this.type+','+this.userId}});
+            console.log(p);
+            if(tag=='add'){
+                this.$router.push({path:p,query:{rId:this.id+','+this.type+','+this.userId}});
             }else if(tag == 'edit' || tag == 'info'){
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:p,query:{type:tag,rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
+                     this.$router.push({path:p,query:{rId:this.id+','+this.type+','+this.userId,id:this.selectId}});
                 }
             }
         },

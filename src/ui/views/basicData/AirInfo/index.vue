@@ -1,7 +1,7 @@
 <template>
     <div>
-         <router-view v-if="this.$router.history.current.path == '/tailInfoAdd'" :key="$route.path"></router-view>
-        <div v-else-if="this.$router.history.current.path == '/tailInfo'" :key="$route.path" class="QCenterRight G_listOne">
+         <router-view v-if="this.$route.path == '/tailInfoAdd'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/tailInfo'" :key="$route.path" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     机尾号信息

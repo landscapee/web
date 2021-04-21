@@ -1,15 +1,17 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/addSubscribeConfig'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/subscribeConfig'" class="QCenterRight G_listOne">
+        <router-view v-if="this.$route.path == '/addSubscribeConfig'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/editSubscribeConfig'" :key="$route.path"></router-view>
+        <router-view v-else-if="this.$route.path == '/infoSubscribeConfig'" :key="$route.path"></router-view>
+        <div v-else-if="this.$route.path == '/subscribeConfig'" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     信息订阅配置
                 </div>
                 <div class="QheadRight">
-                    <div @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
-                    <div @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
-                    <div @click="delData()"><icon iconClass="remove" ></icon>删除</div>
+                    <div v-if="isZDRole" @click="addOrEditOrInfo('add')"><icon iconClass="add" ></icon>新增</div>
+                    <div v-if="isZDRole"  @click="addOrEditOrInfo('edit')"><icon iconClass="edit" ></icon>编辑</div>
+                    <div  v-if="isZDRole" @click="delData()"><icon iconClass="remove" ></icon>删除</div>
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
 
                 </div>
@@ -55,6 +57,11 @@ export default {
    created() {
        this.findDataDictionary();
        this.getList();
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('XXGLZDGLY')
+        },
     },
     watch:{
         params:{
@@ -123,10 +130,11 @@ export default {
             if(tag=='add'){
                 this.$router.push({path:'/addSubscribeConfig',query:{type:'add'}});
             }else if(tag == 'edit' || tag == 'info'){
+                let p='/'+tag+'SubscribeConfig'
                 if(this.selectId==null){
                     this.$message.error('请先选中一行数据');
                 }else{
-                     this.$router.push({path:'/addSubscribeConfig',query:{type:tag,id:this.selectId}});
+                     this.$router.push({path:p,query:{type:tag,id:this.selectId}});
                 }
             }
         },

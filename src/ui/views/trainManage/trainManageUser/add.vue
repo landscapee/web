@@ -134,7 +134,7 @@
         created() {
             if(this.$router.history.current.path == '/trainManageUserAdd'){
                 if (this.$route.query) {
-                    this.type = this.$route.query.type;
+                    this.type = 'info';
 
 
                     if(this.type!='add'){

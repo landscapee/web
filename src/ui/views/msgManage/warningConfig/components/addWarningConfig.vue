@@ -5,10 +5,10 @@
         <span>预警推送配置-{{type=='add'?'新增':type=='edit'?'编辑':type=='info'?'详情':''}}</span>
       </div>
       <div class="top-toolbar">
-        <div @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div v-if="type!='info'"  @click="type!='info'?saveQualifications():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="save"></icon>保存
         </div>
-        <div @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
+        <div  v-if="type!='info'" @click="type!='info'?resetForm():()=>{}" :class="type=='info'?'isDisabled':''">
           <icon iconClass="reset"></icon>重置
         </div>
       </div>

@@ -63,8 +63,7 @@ export const warningSearchHistoryTable = () => {
         { prop: 'state', label: '状态', align: 'center',formatter: (row, column, cellValue) => {
                 return '已关闭';
             }},
-        { slot: 'relationInfo', label: '操作' ,width:'148',search:{fixed:"right",type:'btn',label:'搜索',icon:"table_search"}}
-    ]
+     ]
 };
 export const subscribeConfigTable = (infoSelect) => {
     return [

@@ -68,7 +68,6 @@ export default {
                             responseType:'blob',
                             params:{...this.form}
                         }).then((d)=>{
-
                             let arr=[]
                             if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
                                 arr=d.headers['content-disposition'].split('=')[1].split('.')

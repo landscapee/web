@@ -1,7 +1,7 @@
 <template>
     <div>
-        <router-view v-if="this.$router.history.current.path == '/historyWarning'" :key="$route.path"></router-view>
-        <div v-if="this.$router.history.current.path == '/warningSearch'" class="QCenterRight G_listOne">
+        <router-view v-if="this.$route.path == '/historyWarning'" :key="$route.path"></router-view>
+        <div v-if="this.$route.path == '/warningSearch'" class="QCenterRight G_listOne">
             <div  >
                 <div class="QHead">
                     预警查询
@@ -18,7 +18,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                    <el-table-column slot="relationInfo" align='center' :width="100" >
+                    <el-table-column v-if="isZDRole" slot="relationInfo" align='center' :width="100" >
                         <template slot-scope="{ row }">
                             <el-tooltip class="item" effect="dark" :enterable="false" content="确认" placement="top">
                               <span @click="row.state===1?clickConfirm(row):''"
@@ -72,7 +72,18 @@ export default {
         };
     },
     created() {
+        let arr=warningSearchTable()
+        if(!this.isZDRole){
+            arr.splice(arr.length-1,1)
+
+        }
+        this.tableConfig=arr
        this.getList();
+    },
+    computed:{
+        isZDRole(){
+            return !this.$store.getters.isZDRole('XXGLZDGLY')
+        },
     },
     watch:{
         params:{

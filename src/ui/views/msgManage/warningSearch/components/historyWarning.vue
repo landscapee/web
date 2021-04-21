@@ -14,8 +14,7 @@
                             <icon  iconClass="ky" class="tab_radio" v-else></icon>
                         </template>
                     </el-table-column>
-                     <el-table-column slot="relationInfo"  :width="148" ></el-table-column>
-                </SearchTable>
+                 </SearchTable>
             </div>
         </div>
 </template>
