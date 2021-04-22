@@ -236,9 +236,8 @@
 
                     this.checkbox=bodyTable.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
                  }else{
-                    this.checkbox = document.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
-
-                }
+                    this.checkbox = this.$el.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
+                 }
             })
         },
         methods: {
@@ -257,8 +256,7 @@
 
                 if (this.selectedList.length) {
                     let len = this.data instanceof Array ? this.data.length : this.data.records.length || 0
-                    console.log(len, this.selectedList.length);
-                    if (this.selectedList.length == len) {
+                     if (this.selectedList.length == len) {
                         this.checkbox.indeterminate = false
                         this.checkbox.checked = true
                     } else {
@@ -271,8 +269,7 @@
                 }
             },
             selectCheckBox(select, row) {
-                console.log(select);
-                row.selected = !row.selected
+                 row.selected = !row.selected
                 this.selectedList = select
                 this.selectedRow = row
                 this.isAllSelect()
@@ -301,8 +298,7 @@
                     this.$refs.body_table.clearSelection()
                 }
                 this.allDataSelectOptions(val)
-                console.log('all',val,this.selectedList);
-                this.$emit('selectCheckBox', cloneDeep(this.selectedList),{});
+                 this.$emit('selectCheckBox', cloneDeep(this.selectedList),{});
 
             },
             getIndex(row) {
@@ -349,16 +345,18 @@
                 this.$emit('listenToSelectionChange', list);
             },
             resizeOption1() {
-                // this.$nextTick(() => {
-                if (this.timer) {
+                 if (this.timer) {
                     clearInterval(this.timer)
                     this.timer = null
                 }
+                  if(!this.$el){
+                     return false
+                 }
                 let bs = 'body_table' + this.refTag || ''
                 let hs = 'header_table' + this.refTag || ''
-                let body_table = document.getElementsByClassName(bs)[0]
-                let header_table = document.getElementsByClassName(hs)[0]
-                if (!this.$refs.body_table || !header_table) {
+                let body_table = this.$el.getElementsByClassName(bs)[0]
+                let header_table = this.$el.getElementsByClassName(hs)[0]
+                 if (!this.$refs.body_table || !header_table) {
                     return false
                 }
 
@@ -366,8 +364,7 @@
                 let trheight = parseFloat(window.getComputedStyle(tr).height)
                 let num = this.noSearch ? 1 : 2
                 this.tHeight = trheight * num + 2
-                console.log('tHeight',trheight,this.tHeight);
-                this.$refs.body_table.doLayout();
+                 this.$refs.body_table.doLayout();
                 let hHeight = trheight * num + 2
                 let thHeight = trheight * num + 1
                 let len = this.data.length || this.data.records && this.data.records.length

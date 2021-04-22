@@ -94,9 +94,10 @@
              <Download ref="Download"></Download>
              <MoreExport ref="MoreExport"></MoreExport>
              <Export ref="Export"></Export>
-             <historyEditLog ref="historyEditLog"></historyEditLog>
              <exportTopExcel ref="exportTopExcel" @isCLick="isCLick"></exportTopExcel>
         </div>
+        <historyEditLog ref="historyEditLog"></historyEditLog>
+
     </div>
 </template>
 <script>
