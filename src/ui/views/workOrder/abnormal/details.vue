@@ -263,7 +263,7 @@
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
                         params: {delete: false, valStatus: 1},
-                        data: ["userIsVerify", "QW_Signature_workUser",'FCB_Signature_workUser','QZ_Signature_workUser']
+                        data: ["userIsVerify", 'JZ_Signature_workUser',"QW_Signature_workUser",'FCB_Signature_workUser','QZ_Signature_workUser']
                     }).then(d => {
                         if (d.code == 200) {
                             let options = {
@@ -272,6 +272,7 @@
                                     QWSJGD:d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
                                     CBGZJLD:d.data.FCB_Signature_workUser[0] && d.data.FCB_Signature_workUser[0].valCode,
                                     QZGD:d.data.QZ_Signature_workUser[0] && d.data.QZ_Signature_workUser[0].valCode,
+                                    JZ:d.data.JZ_Signature_workUser[0] && d.data.JZ_Signature_workUser[0].valCode,
 
                                 },
                                 // workUser: d.data.workUser[0] && d.data.workUser[0].valCode,
@@ -1075,7 +1076,7 @@
 
                 this.promiseOptions.then((d) => {
                     if (d.userIsVerify === 'false') {
-                        _this.signFn(type, d.workUser[this.workorder.type], null, id)
+                        _this.signFn(type, d.workUser["JZ"], null, id)
                     } else if (d.userIsVerify === 'true') {
                         this.$msgBox.showMsgBox({
                             isShowInput: true,
@@ -1295,7 +1296,7 @@
 
                     this.promiseOptions.then((d) => {
                         if (d.userIsVerify === 'false') {
-                            this.signOthFnR(type, $event, d.workUser[this.workorder.type])
+                            this.signOthFnR(type, $event, d.workUser['JZ'])
                         } else if (d.userIsVerify === 'true') {
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,

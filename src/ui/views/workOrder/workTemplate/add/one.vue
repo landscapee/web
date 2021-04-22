@@ -143,7 +143,7 @@
                             if (d.data) {
                                 callback();
                                 request({
-                                    url:`${this.$ip}/mms-workorder//template/getNextVersion`,
+                                    url:`${this.$ip}/mms-workorder/template/getNextVersion`,
                                     method: 'get',
                                     params:{code:this.form.code||null}
                                 }).then(d => {

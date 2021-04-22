@@ -48,7 +48,7 @@
                                          value="dasdasd"></el-checkbox>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" slot="option" label="操作" :width="90">
+                    <el-table-column align="center" slot="option" label="操作" :width="120">
                         <template slot-scope="scope">
                             <div>
 
@@ -77,18 +77,25 @@
                                         <icon iconClass="editNew"></icon>
                                     </span>
                                 </el-tooltip>
-
+                                <el-tooltip  class="item" effect="dark" :enterable="false" content="历史修改记录" placement="top">
+                                     <span v-if="scope.row.state===3 && scope.row.isOffline==='线上'"
+                                           @click="historyEditLog(scope.row)" class="rowSvg" style="margin-left: 10px">
+                                        <icon iconClass="history"></icon>
+                                    </span>
+                                </el-tooltip>
 
                             </div>
                         </template>
                     </el-table-column>
 
                 </SearchTable>
-                <Download ref="Download"></Download>
-                <MoreExport ref="MoreExport"></MoreExport>
-                <Export ref="Export"></Export>
-                <exportTopExcel ref="exportTopExcel" @isCLick="isCLick"></exportTopExcel>
+
             </div>
+             <Download ref="Download"></Download>
+             <MoreExport ref="MoreExport"></MoreExport>
+             <Export ref="Export"></Export>
+             <historyEditLog ref="historyEditLog"></historyEditLog>
+             <exportTopExcel ref="exportTopExcel" @isCLick="isCLick"></exportTopExcel>
         </div>
     </div>
 </template>
@@ -101,10 +108,10 @@
     import MoreExport from './moreExport';
     import request from '@lib/axios.js';
     import {extend, map} from 'lodash';
-
+    import historyEditLog from './historyEditLog'
     export default {
         components: {
-            Icon,
+            Icon,historyEditLog,
             SearchTable, MoreExport, Export, exportTopExcel
         },
         name: 'authorizeManage',
@@ -168,6 +175,9 @@
         },
 
         methods: {
+            historyEditLog(row){
+                this.$refs.historyEditLog.open(row)
+            },
             isCLick(val) {
                 this.loading = val
             },
@@ -344,13 +354,16 @@
                 margin: 0;
             }
         }
-    /deep/ .mainTable {
-        height: calc(100vh - 370px);
+        .tableOneBox{
+            /deep/ .mainTable {
+                height: calc(100vh - 370px);
 
-        .el-checkbox__label {
-            display: none;
+                .el-checkbox__label {
+                    display: none;
+                }
+            }
         }
-    }
+
 
     /deep/ .cell > div {
         line-height: 20px !important;

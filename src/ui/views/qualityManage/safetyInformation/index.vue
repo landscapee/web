@@ -15,7 +15,6 @@
                     <div @click="addOrEditOrInfo('info')"><icon iconClass="info" ></icon>详情</div>
                     <div @click="exportExcel"><icon iconClass="export" ></icon> 导出</div>
                     <div v-if="isZDRole" @click="upDocInfo('info')"><icon iconClass="upload" ></icon>安全信息上传</div>
-
                 </div>
             </div>
             <div class="tableOneBox">
