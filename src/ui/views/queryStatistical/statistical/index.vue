@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="this.$router.history.current.path == '/statisticalIndex'" :key="$route.path" class="QCenterRight G_listOne statisticalIndex">
+        <div v-if="this.$route.path == '/statisticalIndex'" :key="$route.path" class="QCenterRight G_listOne statisticalIndex">
             <div >
                 <div class="QHead">
                     综合统计
@@ -11,42 +11,42 @@
                     <el-form :model="form1" :inline="true">
 
                         <el-form-item label="航空公司：" class="firstWidth">
-                            <el-select filterable @change="getList1" clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
+                            <el-select filterable  clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
                                 <el-option v-for="(opt,index) in airlineCompanyName" :key="index" :label="opt.fullname" :value="opt.fullname">
                                     <span>{{opt.iata}}-{{opt.fullname}}</span></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="机型："  class="secWidth">
-                            <el-select filterable @change="getList1" clearable   v-model="form1.airplaneIcao" placeholder="请选择">
+                            <el-select filterable  clearable   v-model="form1.airplaneIcao" placeholder="请选择">
                                 <el-option v-for="(opt,index) in AircraftType" :key="index" :label="opt.iata" :value="opt.iata"> </el-option>
                             </el-select>
                         </el-form-item>
 
                         <el-form-item label="飞机注册号：" class="  threeItemForm">
-                            <el-input @keyup.enter.native="getList1" v-model="form1.flightRegisterNo" clearable placeholder="请输入"></el-input>
+                            <el-input  v-model="form1.flightRegisterNo" clearable placeholder="请输入"></el-input>
                         </el-form-item>
                         <el-form-item label="航班类型：">
-                            <el-select @change="getList1" clearable   v-model="form1.airlineType" placeholder="请选择">
+                            <el-select  clearable   v-model="form1.airlineType" placeholder="请选择">
                                 <el-option v-for="(opt,index) in options.W_flightType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="机位：">
-                            <el-input @keyup.enter.native="getList1" v-model="form1.seat" clearable placeholder="请输入"></el-input>
+                            <el-input  v-model="form1.seat" clearable placeholder="请输入"></el-input>
                         </el-form-item>
                         <div class="marginBotton">
                             <el-form-item label="航班日期：" class="firstWidth">
-                                <el-date-picker @change="getList1"  @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
+                                <el-date-picker   @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
                             <el-form-item label="至" class="secWidth">
-                                <el-date-picker @change="getList1" @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
+                                <el-date-picker  @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
                             <el-form-item label="适用ETOPS运行："  class="threeItemForm">
-                                <el-select @change="getList1"  clearable   v-model="form1.etopEnable"  placeholder="请选择">
+                                <el-select   clearable   v-model="form1.etopEnable"  placeholder="请选择">
                                     <el-option v-for="(opt,index) in options.applyETOP" :key="index" :label="opt.valData"  :value="opt.valCode==='false'?false:true"> </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="保障人员：" >
-                                <el-input @keyup.enter.native="getList1" v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
+                                <el-input  v-model="form1.submitUserName" clearable placeholder="请输入"></el-input>
                             </el-form-item>
                             <el-form-item  >
                                 <div class="button ">
@@ -58,16 +58,16 @@
                         </div>
                         <div class="marginBotton1">
                             <el-form-item class="firstWidth checkRadio" label="部门/项目：" prop="department">
-                                <!--<el-select @change="getList1" clearable   v-model="form1.department" placeholder="请选择">-->
+                                <!--<el-select  clearable   v-model="form1.department" placeholder="请选择">-->
                                 <!--<el-option v-for="(opt,index) in options.dept" :key="index" :label="opt.valData" :value="opt.valCode"> </el-option>-->
                                 <!--</el-select>-->
-                                <el-checkbox-group  @change="getList1"  v-model="form1.checkList">
+                                <el-checkbox-group    v-model="form1.checkList">
                                     <el-checkbox  v-for="(opt,index) in options.dept" :key="index" :label="opt.valCode"  >{{opt.valData}} </el-checkbox>
                                 </el-checkbox-group>
                             </el-form-item>
                             <br>
                             <el-form-item class="firstWidth checkRadio" label="统计维度：" prop="dateType">
-                                <el-radio-group @change="getList1"     v-model="form1.dateType">
+                                <el-radio-group      v-model="form1.dateType">
                                     <el-radio  v-for="(opt,index) in options.statisticType" :key="index" :label="opt.valData" :value="opt.valCode">{{opt.valData}}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
