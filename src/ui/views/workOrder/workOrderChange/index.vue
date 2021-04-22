@@ -21,12 +21,12 @@
                     <el-table-column v-if="isZDRole" slot="option" align='center' label="操作" :width="150"  >
                         <template  slot-scope="{ row }"> <!--||row.state==2--> <!--row.state==1-->
                             <el-tooltip class="item" effect="dark" :enterable="false" content="通过" placement="top">
-                                 <span @click="toPassFn(row)" v-show='row.state===0' class="rowSvg" style="margin-right: 10px">
+                                 <span @click="row.state===0?toPassFn(row):''"   :class="row.state===0?'':'rowSvgInfo'" class="rowSvg" style="margin-right: 10px">
                                         <icon iconClass="pass"  ></icon>
                                 </span>
                             </el-tooltip>
                             <el-tooltip class="item" effect="dark" :enterable="false" content="拒绝" placement="top">
-                                <span @click="torefuseFn(row)" v-show='row.state===0' class="rowSvg">
+                                <span @click="row.state===0?torefuseFn(row):''" :class="row.state===0?'':'rowSvgInfo'" class="rowSvg">
                                     <icon iconClass="nopass"  ></icon>
                             </span>
                             </el-tooltip>

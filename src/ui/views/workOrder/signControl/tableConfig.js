@@ -252,8 +252,13 @@ let createTimeInfo = (row) => {
         return ''
     }
 }
-let userNameInfo = (row) => {
-     return row.userName+'（异常修改）'
+let userNameInfo = (row,x,y) => {
+    console.log(row, x, y);
+    let s='（异常修改）'
+    if(row.index===0){
+        s='（完工提交）'
+    }
+    return row.userName+s
 }
 
 export const historyEditLogConfig = () => {
