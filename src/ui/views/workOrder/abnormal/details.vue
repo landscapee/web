@@ -58,7 +58,7 @@
                                        type="primary"
                                        style="padding: 7px 15px">签字
                             </el-button>
-                            <div style="width:50px;height:50px;position:absolute;left:200px;top:10px">
+                            <div style="width:50px;height:50px;position:absolute;left:60px;top:10px">
                                 <div :pos="item.placeholder" :id="item.placeholder"></div>
                             </div>
                         </div>
@@ -247,8 +247,8 @@
             // location.reload();
         },
         created() {
-            let num=  this.$route.path.substring(1,4)=='add'?4:5;
-            this.type = this.$route.path.substring(1,num);
+            let num = this.$route.path.substring(1, 4) == 'add' ? 4 : 5;
+            this.type = this.$route.path.substring(1, num);
             if (this.$route.query) {
                 this.id = this.$route.query.id
                 this.$route.meta.title =
@@ -263,16 +263,16 @@
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
                         params: {delete: false, valStatus: 1},
-                        data: ["userIsVerify", 'JZ_Signature_workUser',"QW_Signature_workUser",'FCB_Signature_workUser','QZ_Signature_workUser']
+                        data: ["userIsVerify", 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
                     }).then(d => {
                         if (d.code == 200) {
                             let options = {
                                 workUser: {
-                                    QWJJGD:d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
-                                    QWSJGD:d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
-                                    CBGZJLD:d.data.FCB_Signature_workUser[0] && d.data.FCB_Signature_workUser[0].valCode,
-                                    QZGD:d.data.QZ_Signature_workUser[0] && d.data.QZ_Signature_workUser[0].valCode,
-                                    JZ:d.data.JZ_Signature_workUser[0] && d.data.JZ_Signature_workUser[0].valCode,
+                                    QWJJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
+                                    QWSJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
+                                    CBGZJLD: d.data.FCB_Signature_workUser[0] && d.data.FCB_Signature_workUser[0].valCode,
+                                    QZGD: d.data.QZ_Signature_workUser[0] && d.data.QZ_Signature_workUser[0].valCode,
+                                    JZ: d.data.JZ_Signature_workUser[0] && d.data.JZ_Signature_workUser[0].valCode,
 
                                 },
                                 // workUser: d.data.workUser[0] && d.data.workUser[0].valCode,
@@ -317,8 +317,8 @@
 
         },
         computed: {
-            getbutonName(){
-                return this.workorder&&this.workorder.type&&this.workorder.type.startsWith("WX")?'黄页拍照信息':'拍照信息'
+            getbutonName() {
+                return this.workorder && this.workorder.type && this.workorder.type.startsWith("WX") ? '黄页拍照信息' : '拍照信息'
             },
             getbaseItemVOList() {
                 let l = this.baseItemVOList.length % 3
@@ -360,39 +360,40 @@
                 })
             },
             async onPreview() {
-                let s=this.getbutonName
+                let s = this.getbutonName
+                let showReason = this.workorder.type.startsWith("QZ")
                 if (!this.workorder.pageFile) {
-                    if (this.workorder.type.startsWith("QZ")) {
-                        this.$refs.HYPZ.open({
-                            id: this.workorder.id,
-                            reason: this.workorder.reason,
-                            fileMap:{},
-                            fileList: [],
-                        }, this.type,s)
-                    } else {
-                        this.$message.info("该工单暂无黄页图片")
+                    if (this.type == 'info') {
+                        this.$message.info("该工单暂无" + this.getbutonName)
+                        return false
                     }
+                    this.$refs.HYPZ.open({
+                        id: this.workorder.id,
+                        reason: this.workorder.reason,
+                        fileMap: {},
+                        fileList: [],
+                    }, this.type, s, showReason)
                 } else {
                     let data = await this.getFileList()
                     if (data && data.code == 200) {
                         let arr = data.data || []
-                        let obj={}
+                        let obj = {}
                         arr = arr.map((k, l) => {
-                            obj[k.id]=k.id
+                            obj[k.id] = k.id
                             return {
                                 name: k.fileName,
-                                id:k.id,
+                                id: k.id,
                                 status: 'success',
                                 uid: k.id,
-                                url:  k.filePath,
+                                url: k.filePath,
                             }
                         })
                         this.$refs.HYPZ.open({
                             id: this.workorder.id,
                             fileList: arr,
                             reason: this.workorder.reason,
-                            fileMap:obj,
-                        }, this.type,s)
+                            fileMap: obj,
+                        }, this.type, s, showReason)
                     } else {
                         this.$message.error('请求文件失败')
                     }
@@ -771,24 +772,23 @@
                         fn(true);
                         let _this = this
 
-                        that.$nextTick(() => {
+
                             signatureCreator.getBase64Image(
                                 this.getSignatureid(),
                                 this.getSignatureData(),
                                 type,
                                 function (fn, imgdata, signid, sdata) {
                                     $('#kg-img-div-postil1').find('img').attr('src', imgdata);
-
-
                                     that.postSignFn(
-                                        item,
+                                        _this.getSignatureid(), item,
                                         type,
                                         _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1]
                                     )
                                 }
                             )
-                        })
+                        Signature.showAndHideBySignatureId(this.getSignatureid(), false);
+
                     },
                     cancelCall: function () {//点击取消后的回调方法
                         console.log("取消！")
@@ -848,14 +848,14 @@
                                     // this.src=imgdata
                                     $('#kg-img-div-postil1').find('img').attr('src', imgdata);
                                     that.postSignFn(
-                                        item,
+                                        _this.getSignatureid() ,item,
                                         type,
                                         _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1]
                                     )
                                 }
                             )
-
+                            Signature.showAndHideBySignatureId(this.getSignatureid(), false);
                         },
                         cancelCall: function () {//点击取消后的回调方法
                             console.log("取消！")
@@ -911,20 +911,14 @@
                             type,
                             function (fn, imgdata, signid, sdata) {
                                 that.postSignFn(
-                                    item,
+                                    _this.getSignatureid() ,item,
                                     type,
                                     _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
                                     imgdata[1]
                                 )
                             }
                         )
-                        // if(type==='pos3'){
-                        //     that.workerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }else if(type==='pos4'){
-                        //     that.customerSignatureData[this.getSignatureid()] = this.getSignatureData()
-                        // }
-                        // console.log(that.workerSignatureData)
-                        // console.log(that.customerSignatureData)
+                        Signature.showAndHideBySignatureId(this.getSignatureid(), false);
 
                     },
                     cancelCall: function () {//点击取消后的回调方法
@@ -987,13 +981,15 @@
                                 $($event.target).parents('.item').find(".sign_box").attr("pos"),
                                 function (fn, imgdata, signid, sdata) {
                                     that.postSignFn(
-                                        item,
+                                        _this.getSignatureid() ,item,
                                         type,
                                         _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1]
                                     )
                                 }
                             )
+                            Signature.showAndHideBySignatureId(this.getSignatureid(), false);
+
                         },
                         cancelCall: function () { //点击取消后的回调方法
                             console.log("取消！")
@@ -1115,12 +1111,17 @@
                         console.log('onEnd');
                     }
                 }, function (param) {
+                    let offsetX = 1
+                    $('.kg-img-div-' + type).each((ind, ele) => {
+                        offsetX += $(ele).width() -30
+                    })
+
                     signatureCreator.runHW(param, {
+                        offsetX: offsetX,
+                        offsetY: -30,
                         position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
                         okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
-                            console.log("盖章ID：" + this.getSignatureid());
-                            console.log("盖章数据：" + this.getSignatureData());
-                            let _this = this
+                             let _this = this
                             that.templateSignObj[this.getSignatureid().toString()] = this.getSignatureData()
                             fn(true)
                             signatureCreator.getBase64Image(
@@ -1132,7 +1133,7 @@
                                     $('#kg-img-div-postil1').find('img').attr('src', imgdata);
 
                                     that.postSignFn(
-                                        {id},
+                                        _this.getSignatureid() ,{id},
                                         type,
                                         _this.getSignatureid() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1],
@@ -1140,6 +1141,8 @@
                                     )
                                 }
                             )
+                            Signature.showAndHideBySignatureId(this.getSignatureid(), false);
+
                         },
                         cancelCall: function () {//点击取消后的回调方法
                             console.log("取消！")
@@ -1337,7 +1340,7 @@
                 }, function (param) {
                     let offsetX = 1
                     $('.kg-img-div-' + type).each((ind, ele) => {
-                        offsetX += $(ele).width() + 10
+                        offsetX += $(ele).width() -30
                     })
                     signatureCreator.runHW(param, {
                         offsetX: offsetX,
@@ -1356,13 +1359,15 @@
                                 type,
                                 // $($event.target).parents('.item').find(".sign_box").attr("pos"),
                                 function (fn1, imgdata, signid, sdata) {
-                                    that.signBasicFn({
+                                    that.signBasicFn(_this.getSignatureid(), {
                                         key: type,
                                         value: _this.getSignatureid().toString() + '------' + _this.getSignatureData() + '------' +
                                             imgdata[1]
                                     })
                                 }
                             )
+                            Signature.showAndHideBySignatureId(this.getSignatureid(), false);
+
                         },
                         cancelCall: function () {//点击取消后的回调方法
                             console.log("取消！")
@@ -1379,14 +1384,15 @@
                 SignatureInit(val, psd, this.labelVO.noSignTime, 1.5)
                 var signatureCreator = Signature.create()
                 var that = this
+                let offsetX = 1
+                $('.kg-img-div-' + type).each((ind, ele) => {
+                    offsetX += $(ele).width() -30
+                })
+
                 signatureCreator.run({
-                    //protectedItems: protectedItems,
-                    // protectedItems:[ 'item1', 'item2', 'item3','item4',
-                    //                 'item5', 'item6','item7', 'item8',
-                    //                 'item9','item10', 'item11', 'item12',
-                    //                 'item13','item14', 'item15', 'item16',
-                    //                 'item17'],//设置定位页面DOM的id，自动查找ID，自动获取保护DOM的kg-desc属性作为保护项描述，value属性为保护数据。不设置，表示不保护数据，签章永远有效。
-                    position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
+                    offsetX: offsetX,
+                    offsetY: -10,
+                       position: type, //'pos3',//$("#pos3").attr('pos'),//设置盖章定位dom的ID，必须设置
                     okCall: function (fn) {//点击确定后的回调方法，this为签章对象 ,签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,保存成功后必须回调fn(true/false)渲染签章到页面上
                         console.log("盖章ID：" + this.getSignatureid());
                         console.log("盖章数据：" + this.getSignatureData());
@@ -1397,13 +1403,15 @@
                             this.getSignatureData(),
                             type,
                             function (fn, imgdata, signid, sdata) {
-                                that.signBasicFn({
+                                that.signBasicFn(_this.getSignatureid(), {
                                     key: type,
                                     value: _this.getSignatureid().toString() + '------' + _this.getSignatureData() + '------' +
                                         imgdata[1]
                                 })
                             }
                         )
+                        Signature.showAndHideBySignatureId(this.getSignatureid(), false);
+
                     },
                     cancelCall: function () {//点击取消后的回调方法
                         console.log("取消！")
@@ -1411,7 +1419,7 @@
                 })
             },
             // 保存签名数据
-            postSignFn(item, type, getSignatureid) {
+            postSignFn(signatureid,item, type, getSignatureid) {
                 request({
                     // url: `${this.$ip}/mms-workorder/operationInf/sign`,
                     url: `${this.$ip}/mms-workorder/operationInf/exceptionSign`,
@@ -1425,93 +1433,14 @@
                 })
                     .then((data) => {
                         if (data.code == 200) {
+                            Signature.showAndHideBySignatureId(signatureid, true);
                             this.$message({type: 'success', message: '提交成功'})
                         } else {
-                            //this.$message({type: 'error', message: data.message})
+                            $(`div[signatureid=${signatureid}]`).remove()
                         }
-                    })
-            },
-
-            commanderCompleteFn(item, $event) {
-                let inObj = this.workerCompleteData.find(i => i.contentDetailId === item.id)
-                if (!inObj) {
-                    this.$message({type: 'error', message: '操作有误，请检查'})
-                    this.init()
-                    return
-                }
-                request({
-                    url: `${this.$ip}/mms-workorder/operationInf/commanderComplete`,
-                    method: 'post',
-                    data: {
-                        id: inObj.id
-                    }
+                    }).catch(() => {
+                    $(`div[signatureid=${signatureid}]`).remove()
                 })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '提交成功'})
-                        } else {
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-
-            },
-            invalidFn(item, $event) {
-                let inObj = this.workerCompleteData.find(i => i.contentDetailId === item.id)
-                if (!inObj) {
-                    this.$message({type: 'error', message: '操作有误，请检查'})
-                    this.init()
-                    return
-                }
-                request({
-                    url: `${this.$ip}/mms-workorder/operationInf/invalid`,
-                    method: 'post',
-                    data: {
-                        id: inObj.id
-                    }
-                })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '提交成功'})
-                        } else {
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
-            backFn() {
-                request({
-                    url: `${this.$ip}/mms-workorder/operationInf/back`,
-                    method: 'post',
-                    data: {
-                        serialNo: this.workorder.serialNo
-                    }
-                })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '提交成功'})
-                        } else {
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
-            },
-            cleanFn() {
-                request({
-                    url: `${this.$ip}/mms-workorder/operationInf/clean`,
-                    method: 'post',
-                    data: {
-                        serialNo: this.workorder.serialNo
-                    }
-                })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '提交成功'})
-                        } else {
-                            this.$message({type: 'error', message: '接口调用失败，请重试'})
-                        }
-                        this.init(true)
-                    })
             },
             submitFn() {
                 request({
@@ -1525,13 +1454,6 @@
                             this.$message({type: 'error', message: data.message})
                         }
                     })
-            },
-            questionUploadFn() {
-                this.$refs.questionUpload.open(this.workorder)
-            },
-
-            routerPushFn(path, query = {}) {
-                this.$router.push({path, query})
             },
             changeActiveFn(e, item) {
                 let obj = {}
@@ -1555,23 +1477,6 @@
                             this.getBySerialNoFn('clean')
                         } else {
                             this.$message({type: 'error', message: data.message})
-                        }
-                    })
-            },
-            templateContentUpdateFn(item) {
-                request({
-                    url: `${this.$ip}/mms-workorder/templateContent/update`,
-                    method: 'post',
-                    data: {
-                        id: item.id,
-                        active: item.active
-                    }
-                })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '修改成功'})
-                        } else {
-                            //this.$message({type: 'error', message: data.message})
                         }
                     })
             },
@@ -1644,7 +1549,7 @@
                         }, 500)
                     })
             },
-            signBasicFn(obj) {
+            signBasicFn(signatureid, obj) {
                 request({
                     url: `${this.$ip}/mms-workorder/operationInf/signBasic`,
                     method: 'post',
@@ -1654,12 +1559,14 @@
                     }
                 }).then((data) => {
                     if (data.code == 200) {
-                        //this.airInfo = data.
+                        Signature.showAndHideBySignatureId(signatureid, true);
                         this.$message({type: 'success', message: '保存成功'})
                     } else {
-                        // this.$message({type: 'error', message: data.message})
+                        $(`div[signatureid=${signatureid}]`).remove()
                     }
-                })  // http://173.100.1.5:8011/mms-file/get-file-by-id/ee899e8629ab71c00c8609b43382336d
+                }).catch(() => {
+                    $(`div[signatureid=${signatureid}]`).remove()
+                })
             },
             getFileByIdFn(id) {
                 request({
@@ -1679,7 +1586,6 @@
             signBasicActiveFn() {
                 return Array.from($(".commanderComplete")).every(i => $(i).is(":checked"))
             },
-
             deleteSignFn(getSignatureid, getSignatureData) {
                 console.log(this.contentId);
                 let key = $(`div[signatureid='${getSignatureid}']`).attr("elemid")
@@ -1702,19 +1608,6 @@
                             //this.$message({type: 'error', message: data.message})
                         }
                     })
-            },
-
-            removeSignatureFn(signatureid) {
-                if (signatureid) {
-                    $(`[signatureid=${signatureid}]`)[0].remove();
-                } else {
-                    $(".kg-img-div").each((index, ele) => {
-                        console.log(ele)
-                        //$(`[signatureid=${signatureid}]`)[0].remove();
-                        $(ele)[0].remove()
-                        //signatureCreator.removeSignature('KG2016093001333', $(ele).attr("signatureid"));
-                    })
-                }
             },
             submit() {
                 let allSignBol = Array.from($(".itemSign")).every(item => {

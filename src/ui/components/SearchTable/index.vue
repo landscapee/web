@@ -1,7 +1,7 @@
 <template>
 
     <div class="searchTableWrapper" ref="componentTable" :key="$route.path">
-        <el-table :height="tHeight"
+        <el-table :height="40"
                   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
                   @header-dragend="headerDragend"
                   :show-header="true" :data="headerData" ref="header_table" :row-key="getRowKeys" highlight-current-row
@@ -151,7 +151,7 @@
     </div>
 </template>
 <script>
-    import {cloneDeep, forEach,map} from 'lodash';
+    import {cloneDeep, forEach, map} from 'lodash';
     import {fixPx} from '@lib/viewSize.js';
     import Icon from '@components/Icon-svg/index';
 
@@ -169,7 +169,7 @@
                 resizeCallback: [],
                 headerData: [{}],
                 updateWidth: false,
-                 selectedList: [],
+                selectedList: [],
                 selectedRow: {},
                 checkbox: '',
             };
@@ -184,10 +184,10 @@
             len() {
 
                 if (this.data) {
-                    if(this.data instanceof Array){
+                    if (this.data instanceof Array) {
                         return this.data.length
                     }
-                    return   this.data.records && this.data.records.length||0
+                    return this.data.records && this.data.records.length || 0
                 } else {
                     return 0
                 }
@@ -201,7 +201,7 @@
                     this.resetSelect()
                     this.resizeOption1()
                     setTimeout(() => {
-                        if (this.$refs.body_table.doLayout) {
+                        if (this.$refs.body_table && this.$refs.body_table.doLayout) {
                             this.$refs.body_table.doLayout();
                         }
                     }, 100);
@@ -215,9 +215,15 @@
         created() {
 
         },
+        beforeRouteLeave(to, from, next) {
+            if (this.timer1) {
+                // clearInterval(this.timer1)
+            }
+            next()
+        },
         beforeDestroy() {
             if (this.timer1) {
-                clearInterval(this.timer)
+                // clearInterval(this.timer1)
             }
         },
         mounted() {
@@ -225,38 +231,39 @@
             window.addEventListener('resize', this.resizeOption1, true)
             window.addEventListener('scroll', this.scroll, true);
             this.timer1 = setInterval(() => {
+                console.log('time');
                 this.resizeOption1()
             }, 100)
             setTimeout(() => {
-                clearInterval(this.timer1)
-            }, 2000)
+                 clearInterval(this.timer1)
+            }, 3000)
             this.$nextTick(() => {
-                if(this.refTag=='TableRight'){
-                    let bodyTable= this.$parent.$refs[this.refTag].$refs.header_table.$el
+                if (this.refTag == 'TableRight') {
+                    let bodyTable = this.$parent.$refs[this.refTag].$refs.header_table.$el
 
-                    this.checkbox=bodyTable.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
-                 }else{
+                    this.checkbox = bodyTable.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
+                } else {
                     this.checkbox = this.$el.getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('inputBox')[0]
-                 }
+                }
             })
         },
         methods: {
-            resetSelect(){
-                this.selectedList=[]
-                this.selectedRow={}
-                if(this.checkbox){
+            resetSelect() {
+                this.selectedList = []
+                this.selectedRow = {}
+                if (this.checkbox) {
                     this.checkbox.indeterminate = false
                     this.checkbox.checked = false
                     this.$refs.body_table.clearSelection()
                 }
-                this.$emit('selectCheckBox', cloneDeep(this.selectedList),null);
+                this.$emit('selectCheckBox', cloneDeep(this.selectedList), null);
 
             },
             isAllSelect() {
 
                 if (this.selectedList.length) {
                     let len = this.data instanceof Array ? this.data.length : this.data.records.length || 0
-                     if (this.selectedList.length == len) {
+                    if (this.selectedList.length == len) {
                         this.checkbox.indeterminate = false
                         this.checkbox.checked = true
                     } else {
@@ -269,36 +276,36 @@
                 }
             },
             selectCheckBox(select, row) {
-                 row.selected = !row.selected
+                row.selected = !row.selected
                 this.selectedList = select
                 this.selectedRow = row
                 this.isAllSelect()
 
                 this.$emit('selectCheckBox', cloneDeep(this.selectedList), cloneDeep(row));
             },
-            allDataSelectOptions(val){
-                let blo=this.data instanceof Array;
+            allDataSelectOptions(val) {
+                let blo = this.data instanceof Array;
 
-                (blo?this.data:this.data.records).map((k,l)=>{
-                    this.$set(k,'selected',val)
+                (blo ? this.data : this.data.records).map((k, l) => {
+                    this.$set(k, 'selected', val)
                 })
 
-                if(val){
-                    this.selectedList=[...(blo?this.data:this.data.records)]
-                }else{
-                    this.selectedList=[]
+                if (val) {
+                    this.selectedList = [...(blo ? this.data : this.data.records)]
+                } else {
+                    this.selectedList = []
                 }
-             },
+            },
             allSelectChange(value) {
-                let val=value.target.checked
-                 this.checkbox.indeterminate = false
+                let val = value.target.checked
+                this.checkbox.indeterminate = false
                 if (val) {
                     this.$refs.body_table.toggleAllSelection()
                 } else {
                     this.$refs.body_table.clearSelection()
                 }
                 this.allDataSelectOptions(val)
-                 this.$emit('selectCheckBox', cloneDeep(this.selectedList),{});
+                this.$emit('selectCheckBox', cloneDeep(this.selectedList), {});
 
             },
             getIndex(row) {
@@ -314,12 +321,12 @@
             checkRow(d, column, event) {
                 let select = !d.selected;
                 // 多选表格
-                 if (this.checkbox) {
+                if (this.checkbox) {
                     this.$set(d, 'selected', select)
                     this.$refs.body_table.toggleRowSelection(d, select)
                     if (select) {
                         this.selectedList.push(d)
-                    }else{
+                    } else {
                         let index = this.getIndex(d)
                         index > -1 ? this.selectedList.splice(index, 1) : ''
                     }
@@ -339,56 +346,58 @@
                         this.$refs.body_table.setCurrentRow(d);
                     }
                 }
-                 this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(this.selectedList), cloneDeep(event));
+                this.$emit('listenToCheckedChange', cloneDeep(d), cloneDeep(this.selectedList), cloneDeep(event));
             },
             handleSelectionChange(list, c, v) {
                 this.$emit('listenToSelectionChange', list);
             },
             resizeOption1() {
-                 if (this.timer) {
-                    clearInterval(this.timer)
-                    this.timer = null
+                if (!this.$el) {
+                    return false
                 }
-                  if(!this.$el){
-                     return false
-                 }
                 let bs = 'body_table' + this.refTag || ''
                 let hs = 'header_table' + this.refTag || ''
                 let body_table = this.$el.getElementsByClassName(bs)[0]
                 let header_table = this.$el.getElementsByClassName(hs)[0]
-                 if (!this.$refs.body_table || !header_table) {
+                let tr = header_table.getElementsByClassName('el-table__row')[0]
+                 if (!this.$refs.body_table || !header_table||!tr) {
                     return false
                 }
 
-                let tr = header_table.getElementsByClassName('el-table__row')[0]
                 let trheight = parseFloat(window.getComputedStyle(tr).height)
-                let num = this.noSearch ? 1 : 2
+                if(!trheight){
+                    return false
+                }
+                 let num = this.noSearch ? 1 : 2
                 this.tHeight = trheight * num + 2
-                 this.$refs.body_table.doLayout();
                 let hHeight = trheight * num + 2
                 let thHeight = trheight * num + 1
                 let len = this.data.length || this.data.records && this.data.records.length
                 if (!len) {
                     return false
                 }
-                if (tr) {
-                    if (trheight * len > parseFloat(body_table.clientHeight)) {
+                if (tr&& header_table) {
+                     if (trheight * len > parseFloat(body_table.clientHeight)) {
                         header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
                         this.$refs.body_table.doLayout();
                     } else {
                         header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
                     }
+                    if (this.timer1) {
+                        clearInterval(this.timer1)
+                        this.timer1 = null
+                    }
                 }
                 // })
             },
             mousemoveDate(t, e) {
-                 if (e.target.getElementsByClassName('el-input__inner')[0].value) {
-                     e.target.getElementsByClassName('el-input__prefix')[0].setAttribute("class1","displayNone")
+                if (e.target.getElementsByClassName('el-input__inner')[0].value) {
+                    e.target.getElementsByClassName('el-input__prefix')[0].setAttribute("class1", "displayNone")
                 }
             },
             mouseleaveDate(t, e) {
                 if (e.target.getElementsByClassName('el-input__inner')[0].value) {
-                    e.target.getElementsByClassName('el-input__prefix')[0].removeAttribute ("class1")
+                    e.target.getElementsByClassName('el-input__prefix')[0].removeAttribute("class1")
                 }
             },
             doLayout() {
@@ -564,7 +573,6 @@
             background-color: #A0CBF6;
         }
 
-
         /deep/ .el-table__row:nth-child(even) {
             background: #EFF2F3;
         }
@@ -589,7 +597,6 @@
         }
     }
 
-
     .searchTableWrapper {
 
         /deep/ .tableSort {
@@ -602,7 +609,6 @@
             text-align: center;
             margin-top: 20px;
         }
-
 
         /deep/ .el-table {
             border: 1px solid rgba(199, 204, 210, 1);
@@ -644,17 +650,14 @@
         }
 
         .noSearchTable {
-
             /deep/ .el-table__body-wrapper {
                 display: none;
-
             }
             /deep/ .el-table__header-wrapper {
                 th {
                     border-bottom: 0px !important;
                 }
             }
-
         }
         .headerTable {
 
@@ -674,7 +677,6 @@
             ::-webkit-scrollbar {
                 background-color: #fff;
             }
-
 
             /deep/ th {
                 .cell {
@@ -740,11 +742,10 @@
                 & > .el-input {
                     width: calc(100% - 30px);
                 }
-                  .el-select {
+                .el-select {
                     width: calc(100% - 30px);
                 }
             }
-
 
             /deep/ .el-input__inner {
                 line-height: 30px;
@@ -816,7 +817,6 @@
             }
         }
 
-
         /deep/ .el-table--scrollable-x .el-table__body-wrapper {
             height: 100%;
         }
@@ -825,9 +825,10 @@
         }
 
     }
+
     .searchTableWrapper {
-         .el-table {
-             border: 1px solid rgba(199, 204, 210, 1);
+        .el-table {
+            border: 1px solid rgba(199, 204, 210, 1);
             margin: 0 auto;
             /deep/ .cell {
                 padding: 0px 3px;
@@ -882,7 +883,6 @@
             ::-webkit-scrollbar {
                 background-color: #fff;
             }
-
 
             /deep/ th {
                 .cell {
@@ -952,7 +952,6 @@
                     width: calc(100% - 30px);
                 }
             }
-
 
             /deep/ .el-input__inner {
                 line-height: 30px;

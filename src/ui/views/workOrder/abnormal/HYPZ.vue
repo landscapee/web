@@ -3,7 +3,7 @@
         <el-dialog :title="title" :close-on-click-modal="false" center
                    :visible.sync="dialogFormVisible"
                    :before-close="close">
-            <div class="reason">
+            <div class="reason" v-if="showReason">
                 <span>工单填报未上传黄页原因：{{reason||'--'}}</span>
             </div>
             <div class="imgbox"  :class="type=='info'?'info':''">
@@ -43,6 +43,7 @@
                 fileMap: {},
                 fileList: [],
                 dialogFormVisible: false,
+                showReason: false,
             }
         },
         methods: {
@@ -53,7 +54,8 @@
                 this.$emit('init')
             },
 
-            open(row, type,title) {
+            open(row, type,title,showReason) {
+                this.showReason=showReason
                 this.title=title
                 this.type=type
                 this.dialogFormVisible = true

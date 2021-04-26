@@ -140,10 +140,10 @@ export default {
                 headers: {
                     'Content-Type': 'application/vnd.ms-excel',
                 },
-                 url: `${this.$ip}/mms-qualification/download/dangerData`,
+                url: `${this.$ip}/mms-qualification/download/dangerData`,
                 method: 'get',
                 responseType: 'blob',
-             }).then((d)=>{
+            }).then((d)=>{
                 const content = d
                 const blob = new Blob([content],{type:'application/vnd.ms-excel'})
                 const fileName = '危险数据'

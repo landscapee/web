@@ -101,7 +101,6 @@
                 }
                   if(this.$router.currentRoute.matched[2].path=='/addPersonDoc/:id'){
                     this.$router.currentRoute.matched[2].path='/addPersonDoc/'+arr[1]
-
                 }
                  this.$router.currentRoute.matched[2].meta.title =
                     this.$route.query.rId.split(',')[1] == "add"

@@ -94,6 +94,7 @@
         },
         created() {
             if (this.$route.query) {
+                let arr=this.$route.query.rId.split(',')
                 this.$router.currentRoute.matched[2].meta.paramsId={
                     id:this.$route.query.rId.split(',')[0],
                     userId:this.$route.query.rId.split(',')[2],
