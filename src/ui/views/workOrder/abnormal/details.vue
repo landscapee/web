@@ -395,7 +395,7 @@
                             fileMap: obj,
                         }, this.type, s, showReason)
                     } else {
-                        this.$message.error('请求文件失败')
+                        this.$message.error('请求图片失败')
                     }
                 }
             },

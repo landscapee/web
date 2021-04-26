@@ -4,7 +4,7 @@
                    :visible.sync="dialogFormVisible"
                    :before-close="close">
             <div class="reason" v-if="showReason">
-                <span>工单填报未上传黄页原因：{{reason||'--'}}</span>
+                <span>工单填报未上传拍照原因：{{reason||'--'}}</span>
             </div>
             <div class="imgbox"  :class="type=='info'?'info':''">
 
