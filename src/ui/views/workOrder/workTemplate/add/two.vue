@@ -51,7 +51,7 @@
                         </el-select>
                     </div>
                     <div v-else-if="row.type==3" style="text-align: center">
-                        <!--任务排班信息获取-->
+
                     </div>
                     <el-input v-else-if="row.type==2||row.type==5"  v-model="row.value"  placeholder="请输入值" >  </el-input>
 

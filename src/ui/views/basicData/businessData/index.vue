@@ -291,12 +291,12 @@
             //左侧表格新增编辑
             addOrEditOrInfo(tag) {
                 if (tag == 'add') {
-                    this.$router.push({path: '/editBusinessData', query: {}});
+                    this.$router.push({path: '/editBusinessData', query: {type:tag}});
                 } else if (tag == 'edit' || tag == 'info') {
                      if (this.leftSelectId == null) {
                         this.$message.error('请先选中一行数据');
                     } else {
-                        this.$router.push({path: '/editBusinessData', query: { id: this.leftSelectId}});
+                        this.$router.push({path: '/editBusinessData', query: { type:tag,id: this.leftSelectId}});
                     }
                 }
             },
@@ -311,7 +311,7 @@
                         } else {
                             this.$router.push({
                                 path: '/editBusinessSubset',
-                                query: {  id: this.leftSelectId}
+                                query: { type:tag, id: this.leftSelectId}
                             });
                         }
                     }
@@ -319,7 +319,7 @@
                      if (this.rightSelectId == null) {
                         this.$message.error('请先选中一行数据');
                     } else {
-                        this.$router.push({path: '/editBusinessSubset', query: { id: this.rightSelectId}});
+                        this.$router.push({path: '/editBusinessSubset', query: { type:tag,id: this.rightSelectId}});
                     }
                 }
             },

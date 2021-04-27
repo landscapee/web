@@ -229,13 +229,8 @@
                 baseItemVOList: [],
                 labelVO: {},
                 id: '',
-                airInfo: {
-                    'filePath': ''
-                },
-                value5Type: {
-                    '$flightNo': 'flightNo',
-                    '$flightRegisterNo': 'flightRegisterNo'
-                },
+                airInfo: {'filePath': ''},
+                value5Type: {},
                 isActiveSave: true,
                 isActiveReset: true,
                 needSubmit: false,
@@ -263,10 +258,13 @@
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
                         params: {delete: false, valStatus: 1},
-                        data: ["userIsVerify", 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
+                        data: ["userIsVerify",'W_taskGet', 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
                     }).then(d => {
                         if (d.code == 200) {
-                            let options = {
+                            d.data.W_taskGet.map((k,l)=>{
+                                this.value5Type[k.valCode]=k.valSummary
+                            })
+                             let options = {
                                 workUser: {
                                     QWJJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
                                     QWSJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
