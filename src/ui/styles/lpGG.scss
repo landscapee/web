@@ -260,7 +260,6 @@ input:checked{
     border:solid 1px #888888;
     -webkit-border-radius:50%;
     border-radius:50%;
-
     padding:0;
     position:relative;
     display:inline-block;
@@ -329,41 +328,40 @@ input:checked{
 
 
  .Wtui-radioCC:checked::after {
-    content:'×';
-    //left:50%;
-    left:calc(50% - 5.5px);
-    //top:100%;
-    top:calc(50% - 8px);
-    //font-size: 14px;
-    //  -webkit-transform: translate(-50%,-50%);
-    // transform: translate(-50%,-50%);
-     line-height: 5px;
-     position:absolute;
+    content:'+';
+     left: -1px;
+     top: -4px;
+      position:absolute;
     color:#fff;
+     font-size: 17px;
      font-weight: bold;
      padding: 0;
     border-top:none;
     border-right:none;
 
+     -moz-transform:rotate(-45deg);
+     -ms-transform:rotate(-45deg);
+     -webkit-transform:rotate(-45deg);
+     transform:rotate(-45deg);
+
 }
-.Wtui-checkboxCC.Wtui-radioCC:checked::after{
-    left:calc(50% - 6px);
-}
+
 /deep/ .Wtui-radioCC:checked::after {
-    content:'×';
-    //left:50%;
-    left:calc(50% - 5px);
-    //top:50%;
-    top:calc(50% - 9px);
-    font-size: 14px;
-    //transform: translate(-50%);
-    //transform: translate(-50%);
+    content:'+';
+    left: -1px;
+    top: -4px;
     position:absolute;
     color:#fff;
+    font-size: 17px;
     font-weight: bold;
     padding: 0;
     border-top:none;
     border-right:none;
+
+    -moz-transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+    -webkit-transform:rotate(-45deg);
+    transform:rotate(-45deg);
 
 }
   .Wtui-checkbox_zc,.Wtui-checkboxCC{

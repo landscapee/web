@@ -310,11 +310,9 @@
 </script>
 <style scoped lang="scss">
 .nocurser{
-    /*cursor: unset;*/
     cursor: text;
     /deep/ .el-checkbox__input{
-        cursor: url("../../../assets/img/bus.png");
+        cursor: text;
     }
-
 }
 </style>

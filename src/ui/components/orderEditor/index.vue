@@ -56,16 +56,16 @@ export default {
       type: Array,
       default: function () {
         return [
-          'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+          'source', '|', 'undo', 'redo', '|', 'preview',  'code', 'cut', 'copy', 'paste',
           'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
           'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
           'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-          'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-          'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
-          'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+          'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold','Zimage',
+          'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+          'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
           'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox",   "sign"
         ]
-          // "na",'checkradio',
+          // "na",'checkradio','print', 'template','image', 'multiimage', 'flash', 'media', 'insertfile',
       }
     },
     noDisableItems: {
@@ -312,6 +312,12 @@ export default {
         editor.clickToolbar(name, function() {
             _this.$refs.AddInput.open('input')
             })
+    });
+    KindEditor.plugin('Zimage', function(K) {
+        var editor = this, name = 'Zimage';
+        editor.clickToolbar(name, function() {
+            _this.$refs.AddInput.open('input')
+            })
     })
 
     // 多选
@@ -339,7 +345,8 @@ export default {
         checkbox : '多选',
         // na:'NA',
         // checkradio:'单选',
-        sign:'签章'
+        sign:'签章',
+        Zimage:'文件上传'
     })
 
     _this.editor = window.KindEditor.create('#' + this.id, {
@@ -348,6 +355,12 @@ export default {
         minWidth: _this.minWidth,
         minHeight: _this.minHeight,
         items: _this.items,
+        allowImageRemote: false,
+        afterUpload: function(url, data, name) {
+            alert(url);
+            alert(data);
+            alert(name);//如果是单张图片，则 name="image"
+        },
         noDisableItems: _this.noDisableItems,
         filterMode: _this.filterMode,
         htmlTags: _this.htmlTags,
@@ -509,7 +522,9 @@ body{
     })
   },
   methods:{
+      upfile(file,style){
 
+      },
       AddInput(type,width){
           let _this=this;
           _this.inputIndex+=1;
@@ -576,6 +591,12 @@ body{
     width: 22px;
     height: 22px;
   }
+  .ke-icon-Zimage {
+    background-image: url(./assets/img/Efileupload.svg);
+    background-size: 100%;
+    width: 18px;
+    height: 18px;
+  }
     .ke-icon-checkbox{
     background-image: url(./assets/img/edit.svg);
     width: 22px;
@@ -622,7 +643,9 @@ body{
     height: 22px;
   }
 
+  .ke-icon-multiimage {
 
+  }
 }
 
 
