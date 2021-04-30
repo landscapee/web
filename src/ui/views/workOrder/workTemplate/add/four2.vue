@@ -68,13 +68,13 @@
                             </el-checkbox>
                         </el-form-item>
                     </div>
-                     <div class="row_one" v-if="formItem.itemType==3&&(formOne.type=='QWSJGD'||formOne.type=='QWJJGD')">
-                        <el-form-item  label="工序：" prop="pickAirType">
-                            <el-select      v-model="formItem.pickAirType" placeholder="请选择工序">
-                                <el-option v-for="(opt,index) in options[formOne.type=='QWSJGD'?'W_sjType':'W_PickUpType']" :key="index" :label="opt.valData" :value="Number(opt.valSummary)"> </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </div>
+                     <!--<div class="row_one" v-if="formItem.itemType==3&&(formOne.type=='QWSJGD'||formOne.type=='QWJJGD')">-->
+                        <!--<el-form-item  label="工序：" prop="pickAirType">-->
+                            <!--<el-select      v-model="formItem.pickAirType" placeholder="请选择工序">-->
+                                <!--<el-option v-for="(opt,index) in options[formOne.type=='QWSJGD'?'W_sjType':'W_PickUpType']" :key="index" :label="opt.valData" :value="Number(opt.valSummary)"> </el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                    <!--</div>-->
 
                     <div class="row_one" v-if="formItem.noSmallItem">
                         <el-form-item  label="" prop="hsSchedule">

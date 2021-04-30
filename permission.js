@@ -21,10 +21,8 @@ router.beforeEach(async (to, from, next) => {
 					let userInfo = await store.dispatch('user/getInfo');
  					let accessRoutes = await store.dispatch('permission/generateRoutes', userInfo.menus);
                     console.log("router", router)
-
                     resetRouter()
                      router.addRoutes(accessRoutes);
-
                      next({ ...to ,replace:true});
 				} catch (error) {
  					// remove token and go to login page to re-login
@@ -38,11 +36,8 @@ router.beforeEach(async (to, from, next) => {
 	} else {
 		/* has no token */
  		if (whiteList.indexOf(to.path) !== -1) {
-			// in the free login whitelist, go directly
 			next();
 		} else {
-			// other pages that do not have permission to access are redirected to the login page.
-			// next(`/login`);
 			next(`/login?redirect=${to.path}`);
 		}
 	}

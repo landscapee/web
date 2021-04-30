@@ -187,7 +187,9 @@
                     </div>
                 </div>
             </div>
-
+            <div style="padding: 20px 0 ;">
+                无黄页拍照原因：{{this.workorder.reason||'--'}}
+            </div>
             <div style="text-align: right;margin-top: 20px" v-if="needSubmit">
                 <el-button type="primary" @click="submit">提交</el-button>
             </div>
@@ -1468,7 +1470,8 @@
                     url: `${this.$ip}/mms-workorder/operationInf/active`,
                     method: 'post',
                     data: {
-                        ...obj
+                        ...obj,
+                        exceptionFlag:true,
                     }
                 })
                     .then((data) => {
@@ -1533,6 +1536,7 @@
                     url: `${this.$ip}/mms-workorder/operationInf/saveBasic`,
                     method: 'post',
                     data: {
+                        exceptionFlag:true,
                         serialNo: this.workorder.serialNo,  // 工单流水号
                         map
                     }

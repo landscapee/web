@@ -19,12 +19,12 @@
 		<el-container>
 		<el-aside  :class="isOpen?'open-menu':'left-menu'" >
  			<el-menu  router :default-active="routePath" :unique-opened="true">
-				<el-submenu v-if="item.meta"  :index="item.path" v-for="(item,index) in permission_routes" :key="index">
+				<el-submenu v-if="item.meta&&!item.hidden"  :index="item.path" v-for="(item,index) in permission_routes" :key="index">
 					<template slot="title">
 						<icon :iconClass="item.meta.icon" ></icon>
           				<span>{{item.name}}</span>
 					</template>
-					<el-menu-item  :index="obj.path" v-for="obj in item.children" :key="obj.path"  >
+					<el-menu-item  v-if="!item.hidden" :index="obj.path" v-for="obj in item.children" :key="obj.path"  >
 						<span >{{obj.name}}</span>
 					</el-menu-item>
 				</el-submenu>
@@ -77,7 +77,6 @@ import request from '@lib/axios.js';
 	},
       computed: {
           ...mapGetters(['permission_routes']),
-
       },
 	watch: {
 		$route: {
@@ -89,8 +88,8 @@ import request from '@lib/axios.js';
 		}
 	},
 	created(){
-
-        },
+        console.log(this.permission_routes);
+    },
 	mounted(){
         if(window.postal){
              postal.unsubscribe(window.postal)
