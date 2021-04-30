@@ -2,6 +2,7 @@
   <div class="kindeditor">
     <textarea :id="id" name="content" v-model="outContent"></textarea>
     <AddInput ref='AddInput' @addConfirmFn='AddInput'></AddInput>
+    <AddImage ref='AddImage' @getImage='getImage'></AddImage>
     <add-radio-dialog ref='addRadioDialog' @addConfirmFn='addConfirmFn'></add-radio-dialog>
   </div>
 </template>
@@ -12,12 +13,13 @@ import '../../../../node_modules/kindeditor/lang/zh-CN.js'
 import '../../../../node_modules/kindeditor/themes/default/default.css'
 import addRadioDialog from './addRadioDialog.vue';
 import AddInput from './addInput.vue';
+import AddImage from './file.vue';
 function newSignFn(){
     alert("333")
 }
 export default {
     components:{
-        addRadioDialog,AddInput
+        addRadioDialog,AddInput,AddImage
     },
     name: 'kindeditor',
     data () {
@@ -62,10 +64,10 @@ export default {
           'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
           'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold','Zimage',
           'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
-          'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+          'table', 'hr', 'emoticons', 'pagebreak',
           'anchor', 'link', 'unlink', '|', 'about', "inpt", "checkbox",   "sign"
         ]
-          // "na",'checkradio','print', 'template','image', 'multiimage', 'flash', 'media', 'insertfile',
+          // "na",'checkradio','print', 'template','image', 'baidumap', 'multiimage', 'flash', 'media', 'insertfile',
       }
     },
     noDisableItems: {
@@ -316,7 +318,7 @@ export default {
     KindEditor.plugin('Zimage', function(K) {
         var editor = this, name = 'Zimage';
         editor.clickToolbar(name, function() {
-            _this.$refs.AddInput.open('input')
+            _this.$refs.AddImage.open()
             })
     })
 
@@ -522,8 +524,12 @@ body{
     })
   },
   methods:{
-      upfile(file,style){
-
+      getImage(form,img){
+          console.log(form,img);
+          let content=img.map((k,l)=>{
+              return `<img src="${k}" style="width:${form.width}px" />`
+          })
+           this.editor.insertHtml(content.join(""));
       },
       AddInput(type,width){
           let _this=this;
@@ -567,17 +573,19 @@ body{
                 this.inputIndex++
                 let d=new Date()
                 let num=d.getHours()+'' + d.getMinutes() + d.getSeconds() + d.getMilliseconds()
+                let content=`<input type='checkbox' inputType="number" eType='${obj[type]}' class='${className}'
+                                id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' name='${'$$$'+num+'_'+obj[type] +this.inputIndex}' /> `
                 if(type=='1'||type=='4'){
-                    return `<input type='radio' inputType="number" eType='${obj[type]}' class='${className}'
-
+                    content=`<input   type='radio' inputType="number" eType='${obj[type]}' class='${className}'
                     id='${'$$$'+num+'_'+obj[type] +this.inputIndex}'
-                     name='${'$$$'+num+'_'+obj[type]}' /> ${type==3?'N/A':i.value} `
+                     name='${'$$$'+num+'_'+obj[type]}' />`
                 }
-                return `<input type='checkbox' inputType="number" eType='${obj[type]}' class='${className}'
-
-                    id='${'$$$'+num+'_'+obj[type] +this.inputIndex}' name='${'$$$'+num+'_'+obj[type]
-                     +this.inputIndex}' /> ${type==3?'N/A':i.value} `
-            })
+                if(form.position){
+                    return ` ${type==3?'N/A':i.value} ${content}`
+                }else{
+                    return `${content} ${type==3?'N/A':i.value} `
+                }
+             })
             this.editor.insertHtml(html.join(""));
         }
     }

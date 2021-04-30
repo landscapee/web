@@ -263,7 +263,7 @@ input:checked{
     padding:0;
     position:relative;
     display:inline-block;
-    vertical-align:middle;
+    vertical-align:top;
     cursor:default;
     -webkit-appearance:none;
     -webkit-user-select:none;
@@ -283,7 +283,7 @@ input:checked{
     padding:0;
     position:relative;
     display:inline-block;
-    vertical-align:middle;
+    vertical-align:top;
     cursor:default;
     -webkit-appearance:none;
     -webkit-user-select:none;
@@ -329,16 +329,15 @@ input:checked{
 
  .Wtui-radioCC:checked::after {
     content:'+';
-     left: -1px;
-     top: -4px;
-      position:absolute;
-    color:#fff;
-     font-size: 17px;
-     font-weight: bold;
-     padding: 0;
-    border-top:none;
-    border-right:none;
-
+     display: flex;
+     justify-content: center;
+      align-items: center;
+     width: 14px;
+     font-size: 20px;
+     height: 14px;
+     position: absolute;
+     color: #fff;
+      font-weight: bold;
      -moz-transform:rotate(-45deg);
      -ms-transform:rotate(-45deg);
      -webkit-transform:rotate(-45deg);

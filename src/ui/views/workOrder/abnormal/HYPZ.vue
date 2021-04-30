@@ -9,7 +9,6 @@
             <div class="imgbox"  :class="type=='info'?'info':''">
 
                 <el-upload action="#" ref="upFile"
-
                            list-type="picture-card"
                            :http-request="handleSubmit"
                            :before-upload="beforeAvatarUpload"

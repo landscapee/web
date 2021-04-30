@@ -709,10 +709,12 @@
                     }
                 } else {
                     // 弱身份
+
                     this.promiseOptions.then((d) => {
+                        console.log('userIsVerifyd',d.userIsVerify,this.workorder.type);
                         if (d.userIsVerify === 'false') {
                             _this['_' + fnName](item, type, $event, d.workUser[this.workorder.type], null)
-                        } else if (d.userIsVerify === 'true') {
+                        } else if (d.userIsVerify === 'true'){
                             this.$msgBox.showMsgBox({
                                 isShowInput: true,
                                 isShowPsd: true
