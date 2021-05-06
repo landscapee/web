@@ -187,8 +187,8 @@
                     </div>
                 </div>
             </div>
-            <div style="padding: 20px 0 ;">
-                无黄页拍照原因：{{this.workorder.reason||'--'}}
+            <div style="padding: 20px 0 ;" v-if="workorder.type.startsWith('QZ')">
+                无拍照原因：{{this.workorder.reason||'--'}}
             </div>
             <div style="text-align: right;margin-top: 20px" v-if="needSubmit">
                 <el-button type="primary" @click="submit">提交</el-button>
@@ -223,7 +223,7 @@
                 newMap: [],
                 contentVOListMap: [],
                 contentVOList: [],
-                workorder: {},
+                workorder: {type:''},
                 orderModule: {},
                 workerCompleteData: [],
                 template: {},
@@ -287,7 +287,7 @@
                     });
                 })
             }
-            if (localStorage.getItem('refresh') == 'true') {
+            if (localStorage.getItem('refresh') === 'true') {
                 localStorage.removeItem('refresh')
                 location.reload()
             }
@@ -329,8 +329,7 @@
                 }
                 let arr = [...this.baseItemVOList]
                 arr.push(...obj[l])
-                console.log(arr, 3, 45, 6,);
-                return arr
+                 return arr
             },
 
             col: { // 列数
