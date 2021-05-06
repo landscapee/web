@@ -1201,7 +1201,7 @@ let authRoutes = [
 
     {
         path: '*', name: '无权限访问',
-        meta: {title: '无权限访问', icon: 'xxgl'},
+        meta: {title: '您尚未授权访问本页面', icon: 'xxgl'},
         component: Layout,
         redirect: '/404',
         hidden: true,

@@ -35,7 +35,7 @@
         .content{
             transform: translate(-50%, -50%);
             position: absolute;
-            top: 40%;
+            top: 43%;
             left: 50%;
             display: flex;
             flex-direction: column;
@@ -54,7 +54,8 @@
             }
             &>div:nth-child(3){
                 cursor: pointer;
-                padding: 9px 42px;
+                padding: 10px ;
+                text-align: center;
                 font-size: 18px;
                 color:#4181e9;
                 border: 1px solid #4181e9;
