@@ -1,7 +1,7 @@
 <template>
 
     <div class="searchTableWrapper" ref="componentTable" :key="$route.path">
-        <el-table :height="40"
+        <el-table :height="tHeight"
                   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
                   @header-dragend="headerDragend"
                   :show-header="true" :data="headerData" ref="header_table" :row-key="getRowKeys" highlight-current-row
@@ -231,8 +231,7 @@
             window.addEventListener('resize', this.resizeOption1, true)
             window.addEventListener('scroll', this.scroll, true);
             this.timer1 = setInterval(() => {
-                console.log('time');
-                this.resizeOption1()
+                 this.resizeOption1()
             }, 100)
             setTimeout(() => {
                  clearInterval(this.timer1)
@@ -368,7 +367,7 @@
                 if(!trheight){
                     return false
                 }
-                 let num = this.noSearch ? 1 : 2
+                let num = this.noSearch ? 1 : 2
                 this.tHeight = trheight * num + 2
                 let hHeight = trheight * num + 2
                 let thHeight = trheight * num + 1
@@ -388,7 +387,6 @@
                         this.timer1 = null
                     }
                 }
-                // })
             },
             mousemoveDate(t, e) {
                 if (e.target.getElementsByClassName('el-input__inner')[0].value) {
