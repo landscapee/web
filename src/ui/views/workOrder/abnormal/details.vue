@@ -21,8 +21,9 @@
                             <div>{{item.nameCn}}</div>
                             <div>{{item.nameEn}}</div>
                         </div>
-                        <div v-if='item.type==1' :id='item.placeholder' class="value1 value">
-                            {{workorder[value5Type[item.value]]}}
+                        <div v-if='item.type==1' :id='item.placeholder' class="value1 value" :key="value5Type[item.value]">
+                             <input type="text" v-once :name="item.placeholder" :value="workorder[value5Type[item.value]]"    :id="item.placeholder">
+
                         </div>
                         <div v-if='item.type==2' class="value2 value">{{item.value}}</div>
                         <div v-if='item.type==3' class="value3 value">
@@ -260,12 +261,10 @@
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
                         params: {delete: false, valStatus: 1},
-                        data: ["userIsVerify",'W_taskGet', 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
+                        data: ["userIsVerify", 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
                     }).then(d => {
                         if (d.code == 200) {
-                            d.data.W_taskGet.map((k,l)=>{
-                                this.value5Type[k.valCode]=k.valSummary
-                            })
+
                              let options = {
                                 workUser: {
                                     QWJJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
@@ -545,8 +544,26 @@
             },
             async init(isClearAll = false, BasicUpdateLimit = false) {
                 await this.getTemplateById()
-                await this.getBySerialNoFn(isClearAll, BasicUpdateLimit)
+                await this.getTaskGet().then(d => {
+                    if (d.code == 200) {
+                        d.data.W_taskGet.map((k,l)=>{
+                            this.value5Type[k.valCode]=k.valSummary
+                        })
+                        console.log(3);
+                    }else{
+                        this.$message.error(d.message)
+                    }
+                })
+                  this.getBySerialNoFn(isClearAll, BasicUpdateLimit)
 
+            },
+            getTaskGet(){
+                return request({
+                    url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                    method: 'post',
+                    params: {delete: false, valStatus: 1},
+                    data: [ 'W_taskGet', ]
+                })
             },
             getTemplateById() {
                 let _this = this
@@ -1248,8 +1265,12 @@
                                             $("input[id='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                         }
                                         $("input[id='" + mapItem.key + "']").val(mapItem.value == 'true' ? 'checked' : 'on')
-                                    }
-                                    else {
+                                    } else if( mapItem.key.includes("task")){
+                                        this.$nextTick(()=>{
+                                            $("input[name='" + mapItem.key + "']").val(mapItem.value)
+                                            this['isActiveReset'] = true
+                                        })
+                                    } else {
                                         if (BasicUpdateLimit) {
                                             $(".base_item input[name='" + mapItem.key + "']").prop('checked', mapItem.value == 'true' ? true : false)
                                             this['isActiveReset'] = true
@@ -1505,12 +1526,8 @@
                     dateArr.each((index, ele) => {
                         map[$(ele).attr("name")] = $(ele).val()
                     })
-                    let value1Arr = $(".base_i_inner").find(".value1")
-                    value1Arr.each((index, ele) => {
-                        map[$(ele).attr("id")] = $(ele).text()
-                    })
-                    console.log(map)
-                } else {
+
+                 } else {
                     let radioBoxArr = $(".base_i_inner").find("input[type='radio']")
                     radioBoxArr.each((index, ele) => {
                         map[$(ele).attr("id")] = false

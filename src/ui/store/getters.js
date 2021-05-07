@@ -8,7 +8,6 @@ const getters = {
 		return (val)=>{
             let roles=state.user.roles||[]
            return  roles.some((k,l)=>{
-               console.log(k.code, val);
                return k.code==val
              })
 		}

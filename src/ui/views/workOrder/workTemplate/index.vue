@@ -236,7 +236,7 @@
                     if(this.selectId==null){
                         this.$message.error('请先选中一行数据');
                     }else{
-                        this.$router.push({path:p,query:{type:tag,id:this.row.id}});
+                        this.$router.push({path:p,query:{id:this.row.id}});
                     }
                 }
             },
