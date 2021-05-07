@@ -22,7 +22,7 @@
                             <div>{{item.nameEn}}</div>
                         </div>
                         <div v-if='item.type==1' :id='item.placeholder' class="value1 value" :key="value5Type[item.value]">
-                             <input type="text" v-once :name="item.placeholder" :value="workorder[value5Type[item.value]]"    :id="item.placeholder">
+                             <input type="text" :disabled="type=='info'" v-once :name="item.placeholder" :value="workorder[value5Type[item.value]]"    :id="item.placeholder">
 
                         </div>
                         <div v-if='item.type==2' class="value2 value">{{item.value}}</div>
