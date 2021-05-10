@@ -114,15 +114,13 @@ export default {
               data: {...this.form,dicId:this.$route.query.id}
             })
               .then(data => {
-                this.$message.success(this.type == "add"?"保存成功！":"修改成功");
-                this.$router.go(-1);
+                  if(data.code==200){
+                      this.$message.success(this.type == "add"?"保存成功！":"修改成功");
+                      this.$router.go(-1);
+                  }else{
+                      this.$message.error(data.error);
+                  }
                })
-              .catch(error => {
-                this.$message.success(error);
-              });
-          } else {
-            console.log("error submit!!");
-            return false;
           }
         });
       }

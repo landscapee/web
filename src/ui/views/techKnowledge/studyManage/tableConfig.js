@@ -2,7 +2,7 @@ import { formatDate, timeMinuteFormat } from '@lib/tools.js';
 const open=(row)=>{
     return row.open?'公开':row.open===false?'不公开':'--'
 }
-export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
+export const sysParameterTable = (airline, positionArr, folderArr) => {
     return [
         { type: 'selection' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
 
@@ -22,7 +22,7 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
             }
         },
         { prop: 'folder.name', label: '所属主题', align: 'center', sort:true,sortProp:"folderId",search:{prop:'folderId',type:'select',selectProp:["label","id"], data: folderArr,placeholder:"请选择所属主题"} },
-        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
+        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["fullname","fullname"], data: airline,placeholder:"请选择发行单位"} },
         { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
         { prop: 'version', label: '版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入版本"} },
         {
@@ -66,7 +66,7 @@ export const sysParameterTable = (issueDeptArr, positionArr, folderArr) => {
         },
     ]
 };
-export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
+export const userParameterTable = (airline=[], positionArr, folderArr) => {
     return [
         { prop: 'fileName', label: '文档名称', align: 'center',sort:true,sortProp:"fileName",search:{prop:'fileName',type:'input',placeholder:"请输入文档名称"} },
         { prop: 'number', label: '文档编号', align: 'center',sort:true,sortProp:"number",search:{prop:'number',type:'input',placeholder:"请输入"} },
@@ -81,7 +81,7 @@ export const userParameterTable = (issueDeptArr, positionArr, folderArr) => {
             }
         },
         { prop: 'folderName', label: '所属主题', align: 'center', sort:true,sortProp:"folderName",search:{prop:'folderId',type:'select',selectProp:["label","id"], data: folderArr,placeholder:"请选择所属主题"} },
-        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["valData","valData"], data: issueDeptArr,placeholder:"请选择发行单位"} },
+        { prop: 'issueDept', label: '发行单位', align: 'center', sort:true,sortProp:"issueDept",search:{prop:'issueDept',type:'select',selectProp:["fullname","fullname"], data: airline,placeholder:"请选择发行单位"} },
         { prop: 'position', label: '所属岗位', align: 'center', sort:true,sortProp:"position",search:{prop:'position',type:'select',selectProp:["valData","valData"], data: positionArr,placeholder:"请选择所属岗位"} },
         { prop: 'version', label: '版本', align: 'center',sort:true,sortProp:"version",search:{prop:'version',type:'input',placeholder:"请输入版本"} },
         {

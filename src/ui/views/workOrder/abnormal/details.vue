@@ -111,7 +111,7 @@
 
                                 </div>
 
-                                <div style="width:88%;"
+                                <div style="width:88%;" class="item2"
                                      v-if='item.contentDetails&&item.contentDetails.length'>
                                     <div v-for='itemChild in item.contentDetails'
                                          :key='itemChild.key' class="flex">
@@ -261,21 +261,21 @@
                         url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                         method: 'post',
                         params: {delete: false, valStatus: 1},
-                        data: ["userIsVerify", 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
+                        data: ["userIsVerify","pwdIsVerify", 'JZ_Signature_workUser', "QW_Signature_workUser", 'FCB_Signature_workUser', 'QZ_Signature_workUser']
                     }).then(d => {
                         if (d.code == 200) {
 
                              let options = {
                                 workUser: {
-                                    QWJJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
-                                    QWSJGD: d.data.QW_Signature_workUser[0] && d.data.QW_Signature_workUser[0].valCode,
-                                    CBGZJLD: d.data.FCB_Signature_workUser[0] && d.data.FCB_Signature_workUser[0].valCode,
-                                    QZGD: d.data.QZ_Signature_workUser[0] && d.data.QZ_Signature_workUser[0].valCode,
-                                    JZ: d.data.JZ_Signature_workUser[0] && d.data.JZ_Signature_workUser[0].valCode,
+                                    QWJJGD: d.data.QW_Signature_workUser[0]?.valCode,
+                                    QWSJGD: d.data.QW_Signature_workUser[0]?.valCode,
+                                    CBGZJLD: d.data.FCB_Signature_workUser[0]?.valCode,
+                                    QZGD: d.data.QZ_Signature_workUser[0]?.valCode,
+                                    JZ: d.data.JZ_Signature_workUser[0]?.valCode,
 
                                 },
-                                // workUser: d.data.workUser[0] && d.data.workUser[0].valCode,
-                                userIsVerify: d.data.userIsVerify[0] && d.data.userIsVerify[0].valCode,
+                                 pwdIsVerify: d.data.pwdIsVerify[0]&&d.data.pwdIsVerify[0].valCode==='true'?'true':'false' ,
+                                userIsVerify: d.data.userIsVerify[0]?.valCode,
                             }
                             resolve(options)
                         } else {
@@ -401,19 +401,37 @@
             closeViewer() {
                 this.showViewer = false
             },
-            inputVerify(textArr) {
+            inputVerify(textArr, type, blo) {
                 // let textArr = $(".base_i_inner").find("input[type='text']");
                 let res = true
+                let obj = {}
                 textArr.each((index, ele) => {
-                    if (!$(ele).val()) {
-                        this.$message.warning('有输入框为空，请检查')
+                    if (type == 'text' && !$(ele).val()) {
+                        blo && this.$message.warning('有输入框为空，请检查')
                         res = false
                         return false
+                    } else if (type == 'checkbox' && !ele.checked) {
+                        res = false
+                        return false
+                    } else if (type == 'radio') {
+                        obj[$(ele).attr('name')] = ele.checked || obj[$(ele).attr('name')]
                     }
                 })
+                if (type == 'radio') {
+                    for (let k in obj) {
+                        if (!obj[k]) {
+                            res = false
+                            break
+                        }
+                    }
+                }
                 return res
             },
+
             editContent($event, item) {
+                let imgcycle = $($event.target).parents('.item2').siblings('.align_start').find('img[type=quan_true]')
+                let imggou = $($event.target).parents('.item2').siblings('.align_start').find('img[type=gou_true]')
+
                 let textContentele = $($event.target).parents('.checkbox_group').siblings('.textContent')
 
                 if (!item.editState) {
@@ -432,8 +450,16 @@
                     }
                     return false
                 }
-                if (!this.inputVerify(textContentele.find("input[name*='input']"))) {
-                    return
+
+                if (imgcycle.length || imggou.length) {
+                    //检验输入框是否全部填写
+                    let text = this.inputVerify(textContentele.find("input[name*='input']"), 'text')
+                    let checkbox = this.inputVerify(textContentele.find("input[type*='checkbox']"), 'checkbox')
+                    let radio = this.inputVerify(textContentele.find("input[type*='radio']"), 'radio')
+                    if (!text || !checkbox || !radio) {
+                        this.$message.warning('该项次为必填项，存在未完成部分,请检查')
+                        return
+                    }
                 }
                 let map = {}
                 if (textContentele.find("input")) {
@@ -710,20 +736,27 @@
                         if (user) {
                             user = user.split(",").filter(i => i.startsWith("T="))[0].split("=")[1]
                         }
-                        this.$msgBox.showMsgBox({
-                            isShowPsd: true
-                        }).then(async (data) => {
-                            if (data.psd) {
-                                let judegUser = await this.findByUserFn({userName: user, password: data.psd})
-                                if (judegUser == '1') {
-                                    _this[fnName](item, type, $event, user)
-                                } else {
-                                    this.$message({type: 'error', message: '密码错误，请重新输入'});
-                                }
+                        this.promiseOptions.then((d) => {
+                            if (d.pwdIsVerify === 'true') {
+                                this.$msgBox.showMsgBox({
+                                    isShowPsd: true
+                                }).then(async (data) => {
+                                    if (data.psd) {
+                                        let judegUser = await this.findByUserFn({userName: user, password: data.psd})
+                                        if (judegUser == '1') {
+                                            _this[fnName](item, type, $event, user)
+                                        } else {
+                                            this.$message({type: 'error', message: '密码错误，请重新输入'});
+                                        }
+                                    }
+                                }).catch(() => {
+                                    // ...
+                                });
+                            }else{
+                                _this[fnName](item, type, $event, user)
                             }
-                        }).catch(() => {
-                            // ...
-                        });
+                        })
+
                     }
                 } else {
                     // 弱身份
@@ -1302,20 +1335,28 @@
                         if (user) {
                             user = user.split(",").filter(i => i.startsWith("T="))[0].split("=")[1]
                         }
-                        this.$msgBox.showMsgBox({
-                            isShowPsd: true
-                        }).then(async (data) => {
-                            if (data.psd) {
-                                let judegUser = await this.findByUserFn({userName: user, password: data.psd})
-                                if (judegUser == '1') {
-                                    _this.signOthFn(type, $event, user)
-                                } else {
-                                    this.$message({type: 'error', message: '密码错误，请重新输入'});
-                                }
+
+
+                        this.promiseOptions.then((d) => {
+                            if (d.pwdIsVerify === 'true') {
+                                this.$msgBox.showMsgBox({
+                                    isShowPsd: true
+                                }).then(async (data) => {
+                                    if (data.psd) {
+                                        let judegUser = await this.findByUserFn({userName: user, password: data.psd})
+                                        if (judegUser == '1') {
+                                            _this.signOthFn(type, $event, user)
+                                        } else {
+                                            this.$message({type: 'error', message: '密码错误，请重新输入'});
+                                        }
+                                    }
+                                }).catch(() => {
+                                    // ...
+                                });
+                            }else{
+                                _this.signOthFn(type, $event, user)
                             }
-                        }).catch(() => {
-                            // ...
-                        });
+                        })
                     }
                 } else if (qr == 8) {
 
@@ -1477,31 +1518,69 @@
                         }
                     })
             },
-            changeActiveFn(e, item) {
-                let obj = {}
-                // contentDetailId 项次ID
-                obj = {
+            saveActive(obj){
+                return request({
+                    url: `${this.$ip}/mms-workorder/operationInf/active`,
+                    method: 'post',
+                    data: {
+                        ...obj
+                    }
+                })
+            },
+            async changeActiveFn(e, item) {
+
+                let obj = {
                     contentDetailId: item.id,
                     serialNo: this.workorder.serialNo,
                     value: e.value.toString(),
                     key: e.key + '_' + item.serialNumber,
                 }
-                request({
-                    url: `${this.$ip}/mms-workorder/operationInf/active`,
-                    method: 'post',
-                    data: {
-                        ...obj,
-                        exceptionFlag:true,
-                    }
-                })
-                    .then((data) => {
-                        if (data.code == 200) {
-                            this.$message({type: 'success', message: '修改成功'})
-                            this.getBySerialNoFn('clean')
-                        } else {
-                            this.$message({type: 'error', message: data.message})
+                let data = await this.saveActive(obj)
+                // 当前点击图标激活时，需要重置该项次其他激活图标
+                if (data && data.code == 200 && data.data.value == 'true') {
+                    let arr1 = [['notApplicable', 'na'], ['cycle', 'cycle'], ['hook', 'gou']]
+                    let index = ''
+                    arr1.map((k, l) => {
+                        // 筛选显示的图标
+                        if (item[k[0]]) {
+                            // 得到非当前点击图标
+                            if (e.key != k[1]) {
+                                index = l
+                            }
                         }
                     })
+                    let blo = false
+                    // 查看是否存在 非当前点击图标 并且值是否为true
+                    index !== '' && this.newMap.map((k, l) => {
+                        console.log(index, arr1[index][1] + '_' + item.serialNumber);
+                        if (k.key === arr1[index][1] + '_' + item.serialNumber && k.value === 'true') {
+                            blo = true
+                            console.log(l);
+                            return
+                        }
+                    })
+                    if (blo) {
+                        // 为true需要重置为false
+                        obj.value = 'false'
+                        obj.key = arr1[index][1] + '_' + item.serialNumber
+                        this.saveActive(obj).then((data1) => {
+                            if (data1.code == 200) {
+                                this.$message({type: 'success', message: '修改成功'})
+                                this.getBySerialNoFn('clean')
+                            } else {
+                                this.$message({type: 'error', message: data1.message})
+                            }
+                        })
+                        return false
+                    }
+
+                }
+                if (data.code == 200) {
+                    this.$message({type: 'success', message: '修改成功'})
+                    this.getBySerialNoFn('clean')
+                } else {
+                    this.$message({type: 'error', message: data.message})
+                }
             },
             saveBasicFn(type) {
                 if (!this[type]) {

@@ -8,7 +8,7 @@
             </div>
             <div class="tableOneBox">
                 <div  >
-                    <el-form :model="form1" :inline="true">
+                    <el-form :model="form1" ref="form" :rules="rules" :inline="true">
 
                         <el-form-item label="航空公司：" class="firstWidth">
                             <el-select filterable  clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
@@ -34,10 +34,10 @@
                             <el-input  v-model="form1.seat" clearable placeholder="请输入"></el-input>
                         </el-form-item>
                         <div class="marginBotton">
-                            <el-form-item label="航班日期：" class="firstWidth">
+                            <el-form-item label="航班日期：" class="firstWidth" prop="startTime">
                                 <el-date-picker   @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
-                            <el-form-item label="至" class="secWidth">
+                            <el-form-item label="至" class="secWidth" prop="endTime">
                                 <el-date-picker  @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
                             <el-form-item label="适用ETOPS运行："  class="threeItemForm">
@@ -50,8 +50,8 @@
                             </el-form-item>
                             <el-form-item  >
                                 <div class="button ">
-                                    <el-button style="margin-left: 15px" @click="getList1" type="primary" > 查询</el-button>
-                                    <el-button @click="resetForm" > 重置</el-button>
+                                    <el-button style="margin-left: 15px" @click="getList1('form')" type="primary" class="el-icon-search"> 查询</el-button>
+                                    <el-button @click="resetForm" class="el-icon-refresh">重置</el-button>
                                 </div>
                             </el-form-item>
 
@@ -155,7 +155,10 @@
                 form1:{checkList:[]},
                 row:{},
                 sort:{},
-
+                rules:{
+                    startTime:[{required:true,message:'请选择起始日期',trigger:'blur'}],
+                    endTime:[{required:true,message:'请选择结束日期',trigger:'blur'}],
+                },
                 selectId:null
             };
         },
@@ -227,15 +230,20 @@
                 this.form1={checkList:[]};
                 this.getList()
             },
-            getList1(){
-                this.params={
-                    current: 1,
-                    size: 15,
-                }
-                if(this.form.checkList){
-                    this.$set(this.form,'department',this.form.checkList.join(','))
-                }
-                this.getList()
+            getList1(form){
+                this.$refs[form].validate((blo)=>{
+                    if(blo){
+                        this.params={
+                            current: 1,
+                            size: 15,
+                        }
+                        if(this.form.checkList){
+                            this.$set(this.form,'department',this.form.checkList.join(','))
+                        }
+                        this.getList()
+                    }
+                })
+
             },
 
             export2(){
@@ -329,7 +337,7 @@
                 }))
                 data.workOrderParam={...this.form1}
                 if (data.workOrderParam.endTime) {
-                    data.workOrderParam.endTime=new Date(data.workOrderParam.endTime.getTime() + 24 * 60 * 60 * 1000 - 1)
+                    data.workOrderParam.endTime=new Date(data.workOrderParam.endTime.getTime() +8.64e7 - 1)
 
                  }
                 request({
@@ -370,7 +378,7 @@
                 this.pickerOptions1 = {
                     disabledDate(time) {
                         if (s) {
-                            return time.getTime() <= s.getTime()-8.64e7 ;
+                            return time.getTime() <= s.getTime()-8.64e7||time.getTime()> s.getTime()+180*8.64e7 ;
                         }
                     },
                 };
@@ -410,10 +418,17 @@
             }
             .firstWidth{
                 .el-form-item__label{
-                    width: 90px;
+                    position: relative;
+                    width: 105px;
                     padding-left: 0px;
+
+                }
+                .el-form-item__label:before{
+                    position: absolute;
+                    left:-11px;
                 }
             }
+
             .threeItemForm{
                 .el-form-item__label{
                     width: 150px;
@@ -422,7 +437,13 @@
             .secWidth{
                 .el-form-item__label{
                     width: 70px;
+                    position: relative;
                 }
+                .el-form-item__label:before{
+                    position: absolute;
+                    left:1px;
+                }
+
             }
         }
     }

@@ -47,7 +47,6 @@ let worldorderTypeObj = {}
 let jobTypeObj = {}
 
 export const Config = (obj) => {
-    console.log(1111, obj);
     map(obj.worldorderType, (k, l) => {
         worldorderTypeObj[k.valCode] = k.valData
     })

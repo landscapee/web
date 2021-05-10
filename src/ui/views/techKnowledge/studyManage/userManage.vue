@@ -63,21 +63,37 @@ export default {
             tableData:{records:[]},
             selectObjs:[],
             fileList:[],
-            issueDeptArr:[],
             positionArr:[]
         };
     },
     mounted(){
-        // if(!this.$route.query.folderId){
-        //     this.$router.push({path:'/fileManage'});
-        // }
+
         this.init()
-        Promise.all([this.listByCodesFn(),this.getFileList()]).then(res=>{
-            console.log(res)
-            this.businessTableConfig = userParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
+        let airline=new Promise(((resolve,reject) => {
+            request({
+                url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                method: 'get',
+            }).then(d => {
+                let Airline=[]
+                if( d.data&&d.data.length){
+                    d.data.map((k,l)=>{
+                        if(!k.parentCode){
+                            Airline.push(k)
+                        }
+                    })
+                    resolve(Airline)
+                }
+                reject()
+            }).catch(()=>{
+                reject()
+            });
+        }))
+        Promise.all([airline,this.listByCodesFn(),this.getFileList()]).then(res=>{
+             this.businessTableConfig = userParameterTable(res[0], this.positionArr,this.fileList)
         })
     },
     methods:{
+
         switchTable(index){
             this.isActive = index;
             this.tableData = {records:[]};
@@ -216,17 +232,14 @@ export default {
                 request({
                     url:`${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
                     method: 'post',
-                    data:["issueDept", "position",]
+                    data:[ "position",]
                 }).then(d => {
                     if(d.code == 200){
-                        this.issueDeptArr = d.data.issueDept
                         this.positionArr = d.data.position
                     }else{
-                        this.issueDeptArr = []
                         this.positionArr = []
                     }
                     resolve()
-                    // this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
                 })
             })
         },

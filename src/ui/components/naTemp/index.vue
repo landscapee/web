@@ -2,17 +2,17 @@
     <div :class="type=='info'?'info':'cursor1'">
         <div v-if="item.notApplicable " >
             <img :src="na" v-if="isActive('na')" alt="" @click="changeActiveFn('na',true,'na')" style="width:34px">
-            <img :src="na_active" v-else @click="changeActiveFn('na_active',false,'na')" alt="" style="width:34px">
+            <img :src="na_active" type="na_true" v-else @click="changeActiveFn('na_active',false,'na')" alt="" style="width:34px">
         </div>
         <div v-if="item.cycle ">
             <img :src="quan" v-if="isActive('cycle') " alt="" @click="changeActiveFn('quan',true,'cycle')"
                  style="width:34px">
-            <img :src="quan_active" v-else alt="" @click="changeActiveFn('quan_active',false,'cycle')"
+            <img :src="quan_active" type="quan_true" v-else alt="" @click="changeActiveFn('quan_active',false,'cycle')"
                  style="width:34px">
         </div>
         <div v-if="item.hook ">
             <img :src="gou" v-if="isActive('gou')" alt="" @click="changeActiveFn('gou',true,'gou')" style="width:34px">
-            <img :src="gou_active" v-else alt="" @click="changeActiveFn('gou_active',false,'gou')" style="width:34px">
+            <img :src="gou_active" type="gou_true" v-else alt="" @click="changeActiveFn('gou_active',false,'gou')" style="width:34px">
         </div>
 
     </div>
@@ -77,7 +77,7 @@
             }
         },
         created() {
-         }
+        }
 
 
     };
@@ -86,6 +86,6 @@
 <style scoped lang="scss">
 
     .cursor1:hover {
-         cursor: pointer;
+        cursor: pointer;
     }
 </style>

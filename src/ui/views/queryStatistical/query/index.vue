@@ -8,7 +8,7 @@
             </div>
             <div class="tableOneBox">
                 <div  >
-                    <el-form :model="form1" :inline="true">
+                    <el-form :model="form1" :rules="rules" ref="myform" :inline="true">
 
                             <el-form-item label="航空公司：" class="firstWidth">
                                 <el-select filterable   clearable   v-model="form1.airlineCompanyName" placeholder="请选择">
@@ -26,7 +26,7 @@
                                 <el-input   v-model="form1.flightRegisterNo" clearable placeholder="请输入"></el-input>
 
                             </el-form-item>
-                            <el-form-item label="航班类型：">
+                            <el-form-item label="航班类型："  >
                                 <el-select   clearable   v-model="form1.airlineType" placeholder="请选择">
                                     <el-option v-for="(opt,index) in options.W_flightType" :key="index" :label="opt.valData" :value="opt.valData"> </el-option>
                                 </el-select>
@@ -37,10 +37,10 @@
                             </el-form-item>
 
                         <br/>
-                            <el-form-item label="航班日期：" class="firstWidth">
+                            <el-form-item label="航班日期：" class="firstWidth" prop="startTime">
                                 <el-date-picker   @focus="focus" :picker-options="pickerOptions"  v-model="form1.startTime" clearable placeholder="请选择"></el-date-picker>
                              </el-form-item>
-                            <el-form-item label="至" class="secWidth">
+                            <el-form-item label="至" class="secWidth" prop="endTime">
                                  <el-date-picker   @focus="focus1" :picker-options="pickerOptions1" v-model="form1.endTime" clearable placeholder="请选择"></el-date-picker>
                             </el-form-item>
                         <el-form-item label="适用ETOPS运行：" class="threeItemForm">
@@ -53,8 +53,8 @@
                         </el-form-item>
                             <el-form-item  >
                                 <div class="button">
-                                    <el-button style="margin-left: 15px" @click="getList1" type="primary">查询</el-button>
-                                    <el-button @click="resetForm"  >重置</el-button>
+                                    <el-button style="margin-left: 15px" @click="getList1" type="primary" class="el-icon-search">查询</el-button>
+                                    <el-button @click="resetForm" class="el-icon-refresh" >重置</el-button>
                                 </div>
                             </el-form-item>
                     </el-form>
@@ -124,6 +124,10 @@ import {  extend ,map} from 'lodash';
             form1:{},
             row:{},
             sort:{},
+            rules:{
+                startTime:[{required:true,message:'请选择起始日期',trigger:'blur'}],
+                endTime:[{required:true,message:'请选择结束日期',trigger:'blur'}],
+            },
             selectId:null
         };
     },
@@ -202,11 +206,15 @@ import {  extend ,map} from 'lodash';
             this.getList()
         },
         getList1(){
-            this.params={
-                current: 1,
-                size: 15,
-            }
-            this.getList()
+            this.$refs.myform.validate((blo)=>{
+                if(blo){
+                    this.params={
+                        current: 1,
+                        size: 15,
+                    }
+                    this.getList()
+                }
+            })
         },
         export2(){
             let data={...this.form1}
@@ -337,7 +345,7 @@ import {  extend ,map} from 'lodash';
              this.pickerOptions1 = {
                 disabledDate(time) {
                      if (s) {
-                        return time.getTime() <= s.getTime()-8.64e7 ;
+                        return time.getTime() <= s.getTime()-8.64e7 ||time.getTime()> s.getTime()+180*8.64e7;
                      }
                 },
             };
@@ -370,12 +378,22 @@ import {  extend ,map} from 'lodash';
              .el-form-item__label{
                 width: 85px;
                  padding-left: 0px;
+                 position: relative;
              }
+            .el-form-item__label:before{
+                position: absolute;
+                left:-11px;
+            }
         }
         .secWidth{
              .el-form-item__label{
                 width: 70px;
+                 position: relative;
              }
+            .el-form-item__label:before{
+                position: absolute;
+                left:1px;
+            }
         }
     }
 }

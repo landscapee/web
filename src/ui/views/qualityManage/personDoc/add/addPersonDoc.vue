@@ -678,7 +678,7 @@
 								if (d.code == 200) {
 									this.$message.success("保存成功！");
 									if (this.type == "add") {
-										this.$router.push({path: '/addPersonDoc', query: {type: "edit", id: d.data.id ,userId: d.data.userId}})
+										this.$router.push({path: '/addPersonDoc/edit', query: { id: d.data.id ,userId: d.data.userId}})
 										this.$set(this.form, 'id', d.data.id)
 										this.initPage()
 									}

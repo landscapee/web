@@ -388,11 +388,10 @@
                                 .then(d => {
                                     this.$message.success("保存成功！");
                                     if(this.type == "add"){
-                                        this.$router.push({path:'/testMaintenanceAdd',query:{type:"edit",id:d.data}})
+                                        this.$router.push({path:'/edittestMaintenanceAdd',query:{type:"edit",id:d.data}})
                                         this.$set(this.form,'id',d.data)
                                         this.initPage()
                                     }
-
                                  })
                                 .catch(error => {
                                     this.$message.success(error);

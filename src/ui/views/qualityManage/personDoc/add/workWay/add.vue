@@ -93,8 +93,7 @@
         created() {
              if (this.$route.query) {
                 let arr=this.$route.query.rId.split(',')
-                 console.log('sdfsd',this.$router.currentRoute.matched[2]);
-                 this.$router.currentRoute.matched[2].meta.paramsId = {
+                  this.$router.currentRoute.matched[2].meta.paramsId = {
                     id: arr[0],
                     type: arr[1],
                     userId: arr[2]
@@ -112,7 +111,7 @@
                             : "";
                  let arrpath=this.$route.path.split('/')
                 this.type = arrpath[arrpath.length-1];
-                 if(this.$route.path.substring(1,5)=='info'||this.$route.path.match(/[Z|S].*/) ){
+                 if(this.$route.path.substring(1,5)=='info'||arrpath[1].match(/^[Z|S].*/) ){
                      this.type='info'
                  }
                 request({

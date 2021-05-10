@@ -70,7 +70,6 @@ export default {
             deptList:[],
             users:[],
             fileList:[],
-            issueDeptArr:[],
             positionArr:[]
         };
     },
@@ -82,9 +81,27 @@ export default {
     mounted(){
 
         this.init()
-        Promise.all([this.listByCodesFn(),this.getFileList()]).then(res=>{
-            console.log(res)
-            this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr,this.fileList)
+        let airline=new Promise(((resolve,reject) => {
+            request({
+                url:`${this.$ip}/config-client-mms/config/findConfigs?configName=Airline`,
+                method: 'get',
+            }).then(d => {
+                let Airline=[]
+                if( d.data&&d.data.length){
+                    d.data.map((k,l)=>{
+                        if(!k.parentCode){
+                            Airline.push(k)
+                        }
+                    })
+                    resolve(Airline)
+                }
+                reject()
+            }).catch(()=>{
+                reject()
+            });
+        }))
+        Promise.all([airline,this.listByCodesFn(),this.getFileList()]).then(res=>{
+             this.businessTableConfig = sysParameterTable(res[0], this.positionArr,this.fileList)
         })
 
     },
@@ -281,14 +298,11 @@ export default {
                     data:["issueDept", "position",]
                 }).then(d => {
                     if(d.code == 200){
-                        this.issueDeptArr = d.data.issueDept
                         this.positionArr = d.data.position
                     }else{
-                        this.issueDeptArr = []
                         this.positionArr = []
                     }
                     resolve()
-                    // this.businessTableConfig = sysParameterTable(this.issueDeptArr, this.positionArr)
                 })
             })
         },

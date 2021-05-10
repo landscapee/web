@@ -39,7 +39,7 @@
                 </div>
                 <div  class="rowdiv">
                     <div>  作业类型 </div>
-                    <div>{{get(form.typeVO,'jobType')||'--'}}</div>
+                    <div>{{W_workTypeObj[get(form.typeVO,'jobType')]||'--'}}</div>
                     <div>  作业员类型 </div>
                     <div>{{get(form.typeVO,'personType')||'--'}}</div>
                     <div>  航班号 </div>
@@ -80,6 +80,7 @@
                 get:get,
                 contentVOList:[],
                 show:true,
+                W_workTypeObj:{},
             }
         },
         filters: {
@@ -134,6 +135,20 @@
 
         },
         created() {
+            request({
+                url: `${this.$ip}/mms-parameter/businessDictionaryValue/listByCodes`,
+                method: 'post',
+                params: {delete: false},
+                data: [ 'QZ_workType', 'W_workType', ]
+            }).then(d => {
+                 if (d.code == 200) {
+
+                    let  arr= [...d.data.QZ_workType, ...d.data.W_workType,]
+                     arr.map((k,l)=>{
+                         this.W_workTypeObj[k.valCode]=k.valData
+                     })
+                }
+             });
         },
     }
 </script>
