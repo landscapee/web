@@ -458,8 +458,8 @@
                 if (!text ) {
                      return
                 }
-                let Dimgcycle,Dimggou;
-                if(!imgcycle.length||!imggou.length||!imgNa.length){
+                let Dimgcycle=[],Dimggou=[];
+                if(!imgcycle.length&&!imggou.length&&!imgNa.length){
                     Dimgcycle=$(`#${itemChild._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=qaun_true]')
                     Dimggou=$(`#${itemChild._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=gou_true]')
                 }
