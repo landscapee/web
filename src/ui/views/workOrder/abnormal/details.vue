@@ -450,13 +450,16 @@
                     }
                     return false
                 }
-
+                // input必须校验
+                let text = this.inputVerify(textContentele.find("input[name*='input']"), 'text')
+                if (!text ) {
+                     return
+                }
                 if (imgcycle.length || imggou.length) {
-                    //检验输入框是否全部填写
-                    let text = this.inputVerify(textContentele.find("input[name*='input']"), 'text')
+                    //检验checkbox radio是否全部填写
                     let checkbox = this.inputVerify(textContentele.find("input[type*='checkbox']"), 'checkbox')
                     let radio = this.inputVerify(textContentele.find("input[type*='radio']"), 'radio')
-                    if (!text || !checkbox || !radio) {
+                    if ( !checkbox || !radio) {
                         this.$message.warning('该项次为必填项，存在未完成部分,请检查')
                         return
                     }
