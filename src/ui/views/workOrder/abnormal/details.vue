@@ -106,7 +106,9 @@
                                      style="min-height:120px;width:12%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
 
                                     {{item.reduceIndex}}
-                                    <NaTemp :type="type" :serialNumber="item.serialNumber" :newMap="newMap" :item='item'
+                                    <NaTemp :type="type"  v-if="!item.parentId" :id="item.reduceIndex.replace(/\./,'_')+'naTemp'"  :serialNumber="item.serialNumber" :newMap="newMap" :item='item'
+                                            @changeActiveFn='changeActiveFn($event,item)'></NaTemp>
+                                    <NaTemp :type="type" v-else :serialNumber="item.serialNumber" :newMap="newMap" :item='item'
                                             @changeActiveFn='changeActiveFn($event,item)'></NaTemp>
 
                                 </div>
@@ -431,6 +433,7 @@
             editContent($event, item) {
                 let imgcycle = $($event.target).parents('.item2').siblings('.align_start').find('img[type=quan_true]')
                 let imggou = $($event.target).parents('.item2').siblings('.align_start').find('img[type=gou_true]')
+                let imgNa = $($event.target).parents('.item2').siblings('.align_start').find('img[type=na_true]')
 
                 let textContentele = $($event.target).parents('.checkbox_group').siblings('.textContent')
 
@@ -455,7 +458,12 @@
                 if (!text ) {
                      return
                 }
-                if (imgcycle.length || imggou.length) {
+                let Dimgcycle,Dimggou;
+                if(!imgcycle.length||!imggou.length||!imgNa.length){
+                    Dimgcycle=$(`#${itemChild._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=qaun_true]')
+                    Dimggou=$(`#${itemChild._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=gou_true]')
+                }
+                if (imgcycle.length || imggou.length|| Dimgcycle.length|| Dimggou.length) {
                     //检验checkbox radio是否全部填写
                     let checkbox = this.inputVerify(textContentele.find("input[type*='checkbox']"), 'checkbox')
                     let radio = this.inputVerify(textContentele.find("input[type*='radio']"), 'radio')
