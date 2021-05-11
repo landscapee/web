@@ -108,12 +108,12 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="fTd">身份证号</td>
+							<td class="fTd is-required1">身份证号</td>
 							<td class="tTd">
-								<span >{{form.idCard}}</span>
-								<!--<el-form-item v-else prop="idCard">-->
-									<!--<el-input v-model="form.idCard" placeholder="请输入身份证号"></el-input>-->
-								<!--</el-form-item>-->
+								<span  v-if="type=='info'">{{form.idCard}}</span>
+								<el-form-item v-else prop="idCard">
+									<el-input v-model="form.idCard" placeholder="请输入身份证号" ></el-input>
+								</el-form-item>
 							</td>
 							<td class="fTd">性别</td>
 							<td class="tTd">
@@ -389,7 +389,11 @@
 					deptCode: [{required: true, message: '请选择部门/项目'}],
 					idCard: [
 						{
-							pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
+                            required: true,
+ 							message: '身份证号不能为空！',
+							trigger: 'blur'
+						},{
+ 							pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
 							message: '身份证号格式错误！',
 							trigger: 'blur'
 						}
