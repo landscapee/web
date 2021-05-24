@@ -298,7 +298,7 @@
             // SignatureInit('0002','123456',false,1,this.type!=='info')
             let _this = this
             //SignatureInit()
-            this.init()
+            this.init(false,false,true)
             Signature.bind({
                 remove: function (fn) {//签章数据撤销时，将回调此方法，需要实现签章数据持久化（保存数据到后台数据库）,
                     console.log('获取删除的签章ID：' + this.getSignatureid());
@@ -454,14 +454,14 @@
                     return false
                 }
                 // input必须校验
-                let text = this.inputVerify(textContentele.find("input[name*='input']"), 'text')
+                let text = this.inputVerify(textContentele.find("input[name*='input']"), 'text',true)
                 if (!text ) {
                      return
                 }
                 let Dimgcycle=[],Dimggou=[];
                 if(!imgcycle.length&&!imggou.length&&!imgNa.length){
-                    Dimgcycle=$(`#${itemChild._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=qaun_true]')
-                    Dimggou=$(`#${itemChild._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=gou_true]')
+                    Dimgcycle=$(`#${item._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=qaun_true]')
+                    Dimggou=$(`#${item._reduceIndex.split('_')[0]  + "naTemp"}`).find('img[type=gou_true]')
                 }
                 if (imgcycle.length || imggou.length|| Dimgcycle.length|| Dimggou.length) {
                     //检验checkbox radio是否全部填写
@@ -579,8 +579,8 @@
                 console.log(result)
                 return result
             },
-            async init(isClearAll = false, BasicUpdateLimit = false) {
-                await this.getTemplateById()
+            async init(isClearAll = false, BasicUpdateLimit = false,blo) {
+                await this.getTemplateById(blo)
                 await this.getTaskGet().then(d => {
                     if (d.code == 200) {
                         d.data.W_taskGet.map((k,l)=>{
@@ -602,7 +602,7 @@
                     data: [ 'W_taskGet', ]
                 })
             },
-            getTemplateById() {
+            getTemplateById(blo=false) {
                 let _this = this
                 return new Promise((resolve, reject) => {
                     request({
@@ -624,7 +624,8 @@
                                 }
                                 this.template = data.data.template.typeVO
                                 this.labelVO = data.data.template.labelVO
-                                this.getFileByIdFn(this.template.airlineCompanyLogo)
+                                console.log('blo',blo);
+                                blo&&this.getFileByIdFn(this.template.airlineCompanyLogo)
                                 let _this = this
 
                                 this.$nextTick(() => {
