@@ -37,7 +37,7 @@
 					<el-row>
 						<el-col :span="8" v-for="(opt1,index) in getArr(opt)" :key="index"
 								v-if="opt1.enable||!opt1.type">
-							<img v-if="opt1.type==4" :src="$workImgIp+opt1.value.split('$')[1]" alt="加载失败">
+							<img v-if="opt1.type==4" :src="opt1.value.split('$')[1]" alt="加载失败">
 							<!--{{getimg(opt1)}}-->
 							<!--<div v-if="opt1.type==4&&show" style="word-wrap: break-word" > {{ '${'+opt1.placeholder+'}'}}</div>-->
 							<template v-else-if="opt1.type==2">
