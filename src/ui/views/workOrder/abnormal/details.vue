@@ -104,7 +104,6 @@
                             <div class="flex">
                                 <div class="item flex align_start"
                                      style="min-height:120px;width:12%;padding:4px;box-sizing:border-box;text-align: center;display: inline-block">
-
                                     {{item.reduceIndex}}
                                     <NaTemp :type="type"  v-if="!item.parentId" :id="item.reduceIndex.replace(/\./,'_')+'naTemp'"  :serialNumber="item.serialNumber" :newMap="newMap" :item='item'
                                             @changeActiveFn='changeActiveFn($event,item)'></NaTemp>

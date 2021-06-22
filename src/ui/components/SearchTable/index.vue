@@ -215,15 +215,10 @@
         created() {
 
         },
-        beforeRouteLeave(to, from, next) {
-            if (this.timer1) {
-                // clearInterval(this.timer1)
-            }
-            next()
-        },
+
         beforeDestroy() {
             if (this.timer1) {
-                // clearInterval(this.timer1)
+                clearInterval(this.timer1)
             }
         },
         mounted() {
@@ -362,7 +357,6 @@
                  if (!this.$refs.body_table || !header_table||!tr) {
                     return false
                 }
-
                 let trheight = parseFloat(window.getComputedStyle(tr).height)
                 if(!trheight){
                     return false
@@ -377,8 +371,9 @@
                 }
                 if (tr&& header_table) {
                      if (trheight * len > parseFloat(body_table.clientHeight)) {
-                        header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
-                        this.$refs.body_table.doLayout();
+                        this.$nextTick(()=>{
+                            header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
+                        })
                     } else {
                         header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
                     }

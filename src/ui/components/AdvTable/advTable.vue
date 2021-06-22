@@ -80,7 +80,7 @@
                                                     <label v-else>{{col.display ? col.display(row) : ''}}, {{ri}}, {{outParams}}</label>
                                                 </div>
                                                 <div v-if="col.type == 'slot'">
-                                                    <slot :name='col.key' :row="row" :index='ri'></slot>
+                                                    <slot :name='col.key' :row="row" :index='ri' ></slot>
                                                 </div>
                                                 <div v-if="col.type == 'switch'">
                                                     <el-switch
@@ -1689,7 +1689,14 @@
             },
             rowSwitch(row, ri) {
                 return function(row, ri) {
-                    let config = this.$store.getters.getTabConfig(this.id);
+                    let config ;
+
+                    if(this.id) {
+                        config = this.$store.getters.getTabConfig(this.id)
+                    }
+                    if(this.columnConfig) {
+                        config= this.columnConfig.columns;
+                    }
                     if(config.switch) {
                         return config.switch(row, this.outParams);
                     }

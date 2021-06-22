@@ -279,31 +279,32 @@
             getTree() {
                 let userInfo= this.$store.getters.userInfo
                 console.log(userInfo,5,6);
-                let orgId = userInfo.orgId;
+                let deptId = userInfo.deptId;
                 // let deptId = userInfo.deptId;
                 // let administrativeId = userInfo.administrativeId;
                 request({
-                    url: 'sys/org/getOrgById',
+                    url: '/sys/department/getAllDepartmentByDeptIdWithTree',
                     method: 'get',
-                    params:{id:orgId},
+                    params:{deptId:deptId},
                 }).then((d1) => {
                     if(d1.responseCode==1000){
-                        request({
-                            url: 'sys/department/getAllDepartmentByOrgId',
-                            method: 'get',
-                            params:{orgId:orgId},
-                        }).then((d) => {
-                            this.data=[
-                                {
-                                    name:d1.data.name,
-                                    type:'ORG',
-                                    id:d1.data.id,
-                                    children:d.data||[]
-                                }
-                            ]
-                        });
+                        console.log('sdfsdfds',d1);
+                        this.data=this.tranTree(d1.data)
+
                     }
                 });
+            },
+            tranTree(data){
+               return map(data,(k,l)=>{
+                   let obj={
+                       ...k.data,
+                       children:[]
+                   }
+                   if(k?.children?.length){
+                       obj.children= this.tranTree(k.children)
+                   }
+                    return obj
+                })
             },
             findCurrentDept(dept, deptId) {
                 if (dept.data.id == deptId) {

@@ -112,7 +112,7 @@
                 })
                 const isLt5M = file.size / 1024 / 1024 <= 1;
                 if (!isLt5M) {
-                    this.$message.error('上传头像图片大小不能超过 1MB!');
+                    this.$message.error('上传图片大小不能超过 1MB!');
                 }
                 return isLt5M
             },

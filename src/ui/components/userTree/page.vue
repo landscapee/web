@@ -349,29 +349,28 @@
             },
 
             getTree() {
-                let orgId = getUserInfo().orgId//this.$store.getters.userInfo.orgId;
+                let deptId = getUserInfo().deptId
                 request({
-                    url: this.$ip + '/sys/org/getOrgById',
+                    url: this.$ip + '/sys/department/getAllDepartmentByDeptIdWithTree',
                     method: 'get',
-                    params: {id: orgId},
+                    params: {deptId},
                 }).then((d1) => {
                     if (d1.responseCode == 1000) {
-                        request({
-                            url: this.$ip + '/sys/department/getAllDepartmentByOrgId',
-                            method: 'get',
-                            params: {orgId: orgId},
-                        }).then((d) => {
-                            this.data = [
-                                {
-                                    name: d1.data.name,
-                                    type: 'ORG',
-                                    id: d1.data.id,
-                                    children: d.data || []
-                                }
-                            ]
-                        });
+                        this.data=this.tranTree(d1.data)
                     }
                 });
+            },
+            tranTree(data){
+                return map(data,(k,l)=>{
+                    let obj={
+                        ...k.data,
+                        children:[]
+                    }
+                    if(k?.children?.length){
+                        obj.children= this.tranTree(k.children)
+                    }
+                    return obj
+                })
             },
             handleClose() {
                 this.type = 'ORG'

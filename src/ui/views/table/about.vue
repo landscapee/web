@@ -8,15 +8,64 @@
  -->
 <template>
     <div class="about">
-        <AdvTable id="demo_plan_list" :tab-data="tabData" :pagination="pagination" @viewsRow="viewsRow" @submit="submit"></AdvTable>
+        <AdvTable id="demo_plan_list"  :tab-data="tabData" :pagination="pagination" @viewsRow="viewsRow" @submit="submit">
+            <span slot="danjia" width="100">11</span>
+        </AdvTable>
     </div>
 </template>
 <script>
+    // import AdvTable from '@components/AdvTable/AdvTable'
 export default {
+        // components:{AdvTable},
     data(){
         return {
             tabData: [
-                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' }
+                { waybillCode: '217-00000000',arrive:true, des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
+                { waybillCode: '217-00000000', des: 'bkk', number: 5, weight: 10, specialCode: 'RLI', flightDate: 1589341428610, remark: '' },
             ],
             pagination: {
                 page: 1,
@@ -47,4 +96,15 @@ export default {
         height: 600px;
         width: 100%;
     }
+
+    /deep/ .operate-cell{
+        .el-button{
+            background: #0a76a4;
+        }
+    }
+
+/deep/ .co-scroll_portrait_track{
+    display: none;
+}
+
 </style>

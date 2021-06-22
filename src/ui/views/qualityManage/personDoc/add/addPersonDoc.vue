@@ -631,15 +631,13 @@
 							: this.type == "info"
 								? "人员档案详情"
 								: "";
-
-					request({
-						// headers: {'Content-Type': 'text/plain'},
-						url: `/sys/user/getUsersByOrgId`,
+                     request({
+ 						url: `/sys/user/getAllUserByDeptId`,
+						// url: `/sys/user/getUsersByOrgId`,
 						method: 'get',
 						params: {
-							// pageNum: 1, pageSize: 99999,
-							orgId: this.$store.state.user.userInfo.orgId,
-							deptRelation: false,
+                             deptId: this.$store.state.user.userInfo.deptId,
+							// deptRelation: false,
 							needRole: false
 						}
 					}).then((d) => {
