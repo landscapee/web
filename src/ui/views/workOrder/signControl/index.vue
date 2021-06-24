@@ -298,6 +298,10 @@
                 });
             },
             abnormalChange(row) {
+                if(row?.template?.deleted){
+                    this.$message.warning('该工单模板已删除，不能异常更改')
+                    return false
+                }
                 if (row.state === 3) {
                     let src = '/editWorkAbnormalDetails';
                     let data = row.id;
