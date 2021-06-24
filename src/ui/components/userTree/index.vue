@@ -381,17 +381,16 @@
                         this.$refs.userScroll.addEventListener('scroll', this.handleScroll, true);//监听函数
                     }
                 })
-
                 this.getTree();
                 this.selectAll = false;
                 this.title = title || '选择人员';
-                this.userSelect = inputList || [];
-                this.userSelectIdS = inputList&&inputList.map((k, l) => {
+                // this.userSelect = [...inputList] ;
+                this.userSelect = inputList ? [...inputList]:[];
+                this.userSelectIdS = this.userSelect.map((k, l) => {
                     return k.id
                 })
             },
         },
-
     };
 </script>
 
