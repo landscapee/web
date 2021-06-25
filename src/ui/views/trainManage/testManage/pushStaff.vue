@@ -81,7 +81,8 @@
 <script>
      import Tree from '@components/Tree/index';
     import { formatTreeData } from '@lib/tools.js';
-    import Icon from "@components/Icon-svg/index";
+     import {getUserInfo} from '@lib/auth.js';
+     import Icon from "@components/Icon-svg/index";
     import request from "@lib/axios.js";
      import { extend, get, cloneDeep, filter, some, flow, concat, map } from 'lodash';
     export default {
@@ -277,20 +278,42 @@
 
 
             getTree() {
-                let userInfo= this.$store.getters.userInfo
-                console.log(userInfo,5,6);
-                let deptId = userInfo.deptId;
-                // let deptId = userInfo.deptId;
-                // let administrativeId = userInfo.administrativeId;
+                //默认生产环境
+                console.log('my',PROGRAM);
+                let orgId=getUserInfo().orgId;
+                let obj = {deptId: getUserInfo().deptId,}
+                let url = `/sys/department/getAllDepartmentByDeptIdWithTree`
+                if (PROGRAM !== "jwxt.prod") { // 非 生产环境
+                    url = `/sys/org/getOrgById`
+                    delete obj.deptId
+                    obj.id =orgId
+                }
                 request({
-                    url: '/sys/department/getAllDepartmentByDeptIdWithTree',
+                    url: this.$ip + url,
                     method: 'get',
-                    params:{deptId:deptId},
+                    params: obj,
                 }).then((d1) => {
-                    if(d1.responseCode==1000){
-                        console.log('sdfsdfds',d1);
-                        this.data=this.tranTree(d1.data)
-
+                    if (d1.responseCode == 1000) {
+                        if(PROGRAM == "jwxt.prod"){
+                            //默认生产环境
+                            this.data=this.tranTree(d1.data)
+                        }else{
+                            // 非 生产环境
+                            request({
+                                url: this.$ip + '/sys/department/getAllDepartmentByOrgId',
+                                method: 'get',
+                                params: {orgId},
+                            }).then((d) => {
+                                this.data = [
+                                    {
+                                        name: d1.data.name,
+                                        type: 'ORG',
+                                        id: d1.data.id,
+                                        children: d.data || []
+                                    }
+                                ]
+                            });
+                        }
                     }
                 });
             },

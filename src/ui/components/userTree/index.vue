@@ -27,7 +27,7 @@
 
                 <el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选
                 </el-checkbox>
-                <div class="item" v-for="(item, index) in personList" :key="item.id">
+                <div class="item" v-for="(item, index) in personList" :key="index+'tc'">
                   <div class="item-time">
                     <el-checkbox v-model="userSelectIdS" @change="userSelectC($event,item)" :label="item.id">
                       {{item.name}}
@@ -324,14 +324,42 @@
             },
 
             getTree() {
-                let deptId = getUserInfo().deptId
+                //默认生产环境
+                console.log('my',PROGRAM);
+                let orgId=getUserInfo().orgId;
+                let obj = {deptId: getUserInfo().deptId,}
+                let url = `/sys/department/getAllDepartmentByDeptIdWithTree`
+                if (PROGRAM !== "jwxt.prod") { // 非 生产环境
+                    url = `/sys/org/getOrgById`
+                    delete obj.deptId
+                    obj.id =orgId
+                 }
                  request({
-                    url: this.$ip + '/sys/department/getAllDepartmentByDeptIdWithTree',
+                    url: this.$ip + url,
                     method: 'get',
-                    params: {deptId},
+                    params: obj,
                 }).then((d1) => {
                     if (d1.responseCode == 1000) {
-                        this.data=this.tranTree(d1.data)
+                        if(PROGRAM == "jwxt.prod"){
+                            //默认生产环境
+                            this.data=this.tranTree(d1.data)
+                        }else{
+                            // 非 生产环境
+                            request({
+                                url: this.$ip + '/sys/department/getAllDepartmentByOrgId',
+                                method: 'get',
+                                params: {orgId},
+                            }).then((d) => {
+                                this.data = [
+                                    {
+                                        name: d1.data.name,
+                                        type: 'ORG',
+                                        id: d1.data.id,
+                                        children: d.data || []
+                                    }
+                                ]
+                            });
+                        }
                     }
                 });
             },
