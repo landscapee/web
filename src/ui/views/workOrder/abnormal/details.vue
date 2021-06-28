@@ -605,7 +605,7 @@
                 let _this = this
                 return new Promise((resolve, reject) => {
                     request({
-                        url: `${this.$ip}/mms-workorder/workorder/refresh?workorderId=${this.id}`,
+                        url: `${this.$ip}/mms-workorder/workorder/complexInfoNoLogicDeleted?workorderId=${this.id}`,
                         method: 'get',
                     })
                         .then((data) => {
