@@ -29,7 +29,7 @@
                                   <div class="item" v-for="(item, index) in personList" :key="item.id">
                                       <div class="item-time">
                                           <el-checkbox v-model="userSelectIdS" @change="userSelectC($event,item)" :label="item.id">
-                                              {{item.name}}
+                                              {{item.name}}{{item.workNumber?`(${item.workNumber})`:''}}
                                           </el-checkbox>
                                       </div>
                                   </div>

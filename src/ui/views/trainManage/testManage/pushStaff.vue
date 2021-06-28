@@ -49,7 +49,7 @@
                                         <el-checkbox v-show="personList.length > 0" v-model="selectAll" @change="handleSelectAll">全选</el-checkbox>
                                         <div class="item" v-for="(item, index) in personList" :key="item.id">
                                             <div class="item-time">
-                                                <el-checkbox v-model="userSelect" @change="userSelectC"   :label="item">{{item.name}}</el-checkbox>
+                                                <el-checkbox v-model="userSelect" @change="userSelectC"   :label="item">{{item.name}}{{item.workNumber?`(${item.workNumber})`:''}}</el-checkbox>
                                             </div>
                                         </div>
                                     </el-scrollbar>
