@@ -138,8 +138,6 @@
             },
             objectSpanMethod({ row, column, rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
-
-                    // console.log(rowIndex, columnIndex, row.col, row.oldCol);
                     if ((rowIndex - row.oldCol) % row.col === 0) {
                         return {
                             rowspan: row.col,
