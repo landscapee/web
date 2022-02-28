@@ -42,10 +42,10 @@
                              class="value5  value flex flex_wrap align_center">
                             <div v-for="(k,l) in item.value.split(';')" :key="l"
                                  class="flex align_center">
-                                <input type="checkbox" :disabled="type=='info'"
+                                <input type="radio" :disabled="type=='info'"
                                        :id="item.placeholder.split(';')[l]"
-                                       :name="item.placeholder.split(';')[l]"
-                                       class="Wtui-checkbox">{{k}}&nbsp;
+                                       :name="getRadioName(item.placeholder.split(';')[l])"
+                                       class="Wtui-checkbox"> <label :for="item.placeholder.split(';')[l]"  >{{k}}&nbsp;</label>
                                 <!-- <div style="width: 100%" >
                                     {{'${'+item.placeholder.split(';')[l]+'}'}}
                                 </div> -->
@@ -317,6 +317,14 @@
 
         },
         computed: {
+            getRadioName(){
+              return (val)=>{
+                  if(val){
+                      return val.split('_')[0]
+                  }
+                  return val
+              }
+            },
             getbutonName() {
                 return this.workorder && this.workorder.type && this.workorder.type.startsWith("WX") ? '黄页拍照信息' : '拍照信息'
             },

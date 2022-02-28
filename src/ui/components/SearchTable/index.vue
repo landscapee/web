@@ -213,7 +213,8 @@
             },
         },
         created() {
-
+            let form=JSON.parse(sessionStorage.getItem('signControlForm'))||{}
+            this.headerData=[{...form}]
         },
 
         beforeDestroy() {
@@ -375,7 +376,9 @@
                             header_table.style.cssText = `height:${thHeight}px;overflow-y:hidden;`
                         })
                     } else {
-                        header_table.style.cssText = `height:${hHeight}px;overflow-y:hidden`
+                         this.$nextTick(()=>{
+                             header_table.style.cssText = `height:41px;overflow-y:hidden`
+                         })
                     }
                     if (this.timer1) {
                         clearInterval(this.timer1)
@@ -483,9 +486,7 @@
             }
         },
 
-        beforeDestroy() {
 
-        },
     };
 </script>
 
@@ -952,7 +953,9 @@
                 background: rgba(255, 255, 255, 1);
                 border-radius: 2px;
                 border: 1px solid rgba(216, 216, 216, 1);
-                padding-left: 10px;
+                padding-left: 5px;
+                padding-right: 17px;
+
             }
             /deep/ .el-input__icon {
                 line-height: 30px;

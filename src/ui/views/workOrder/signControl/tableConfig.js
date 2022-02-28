@@ -67,6 +67,9 @@ export const Config = (obj) => {
             return ''
         }
     }
+    // {
+    //     prop: 'airlineCompanyName', label: '航司名称', sortProp: "airlineCompanyName", align: 'center', sort: true, search: {type: 'input', prop: 'airlineCompanyName', placeholder: "请输入"}
+    // },
     return [
         // { slot: 'checkbox' , label: '选择',width:'50',search:{type:'allSelected',label:'全选'}},
         {type: 'selection', label: '选择', width: '50', search: {type: 'allSelected', label: '全选'}},
@@ -145,16 +148,8 @@ export const Config = (obj) => {
             search: {type: 'input', prop: 'airlineCompanyCode', placeholder: "请输入"}
         },
         {
-            prop: 'airlineCompanyName',
-            label: '航司名称',
-            sortProp: "airlineCompanyName",
-            align: 'center',
-            sort: true,
-            search: {type: 'input', prop: 'airlineCompanyName', placeholder: "请输入"}
-        },
-        {
             prop: 'airplaneIcao',
-            width: '70',
+            width: '80',
             label: '机型',
             sortProp: "airplaneIcao",
             align: 'center',
@@ -162,10 +157,39 @@ export const Config = (obj) => {
             search: {type: 'input', prop: 'airplaneIcao', placeholder: "请输入",}
         },
         {
+            prop: 'flightNo',
+            width: '90',
+            label: '航班号',
+            sortProp: "flightNo",
+            align: 'center',
+            sort: true,
+            search: {type: 'input', prop: 'flightNo', placeholder: "请输入",}
+        },
+        {
+            prop: 'seat',
+            width: '90',
+            label: '机位',
+            sortProp: "seat",
+            align: 'center',
+            sort: true,
+            search: {type: 'input', prop: 'seat', placeholder: "请输入",}
+        },
+
+        {
+            prop: 'flightRegisterNo',
+            width: '90',
+            label: '机号',
+            sortProp: "flightRegisterNo",
+            align: 'center',
+            sort: true,
+            search: {type: 'input', prop: 'flightRegisterNo', placeholder: "请输入",}
+        },
+        {
             prop: 'flightState',
             label: '航班类型',
             sortProp: "flightState",
             align: 'center',
+            width:'90px',
             sort: true,
             search: {
                 type: 'select',
