@@ -364,7 +364,7 @@
                 }
                 let num = this.noSearch ? 1 : 2
                 this.tHeight = trheight * num + 2
-                let hHeight = trheight * num + 4
+                let hHeight = trheight * num + 2
                 let thHeight = trheight * num + 1
                 let len = this.data.length || this.data.records && this.data.records.length
                 if (!len) {
@@ -881,7 +881,10 @@
 
             /deep/ th {
                 .cell {
-                    line-height: 1em
+                    line-height: 1em;
+                    &>div{
+                         line-height: 18px!important;
+                    }
                 }
                 div, span {
                     font-weight: bold;

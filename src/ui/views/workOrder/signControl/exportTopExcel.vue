@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog title="培训项目导出" :close-on-click-modal="false" center :visible.sync="dialogFormVisible"
+        <el-dialog title="工单导出" :close-on-click-modal="false" center :visible.sync="dialogFormVisible"
                    :before-close="close">
             <el-form :model="form" ref="form" :rules="rules">
 

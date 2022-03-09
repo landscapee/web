@@ -1,12 +1,13 @@
 <template>
-    <div>
+    <div  >
         <el-dialog title="工单批量导出"    :close-on-click-modal="false" center  :visible.sync="dialogFormVisible" :before-close="close">
+
             <div style=" padding: 32px 40px 28px 50px; ">
                 <div  v-show="showItem" :style=" ` position: absolute;left:600px;background:white;width:90%;padding:15px;  box-shadow: darkgrey 10px 10px 30px 5px ;` "  >
                     <Info :form="hoveropt"></Info>
                 </div>
                 <div class="divBoxF">
-                    <div @ class="item" @mouseenter="showInfo(opt)" @mouseleave="leave()"  v-for="(opt,index) in checkArr" :key="index">
+                    <div  class="item cursor" @mouseenter="showInfo(opt)" @mouseleave="leave()"  v-for="(opt,index) in checkArr" :key="index">
                         <div>{{index+1}}</div>
                         <div>工单编号：<span>{{opt.serialNo}}</span></div>
 
@@ -84,6 +85,7 @@
             },
             close( ){
                 this.checkArr=[]
+                this.form={}
                 this.dialogFormVisible=false
             },
             submit(form){
@@ -92,13 +94,22 @@
                         let serialNo=this.checkArr.map((k,l)=>{
                                 return k.serialNo
                         })
+                        const loading = this.$loading({
+                            lock: true,
+                            text: '工单导出中。。。',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
+
                          request({
                             header:{
                                 'Content-Type':'multipart/form-data'
+                                // 'Content-Type':'application/zip'
                             },
                             url:`${this.$ip}/mms-workorder/operationInf/exportBatch?serialNo=${serialNo.join(',') }&type=${this.form.type}`,
                             method: 'get',
-                            responseType: 'blob'
+                            responseType: 'blob',
+                             timeout:60*1000
                         }).then(d => {
                              let arr=['压缩文件','zip']
                             if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
@@ -119,7 +130,15 @@
                             }else { // IE10+下载
                                 navigator.msSaveBlob(blob, fileName)
                             }
-                        });
+                             loading.close();
+                             this.close()
+                             this.$message.success('导出成功')
+                        }).catch((e)=>{
+                             loading.close();
+                             this.$alert(e.message||'服务器错误','导出提示',{
+                                 type:'error'
+                             })
+                         });
 
                     }
                 });
@@ -174,11 +193,14 @@
         margin-top: 5px;
     }
 .divBoxF{
+    max-height:300px;
+    overflow-y: auto;
     &>.item{
         display: flex;
         justify-content: left;
         align-items: center;
         height:30px;
+        //box-shadow: darkgrey 10px 10px 30px 5px ;
         div:first-child{
             color:#7F7F7F;
             margin-right: 15px;
