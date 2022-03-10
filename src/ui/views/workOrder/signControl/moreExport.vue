@@ -109,7 +109,7 @@
                             url:`${this.$ip}/mms-workorder/operationInf/exportBatch?serialNo=${serialNo.join(',') }&type=${this.form.type}`,
                             method: 'get',
                             responseType: 'blob',
-                             timeout:60*1000
+                             timeout:2*1000
                         }).then(d => {
                              let arr=['压缩文件','zip']
                             if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
@@ -134,8 +134,11 @@
                              this.close()
                              this.$message.success('导出成功')
                         }).catch((e)=>{
-                             loading.close();
-                             this.$alert(e.message||'服务器错误','导出提示',{
+                              loading.close();
+                             let blo="[object Error]"==Object.prototype.toString.call(e)
+                             let s=e.message||'服务器错误'
+                             s=blo?'由于一次性导出数量过多以及网络延迟原因，导出失败！ 请减少一次性导出数量或航后网络空闲时再试！':s
+                             this.$alert(s,'导出提示',{
                                  type:'error'
                              })
                          });

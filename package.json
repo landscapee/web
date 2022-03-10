@@ -11,6 +11,7 @@
     "build": "webpack --config webpack.dev.js --Program jwxt.dev",
     "dev.deploy": "npm run build && scp -r build/* root@173.100.1.134:/home/front-end/",
     "test.deploy": "npm run build.test && scp -r build/* root@173.101.1.130:/home/front-end/",
+    "t.deploy": " scp -r build/* root@173.101.1.130:/home/front-end/",
     "test.prod": "npm run build.test && scp -r build/* root@173.101.1.130:/home/front-end/",
     "build.test": "webpack --config webpack.prod.js --Program jwxt.test",
     "build.prod": "webpack --config webpack.prod.js --Program jwxt.prod",
