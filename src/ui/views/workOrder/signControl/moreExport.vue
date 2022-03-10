@@ -109,7 +109,7 @@
                             url:`${this.$ip}/mms-workorder/operationInf/exportBatch?serialNo=${serialNo.join(',') }&type=${this.form.type}`,
                             method: 'get',
                             responseType: 'blob',
-                             timeout:120*1000
+                             timeout:90*1000
                         }).then(d => {
                              let arr=['压缩文件','zip']
                             if(d.headers['content-disposition']&&d.headers['content-disposition'].split('=')){
