@@ -4,7 +4,9 @@
         <el-table :height="tHeight"
                   :class="noSearch?`noSearchTable headerTable ${'header_table'+refTag||''}`:` headerTable ${'header_table'+refTag||''}`"
                   @header-dragend="headerDragend"
-                  :show-header="true" :data="headerData" ref="header_table" :row-key="getRowKeys" highlight-current-row
+                  :show-header="true"
+                  :data="headerData" ref="header_table"
+                  :row-key="getRowKeys" highlight-current-row
                   tooltip-effect="dark" border>
             <template v-for="(colConfig, index) in tableConfig">
                 <template v-if="colConfig.search">

@@ -11,7 +11,7 @@
 
                     <el-tree
                             @check="check"
-v                            show-checkbox
+            v                            show-checkbox
                             node-key="id"
                              class="filter-tree"
                             :data="dataTree"

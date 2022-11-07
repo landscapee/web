@@ -1,6 +1,6 @@
 /*
- * @Descripttion: 
- * @version: 
+ * @Descripttion:
+ * @version:
  * @Author: xdh.ss
  * @Date: 2020-04-08 12:12:15
  * @LastEditors: xdh.ss
@@ -45,8 +45,6 @@ module.exports = {
         chunkFilename: '[name].[hash].chunk.js',
         publicPath: '/',
         globalObject: 'this',
-
-
     },
     module: {
         rules: [
@@ -149,7 +147,7 @@ module.exports = {
                 ignore: ['.*']
             }
         ]),
-        
+
         new VueLoaderPlugin(),
         html_webpack_plugin,
         new webpack.DefinePlugin({
